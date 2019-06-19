@@ -17,40 +17,46 @@ const {{ontologyNameUppercase}} = {
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 
-{{#if class}}
+{{#if classes}}
     // *****************
     // All the Classes.
     // *****************
-    {{#each class}}
+    {{#each classes}}
     
     /**
-    * {{constant}}
+    * {{comment}}
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), true)
     {{#each labels}}
-      .addLabel('{{language}}', '{{literal}}')
+      .addLabel('{{language}}', '{{value}}')
+    {{/each}}
+    {{#each alteratives}}
+      .addAlternativeName('{{language}}', '{{value}}')
     {{/each}}
     {{#each comments}}
-      .addComment('{{language}}', '{{literal}}'){{#if @last}},{{/if}}
+      .addComment('{{language}}', '{{value}}'){{#if @last}},{{/if}}
     {{/each}}
     {{/each}}
 {{/if}}
 
-{{#if property}}
+{{#if properties}}
     // *******************
     // All the Properties.
     // *******************
-    {{#each property}}
+    {{#each properties}}
 
     /**
-    * {{constant}}
+    * {{comment}}
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), true)
     {{#each labels}}
-      .addLabel('{{language}}', '{{literal}}')
+      .addLabel('{{language}}', '{{value}}')
+    {{/each}}
+    {{#each alternatives}}
+      .addAlternativeName('{{language}}', '{{value}}')
     {{/each}}
     {{#each comments}}
-      .addComment('{{language}}', '{{literal}}'){{#if @last}},{{/if}}
+      .addComment('{{language}}', '{{value}}'){{#if @last}},{{/if}}
     {{/each}}
     {{/each}}
 {{/if}}
@@ -61,4 +67,4 @@ const {{ontologyNameUppercase}} = {
   END_OF_VOCAB: 'End of vocab.'
 }
 
-module.exports = ${ontologyNameUppercase}
+module.exports = {{ontologyNameUppercase}};

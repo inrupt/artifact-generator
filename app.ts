@@ -1,6 +1,9 @@
 const fs = require('fs');
 const Handlebars = require('handlebars');
 
+const rdf = require('rdf-ext')
+const { LitUtils } = require('lit-vocab-term')
+
 
 fs.readFile('templates/template.hbs', function read(err, data) {
     if (err) {
@@ -9,46 +12,72 @@ fs.readFile('templates/template.hbs', function read(err, data) {
 
 	var template = Handlebars.compile(data.toString());
 	
-	var input = {ontologyComment: 'The LIT Core Ontology. The LIT is intended to be a collection of utility libraries to ease the adoption of RDF for developers.',
-		ontologyNameUppercase: 'SCHEMA-EXT',
-		namespace: 'http://schema.org/',
-		class: [{name: 'Person', constant: 'A person (alive, dead, undead, or fictional).',
-					labels:[{literal: "Person", language: 'en'},
-							{literal: "Persono", language: 'fr'}],
-					comments:[{literal: "A Person.", language: 'en'},
-							{literal: "A Persono.", language: 'fr'}]
-							},
-				{name: 'Entity', constant: 'A entity could be a person or an orgainization.',
-					labels:[{literal: "Entity", language: 'en'},
-							{literal: "Entitieie", language: 'fr'}],
-					comments:[{literal: "A Entity.", language: 'en'},
-							{literal: "A Entitieie.", language: 'fr'}]
-							}
-		],
 
-		property: [{name: 'givenName', constant: 'A persons given name.',
-						labels:[{literal: "Given Name", language: 'en'},
-								{literal: "Giveno Namo", language: 'fr'}],
-						comments:[{literal: "A Persons given name.", language: 'en'},
-								{literal: "A Persono given nameo.", language: 'fr'}]
-					},
-					{name: 'familyName', constant: 'A entity could be a person or an orgainization.',
-						labels:[{literal: "Entity", language: 'en'},
-								{literal: "Entitieie", language: 'fr'}],
-						comments:[{literal: "A Entity.", language: 'en'},
-								{literal: "A Entitieie.", language: 'fr'}]
-					}
-		]
-	};
+	const classes = [];
+	const properties = [];
 
-	var contents = template(input);
+	const result = {};
+	result.classes = classes;
+	result.properties = properties;
+	result.namespace = 'http://schema.org/'; //TODO read this from the data
 
-	fs.writeFile('generated/schema-ext.ts', contents, err => {
-	    if (err) {
-	        return console.error('Failed to store template: ${err.message}.');
-	    }
-	    console.log('Saved template!');
+
+	LitUtils.loadTurtleFile('C:/Users/holleranj/development/LIT/vocab/rdf/OntologyDirMarker/schema-ext.ttl', function (data) {
+	    
+	    data.match(null, null, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#Class')).filter((quad) => {
+	    	classes.push(handleTerms(data, quad));
+	    });
+
+	    data.match(null, null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property')).filter((quad) => {
+			
+			properties.push(handleTerms(data, quad));
+	    });
+
+
+
+		//console.log('Result : ' + JSON.stringify(result, null, ' '));
+
+
+		var contents = template(result);
+
+		fs.writeFile('generated/schema-ext.ts', contents, err => {
+		    if (err) {
+		        return console.error('Failed to store template: ${err.message}.');
+		    }
+		    console.log('Saved template!');
+		});
+
 	});
 
 });
 
+function handleTerms(data, quad) {
+	const labels = [];
+	data.match(quad.subject, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label'), null).filter((subQuad) => {
+		add(labels, subQuad);
+	});
+
+	
+	const alternateName = [];
+	data.match(quad.subject, rdf.namedNode('http://schema.org/alternateName'), null).filter((subQuad) => {
+		add(alternateName, subQuad);
+	});
+
+	const comments = [];
+	data.match(quad.subject, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#comment'), null).filter((subQuad) => {
+		add(comments, subQuad);
+	});
+
+	return {name: labels[0].value,
+				comment: comments[0].value,
+				labels: labels,
+				alternateName: alternateName,
+				comments: comments};
+}
+
+function add(array, quad) {
+	array.push({
+		value: quad.object.value,
+		language: quad.object.language
+	});
+}
