@@ -30,8 +30,8 @@ const {{ontologyNameUppercase}} = {
     {{#each labels}}
       .addLabel('{{language}}', '{{value}}')
     {{/each}}
-    {{#each alteratives}}
-      .addAlternativeName('{{language}}', '{{value}}')
+    {{#each alternateNames}}
+      .addLabel('{{language}}', '{{value}}')
     {{/each}}
     {{#each comments}}
       .addComment('{{language}}', '{{value}}'){{#if @last}},{{/if}}
@@ -52,8 +52,8 @@ const {{ontologyNameUppercase}} = {
     {{#each labels}}
       .addLabel('{{language}}', '{{value}}')
     {{/each}}
-    {{#each alternatives}}
-      .addAlternativeName('{{language}}', '{{value}}')
+    {{#each alternateNames}}
+      .addLabel('{{language}}', '{{value}}')
     {{/each}}
     {{#each comments}}
       .addComment('{{language}}', '{{value}}'){{#if @last}},{{/if}}

@@ -4,13 +4,27 @@
   "description": "A simple generator for building ontology artifacts",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha \"./test/**/*.test.js\"",
+    "start": "node app.ts"
   },
   "author": "Jarlath Holleran",
   "license": "ISC",
   "dependencies": {
     "handlebars": "^4.1.2",
+    "vocab-lit": "file:C:/Users/holleranj/development/LIT/javascript/generated-source-code/vocab-lit-js",
     "lit-vocab-term": "file:C:/Users/holleranj/development/LIT/javascript/lit-vocab-term-js",
     "rdf-ext": "^1.2.2"
-  }
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-string": "^1.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.0.4",
+    "nyc": "^11.6.0",
+    "standard": "^10.0.3"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": []
 }
