@@ -50,6 +50,21 @@ const datasetExtension = rdf.dataset().addAll([
 ]);
 
 
+const dataSetA = rdf.dataset().addAll([
+  rdf.quad(SCHEMA.Person, RDF.type, RDFS.Class),
+  rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person')),
+]);
+
+const dataSetB = rdf.dataset().addAll([
+  rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
+  rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('Given Name')),
+]);
+
+const dataSetC = rdf.dataset().addAll([
+  rdf.quad(SCHEMA.familyName, RDF.type, RDFS.Property),
+  rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Family Name')),
+]);
+
 describe ('LIT JS unit tests', () => {
   // const aliceIriAsString = 'https://alice.example.org/profile#me'
   // const alice = rdf.namedNode(aliceIriAsString)
@@ -65,7 +80,7 @@ describe ('LIT JS unit tests', () => {
       // const webId = LitUtils.createWebId(username)
       // expect(webId.value).to.include('https://', username, LitUtils.DEFAULT_WEDID_SERVER_DOMAIN, '#')
 
-      const result = gen.buildTemplateInput(dataset, datasetExtension);
+      const result = gen.buildTemplateInput(gen.load([dataset, datasetExtension]), gen.load([datasetExtension]));
       expect(result.namespace).to.equal("http://schema.org/");
       expect(result.ontologyNameUppercase).to.equal("SCHEMA_EXT");
       expect(result.classes[0].name).to.equal("Person");
@@ -84,8 +99,48 @@ describe ('LIT JS unit tests', () => {
       expect(result.properties[0].alternateNames[3].value).to.equal("Given Name-es");
     })
 
+    it ('Should load A and B, and generate code from A and B', () => {
+        const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetA, dataSetB]));
+
+        expect(result.classes[0].name).to.equal('Person');
+        expect(result.properties[0].name).to.equal('Given Name');
+    })
+
+    it ('Should load A and B, and generate code from A (not B)', () => {
+      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetA]));
+
+      expect(result.classes[0].name).to.equal('Person');
+      expect(result.properties.length).to.equal(0);
+    })
+
+
+    it ('Should load A and B, and generate code from B (not A)', () => {
+      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetB]));
+
+      expect(result.classes.length).to.equal(0);
+      expect(result.properties[0].name).to.equal('Given Name');
+    })
+
+    it ('Should load A B and C, and generate code from A and B (not C)', () => {
+      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB, dataSetC]), gen.load([dataSetA, dataSetB]));
+
+      expect(result.classes[0].name).to.equal('Person');
+      expect(result.properties[0].name).to.equal('Given Name');
+      expect(result.properties.length).to.equal(1);
+    })
+
+
     it ('Should generate using environment value', () => {
       gen.processVocab();
     })
   })
+
+
+
+  describe ('Passing the JSON to the template to create the output file', () => {
+    it ('should ', () => {
+
+    });
+  });
+
 })

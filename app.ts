@@ -5,35 +5,60 @@ const rdf = require('rdf-ext')
 const { LitUtils } = require('lit-vocab-term')
 
 
-const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit')
+//const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit')
+
+const OWL = {};
+OWL.Ontology = 'http://www.w3.org/2002/07/owl#Ontology';
+
+
+const PNU = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
+const ENU = 'http://inrupt.com/extendingNamespaceUri';
+const ENP = 'http://inrupt.com/extendingNamespacePrefix';
+
+const version = process.argv[2] || '1.0.0';
+
 
 function processVocab() {
+	readResources(function(ds, dsExt) {
+		const parsed = parseDatasets(ds, dsExt);
+		createArtifacts(parsed);
+	})
+}
 
-	fs.readFile('templates/template.hbs', function read(err, data) {
+function createArtifacts(templateData) {
+
+	createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
+	createArtifact('templates/package.hbs', 'generated/package.json', templateData);
+}
+
+function createArtifact(template, outputFile, templateData) {
+	fs.readFile(template, function read(err, data) {
 		if (err) {
 			throw err;
 		}
 
 		var template = Handlebars.compile(data.toString());
+		var contents = template(templateData);
 
-		LitUtils.loadTurtleFile('./vocabs/schema.ttl', (dataset) => {
-			LitUtils.loadTurtleFile('./vocabs/schema-ext.ttl', (extensionDataset) => {
-
-				const result = buildTemplateInput(dataset, extensionDataset);
-
-				var contents = template(result);
-
-				fs.writeFile('generated/schema-ext.ts', contents, err => {
-					if (err) {
-						return console.error('Failed to store template: ${err.message}.');
-					}
-					console.log('Saved template!');
-				});
-				
-			});
+		fs.writeFile(outputFile, contents, err => {
+			if (err) {
+				return console.error(`Failed to create artifact (${outputFile}): Error: ${err.message}.`);
+			} else {
+				console.log(`Created artifiact: ${outputFile}`);
+			}
 		});
+	});
+}
 
+function parseDatasets(ds, dsExt) {
+	return buildTemplateInput(load([ds, dsExt]), load([dsExt]));
+}
 
+function readResources(processDatasets) {
+	LitUtils.loadTurtleFile('./vocabs/schema.ttl', (dataset) => {
+		LitUtils.loadTurtleFile('./vocabs/schema-ext.ttl', (extensionDataset) => {
+			processDatasets(dataset, extensionDataset);
+		});
 	});
 }
 
@@ -56,7 +81,7 @@ function handleTerms(data, quad) {
 	});
 
 	return {name: labels[0].value,
-				comment: comments[0].value,
+				comment: comments[0] ? comments[0].value : '',
 				labels: labels,
 				alternateNames: alternateName,
 				comments: comments};
@@ -69,9 +94,9 @@ function add(array, quad) {
 	});
 }
 
-function buildTemplateInput(vocabData, vocabExtentionData) {
+function buildTemplateInput(fullData, dataSetExtentions) {
 
-	const fullData = vocabData.merge(vocabExtentionData);
+	//const fullData = dataSet.merge(dataSetExtentions);
 
 	const classes = [];
 	const properties = [];
@@ -79,11 +104,21 @@ function buildTemplateInput(vocabData, vocabExtentionData) {
 	const result = {};
 	result.classes = classes;
 	result.properties = properties;
-	result.namespace = 'http://schema.org/'; //TODO read this from the data
-	result.ontologyNameUppercase = "SCHEMA_EXT"
+
+	const ontologyNamespace = dataSetExtentions.match(null, rdf.namedNode(ENU), null).toArray();
+	result.namespace = ontologyNamespace[0].object.value;
+
+	const ontologyName = dataSetExtentions.match(null, rdf.namedNode(ENP), null).toArray();
+	result.ontologyNameUppercase = ontologyName[0].object.value.toUpperCase();
+
+	const ontologyPrefix = dataSetExtentions.match(null, rdf.namedNode(PNU), null).toArray();
+	result.ontologyPrefix = ontologyPrefix[0].object.value;
+
+	result.version = version;
 
 
-	const ontologyStatements = vocabExtentionData.match(null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+
+	const ontologyStatements = dataSetExtentions.match(null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
 		rdf.namedNode('http://www.w3.org/2002/07/owl#Ontology')).toArray();
 	// if (ontologyStatements.length != 1) {
 	// 	throw new Error(`Must contain only 1 ontology, but found [${ontologyStatements.length}], i.e. ${ontologyStatements.toString()}]`)
@@ -93,7 +128,7 @@ function buildTemplateInput(vocabData, vocabExtentionData) {
 	//console.log(`ontologySubject: [${ontologySubject}]`);
 
 
-	const terms = vocabExtentionData.filter((quad) => {
+	const terms = dataSetExtentions.filter((quad) => {
 		return quad.subject.value !== OWL.Ontology;
 	})
 
@@ -105,7 +140,8 @@ function buildTemplateInput(vocabData, vocabExtentionData) {
 		termSubjects.push(quad.subject.value);
 	});
 
-	const subjectSet = [...new Set(termSubjects)]
+	const subjectSet = [...new Set(termSubjects)];
+
 	//console.log(termSubjects.length);
 
 	//console.log(`term subjects: [${subjectSet}]`);
@@ -125,5 +161,19 @@ function buildTemplateInput(vocabData, vocabExtentionData) {
 	return result;
 }
 
-module .exports.processVocab = processVocab;
+
+function load(dataSets) {
+
+	var fullData = rdf.dataset();
+	dataSets.forEach(function(ds) {
+		fullData = fullData.merge(ds);
+	})
+
+	return fullData;
+}
+
+module.exports.processVocab = processVocab;
 module.exports.buildTemplateInput = buildTemplateInput;
+module.exports.load = load;
+
+processVocab();

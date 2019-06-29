@@ -11,8 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "handlebars": "^4.1.2",
-    "vocab-lit": "file:C:/Users/holleranj/development/LIT/javascript/generated-source-code/vocab-lit-js",
-    "lit-vocab-term": "file:C:/Users/holleranj/development/LIT/javascript/lit-vocab-term-js",
+    "lit-vocab-term": "^1.0.1",
     "rdf-ext": "^1.2.2"
   },
   "devDependencies": {
