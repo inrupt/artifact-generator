@@ -128,11 +128,6 @@ describe ('LIT JS unit tests', () => {
       expect(result.properties[0].name).to.equal('Given Name');
       expect(result.properties.length).to.equal(1);
     })
-
-
-    it ('Should generate using environment value', () => {
-      gen.generate();
-    })
   })
 
 

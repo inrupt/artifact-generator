@@ -4,6 +4,8 @@ const Handlebars = require('handlebars');
 const rdf = require('rdf-ext')
 const { LitUtils } = require('lit-vocab-term')
 
+const rdfFormats = require('rdf-formats-common')()
+const stringToStream = require('string-to-stream')
 
 //const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit')
 
@@ -15,51 +17,76 @@ const PNU = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
 const ENU = 'http://inrupt.com/extendingNamespaceUri';
 const ENP = 'http://inrupt.com/extendingNamespacePrefix';
 
-const version = process.argv[2] || '1.0.0';
+var version
 
 
-function generate() {
-	readResources(function(ds, dsExt) {
-		const parsed = parseDatasets(ds, dsExt);
-		createArtifacts(parsed);
-	})
+/**
+ *
+ */
+function generate(inputFiles, ver) {
+	version = ver;
+	return new Promise(function(resolve, reject) {
+		readResources(inputFiles, function(ds, dsExt) {
+			const parsed = parseDatasets(ds, dsExt);
+			createArtifacts(parsed);
+			resolve('Done!');
+		})
+	});
 }
 
+/**
+ *
+ * @param templateData
+ */
 function createArtifacts(templateData) {
 
 	createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
 	createArtifact('templates/package.hbs', 'generated/package.json', templateData);
 }
 
+
 function createArtifact(template, outputFile, templateData) {
-	fs.readFile(template, function read(err, data) {
-		if (err) {
-			throw err;
-		}
 
-		var template = Handlebars.compile(data.toString());
-		var contents = template(templateData);
+	let data = fs.readFileSync(template);
 
-		fs.writeFile(outputFile, contents, err => {
-			if (err) {
-				return console.error(`Failed to create artifact (${outputFile}): Error: ${err.message}.`);
-			} else {
-				console.log(`Created artifiact: ${outputFile}`);
-			}
-		});
-	});
+	var template = Handlebars.compile(data.toString());
+	var contents = template(templateData);
+
+	fs.writeFileSync(outputFile, contents);
+		// 	err => {
+		// if (err) {
+		// 	return console.error(`Failed to create artifact (${outputFile}): Error: ${err.message}.`);
+		// } else {
+		 	console.log(`Created artifiact: ${outputFile}`);
+		// }
+	//});
 }
 
 function parseDatasets(ds, dsExt) {
 	return buildTemplateInput(load([ds, dsExt]), load([dsExt]));
 }
 
-function readResources(processDatasets) {
-	LitUtils.loadTurtleFile('./vocabs/schema.ttl', (dataset) => {
-		LitUtils.loadTurtleFile('./vocabs/schema-ext.ttl', (extensionDataset) => {
-			processDatasets(dataset, extensionDataset);
-		});
+async function readResources(inputFiles, processDatasets) {
+
+	var datasets = [];
+
+	for (let inputFile of inputFiles) {
+		var ds = await loadTurtleFile(inputFile, undefined);
+		datasets.push(ds);
+	}
+
+	LitUtils.loadTurtleFile('./test/vocabs/schema-ext.ttl', (extensionDataset) => {
+		processDatasets(datasets[0], extensionDataset);
 	});
+}
+
+function loadTurtleFile (filename, dataset) {
+	const mimeType = 'text/turtle'
+	const data = fs.readFileSync(filename, 'utf8')
+
+	const parser = rdfFormats.parsers[ mimeType ]
+	const quadStream = parser.import(stringToStream(data))
+	return (dataset ? dataset : rdf.dataset()).import(quadStream)
 }
 
 function handleTerms(data, quad) {
@@ -105,17 +132,17 @@ function buildTemplateInput(fullData, dataSetExtentions) {
 	result.classes = classes;
 	result.properties = properties;
 
-	const ontologyNamespace = dataSetExtentions.match(null, rdf.namedNode(ENU), null).toArray();
-	result.namespace = ontologyNamespace[0].object.value;
+	const ontologyNamespaces = dataSetExtentions.match(null, rdf.namedNode(ENU), null).toArray();
+	result.namespace = firstDsValue(ontologyNamespaces, 'http://default.com/');
+
 
 	const ontologyName = dataSetExtentions.match(null, rdf.namedNode(ENP), null).toArray();
-	result.ontologyNameUppercase = ontologyName[0].object.value.toUpperCase();
+	result.ontologyNameUppercase = firstDsValue(ontologyName, 'SCHEMA').toUpperCase();
 
 	const ontologyPrefix = dataSetExtentions.match(null, rdf.namedNode(PNU), null).toArray();
-	result.ontologyPrefix = ontologyPrefix[0].object.value;
+	result.ontologyPrefix = firstDsValue(ontologyPrefix, 'default');
 
 	result.version = version;
-
 
 
 	const ontologyStatements = dataSetExtentions.match(null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -161,19 +188,35 @@ function buildTemplateInput(fullData, dataSetExtentions) {
 	return result;
 }
 
+function firstDsValue(dataset, defaultRes) {
+	const first = dataset[0];
+	if(first) {
+		return first.object.value;
+	} else {
+		return defaultRes;
+	}
+}
 
 function load(dataSets) {
 
-	var fullData = rdf.dataset();
-	dataSets.forEach(function(ds) {
-		fullData = fullData.merge(ds);
-	})
+	if(dataSets) {
+		var fullData = rdf.dataset();
+		dataSets.forEach(function(ds) {
+			if(ds) {
+				fullData = fullData.merge(ds);
+			}
+		})
 
-	return fullData;
+		return fullData;
+	} else {
+		return undefined;
+	}
+
 }
 
 module.exports.generate = generate;
 module.exports.buildTemplateInput = buildTemplateInput;
 module.exports.load = load;
 
-generate();
+
+//generate('1.0.0');
