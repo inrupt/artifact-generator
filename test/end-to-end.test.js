@@ -25,17 +25,18 @@ describe ('Ontology Generator', () => {
 
   describe ('Builds node modules artifacts', () => {
     it ('should create from an ontology file', async () => {
-        var result = await gen.generate(['./test/vocabs/schema.ttl'], '1.0.0')
+        var result = await gen.generate(['./test/vocabs/schema.ttl'], '1.0.0', undefined)
         expect(result).to.equal("Done!");
 
 
         expect(fs.existsSync('generated/index.ts')).to.be.true
         expect(fs.readFileSync('generated/index.ts').toString()).to.equal(
-            fs.readFileSync('test/expected/index.ts').toString())
+            fs.readFileSync('test/expected/single/index.ts').toString())
 
         expect(fs.existsSync('generated/package.json')).to.be.true
         expect(fs.readFileSync('generated/package.json').toString()).to.equal(
-            fs.readFileSync('test/expected/package.json').toString())
+            fs.readFileSync('test/expected/single/package.json').toString())
+
     })
 
     it ('should create from an ontology link', () => {
@@ -44,17 +45,40 @@ describe ('Ontology Generator', () => {
 
 
     it ('should be able to fully extend an ontology with multiple input files', async () => {
+        var result = await gen.generate(['./test/vocabs/schema.ttl', './test/vocabs/schema-ext.ttl'], '1.0.0');
+        expect(result).to.equal("Done!");
+
+
+        expect(fs.existsSync('generated/index.ts')).to.be.true
+        expect(fs.readFileSync('generated/index.ts').toString()).to.equal(
+            fs.readFileSync('test/expected/full-ext/index.ts').toString())
+
+        expect(fs.existsSync('generated/package.json')).to.be.true
+        expect(fs.readFileSync('generated/package.json').toString()).to.equal(
+        fs.readFileSync('test/expected/full-ext/package.json').toString())
 
     })
 
-    it ('should be able to partial extend an ontology that only creates triples from extention file', () => {
+    it ('should be able to partial extend an ontology that only creates triples from extention file', async () => {
+        var result = await gen.generate(['./test/vocabs/schema.ttl', './test/vocabs/schema-ext.ttl'], '1.0.0', './test/vocabs/schema-ext.ttl');
+        expect(result).to.equal("Done!");
 
+
+        expect(fs.existsSync('generated/index.ts')).to.be.true
+        expect(fs.readFileSync('generated/index.ts').toString()).to.equal(
+            fs.readFileSync('test/expected/partial-ext/index.ts').toString())
+
+        expect(fs.existsSync('generated/package.json')).to.be.true
+        expect(fs.readFileSync('generated/package.json').toString()).to.equal(
+        fs.readFileSync('test/expected/partial-ext/package.json').toString())
     })
 
-    it ('should take in a version for the output module', () => {
+    it ('should take in a version for the output module', async () => {
+        var result = await gen.generate(['./test/vocabs/schema.ttl'], '1.0.5', './test/vocabs/schema-ext.ttl');
+        expect(result).to.equal("Done!");
 
+        expect(fs.existsSync('generated/package.json')).to.be.true
+        expect(fs.readFileSync('generated/package.json').toString()).to.contains('"version": "1.0.5"')
     })
-})
-
-
+  })
 })

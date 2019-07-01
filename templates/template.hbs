@@ -13,7 +13,7 @@ const { LitVocabTerm } = require('lit-vocab-term')
 const _NAMESPACE = "{{namespace}}";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
-const {{ontologyNameUppercase}} = {
+const ONTOLOGY = {
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 
@@ -67,4 +67,4 @@ const {{ontologyNameUppercase}} = {
   END_OF_VOCAB: 'End of vocab.'
 }
 
-module.exports = {{ontologyNameUppercase}};
+module.exports = ONTOLOGY;

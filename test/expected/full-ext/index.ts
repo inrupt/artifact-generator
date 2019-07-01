@@ -13,7 +13,7 @@ const { LitVocabTerm } = require('lit-vocab-term')
 const _NAMESPACE = "http://schema.org/";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
-const SCHEMA = {
+const ONTOLOGY = {
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 
@@ -77,6 +77,13 @@ const SCHEMA = {
       .addComment('it', `Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name.`),
 
     /**
+    * The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.
+    */
+    addressCountry: new LitVocabTerm(_NS('addressCountry'), undefined, true)
+      .addLabel('', 'addressCountry')
+      .addComment('', `The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.`),
+
+    /**
     * An additional name for a Person, can be used for a middle name.
     */
     additionalName: new LitVocabTerm(_NS('additionalName'), undefined, true)
@@ -98,4 +105,4 @@ const SCHEMA = {
   END_OF_VOCAB: 'End of vocab.'
 }
 
-module.exports = SCHEMA;
+module.exports = ONTOLOGY;

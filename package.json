@@ -4,7 +4,7 @@
   "description": "A simple generator for building ontology artifacts",
   "main": "generator.ts",
   "scripts": {
-    "test": "nyc mocha \"./test/**/*.test.js\"",
+    "test": "nyc mocha \"./test/**/end-to-end.test.js\"",
     "start": "node generator.ts"
   },
   "author": "Jarlath Holleran",

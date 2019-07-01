@@ -1,6 +1,6 @@
 {
-  "name": "{{ontologyPrefix}}-inrupt-ext",
-  "version": "{{version}}",
+  "name": "schema-inrupt-ext",
+  "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "author": "lit-js@inrupt.com",
