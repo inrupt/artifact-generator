@@ -16,10 +16,8 @@ schema-ext:
     dcterms:date "2019/06/18" ;
     rdfs:label "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
     rdfs:comment "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
-    vann:preferredNamespacePrefix "schema-ext" ;
-    schema-ext:extendingNamespacePrefix "schema" ;
-    vann:preferredNamespaceUri "http://inrupt.com/" ;
-    schema-ext:extendingNamespaceUri "http://schema.org/" ;
+    vann:preferredNamespacePrefix "schema" ;
+    vann:preferredNamespaceUri "http://schema.org/" ;
     dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
 
 

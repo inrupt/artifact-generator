@@ -2,10 +2,10 @@
   "name": "lit-js",
   "version": "1.0.0",
   "description": "A simple generator for building ontology artifacts",
-  "main": "generator.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "nyc mocha \"./test/**/end-to-end.test.js\"",
-    "start": "node generator.ts"
+    "start": "node index.ts"
   },
   "author": "Jarlath Holleran",
   "license": "ISC",
