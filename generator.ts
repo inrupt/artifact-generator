@@ -18,7 +18,7 @@ const ENP = 'http://inrupt.com/extendingNamespacePrefix';
 const version = process.argv[2] || '1.0.0';
 
 
-function processVocab() {
+function generate() {
 	readResources(function(ds, dsExt) {
 		const parsed = parseDatasets(ds, dsExt);
 		createArtifacts(parsed);
@@ -172,8 +172,8 @@ function load(dataSets) {
 	return fullData;
 }
 
-module.exports.processVocab = processVocab;
+module.exports.generate = generate;
 module.exports.buildTemplateInput = buildTemplateInput;
 module.exports.load = load;
 
-processVocab();
+generate();

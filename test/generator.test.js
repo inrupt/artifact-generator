@@ -4,7 +4,7 @@ const rdf = require('rdf-ext')
 
 const { RDF, RDFS, SCHEMA } = require('vocab-lit')
 
-const gen = require('../app.ts')
+const gen = require('../generator.ts')
 
 const chai = require('chai')
 chai.use(require('chai-string'));
@@ -131,7 +131,7 @@ describe ('LIT JS unit tests', () => {
 
 
     it ('Should generate using environment value', () => {
-      gen.processVocab();
+      gen.generate();
     })
   })
 
