@@ -4,11 +4,11 @@
   "description": "A simple generator for building ontology artifacts",
   "main": "index.ts",
   "scripts": {
-    "test": "nyc mocha \"./test/**/end-to-end.test.js\"",
+    "test": "mkdir -p test/resources/output && nyc mocha \"./test/**/end-to-end.test.js\"",
     "start": "node index.ts"
   },
   "author": "Jarlath Holleran",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "handlebars": "^4.1.2",
     "lit-vocab-term": "^1.0.1",
@@ -18,13 +18,32 @@
     "chai": "^4.2.0",
     "chai-string": "^1.5.0",
     "del": "^4.1.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^5.0.4",
-    "nyc": "^11.6.0",
-    "standard": "^10.0.3"
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
   },
   "directories": {
     "test": "test"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 98,
+    "statements": 98,
+    "functions": 98,
+    "branches": 98,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "require": [],
+    "extension": [],
+    "cache": true,
+    "all": true,
+    "report-dir": "./.nyc_output/alternative"
   },
   "keywords": []
 }

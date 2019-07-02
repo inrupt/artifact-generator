@@ -4,8 +4,6 @@ const Handlebars = require('handlebars');
 const rdf = require('rdf-ext')
 const { LitUtils } = require('lit-vocab-term')
 
-const rdfFormats = require('rdf-formats-common')()
-const stringToStream = require('string-to-stream')
 
 //const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit')
 
@@ -61,18 +59,14 @@ function parseDatasets(ds, dsExt) {
 
 function load(dataSets) {
 
-	if(dataSets) {
-		var fullData = rdf.dataset();
-		dataSets.forEach(function(ds) {
-			if(ds) {
-				fullData = fullData.merge(ds);
-			}
-		})
+	var fullData = rdf.dataset();
+	dataSets.forEach(function(ds) {
+		if(ds) {
+			fullData = fullData.merge(ds);
+		}
+	})
 
-		return fullData;
-	} else {
-		return undefined;
-	}
+	return fullData;
 }
 
 async function readResources(inputFiles, extensionFile, processDatasets) {
@@ -80,7 +74,7 @@ async function readResources(inputFiles, extensionFile, processDatasets) {
 	var datasets = [];
 
 	for (let inputFile of inputFiles) {
-		var ds = await loadTurtleFile(inputFile, undefined);
+		var ds = await LitUtils.loadTurtleFileIntoDatasetPromise(inputFile, undefined);
 		datasets.push(ds);
 	}
 
@@ -94,16 +88,7 @@ async function readResources(inputFiles, extensionFile, processDatasets) {
 
 }
 
-function loadTurtleFile (filename, dataset) {
-	const mimeType = 'text/turtle'
-	const data = fs.readFileSync(filename, 'utf8')
-
-	const parser = rdfFormats.parsers[ mimeType ]
-	const quadStream = parser.import(stringToStream(data))
-	return (dataset ? dataset : rdf.dataset()).import(quadStream)
-}
-
-function handleTerms(data, quad) {
+function handleTerms(data, quad, namespace) {
 
 	const labels = [];
 	data.match(quad.subject, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label'), null).filter((subQuad) => {
@@ -121,7 +106,10 @@ function handleTerms(data, quad) {
 		add(comments, subQuad);
 	});
 
-	return {name: labels[0].value,
+	var termName = quad.subject.value;
+	termName = termName.split(namespace)[1];
+
+	return {name: termName,
 				comment: comments[0] ? comments[0].value : '',
 				labels: labels,
 				alternateNames: alternateName,
@@ -158,15 +146,16 @@ function buildTemplateInput(fullData, dataSetExtentions) {
 		subjectSet = subjectsOnly(fullData);
 	}
 
-
-	subjectSet.forEach(function(entry) {
+	subjectSet.forEach((entry) => {
 
 		fullData.match(entry, null, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#Class')).filter((quad) => {
-			classes.push(handleTerms(fullData, quad));
+			classes.push(handleTerms(fullData, quad, result.namespace));
 		});
 
+
 		fullData.match(entry, null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property')).filter((quad) => {
-			properties.push(handleTerms(fullData, quad));
+			//console.log(quad);
+			properties.push(handleTerms(fullData, quad, result.namespace));
 		});
 	});
 

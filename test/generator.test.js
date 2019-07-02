@@ -4,7 +4,7 @@ const rdf = require('rdf-ext')
 
 const { RDF, RDFS, SCHEMA } = require('vocab-lit')
 
-const gen = require('../generator.ts')
+const gen = require('../src/generator.js')
 
 const chai = require('chai')
 chai.use(require('chai-string'));

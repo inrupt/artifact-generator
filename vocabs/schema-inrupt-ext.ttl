@@ -5,7 +5,6 @@ prefix schema: <http://schema.org/>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix lit_core: <https://w3id.org/lit/vocab/core#>
-prefix lit_gen: <https://w3id.org/lit/vocab/code-generation#>
 prefix schema-ext: <http://inrupt.com/>
 
 

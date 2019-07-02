@@ -99,6 +99,12 @@ const ONTOLOGY = {
       .addComment('es', `Un nombre adicional para una persona, se puede utilizar para un segundo nombre.`)
       .addComment('it', `Un nome aggiuntivo per una persona può essere usato per un secondo nome.`),
 
+    /**
+    * 
+    */
+    newTerm: new LitVocabTerm(_NS('newTerm'), undefined, true)
+      .addLabel('', 'newTerm')
+
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
   //

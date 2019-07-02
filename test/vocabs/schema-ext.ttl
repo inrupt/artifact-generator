@@ -72,3 +72,6 @@ schema:additionalName a rdf:Property ;
     rdfs:comment "Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden."@de ;
     rdfs:comment "Un nombre adicional para una persona, se puede utilizar para un segundo nombre."@es ;
     rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
+
+schema:newTerm a rdf:Property ;
+    rdfs:label "newTerm" .
