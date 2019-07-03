@@ -1,13 +1,6 @@
-const fs = require('fs');
-
-const Handlebars = require('handlebars');
+const data = require('./data');
 
 const rdf = require('rdf-ext')
-const rdfFetch = require('rdf-fetch-lite')
-const N3Parser = require('rdf-parser-n3')
-
-const { LitUtils } = require('lit-vocab-term')
-
 
 const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
 
@@ -17,47 +10,18 @@ const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
 var version
 
 
-let formats = {
-	parsers: new rdf.Parsers({
-		'text/turtle': N3Parser,
-		'application/x-turtle': N3Parser
-	})
-}
-
 /**
  *
  */
 function generate(datasetFiles, ver, subjectsOnlyFile) {
 	version = ver; //TODO tidy this up
 	return new Promise(function(resolve, reject) {
-		readResources(datasetFiles, subjectsOnlyFile, function(fullDataset, subjectsOnlyDataset) {
+		data.readResources(datasetFiles, subjectsOnlyFile, function(fullDataset, subjectsOnlyDataset) {
 			const parsed = parseDatasets(fullDataset, subjectsOnlyDataset);
-			createArtifacts(parsed);
+			data.createArtifacts(parsed);
 			resolve('Done!');
 		})
 	});
-}
-
-/**
- *
- * @param templateData
- */
-function createArtifacts(templateData) {
-
-	createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
-	createArtifact('templates/package.hbs', 'generated/package.json', templateData);
-}
-
-
-function createArtifact(template, outputFile, templateData) {
-
-	let data = fs.readFileSync(template);
-
-	var template = Handlebars.compile(data.toString());
-	var contents = template(templateData);
-
-	fs.writeFileSync(outputFile, contents);
-	console.log(`Created artifiact: ${outputFile}`);
 }
 
 function parseDatasets(ds, dsExt) {
@@ -74,36 +38,6 @@ function merge(dataSets) {
 	})
 
 	return fullData;
-}
-
-async function readResources(datasetFiles, subjectsOnlyFile, processDatasetsCallback) {
-
-	var datasets = [];
-
-	for (let datasetFile of datasetFiles) {
-		var ds = await readResource(datasetFile);
-		datasets.push(ds);
-	}
-
-	if(subjectsOnlyFile) {
-		var subjectsOnlyDataset = await readResource(subjectsOnlyFile);
-		datasets.push(subjectsOnlyDataset);
-		processDatasetsCallback(datasets, subjectsOnlyDataset);
-
-	} else {
-		processDatasetsCallback(datasets);
-	}
-
-}
-
-function readResource(datasetFile) {
-	if(datasetFile.startsWith('http')) {
-		return rdfFetch(datasetFile, {formats: formats}).then((res) => {
-			return res.dataset()
-		});
-	} else {
-		return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
-	}
 }
 
 function handleTerms(fullDataset, quad, namespace) {
@@ -227,4 +161,4 @@ function firstDsValue(dataset, defaultRes) {
 
 module.exports.generate = generate;
 module.exports.buildTemplateInput = buildTemplateInput;
-module.exports.load = merge;
+module.exports.merge = merge;

@@ -80,7 +80,7 @@ describe ('LIT JS unit tests', () => {
       // const webId = LitUtils.createWebId(username)
       // expect(webId.value).to.include('https://', username, LitUtils.DEFAULT_WEDID_SERVER_DOMAIN, '#')
 
-      const result = gen.buildTemplateInput(gen.load([dataset, datasetExtension]), gen.load([datasetExtension]));
+      const result = gen.buildTemplateInput(gen.merge([dataset, datasetExtension]), gen.merge([datasetExtension]));
       expect(result.namespace).to.equal("http://schema.org/");
       expect(result.ontologyPrefix).to.equal("schema");
       expect(result.classes[0].name).to.equal("Person");
@@ -99,30 +99,30 @@ describe ('LIT JS unit tests', () => {
       expect(result.properties[0].alternateNames[3].value).to.equal("Given Name-es");
     })
 
-    it ('Should load A and B, and generate code from A and B', () => {
-        const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetA, dataSetB]));
+    it ('Should merge A and B, and generate code from A and B', () => {
+        const result = gen.buildTemplateInput(gen.merge([dataSetA, dataSetB]), gen.merge([dataSetA, dataSetB]));
 
         expect(result.classes[0].name).to.equal('Person');
         expect(result.properties[0].name).to.equal('givenName');
     })
 
-    it ('Should load A and B, and generate code from A (not B)', () => {
-      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetA]));
+    it ('Should merge A and B, and generate code from A (not B)', () => {
+      const result = gen.buildTemplateInput(gen.merge([dataSetA, dataSetB]), gen.merge([dataSetA]));
 
       expect(result.classes[0].name).to.equal('Person');
       expect(result.properties.length).to.equal(0);
     })
 
 
-    it ('Should load A and B, and generate code from B (not A)', () => {
-      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetB]));
+    it ('Should merge A and B, and generate code from B (not A)', () => {
+      const result = gen.buildTemplateInput(gen.merge([dataSetA, dataSetB]), gen.merge([dataSetB]));
 
       expect(result.classes.length).to.equal(0);
       expect(result.properties[0].name).to.equal('givenName');
     })
 
-    it ('Should load A B and C, and generate code from A and B (not C)', () => {
-      const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB, dataSetC]), gen.load([dataSetA, dataSetB]));
+    it ('Should merge A B and C, and generate code from A and B (not C)', () => {
+      const result = gen.buildTemplateInput(gen.merge([dataSetA, dataSetB, dataSetC]), gen.merge([dataSetA, dataSetB]));
 
       expect(result.classes[0].name).to.equal('Person');
       expect(result.properties[0].name).to.equal('givenName');
