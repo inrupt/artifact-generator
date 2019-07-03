@@ -6,7 +6,7 @@ const argv = require('yargs')
     .argv
 
 
-gen.generate(argv.input || [], argv.mversion, argv.subjects);
+gen.generate(argv.input || [], argv.mversion || '1.0.0', argv.subjects);
 
 
 
