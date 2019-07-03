@@ -82,7 +82,7 @@ describe ('LIT JS unit tests', () => {
 
       const result = gen.buildTemplateInput(gen.load([dataset, datasetExtension]), gen.load([datasetExtension]));
       expect(result.namespace).to.equal("http://schema.org/");
-      expect(result.ontologyNameUppercase).to.equal("SCHEMA_EXT");
+      expect(result.ontologyPrefix).to.equal("schema");
       expect(result.classes[0].name).to.equal("Person");
       expect(result.classes[0].comment).to.equal("Person dead of alive");
       expect(result.classes[0].labels[0].value).to.equal("Person");
@@ -103,7 +103,7 @@ describe ('LIT JS unit tests', () => {
         const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetA, dataSetB]));
 
         expect(result.classes[0].name).to.equal('Person');
-        expect(result.properties[0].name).to.equal('Given Name');
+        expect(result.properties[0].name).to.equal('givenName');
     })
 
     it ('Should load A and B, and generate code from A (not B)', () => {
@@ -118,14 +118,14 @@ describe ('LIT JS unit tests', () => {
       const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB]), gen.load([dataSetB]));
 
       expect(result.classes.length).to.equal(0);
-      expect(result.properties[0].name).to.equal('Given Name');
+      expect(result.properties[0].name).to.equal('givenName');
     })
 
     it ('Should load A B and C, and generate code from A and B (not C)', () => {
       const result = gen.buildTemplateInput(gen.load([dataSetA, dataSetB, dataSetC]), gen.load([dataSetA, dataSetB]));
 
       expect(result.classes[0].name).to.equal('Person');
-      expect(result.properties[0].name).to.equal('Given Name');
+      expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
     })
   })

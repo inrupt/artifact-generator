@@ -54,10 +54,10 @@ function createArtifact(template, outputFile, templateData) {
 }
 
 function parseDatasets(ds, dsExt) {
-	return buildTemplateInput(load(ds), load([dsExt]));
+	return buildTemplateInput(merge(ds), merge([dsExt]));
 }
 
-function load(dataSets) {
+function merge(dataSets) {
 
 	var fullData = rdf.dataset();
 	dataSets.forEach(function(ds) {
@@ -209,4 +209,4 @@ function firstDsValue(dataset, defaultRes) {
 
 module.exports.generate = generate;
 module.exports.buildTemplateInput = buildTemplateInput;
-module.exports.load = load;
+module.exports.load = merge;
