@@ -13,7 +13,10 @@
     "handlebars": "^4.1.2",
     "lit-vocab-term": "^1.0.1",
     "vocab-lit": "^1.0.5",
-    "rdf-ext": "^1.2.2"
+    "rdf-ext": "^1.2.2",
+    "rdf-fetch-lite": "^1.1.2",
+    "rdf-parser-jsonld": "^1.1.0",
+    "rdf-parser-n3": "^1.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

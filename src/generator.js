@@ -1,7 +1,11 @@
 const fs = require('fs');
+
 const Handlebars = require('handlebars');
 
 const rdf = require('rdf-ext')
+const rdfFetch = require('rdf-fetch-lite')
+const N3Parser = require('rdf-parser-n3')
+
 const { LitUtils } = require('lit-vocab-term')
 
 
@@ -13,14 +17,21 @@ const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
 var version
 
 
+let formats = {
+	parsers: new rdf.Parsers({
+		'text/turtle': N3Parser,
+		'application/x-turtle': N3Parser
+	})
+}
+
 /**
  *
  */
-function generate(inputFiles, ver, extensionFile) {
-	version = ver;
+function generate(datasetFiles, ver, subjectsOnlyFile) {
+	version = ver; //TODO tidy this up
 	return new Promise(function(resolve, reject) {
-		readResources(inputFiles, extensionFile, function(ds, dsExt) {
-			const parsed = parseDatasets(ds, dsExt);
+		readResources(datasetFiles, subjectsOnlyFile, function(fullDataset, subjectsOnlyDataset) {
+			const parsed = parseDatasets(fullDataset, subjectsOnlyDataset);
 			createArtifacts(parsed);
 			resolve('Done!');
 		})
@@ -65,40 +76,51 @@ function merge(dataSets) {
 	return fullData;
 }
 
-async function readResources(inputFiles, extensionFile, processDatasets) {
+async function readResources(datasetFiles, subjectsOnlyFile, processDatasetsCallback) {
 
 	var datasets = [];
 
-	for (let inputFile of inputFiles) {
-		var ds = await LitUtils.loadTurtleFileIntoDatasetPromise(inputFile, undefined);
+	for (let datasetFile of datasetFiles) {
+		var ds = await readResource(datasetFile);
 		datasets.push(ds);
 	}
 
-	if(extensionFile) {
-		LitUtils.loadTurtleFile(extensionFile, (extensionDataset) => {
-			processDatasets(datasets, extensionDataset);
-		});
+	if(subjectsOnlyFile) {
+		var subjectsOnlyDataset = await readResource(subjectsOnlyFile);
+		datasets.push(subjectsOnlyDataset);
+		processDatasetsCallback(datasets, subjectsOnlyDataset);
+
 	} else {
-		processDatasets(datasets, undefined);
+		processDatasetsCallback(datasets);
 	}
 
 }
 
-function handleTerms(data, quad, namespace) {
+function readResource(datasetFile) {
+	if(datasetFile.startsWith('http')) {
+		return rdfFetch(datasetFile, {formats: formats}).then((res) => {
+			return res.dataset()
+		});
+	} else {
+		return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
+	}
+}
+
+function handleTerms(fullDataset, quad, namespace) {
 
 	const labels = [];
-	data.match(quad.subject, RDFS.label, null).filter((subQuad) => {
+	fullDataset.match(quad.subject, RDFS.label, null).filter((subQuad) => {
 		add(labels, subQuad);
 	});
 
 
 	const alternateName = [];
-	data.match(quad.subject, SCHEMA.alternateName, null).filter((subQuad) => {
+	fullDataset.match(quad.subject, SCHEMA.alternateName, null).filter((subQuad) => {
 		add(alternateName, subQuad);
 	});
 
 	const comments = [];
-	data.match(quad.subject, RDFS.comment, null).filter((subQuad) => {
+	fullDataset.match(quad.subject, RDFS.comment, null).filter((subQuad) => {
 		add(comments, subQuad);
 	});
 
@@ -119,7 +141,7 @@ function add(array, quad) {
 	});
 }
 
-function buildTemplateInput(fullData, dataSetExtentions) {
+function buildTemplateInput(fullData, subjectsOnlyDataset) {
 
 	//const fullData = dataSet.merge(dataSetExtentions);
 
@@ -137,7 +159,7 @@ function buildTemplateInput(fullData, dataSetExtentions) {
 	result.version = version;
 
 
-	let subjectSet = subjectsOnly(dataSetExtentions);
+	let subjectSet = subjectsOnly(subjectsOnlyDataset);
 	if(subjectSet.length === 0) {
 		subjectSet = subjectsOnly(fullData);
 	}
