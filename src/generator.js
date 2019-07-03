@@ -5,11 +5,7 @@ const rdf = require('rdf-ext')
 const { LitUtils } = require('lit-vocab-term')
 
 
-//const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit')
-
-const OWL = {};
-OWL.Ontology = 'http://www.w3.org/2002/07/owl#Ontology';
-
+const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
 
 const PNP = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
 const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
@@ -91,18 +87,18 @@ async function readResources(inputFiles, extensionFile, processDatasets) {
 function handleTerms(data, quad, namespace) {
 
 	const labels = [];
-	data.match(quad.subject, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label'), null).filter((subQuad) => {
+	data.match(quad.subject, RDFS.label, null).filter((subQuad) => {
 		add(labels, subQuad);
 	});
 
 
 	const alternateName = [];
-	data.match(quad.subject, rdf.namedNode('http://schema.org/alternateName'), null).filter((subQuad) => {
+	data.match(quad.subject, SCHEMA.alternateName, null).filter((subQuad) => {
 		add(alternateName, subQuad);
 	});
 
 	const comments = [];
-	data.match(quad.subject, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#comment'), null).filter((subQuad) => {
+	data.match(quad.subject, RDFS.comment, null).filter((subQuad) => {
 		add(comments, subQuad);
 	});
 
@@ -148,12 +144,12 @@ function buildTemplateInput(fullData, dataSetExtentions) {
 
 	subjectSet.forEach((entry) => {
 
-		fullData.match(entry, null, rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#Class')).filter((quad) => {
+		fullData.match(entry, null, RDFS.Class).filter((quad) => {
 			classes.push(handleTerms(fullData, quad, result.namespace));
 		});
 
 
-		fullData.match(entry, null, rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property')).filter((quad) => {
+		fullData.match(entry, null, RDF.Property).filter((quad) => {
 			//console.log(quad);
 			properties.push(handleTerms(fullData, quad, result.namespace));
 		});
