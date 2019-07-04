@@ -27,7 +27,7 @@ Here are some examples of running the tool:
 Local ontology file
 
 ```shell
-node index.ts --input node./vocabs/schema.ttl
+node index.ts --input ./vocabs/schema.ttl
 ```
 
 Multiple local ontology files
