@@ -66,9 +66,9 @@ function readResource(datasetFile) {
     return rdfFetch(datasetFile, { formats: formats }).then(res => {
       return res.dataset();
     });
-  } else {
-    return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
   }
+
+  return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
 }
 
 module.exports.readResources = readResources;
