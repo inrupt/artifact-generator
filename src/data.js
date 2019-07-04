@@ -16,6 +16,12 @@ const formats = {
 };
 
 function createArtifacts(templateData) {
+  const generatedDirectory = 'generated'
+
+  if (! fs.existsSync(generatedDirectory)) {
+    fs.mkdirSync(generatedDirectory)
+  }
+
   createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
   createArtifact(
     'templates/package.hbs',
