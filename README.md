@@ -26,29 +26,35 @@ Here are some examples of running the tool:
 Local ontology file
 
 ```shell
-node index.ts --input "./vocabs/schema.ttl"
+node index.ts --input node./vocabs/schema.ttl
 ```
 
 Multiple local ontology files
 
 ```shell
-node index.ts --input "./vocabs/schema.ttl" "./vocabs/schema-inrupt-ext.ttl"
+node index.ts --input ./vocabs/schema.ttl ./vocabs/schema-inrupt-ext.ttl
 ```
 
-Subjects only ontology files
+Subjects only ontology files. Generates Vocab Terms from only the specified ontology file.
 ```shell
-node index.ts --input "./vocabs/schema.ttl" --subjects "./vocabs/schema-inrupt-ext.ttl"
+node index.ts --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ```
 
 Links to ontology file(s)
 ```shell
-node index.ts --input  "http://schema.org/Person.ttl"  "https://schema.org/Restaurant.ttl" "https://schema.org/Review"
+node index.ts --input  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
 Specifing a version for the output module
 ```shell
-node index.ts --input "http://www.w3.org/2002/07/owl#" "./vocabs/owl-inrupt-ext.ttl" --mversion 1.0.1
+node index.ts --input "http://www.w3.org/2002/07/owl#" ./vocabs/owl-inrupt-ext.ttl --mversion 1.0.1
 ```
+
+Using alaises for the input command
+```shell
+node index.ts --in ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --mver 1.0.6
+```
+
 
 
 # How to Deploy the module to an npm registry
