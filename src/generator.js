@@ -83,7 +83,6 @@ function handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
     name: termName,
     comment: getComment(comments),
     labels: labels,
-    alternateNames: [],
     comments: comments,
   };
 }

@@ -30,9 +30,6 @@ const ONTOLOGY = {
     {{#each labels}}
       .addLabel('{{language}}', '{{value}}')
     {{/each}}
-    {{#each alternateNames}}
-      .addLabel('{{language}}', '{{value}}')
-    {{/each}}
     {{#each comments}}
       .addComment('{{language}}', `{{value}}`){{#if @last}},{{/if}}
     {{/each}}
@@ -50,9 +47,6 @@ const ONTOLOGY = {
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), undefined, true)
     {{#each labels}}
-      .addLabel('{{language}}', '{{value}}')
-    {{/each}}
-    {{#each alternateNames}}
       .addLabel('{{language}}', '{{value}}')
     {{/each}}
     {{#each comments}}
