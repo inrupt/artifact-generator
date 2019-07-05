@@ -16,11 +16,7 @@ const dataset = rdf
   .addAll([
     rdf.quad(SCHEMA.Person, RDF.type, RDFS.Class),
     rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person', 'en')),
-    rdf.quad(
-      SCHEMA.Person,
-      RDFS.comment,
-      rdf.literal('Person dead or alive', 'en')
-    ),
+    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive', 'en')),
 
     rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
     rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('givenName', '')),
@@ -42,72 +38,20 @@ const dataset = rdf
 const datasetExtension = rdf
   .dataset()
   .addAll([
-    rdf.quad(
-      SCHEMA.Person,
-      SCHEMA.alternateName,
-      rdf.literal('Person-fr', 'fr')
-    ),
-    rdf.quad(
-      SCHEMA.Person,
-      SCHEMA.alternateName,
-      rdf.literal('Person-de', 'de')
-    ),
-    rdf.quad(
-      SCHEMA.Person,
-      SCHEMA.alternateName,
-      rdf.literal('Person-es', 'es')
-    ),
-    rdf.quad(
-      SCHEMA.Person,
-      RDFS.comment,
-      rdf.literal('Person dead or alive fr', 'fr')
-    ),
-    rdf.quad(
-      SCHEMA.Person,
-      RDFS.comment,
-      rdf.literal('Person dead or alive de', 'de')
-    ),
-    rdf.quad(
-      SCHEMA.Person,
-      RDFS.comment,
-      rdf.literal('Person dead or alive es', 'es')
-    ),
+    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-fr', 'fr')),
+    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-de', 'de')),
+    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-es', 'es')),
+    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive fr', 'fr')),
+    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive de', 'de')),
+    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive es', 'es')),
 
-    rdf.quad(
-      SCHEMA.givenName,
-      SCHEMA.alternateName,
-      rdf.literal('Given Name', 'en')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      SCHEMA.alternateName,
-      rdf.literal('Given Name-fr', 'fr')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      SCHEMA.alternateName,
-      rdf.literal('Given Name-de', 'de')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      SCHEMA.alternateName,
-      rdf.literal('Given Name-es', 'es')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      RDFS.comment,
-      rdf.literal('Given name of a person fr', 'fr')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      RDFS.comment,
-      rdf.literal('Given name of a person de', 'de')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      RDFS.comment,
-      rdf.literal('Given name of a person es', 'es')
-    ),
+    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name', 'en')),
+    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-fr', 'fr')),
+    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-de', 'de')),
+    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-es', 'es')),
+    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person fr', 'fr')),
+    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person de', 'de')),
+    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person es', 'es')),
   ]);
 
 const emptyDataSet = rdf.dataset();
@@ -138,27 +82,14 @@ const overrideLabelTerms = rdf
   .addAll([
     rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Override Person')),
     rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('Override Given Name')),
-    rdf.quad(
-      SCHEMA.familyName,
-      RDFS.label,
-      rdf.literal('Override Family Name'),
-      'en'
-    ),
+    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Override Family Name'), 'en'),
   ]);
 
 const overrideCommentTerms = rdf
   .dataset()
   .addAll([
-    rdf.quad(
-      SCHEMA.Person,
-      RDFS.comment,
-      rdf.literal('Override comment for Person')
-    ),
-    rdf.quad(
-      SCHEMA.givenName,
-      RDFS.comment,
-      rdf.literal('Override comment for Given Name')
-    ),
+    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Override comment for Person')),
+    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Override comment for Given Name')),
     rdf.quad(
       SCHEMA.familyName,
       RDFS.comment,
@@ -171,17 +102,8 @@ const overrideAtlNameTerms = rdf
   .dataset()
   .addAll([
     rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Alt Person')),
-    rdf.quad(
-      SCHEMA.givenName,
-      SCHEMA.alternateName,
-      rdf.literal('Alt Given Name')
-    ),
-    rdf.quad(
-      SCHEMA.familyName,
-      SCHEMA.alternateName,
-      rdf.literal('Alt Family Name'),
-      'en'
-    ),
+    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Alt Given Name')),
+    rdf.quad(SCHEMA.familyName, SCHEMA.alternateName, rdf.literal('Alt Family Name'), 'en'),
   ]);
 
 describe('LIT JS unit tests', () => {
@@ -193,8 +115,8 @@ describe('LIT JS unit tests', () => {
   describe('Building the Template input', () => {
     it('should create a simple JSON object with all the fields', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataset, datasetExtension]),
-        gen.merge([datasetExtension])
+        Generator.merge([dataset, datasetExtension]),
+        Generator.merge([datasetExtension])
       );
       expect(result.namespace).to.equal('http://schema.org/');
       expect(result.ontologyPrefix).to.equal('schema');
@@ -221,9 +143,7 @@ describe('LIT JS unit tests', () => {
       });
 
       expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties[0].comment).to.equal(
-        'A given name is the first name of a person.'
-      );
+      expect(result.properties[0].comment).to.equal('A given name is the first name of a person.');
       var givenNameLabels = result.properties[0].labels;
 
       expect(givenNameLabels).to.deep.include({
@@ -246,8 +166,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should merge A and B, and generate code from A and B', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetA, dataSetB])
+        Generator.merge([dataSetA, dataSetB]),
+        Generator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -256,8 +176,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should merge A and B, and generate code from A (not B)', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetA])
+        Generator.merge([dataSetA, dataSetB]),
+        Generator.merge([dataSetA])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -266,8 +186,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should merge A and B, and generate code from B (not A)', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetB])
+        Generator.merge([dataSetA, dataSetB]),
+        Generator.merge([dataSetB])
       );
 
       expect(result.classes.length).to.equal(0);
@@ -276,8 +196,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC]),
-        gen.merge([dataSetA, dataSetB])
+        Generator.merge([dataSetA, dataSetB, dataSetC]),
+        Generator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -287,8 +207,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should handle empty datasets', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([emptyDataSet]),
-        gen.merge([emptyDataSet])
+        Generator.merge([emptyDataSet]),
+        Generator.merge([emptyDataSet])
       );
 
       expect(result.namespace).to.equal('');
@@ -299,8 +219,8 @@ describe('LIT JS unit tests', () => {
 
     it('Should have an empty comment for the class or property if one cant be found', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetB])
+        Generator.merge([dataSetA, dataSetB]),
+        Generator.merge([dataSetB])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
@@ -321,23 +241,21 @@ describe('LIT JS unit tests', () => {
         ]);
 
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetFrenchOnlyComment]),
-        gen.merge([dataSetFrenchOnlyComment])
+        Generator.merge([dataSetA, dataSetFrenchOnlyComment]),
+        Generator.merge([dataSetFrenchOnlyComment])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal(
-        'Given Name comment in french'
-      );
+      expect(result.properties[0].comment).to.equal('Given Name comment in french');
     });
   });
 
   describe('Vocab terms from extention dataset', () => {
     it('should override label terms of the main datasets', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
-        gen.merge([overrideLabelTerms])
+        Generator.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
+        Generator.merge([overrideLabelTerms])
       );
 
       var person = result.classes[0];
@@ -361,8 +279,8 @@ describe('LIT JS unit tests', () => {
 
     it('should override comment terms of the main datasets', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
-        gen.merge([overrideCommentTerms])
+        Generator.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
+        Generator.merge([overrideCommentTerms])
       );
 
       var person = result.classes[0];
@@ -375,23 +293,19 @@ describe('LIT JS unit tests', () => {
 
       expect(givenName.name).to.equal('givenName');
       expect(givenName.comments.length).to.equal(1);
-      expect(givenName.comments[0].value).to.equal(
-        'Override comment for Given Name'
-      );
+      expect(givenName.comments[0].value).to.equal('Override comment for Given Name');
 
       var familyName = result.properties[1];
 
       expect(familyName.name).to.equal('familyName');
       expect(familyName.comments.length).to.equal(1);
-      expect(familyName.comments[0].value).to.equal(
-        'Override comment for Family Name'
-      );
+      expect(familyName.comments[0].value).to.equal('Override comment for Family Name');
     });
 
     it('should override label with alternativeNames from the vocab terms', () => {
       const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
-        gen.merge([overrideAtlNameTerms])
+        Generator.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
+        Generator.merge([overrideAtlNameTerms])
       );
 
       var person = result.classes[0];

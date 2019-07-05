@@ -1,0 +1,11 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error", {
+      "trailingComma": "es5"
+    }
+    ],
+    "no-console": "off"
+  }
+}
