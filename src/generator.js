@@ -41,20 +41,39 @@ function merge(dataSets) {
   return fullData;
 }
 
-function handleTerms(fullDataset, quad, namespace) {
+function handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
   const labels = [];
+
+  subjectsOnlyDataset.match(quad.subject, RDFS.label, null).filter(subQuad => {
+    add(labels, subQuad);
+  });
+
   fullDataset.match(quad.subject, RDFS.label, null).filter(subQuad => {
     add(labels, subQuad);
   });
 
-  const alternateName = [];
+  const alternateNames = [];
+
+  subjectsOnlyDataset
+    .match(quad.subject, SCHEMA.alternateName, null)
+    .filter(subQuad => {
+      add(alternateNames, subQuad);
+    });
+
   fullDataset
     .match(quad.subject, SCHEMA.alternateName, null)
     .filter(subQuad => {
-      add(alternateName, subQuad);
+      add(alternateNames, subQuad);
     });
 
   const comments = [];
+
+  subjectsOnlyDataset
+    .match(quad.subject, RDFS.comment, null)
+    .filter(subQuad => {
+      add(comments, subQuad);
+    });
+
   fullDataset.match(quad.subject, RDFS.comment, null).filter(subQuad => {
     add(comments, subQuad);
   });
@@ -64,18 +83,47 @@ function handleTerms(fullDataset, quad, namespace) {
 
   return {
     name: termName,
-    comment: comments[0] ? comments[0].value : '',
+    comment: getComment(comments),
     labels: labels,
-    alternateNames: alternateName,
+    alternateNames: alternateNames,
     comments: comments,
   };
 }
 
 function add(array, quad) {
-  array.push({
-    value: quad.object.value,
-    language: quad.object.language,
-  });
+  if (doesNotContainLanguage(array, quad)) {
+    array.push({
+      value: quad.object.value,
+      language: quad.object.language,
+    });
+  }
+}
+
+/**
+ * Finds a comment from the comments array. First check if there is a english comment, next check for a default language
+ * comment (''), then just get the first comment or default to empty string.
+ * @param comments An array of comments containing comments and there language.
+ * @returns {string} Returns a string of the comment if founds, else empty string is returned.
+ */
+function getComment(comments) {
+  comments = comments || [];
+
+  var found = comments.find(e => e.language === 'en');
+
+  if (found === undefined) {
+    found = comments.find(e => e.language === '');
+  }
+
+  if (found === undefined) {
+    found = comments[0] ? comments[0] : { value: '' };
+  }
+  return found.value;
+}
+
+function doesNotContainLanguage(array, quad) {
+  return (
+    array.length === 0 || !array.some(e => e.language === quad.object.language)
+  );
 }
 
 function buildTemplateInput(fullData, subjectsOnlyDataset) {
@@ -101,12 +149,15 @@ function buildTemplateInput(fullData, subjectsOnlyDataset) {
 
   subjectSet.forEach(entry => {
     fullData.match(entry, null, RDFS.Class).filter(quad => {
-      classes.push(handleTerms(fullData, quad, result.namespace));
+      classes.push(
+        handleTerms(fullData, subjectsOnlyDataset, quad, result.namespace)
+      );
     });
 
     fullData.match(entry, null, RDF.Property).filter(quad => {
-      //console.log(quad);
-      properties.push(handleTerms(fullData, quad, result.namespace));
+      properties.push(
+        handleTerms(fullData, subjectsOnlyDataset, quad, result.namespace)
+      );
     });
   });
 

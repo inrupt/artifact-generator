@@ -18,7 +18,7 @@ const dataset = rdf
   .dataset()
   .addAll([
     rdf.quad(SCHEMA.Person, RDF.type, RDFS.Class),
-    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person', 'fr')),
+    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person', 'en')),
     rdf.quad(
       SCHEMA.Person,
       RDFS.comment,
@@ -130,25 +130,69 @@ const dataSetB = rdf
 const dataSetC = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.familyName, RDF.type, RDFS.Property),
-    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Family Name')),
+    rdf.quad(SCHEMA.familyName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Family Name'), 'en'),
+  ]);
+
+const overrideLabelTerms = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Override Person')),
+    rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('Override Given Name')),
+    rdf.quad(
+      SCHEMA.familyName,
+      RDFS.label,
+      rdf.literal('Override Family Name'),
+      'en'
+    ),
+  ]);
+
+const overrideCommentTerms = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(
+      SCHEMA.Person,
+      RDFS.comment,
+      rdf.literal('Override comment for Person')
+    ),
+    rdf.quad(
+      SCHEMA.givenName,
+      RDFS.comment,
+      rdf.literal('Override comment for Given Name')
+    ),
+    rdf.quad(
+      SCHEMA.familyName,
+      RDFS.comment,
+      rdf.literal('Override comment for Family Name'),
+      'en'
+    ),
+  ]);
+
+const overrideAtlNameTerms = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Alt Person')),
+    rdf.quad(
+      SCHEMA.givenName,
+      SCHEMA.alternateName,
+      rdf.literal('Alt Given Name')
+    ),
+    rdf.quad(
+      SCHEMA.familyName,
+      SCHEMA.alternateName,
+      rdf.literal('Alt Family Name'),
+      'en'
+    ),
   ]);
 
 describe('LIT JS unit tests', () => {
-  // const aliceIriAsString = 'https://alice.example.org/profile#me'
-  // const alice = rdf.namedNode(aliceIriAsString)
-
   beforeEach(() => {
-    // delete process.env.IRI_HINT_APPLICATION
-    // delete process.env.DATA_SERVER_SOLID
+    delete process.env.IRI_HINT_APPLICATION;
+    delete process.env.DATA_SERVER_SOLID;
   });
 
   describe('Building the Template input', () => {
     it('should create a simple JSON object with all the fields', () => {
-      // const username = 'TestUser'
-      // const webId = LitUtils.createWebId(username)
-      // expect(webId.value).to.include('https://', username, LitUtils.DEFAULT_WEDID_SERVER_DOMAIN, '#')
-
       const result = gen.buildTemplateInput(
         gen.merge([dataset, datasetExtension]),
         gen.merge([datasetExtension])
@@ -223,7 +267,84 @@ describe('LIT JS unit tests', () => {
     });
   });
 
-  describe('Passing the JSON to the template to create the output file', () => {
-    it('should ', () => {});
+  describe('Vocab terms from extention dataset', () => {
+    it('should override label terms of the main datasets', () => {
+      const result = gen.buildTemplateInput(
+        gen.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
+        gen.merge([overrideLabelTerms])
+      );
+
+      var person = result.classes[0];
+
+      expect(person.name).to.equal('Person');
+      expect(person.labels.length).to.equal(1);
+      expect(person.labels[0].value).to.equal('Override Person');
+
+      var givenName = result.properties[0];
+
+      expect(givenName.name).to.equal('givenName');
+      expect(givenName.labels.length).to.equal(1);
+      expect(givenName.labels[0].value).to.equal('Override Given Name');
+
+      var familyName = result.properties[1];
+
+      expect(familyName.name).to.equal('familyName');
+      expect(familyName.labels.length).to.equal(1);
+      expect(familyName.labels[0].value).to.equal('Override Family Name');
+    });
+
+    it('should override comment terms of the main datasets', () => {
+      const result = gen.buildTemplateInput(
+        gen.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
+        gen.merge([overrideCommentTerms])
+      );
+
+      var person = result.classes[0];
+
+      expect(person.name).to.equal('Person');
+      expect(person.comments.length).to.equal(1);
+      expect(person.comments[0].value).to.equal('Override comment for Person');
+
+      var givenName = result.properties[0];
+
+      expect(givenName.name).to.equal('givenName');
+      expect(givenName.comments.length).to.equal(1);
+      expect(givenName.comments[0].value).to.equal(
+        'Override comment for Given Name'
+      );
+
+      var familyName = result.properties[1];
+
+      expect(familyName.name).to.equal('familyName');
+      expect(familyName.comments.length).to.equal(1);
+      expect(familyName.comments[0].value).to.equal(
+        'Override comment for Family Name'
+      );
+    });
+
+    it('should override label alternativeNames of the main datasets ', () => {
+      const result = gen.buildTemplateInput(
+        gen.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
+        gen.merge([overrideAtlNameTerms])
+      );
+
+      var person = result.classes[0];
+
+      expect(person.name).to.equal('Person');
+      expect(person.alternateNames.length).to.equal(1);
+      expect(person.alternateNames[0].value).to.equal('Alt Person');
+
+      var givenName = result.properties[0];
+
+      expect(givenName.name).to.equal('givenName');
+      expect(givenName.alternateNames.length).to.equal(1);
+      expect(givenName.alternateNames[0].value).to.equal('Alt Given Name');
+
+      var familyName = result.properties[1];
+
+      expect(familyName.name).to.equal('familyName');
+      expect(familyName.alternateNames.length).to.equal(1);
+      expect(familyName.alternateNames[0].value).to.equal('Alt Family Name');
+    });
   });
 });

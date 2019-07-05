@@ -11,7 +11,7 @@ const { LitUtils } = require('lit-vocab-term');
 const formats = {
   parsers: new rdf.Parsers({
     'text/turtle': N3Parser,
-    'application/x-turtle': N3Parser,
+    'application/x-turtle': N3Parser, // This is needed as schema.org will returns this as the content type
   }),
 };
 
@@ -48,7 +48,7 @@ async function readResources(
 
   if (subjectsOnlyFile) {
     var subjectsOnlyDataset = await readResource(subjectsOnlyFile);
-    datasets.push(subjectsOnlyDataset);
+    datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
     processDatasetsCallback(datasets, subjectsOnlyDataset);
   } else {
     processDatasetsCallback(datasets);
