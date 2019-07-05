@@ -1,4 +1,5 @@
-const data = require('./data');
+const resources = require('./resources');
+const artifacts = require('./artifacts');
 
 const rdf = require('rdf-ext');
 
@@ -15,12 +16,12 @@ var version;
 function generate(datasetFiles, ver, subjectsOnlyFile) {
   version = ver; //TODO tidy this up
   return new Promise(function(resolve, reject) {
-    data.readResources(datasetFiles, subjectsOnlyFile, function(
+    resources.readResources(datasetFiles, subjectsOnlyFile, function(
       fullDataset,
       subjectsOnlyDataset
     ) {
       const parsed = parseDatasets(fullDataset, subjectsOnlyDataset);
-      data.createArtifacts(parsed);
+      artifacts.createArtifacts(parsed);
       resolve('Done!');
     });
   });

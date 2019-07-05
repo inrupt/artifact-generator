@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-const Handlebars = require('handlebars');
-
 const rdf = require('rdf-ext');
 const rdfFetch = require('rdf-fetch-lite');
 const N3Parser = require('rdf-parser-n3');
@@ -14,31 +12,6 @@ const formats = {
     'application/x-turtle': N3Parser, // This is needed as schema.org will returns this as the content type
   }),
 };
-
-function createArtifacts(templateData) {
-  const generatedDirectory = 'generated';
-
-  if (!fs.existsSync(generatedDirectory)) {
-    fs.mkdirSync(generatedDirectory);
-  }
-
-  createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
-  createArtifact(
-    'templates/package.hbs',
-    'generated/package.json',
-    templateData
-  );
-}
-
-function createArtifact(template, outputFile, templateData) {
-  let data = fs.readFileSync(template);
-
-  var template = Handlebars.compile(data.toString());
-  var contents = template(templateData);
-
-  fs.writeFileSync(outputFile, contents);
-  console.log(`Created artifiact: ${outputFile}`);
-}
 
 async function readResources(
   datasetFiles,
@@ -72,4 +45,3 @@ function readResource(datasetFile) {
 }
 
 module.exports.readResources = readResources;
-module.exports.createArtifacts = createArtifacts;

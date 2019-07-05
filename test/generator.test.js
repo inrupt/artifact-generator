@@ -10,10 +10,6 @@ const chai = require('chai');
 chai.use(require('chai-string'));
 const expect = chai.expect;
 
-// const person = rdf.namedNode('http://schema.org/Person')
-// const givenName = rdf.namedNode('http://schema.org/givenName')
-// const familyName = rdf.namedNode('http://schema.org/familyName')
-
 const dataset = rdf
   .dataset()
   .addAll([
