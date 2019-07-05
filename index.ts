@@ -1,4 +1,4 @@
-const gen = require('./src/generator.js');
+const Generator = require('./src/generator');
 
 
 const argv = require('yargs')
@@ -19,7 +19,8 @@ const argv = require('yargs')
     .argv
 
 
-gen.generate(argv.input || [], argv.av || '1.0.0', argv.vocabTermsFrom);
+const gen = new Generator(argv.av || '1.0.0');
+gen.generate(argv.input || [], argv.vocabTermsFrom);
 
 
 

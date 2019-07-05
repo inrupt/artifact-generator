@@ -1,14 +1,15 @@
 'use strict';
 
+const chai = require('chai');
+chai.use(require('chai-string'));
+const expect = chai.expect;
+
 const rdf = require('rdf-ext');
 
 const { RDF, RDFS, SCHEMA } = require('vocab-lit');
 
-const gen = require('../src/generator.js');
-
-const chai = require('chai');
-chai.use(require('chai-string'));
-const expect = chai.expect;
+const Generator = require('../src/generator');
+const gen = new Generator('1.0.0');
 
 const dataset = rdf
   .dataset()

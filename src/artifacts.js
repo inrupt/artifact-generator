@@ -1,7 +1,6 @@
 const fs = require('fs');
 const Handlebars = require('handlebars');
 
-
 function createArtifacts(templateData) {
   const generatedDirectory = 'generated';
 
