@@ -22,11 +22,7 @@ describe('Ontology Generator', () => {
 
   describe('Builds node modules artifacts', () => {
     it('should create from an ontology file', async () => {
-      const gen = new Generator(
-        ['./test/vocabs/schema.ttl'],
-        undefined,
-        '1.0.0'
-      );
+      const gen = new Generator(['./test/vocabs/schema.ttl'], undefined, '1.0.0');
 
       var result = await gen.generate();
       expect(result).to.equal('Done!');
@@ -43,11 +39,7 @@ describe('Ontology Generator', () => {
     });
 
     it('should create from an ontology link', async () => {
-      const gen = new Generator(
-        ['./test/vocabs/schema.ttl'],
-        undefined,
-        '1.0.0'
-      );
+      const gen = new Generator(['./test/vocabs/schema.ttl'], undefined, '1.0.0');
 
       var result = await gen.generate();
       expect(result).to.equal('Done!');
@@ -86,10 +78,7 @@ describe('Ontology Generator', () => {
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
       const gen = new Generator(
-        [
-          'https://schema.org/Person.ttl',
-          './test/vocabs/schema-inrupt-ext.ttl',
-        ],
+        ['https://schema.org/Person.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         undefined,
         '1.0.0'
       );
@@ -102,12 +91,8 @@ describe('Ontology Generator', () => {
       var indexOutput = fs.readFileSync('generated/index.ts').toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contains(
-        "address: new LitVocabTerm(_NS('address')"
-      );
-      expect(indexOutput).to.contains(
-        "additionalName: new LitVocabTerm(_NS('additionalName')"
-      );
+      expect(indexOutput).to.contains("address: new LitVocabTerm(_NS('address')");
+      expect(indexOutput).to.contains("additionalName: new LitVocabTerm(_NS('additionalName')");
       expect(indexOutput).to.contains(".addLabel('es', 'Nombre adicional')");
     }).timeout(5000);
 
@@ -180,11 +165,7 @@ describe('Ontology Generator', () => {
     it('should handle creating generated folder if it does not exist already', async () => {
       del.sync(['generated']);
 
-      const gen = new Generator(
-        ['./test/vocabs/schema.ttl'],
-        undefined,
-        '1.0.5'
-      );
+      const gen = new Generator(['./test/vocabs/schema.ttl'], undefined, '1.0.5');
 
       var result = await gen.generate();
       expect(result).to.equal('Done!');

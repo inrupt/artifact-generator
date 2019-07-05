@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
     "start": "node index.ts",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,test}/**/*.js\""
+    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,test}/**/*.js\"",
+    "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "author": "Jarlath Holleran",
   "license": "MIT",
@@ -17,16 +18,23 @@
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",
     "rdf-parser-n3": "^1.1.1",
-    "vocab-lit": "^1.0.6",
+    "vocab-lit": "^1.0.5",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-string": "^1.5.0",
     "del": "^4.1.1",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.2",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "prettier": "1.18.2"
+    "prettier": "^1.18.2"
   },
   "directories": {
     "test": "test"

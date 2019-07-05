@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const rdf = require('rdf-ext');
 const rdfFetch = require('rdf-fetch-lite');
 const N3Parser = require('rdf-parser-n3');
@@ -20,25 +18,22 @@ module.exports = class Resources {
   }
 
   async readResources(processDatasetsCallback) {
-    var datasets = [];
+    const datasetsProm = this.datasetFiles.map(e => Resources.readResource(e));
 
-    for (var datasetFile of this.datasetFiles) {
-      var ds = await this.readResource(datasetFile);
-      datasets.push(ds);
-    }
+    const datasets = await Promise.all(datasetsProm);
 
+    let subjectsOnlyDataset;
     if (this.subjectsOnlyFile) {
-      var subjectsOnlyDataset = await this.readResource(this.subjectsOnlyFile);
+      subjectsOnlyDataset = await Resources.readResource(this.subjectsOnlyFile);
       datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
-      processDatasetsCallback(datasets, subjectsOnlyDataset);
-    } else {
-      processDatasetsCallback(datasets);
     }
+
+    processDatasetsCallback(datasets, subjectsOnlyDataset);
   }
 
-  readResource(datasetFile) {
+  static readResource(datasetFile) {
     if (datasetFile.startsWith('http')) {
-      return rdfFetch(datasetFile, { formats: formats }).then(res => {
+      return rdfFetch(datasetFile, { formats }).then(res => {
         return res.dataset();
       });
     }

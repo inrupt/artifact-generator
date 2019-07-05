@@ -1,9 +1,8 @@
+const rdf = require('rdf-ext');
+const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
+
 const Resources = require('./resources');
 const artifacts = require('./artifacts');
-
-const rdf = require('rdf-ext');
-
-const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
 
 const PNP = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
 const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
@@ -18,10 +17,9 @@ module.exports = class Generator {
    *
    */
   generate() {
-    const that = this;
-    return new Promise(function(resolve, reject) {
-      that.resources.readResources(function(fullDataset, subjectsOnlyDataset) {
-        const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
+    return new Promise(resolve => {
+      this.resources.readResources((fullDataset, subjectsOnlyDataset) => {
+        const parsed = this.parseDatasets(fullDataset, subjectsOnlyDataset);
         artifacts.createArtifacts(parsed);
         resolve('Done!');
       });
@@ -29,12 +27,12 @@ module.exports = class Generator {
   }
 
   parseDatasets(ds, dsExt) {
-    return this.buildTemplateInput(this.merge(ds), this.merge([dsExt]));
+    return this.buildTemplateInput(Generator.merge(ds), Generator.merge([dsExt]));
   }
 
-  merge(dataSets) {
-    var fullData = rdf.dataset();
-    dataSets.forEach(function(ds) {
+  static merge(dataSets) {
+    let fullData = rdf.dataset();
+    dataSets.forEach(ds => {
       if (ds) {
         fullData = fullData.merge(ds);
       }
@@ -43,56 +41,45 @@ module.exports = class Generator {
     return fullData;
   }
 
-  handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
+  static handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
     const labels = [];
 
-    subjectsOnlyDataset
-      .match(quad.subject, SCHEMA.alternateName, null)
-      .filter(subQuad => {
-        this.add(labels, subQuad);
-      });
-
-    subjectsOnlyDataset
-      .match(quad.subject, RDFS.label, null)
-      .filter(subQuad => {
-        this.add(labels, subQuad);
-      });
-
-    fullDataset.match(quad.subject, RDFS.label, null).filter(subQuad => {
-      this.add(labels, subQuad);
+    subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
+      Generator.add(labels, subQuad);
     });
 
-    fullDataset
-      .match(quad.subject, SCHEMA.alternateName, null)
-      .filter(subQuad => {
-        this.add(labels, subQuad);
-      });
+    subjectsOnlyDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
+      Generator.add(labels, subQuad);
+    });
+
+    fullDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
+      Generator.add(labels, subQuad);
+    });
+
+    fullDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
+      Generator.add(labels, subQuad);
+    });
 
     const comments = [];
 
-    subjectsOnlyDataset
-      .match(quad.subject, RDFS.comment, null)
-      .filter(subQuad => {
-        this.add(comments, subQuad);
-      });
-
-    fullDataset.match(quad.subject, RDFS.comment, null).filter(subQuad => {
-      this.add(comments, subQuad);
+    subjectsOnlyDataset.match(quad.subject, RDFS.comment, null).forEach(subQuad => {
+      Generator.add(comments, subQuad);
     });
 
-    var termName = quad.subject.value;
-    termName = termName.split(namespace)[1];
+    fullDataset.match(quad.subject, RDFS.comment, null).forEach(subQuad => {
+      Generator.add(comments, subQuad);
+    });
 
-    return {
-      name: termName,
-      comment: this.getComment(comments),
-      labels: labels,
-      comments: comments,
-    };
+    const fullName = quad.subject.value;
+    const name = fullName.split(namespace)[1];
+
+    const comment = Generator.getComment(comments);
+
+    return { name, comment, labels, comments };
   }
 
-  add(array, quad) {
-    if (this.doesNotContainLanguage(array, quad)) {
+  static add(array, quad) {
+    if (Generator.doesNotContainLanguage(array, quad)) {
       array.push({
         value: quad.object.value,
         language: quad.object.language,
@@ -106,8 +93,8 @@ module.exports = class Generator {
    * @param comments An array of comments containing comments and there language.
    * @returns {string} Returns a string of the comment if founds, else empty string is returned.
    */
-  getComment(comments) {
-    var found = comments.find(e => e.language === 'en');
+  static getComment(comments) {
+    let found = comments.find(e => e.language === 'en');
 
     if (found === undefined) {
       found = comments.find(e => e.language === '');
@@ -119,16 +106,11 @@ module.exports = class Generator {
     return found.value;
   }
 
-  doesNotContainLanguage(array, quad) {
-    return (
-      array.length === 0 ||
-      !array.some(e => e.language === quad.object.language)
-    );
+  static doesNotContainLanguage(array, quad) {
+    return array.length === 0 || !array.some(e => e.language === quad.object.language);
   }
 
   buildTemplateInput(fullData, subjectsOnlyDataset) {
-    //const fullData = dataSet.merge(dataSetExtentions);
-
     const classes = [];
     const properties = [];
 
@@ -136,37 +118,25 @@ module.exports = class Generator {
     result.classes = classes;
     result.properties = properties;
 
-    result.namespace = this.findNamespace(fullData);
+    result.namespace = Generator.findNamespace(fullData);
 
-    result.ontologyPrefix = this.findPrefix(fullData);
+    result.ontologyPrefix = Generator.findPrefix(fullData);
 
     result.version = this.version;
 
-    let subjectSet = this.subjectsOnly(subjectsOnlyDataset);
+    let subjectSet = Generator.subjectsOnly(subjectsOnlyDataset);
     if (subjectSet.length === 0) {
-      subjectSet = this.subjectsOnly(fullData);
+      subjectSet = Generator.subjectsOnly(fullData);
     }
 
     subjectSet.forEach(entry => {
-      fullData.match(entry, null, RDFS.Class).filter(quad => {
-        classes.push(
-          this.handleTerms(
-            fullData,
-            subjectsOnlyDataset,
-            quad,
-            result.namespace
-          )
-        );
+      fullData.match(entry, null, RDFS.Class).forEach(quad => {
+        classes.push(Generator.handleTerms(fullData, subjectsOnlyDataset, quad, result.namespace));
       });
 
-      fullData.match(entry, null, RDF.Property).filter(quad => {
+      fullData.match(entry, null, RDF.Property).forEach(quad => {
         properties.push(
-          this.handleTerms(
-            fullData,
-            subjectsOnlyDataset,
-            quad,
-            result.namespace
-          )
+          Generator.handleTerms(fullData, subjectsOnlyDataset, quad, result.namespace)
         );
       });
     });
@@ -174,54 +144,46 @@ module.exports = class Generator {
     return result;
   }
 
-  findNamespace(fullData) {
-    const ontologyNamespaces = fullData
-      .match(null, rdf.namedNode(PNU), null)
-      .toArray();
-    let namespace = this.firstDsValue(ontologyNamespaces);
+  static findNamespace(fullData) {
+    const ontologyNamespaces = fullData.match(null, rdf.namedNode(PNU), null).toArray();
+    let namespace = Generator.firstDsValue(ontologyNamespaces);
 
     if (!namespace) {
-      let first = this.subjectsOnly(fullData)[0] || '';
+      const first = Generator.subjectsOnly(fullData)[0] || '';
       namespace = first.substring(0, first.lastIndexOf('/') + 1);
     }
     return namespace;
   }
 
-  findPrefix(fullData) {
-    const ontologyPrefix = fullData
-      .match(null, rdf.namedNode(PNP), null)
-      .toArray();
-    let prefix = this.firstDsValue(ontologyPrefix);
+  static findPrefix(fullData) {
+    const ontologyPrefix = fullData.match(null, rdf.namedNode(PNP), null).toArray();
+    let prefix = Generator.firstDsValue(ontologyPrefix);
 
     if (!prefix) {
-      let first = this.subjectsOnly(fullData)[0] || '';
-      prefix = first.substring(
-        first.lastIndexOf('//') + 2,
-        first.lastIndexOf('.')
-      );
+      const first = Generator.subjectsOnly(fullData)[0] || '';
+      prefix = first.substring(first.lastIndexOf('//') + 2, first.lastIndexOf('.'));
     }
     return prefix;
   }
 
-  subjectsOnly(fullData) {
+  static subjectsOnly(fullData) {
     const terms = fullData.filter(quad => {
       return quad.subject.value !== OWL.Ontology;
     });
 
     const termSubjects = [];
-    terms.filter(quad => {
+    terms.forEach(quad => {
       termSubjects.push(quad.subject.value);
     });
 
     return [...new Set(termSubjects)];
   }
 
-  firstDsValue(dataset, defaultRes) {
+  static firstDsValue(dataset, defaultRes) {
     const first = dataset[0];
     if (first) {
       return first.object.value;
-    } else {
-      return defaultRes;
     }
+    return defaultRes;
   }
 };
