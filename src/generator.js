@@ -106,8 +106,6 @@ function add(array, quad) {
  * @returns {string} Returns a string of the comment if founds, else empty string is returned.
  */
 function getComment(comments) {
-  comments = comments || [];
-
   var found = comments.find(e => e.language === 'en');
 
   if (found === undefined) {
@@ -171,7 +169,7 @@ function findNamespace(fullData) {
   let namespace = firstDsValue(ontologyNamespaces);
 
   if (!namespace) {
-    let first = subjectsOnly(fullData)[0];
+    let first = subjectsOnly(fullData)[0] || '';
     namespace = first.substring(0, first.lastIndexOf('/') + 1);
   }
   return namespace;
@@ -184,7 +182,7 @@ function findPrefix(fullData) {
   let prefix = firstDsValue(ontologyPrefix);
 
   if (!prefix) {
-    let first = subjectsOnly(fullData)[0];
+    let first = subjectsOnly(fullData)[0] || '';
     prefix = first.substring(
       first.lastIndexOf('//') + 2,
       first.lastIndexOf('.')

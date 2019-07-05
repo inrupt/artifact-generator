@@ -56,7 +56,7 @@ describe('Ontology Generator', () => {
       expect(fs.readFileSync('generated/package.json').toString()).to.contains(
         '"name": "schema-inrupt-ext"'
       );
-    });
+    }).timeout(5000);
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
       var result = await gen.generate(
@@ -98,7 +98,7 @@ describe('Ontology Generator', () => {
         "additionalName: new LitVocabTerm(_NS('additionalName')"
       );
       expect(indexOutput).to.contains(".addLabel('es', 'Nombre adicional')");
-    });
+    }).timeout(5000);
 
     it('should be able to extend an ontology but only creates triples from extention file', async () => {
       var result = await gen.generate(
@@ -158,6 +158,19 @@ describe('Ontology Generator', () => {
       expect(fs.readFileSync('generated/package.json').toString()).to.contains(
         '"version": "1.0.5"'
       );
+    });
+
+    it('should handle creating generated folder if it does not exist already', async () => {
+      del.sync(['generated']);
+
+      var result = await gen.generate(
+        ['./test/vocabs/schema.ttl'],
+        '1.0.0',
+        undefined
+      );
+      expect(result).to.equal('Done!');
+      expect(fs.existsSync('generated/index.ts')).to.be.true;
+      expect(fs.existsSync('generated/package.json')).to.be.true;
     });
   });
 });

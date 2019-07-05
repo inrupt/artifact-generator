@@ -22,7 +22,7 @@ const dataset = rdf
     rdf.quad(
       SCHEMA.Person,
       RDFS.comment,
-      rdf.literal('Person dead of alive', 'en')
+      rdf.literal('Person dead or alive', 'en')
     ),
 
     rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
@@ -63,17 +63,17 @@ const datasetExtension = rdf
     rdf.quad(
       SCHEMA.Person,
       RDFS.comment,
-      rdf.literal('Person dead of alive fr', 'fr')
+      rdf.literal('Person dead or alive fr', 'fr')
     ),
     rdf.quad(
       SCHEMA.Person,
       RDFS.comment,
-      rdf.literal('Person dead of alive de', 'de')
+      rdf.literal('Person dead or alive de', 'de')
     ),
     rdf.quad(
       SCHEMA.Person,
       RDFS.comment,
-      rdf.literal('Person dead of alive es', 'es')
+      rdf.literal('Person dead or alive es', 'es')
     ),
 
     rdf.quad(
@@ -112,6 +112,8 @@ const datasetExtension = rdf
       rdf.literal('Given name of a person es', 'es')
     ),
   ]);
+
+const emptyDataSet = rdf.dataset();
 
 const dataSetA = rdf
   .dataset()
@@ -200,29 +202,46 @@ describe('LIT JS unit tests', () => {
       expect(result.namespace).to.equal('http://schema.org/');
       expect(result.ontologyPrefix).to.equal('schema');
       expect(result.classes[0].name).to.equal('Person');
-      expect(result.classes[0].comment).to.equal('Person dead of alive');
+      expect(result.classes[0].comment).to.equal('Person dead or alive');
       expect(result.classes[0].labels[0].value).to.equal('Person');
-      expect(result.classes[0].alternateNames[0].value).to.equal('Person-fr');
-      expect(result.classes[0].alternateNames[1].value).to.equal('Person-de');
-      expect(result.classes[0].alternateNames[2].value).to.equal('Person-es');
+
+      var personAlternateNames = result.classes[0].alternateNames;
+      expect(personAlternateNames).to.deep.include({
+        value: 'Person-fr',
+        language: 'fr',
+      });
+      expect(personAlternateNames).to.deep.include({
+        value: 'Person-de',
+        language: 'de',
+      });
+      expect(personAlternateNames).to.deep.include({
+        value: 'Person-es',
+        language: 'es',
+      });
 
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties[0].comment).to.equal(
         'A given name is the first name of a person.'
       );
       expect(result.properties[0].labels[0].value).to.equal('givenName');
-      expect(result.properties[0].alternateNames[0].value).to.equal(
-        'Given Name'
-      );
-      expect(result.properties[0].alternateNames[1].value).to.equal(
-        'Given Name-fr'
-      );
-      expect(result.properties[0].alternateNames[2].value).to.equal(
-        'Given Name-de'
-      );
-      expect(result.properties[0].alternateNames[3].value).to.equal(
-        'Given Name-es'
-      );
+
+      var givenNameAlternateNames = result.properties[0].alternateNames;
+      expect(givenNameAlternateNames).to.deep.include({
+        value: 'Given Name',
+        language: 'en',
+      });
+      expect(givenNameAlternateNames).to.deep.include({
+        value: 'Given Name-fr',
+        language: 'fr',
+      });
+      expect(givenNameAlternateNames).to.deep.include({
+        value: 'Given Name-de',
+        language: 'de',
+      });
+      expect(givenNameAlternateNames).to.deep.include({
+        value: 'Given Name-es',
+        language: 'es',
+      });
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
@@ -264,6 +283,53 @@ describe('LIT JS unit tests', () => {
       expect(result.classes[0].name).to.equal('Person');
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
+    });
+
+    it('Should handle empty datasets', () => {
+      const result = gen.buildTemplateInput(
+        gen.merge([emptyDataSet]),
+        gen.merge([emptyDataSet])
+      );
+
+      expect(result.namespace).to.equal('');
+      expect(result.ontologyPrefix).to.equal('');
+      expect(result.classes.length).to.equal(0);
+      expect(result.properties.length).to.equal(0);
+    });
+
+    it('Should have an empty comment for the class or property if one cant be found', () => {
+      const result = gen.buildTemplateInput(
+        gen.merge([dataSetA, dataSetB]),
+        gen.merge([dataSetB])
+      );
+
+      expect(result.properties[0].name).to.equal('givenName');
+      expect(result.properties.length).to.equal(1);
+      expect(result.properties[0].comment).to.equal('');
+    });
+
+    it('Should take any comment for the class or property if english or default cant be found', () => {
+      const dataSetFrenchOnlyComment = rdf
+        .dataset()
+        .addAll([
+          rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
+          rdf.quad(
+            SCHEMA.givenName,
+            RDFS.comment,
+            rdf.literal('Given Name comment in french', 'fr')
+          ),
+        ]);
+
+      const result = gen.buildTemplateInput(
+        gen.merge([dataSetA, dataSetFrenchOnlyComment]),
+        gen.merge([dataSetFrenchOnlyComment])
+      );
+
+      expect(result.properties[0].name).to.equal('givenName');
+      expect(result.properties.length).to.equal(1);
+      expect(result.properties[0].comment).to.equal(
+        'Given Name comment in french'
+      );
     });
   });
 
