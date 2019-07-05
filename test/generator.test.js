@@ -203,18 +203,22 @@ describe('LIT JS unit tests', () => {
       expect(result.ontologyPrefix).to.equal('schema');
       expect(result.classes[0].name).to.equal('Person');
       expect(result.classes[0].comment).to.equal('Person dead or alive');
-      expect(result.classes[0].labels[0].value).to.equal('Person');
 
-      var personAlternateNames = result.classes[0].alternateNames;
-      expect(personAlternateNames).to.deep.include({
+      var personLabels = result.classes[0].labels;
+      expect(personLabels).to.deep.include({
+        value: 'Person',
+        language: 'en',
+      });
+
+      expect(personLabels).to.deep.include({
         value: 'Person-fr',
         language: 'fr',
       });
-      expect(personAlternateNames).to.deep.include({
+      expect(personLabels).to.deep.include({
         value: 'Person-de',
         language: 'de',
       });
-      expect(personAlternateNames).to.deep.include({
+      expect(personLabels).to.deep.include({
         value: 'Person-es',
         language: 'es',
       });
@@ -223,22 +227,21 @@ describe('LIT JS unit tests', () => {
       expect(result.properties[0].comment).to.equal(
         'A given name is the first name of a person.'
       );
-      expect(result.properties[0].labels[0].value).to.equal('givenName');
+      var givenNameLabels = result.properties[0].labels;
 
-      var givenNameAlternateNames = result.properties[0].alternateNames;
-      expect(givenNameAlternateNames).to.deep.include({
+      expect(givenNameLabels).to.deep.include({
         value: 'Given Name',
         language: 'en',
       });
-      expect(givenNameAlternateNames).to.deep.include({
+      expect(givenNameLabels).to.deep.include({
         value: 'Given Name-fr',
         language: 'fr',
       });
-      expect(givenNameAlternateNames).to.deep.include({
+      expect(givenNameLabels).to.deep.include({
         value: 'Given Name-de',
         language: 'de',
       });
-      expect(givenNameAlternateNames).to.deep.include({
+      expect(givenNameLabels).to.deep.include({
         value: 'Given Name-es',
         language: 'es',
       });
@@ -388,7 +391,7 @@ describe('LIT JS unit tests', () => {
       );
     });
 
-    it('should override label alternativeNames of the main datasets ', () => {
+    it('should override label with alternativeNames from the vocab terms', () => {
       const result = gen.buildTemplateInput(
         gen.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
         gen.merge([overrideAtlNameTerms])
@@ -397,20 +400,20 @@ describe('LIT JS unit tests', () => {
       var person = result.classes[0];
 
       expect(person.name).to.equal('Person');
-      expect(person.alternateNames.length).to.equal(1);
-      expect(person.alternateNames[0].value).to.equal('Alt Person');
+      expect(person.labels.length).to.equal(1);
+      expect(person.labels[0].value).to.equal('Alt Person');
 
       var givenName = result.properties[0];
 
       expect(givenName.name).to.equal('givenName');
-      expect(givenName.alternateNames.length).to.equal(1);
-      expect(givenName.alternateNames[0].value).to.equal('Alt Given Name');
+      expect(givenName.labels.length).to.equal(1);
+      expect(givenName.labels[0].value).to.equal('Alt Given Name');
 
       var familyName = result.properties[1];
 
       expect(familyName.name).to.equal('familyName');
-      expect(familyName.alternateNames.length).to.equal(1);
-      expect(familyName.alternateNames[0].value).to.equal('Alt Family Name');
+      expect(familyName.labels.length).to.equal(1);
+      expect(familyName.labels[0].value).to.equal('Alt Family Name');
     });
   });
 });

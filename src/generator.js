@@ -44,6 +44,12 @@ function merge(dataSets) {
 function handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
   const labels = [];
 
+  subjectsOnlyDataset
+    .match(quad.subject, SCHEMA.alternateName, null)
+    .filter(subQuad => {
+      add(labels, subQuad);
+    });
+
   subjectsOnlyDataset.match(quad.subject, RDFS.label, null).filter(subQuad => {
     add(labels, subQuad);
   });
@@ -52,18 +58,10 @@ function handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
     add(labels, subQuad);
   });
 
-  const alternateNames = [];
-
-  subjectsOnlyDataset
-    .match(quad.subject, SCHEMA.alternateName, null)
-    .filter(subQuad => {
-      add(alternateNames, subQuad);
-    });
-
   fullDataset
     .match(quad.subject, SCHEMA.alternateName, null)
     .filter(subQuad => {
-      add(alternateNames, subQuad);
+      add(labels, subQuad);
     });
 
   const comments = [];
@@ -85,7 +83,7 @@ function handleTerms(fullDataset, subjectsOnlyDataset, quad, namespace) {
     name: termName,
     comment: getComment(comments),
     labels: labels,
-    alternateNames: alternateNames,
+    alternateNames: [],
     comments: comments,
   };
 }
