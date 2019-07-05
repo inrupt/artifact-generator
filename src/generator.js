@@ -1,4 +1,4 @@
-const resources = require('./resources');
+const Resources = require('./resources');
 const artifacts = require('./artifacts');
 
 const rdf = require('rdf-ext');
@@ -9,22 +9,18 @@ const PNP = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
 const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
 
 module.exports = class Generator {
-  constructor(version) {
-    // this.datasetFiles = datasetFiles;
-    // this.subjectsOnlyFile = subjectsOnlyFile;
+  constructor(datasetFiles, vocabTermsFromFile, version) {
+    this.resources = new Resources(datasetFiles, vocabTermsFromFile);
     this.version = version;
   }
 
   /**
    *
    */
-  generate(datasetFiles, subjectsOnlyFile) {
+  generate() {
     const that = this;
     return new Promise(function(resolve, reject) {
-      resources.readResources(datasetFiles, subjectsOnlyFile, function(
-        fullDataset,
-        subjectsOnlyDataset
-      ) {
+      that.resources.readResources(function(fullDataset, subjectsOnlyDataset) {
         const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
         artifacts.createArtifacts(parsed);
         resolve('Done!');

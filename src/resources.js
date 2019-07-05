@@ -13,35 +13,36 @@ const formats = {
   }),
 };
 
-async function readResources(
-  datasetFiles,
-  subjectsOnlyFile,
-  processDatasetsCallback
-) {
-  var datasets = [];
-
-  for (let datasetFile of datasetFiles) {
-    var ds = await readResource(datasetFile);
-    datasets.push(ds);
+module.exports = class Resources {
+  constructor(datasetFiles, vocabTermsFromFile) {
+    this.datasetFiles = datasetFiles;
+    this.subjectsOnlyFile = vocabTermsFromFile;
   }
 
-  if (subjectsOnlyFile) {
-    var subjectsOnlyDataset = await readResource(subjectsOnlyFile);
-    datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
-    processDatasetsCallback(datasets, subjectsOnlyDataset);
-  } else {
-    processDatasetsCallback(datasets);
+  async readResources(processDatasetsCallback) {
+    var datasets = [];
+
+    for (var datasetFile of this.datasetFiles) {
+      var ds = await this.readResource(datasetFile);
+      datasets.push(ds);
+    }
+
+    if (this.subjectsOnlyFile) {
+      var subjectsOnlyDataset = await this.readResource(this.subjectsOnlyFile);
+      datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
+      processDatasetsCallback(datasets, subjectsOnlyDataset);
+    } else {
+      processDatasetsCallback(datasets);
+    }
   }
-}
 
-function readResource(datasetFile) {
-  if (datasetFile.startsWith('http')) {
-    return rdfFetch(datasetFile, { formats: formats }).then(res => {
-      return res.dataset();
-    });
+  readResource(datasetFile) {
+    if (datasetFile.startsWith('http')) {
+      return rdfFetch(datasetFile, { formats: formats }).then(res => {
+        return res.dataset();
+      });
+    }
+
+    return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
   }
-
-  return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
-}
-
-module.exports.readResources = readResources;
+};

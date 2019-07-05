@@ -12,8 +12,6 @@ const rdf = require('rdf-ext');
 
 const Generator = require('../src/generator');
 
-const gen = new Generator('1.0.0');
-
 describe('Ontology Generator', () => {
   beforeEach(() => {
     (async () => {
@@ -24,7 +22,13 @@ describe('Ontology Generator', () => {
 
   describe('Builds node modules artifacts', () => {
     it('should create from an ontology file', async () => {
-      var result = await gen.generate(['./test/vocabs/schema.ttl'], undefined);
+      const gen = new Generator(
+        ['./test/vocabs/schema.ttl'],
+        undefined,
+        '1.0.0'
+      );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync('generated/index.ts')).to.be.true;
@@ -39,10 +43,13 @@ describe('Ontology Generator', () => {
     });
 
     it('should create from an ontology link', async () => {
-      var result = await gen.generate(
-        ['https://schema.org/Person.ttl'],
-        undefined
+      const gen = new Generator(
+        ['./test/vocabs/schema.ttl'],
+        undefined,
+        '1.0.0'
       );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync('generated/index.ts')).to.be.true;
@@ -57,10 +64,13 @@ describe('Ontology Generator', () => {
     }).timeout(5000);
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
-      var result = await gen.generate([
-        './test/vocabs/schema.ttl',
-        './test/vocabs/schema-inrupt-ext.ttl',
-      ]);
+      const gen = new Generator(
+        ['./test/vocabs/schema.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
+        undefined,
+        '1.0.0'
+      );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync('generated/index.ts')).to.be.true;
@@ -75,10 +85,16 @@ describe('Ontology Generator', () => {
     });
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
-      var result = await gen.generate([
-        'https://schema.org/Person.ttl',
-        './test/vocabs/schema-inrupt-ext.ttl',
-      ]);
+      const gen = new Generator(
+        [
+          'https://schema.org/Person.ttl',
+          './test/vocabs/schema-inrupt-ext.ttl',
+        ],
+        undefined,
+        '1.0.0'
+      );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync('generated/index.ts')).to.be.true;
@@ -96,10 +112,13 @@ describe('Ontology Generator', () => {
     }).timeout(5000);
 
     it('should be able to extend an ontology but only creates triples from extention file', async () => {
-      var result = await gen.generate(
+      const gen = new Generator(
         ['./test/vocabs/schema.ttl'],
-        './test/vocabs/schema-inrupt-ext.ttl'
+        './test/vocabs/schema-inrupt-ext.ttl',
+        '1.0.0'
       );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       var indexOutput = fs.readFileSync('generated/index.ts').toString();
@@ -118,10 +137,13 @@ describe('Ontology Generator', () => {
     });
 
     it('should be able to extend an ontology but only create triples from extention URL links', async () => {
-      var result = await gen.generate(
+      const gen = new Generator(
         ['./test/vocabs/schema.ttl'],
-        'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl'
+        'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
+        '1.0.0'
       );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       var indexOutput = fs.readFileSync('generated/index.ts').toString();
@@ -140,11 +162,13 @@ describe('Ontology Generator', () => {
     });
 
     it('should take in a version for the output module', async () => {
-      const gen = new Generator('1.0.5');
-      var result = await gen.generate(
+      const gen = new Generator(
         ['./test/vocabs/schema.ttl'],
-        './test/vocabs/schema-inrupt-ext.ttl'
+        './test/vocabs/schema-inrupt-ext.ttl',
+        '1.0.5'
       );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync('generated/package.json')).to.be.true;
@@ -156,8 +180,15 @@ describe('Ontology Generator', () => {
     it('should handle creating generated folder if it does not exist already', async () => {
       del.sync(['generated']);
 
-      var result = await gen.generate(['./test/vocabs/schema.ttl'], undefined);
+      const gen = new Generator(
+        ['./test/vocabs/schema.ttl'],
+        undefined,
+        '1.0.5'
+      );
+
+      var result = await gen.generate();
       expect(result).to.equal('Done!');
+
       expect(fs.existsSync('generated/index.ts')).to.be.true;
       expect(fs.existsSync('generated/package.json')).to.be.true;
     });
