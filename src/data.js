@@ -16,6 +16,12 @@ const formats = {
 };
 
 function createArtifacts(templateData) {
+  const generatedDirectory = 'generated'
+
+  if (! fs.existsSync(generatedDirectory)) {
+    fs.mkdirSync(generatedDirectory)
+  }
+
   createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
   createArtifact(
     'templates/package.hbs',
@@ -60,9 +66,9 @@ function readResource(datasetFile) {
     return rdfFetch(datasetFile, { formats: formats }).then(res => {
       return res.dataset();
     });
-  } else {
-    return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
   }
+
+  return LitUtils.loadTurtleFileIntoDatasetPromise(datasetFile);
 }
 
 module.exports.readResources = readResources;

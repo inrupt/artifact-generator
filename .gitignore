@@ -1,7 +1,10 @@
-node_modules/
 generated/
+node_modules/
+
 .idea
 .vscode/
+
 .nyc_output/
 package-lock.json
+
 docs/
