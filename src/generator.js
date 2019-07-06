@@ -6,9 +6,10 @@ const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
 
 module.exports = class Generator {
-  constructor(datasetFiles, vocabTermsFromFile, version) {
-    this.resources = new Resources(datasetFiles, vocabTermsFromFile);
-    this.version = version;
+  constructor(argv) {
+    this.argv = argv;
+
+    this.resources = new Resources(argv.input, argv.vocabTermsFrom);
   }
 
   /**
@@ -19,7 +20,7 @@ module.exports = class Generator {
     return new Promise(function(resolve, reject) {
       that.resources.readResources(function(fullDataset, subjectsOnlyDataset) {
         const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
-        artifacts.createArtifacts(parsed);
+        artifacts.createArtifacts(that.argv, parsed);
         resolve('Done!');
       });
     });
@@ -137,7 +138,7 @@ module.exports = class Generator {
 
     result.ontologyPrefix = this.findPrefix(fullData);
 
-    result.version = this.version;
+    result.version = this.argv.artifactVersion;
 
     let subjectSet = this.subjectsOnly(subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -173,7 +174,7 @@ module.exports = class Generator {
 
   findNamespace(fullData) {
     const ontologyNamespaces = fullData
-      .match(null, rdf.namedNode(VANN.preferredNamespaceUri), null)
+      .match(null, VANN.preferredNamespaceUri, null)
       .toArray();
     let namespace = this.firstDsValue(ontologyNamespaces);
 
@@ -186,7 +187,7 @@ module.exports = class Generator {
 
   findPrefix(fullData) {
     const ontologyPrefix = fullData
-      .match(null, rdf.namedNode(VANN.preferredNamespacePrefix), null)
+      .match(null, VANN.preferredNamespacePrefix  , null)
       .toArray();
     let prefix = this.firstDsValue(ontologyPrefix);
 

@@ -1,29 +1,29 @@
 const fs = require('fs');
 const Handlebars = require('handlebars');
 
-function createArtifacts(templateData) {
-  const generatedDirectory = 'generated';
+function createArtifacts(argv, templateData) {
+  const outputDirectory = argv.outputDirectory;
 
-  if (!fs.existsSync(generatedDirectory)) {
-    fs.mkdirSync(generatedDirectory);
+  if (!fs.existsSync(outputDirectory)) {
+    fs.mkdirSync(outputDirectory);
   }
 
-  createArtifact('templates/template.hbs', 'generated/index.ts', templateData);
+  createArtifact('templates/template.hbs', `${outputDirectory}/index.ts`, templateData);
   createArtifact(
     'templates/package.hbs',
-    'generated/package.json',
+    `${outputDirectory}/package.json`,
     templateData
   );
 }
 
-function createArtifact(template, outputFile, templateData) {
-  let data = fs.readFileSync(template);
+function createArtifact(templateFile, outputFile, templateData) {
+  const data = fs.readFileSync(templateFile);
 
-  var template = Handlebars.compile(data.toString());
-  var contents = template(templateData);
+  const template = Handlebars.compile(data.toString());
+  const contents = template(templateData);
 
   fs.writeFileSync(outputFile, contents);
-  console.log(`Created artifiact: ${outputFile}`);
+  console.log(`Created artifiact: [${outputFile}]`);
 }
 
 module.exports.createArtifacts = createArtifacts;

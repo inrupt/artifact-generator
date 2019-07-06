@@ -9,7 +9,7 @@ const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA } = require('vocab-lit');
 
 const Generator = require('../src/generator');
-const gen = new Generator('1.0.0');
+const gen = new Generator( { 'input': [], 'artifactVersion': '1.0.0' } );
 
 const dataset = rdf
   .dataset()
