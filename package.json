@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
     "start": "node index.ts",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,test}/**/*.js\""
+    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,test}/**/*.js\"",
+    "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "author": "Jarlath Holleran",
   "license": "MIT",
@@ -26,7 +27,7 @@
     "del": "^4.1.1",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "prettier": "1.18.2"
+    "prettier": "^1.18.2"
   },
   "directories": {
     "test": "test"
