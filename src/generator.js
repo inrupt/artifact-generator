@@ -18,11 +18,17 @@ module.exports = class Generator {
   generate() {
     const that = this;
     return new Promise(function(resolve, reject) {
-      that.resources.readResources(function(fullDataset, subjectsOnlyDataset) {
-        const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
-        artifacts.createArtifacts(that.argv, parsed);
-        resolve('Done!');
-      });
+      that.resources
+        .readResources(function(fullDataset, subjectsOnlyDataset) {
+          const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
+          artifacts.createArtifacts(that.argv, parsed);
+          resolve('Done!');
+        })
+        .catch(error => {
+          const result = 'Failed to generate: ' + error.toString();
+          console.log(result);
+          reject(new Error(result));
+        });
     });
   }
 
@@ -187,7 +193,7 @@ module.exports = class Generator {
 
   findPrefix(fullData) {
     const ontologyPrefix = fullData
-      .match(null, VANN.preferredNamespacePrefix  , null)
+      .match(null, VANN.preferredNamespacePrefix, null)
       .toArray();
     let prefix = this.firstDsValue(ontologyPrefix);
 

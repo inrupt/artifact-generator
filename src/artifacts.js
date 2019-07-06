@@ -8,7 +8,11 @@ function createArtifacts(argv, templateData) {
     fs.mkdirSync(outputDirectory);
   }
 
-  createArtifact('templates/template.hbs', `${outputDirectory}/index.ts`, templateData);
+  createArtifact(
+    'templates/template.hbs',
+    `${outputDirectory}/index.ts`,
+    templateData
+  );
   createArtifact(
     'templates/package.hbs',
     `${outputDirectory}/package.json`,

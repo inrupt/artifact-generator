@@ -20,16 +20,18 @@ module.exports = class Resources {
   }
 
   async readResources(processDatasetsCallback) {
-    var datasets = [];
+    const datasets = [];
 
-    for (var datasetFile of this.datasetFiles) {
-      var ds = await this.readResource(datasetFile);
-      datasets.push(ds);
+    for (const datasetFile of this.datasetFiles) {
+      const dataset = await this.readResource(datasetFile);
+      datasets.push(dataset);
     }
 
     if (this.subjectsOnlyFile) {
-      var subjectsOnlyDataset = await this.readResource(this.subjectsOnlyFile);
-      datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
+      const subjectsOnlyDataset = await this.readResource(
+        this.subjectsOnlyFile
+      );
+      datasets.push(subjectsOnlyDataset); // Adds the extension to the full data set.
       processDatasetsCallback(datasets, subjectsOnlyDataset);
     } else {
       processDatasetsCallback(datasets);
@@ -38,8 +40,8 @@ module.exports = class Resources {
 
   readResource(datasetFile) {
     if (datasetFile.startsWith('http')) {
-      return rdfFetch(datasetFile, { formats: formats }).then(res => {
-        return res.dataset();
+      return rdfFetch(datasetFile, { formats: formats }).then(resource => {
+        return resource.dataset();
       });
     }
 

@@ -29,8 +29,5 @@ const argv = require('yargs')
     .argv
 
 
-const gen = new Generator(argv);
-gen.generate();
-
-
-
+const generator = new Generator(argv);
+generator.generate().catch(error => console.log(`Generation process failed: [${error}]`));

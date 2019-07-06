@@ -9,7 +9,7 @@ const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA } = require('vocab-lit');
 
 const Generator = require('../src/generator');
-const gen = new Generator( { 'input': [], 'artifactVersion': '1.0.0' } );
+const generator = new Generator({ input: [], artifactVersion: '1.0.0' });
 
 const dataset = rdf
   .dataset()
@@ -192,9 +192,9 @@ describe('Artifact generator unit tests', () => {
 
   describe('Building the Template input', () => {
     it('should create a simple JSON object with all the fields', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataset, datasetExtension]),
-        gen.merge([datasetExtension])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataset, datasetExtension]),
+        generator.merge([datasetExtension])
       );
       expect(result.namespace).to.equal('http://schema.org/');
       expect(result.ontologyPrefix).to.equal('schema');
@@ -245,9 +245,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetA, dataSetB])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB]),
+        generator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -255,9 +255,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A (not B)', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetA])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB]),
+        generator.merge([dataSetA])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -265,9 +265,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from B (not A)', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetB])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB]),
+        generator.merge([dataSetB])
       );
 
       expect(result.classes.length).to.equal(0);
@@ -275,9 +275,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC]),
-        gen.merge([dataSetA, dataSetB])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB, dataSetC]),
+        generator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -286,9 +286,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should handle empty datasets', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([emptyDataSet]),
-        gen.merge([emptyDataSet])
+      const result = generator.buildTemplateInput(
+        generator.merge([emptyDataSet]),
+        generator.merge([emptyDataSet])
       );
 
       expect(result.namespace).to.equal('');
@@ -298,9 +298,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should have an empty comment for the class or property if one cant be found', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB]),
-        gen.merge([dataSetB])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB]),
+        generator.merge([dataSetB])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
@@ -320,9 +320,9 @@ describe('Artifact generator unit tests', () => {
           ),
         ]);
 
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetFrenchOnlyComment]),
-        gen.merge([dataSetFrenchOnlyComment])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetFrenchOnlyComment]),
+        generator.merge([dataSetFrenchOnlyComment])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
@@ -335,9 +335,9 @@ describe('Artifact generator unit tests', () => {
 
   describe('Vocab terms from extention dataset', () => {
     it('should override label terms of the main datasets', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
-        gen.merge([overrideLabelTerms])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
+        generator.merge([overrideLabelTerms])
       );
 
       var person = result.classes[0];
@@ -360,9 +360,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should override comment terms of the main datasets', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
-        gen.merge([overrideCommentTerms])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
+        generator.merge([overrideCommentTerms])
       );
 
       var person = result.classes[0];
@@ -389,9 +389,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should override label with alternativeNames from the vocab terms', () => {
-      const result = gen.buildTemplateInput(
-        gen.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
-        gen.merge([overrideAtlNameTerms])
+      const result = generator.buildTemplateInput(
+        generator.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
+        generator.merge([overrideAtlNameTerms])
       );
 
       var person = result.classes[0];
