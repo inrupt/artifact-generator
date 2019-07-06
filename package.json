@@ -17,7 +17,7 @@
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",
     "rdf-parser-n3": "^1.1.1",
-    "vocab-lit": "^1.0.6",
+    "vocab-lit": "^1.0.7  ",
     "yargs": "^13.2.4"
   },
   "devDependencies": {

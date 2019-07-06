@@ -3,10 +3,7 @@ const artifacts = require('./artifacts');
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
-
-const PNP = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
-const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
 
 module.exports = class Generator {
   constructor(datasetFiles, vocabTermsFromFile, version) {
@@ -176,7 +173,7 @@ module.exports = class Generator {
 
   findNamespace(fullData) {
     const ontologyNamespaces = fullData
-      .match(null, rdf.namedNode(PNU), null)
+      .match(null, rdf.namedNode(VANN.preferredNamespaceUri), null)
       .toArray();
     let namespace = this.firstDsValue(ontologyNamespaces);
 
@@ -189,7 +186,7 @@ module.exports = class Generator {
 
   findPrefix(fullData) {
     const ontologyPrefix = fullData
-      .match(null, rdf.namedNode(PNP), null)
+      .match(null, rdf.namedNode(VANN.preferredNamespacePrefix), null)
       .toArray();
     let prefix = this.firstDsValue(ontologyPrefix);
 
