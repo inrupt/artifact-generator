@@ -1,6 +1,5 @@
 const Generator = require('./src/generator');
 
-
 const argv = require('yargs')
     .array('i')
     .alias('i', 'input')

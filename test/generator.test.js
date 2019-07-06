@@ -184,7 +184,7 @@ const overrideAtlNameTerms = rdf
     ),
   ]);
 
-describe('LIT JS unit tests', () => {
+describe('Artifact generator unit tests', () => {
   beforeEach(() => {
     delete process.env.IRI_HINT_APPLICATION;
     delete process.env.DATA_SERVER_SOLID;
