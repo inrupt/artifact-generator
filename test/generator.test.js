@@ -9,7 +9,7 @@ const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA } = require('vocab-lit');
 
 const Generator = require('../src/generator');
-const gen = new Generator('1.0.0');
+const generator = new Generator({ input: [], artifactVersion: '1.0.0' });
 
 const dataset = rdf
   .dataset()
@@ -106,7 +106,7 @@ const overrideAtlNameTerms = rdf
     rdf.quad(SCHEMA.familyName, SCHEMA.alternateName, rdf.literal('Alt Family Name'), 'en'),
   ]);
 
-describe('LIT JS unit tests', () => {
+describe('Artifact generator unit tests', () => {
   beforeEach(() => {
     delete process.env.IRI_HINT_APPLICATION;
     delete process.env.DATA_SERVER_SOLID;
@@ -114,7 +114,7 @@ describe('LIT JS unit tests', () => {
 
   describe('Building the Template input', () => {
     it('should create a simple JSON object with all the fields', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataset, datasetExtension]),
         Generator.merge([datasetExtension])
       );
@@ -165,7 +165,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetA, dataSetB])
       );
@@ -175,7 +175,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A (not B)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetA])
       );
@@ -185,7 +185,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from B (not A)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetB])
       );
@@ -195,7 +195,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB, dataSetC]),
         Generator.merge([dataSetA, dataSetB])
       );
@@ -206,7 +206,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should handle empty datasets', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([emptyDataSet]),
         Generator.merge([emptyDataSet])
       );
@@ -218,7 +218,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('Should have an empty comment for the class or property if one cant be found', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetB])
       );
@@ -240,7 +240,7 @@ describe('LIT JS unit tests', () => {
           ),
         ]);
 
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetFrenchOnlyComment]),
         Generator.merge([dataSetFrenchOnlyComment])
       );
@@ -253,7 +253,7 @@ describe('LIT JS unit tests', () => {
 
   describe('Vocab terms from extention dataset', () => {
     it('should override label terms of the main datasets', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
         Generator.merge([overrideLabelTerms])
       );
@@ -278,7 +278,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('should override comment terms of the main datasets', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
         Generator.merge([overrideCommentTerms])
       );
@@ -303,7 +303,7 @@ describe('LIT JS unit tests', () => {
     });
 
     it('should override label with alternativeNames from the vocab terms', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
         Generator.merge([overrideAtlNameTerms])
       );

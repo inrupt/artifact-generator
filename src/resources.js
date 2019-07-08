@@ -25,7 +25,7 @@ module.exports = class Resources {
     let subjectsOnlyDataset;
     if (this.subjectsOnlyFile) {
       subjectsOnlyDataset = await Resources.readResource(this.subjectsOnlyFile);
-      datasets.push(subjectsOnlyDataset); // Adds the extention to the full data set
+      datasets.push(subjectsOnlyDataset); // Adds the extension to the full data set.
     }
 
     processDatasetsCallback(datasets, subjectsOnlyDataset);
@@ -33,8 +33,8 @@ module.exports = class Resources {
 
   static readResource(datasetFile) {
     if (datasetFile.startsWith('http')) {
-      return rdfFetch(datasetFile, { formats }).then(res => {
-        return res.dataset();
+      return rdfFetch(datasetFile, { formats }).then(resource => {
+        return resource.dataset();
       });
     }
 

@@ -1,28 +1,32 @@
 const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL } = require('vocab-lit');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
 
 const Resources = require('./resources');
 const artifacts = require('./artifacts');
 
-const PNP = 'http://purl.org/vocab/vann/preferredNamespacePrefix';
-const PNU = 'http://purl.org/vocab/vann/preferredNamespaceUri';
-
 module.exports = class Generator {
-  constructor(datasetFiles, vocabTermsFromFile, version) {
-    this.resources = new Resources(datasetFiles, vocabTermsFromFile);
-    this.version = version;
+  constructor(argv) {
+    this.argv = argv;
+
+    this.resources = new Resources(argv.input, argv.vocabTermsFrom);
   }
 
   /**
    *
    */
   generate() {
-    return new Promise(resolve => {
-      this.resources.readResources((fullDataset, subjectsOnlyDataset) => {
-        const parsed = this.parseDatasets(fullDataset, subjectsOnlyDataset);
-        artifacts.createArtifacts(parsed);
-        resolve('Done!');
-      });
+    return new Promise((resolve, reject) => {
+      this.resources
+        .readResources((fullDataset, subjectsOnlyDataset) => {
+          const parsed = this.parseDatasets(fullDataset, subjectsOnlyDataset);
+          artifacts.createArtifacts(this.argv, parsed);
+          resolve('Done!');
+        })
+        .catch(error => {
+          const result = `Failed to generate: ${error.toString()}`;
+          console.log(result);
+          reject(new Error(result));
+        });
     });
   }
 
@@ -122,7 +126,7 @@ module.exports = class Generator {
 
     result.ontologyPrefix = Generator.findPrefix(fullData);
 
-    result.version = this.version;
+    result.version = this.argv.artifactVersion;
 
     let subjectSet = Generator.subjectsOnly(subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -145,7 +149,7 @@ module.exports = class Generator {
   }
 
   static findNamespace(fullData) {
-    const ontologyNamespaces = fullData.match(null, rdf.namedNode(PNU), null).toArray();
+    const ontologyNamespaces = fullData.match(null, VANN.preferredNamespaceUri, null).toArray();
     let namespace = Generator.firstDsValue(ontologyNamespaces);
 
     if (!namespace) {
@@ -156,7 +160,7 @@ module.exports = class Generator {
   }
 
   static findPrefix(fullData) {
-    const ontologyPrefix = fullData.match(null, rdf.namedNode(PNP), null).toArray();
+    const ontologyPrefix = fullData.match(null, VANN.preferredNamespacePrefix, null).toArray();
     let prefix = Generator.firstDsValue(ontologyPrefix);
 
     if (!prefix) {
