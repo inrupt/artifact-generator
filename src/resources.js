@@ -24,8 +24,8 @@ module.exports = class Resources {
 
     let subjectsOnlyDataset;
     if (this.subjectsOnlyFile) {
-      const subjectsOnlyDataset = await Resources.readResource(this.subjectsOnlyFile);
-      datasets.push(dataset);
+      subjectsOnlyDataset = await Resources.readResource(this.subjectsOnlyFile);
+      datasets.push(subjectsOnlyDataset); // Adds the extension to the full data set.
     }
 
     processDatasetsCallback(datasets, subjectsOnlyDataset);

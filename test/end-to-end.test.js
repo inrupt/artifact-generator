@@ -55,14 +55,12 @@ describe('Ontology Generator', () => {
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/index.ts`).toString()
-      ).to.equal(fs.readFileSync('test/expected/single/index.ts').toString());
+      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
+        fs.readFileSync('test/expected/single/index.ts').toString()
+      );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/package.json`).toString()
-      ).to.equal(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.equal(
         fs.readFileSync('test/expected/single/package.json').toString()
       );
     });
@@ -78,22 +76,19 @@ describe('Ontology Generator', () => {
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/index.ts`).toString()
-      ).to.contains("Person: new LitVocabTerm(_NS('Person'), undefined, true)");
+      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.contains(
+        "Person: new LitVocabTerm(_NS('Person'), undefined, true)"
+      );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/package.json`).toString()
-      ).to.contains('"name": "schema-inrupt-ext"');
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"name": "schema-inrupt-ext"'
+      );
     }).timeout(5000);
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
       const generator = new Generator({
-        input: [
-          './test/vocabs/schema.ttl',
-          './test/vocabs/schema-inrupt-ext.ttl',
-        ],
+        input: ['./test/vocabs/schema.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
       });
@@ -102,24 +97,19 @@ describe('Ontology Generator', () => {
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/index.ts`).toString()
-      ).to.equal(fs.readFileSync('test/expected/full-ext/index.ts').toString());
+      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
+        fs.readFileSync('test/expected/full-ext/index.ts').toString()
+      );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/package.json`).toString()
-      ).to.equal(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.equal(
         fs.readFileSync('test/expected/full-ext/package.json').toString()
       );
     });
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
       const generator = new Generator({
-        input: [
-          'https://schema.org/Person.ttl',
-          './test/vocabs/schema-inrupt-ext.ttl',
-        ],
+        input: ['https://schema.org/Person.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
       });
@@ -129,17 +119,11 @@ describe('Ontology Generator', () => {
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
 
-      var indexOutput = fs
-        .readFileSync(`${outputDirectory}/index.ts`)
-        .toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contains(
-        "address: new LitVocabTerm(_NS('address')"
-      );
-      expect(indexOutput).to.contains(
-        "additionalName: new LitVocabTerm(_NS('additionalName')"
-      );
+      expect(indexOutput).to.contains("address: new LitVocabTerm(_NS('address')");
+      expect(indexOutput).to.contains("additionalName: new LitVocabTerm(_NS('additionalName')");
       expect(indexOutput).to.contains(".addLabel('es', 'Nombre adicional')");
     }).timeout(5000);
 
@@ -154,9 +138,7 @@ describe('Ontology Generator', () => {
       var result = await generator.generate();
       expect(result).to.equal('Done!');
 
-      var indexOutput = fs
-        .readFileSync(`${outputDirectory}/index.ts`)
-        .toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains(".addLabel('en', 'Person')");
@@ -175,17 +157,14 @@ describe('Ontology Generator', () => {
       const generator = new Generator({
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
-        vocabTermsFrom:
-          'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
+        vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
       });
 
       var result = await generator.generate();
       expect(result).to.equal('Done!');
 
-      var indexOutput = fs
-        .readFileSync(`${outputDirectory}/index.ts`)
-        .toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains(".addLabel('en', 'Person')");
@@ -212,9 +191,9 @@ describe('Ontology Generator', () => {
       expect(result).to.equal('Done!');
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(
-        fs.readFileSync(`${outputDirectory}/package.json`).toString()
-      ).to.contains('"version": "1.0.5"');
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"version": "1.0.5"'
+      );
     });
 
     it('should handle creating generated folder if it does not exist already', async () => {
