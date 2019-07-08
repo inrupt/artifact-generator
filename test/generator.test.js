@@ -165,7 +165,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetA, dataSetB])
       );
@@ -175,7 +175,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A (not B)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetA])
       );
@@ -185,7 +185,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from B (not A)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetB])
       );
@@ -195,7 +195,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB, dataSetC]),
         Generator.merge([dataSetA, dataSetB])
       );
@@ -206,7 +206,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should handle empty datasets', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([emptyDataSet]),
         Generator.merge([emptyDataSet])
       );
@@ -218,7 +218,7 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should have an empty comment for the class or property if one cant be found', () => {
-      const result = gen.buildTemplateInput(
+      const result = generator.buildTemplateInput(
         Generator.merge([dataSetA, dataSetB]),
         Generator.merge([dataSetB])
       );
