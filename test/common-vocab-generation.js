@@ -11,7 +11,7 @@ const del = require('del');
 const Generator = require('../src/generator');
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it('Solid Generator UI vocab', async () => {
+  it.skip('Solid Generator UI vocab', async () => {
     generateVocabArtifact(
       ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
       '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript'
