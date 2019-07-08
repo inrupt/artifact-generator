@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA } = require('vocab-lit');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 
 const Generator = require('../src/generator');
 const generator = new Generator({ input: [], artifactVersion: '1.0.0' });
@@ -52,6 +52,17 @@ const datasetExtension = rdf
     rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person fr', 'fr')),
     rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person de', 'de')),
     rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person es', 'es')),
+  ]);
+
+const extSubject = rdf.namedNode('http://rdf-extension.com');
+const extDataset = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(extSubject, RDF.type, OWL.Ontology),
+    rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+    rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
+    rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+    rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
   ]);
 
 const emptyDataSet = rdf.dataset();
@@ -327,6 +338,18 @@ describe('Artifact generator unit tests', () => {
       expect(familyName.name).to.equal('familyName');
       expect(familyName.labels.length).to.equal(1);
       expect(familyName.labels[0].value).to.equal('Alt Family Name');
+    });
+
+    it('should take description from the rdfs:comment of an owl:Ontology term', () => {
+      const result = generator.buildTemplateInput(
+        Generator.merge([dataset, extDataset]),
+        Generator.merge([extDataset])
+      );
+
+      expect(result.name).to.equal('lit-generated-vocab-ext-prefix');
+      expect(result.namespace).to.equal('http://rdf-extension.com');
+      expect(result.prefixUpperCase).to.equal('EXT_PREFIX');
+      expect(result.description).to.equal('Extension comment');
     });
   });
 });

@@ -233,5 +233,22 @@ describe('Ontology Generator', () => {
         '"name": "lit-generated-vocab-schema-inrupt-ext",'
       );
     });
+
+    it('should add a descrtion inside the package.json', async () => {
+      const generator = new Generator({
+        input: ['./test/vocabs/schema.ttl'],
+        outputDirectory: outputDirectory,
+        vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
+        artifactVersion: '1.0.5',
+      });
+
+      var result = await generator.generate();
+      expect(result).to.equal('Done!');
+
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
+          'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
+      );
+    });
   });
 });

@@ -1,7 +1,7 @@
 {
   "name": "lit-generated-vocab-schema-inrupt-ext",
   "version": "1.0.0",
-  "description": "",
+  "description": "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
   "main": "index.ts",
   "author": "lit-js@inrupt.com",
   "license": "MIT",

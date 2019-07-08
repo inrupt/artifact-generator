@@ -1,5 +1,5 @@
 const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 
 const Resources = require('./resources');
 const artifacts = require('./artifacts');
@@ -127,6 +127,8 @@ module.exports = class Generator {
     result.name = Generator.moduleName(fullData);
     result.prefixUpperCase = Generator.prefixUpperCase(fullData);
 
+    result.description = Generator.findDescription(fullData);
+
     result.version = this.argv.artifactVersion;
 
     let subjectSet = Generator.subjectsOnly(subjectsOnlyDataset);
@@ -179,6 +181,23 @@ module.exports = class Generator {
     return Generator.findPrefix(fullData)
       .toUpperCase()
       .replace(/-/g, '_');
+  }
+
+  static findDescription(fullData) {
+    const ontologyTerms = fullData
+      .match(null, RDF.type, OWL.Ontology)
+      .toArray()
+      .shift();
+
+    let description = '';
+    if (ontologyTerms) {
+      const onologyComment = fullData
+        .match(ontologyTerms.subject, RDFS.comment, null)
+        .toArray()
+        .shift();
+      description = onologyComment && onologyComment.object.value;
+    }
+    return description;
   }
 
   static subjectsOnly(fullData) {
