@@ -1,9 +1,8 @@
+const rdf = require('rdf-ext');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
+
 const Resources = require('./resources');
 const artifacts = require('./artifacts');
-
-const rdf = require('rdf-ext');
-
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('vocab-lit');
 
 module.exports = class Generator {
   constructor(argv) {
@@ -24,7 +23,7 @@ module.exports = class Generator {
           resolve('Done!');
         })
         .catch(error => {
-          const result = 'Failed to generate: ' + error.toString();
+          const result = `Failed to generate: ${error.toString()}`;
           console.log(result);
           reject(new Error(result));
         });
