@@ -119,7 +119,8 @@ describe('Artifact generator unit tests', () => {
         Generator.merge([datasetExtension])
       );
       expect(result.namespace).to.equal('http://schema.org/');
-      expect(result.ontologyPrefix).to.equal('schema');
+      expect(result.name).to.equal('lit-generated-vocab-schema');
+      expect(result.prefixUpperCase).to.equal('SCHEMA');
       expect(result.classes[0].name).to.equal('Person');
       expect(result.classes[0].comment).to.equal('Person dead or alive');
 
@@ -212,7 +213,8 @@ describe('Artifact generator unit tests', () => {
       );
 
       expect(result.namespace).to.equal('');
-      expect(result.ontologyPrefix).to.equal('');
+      expect(result.name).to.equal('lit-generated-vocab-');
+      expect(result.prefixUpperCase).to.equal('');
       expect(result.classes.length).to.equal(0);
       expect(result.properties.length).to.equal(0);
     });

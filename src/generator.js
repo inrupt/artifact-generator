@@ -124,7 +124,8 @@ module.exports = class Generator {
 
     result.namespace = Generator.findNamespace(fullData);
 
-    result.ontologyPrefix = Generator.findPrefix(fullData);
+    result.name = Generator.moduleName(fullData);
+    result.prefixUpperCase = Generator.prefixUpperCase(fullData);
 
     result.version = this.argv.artifactVersion;
 
@@ -168,6 +169,16 @@ module.exports = class Generator {
       prefix = first.substring(first.lastIndexOf('//') + 2, first.lastIndexOf('.'));
     }
     return prefix;
+  }
+
+  static moduleName(fullData) {
+    return `lit-generated-vocab-${Generator.findPrefix(fullData)}`;
+  }
+
+  static prefixUpperCase(fullData) {
+    return Generator.findPrefix(fullData)
+      .toUpperCase()
+      .replace(/-/g, '_');
   }
 
   static subjectsOnly(fullData) {

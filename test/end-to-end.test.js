@@ -36,12 +36,6 @@ describe('Ontology Generator', () => {
           throw new Error('Should fail!');
         })
         .catch(error => expect(error).to.contain('Failed', errorFilename));
-
-      // try {
-      //   await generator.generate();
-      // } catch (error) {
-      //   expect(error).to.contain('Failed', errorFilename);
-      // }
     });
 
     it('should create from an ontology file', async () => {
@@ -82,7 +76,7 @@ describe('Ontology Generator', () => {
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
-        '"name": "schema-inrupt-ext"'
+        '"name": "lit-generated-vocab-schema"'
       );
     }).timeout(5000);
 
@@ -210,6 +204,34 @@ describe('Ontology Generator', () => {
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
+    });
+
+    it('module names should by default start with lit-generated-vocab-*', async () => {
+      let generator = new Generator({
+        input: ['./test/vocabs/schema.ttl'],
+        outputDirectory: outputDirectory,
+        artifactVersion: '1.0.5',
+      });
+
+      let result = await generator.generate();
+      expect(result).to.equal('Done!');
+
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"name": "lit-generated-vocab-schema",'
+      );
+
+      generator = new Generator({
+        input: ['./test/vocabs/schema-inrupt-ext.ttl'],
+        outputDirectory: outputDirectory,
+        artifactVersion: '1.0.5',
+      });
+
+      result = await generator.generate();
+      expect(result).to.equal('Done!');
+
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"name": "lit-generated-vocab-schema-inrupt-ext",'
+      );
     });
   });
 });
