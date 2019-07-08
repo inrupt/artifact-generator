@@ -234,7 +234,7 @@ describe('Ontology Generator', () => {
       );
     });
 
-    it('should add a descrtion inside the package.json', async () => {
+    it('should add a description inside the package.json', async () => {
       const generator = new Generator({
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,

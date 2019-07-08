@@ -152,8 +152,14 @@ module.exports = class Generator {
   }
 
   static findNamespace(fullData) {
-    const ontologyNamespaces = fullData.match(null, VANN.preferredNamespaceUri, null).toArray();
-    let namespace = Generator.firstDsValue(ontologyNamespaces);
+    let namespace = Generator.findOwlOntology(fullData, owlOntologyTerms => {
+      const ontologyNamespaces = fullData.match(
+        owlOntologyTerms.subject,
+        VANN.preferredNamespaceUri,
+        null
+      );
+      return Generator.firstDsValue(ontologyNamespaces);
+    });
 
     if (!namespace) {
       const first = Generator.subjectsOnly(fullData)[0] || '';
@@ -163,8 +169,14 @@ module.exports = class Generator {
   }
 
   static findPrefix(fullData) {
-    const ontologyPrefix = fullData.match(null, VANN.preferredNamespacePrefix, null).toArray();
-    let prefix = Generator.firstDsValue(ontologyPrefix);
+    let prefix = Generator.findOwlOntology(fullData, owlOntologyTerms => {
+      const ontologyPrefix = fullData.match(
+        owlOntologyTerms.subject,
+        VANN.preferredNamespacePrefix,
+        null
+      );
+      return Generator.firstDsValue(ontologyPrefix);
+    });
 
     if (!prefix) {
       const first = Generator.subjectsOnly(fullData)[0] || '';
@@ -184,20 +196,21 @@ module.exports = class Generator {
   }
 
   static findDescription(fullData) {
-    const ontologyTerms = fullData
+    return Generator.findOwlOntology(fullData, owlOntologyTerms => {
+      const onologyCommentDs = fullData.match(owlOntologyTerms.subject, RDFS.comment, null);
+      return Generator.firstDsValue(onologyCommentDs, '');
+    });
+  }
+
+  static findOwlOntology(fullData, callback) {
+    const owlOntologyTerms = fullData
       .match(null, RDF.type, OWL.Ontology)
       .toArray()
       .shift();
-
-    let description = '';
-    if (ontologyTerms) {
-      const onologyComment = fullData
-        .match(ontologyTerms.subject, RDFS.comment, null)
-        .toArray()
-        .shift();
-      description = onologyComment && onologyComment.object.value;
+    if (owlOntologyTerms) {
+      return callback(owlOntologyTerms);
     }
-    return description;
+    return ''; // Default to return empty string
   }
 
   static subjectsOnly(fullData) {
@@ -214,7 +227,7 @@ module.exports = class Generator {
   }
 
   static firstDsValue(dataset, defaultRes) {
-    const first = dataset[0];
+    const first = dataset.toArray().shift();
     if (first) {
       return first.object.value;
     }
