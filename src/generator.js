@@ -16,12 +16,11 @@ module.exports = class Generator {
    *
    */
   generate() {
-    const that = this;
-    return new Promise(function(resolve, reject) {
-      that.resources
-        .readResources(function(fullDataset, subjectsOnlyDataset) {
-          const parsed = that.parseDatasets(fullDataset, subjectsOnlyDataset);
-          artifacts.createArtifacts(that.argv, parsed);
+    return new Promise((resolve, reject) => {
+      this.resources
+        .readResources((fullDataset, subjectsOnlyDataset) => {
+          const parsed = this.parseDatasets(fullDataset, subjectsOnlyDataset);
+          artifacts.createArtifacts(this.argv, parsed);
           resolve('Done!');
         })
         .catch(error => {
