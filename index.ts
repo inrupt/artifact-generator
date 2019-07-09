@@ -1,5 +1,7 @@
 const Generator = require('./src/generator');
 
+var inquirer = require("inquirer");
+
 const argv = require('yargs')
     .array('i')
     .alias('i', 'input')
@@ -30,4 +32,39 @@ const argv = require('yargs')
 
 
 const generator = new Generator(argv);
-generator.generate().catch(error => console.log(`Generation process failed: [${error}]`));
+
+// Craft questions to present to users
+const questions = [
+    {
+        type : 'input',
+        name : 'name',
+        message : 'Enter name of the output module ...',
+        default : 'lit-generated-vocab-'
+    },
+    {
+        type : 'input',
+        name : 'version',
+        message : 'Enter artifact version ...',
+        default : argv.artifactVersion
+    },
+    // {
+    //     type : 'input',
+    //     name : 'phone',
+    //     message : 'Enter phone number ...'
+    // },
+    // {
+    //     type : 'input',
+    //     name : 'email',
+    //     message : 'Enter email address ...'
+    // }
+];
+inquirer.prompt(questions).then(answers => {
+
+    // Use user feedback for... whatever!!
+    console.log(answers);
+
+    argv.artifactVersion = answers.version;
+    generator.generate().catch(error => console.log(`Generation process failed: [${error}]`));
+
+});
+

@@ -1,5 +1,5 @@
 {
-  "name": "lit-js",
+  "name": "lit-artifact-generator-js",
   "version": "1.0.0",
   "description": "A simple generator for building ontology artifacts",
   "main": "index.ts",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "handlebars": "^4.1.2",
+    "inquirer": "^6.4.1",
     "lit-vocab-term": "^1.0.2",
     "rdf-ext": "^1.2.2",
     "rdf-fetch-lite": "^1.1.2",
