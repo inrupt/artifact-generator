@@ -17,21 +17,25 @@ module.exports = class Generator {
   generate() {
     return new Promise((resolve, reject) => {
       this.resources
-        .readResources((fullDataset, subjectsOnlyDataset) => {
-          const parsed = this.parseDatasets(fullDataset, subjectsOnlyDataset);
+        .readResources((fullDatasetsArray, vocabTermsOnlyDataset) => {
+          const parsed = this.parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset);
           artifacts.createArtifacts(this.argv, parsed);
           resolve('Done!');
         })
         .catch(error => {
           const result = `Failed to generate: ${error.toString()}`;
           console.log(result);
+          console.error(error);
           reject(new Error(result));
         });
     });
   }
 
-  parseDatasets(ds, dsExt) {
-    return this.buildTemplateInput(Generator.merge(ds), Generator.merge([dsExt]));
+  parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset) {
+    return this.buildTemplateInput(
+      Generator.merge(fullDatasetsArray),
+      Generator.merge([vocabTermsOnlyDataset])
+    );
   }
 
   buildTemplateInput(fullData, subjectsOnlyDataset) {

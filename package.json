@@ -4,8 +4,7 @@
   "description": "A simple generator for building ontology artifacts",
   "main": "index.ts",
   "scripts": {
-    "test": "mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
-    "start": "node index.ts",
+    "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
     "format": "prettier --single-quote --trailing-comma es5 --write \"{src,test}/**/*.js\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
