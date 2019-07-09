@@ -13,7 +13,7 @@ const { LitVocabTerm } = require('lit-vocab-term')
 const _NAMESPACE = "http://schema.org/";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
-const ONTOLOGY = {
+const SCHEMA = {
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 
@@ -59,4 +59,4 @@ const ONTOLOGY = {
   END_OF_VOCAB: 'End of vocab.'
 }
 
-module.exports = ONTOLOGY;
+module.exports = SCHEMA;

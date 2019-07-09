@@ -1,5 +1,5 @@
 {
-  "name": "schema-inrupt-ext",
+  "name": "lit-generated-vocab-schema",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",

@@ -5,17 +5,17 @@ prefix schema: <http://schema.org/>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix lit_core: <https://w3id.org/lit/vocab/core#>
-prefix schema-ext: <http://inrupt.com/>
+prefix schema-inrupt-ext: <http://inrupt.com/>
 
 
-schema-ext:
+schema-inrupt-ext:
     a owl:Ontology, lit_core:Ontology ;
     owl:versionInfo "1" ;
     dcterms:creator "Jarlath Holleran" ;
     dcterms:date "2019/06/18" ;
     rdfs:label "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
     rdfs:comment "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
-    vann:preferredNamespacePrefix "schema" ;
+    vann:preferredNamespacePrefix "schema-inrupt-ext" ;
     vann:preferredNamespaceUri "http://schema.org/" ;
     dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
 
