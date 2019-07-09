@@ -65,6 +65,11 @@ const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
+    rdf.quad(
+      extSubject,
+      rdf.namedNode('http://purl.org/dc/terms/creator'),
+      rdf.literal('Jarlath Holleran')
+    ),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
     rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
@@ -388,6 +393,33 @@ describe('Artifact generator unit tests', () => {
       expect(result.namespace).to.equal('http://rdf-extension.com');
       expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
       expect(result.description).to.equal('');
+    });
+
+    it('should read author from owl:Ontology terms', () => {
+      const result = generator.buildTemplateInput(
+        Generator.merge([dataset, owlOntologyDataset]),
+        Generator.merge([owlOntologyDataset])
+      );
+
+      expect(result.author).to.equal('Jarlath Holleran');
+    });
+
+    it('should default to lit-js@inrupt.com if author in not contained in owl:Ontology terms', () => {
+      const owlOntologyDatasetWithNoAuthor = rdf
+        .dataset()
+        .addAll([
+          rdf.quad(extSubject, RDF.type, OWL.Ontology),
+          rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+          rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
+          rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+          rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
+        ]);
+      const result = generator.buildTemplateInput(
+        Generator.merge([dataset, owlOntologyDatasetWithNoAuthor]),
+        Generator.merge([owlOntologyDatasetWithNoAuthor])
+      );
+
+      expect(result.author).to.equal('lit-js@inrupt.com');
     });
   });
 });

@@ -44,14 +44,20 @@ generator
       {
         type: 'input',
         name: 'name',
-        message: 'Enter artifact name ...',
+        message: 'Artifact name ...',
         default: data.artifactName,
       },
       {
         type: 'input',
         name: 'version',
-        message: 'Enter artifact version ...',
+        message: 'Artifact version ...',
         default: data.version,
+      },
+      {
+        type: 'input',
+        name: 'author',
+        message: 'Artifact author ...',
+        default: data.author,
       },
     ];
 

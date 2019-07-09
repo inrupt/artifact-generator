@@ -1,3 +1,4 @@
+const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 
 module.exports = class DatasetHandler {
@@ -85,13 +86,11 @@ module.exports = class DatasetHandler {
     result.properties = properties;
 
     result.namespace = this.findNamespace();
-
     result.artifactName = this.moduleName();
     result.vocabNameUpperCase = this.vocabNameUpperCase();
-
     result.description = this.findDescription();
-
     result.version = this.argv.artifactVersion;
+    result.author = this.findAuthor();
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -162,7 +161,18 @@ module.exports = class DatasetHandler {
     });
   }
 
-  findOwlOntology(callback) {
+  findAuthor() {
+    return this.findOwlOntology(owlOntologyTerms => {
+      const onologyAuthorDs = this.fullDataset.match(
+        owlOntologyTerms.subject,
+        rdf.namedNode('http://purl.org/dc/terms/creator'),
+        null
+      );
+      return DatasetHandler.firstDsValue(onologyAuthorDs, 'lit-js@inrupt.com');
+    }, 'lit-js@inrupt.com');
+  }
+
+  findOwlOntology(callback, defaultResult) {
     const owlOntologyTerms = this.fullDataset
       .match(null, RDF.type, OWL.Ontology)
       .toArray()
@@ -170,7 +180,7 @@ module.exports = class DatasetHandler {
     if (owlOntologyTerms) {
       return callback(owlOntologyTerms);
     }
-    return ''; // Default to return empty string
+    return defaultResult || ''; // Default to return empty string
   }
 
   static subjectsOnly(dataset) {

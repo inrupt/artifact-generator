@@ -256,5 +256,21 @@ describe('Ontology Generator', () => {
           'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
       );
     });
+
+    it('should add a author inside the package.json', async () => {
+      const generator = new Generator({
+        input: ['./test/vocabs/schema.ttl'],
+        outputDirectory: outputDirectory,
+        vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
+        artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
+      });
+
+      await generator.generate(doNothingPromise);
+
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"author": "Jarlath Holleran"'
+      );
+    });
   });
 });
