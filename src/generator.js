@@ -39,11 +39,7 @@ module.exports = class Generator {
   }
 
   buildTemplateInput(fullData, subjectsOnlyDataset) {
-    const datasetHandler = new DatasetHandler(
-      fullData,
-      subjectsOnlyDataset,
-      this.argv.artifactVersion
-    );
+    const datasetHandler = new DatasetHandler(fullData, subjectsOnlyDataset, this.argv);
     return datasetHandler.buildTemplateInput();
   }
 

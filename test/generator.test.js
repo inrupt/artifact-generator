@@ -9,7 +9,11 @@ const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 
 const Generator = require('../src/generator');
-const generator = new Generator({ input: [], artifactVersion: '1.0.0' });
+const generator = new Generator({
+  input: [],
+  artifactVersion: '1.0.0',
+  moduleNamePrefix: 'lit-generated-vocab-',
+});
 
 const DatasetHandler = require('../src/dataset-handler');
 
@@ -132,8 +136,8 @@ describe('Artifact generator unit tests', () => {
         Generator.merge([datasetExtension])
       );
       expect(result.namespace).to.equal('http://schema.org/');
-      expect(result.name).to.equal('lit-generated-vocab-schema');
-      expect(result.prefixUpperCase).to.equal('SCHEMA');
+      expect(result.artifactName).to.equal('lit-generated-vocab-schema');
+      expect(result.vocabNameUpperCase).to.equal('SCHEMA');
       expect(result.classes[0].name).to.equal('Person');
       expect(result.classes[0].comment).to.equal('Person dead or alive');
 
@@ -226,8 +230,8 @@ describe('Artifact generator unit tests', () => {
       );
 
       expect(result.namespace).to.equal('');
-      expect(result.name).to.equal('lit-generated-vocab-');
-      expect(result.prefixUpperCase).to.equal('');
+      expect(result.artifactName).to.equal('lit-generated-vocab-');
+      expect(result.vocabNameUpperCase).to.equal('');
       expect(result.classes.length).to.equal(0);
       expect(result.properties.length).to.equal(0);
     });
@@ -263,6 +267,17 @@ describe('Artifact generator unit tests', () => {
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
       expect(result.properties[0].comment).to.equal('Given Name comment in french');
+    });
+
+    it('Should allow the prefix for the name of the module can be configured', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(Generator.merge([dataset]), Generator.merge([]));
+
+      expect(result.artifactName).to.equal('my-company-prefix-schema');
     });
   });
 
@@ -348,9 +363,9 @@ describe('Artifact generator unit tests', () => {
         Generator.merge([owlOntologyDataset])
       );
 
-      expect(result.name).to.equal('lit-generated-vocab-ext-prefix');
+      expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
       expect(result.namespace).to.equal('http://rdf-extension.com');
-      expect(result.prefixUpperCase).to.equal('EXT_PREFIX');
+      expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
       expect(result.description).to.equal('Extension comment');
     });
 
@@ -369,9 +384,9 @@ describe('Artifact generator unit tests', () => {
         Generator.merge([owlOntologyDatasetWithNoComment])
       );
 
-      expect(result.name).to.equal('lit-generated-vocab-ext-prefix');
+      expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
       expect(result.namespace).to.equal('http://rdf-extension.com');
-      expect(result.prefixUpperCase).to.equal('EXT_PREFIX');
+      expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
       expect(result.description).to.equal('');
     });
   });

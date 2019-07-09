@@ -25,6 +25,10 @@ const argv = require('yargs')
     .choices('at', ['nodejs']) // Add to this when other languages are supported.
     .default('at', 'nodejs')
 
+    .alias('mnp', 'moduleNamePrefix')
+    .descibe('mnp', 'A prefix for the name of the output module')
+    .default('mnp', 'lit-generated-vocab-')
+
     .strict()
     .argv
 

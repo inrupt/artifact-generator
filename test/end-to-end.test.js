@@ -43,6 +43,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       const result = await generator.generate();
@@ -64,6 +65,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       const result = await generator.generate();
@@ -85,6 +87,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -106,6 +109,7 @@ describe('Ontology Generator', () => {
         input: ['https://schema.org/Person.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -127,6 +131,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -153,6 +158,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -179,6 +185,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -197,6 +204,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
@@ -211,6 +219,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       let result = await generator.generate();
@@ -224,6 +233,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       result = await generator.generate();
@@ -240,6 +250,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
       });
 
       var result = await generator.generate();
