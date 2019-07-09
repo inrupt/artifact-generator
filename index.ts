@@ -30,29 +30,35 @@ const argv = require('yargs')
   .choices('at', ['nodejs']) // Add to this when other languages are supported.
   .default('at', 'nodejs')
 
+  .alias('mnp', 'moduleNamePrefix')
+  .describe('mnp', 'A prefix for the name of the output module')
+  .default('mnp', 'lit-generated-vocab-')
+
   .strict().argv;
 
 const generator = new Generator(argv);
-generator.generate((data) => {
+generator
+  .generate(data => {
     // Craft questions to present to users
     const questions = [
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Enter artifact name ...',
-            default: data.name,
-        },
-        {
-            type: 'input',
-            name: 'version',
-            message: 'Enter artifact version ...',
-            default: data.version,
-        },
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Enter artifact name ...',
+        default: data.artifactName,
+      },
+      {
+        type: 'input',
+        name: 'version',
+        message: 'Enter artifact version ...',
+        default: data.version,
+      },
     ];
 
     return inquirer.prompt(questions).then(answers => {
-        return new Promise((resolve, reject) => {
-            resolve({ ...data, ...answers });
-        });
+      return new Promise((resolve, reject) => {
+        resolve({ ...data, ...answers });
+      });
     });
-}).catch(error => console.log(`Generation process failed: [${error}]`));
+  })
+  .catch(error => console.log(`Generation process failed: [${error}]`));

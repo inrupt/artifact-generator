@@ -1,10 +1,10 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 
 module.exports = class DatasetHandler {
-  constructor(fullDataset, subjectsOnlyDataset, artifactVersion) {
+  constructor(fullDataset, subjectsOnlyDataset, argv) {
     this.fullDataset = fullDataset;
     this.subjectsOnlyDataset = subjectsOnlyDataset;
-    this.artifactVersion = artifactVersion;
+    this.argv = argv;
   }
 
   handleTerms(quad, namespace) {
@@ -86,12 +86,12 @@ module.exports = class DatasetHandler {
 
     result.namespace = this.findNamespace();
 
-    result.name = this.moduleName();
-    result.prefixUpperCase = this.prefixUpperCase();
+    result.artifactName = this.moduleName();
+    result.vocabNameUpperCase = this.vocabNameUpperCase();
 
     result.description = this.findDescription();
 
-    result.version = this.artifactVersion;
+    result.version = this.argv.artifactVersion;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -146,10 +146,10 @@ module.exports = class DatasetHandler {
   }
 
   moduleName() {
-    return `lit-generated-vocab-${this.findPrefix()}`;
+    return this.argv.moduleNamePrefix + this.findPrefix();
   }
 
-  prefixUpperCase() {
+  vocabNameUpperCase() {
     return this.findPrefix()
       .toUpperCase()
       .replace(/-/g, '_');
