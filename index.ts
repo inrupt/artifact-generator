@@ -2,6 +2,8 @@ const Generator = require('./src/generator');
 
 var inquirer = require('inquirer');
 
+const { execSync } = require('child_process');
+
 const argv = require('yargs')
   .array('i')
   .alias('i', 'input')
@@ -39,6 +41,9 @@ const argv = require('yargs')
 const generator = new Generator(argv);
 generator
   .generate(data => {
+
+
+
     // Craft questions to present to users
     const questions = [
       {
@@ -47,12 +52,13 @@ generator
         message: 'Artifact name ...',
         default: data.artifactName,
       },
-      {
-        type: 'input',
-        name: 'version',
-        message: 'Artifact version ...',
-        default: data.version,
-      },
+      // {
+      //   type: 'expand',
+      //   name: 'version',
+      //   message: `Do you want to increment the artifact version? Current version is: (${data.artifactVersion})`,
+      //   choices: ['patch (1.0.1)', 'minor (1.1.0)', 'major (2.0.0)'],
+      //   default: data.artifactVersion,
+      // },
       {
         type: 'input',
         name: 'author',
@@ -61,10 +67,32 @@ generator
       },
     ];
 
-    return inquirer.prompt(questions).then(answers => {
-      return new Promise((resolve, reject) => {
-        resolve({ ...data, ...answers });
+    return inquirer.prompt(questions).then(answers1 => {
+
+      let currentVersion = execSync(`npm view ${data.artifactName} version`).toString().trim();
+      //console.log("Current version is: " + currentVersion);
+
+      answers1.version = currentVersion;
+
+      return inquirer.prompt([
+        {
+          type: 'list',
+          name: 'bump',
+          message: `Current artifact version in registry is ${currentVersion}. Do you want to bump the version?`,
+          choices: ['patch', 'minor', 'major', 'no']
+
+        }]).then(answers2 => {
+        return new Promise((resolve, reject) => {
+          resolve({ ...data, ...answers1, ...answers2 });
+        });
       });
     });
   })
+    .then(data => {
+      if(data.bump !== 'no') {
+        execSync(`cd generated && npm version ${data.bump}`);
+        execSync(`cd generated && npm publish --registry http://localhost:4873`);
+        //console.log(output)
+      }
+    })
   .catch(error => console.log(`Generation process failed: [${error}]`));

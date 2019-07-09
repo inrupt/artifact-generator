@@ -19,7 +19,10 @@ module.exports = class Generator {
         return inquirerProcess(data);
       })
       .then(mergedData => {
-        artifacts.createArtifacts(this.argv, mergedData);
+        return new Promise(resolve => {
+          artifacts.createArtifacts(this.argv, mergedData);
+          resolve(mergedData);
+         });
       });
   }
 

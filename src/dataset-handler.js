@@ -1,5 +1,5 @@
 const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-common-js');
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
