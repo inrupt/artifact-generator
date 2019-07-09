@@ -1,8 +1,10 @@
 const rdf = require('rdf-ext');
 
+var inquirer = require('inquirer');
+
 const Resources = require('./resources');
-const DatasetHandler = require('./dataset-handler');
 const artifacts = require('./artifacts');
+const DatasetHandler = require('./dataset-handler');
 
 module.exports = class Generator {
   constructor(argv) {
@@ -11,16 +13,22 @@ module.exports = class Generator {
     this.resources = new Resources(argv.input, argv.vocabTermsFrom);
   }
 
-  /**
-   *
-   */
-  generate() {
+  generate(inquirerProcess) {
+    return this.generateData()
+      .then(data => {
+        return inquirerProcess(data);
+      })
+      .then(mergedData => {
+        artifacts.createArtifacts(this.argv, mergedData);
+      });
+  }
+
+  generateData() {
     return new Promise((resolve, reject) => {
       this.resources
         .readResources((fullDatasetsArray, vocabTermsOnlyDataset) => {
           const parsed = this.parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset);
-          artifacts.createArtifacts(this.argv, parsed);
-          resolve('Done!');
+          resolve(parsed);
         })
         .catch(error => {
           const result = `Failed to generate: ${error.toString()}`;

@@ -10,6 +10,12 @@ const del = require('del');
 
 const Generator = require('../src/generator');
 
+const doNothingPromise = data => {
+  return new Promise((resolve, reject) => {
+    resolve(data);
+  });
+}
+
 describe('Ontology Generator', () => {
   const outputDirectory = 'generated';
 
@@ -31,7 +37,7 @@ describe('Ontology Generator', () => {
       });
 
       generator
-        .generate()
+        .generate(doNothingPromise)
         .then(() => {
           throw new Error('Should fail!');
         })
@@ -45,8 +51,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      const result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
@@ -66,8 +71,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      const result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.contains(
@@ -87,8 +91,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
@@ -108,8 +111,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+     await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
 
@@ -129,8 +131,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
@@ -155,8 +156,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.0',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
@@ -181,8 +181,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.5',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
@@ -199,8 +198,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.5',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -213,8 +211,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.5',
       });
 
-      let result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"name": "lit-generated-vocab-schema",'
@@ -226,8 +223,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.5',
       });
 
-      result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"name": "lit-generated-vocab-schema-inrupt-ext",'
@@ -242,8 +238,7 @@ describe('Ontology Generator', () => {
         artifactVersion: '1.0.5',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
