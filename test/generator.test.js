@@ -11,6 +11,8 @@ const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
 const Generator = require('../src/generator');
 const generator = new Generator({ input: [], artifactVersion: '1.0.0' });
 
+const DatasetHandler = require('../src/dataset-handler');
+
 const dataset = rdf
   .dataset()
   .addAll([
@@ -55,7 +57,7 @@ const datasetExtension = rdf
   ]);
 
 const extSubject = rdf.namedNode('http://rdf-extension.com');
-const extDataset = rdf
+const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
@@ -342,14 +344,35 @@ describe('Artifact generator unit tests', () => {
 
     it('should take description from the rdfs:comment of an owl:Ontology term', () => {
       const result = generator.buildTemplateInput(
-        Generator.merge([dataset, extDataset]),
-        Generator.merge([extDataset])
+        Generator.merge([dataset, owlOntologyDataset]),
+        Generator.merge([owlOntologyDataset])
       );
 
       expect(result.name).to.equal('lit-generated-vocab-ext-prefix');
       expect(result.namespace).to.equal('http://rdf-extension.com');
       expect(result.prefixUpperCase).to.equal('EXT_PREFIX');
       expect(result.description).to.equal('Extension comment');
+    });
+
+    it('should default description to empty string if rdfs:comment of an owl:Ontology term is not found', () => {
+      const owlOntologyDatasetWithNoComment = rdf
+        .dataset()
+        .addAll([
+          rdf.quad(extSubject, RDF.type, OWL.Ontology),
+          rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+          rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+          rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
+        ]);
+
+      const result = generator.buildTemplateInput(
+        Generator.merge([dataset, owlOntologyDatasetWithNoComment]),
+        Generator.merge([owlOntologyDatasetWithNoComment])
+      );
+
+      expect(result.name).to.equal('lit-generated-vocab-ext-prefix');
+      expect(result.namespace).to.equal('http://rdf-extension.com');
+      expect(result.prefixUpperCase).to.equal('EXT_PREFIX');
+      expect(result.description).to.equal('');
     });
   });
 });
