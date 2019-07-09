@@ -1,5 +1,5 @@
 {
-  "name": "lit-js",
+  "name": "lit-artifact-generator-js",
   "version": "1.0.0",
   "description": "A simple generator for building ontology artifacts",
   "main": "index.ts",
@@ -9,7 +9,11 @@
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
-  "author": "Jarlath Holleran",
+  "author": "inrupt, Inc.",
+  "contributors": [
+    "Jarlath Holleran (https://github.com/jholleran)",
+    "Pat McBennett (https://github.com/pmcb55)"
+  ],
   "license": "MIT",
   "dependencies": {
     "handlebars": "^4.1.2",
@@ -21,7 +25,7 @@
     "vocab-lit": "^1.0.8",
     "yargs": "^13.2.4",
     "lit-vocab-term": "^1.0.2",
-    "lit-generated-vocab-js": "^1.0.9"
+    "lit-generated-vocab-common-js": "^1.0.10"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -62,5 +66,9 @@
     "all": true,
     "report-dir": "./.nyc_output/alternative"
   },
-  "keywords": []
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:inrupt/lit-artifact-generator-js.git"
+  }
 }
