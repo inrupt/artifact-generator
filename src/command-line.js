@@ -1,11 +1,13 @@
-var inquirer = require('inquirer');
+const inquirer = require('inquirer');
+
+const ChildProcess = require('child_process');
 
 module.exports = class CommandLine {
   constructor(argv) {
     this.argv = argv;
   }
 
-  async askForArtifactInfo(data) {
+  static async askForArtifactInfo(data) {
     // Craft questions to present to users
     const questions = [
       {
@@ -24,28 +26,26 @@ module.exports = class CommandLine {
 
     const artifactInfoAnswers = await inquirer.prompt(questions);
 
-    data = { ...data, ...artifactInfoAnswers }; //Merge the answers in with the data
+    const mergedData = { ...data, ...artifactInfoAnswers }; // Merge the answers in with the data
 
-    findPublishedVersionOfModule(data);
-
-    return data;
+    return CommandLine.findPublishedVersionOfModule(mergedData);
   }
 
-  findPublishedVersionOfModule(data) {
+  static findPublishedVersionOfModule(data) {
+    const cloneData = { ...data };
     try {
-      let publishedVersion = execSync(`npm view ${data.artifactName} version`)
+      const publishedVersion = ChildProcess.execSync(`npm view ${data.artifactName} version`)
         .toString()
         .trim();
-
-      data.publishedVersion = publishedVersion;
-      data.version = publishedVersion;
-      return publishedVersion;
+      cloneData.publishedVersion = publishedVersion;
+      cloneData.version = publishedVersion;
     } catch (error) {
       // Its ok to ignore this. It just means that module has not been published before.
     }
+    return cloneData;
   }
 
-  async askForArtifactVersionBumpType(data) {
+  static async askForArtifactVersionBumpType(data) {
     const bumpQuestion = [
       {
         type: 'list',
@@ -58,11 +58,11 @@ module.exports = class CommandLine {
     const answer = await inquirer.prompt(bumpQuestion);
 
     if (answer.bump && answer.bump !== 'no') {
-      execSync(`cd generated && npm version ${answer.bump}`);
+      ChildProcess.execSync(`cd generated && npm version ${answer.bump}`);
       console.log(`Artifact (${data.artifactName}) version has been updated (${answer.bump}).`);
     }
 
-    return { ...data, ...answer }; //Merge the answers in with the data and return
+    return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
   async askForArtifactToBePublished(data) {
@@ -78,12 +78,12 @@ module.exports = class CommandLine {
     const answer = await inquirer.prompt(publishQuestion);
 
     if (answer.publish) {
-      execSync(`cd generated && npm publish --registry ${this.argv.npmRegistry}`);
+      ChildProcess.execSync(`cd generated && npm publish --registry ${this.argv.npmRegistry}`);
       console.log(
         `Artifact (${data.artifactName}) has been published to ${this.argv.npmRegistry}.`
       );
     }
 
-    return { ...data, ...answer }; //Merge the answers in with the data and return
+    return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 };

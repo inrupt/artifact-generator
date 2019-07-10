@@ -151,7 +151,7 @@ describe('Ontology Generator', () => {
       expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    });
+    }).timeout(5000);
 
     it('should be able to extend an ontology but only create triples from extention URL links', async () => {
       const generator = new Generator({

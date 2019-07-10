@@ -2,8 +2,6 @@ const Generator = require('./src/generator');
 
 const CommandLine = require('./src/commad-line');
 
-const { execSync } = require('child_process');
-
 const argv = require('yargs')
   .array('i')
   .alias('i', 'input')
@@ -50,7 +48,7 @@ function handleError(error) {
 }
 
 generator
-  .generate(commandLine.askForArtifactInfo)
-  .then(commandLine.askForArtifactVersionBumpType)
+  .generate(CommandLine.askForArtifactInfo)
+  .then(CommandLine.askForArtifactVersionBumpType)
   .then(commandLine.askForArtifactToBePublished)
   .catch(handleError);
