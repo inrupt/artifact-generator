@@ -1,6 +1,6 @@
 const Generator = require('./src/generator');
 
-const CommandLine = require('./src/commad-line');
+const CommandLine = require('./src/command-line');
 
 const argv = require('yargs')
   .array('i')
