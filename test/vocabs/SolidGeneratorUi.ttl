@@ -1,0 +1,71 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix dcterms: <http://purl.org/dc/terms#>.
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix ldp: <http://www.w3.org/ns/ldp#>
+prefix schema: <http://schema.org/>
+prefix vann: <http://purl.org/vocab/vann/>
+
+prefix lit_core: <https://w3id.org/lit/vocab/core#>
+
+prefix gen_ui: <https://inrupt.net/vocab/solid-generator-ui#>
+
+
+gen_ui:
+	a owl:Ontology, lit_core:Ontology ;
+	owl:versionInfo "1" ;
+	dcterms:creator "PatMcB" ;
+	dcterms:date "2019/01/01" ;
+ 	rdfs:label "Solid Generator UI" ;
+	rdfs:comment """The Solid Generator UI Vocabulary. The Solid Generator bootstraps Solid applications, and this
+ vocabulary provides terms (e.g. classes and properties) and literals (e.g. informative and error messages).""" ;
+	vann:preferredNamespacePrefix "solid_gen_ui" ;
+	vann:preferredNamespaceUri "https://inrupt.net/vocab/solid-generator-ui#" ;
+	dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+
+
+  #
+  # Generator UI messages...
+  # (NOTE: literals don't *require* labels or comments - it's assumed the definition is sufficiently informative.
+  #
+  gen_ui:msgWelcome a rdfs:Literal ;
+    skos:definition "Welcome"@en ;
+    skos:definition "Bienvenido"@es ;
+    skos:definition "Bienvenue"@fr .
+
+  gen_ui:msgListOfLibraries a rdfs:Literal ;
+    rdfs:comment "This literal is specific React-i18next as it uses <0>, <1> to provide UI positioning."@en ;
+    skos:definition """<0><0><0> Reusable Components </0>that you can use on your own in the applications that you build.
+ </0><1><0>Application Generator</0>  that incorporates all of the components and best practices together for you,
+ standing up THIS fully functional Solid React application. Note: The Solid React application illustrates the use of
+ the components installed by the Generator. It should not be considered as a service provided by inrupt, and is subject
+ to change.</1><1>Best practice patterns that you can reference as examples of how to accomplish particular
+ things.</1></0>"""@en ;
+    skos:definition """<0><0><0> Componentes reutilizables </0>que puedes utilizar en tus propias aplicaciones.</0><1><0>
+Generador de aplicaciones</0>, incorpora todos los componentes y las buenas practicas en una misma aplicacion para el
+ desarrollador. Nota: La aplicaciones Solid React, muestra el uso de los componentes instalados por el generador. No
+ debe ser considerado como un servicio que Inrupt provee, y está sujeto a cambios.</0><0>Patrones de buenas prácticas
+ que puedes referenciar como ejemplos para lograr resolver diferentes situaciones.</1></0>"""@es .
+
+
+  gen_ui:msgTestMessageWithTwoParams a rdfs:Literal ;
+    skos:definition "Some message with 2 params: first [{{0}}] and second [{{1}}]"@en ;
+    skos:definition "Certains messages avec 2 paramètres: le premier [{{0}}] et le deuxième [{{1}}]"@fr ;
+    skos:definition "Algunos mensajes con 2 parámetros: primero [{{0}}] y segundo [{{1}}]"@es .
+
+
+  #
+  # Generator UI Classes and properties...
+  #
+  gen_ui:Page a rdfs:Class ;
+    rdfs:label "Page"@en ;
+    rdfs:label "Página"@es ;
+    rdfs:comment """A page within an application, that may have a Tab, it's content, icons."""@en ;
+    rdfs:comment """Una página dentro de una aplicación, que puede tener una pestaña, su contenido, iconos."""@es .
+
+  gen_ui:hasSmallIcon a rdf:Property ;
+    rdfs:label "Small Icon"@en ;
+    rdfs:comment """A small icon, suitable for display in a Tab, or as a thumbnail perhaps."""@en ;
+    rdfs:comment """Un pequeño icono, adecuado para mostrar en una pestaña, o como una miniatura tal vez."""@es .

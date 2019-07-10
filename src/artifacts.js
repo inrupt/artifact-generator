@@ -8,12 +8,12 @@ function createArtifact(templateFile, outputFile, templateData) {
   const contents = template(templateData);
 
   fs.writeFileSync(outputFile, contents);
-  console.log(`Created artifiact: [${outputFile}]`);
+  console.log(`Created artifact: [${outputFile}]`);
 }
 
 function createArtifacts(argv, templateData) {
   if (!fs.existsSync(argv.outputDirectory)) {
-    fs.mkdirSync(argv.outputDirectory);
+    fs.mkdirSync(argv.outputDirectory, { recursive: true });
   }
 
   createArtifact('templates/template.hbs', `${argv.outputDirectory}/index.ts`, templateData);

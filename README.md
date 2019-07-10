@@ -48,12 +48,17 @@ node index.ts --input  http://schema.org/Person.ttl https://schema.org/Restauran
 
 Specifing a version for the output module
 ```shell
-node index.ts --input "http://www.w3.org/2002/07/owl#" ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
+node index.ts --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
+```
+
+Specifing a custom prefix for the output module name
+```shell
+node index.ts --input ./vocabs/schema.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Using short-form alaises for the command-line flags
 ```shell
-node index.ts --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6
+node index.ts --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
 

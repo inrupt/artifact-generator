@@ -4,7 +4,7 @@ const argv = require('yargs')
     .array('i')
     .alias('i', 'input')
     .describe('i', 'One or more ontology files that will be used to build Vocab Terms from.')
-    .default('i', [])
+    .demandOption('input', 'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).')
 
     .string('o')
     .alias('o', 'outputDirectory')
@@ -24,6 +24,10 @@ const argv = require('yargs')
     .describe('at', 'The artifact type that will be generated.')
     .choices('at', ['nodejs']) // Add to this when other languages are supported.
     .default('at', 'nodejs')
+
+    .alias('mnp', 'moduleNamePrefix')
+    .describe('mnp', 'A prefix for the name of the output module')
+    .default('mnp', 'lit-generated-vocab-')
 
     .strict()
     .argv
