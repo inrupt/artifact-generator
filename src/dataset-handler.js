@@ -86,7 +86,8 @@ module.exports = class DatasetHandler {
     result.properties = properties;
 
     result.namespace = this.findNamespace();
-    result.artifactName = this.moduleName();
+
+    result.artifactName = this.artifactName();
     result.vocabNameUpperCase = this.vocabNameUpperCase();
     result.description = this.findDescription();
     result.version = this.argv.artifactVersion;
@@ -117,7 +118,7 @@ module.exports = class DatasetHandler {
         VANN.preferredNamespaceUri,
         null
       );
-      return DatasetHandler.firstDsValue(ontologyNamespaces);
+      return DatasetHandler.firstDatasetValue(ontologyNamespaces);
     });
 
     if (!namespace) {
@@ -134,7 +135,7 @@ module.exports = class DatasetHandler {
         VANN.preferredNamespacePrefix,
         null
       );
-      return DatasetHandler.firstDsValue(ontologyPrefix);
+      return DatasetHandler.firstDatasetValue(ontologyPrefix);
     });
 
     if (!prefix) {
@@ -144,7 +145,7 @@ module.exports = class DatasetHandler {
     return prefix;
   }
 
-  moduleName() {
+  artifactName() {
     return this.argv.moduleNamePrefix + this.findPrefix();
   }
 
@@ -157,7 +158,7 @@ module.exports = class DatasetHandler {
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
       const onologyCommentDs = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
-      return DatasetHandler.firstDsValue(onologyCommentDs, '');
+      return DatasetHandler.firstDatasetValue(onologyCommentDs, '');
     });
   }
 
@@ -196,11 +197,18 @@ module.exports = class DatasetHandler {
     return [...new Set(termSubjects)];
   }
 
-  static firstDsValue(dataset, defaultRes) {
+  /**
+   * Reads the first object value from the given Dataset.
+   *
+   * @param dataset The input Dataset that will be read.
+   * @param defaultValue A default value if the first term is not found.
+   * @returns {*} The value of the first object value, else return the defaultValue.
+   */
+  static firstDatasetValue(dataset, defaultValue) {
     const first = dataset.toArray().shift();
     if (first) {
       return first.object.value;
     }
-    return defaultRes;
+    return first ? first.object.value : defaultValue;
   }
 };
