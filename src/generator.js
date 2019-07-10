@@ -1,7 +1,5 @@
 const rdf = require('rdf-ext');
 
-var inquirer = require('inquirer');
-
 const Resources = require('./resources');
 const artifacts = require('./artifacts');
 const DatasetHandler = require('./dataset-handler');
