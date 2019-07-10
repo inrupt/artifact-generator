@@ -22,7 +22,7 @@ module.exports = class Generator {
         return new Promise(resolve => {
           artifacts.createArtifacts(this.argv, mergedData);
           resolve(mergedData);
-         });
+        });
       });
   }
 
