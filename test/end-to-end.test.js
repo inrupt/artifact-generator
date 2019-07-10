@@ -177,7 +177,7 @@ describe('Ontology Generator', () => {
       expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    });
+    }).timeout(5000);
 
     it('should take in a version for the output module', async () => {
       const generator = new Generator({

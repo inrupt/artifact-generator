@@ -169,7 +169,7 @@ module.exports = class DatasetHandler {
         rdf.namedNode('http://purl.org/dc/terms/creator'),
         null
       );
-      return DatasetHandler.firstDsValue(onologyAuthorDs, 'lit-js@inrupt.com');
+      return DatasetHandler.firstDatasetValue(onologyAuthorDs, 'lit-js@inrupt.com');
     }, 'lit-js@inrupt.com');
   }
 
@@ -206,9 +206,6 @@ module.exports = class DatasetHandler {
    */
   static firstDatasetValue(dataset, defaultValue) {
     const first = dataset.toArray().shift();
-    if (first) {
-      return first.object.value;
-    }
     return first ? first.object.value : defaultValue;
   }
 };
