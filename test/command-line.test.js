@@ -11,7 +11,11 @@ const childProcess = require('child_process');
 
 const CommandLine = require('../src/command-line');
 
-const defaultInputs = { artifactName: 'lit-generator-vocab-schema-ext', author: 'lit@inrupt.com' };
+const defaultInputs = {
+  artifactName: 'lit-generator-vocab-schema-ext',
+  author: 'lit@inrupt.com',
+  npmRegistry: 'http://localhost:4873/',
+};
 
 describe('Command Line unit tests', () => {
   beforeEach(() => {});
@@ -48,6 +52,15 @@ describe('Command Line unit tests', () => {
       expect(result.version).to.equal('1.1.10');
     });
 
+    it('Should not add to the result if artifact has not been published to the registry', () => {
+      sinon.stub(childProcess, 'execSync').throws();
+
+      const result = CommandLine.findPublishedVersionOfModule(defaultInputs);
+
+      expect(result.publishedVersion).to.equal(undefined);
+      expect(result.version).to.equal(undefined);
+    });
+
     it('Should ask for the artifact version bump type (major, minor, patch)', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
         return { bump: 'patch' };
@@ -56,6 +69,8 @@ describe('Command Line unit tests', () => {
       sinon.stub(childProcess, 'execSync').callsFake(() => {
         return '';
       });
+
+      defaultInputs.publishedVersion = '1.1.10';
 
       const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
 
@@ -72,9 +87,29 @@ describe('Command Line unit tests', () => {
         .expects('execSync')
         .never();
 
+      defaultInputs.publishedVersion = '1.1.10';
+
       const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
 
       expect(result.bump).to.equal('no');
+    });
+
+    it('Should not prompt for artifact version bump type if the module has not been published', async () => {
+      sinon
+        .mock(inquirer)
+        .expects('prompt')
+        .never();
+
+      sinon
+        .mock(childProcess)
+        .expects('execSync')
+        .never();
+
+      defaultInputs.publishedVersion = undefined;
+
+      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
+
+      expect(result.publishedVersion).to.equal(undefined);
     });
 
     it('Should publish artifact to the registry if user confirms yes', async () => {
@@ -86,8 +121,7 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const commandLine = new CommandLine({ npmRegistry: 'http://localhost:4873/' });
-      const result = await commandLine.askForArtifactToBePublished(defaultInputs);
+      const result = await CommandLine.askForArtifactToBePublished(defaultInputs);
 
       expect(result.publish).to.equal(true);
     });
@@ -102,8 +136,7 @@ describe('Command Line unit tests', () => {
         .expects('execSync')
         .never();
 
-      const commandLine = new CommandLine({ npmRegistry: 'http://localhost:4873/' });
-      const result = await commandLine.askForArtifactToBePublished(defaultInputs);
+      const result = await CommandLine.askForArtifactToBePublished(defaultInputs);
 
       expect(result.publish).to.equal(false);
     });

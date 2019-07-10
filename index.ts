@@ -41,14 +41,14 @@ const argv = require('yargs')
   .strict().argv;
 
 const generator = new Generator(argv);
-const commandLine = new CommandLine(argv);
 
 function handleError(error) {
   console.log(`Generation process failed: [${error}]`);
+  console.error(error);
 }
 
 generator
   .generate(CommandLine.askForArtifactInfo)
   .then(CommandLine.askForArtifactVersionBumpType)
-  .then(commandLine.askForArtifactToBePublished)
+  .then(CommandLine.askForArtifactToBePublished)
   .catch(handleError);

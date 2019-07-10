@@ -91,6 +91,7 @@ module.exports = class DatasetHandler {
     result.vocabNameUpperCase = this.vocabNameUpperCase();
     result.description = this.findDescription();
     result.version = this.argv.artifactVersion;
+    result.npmRegistry = this.argv.npmRegistry;
     result.author = this.findAuthor();
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
