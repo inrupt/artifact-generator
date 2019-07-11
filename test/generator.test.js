@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
 
 const Generator = require('../src/generator');
 const generator = new Generator({
@@ -16,6 +16,8 @@ const generator = new Generator({
 });
 
 const DatasetHandler = require('../src/dataset-handler');
+
+const message = rdf.namedNode('http://message.com/hello');
 
 const dataset = rdf
   .dataset()
@@ -39,6 +41,10 @@ const dataset = rdf
       RDFS.comment,
       rdf.literal('A family name is the last name of a person.', 'en')
     ),
+    rdf.quad(message, RDF.type, RDFS.Literal),
+    rdf.quad(message, RDFS.label, rdf.literal('Hello World!', 'en')),
+    rdf.quad(message, RDFS.label, rdf.literal('Hola Mundo!', 'es')),
+    rdf.quad(message, RDFS.label, rdf.literal('Bonjour le monde!', 'fr')),
   ]);
 
 const datasetExtension = rdf
@@ -65,11 +71,7 @@ const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(
-      extSubject,
-      rdf.namedNode('http://purl.org/dc/terms/creator'),
-      rdf.literal('Jarlath Holleran')
-    ),
+    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
     rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
@@ -283,6 +285,32 @@ describe('Artifact generator unit tests', () => {
       const result = generator.buildTemplateInput(Generator.merge([dataset]), Generator.merge([]));
 
       expect(result.artifactName).to.equal('my-company-prefix-schema');
+    });
+
+    it('Should create vocab terms for literals', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(Generator.merge([dataset]), Generator.merge([]));
+
+      var messageLiterals = result.literals[0].labels;
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Hello World!',
+        language: 'en',
+      });
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Hola Mundo!',
+        language: 'es',
+      });
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Bonjour le monde!',
+        language: 'fr',
+      });
     });
   });
 

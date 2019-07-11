@@ -13,6 +13,7 @@ const SUPPORTED_PROPERTIES = [
   OWL.AnnotationProperty,
   OWL.DatatypeProperty,
 ];
+const SUPPORTED_LITERALS = [RDFS.Literal];
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
@@ -91,12 +92,11 @@ module.exports = class DatasetHandler {
   }
 
   buildTemplateInput() {
-    const classes = [];
-    const properties = [];
 
     const result = {};
-    result.classes = classes;
-    result.properties = properties;
+    result.classes = [];
+    result.properties = [];
+    result.literals = [];
 
     result.namespace = this.findNamespace();
 
@@ -115,6 +115,7 @@ module.exports = class DatasetHandler {
     subjectSet.forEach(entry => {
       this.handleClasses(entry, result);
       this.handleProperties(entry, result);
+      this.handleLiterals(entry, result);
     });
 
     return result;
@@ -132,6 +133,14 @@ module.exports = class DatasetHandler {
     SUPPORTED_PROPERTIES.forEach(propertyType => {
       this.fullDataset.match(entry, null, propertyType).forEach(quad => {
         result.properties.push(this.handleTerms(quad, result.namespace));
+      });
+    });
+  }
+
+  handleLiterals(entry, result) {
+    SUPPORTED_LITERALS.forEach(literalType => {
+      this.fullDataset.match(entry, null, literalType).forEach(quad => {
+        result.literals.push(this.handleTerms(quad, result.namespace));
       });
     });
   }

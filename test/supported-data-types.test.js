@@ -19,14 +19,10 @@ const doNothingPromise = data => {
 describe('Supported Data Type', () => {
   const outputDirectory = 'generated';
 
-  beforeEach(() => {
-    (async () => {
-      // const deletedPaths = await del([`${outputDirectory}/*`]);
-      // console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
-    })();
-  });
+  beforeEach(async () => {
+    const deletedPaths = await del([`${outputDirectory}/*`]);
+    console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
 
-  it('should be able to generate vocabs for all the class data types specified in the supported-data-types.ttl', async () => {
     const generator = new Generator({
       input: ['./test/vocabs/supported-data-types.ttl'],
       outputDirectory: outputDirectory,
@@ -35,7 +31,9 @@ describe('Supported Data Type', () => {
     });
 
     await generator.generate(doNothingPromise);
+  });
 
+  it('should be able to generate vocabs for all the supported class data types', async () => {
     var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
     expect(indexOutput).to.contains("class1: new LitVocabTerm(_NS('class1'), undefined, true)");
@@ -54,7 +52,7 @@ describe('Supported Data Type', () => {
     expect(indexOutput).to.not.contains(".addLabel('', 'Not supported class')");
   });
 
-  it('should be able to generate vocabs for all the propert data types specified in the supported-data-types.ttl', () => {
+  it('should be able to generate vocabs for all the supported property data types', () => {
     var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
     expect(indexOutput).to.contains(
@@ -91,5 +89,17 @@ describe('Supported Data Type', () => {
       "property7: new LitVocabTerm(_NS('property7'), undefined, true)"
     );
     expect(indexOutput).to.not.contains(".addLabel('', 'Not supported property')");
+  });
+
+  it('should be able to generate vocabs for all the supported literal data types', async () => {
+    var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+
+    expect(indexOutput).to.contains("literal1: new LitVocabTerm(_NS('literal1'), undefined, true)");
+    expect(indexOutput).to.contains(".addLabel('', 'A rdfs literal')");
+
+    expect(indexOutput).to.not.contains(
+      "literal2: new LitVocabTerm(_NS('literal2'), undefined, true)"
+    );
+    expect(indexOutput).to.not.contains(".addLabel('', 'Not supported literal')");
   });
 });

@@ -81,4 +81,6 @@ lit_gen:literal1 a rdfs:Literal ;
     rdfs:label "A rdfs literal" ;
     rdfs:comment "This is a rdfs literal." .
 
-
+lit_gen:literal2 a rdfs:NotSupportedLiteral ;
+    rdfs:label "Not supported literal" ;
+    rdfs:comment "This literal is not supported." .
