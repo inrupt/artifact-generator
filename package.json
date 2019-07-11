@@ -1,5 +1,5 @@
 {
-  "name": "lit-artifact-generator-js",
+  "name": "@lit/artifact-generator-js",
   "version": "1.0.0",
   "description": "A simple generator for building ontology artifacts",
   "main": "index.ts",
