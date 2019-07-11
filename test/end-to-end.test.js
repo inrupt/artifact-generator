@@ -10,6 +10,12 @@ const del = require('del');
 
 const Generator = require('../src/generator');
 
+const doNothingPromise = data => {
+  return new Promise((resolve, reject) => {
+    resolve(data);
+  });
+};
+
 describe('Ontology Generator', () => {
   const outputDirectory = 'generated';
 
@@ -31,7 +37,7 @@ describe('Ontology Generator', () => {
       });
 
       generator
-        .generate()
+        .generate(doNothingPromise)
         .then(() => {
           throw new Error('Should fail!');
         })
@@ -46,8 +52,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      const result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
@@ -68,8 +73,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      const result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.contains(
@@ -90,8 +94,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
@@ -112,8 +115,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
 
@@ -134,8 +136,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
@@ -150,7 +151,7 @@ describe('Ontology Generator', () => {
       expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    });
+    }).timeout(5000);
 
     it('should be able to extend an ontology but only create triples from extention URL links', async () => {
       const generator = new Generator({
@@ -161,8 +162,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
@@ -177,7 +177,7 @@ describe('Ontology Generator', () => {
       expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    });
+    }).timeout(5000);
 
     it('should take in a version for the output module', async () => {
       const generator = new Generator({
@@ -188,8 +188,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
@@ -207,8 +206,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -222,8 +220,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      let result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"name": "lit-generated-vocab-schema",'
@@ -236,8 +233,7 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"name": "lit-generated-vocab-schema-inrupt-ext",'
@@ -253,12 +249,27 @@ describe('Ontology Generator', () => {
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
-      var result = await generator.generate();
-      expect(result).to.equal('Done!');
+      await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
         '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
           'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
+      );
+    });
+
+    it('should add a author inside the package.json', async () => {
+      const generator = new Generator({
+        input: ['./test/vocabs/schema.ttl'],
+        outputDirectory: outputDirectory,
+        vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
+        artifactVersion: '1.0.5',
+        moduleNamePrefix: 'lit-generated-vocab-',
+      });
+
+      await generator.generate(doNothingPromise);
+
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
+        '"author": "Jarlath Holleran"'
       );
     });
   });

@@ -2,7 +2,7 @@ const rdf = require('rdf-ext');
 const rdfFetch = require('rdf-fetch-lite');
 const N3Parser = require('rdf-parser-n3');
 
-const { LitUtils } = require('lit-vocab-term');
+const { LitUtils } = require('@lit/vocab-term');
 
 const formats = {
   parsers: new rdf.Parsers({

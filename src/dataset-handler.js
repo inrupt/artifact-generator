@@ -1,4 +1,7 @@
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('lit-generated-vocab-js');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
+const { LitUtils } = require('@lit/vocab-term');
+
+const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
@@ -88,10 +91,10 @@ module.exports = class DatasetHandler {
 
     result.artifactName = this.artifactName();
     result.vocabNameUpperCase = this.vocabNameUpperCase();
-
     result.description = this.findDescription();
-
     result.version = this.argv.artifactVersion;
+    result.npmRegistry = this.argv.npmRegistry;
+    result.author = this.findAuthor();
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -118,7 +121,7 @@ module.exports = class DatasetHandler {
         VANN.preferredNamespaceUri,
         null
       );
-      return DatasetHandler.firstDatasetValue(ontologyNamespaces);
+      return LitUtils.firstDatasetValue(ontologyNamespaces);
     });
 
     if (!namespace) {
@@ -130,12 +133,12 @@ module.exports = class DatasetHandler {
 
   findPrefix() {
     let prefix = this.findOwlOntology(owlOntologyTerms => {
-      const ontologyPrefix = this.fullDataset.match(
+      const ontologyPrefixes = this.fullDataset.match(
         owlOntologyTerms.subject,
         VANN.preferredNamespacePrefix,
         null
       );
-      return DatasetHandler.firstDatasetValue(ontologyPrefix);
+      return LitUtils.firstDatasetValue(ontologyPrefixes);
     });
 
     if (!prefix) {
@@ -157,12 +160,23 @@ module.exports = class DatasetHandler {
 
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
-      const onologyCommentDs = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
-      return DatasetHandler.firstDatasetValue(onologyCommentDs, '');
+      const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
+      return LitUtils.firstDatasetValue(onologyComments, '');
     });
   }
 
-  findOwlOntology(callback) {
+  findAuthor() {
+    return this.findOwlOntology(owlOntologyTerms => {
+      const onologyAuthors = this.fullDataset.match(
+        owlOntologyTerms.subject,
+        DCTERMS.creator,
+        null
+      );
+      return LitUtils.firstDatasetValue(onologyAuthors, DEFAULT_AUTHOR);
+    }, DEFAULT_AUTHOR);
+  }
+
+  findOwlOntology(callback, defaultResult) {
     const owlOntologyTerms = this.fullDataset
       .match(null, RDF.type, OWL.Ontology)
       .toArray()
@@ -170,7 +184,7 @@ module.exports = class DatasetHandler {
     if (owlOntologyTerms) {
       return callback(owlOntologyTerms);
     }
-    return ''; // Default to return empty string
+    return defaultResult || ''; // Default to return empty string
   }
 
   static subjectsOnly(dataset) {
@@ -184,20 +198,5 @@ module.exports = class DatasetHandler {
     });
 
     return [...new Set(termSubjects)];
-  }
-
-  /**
-   * Reads the first object value from the given Dataset.
-   *
-   * @param dataset The input Dataset that will be read.
-   * @param defaultValue A default value if the first term is not found.
-   * @returns {*} The value of the first object value, else return the defaultValue.
-   */
-  static firstDatasetValue(dataset, defaultValue) {
-    const first = dataset.toArray().shift();
-    if (first) {
-      return first.object.value;
-    }
-    return first ? first.object.value : defaultValue;
   }
 };
