@@ -97,8 +97,13 @@ describe('Supported Data Type', () => {
     expect(indexOutput).to.contains("literal1: new LitVocabTerm(_NS('literal1'), undefined, true)");
     expect(indexOutput).to.contains(".addLabel('', 'A rdfs literal')");
 
+    expect(indexOutput).to.contains("literal2: new LitVocabTerm(_NS('literal2'), undefined, true)");
+    expect(indexOutput).to.contains(".addLiteral('en', `Welcome`)");
+    expect(indexOutput).to.contains(".addLiteral('es', `Bienvenido`)");
+    expect(indexOutput).to.contains(".addLiteral('fr', `Bienvenue`)");
+
     expect(indexOutput).to.not.contains(
-      "literal2: new LitVocabTerm(_NS('literal2'), undefined, true)"
+      "literal3: new LitVocabTerm(_NS('literal3'), undefined, true)"
     );
     expect(indexOutput).to.not.contains(".addLabel('', 'Not supported literal')");
   });

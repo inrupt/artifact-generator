@@ -71,6 +71,9 @@ const {{vocabNameUpperCase}} = {
     {{#each comments}}
       .addComment('{{language}}', `{{value}}`){{#if @last}},{{/if}}
     {{/each}}
+    {{#each definitions}}
+      .addLiteral('{{language}}', `{{value}}`){{#if @last}},{{/if}}
+    {{/each}}
     {{/each}}
 {{/if}}
   //

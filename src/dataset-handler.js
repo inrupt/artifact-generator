@@ -1,3 +1,4 @@
+const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
@@ -14,6 +15,9 @@ const SUPPORTED_PROPERTIES = [
   OWL.DatatypeProperty,
 ];
 const SUPPORTED_LITERALS = [RDFS.Literal];
+
+const SKOS = {};
+SKOS.DEFINITION = rdf.namedNode('http://www.w3.org/2004/02/skos/core#definition');
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
@@ -51,12 +55,22 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(comments, subQuad);
     });
 
+    const definitions = [];
+
+    this.subjectsOnlyDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+      DatasetHandler.add(definitions, subQuad);
+    });
+
+    this.fullDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+      DatasetHandler.add(definitions, subQuad);
+    });
+
     const fullName = quad.subject.value;
     const name = fullName.split(namespace)[1];
 
     const comment = DatasetHandler.getComment(comments);
 
-    return { name, comment, labels, comments };
+    return { name, comment, labels, comments, definitions };
   }
 
   static add(array, quad) {
@@ -92,7 +106,6 @@ module.exports = class DatasetHandler {
   }
 
   buildTemplateInput() {
-
     const result = {};
     result.classes = [];
     result.properties = [];
