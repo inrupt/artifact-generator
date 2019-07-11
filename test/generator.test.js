@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('@lit/generated-vocab-common-js');
+const { RDF, RDFS, SCHEMA, OWL, VANN } = require('@lit/generated-vocab-common');
 
 const Generator = require('../src/generator');
 const generator = new Generator({

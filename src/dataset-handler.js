@@ -1,5 +1,4 @@
-const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('@lit/generated-vocab-common-js');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
@@ -170,7 +169,7 @@ module.exports = class DatasetHandler {
     return this.findOwlOntology(owlOntologyTerms => {
       const onologyAuthors = this.fullDataset.match(
         owlOntologyTerms.subject,
-        rdf.namedNode('http://purl.org/dc/terms/creator'),
+        DCTERMS.creator,
         null
       );
       return LitUtils.firstDatasetValue(onologyAuthors, DEFAULT_AUTHOR);
