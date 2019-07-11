@@ -3,6 +3,17 @@ const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SCHEMA.PaymentStatusType];
+const SUPPORTED_PROPERTIES = [
+  RDF.Property,
+  RDFS.Datatype,
+  OWL.ObjectProperty,
+  OWL.NamedIndividual,
+  OWL.AnnotationProperty,
+  OWL.AnnotationProperty,
+  OWL.DatatypeProperty,
+];
+
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
     this.fullDataset = fullDataset;
@@ -102,43 +113,27 @@ module.exports = class DatasetHandler {
     }
 
     subjectSet.forEach(entry => {
-      this.fullDataset.match(entry, null, RDFS.Class).forEach(quad => {
-        classes.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, OWL.Class).forEach(quad => {
-        classes.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, SCHEMA.PaymentStatusType).forEach(quad => {
-        classes.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, RDF.Property).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, RDFS.Datatype).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, OWL.ObjectProperty).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, OWL.NamedIndividual).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, OWL.AnnotationProperty).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
-      this.fullDataset.match(entry, null, OWL.DatatypeProperty).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
+      this.handleClasses(entry, result);
+      this.handleProperties(entry, result);
     });
 
     return result;
+  }
+
+  handleClasses(entry, result) {
+    SUPPORTED_CLASSES.forEach(classType => {
+      this.fullDataset.match(entry, null, classType).forEach(quad => {
+        result.classes.push(this.handleTerms(quad, result.namespace));
+      });
+    });
+  }
+
+  handleProperties(entry, result) {
+    SUPPORTED_PROPERTIES.forEach(propertyType => {
+      this.fullDataset.match(entry, null, propertyType).forEach(quad => {
+        result.properties.push(this.handleTerms(quad, result.namespace));
+      });
+    });
   }
 
   findNamespace() {

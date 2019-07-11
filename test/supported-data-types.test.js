@@ -23,18 +23,19 @@ describe('Supported Data Type', () => {
     (async () => {
       // const deletedPaths = await del([`${outputDirectory}/*`]);
       // console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
-      const generator = new Generator({
-        input: ['./test/vocabs/supported-data-types.ttl'],
-        outputDirectory: outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
-      });
-
-      await generator.generate(doNothingPromise);
     })();
   });
 
-  it('should be able to generate vocabs for all the class data types specified in the supported-data-types.ttl', () => {
+  it('should be able to generate vocabs for all the class data types specified in the supported-data-types.ttl', async () => {
+    const generator = new Generator({
+      input: ['./test/vocabs/supported-data-types.ttl'],
+      outputDirectory: outputDirectory,
+      artifactVersion: '1.0.0',
+      moduleNamePrefix: 'lit-generated-vocab-',
+    });
+
+    await generator.generate(doNothingPromise);
+
     var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
 
     expect(indexOutput).to.contains("class1: new LitVocabTerm(_NS('class1'), undefined, true)");
