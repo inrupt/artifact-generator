@@ -32,7 +32,7 @@ const argv = require('yargs')
 
   .alias('mnp', 'moduleNamePrefix')
   .describe('mnp', 'A prefix for the name of the output module')
-  .default('mnp', 'lit-generated-vocab-')
+  .default('mnp', '@lit/generated-vocab-')
 
   .alias('nr', 'npmRegistry')
   .describe('nr', 'The NPM Registry where artifacts will be published')

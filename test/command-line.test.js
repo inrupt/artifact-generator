@@ -12,7 +12,7 @@ const childProcess = require('child_process');
 const CommandLine = require('../src/command-line');
 
 const defaultInputs = {
-  artifactName: 'lit-generator-vocab-schema-ext',
+  artifactName: '@lit/generator-vocab-schema-ext',
   author: 'lit@inrupt.com',
   npmRegistry: 'http://localhost:4873/',
 };
