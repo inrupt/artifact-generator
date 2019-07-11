@@ -106,7 +106,34 @@ module.exports = class DatasetHandler {
         classes.push(this.handleTerms(quad, result.namespace));
       });
 
+      this.fullDataset.match(entry, null, OWL.Class).forEach(quad => {
+        classes.push(this.handleTerms(quad, result.namespace));
+      });
+
+      this.fullDataset.match(entry, null, SCHEMA.PaymentStatusType).forEach(quad => {
+        classes.push(this.handleTerms(quad, result.namespace));
+      });
+
       this.fullDataset.match(entry, null, RDF.Property).forEach(quad => {
+        properties.push(this.handleTerms(quad, result.namespace));
+      });
+
+      this.fullDataset.match(entry, null, RDFS.Datatype).forEach(quad => {
+        properties.push(this.handleTerms(quad, result.namespace));
+      });
+
+      this.fullDataset.match(entry, null, OWL.ObjectProperty).forEach(quad => {
+        properties.push(this.handleTerms(quad, result.namespace));
+      });
+
+      this.fullDataset.match(entry, null, OWL.NamedIndividual).forEach(quad => {
+        properties.push(this.handleTerms(quad, result.namespace));
+      });
+
+      this.fullDataset.match(entry, null, OWL.AnnotationProperty).forEach(quad => {
+        properties.push(this.handleTerms(quad, result.namespace));
+      });
+      this.fullDataset.match(entry, null, OWL.DatatypeProperty).forEach(quad => {
         properties.push(this.handleTerms(quad, result.namespace));
       });
     });
