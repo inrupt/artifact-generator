@@ -36,7 +36,8 @@ const SCHEMA_INRUPT_EXT = {
       .addComment('fr', `Une personne (vivante, morte, mort-vivant ou fictive).`)
       .addComment('de', `Eine Person (lebendig, tot, untot oder fiktiv).`)
       .addComment('es', `Una persona (viva, muerta, no muerta o ficticia).`)
-      .addComment('it', `Una persona (viva, morta, non morta o immaginaria).`),
+      .addComment('it', `Una persona (viva, morta, non morta o immaginaria).`)
+,
 
     // *******************
     // All the Properties.
@@ -57,7 +58,8 @@ const SCHEMA_INRUPT_EXT = {
       .addComment('fr', `Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name.`)
       .addComment('de', `Vorname. In den USA der Vorname einer Person. Dies kann zusammen mit familyName anstelle der Eigenschaft name verwendet werden.`)
       .addComment('es', `Nombre de pila. En los EE. UU., El primer nombre de una persona. Esto se puede usar junto con familyName en lugar de la propiedad name.`)
-      .addComment('it', `Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name.`),
+      .addComment('it', `Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name.`)
+,
 
     /**
     * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
@@ -74,14 +76,16 @@ const SCHEMA_INRUPT_EXT = {
       .addComment('fr', `Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name.`)
       .addComment('de', `Nachname. In den USA der Nachname einer Person. Dies kann zusammen mit givenName anstelle der Eigenschaft name verwendet werden.`)
       .addComment('es', `Apellido. En los EE.UU., el apellido de una persona. Esto se puede usar junto con givenName en lugar de la propiedad name.`)
-      .addComment('it', `Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name.`),
+      .addComment('it', `Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name.`)
+,
 
     /**
     * The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.
     */
     addressCountry: new LitVocabTerm(_NS('addressCountry'), undefined, true)
       .addLabel('', 'addressCountry')
-      .addComment('', `The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.`),
+      .addComment('', `The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.`)
+,
 
     /**
     * An additional name for a Person, can be used for a middle name.
@@ -97,13 +101,15 @@ const SCHEMA_INRUPT_EXT = {
       .addComment('fr', `Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom.`)
       .addComment('de', `Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden.`)
       .addComment('es', `Un nombre adicional para una persona, se puede utilizar para un segundo nombre.`)
-      .addComment('it', `Un nome aggiuntivo per una persona può essere usato per un secondo nome.`),
+      .addComment('it', `Un nome aggiuntivo per una persona può essere usato per un secondo nome.`)
+,
 
     /**
     * 
     */
     newTerm: new LitVocabTerm(_NS('newTerm'), undefined, true)
       .addLabel('', 'newTerm')
+,
 
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).

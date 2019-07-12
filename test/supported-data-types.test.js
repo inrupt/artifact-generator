@@ -42,8 +42,8 @@ describe('Supported Data Type', () => {
     expect(indexOutput).to.contains("class2: new LitVocabTerm(_NS('class2'), undefined, true)");
     expect(indexOutput).to.contains(".addLabel('', 'An owl class')");
 
-    // expect(indexOutput).to.contains("class3: new LitVocabTerm(_NS('class3'), undefined, true)");
-    // expect(indexOutput).to.contains(".addLabel('', 'A skos concept class')");
+    expect(indexOutput).to.contains("class3: new LitVocabTerm(_NS('class3'), undefined, true)");
+    expect(indexOutput).to.contains(".addLabel('', 'A skos concept class')");
 
     expect(indexOutput).to.contains("class4: new LitVocabTerm(_NS('class4'), undefined, true)");
     expect(indexOutput).to.contains(".addLabel('', 'A schema payment status type class')");

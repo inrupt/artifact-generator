@@ -1,10 +1,9 @@
-const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
-const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SCHEMA.PaymentStatusType];
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA.PaymentStatusType];
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
   RDFS.Datatype,
@@ -15,9 +14,6 @@ const SUPPORTED_PROPERTIES = [
   OWL.DatatypeProperty,
 ];
 const SUPPORTED_LITERALS = [RDFS.Literal];
-
-const SKOS = {};
-SKOS.DEFINITION = rdf.namedNode('http://www.w3.org/2004/02/skos/core#definition');
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
@@ -57,11 +53,11 @@ module.exports = class DatasetHandler {
 
     const definitions = [];
 
-    this.subjectsOnlyDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+    this.subjectsOnlyDataset.match(quad.subject, SKOS.definition, null).forEach(subQuad => {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    this.fullDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+    this.fullDataset.match(quad.subject, SKOS.definition, null).forEach(subQuad => {
       DatasetHandler.add(definitions, subQuad);
     });
 
