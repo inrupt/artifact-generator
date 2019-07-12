@@ -1,5 +1,3 @@
-// const rdf = require('rdf-ext')
-
 const { LitVocabTerm } = require('lit-vocab-term')
 
 /**

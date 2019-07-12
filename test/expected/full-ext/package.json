@@ -2,10 +2,10 @@
   "name": "lit-generated-vocab-schema-inrupt-ext",
   "version": "1.0.0",
   "description": "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
-  "main": "index.ts",
+  "main": "index.js",
   "author": "Jarlath Holleran",
   "license": "MIT",
   "dependencies": {
-    "lit-vocab-term": "^1.0.2"
+    "@lit/vocab-term": "^1.0.8"
   }
 }
