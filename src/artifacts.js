@@ -16,7 +16,7 @@ function createArtifacts(argv, templateData) {
     fs.mkdirSync(argv.outputDirectory, { recursive: true });
   }
 
-  createArtifact('templates/template.hbs', `${argv.outputDirectory}/index.ts`, templateData);
+  createArtifact('templates/template.hbs', `${argv.outputDirectory}/index.js`, templateData);
   createArtifact('templates/package.hbs', `${argv.outputDirectory}/package.json`, templateData);
 }
 

@@ -54,9 +54,9 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
-        fs.readFileSync('test/expected/single/index.ts').toString()
+      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectory}/index.js`).toString()).to.equal(
+        fs.readFileSync('test/expected/single/index.js').toString()
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -75,8 +75,8 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.contains(
+      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectory}/index.js`).toString()).to.contains(
         "Person: new LitVocabTerm(_NS('Person'), undefined, true)"
       );
 
@@ -96,9 +96,9 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/index.ts`).toString()).to.equal(
-        fs.readFileSync('test/expected/full-ext/index.ts').toString()
+      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectory}/index.js`).toString()).to.equal(
+        fs.readFileSync('test/expected/full-ext/index.js').toString()
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -117,9 +117,9 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
 
-      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains("address: new LitVocabTerm(_NS('address')");
@@ -138,7 +138,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains(".addLabel('en', 'Person')");
@@ -164,7 +164,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains(".addLabel('en', 'Person')");
@@ -208,7 +208,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate(doNothingPromise);
 
-      expect(fs.existsSync(`${outputDirectory}/index.ts`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
     });
 

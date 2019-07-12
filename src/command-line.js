@@ -47,7 +47,7 @@ module.exports = class CommandLine {
         {
           type: 'list',
           name: 'bump',
-          message: `Current artifact version in registry is ${data.publishedVersion}. Do you want to bump the version?`,
+          message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
           choices: ['patch', 'minor', 'major', 'no'],
         },
       ];
@@ -55,8 +55,8 @@ module.exports = class CommandLine {
       const answer = await inquirer.prompt(bumpQuestion);
 
       if (answer.bump && answer.bump !== 'no') {
-        ChildProcess.execSync(`cd generated && npm version ${answer.bump}`);
-        console.log(`Artifact (${data.artifactName}) version has been updated (${answer.bump}).`);
+        ChildProcess.execSync(`cd ${data.outputDirectory} && npm version ${answer.bump}`);
+        console.log(`Artifact [${data.artifactName}] version has been updated [${answer.bump}].`);
       }
 
       return { ...data, ...answer }; // Merge the answers in with the data and return
@@ -69,7 +69,7 @@ module.exports = class CommandLine {
       {
         type: 'confirm',
         name: 'publish',
-        message: `Do you want to publish ${data.artifactName} to the registry ${data.npmRegistry}?`,
+        message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
         default: false,
       },
     ];
@@ -77,8 +77,10 @@ module.exports = class CommandLine {
     const answer = await inquirer.prompt(publishQuestion);
 
     if (answer.publish) {
-      ChildProcess.execSync(`cd generated && npm publish --registry ${data.npmRegistry}`);
-      console.log(`Artifact (${data.artifactName}) has been published to ${data.npmRegistry}.`);
+      ChildProcess.execSync(
+        `cd ${data.outputDirectory} && npm publish --registry [${data.npmRegistry}]`
+      );
+      console.log(`Artifact (${data.artifactName}) has been published to [${data.npmRegistry}].`);
     }
 
     return { ...data, ...answer }; // Merge the answers in with the data and return
