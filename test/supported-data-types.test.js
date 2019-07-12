@@ -34,7 +34,7 @@ describe('Supported Data Type', () => {
   });
 
   it('should be able to generate vocabs for all the supported class data types', async () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).to.contains("class1: new LitVocabTerm(_NS('class1'), undefined, true)");
     expect(indexOutput).to.contains(".addLabel('', 'A rdfs class')");
@@ -53,7 +53,7 @@ describe('Supported Data Type', () => {
   });
 
   it('should be able to generate vocabs for all the supported property data types', () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).to.contains(
       "property1: new LitVocabTerm(_NS('property1'), undefined, true)"
@@ -92,7 +92,7 @@ describe('Supported Data Type', () => {
   });
 
   it('should be able to generate vocabs for all the supported literal data types', async () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.ts`).toString();
+    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).to.contains("literal1: new LitVocabTerm(_NS('literal1'), undefined, true)");
     expect(indexOutput).to.contains(".addLabel('', 'A rdfs literal')");

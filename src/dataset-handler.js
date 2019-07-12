@@ -114,6 +114,7 @@ module.exports = class DatasetHandler {
     result.description = this.findDescription();
     result.version = this.argv.artifactVersion;
     result.npmRegistry = this.argv.npmRegistry;
+    result.outputDirectory = this.argv.outputDirectory;
     result.author = this.findAuthor();
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
