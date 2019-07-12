@@ -1,7 +1,23 @@
+const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
+
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SCHEMA.PaymentStatusType];
+const SUPPORTED_PROPERTIES = [
+  RDF.Property,
+  RDFS.Datatype,
+  OWL.ObjectProperty,
+  OWL.NamedIndividual,
+  OWL.AnnotationProperty,
+  OWL.AnnotationProperty,
+  OWL.DatatypeProperty,
+];
+const SUPPORTED_LITERALS = [RDFS.Literal];
+
+const SKOS = {};
+SKOS.DEFINITION = rdf.namedNode('http://www.w3.org/2004/02/skos/core#definition');
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, argv) {
@@ -39,12 +55,22 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(comments, subQuad);
     });
 
+    const definitions = [];
+
+    this.subjectsOnlyDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+      DatasetHandler.add(definitions, subQuad);
+    });
+
+    this.fullDataset.match(quad.subject, SKOS.DEFINITION, null).forEach(subQuad => {
+      DatasetHandler.add(definitions, subQuad);
+    });
+
     const fullName = quad.subject.value;
     const name = fullName.split(namespace)[1];
 
     const comment = DatasetHandler.getComment(comments);
 
-    return { name, comment, labels, comments };
+    return { name, comment, labels, comments, definitions };
   }
 
   static add(array, quad) {
@@ -80,12 +106,10 @@ module.exports = class DatasetHandler {
   }
 
   buildTemplateInput() {
-    const classes = [];
-    const properties = [];
-
     const result = {};
-    result.classes = classes;
-    result.properties = properties;
+    result.classes = [];
+    result.properties = [];
+    result.literals = [];
 
     result.namespace = this.findNamespace();
 
@@ -102,16 +126,36 @@ module.exports = class DatasetHandler {
     }
 
     subjectSet.forEach(entry => {
-      this.fullDataset.match(entry, null, RDFS.Class).forEach(quad => {
-        classes.push(this.handleTerms(quad, result.namespace));
-      });
-
-      this.fullDataset.match(entry, null, RDF.Property).forEach(quad => {
-        properties.push(this.handleTerms(quad, result.namespace));
-      });
+      this.handleClasses(entry, result);
+      this.handleProperties(entry, result);
+      this.handleLiterals(entry, result);
     });
 
     return result;
+  }
+
+  handleClasses(entry, result) {
+    SUPPORTED_CLASSES.forEach(classType => {
+      this.fullDataset.match(entry, null, classType).forEach(quad => {
+        result.classes.push(this.handleTerms(quad, result.namespace));
+      });
+    });
+  }
+
+  handleProperties(entry, result) {
+    SUPPORTED_PROPERTIES.forEach(propertyType => {
+      this.fullDataset.match(entry, null, propertyType).forEach(quad => {
+        result.properties.push(this.handleTerms(quad, result.namespace));
+      });
+    });
+  }
+
+  handleLiterals(entry, result) {
+    SUPPORTED_LITERALS.forEach(literalType => {
+      this.fullDataset.match(entry, null, literalType).forEach(quad => {
+        result.literals.push(this.handleTerms(quad, result.namespace));
+      });
+    });
   }
 
   findNamespace() {

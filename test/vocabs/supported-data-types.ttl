@@ -1,0 +1,91 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix schema: <http://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix lit_core: <https://w3id.org/lit/vocab/core#>
+prefix lit_gen: <https://w3id.org/lit/vocab/code-generation#>
+prefix schema-inrupt-ext: <http://inrupt.com/>
+
+
+schema-inrupt-ext:
+    a owl:Ontology, lit_core:Ontology ;
+    owl:versionInfo "1" ;
+    dcterms:creator "Jarlath Holleran" ;
+    dcterms:date "2019/06/18" ;
+    rdfs:label "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
+    rdfs:comment "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
+    vann:preferredNamespacePrefix "lit_gen" ;
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/code-generation#" ;
+    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+
+########### The Classes ###########
+
+lit_gen:class1 a rdfs:Class ;
+    rdfs:label "A rdfs class" ;
+    rdfs:comment "This is a rdfs class." .
+
+lit_gen:class2 a owl:Class ;
+    rdfs:label "An owl class" ;
+    rdfs:comment "This is an owl class." .
+
+lit_gen:class3 a skos:Concept ;
+    rdfs:label "A skos concept class" ;
+    rdfs:comment "This is a skos concept class." .
+
+lit_gen:class4 a schema:PaymentStatusType ;
+        rdfs:label "A schema payment status type class" ;
+        rdfs:comment "This is a schema payment status type class." .
+
+lit_gen:class4 a schema:NotSupportedClass ;
+        rdfs:label "Not supported class" ;
+        rdfs:comment "This class is not supported." .
+
+########### The Properties ###########
+
+lit_gen:property1 a rdf:Property ;
+    rdfs:label "A rdf property" ;
+    rdfs:comment "This is a rdf property." .
+
+
+lit_gen:property2 a rdfs:Datatype ;
+    rdfs:label "A rdfs data type property" ;
+    rdfs:comment "This is a data type property." .
+
+lit_gen:property3 a owl:ObjectProperty ;
+    rdfs:label "An owl object property" ;
+    rdfs:comment "This is an owl object property." .
+
+
+lit_gen:property4 a owl:NamedIndividual ;
+    rdfs:label "An owl named individual property" ;
+    rdfs:comment "This is an owl named individual property." .
+
+lit_gen:property5 a owl:AnnotationProperty ;
+    rdfs:label "An owl annotation property" ;
+    rdfs:comment "This is an owl annotation property." .
+
+lit_gen:property6 a owl:DatatypeProperty ;
+   rdfs:label "An owl datatype property" ;
+   rdfs:comment "This is an owl datatype property." .
+
+lit_gen:property7 a owl:NotSupportedProperty ;
+   rdfs:label "Not supported property" ;
+   rdfs:comment "This property is not supported." .
+
+########### The Literals ###########
+
+lit_gen:literal1 a rdfs:Literal ;
+    rdfs:label "A rdfs literal" ;
+    rdfs:comment "This is a rdfs literal." .
+
+lit_gen:literal2 a rdfs:Literal ;
+    skos:definition "Welcome"@en ;
+    skos:definition "Bienvenido"@es ;
+    skos:definition "Bienvenue"@fr .
+
+lit_gen:literal3 a rdfs:NotSupportedLiteral ;
+    rdfs:label "Not supported literal" ;
+    rdfs:comment "This literal is not supported." .

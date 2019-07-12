@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA, OWL, VANN } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
 
 const Generator = require('../src/generator');
 const generator = new Generator({
@@ -65,11 +65,7 @@ const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(
-      extSubject,
-      rdf.namedNode('http://purl.org/dc/terms/creator'),
-      rdf.literal('Jarlath Holleran')
-    ),
+    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
     rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
@@ -126,6 +122,24 @@ const overrideAtlNameTerms = rdf
     rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Alt Person')),
     rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Alt Given Name')),
     rdf.quad(SCHEMA.familyName, SCHEMA.alternateName, rdf.literal('Alt Family Name'), 'en'),
+  ]);
+
+const message = rdf.namedNode('http://message.com/hello');
+const SKOS = {};
+SKOS.DEFINITION = rdf.namedNode('http://www.w3.org/2004/02/skos/core#definition'); // TODO This needs to be taken from common vocab (its not in there yet!)
+const literalDataset = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(message, RDF.type, RDFS.Literal),
+    rdf.quad(message, RDFS.label, rdf.literal('Hello', 'en')),
+    rdf.quad(message, RDFS.label, rdf.literal('Hola', 'es')),
+    rdf.quad(message, RDFS.label, rdf.literal('Bonjour', 'fr')),
+    rdf.quad(message, RDFS.comment, rdf.literal('Hello there', 'en')),
+    rdf.quad(message, RDFS.comment, rdf.literal('Hola', 'es')),
+    rdf.quad(message, RDFS.comment, rdf.literal('Bonjour', 'fr')),
+    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Welcome', 'en')),
+    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Bienvenido', 'es')),
+    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Bienvenue', 'fr')),
   ]);
 
 describe('Artifact generator unit tests', () => {
@@ -284,6 +298,93 @@ describe('Artifact generator unit tests', () => {
 
       expect(result.artifactName).to.equal('my-company-prefix-schema');
     });
+
+    it('Should create label vocab terms for literals', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(
+        Generator.merge([literalDataset]),
+        Generator.merge([])
+      );
+
+      var messageLiterals = result.literals[0].labels;
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Hello',
+        language: 'en',
+      });
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Hola',
+        language: 'es',
+      });
+
+      expect(messageLiterals).to.deep.include({
+        value: 'Bonjour',
+        language: 'fr',
+      });
+    });
+
+    it('Should create comments vocab terms for literals', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(
+        Generator.merge([literalDataset]),
+        Generator.merge([])
+      );
+
+      var messageComments = result.literals[0].comments;
+
+      expect(messageComments).to.deep.include({
+        value: 'Hello there',
+        language: 'en',
+      });
+
+      expect(messageComments).to.deep.include({
+        value: 'Hola',
+        language: 'es',
+      });
+
+      expect(messageComments).to.deep.include({
+        value: 'Bonjour',
+        language: 'fr',
+      });
+    });
+
+    it('Should create defination vocab terms for literals', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(
+        Generator.merge([literalDataset]),
+        Generator.merge([])
+      );
+
+      var messageDefinitions = result.literals[0].definitions;
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Welcome',
+        language: 'en',
+      });
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Bienvenido',
+        language: 'es',
+      });
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Bienvenue',
+        language: 'fr',
+      });
+    });
   });
 
   describe('Vocab terms from extention dataset', () => {
@@ -360,6 +461,35 @@ describe('Artifact generator unit tests', () => {
       expect(familyName.name).to.equal('familyName');
       expect(familyName.labels.length).to.equal(1);
       expect(familyName.labels[0].value).to.equal('Alt Family Name');
+    });
+
+    it('Should create defination vocab terms for literals from extentions', () => {
+      const generator = new Generator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(
+        Generator.merge([dataset, literalDataset]),
+        Generator.merge([literalDataset])
+      );
+
+      var messageDefinitions = result.literals[0].definitions;
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Welcome',
+        language: 'en',
+      });
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Bienvenido',
+        language: 'es',
+      });
+
+      expect(messageDefinitions).to.deep.include({
+        value: 'Bienvenue',
+        language: 'fr',
+      });
     });
 
     it('should take description from the rdfs:comment of an owl:Ontology term', () => {
