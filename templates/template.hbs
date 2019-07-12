@@ -27,12 +27,12 @@ const {{vocabNameUpperCase}} = {
     * {{comment}}
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), undefined, true)
-    {{#each labels}}
+{{#each labels}}
       .addLabel('{{language}}', '{{value}}')
-    {{/each}}
-    {{#each comments}}
-      .addComment('{{language}}', `{{value}}`){{#if @last}},{{/if}}
-    {{/each}}
+{{/each}}
+{{#each comments}}
+      .addComment('{{language}}', `{{value}}`)
+{{/each}},
     {{/each}}
 {{/if}}
 
@@ -46,12 +46,12 @@ const {{vocabNameUpperCase}} = {
     * {{comment}}
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), undefined, true)
-    {{#each labels}}
+{{#each labels}}
       .addLabel('{{language}}', '{{value}}')
-    {{/each}}
-    {{#each comments}}
-      .addComment('{{language}}', `{{value}}`){{#if @last}},{{/if}}
-    {{/each}}
+{{/each}}
+{{#each comments}}
+      .addComment('{{language}}', `{{value}}`)
+{{/each}},
     {{/each}}
 {{/if}}
 
@@ -65,15 +65,15 @@ const {{vocabNameUpperCase}} = {
     * {{comment}}
     */
     {{name}}: new LitVocabTerm(_NS('{{name}}'), undefined, true)
-    {{#each labels}}
+{{#each labels}}
       .addLabel('{{language}}', '{{value}}')
-    {{/each}}
-    {{#each comments}}
-      .addComment('{{language}}', `{{value}}`){{#if @last}},{{/if}}
-    {{/each}}
-    {{#each definitions}}
-      .addLiteral('{{language}}', `{{value}}`){{#if @last}},{{/if}}
-    {{/each}}
+{{/each}}
+{{#each comments}}
+      .addComment('{{language}}', `{{value}}`)
+{{/each}}
+{{#each definitions}}
+      .addLiteral('{{language}}', `{{value}}`)
+{{/each}},
     {{/each}}
 {{/if}}
   //

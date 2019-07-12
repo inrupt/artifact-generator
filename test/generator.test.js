@@ -6,7 +6,7 @@ const expect = chai.expect;
 
 const rdf = require('rdf-ext');
 
-const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 
 const Generator = require('../src/generator');
 const generator = new Generator({
@@ -125,8 +125,7 @@ const overrideAtlNameTerms = rdf
   ]);
 
 const message = rdf.namedNode('http://message.com/hello');
-const SKOS = {};
-SKOS.DEFINITION = rdf.namedNode('http://www.w3.org/2004/02/skos/core#definition'); // TODO This needs to be taken from common vocab (its not in there yet!)
+
 const literalDataset = rdf
   .dataset()
   .addAll([
@@ -137,9 +136,9 @@ const literalDataset = rdf
     rdf.quad(message, RDFS.comment, rdf.literal('Hello there', 'en')),
     rdf.quad(message, RDFS.comment, rdf.literal('Hola', 'es')),
     rdf.quad(message, RDFS.comment, rdf.literal('Bonjour', 'fr')),
-    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Welcome', 'en')),
-    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Bienvenido', 'es')),
-    rdf.quad(message, SKOS.DEFINITION, rdf.literal('Bienvenue', 'fr')),
+    rdf.quad(message, SKOS.definition, rdf.literal('Welcome', 'en')),
+    rdf.quad(message, SKOS.definition, rdf.literal('Bienvenido', 'es')),
+    rdf.quad(message, SKOS.definition, rdf.literal('Bienvenue', 'fr')),
   ]);
 
 describe('Artifact generator unit tests', () => {
