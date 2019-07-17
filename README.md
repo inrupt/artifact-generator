@@ -66,6 +66,14 @@ Using short-form alaises for the command-line flags:
 node index.ts --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
+Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
+
+*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-vocab-term` to pick up that local copy.
+```shell
+node index.ts --i ./vocabs/schema.ttl --litVocabTermVersion ^1.0.10
+```
+
+
 For help run:
 ```shell
 node index.ts --help
