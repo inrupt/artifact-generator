@@ -186,11 +186,17 @@ module.exports = class DatasetHandler {
       const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
       prefix = first.substring(first.lastIndexOf('//') + 2, first.lastIndexOf('.'));
     }
+
     return prefix;
   }
 
   artifactName() {
-    return this.argv.moduleNamePrefix + this.findPrefix();
+    return (
+      this.argv.moduleNamePrefix +
+      this.findPrefix()
+        .toLowerCase()
+        .replace(/_/g, '-')
+    );
   }
 
   vocabNameUpperCase() {
@@ -202,8 +208,24 @@ module.exports = class DatasetHandler {
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
       const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
-      return LitUtils.firstDatasetValue(onologyComments, '');
+
+      // Escape this description so that we can use it in the 'package.json' file.
+      return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
     });
+  }
+
+  /**
+   * Simple utility function that encodes the specified value for use within JSON (e.g. escapes newline characters).
+   * NOTE: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
+   * quotes!
+   *
+   * @param value The value to escape
+   * @returns {string} The escaped string
+   */
+  static escapeStringForJson(value) {
+    // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
+    const escaped = JSON.stringify(value);
+    return escaped.substr(1, escaped.length - 2);
   }
 
   findAuthor() {

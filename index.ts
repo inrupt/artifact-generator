@@ -36,7 +36,7 @@ const argv = require('yargs')
 
   .alias('nr', 'npmRegistry')
   .describe('nr', 'The NPM Registry where artifacts will be published')
-  .default('nr', 'https://verdaccio.inrupt.com')
+  // .default('nr', 'https://verdaccio.inrupt.com')
 
   .strict().argv;
 

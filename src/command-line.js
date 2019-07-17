@@ -61,6 +61,7 @@ module.exports = class CommandLine {
 
       return { ...data, ...answer }; // Merge the answers in with the data and return
     }
+
     return data;
   }
 

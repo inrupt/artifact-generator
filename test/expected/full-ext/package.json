@@ -6,6 +6,6 @@
   "author": "Jarlath Holleran",
   "license": "MIT",
   "dependencies": {
-    "@lit/vocab-term": "^1.0.8"
+    "@lit/vocab-term": "^1.0.10"
   }
 }
