@@ -4,13 +4,19 @@ const ChildProcess = require('child_process');
 
 module.exports = class CommandLine {
   static async askForArtifactInfo(data) {
-    // Craft questions to present to users
+    // Craft questions to present to users.
     const questions = [
       {
         type: 'input',
         name: 'artifactName',
         message: 'Artifact name ...',
         default: data.artifactName,
+      },
+      {
+        type: 'input',
+        name: 'litVersion',
+        message: 'Version string for LIT Vocab Term dependency ...',
+        default: data.litVersion,
       },
       {
         type: 'input',
@@ -81,9 +87,20 @@ module.exports = class CommandLine {
       ChildProcess.execSync(
         `cd ${data.outputDirectory} && npm publish --registry [${data.npmRegistry}]`
       );
-      console.log(`Artifact (${data.artifactName}) has been published to [${data.npmRegistry}].`);
+      console.log(`Artifact [${data.artifactName}] has been published to [${data.npmRegistry}].`);
     }
 
     return { ...data, ...answer }; // Merge the answers in with the data and return
+  }
+
+  static runNpmInstall(data) {
+    // ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
+    ChildProcess.execSync(`cd ${data.outputDirectory}`);
+
+    console.log(
+      `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
+    );
+
+    return { ...data, ...{ ranNpmInstall: true } }; // Merge the answers in with the data and return
   }
 };
