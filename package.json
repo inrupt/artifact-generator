@@ -19,7 +19,7 @@
     "global-npm": "^0.3.0",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
-    "@lit/generated-vocab-common": "^1.2.4",
+    "@lit/generated-vocab-common": "^1.2.8",
     "@lit/vocab-term": "^1.0.8",
     "npm": "^6.10.0",
     "rdf-ext": "^1.2.2",

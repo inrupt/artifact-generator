@@ -13,7 +13,7 @@ const argv = require('yargs')
   .string('litVocabTermVersion')
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
-  .default('^1.0.10')
+  .default('litVocabTermVersion', '^1.0.10')
 
   .string('o')
   .alias('o', 'outputDirectory')

@@ -14,9 +14,9 @@ module.exports = class CommandLine {
       },
       {
         type: 'input',
-        name: 'litVersion',
+        name: 'litVocabTermVersion',
         message: 'Version string for LIT Vocab Term dependency ...',
-        default: data.litVersion,
+        default: data.litVocabTermVersion,
       },
       {
         type: 'input',

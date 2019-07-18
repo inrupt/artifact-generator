@@ -34,7 +34,7 @@ describe('Ontology Generator', () => {
         input: [errorFilename],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
       });
 
       generator
@@ -50,7 +50,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
@@ -72,7 +72,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -94,7 +94,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
@@ -116,7 +116,7 @@ describe('Ontology Generator', () => {
         input: ['https://schema.org/Person.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -138,7 +138,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -165,7 +165,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -192,7 +192,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -211,7 +211,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -226,7 +226,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -240,7 +240,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -257,7 +257,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
@@ -275,7 +275,7 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        litVersion: '^1.0.10',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
 
