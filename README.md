@@ -12,7 +12,7 @@ It also allows aspects of vocab terms (e.g. a term's rdfs:label, or rdfs:comment
 npm install
 ```
 
-# How to Run
+# How to run
 
 ```shell
 node index.ts --input <ontology files> --subjects <subjects only ontology file> --mversion <version number>
@@ -20,7 +20,7 @@ node index.ts --input <ontology files> --subjects <subjects only ontology file> 
 
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'input' flag. This module is located inside the **./generated** folder by default.
 
-### Examles:
+## Examples
 
 Here are some examples of running the tool:
 
