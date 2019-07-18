@@ -16,17 +16,16 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@lit/generated-vocab-common": "github:inrupt/lit-generated-vocab-common-js",
+    "@lit/vocab-term": "github:inrupt/lit-vocab-term-js",
     "global-npm": "^0.3.0",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
-    "@lit/generated-vocab-common": "^1.2.4",
-    "@lit/vocab-term": "^1.0.8",
     "npm": "^6.10.0",
     "rdf-ext": "^1.2.2",
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",
     "rdf-parser-n3": "^1.1.1",
-    "vocab-lit": "^1.0.8",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
