@@ -15,7 +15,7 @@ npm install
 # How to run
 
 ```shell
-node index.ts --input <ontology files> --subjects <subjects only ontology file> --mversion <version number>
+node index.js --input <ontology files> --subjects <subjects only ontology file> --mversion <version number>
 ```
 
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'input' flag. This module is located inside the **./generated** folder by default.
@@ -27,56 +27,56 @@ Here are some examples of running the tool:
 Local ontology file
 
 ```shell
-node index.ts --input ./vocabs/schema.ttl
+node index.js --input ./vocabs/schema.ttl
 ```
 
 Multiple local ontology files:
 
 ```shell
-node index.ts --input ./vocabs/schema.ttl ./vocabs/schema-inrupt-ext.ttl
+node index.js --input ./vocabs/schema.ttl ./vocabs/schema-inrupt-ext.ttl
 ```
 
 Generate vocab terms from only a specified vocabulary (here we provide the full Schema.org vocab as input, but we only want generated constants from the terms mentioned in the 'schema-inrupt-ext.ttl' vocab):
 ```shell
-node index.ts --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+node index.js --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ```
 
 Providing IRI's for remote vocabularies:
 ```shell
-node index.ts --input  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
+node index.js --input  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
 Specifing a version for the output module:
 ```shell
-node index.ts --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
+node index.js --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
 ```
 
 Specifing a custom prefix for the output module name:
 ```shell
-node index.ts --input ./vocabs/schema.ttl --moduleNamePrefix my-company-prefix-
+node index.js --input ./vocabs/schema.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Specifing a custom npm registry for where the output module will be published:
 ```shell
-node index.ts --input ./vocabs/schema.ttl --npmRegistry http://my.company.registry/npm/
+node index.js --input ./vocabs/schema.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
 Using short-form alaises for the command-line flags:
 ```shell
-node index.ts --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
+node index.js --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
 Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
 *NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-vocab-term` to pick up that local copy.
 ```shell
-node index.ts --i ./vocabs/schema.ttl --litVocabTermVersion ^1.0.10
+node index.js --i ./vocabs/schema.ttl --litVocabTermVersion ^1.0.10
 ```
 
 
 For help run:
 ```shell
-node index.ts --help
+node index.js --help
 ```
 
 # How to build and deploy the module to an npm registry
@@ -94,10 +94,10 @@ When you run the tool you will be prompted with questions that will quide you th
 
 Here is an example of what this will look like on the output:
 ```shell
-[lit-artifact-generator-js]$ node index.ts --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+[lit-artifact-generator-js]$ node index.js --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ? Artifact name ... @lit/generated-vocab-schema-inrupt-ext
 ? Artifact author ... Jarlath Holleran
-Created artifact: [./generated/index.ts]
+Created artifact: [./generated/index.js]
 Created artifact: [./generated/package.json]
 ? Current artifact version in registry is 1.0.1. Do you want to bump the version? patch
 Artifact (@lit/generated-vocab-schema-inrupt-ext) version has been updated (patch).
@@ -106,7 +106,7 @@ npm notice
 npm notice 📦  @lit/generated-vocab-schema-inrupt-ext@1.0.2
 npm notice === Tarball Contents === 
 npm notice 423B   package.json
-npm notice 20.8kB index.ts    
+npm notice 20.8kB index.js    
 npm notice === Tarball Details === 
 npm notice name:          @lit/generated-vocab-schema-inrupt-ext  
 npm notice version:       1.0.2                                   
