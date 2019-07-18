@@ -140,5 +140,15 @@ describe('Command Line unit tests', () => {
 
       expect(result.publish).to.equal(false);
     });
+
+    it('Should run npm install', () => {
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
+
+      const result = CommandLine.runNpmInstall(defaultInputs);
+
+      expect(result.ranNpmInstall).to.be.true;
+    });
   });
 });

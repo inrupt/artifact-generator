@@ -34,6 +34,7 @@ describe('Ontology Generator', () => {
         input: [errorFilename],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
       });
 
       generator
@@ -49,6 +50,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
@@ -70,19 +72,20 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
 
       expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/index.js`).toString()).to.contains(
-        "Person: new LitVocabTerm(_NS('Person'), undefined, true)"
+        "Person: new LitVocabTerm(_NS('Person'), localStorage, true)"
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
-        '"name": "lit-generated-vocab-schema"'
+        '"name": "@lit/generated-vocab-schema"'
       );
     }).timeout(5000);
 
@@ -91,6 +94,7 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: 'lit-generated-vocab-',
       });
 
@@ -112,7 +116,8 @@ describe('Ontology Generator', () => {
         input: ['https://schema.org/Person.ttl', './test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -133,7 +138,8 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -159,7 +165,8 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -185,7 +192,8 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -203,7 +211,8 @@ describe('Ontology Generator', () => {
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -212,31 +221,33 @@ describe('Ontology Generator', () => {
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
     });
 
-    it('module names should by default start with lit-generated-vocab-*', async () => {
+    it('module names should by default start with @lit/generated-vocab-*', async () => {
       let generator = new Generator({
         input: ['./test/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
-        '"name": "lit-generated-vocab-schema",'
+        '"name": "@lit/generated-vocab-schema",'
       );
 
       generator = new Generator({
         input: ['./test/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
 
       expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contains(
-        '"name": "lit-generated-vocab-schema-inrupt-ext",'
+        '"name": "@lit/generated-vocab-schema-inrupt-ext",'
       );
     });
 
@@ -246,7 +257,8 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
@@ -263,7 +275,8 @@ describe('Ontology Generator', () => {
         outputDirectory: outputDirectory,
         vocabTermsFrom: './test/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
       });
 
       await generator.generate(doNothingPromise);
