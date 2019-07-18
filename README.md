@@ -9,6 +9,7 @@ It also allows aspects of vocab terms (e.g. a term's rdfs:label, or rdfs:comment
 # How to build
 
 ```shell
+npm set registry https://verdaccio.inrupt.com
 npm install
 ```
 
