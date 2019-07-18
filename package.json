@@ -2,10 +2,10 @@
   "name": "@lit/artifact-generator",
   "version": "1.0.0",
   "description": "A simple generator for building ontology artifacts",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
-    "start": "node index.ts",
+    "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"src/**/*.js\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
@@ -26,7 +26,6 @@
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",
     "rdf-parser-n3": "^1.1.1",
-    "vocab-lit": "^1.0.8",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
