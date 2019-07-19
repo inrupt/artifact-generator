@@ -10,15 +10,13 @@ const argv = require('yargs')
     'input',
     'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
   )
-  .string('litVocabTermVersion')
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
   .default('litVocabTermVersion', '^1.0.10')
 
-  .string('o')
-  .alias('o', 'outputDirectory')
-  .describe('o', 'The output directory for the generated artifact.')
-  .default('o', './generated')
+  .alias('outputDirectory', 'o')
+  .describe('outputDirectory', 'The output directory for the generated artifact.')
+  .default('outputDirectory', './generated')
 
   .boolean('install')
   .alias('install', 'in')
@@ -33,7 +31,6 @@ const argv = require('yargs')
   .describe('publish', 'If set, will attempt to publish to the configured NPM registry.')
   .default('publish', false)
 
-  .string('bumpVersion')
   .alias('bumpVersion', 'b')
   .describe(
     'bumpVersion',
@@ -49,11 +46,9 @@ const argv = require('yargs')
   )
   .default('noprompt', false)
 
-  .string('vtf')
-  .alias('vtf', 'vocabTermsFrom')
-  .describe('vtf', 'Generates Vocab Terms from only the specified ontology file.')
+  .alias('vocabTermsFrom', 'vtf')
+  .describe('vocabTermsFrom', 'Generates Vocab Terms from only the specified ontology file.')
 
-  .string('artifactVersion')
   .alias('artifactVersion', 'av')
   .describe('artifactVersion', 'The version of the Node module that will be generated.')
   .default('artifactVersion', '1.0.1')
@@ -63,13 +58,13 @@ const argv = require('yargs')
   .choices('artifactType', ['nodejs']) // Add to this when other languages are supported.
   .default('artifactType', 'nodejs')
 
-  .alias('mnp', 'moduleNamePrefix')
-  .describe('mnp', 'A prefix for the name of the output module')
-  .default('mnp', '@lit/generated-vocab-')
+  .alias('moduleNamePrefix', 'mnp')
+  .describe('moduleNamePrefix', 'A prefix for the name of the output module')
+  .default('moduleNamePrefix', '@lit/generated-vocab-')
 
-  .alias('nr', 'npmRegistry')
-  .describe('nr', 'The NPM Registry where artifacts will be published')
-  .default('nr', 'https://verdaccio.inrupt.com')
+  .alias('npmRegistry', 'nr')
+  .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
+  .default('npmRegistry', 'https://verdaccio.inrupt.com')
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')

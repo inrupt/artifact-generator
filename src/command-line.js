@@ -22,7 +22,7 @@ module.exports = class CommandLine {
     if (!data.litVocabTermVersion) {
       questions.push({
         type: 'input',
-        name: 'litVersion',
+        name: 'litVocabTermVersion',
         message: 'Version string for LIT Vocab Term dependency ...',
         default: data.litVocabTermVersion,
       });
@@ -58,6 +58,9 @@ module.exports = class CommandLine {
           `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`
         );
       } catch (error) {
+        console.log(
+          `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}]: ${error}`
+        );
         // Its ok to ignore this. It just means that the module hasn't been published before.
       }
     }
@@ -93,32 +96,6 @@ module.exports = class CommandLine {
     return data;
   }
 
-  static async askForArtifactToBePublished(data) {
-    if (data.publish && data.npmRegistry) {
-      return { ...data, ...CommandLine.runNpmPublish(data) }; // Merge the answers in with the data and return
-    }
-
-    let answer = {};
-    if (!data.noprompt && data.npmRegistry) {
-      const publishQuestion = [
-        {
-          type: 'confirm',
-          name: 'publish',
-          message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-          default: false,
-        },
-      ];
-
-      answer = await inquirer.prompt(publishQuestion);
-
-      if (answer.publish) {
-        answer = { ...answer, ...CommandLine.runNpmPublish(data) };
-      }
-    }
-
-    return { ...data, ...answer }; // Merge the answers in with the data and return
-  }
-
   static async askForArtifactToBeInstalled(data) {
     if (data.install) {
       return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
@@ -145,6 +122,32 @@ module.exports = class CommandLine {
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
+  static async askForArtifactToBePublished(data) {
+    if (data.publish && data.npmRegistry) {
+      return { ...data, ...CommandLine.runNpmPublish(data) }; // Merge the answers in with the data and return
+    }
+
+    let answer = {};
+    if (!data.noprompt && data.npmRegistry) {
+      const publishQuestion = [
+        {
+          type: 'confirm',
+          name: 'publish',
+          message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
+          default: false,
+        },
+      ];
+
+      answer = await inquirer.prompt(publishQuestion);
+
+      if (answer.publish) {
+        answer = { ...answer, ...CommandLine.runNpmPublish(data) };
+      }
+    }
+
+    return { ...data, ...answer }; // Merge the answers in with the data and return
+  }
+
   static runNpmInstall(data) {
     console.log(
       `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
@@ -156,7 +159,7 @@ module.exports = class CommandLine {
       `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
-    return { ...data, ...{ ranNpmInstall: true } }; // Merge the answers in with the data and return
+    return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
   }
 
   static runNpmVersion(data) {
@@ -164,13 +167,15 @@ module.exports = class CommandLine {
       `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
     );
 
-    ChildProcess.execSync(`cd ${data.outputDirectory} && npm version ${data.bumpVersion}`);
+    const newVersion = ChildProcess.execSync(
+      `cd ${data.outputDirectory} && npm version ${data.bumpVersion}`
+    );
 
     console.log(
       `Ran 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
-    return { ...data, ...{ ranNpmInstall: true } }; // Merge the answers in with the data and return
+    return { ...data, ranNpmVersion: true, bumpedVersion: newVersion }; // Merge the answers in with the data and return
   }
 
   static runNpmPublish(data) {
