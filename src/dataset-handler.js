@@ -117,6 +117,10 @@ module.exports = class DatasetHandler {
     result.npmRegistry = this.argv.npmRegistry;
     result.outputDirectory = this.argv.outputDirectory;
     result.author = this.findAuthor();
+    result.install = this.argv.install;
+    result.publish = this.argv.publish;
+    result.bumpVersion = this.argv.bumpVersion;
+    result.noprompt = this.argv.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {

@@ -23,6 +23,35 @@ const argv = require('yargs')
   .describe('o', 'The output directory for the generated artifact.')
   .default('o', './generated')
 
+  .boolean('install')
+  .alias('install', 'in')
+  .describe(
+    'install',
+    'If set, will attempt to NPM install the generated artifact from within the output directory.'
+  )
+  .default('install', false)
+
+  .boolean('publish')
+  .alias('publish', 'p')
+  .describe('publish', 'If set, will attempt to publish to the configured NPM registry.')
+  .default('publish', false)
+
+  .string('bumpVersion')
+  .alias('bumpVersion', 'b')
+  .describe(
+    'bumpVersion',
+    'Bump up the semantic version of the artifact from the currently published version.'
+  )
+  .choices('bumpVersion', ['patch', 'minor', 'major'])
+
+  .boolean('noprompt')
+  .alias('noprompt', 'np')
+  .describe(
+    'noprompt',
+    'If set, will not ask any interactive questions and will attempt to perform artifact generation automatically.'
+  )
+  .default('noprompt', false)
+
   .string('vtf')
   .alias('vtf', 'vocabTermsFrom')
   .describe('vtf', 'Generates Vocab Terms from only the specified ontology file.')
@@ -45,6 +74,8 @@ const argv = require('yargs')
   .describe('nr', 'The NPM Registry where artifacts will be published')
   // .default('nr', 'https://verdaccio.inrupt.com')
 
+  // Can't provide an explicit version, and then also request a version bump!
+  .conflicts('artifactVersion', 'bumpVersion')
   .strict().argv;
 
 const generator = new Generator(argv);
@@ -57,5 +88,6 @@ function handleError(error) {
 generator
   .generate(CommandLine.askForArtifactInfo)
   .then(CommandLine.askForArtifactVersionBumpType)
+  .then(CommandLine.askForArtifactToBeInstalled)
   .then(CommandLine.askForArtifactToBePublished)
   .catch(handleError);

@@ -28,7 +28,7 @@ describe('Ontology Generator', () => {
 
   describe('Builds node modules artifacts', () => {
     it('should fail if no ontology file', async () => {
-      const errorFilename = './test/vocabs/does.not.exist.ttl';
+     const errorFilename = './test/vocabs/does.not.exist.ttl';
 
       const generator = new Generator({
         input: [errorFilename],
@@ -43,6 +43,24 @@ describe('Ontology Generator', () => {
           throw new Error('Should fail!');
         })
         .catch(error => expect(error).to.contain('Failed', errorFilename));
+    });
+
+    it('should fail if ontology file invalid', async () => {
+      const errorFilename = './test/vocabs/invalid-turtle.ttl';
+
+      const generator = new Generator({
+        input: [errorFilename],
+        outputDirectory: outputDirectory,
+      });
+
+      generator
+        .generate(doNothingPromise)
+        .then(() => {
+          throw new Error('Should fail!');
+        })
+        .catch(error => {
+          expect(error).to.contain('Failed', errorFilename)
+        });
     });
 
     it('should create from an ontology file', async () => {

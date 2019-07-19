@@ -21,7 +21,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('LIT vocabs', async () => {
     generateVocabArtifact(
       ['SHOULD BE RDF, RDFS, Schema.org, etc.'],
-      '../../../../Vocab/LIT/GeneratedSourceCodeArtifacts/Javascript',
+      '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
       '1.0.0',
       '^1.0.0'
     );

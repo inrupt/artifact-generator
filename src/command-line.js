@@ -4,27 +4,38 @@ const ChildProcess = require('child_process');
 
 module.exports = class CommandLine {
   static async askForArtifactInfo(data) {
+    if (data.noprompt) {
+      return CommandLine.findPublishedVersionOfModule(data);
+    }
+
     // Craft questions to present to users.
-    const questions = [
-      {
+    const questions = [];
+
+    if (!data.moduleNamePrefix)
+      questions.push({
         type: 'input',
         name: 'artifactName',
         message: 'Artifact name ...',
         default: data.artifactName,
-      },
-      {
+      });
+
+    if (!data.litVersion) {
+      questions.push({
         type: 'input',
         name: 'litVersion',
         message: 'Version string for LIT Vocab Term dependency ...',
         default: data.litVersion,
-      },
-      {
+      });
+    }
+
+    if (!data.author) {
+      questions.push({
         type: 'input',
         name: 'author',
         message: 'Artifact author ...',
         default: data.author,
-      },
-    ];
+      });
+    }
 
     const artifactInfoAnswers = await inquirer.prompt(questions);
 
@@ -35,34 +46,45 @@ module.exports = class CommandLine {
 
   static findPublishedVersionOfModule(data) {
     const cloneData = { ...data };
-    try {
-      const publishedVersion = ChildProcess.execSync(`npm view ${data.artifactName} version`)
-        .toString()
-        .trim();
-      cloneData.publishedVersion = publishedVersion;
-      cloneData.version = publishedVersion;
-    } catch (error) {
-      // Its ok to ignore this. It just means that module has not been published before.
+    if (data.publish) {
+      try {
+        const publishedVersion = ChildProcess.execSync(`npm view ${data.artifactName} version`)
+          .toString()
+          .trim();
+        cloneData.publishedVersion = publishedVersion;
+        cloneData.version = publishedVersion;
+
+        console.log(
+          `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`
+        );
+      } catch (error) {
+        // Its ok to ignore this. It just means that the module hasn't been published before.
+      }
     }
+
     return cloneData;
   }
 
   static async askForArtifactVersionBumpType(data) {
-    if (data.publishedVersion) {
+    if (data.bumpVersion && data.publishedVersion) {
+      return { ...data, ...CommandLine.runNpmVersion(data) }; // Merge the answers in with the data and return
+    }
+
+    if (!data.noprompt && data.publishedVersion) {
       const bumpQuestion = [
         {
           type: 'list',
-          name: 'bump',
+          name: 'bumpVersion',
           message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
           choices: ['patch', 'minor', 'major', 'no'],
+          default: data.bumpVersion,
         },
       ];
 
-      const answer = await inquirer.prompt(bumpQuestion);
+      let answer = await inquirer.prompt(bumpQuestion);
 
-      if (answer.bump && answer.bump !== 'no') {
-        ChildProcess.execSync(`cd ${data.outputDirectory} && npm version ${answer.bump}`);
-        console.log(`Artifact [${data.artifactName}] version has been updated [${answer.bump}].`);
+      if (answer.bumpVersion && answer.bumpVersion !== 'no') {
+        answer = { ...answer, ...CommandLine.runNpmVersion(data) };
       }
 
       return { ...data, ...answer }; // Merge the answers in with the data and return
@@ -72,35 +94,98 @@ module.exports = class CommandLine {
   }
 
   static async askForArtifactToBePublished(data) {
-    const publishQuestion = [
-      {
-        type: 'confirm',
-        name: 'publish',
-        message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-        default: false,
-      },
-    ];
+    if (data.publish && data.npmRegistry) {
+      return { ...data, ...CommandLine.runNpmPublish(data) }; // Merge the answers in with the data and return
+    }
 
-    const answer = await inquirer.prompt(publishQuestion);
+    let answer = {};
+    if (!data.noprompt && data.npmRegistry) {
+      const publishQuestion = [
+        {
+          type: 'confirm',
+          name: 'publish',
+          message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
+          default: false,
+        },
+      ];
 
-    if (answer.publish) {
-      ChildProcess.execSync(
-        `cd ${data.outputDirectory} && npm publish --registry [${data.npmRegistry}]`
-      );
-      console.log(`Artifact [${data.artifactName}] has been published to [${data.npmRegistry}].`);
+      answer = await inquirer.prompt(publishQuestion);
+
+      if (answer.publish) {
+        answer = { ...answer, ...CommandLine.runNpmPublish(data) };
+      }
+    }
+
+    return { ...data, ...answer }; // Merge the answers in with the data and return
+  }
+
+  static async askForArtifactToBeInstalled(data) {
+    if (data.install) {
+      return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
+    }
+
+    let answer;
+    if (!data.noprompt) {
+      const publishQuestion = [
+        {
+          type: 'confirm',
+          name: 'install',
+          message: `Do you want to NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
+          default: true,
+        },
+      ];
+
+      answer = await inquirer.prompt(publishQuestion);
+
+      if (answer.install) {
+        answer = { ...answer, ...CommandLine.runNpmInstall(data) };
+      }
     }
 
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
   static runNpmInstall(data) {
-    // ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
-    ChildProcess.execSync(`cd ${data.outputDirectory}`);
+    console.log(
+      `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+    );
+    ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
+    // ChildProcess.execSync(`cd ${data.outputDirectory}`);
 
     console.log(
       `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
     return { ...data, ...{ ranNpmInstall: true } }; // Merge the answers in with the data and return
+  }
+
+  static runNpmVersion(data) {
+    console.log(
+      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+    );
+
+    ChildProcess.execSync(`cd ${data.outputDirectory} && npm version ${data.bumpVersion}`);
+
+    console.log(
+      `Ran 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
+    );
+
+    return { ...data, ...{ ranNpmInstall: true } }; // Merge the answers in with the data and return
+  }
+
+  static runNpmPublish(data) {
+    console.log(
+      `Running 'npm publish' for artifact [${data.artifactName}] to registry [${data.npmRegistry}]...`
+    );
+
+    ChildProcess.execSync(
+      `cd ${data.outputDirectory} && npm publish --registry ${data.npmRegistry}`
+    );
+
+    console.log(
+      `Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`
+    );
+
+    return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
 };
