@@ -19,12 +19,12 @@ module.exports = class CommandLine {
         default: data.artifactName,
       });
 
-    if (!data.litVersion) {
+    if (!data.litVocabTermVersion) {
       questions.push({
         type: 'input',
         name: 'litVersion',
         message: 'Version string for LIT Vocab Term dependency ...',
-        default: data.litVersion,
+        default: data.litVocabTermVersion,
       });
     }
 
