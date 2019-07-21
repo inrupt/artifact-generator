@@ -61,6 +61,29 @@ describe('Ontology Generator', () => {
         });
     });
 
+    it('should fail if ontology file has term from different namespace', async () => {
+      const errorFilename = './test/vocabs/mismatched-namespaces.ttl';
+
+      const generator = new Generator({
+        input: [errorFilename],
+        outputDirectory: outputDirectory,
+      });
+
+      generator
+        .generate(doNothingPromise)
+        .then(() => {
+          throw new Error('Should fail!');
+        })
+        .catch(error => {
+          expect(error).to.contain(
+            'sampleTerm',
+            'https://inrupt.net/vocab/different-IRI#',
+            'https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#',
+            errorFilename
+          );
+        });
+    });
+
     it('should create from an ontology file', async () => {
       const generator = new Generator({
         input: ['./test/vocabs/schema.ttl'],

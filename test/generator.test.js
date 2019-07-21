@@ -124,7 +124,7 @@ const overrideAtlNameTerms = rdf
     rdf.quad(SCHEMA.familyName, SCHEMA.alternateName, rdf.literal('Alt Family Name'), 'en'),
   ]);
 
-const message = rdf.namedNode('http://message.com/hello');
+const message = rdf.namedNode('http://schema.org/hello');
 
 const literalDataset = rdf
   .dataset()
@@ -462,7 +462,7 @@ describe('Artifact generator unit tests', () => {
       expect(familyName.labels[0].value).to.equal('Alt Family Name');
     });
 
-    it('Should create defination vocab terms for literals from extentions', () => {
+    it('Should create definition vocab terms for literals from extentions', () => {
       const generator = new Generator({
         input: [],
         artifactVersion: '1.0.0',

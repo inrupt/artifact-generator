@@ -12,13 +12,23 @@ const Generator = require('../src/generator');
 const CommandLine = require('../src/command-line');
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it.skip('LIT vocabs', async () => {
+  it.skip('LIT vocabs - WE DO NOT YET SUPPORT MULTIPLE VOCABS IN THIS JAVASCRIPT CODEBASE', async () => {
     generateVocabArtifact(
       ['SHOULD BE RDF, RDFS, Schema.org, etc.'],
       '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
       '1.0.0',
       '^1.0.0'
     );
+  });
+
+  it.skip('Test Demo App', async () => {
+    generateVocabArtifact({
+      input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
+      outputDirectory: './generated',
+      artifactVersion: '1.0.0',
+      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+      moduleNamePrefix: '@lit/generated-vocab-',
+    });
   });
 
   it.skip('Solid Generator UI vocab', async () => {
