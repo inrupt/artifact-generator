@@ -30,7 +30,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
       widoco: true,
-    } );
+    });
   });
 
   it.skip('Solid Component vocab', async () => {
@@ -42,7 +42,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
       widoco: true,
-    } );
+    });
   });
 
   it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
@@ -52,14 +52,14 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       artifactVersion: '1.0.0',
       litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
       moduleNamePrefix: '@solid/generated-vocab-',
-    } );
+    });
   });
 });
 
 async function generateVocabArtifact(argv) {
   await deleteDirectory(argv.outputDirectory);
 
-  const generator = new Generator( { ...argv, noprompt: true } );
+  const generator = new Generator({ ...argv, noprompt: true });
 
   const data = await generator
     .generate(CommandLine.askForArtifactInfo)
@@ -67,10 +67,10 @@ async function generateVocabArtifact(argv) {
     .then(CommandLine.askForArtifactToBeInstalled)
     .then(CommandLine.askForArtifactToBePublished)
     .then(CommandLine.askForArtifactToBeDocumented)
-    .catch((error) => {
-        console.log(`Generation process failed: [${error}]`);
-        console.error(error);
-        throw new Error(error);
+    .catch(error => {
+      console.log(`Generation process failed: [${error}]`);
+      console.error(error);
+      throw new Error(error);
     });
 
   expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;

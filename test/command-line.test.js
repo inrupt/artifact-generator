@@ -55,7 +55,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactInfo({
         ...defaultInputs,
-        moduleNamePrefix: 'override-this-prefix-'
+        moduleNamePrefix: 'override-this-prefix-',
       });
 
       expect(result.artifactName).to.equal('test-prefix-');
@@ -66,7 +66,10 @@ describe('Command Line unit tests', () => {
         return { litVocabTermVersion: '^1.2.3' };
       });
 
-      const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, litVocabTermVersion: '0.0.0' });
+      const result = await CommandLine.askForArtifactInfo({
+        ...defaultInputs,
+        litVocabTermVersion: '0.0.0',
+      });
 
       expect(result.litVocabTermVersion).to.equal('^1.2.3');
     });
@@ -121,7 +124,10 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBePublished({ ...defaultInputs, publish:true });
+      const result = await CommandLine.askForArtifactToBePublished({
+        ...defaultInputs,
+        publish: true,
+      });
 
       expect(result.publish).to.equal(true);
       expect(result.ranNpmPublish).to.equal(true);
@@ -143,7 +149,10 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not publish artifact if user did not specify publish, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBePublished({ ...defaultInputs, noprompt:true });
+      const result = await CommandLine.askForArtifactToBePublished({
+        ...defaultInputs,
+        noprompt: true,
+      });
 
       expect(result.ranNpmPublish).to.equal(undefined);
     });
@@ -168,7 +177,7 @@ describe('Command Line unit tests', () => {
       const result = await CommandLine.askForArtifactVersionBumpType({
         ...defaultInputs,
         publishedVersion: '1.1.10',
-        bumpVersion: 'minor'
+        bumpVersion: 'minor',
       });
 
       expect(result.publishedVersion).to.equal('1.1.10');
@@ -186,7 +195,10 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactVersionBumpType({ ...defaultInputs, publishedVersion: '1.1.10' });
+      const result = await CommandLine.askForArtifactVersionBumpType({
+        ...defaultInputs,
+        publishedVersion: '1.1.10',
+      });
 
       expect(result.bumpVersion).to.equal('patch');
       expect(result.ranNpmVersion).to.equal(true);
@@ -244,7 +256,10 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, install: true });
+      const result = await CommandLine.askForArtifactToBeInstalled({
+        ...defaultInputs,
+        install: true,
+      });
 
       expect(result.ranNpmInstall).to.equal(true);
     });
@@ -274,7 +289,10 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not install artifact if user did not specify install, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, noprompt: true });
+      const result = await CommandLine.askForArtifactToBeInstalled({
+        ...defaultInputs,
+        noprompt: true,
+      });
 
       expect(result.ranNpmInstall).to.equal(undefined);
     });
@@ -296,7 +314,10 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeDocumented({ ...defaultInputs, runWidoco: true });
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        runWidoco: true,
+      });
 
       expect(result.ranWidoco).to.equal(true);
     });
@@ -326,7 +347,10 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not generate documentation if user did not specify, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBeDocumented({ ...defaultInputs, noprompt: true });
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        noprompt: true,
+      });
 
       expect(result.ranWidoco).to.equal(undefined);
     });

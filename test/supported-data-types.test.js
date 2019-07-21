@@ -48,7 +48,9 @@ describe('Supported Data Type', () => {
     expect(indexOutput).to.contains("class4: new LitVocabTerm(_NS('class4'), localStorage, true)");
     expect(indexOutput).to.contains(".addLabel('', 'A schema payment status type class')");
 
-    expect(indexOutput).to.not.contains("class5: new LitVocabTerm(_NS('class5'), localStorage, true)");
+    expect(indexOutput).to.not.contains(
+      "class5: new LitVocabTerm(_NS('class5'), localStorage, true)"
+    );
     expect(indexOutput).to.not.contains(".addLabel('', 'Not supported class')");
   });
 
@@ -94,10 +96,14 @@ describe('Supported Data Type', () => {
   it('should be able to generate vocabs for all the supported literal data types', async () => {
     var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
-    expect(indexOutput).to.contains("literal1: new LitVocabTerm(_NS('literal1'), localStorage, true)");
+    expect(indexOutput).to.contains(
+      "literal1: new LitVocabTerm(_NS('literal1'), localStorage, true)"
+    );
     expect(indexOutput).to.contains(".addLabel('', 'A rdfs literal')");
 
-    expect(indexOutput).to.contains("literal2: new LitVocabTerm(_NS('literal2'), localStorage, true)");
+    expect(indexOutput).to.contains(
+      "literal2: new LitVocabTerm(_NS('literal2'), localStorage, true)"
+    );
     expect(indexOutput).to.contains(".addMessage('en', `Welcome`)");
     expect(indexOutput).to.contains(".addMessage('es', `Bienvenido`)");
     expect(indexOutput).to.contains(".addMessage('fr', `Bienvenue`)");
