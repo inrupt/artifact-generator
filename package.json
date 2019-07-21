@@ -4,7 +4,7 @@
   "description": "A simple generator for building ontology artifacts",
   "main": "index.js",
   "scripts": {
-    "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
+    "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha --require mock-local-storage \"./test/**/*.test.js\"",
     "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/expected/**\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
@@ -41,6 +41,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "mocha": "^6.1.4",
+    "mock-local-storage": "^1.1.8",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "sinon": "^7.3.2"

@@ -21,7 +21,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     );
   });
 
-  it('Solid Generator UI vocab', async () => {
+  it.skip('Solid Generator UI vocab', async () => {
     generateVocabArtifact({
       input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
       outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',

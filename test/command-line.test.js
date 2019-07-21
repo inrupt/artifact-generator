@@ -304,7 +304,11 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = CommandLine.runWidoco(defaultInputs);
+      const result = CommandLine.runWidoco({
+        ...defaultInputs,
+        inputVocabList: ['Dummy_vocab_file'],
+        outputDirectory: 'needs/a/parent/directory',
+      });
 
       expect(result.ranWidoco).to.be.true;
     });
@@ -316,7 +320,9 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        runWidoco: true,
+        inputVocabList: ['Dummy_vocab_file'],
+        outputDirectory: 'needs/a/parent/directory',
+        widoco: true,
       });
 
       expect(result.ranWidoco).to.equal(true);
@@ -331,7 +337,11 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeDocumented(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        inputVocabList: ['Dummy_vocab_file'],
+        outputDirectory: 'needs/a/parent/directory',
+      });
 
       expect(result.ranWidoco).to.equal(true);
     });
@@ -341,7 +351,11 @@ describe('Command Line unit tests', () => {
         return { widoco: false };
       });
 
-      const result = await CommandLine.askForArtifactToBeDocumented(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        inputVocabList: ['Dummy_vocab_file'],
+        outputDirectory: 'needs/a/parent/directory',
+      });
 
       expect(result.ranWidoco).to.equal(undefined);
     });
