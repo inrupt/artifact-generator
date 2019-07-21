@@ -10,6 +10,10 @@ const argv = require('yargs')
     'input',
     'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
   )
+  .string('litVocabTermVersion')
+  .alias('litVocabTermVersion', 'lv')
+  .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
+  .default('litVocabTermVersion', '^1.0.10')
 
   .string('o')
   .alias('o', 'outputDirectory')
@@ -20,15 +24,15 @@ const argv = require('yargs')
   .alias('vtf', 'vocabTermsFrom')
   .describe('vtf', 'Generates Vocab Terms from only the specified ontology file.')
 
-  .string('av')
-  .alias('av', 'artifactVersion')
-  .describe('av', 'The version of the Node module that will be built.')
-  .default('av', '1.0.1')
+  .string('artifactVersion')
+  .alias('artifactVersion', 'av')
+  .describe('artifactVersion', 'The version of the Node module that will be generated.')
+  .default('artifactVersion', '1.0.1')
 
-  .alias('at', 'artifactType')
-  .describe('at', 'The artifact type that will be generated.')
-  .choices('at', ['nodejs']) // Add to this when other languages are supported.
-  .default('at', 'nodejs')
+  .alias('artifactType', 'at')
+  .describe('artifactType', 'The artifact type that will be generated.')
+  .choices('artifactType', ['nodejs']) // Add to this when other languages are supported.
+  .default('artifactType', 'nodejs')
 
   .alias('mnp', 'moduleNamePrefix')
   .describe('mnp', 'A prefix for the name of the output module')
