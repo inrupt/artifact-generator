@@ -59,7 +59,13 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 });
 
-async function generateVocabArtifact(inputFiles, outputDirectory, artifactVersion, litVersion, scope) {
+async function generateVocabArtifact(
+  inputFiles,
+  outputDirectory,
+  artifactVersion,
+  litVersion,
+  scope
+) {
   await deleteDirectory(outputDirectory);
 
   const generator = new Generator({
