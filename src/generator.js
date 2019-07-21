@@ -33,8 +33,6 @@ module.exports = class Generator {
         })
         .catch(error => {
           const result = `Failed to generate: ${error.toString()}`;
-          console.log(result);
-          console.error(error);
           reject(new Error(result));
         });
     });
