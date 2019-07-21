@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
     "start": "node index.js",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"test/expected/**\"",
+    "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/expected/**\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "author": "inrupt, Inc.",

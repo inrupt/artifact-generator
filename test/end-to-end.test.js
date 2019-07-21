@@ -1,7 +1,6 @@
 'use strict';
 
-const chai = require('chai')
-    .use(require('chai-as-promised'));
+const chai = require('chai').use(require('chai-as-promised'));
 chai.use(require('chai-string'));
 const expect = chai.expect;
 
@@ -38,9 +37,10 @@ describe('Ontology Generator', () => {
         litVocabTermVersion: '^1.0.10',
       });
 
-      await expect(generator.generate(doNothingPromise)).to.be.rejectedWith(Error,
-       "Failed to generate: Error: ENOENT: no such file or directory, open './test/vocabs/does.not.exist.ttl'")
-
+      await expect(generator.generate(doNothingPromise)).to.be.rejectedWith(
+        Error,
+        "Failed to generate: Error: ENOENT: no such file or directory, open './test/vocabs/does.not.exist.ttl'"
+      );
     });
 
     it('should create from an ontology file', async () => {
