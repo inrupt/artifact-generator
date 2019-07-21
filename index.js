@@ -66,6 +66,14 @@ const argv = require('yargs')
   .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
   .default('npmRegistry', 'https://verdaccio.inrupt.com')
 
+  .boolean('runWidoco')
+  .alias('runWidoco', 'w')
+  .describe(
+    'runWidoco',
+    'If set, will run Widoco to generate documentation for this vocabulary.'
+  )
+  .default('runWidoco', false)
+
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
   .strict().argv;
@@ -82,4 +90,5 @@ generator
   .then(CommandLine.askForArtifactVersionBumpType)
   .then(CommandLine.askForArtifactToBeInstalled)
   .then(CommandLine.askForArtifactToBePublished)
+  .then(CommandLine.askForArtifactToBeDocumented)
   .catch(handleError);

@@ -27,7 +27,7 @@ describe('Command Line unit tests', () => {
 
   describe('Requesting input from the user', () => {
     it('Should not ask for artifact information if explicitly told not to', async () => {
-      const result = await CommandLine.askForArtifactInfo( { ...defaultInputs, noprompt: true } );
+      const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, noprompt: true });
 
       expect(result.artifactName).to.equal('@lit/generator-vocab-schema-ext');
       expect(result.author).to.equal('lit@inrupt.com');
@@ -53,7 +53,10 @@ describe('Command Line unit tests', () => {
         return { artifactName: 'test-prefix-' };
       });
 
-      const result = await CommandLine.askForArtifactInfo( { ...defaultInputs, moduleNamePrefix: 'override-this-prefix-' } );
+      const result = await CommandLine.askForArtifactInfo({
+        ...defaultInputs,
+        moduleNamePrefix: 'override-this-prefix-'
+      });
 
       expect(result.artifactName).to.equal('test-prefix-');
     });
@@ -63,7 +66,7 @@ describe('Command Line unit tests', () => {
         return { litVocabTermVersion: '^1.2.3' };
       });
 
-      const result = await CommandLine.askForArtifactInfo( { ...defaultInputs, litVocabTermVersion: '0.0.0' } );
+      const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, litVocabTermVersion: '0.0.0' });
 
       expect(result.litVocabTermVersion).to.equal('^1.2.3');
     });
@@ -77,7 +80,9 @@ describe('Command Line unit tests', () => {
 
       expect(result.author).to.equal('test-inrupt');
     });
+  });
 
+  describe('NPM publishing...', () => {
     it('Should find the latest published artifact from registry', () => {
       sinon.stub(childProcess, 'execSync').callsFake(() => {
         return '1.1.10';
@@ -92,75 +97,11 @@ describe('Command Line unit tests', () => {
     it('Should not add to the result if artifact has not been published to the registry', () => {
       sinon.stub(childProcess, 'execSync').throws();
 
-      const result = CommandLine.findPublishedVersionOfModule( { ...defaultInputs, publish: true });
+      const result = CommandLine.findPublishedVersionOfModule({ ...defaultInputs, publish: true });
 
       expect(result.publishedVersion).to.equal(undefined);
       expect(result.version).to.equal(undefined);
     });
-
-    it('Should bump artifact version if explicitly told to', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '1.2.10';
-      });
-
-      const result = await CommandLine.askForArtifactVersionBumpType({ ...defaultInputs, publishedVersion: '1.1.10', bumpVersion: 'minor' });
-
-      expect(result.publishedVersion).to.equal('1.1.10');
-      expect(result.bumpVersion).to.equal('minor');
-      expect(result.bumpedVersion).to.equal('1.2.10');
-      expect(result.ranNpmVersion).to.equal(true);
-    });
-
-    it('Should ask for the artifact version bump type (major, minor, patch)', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { bumpVersion: 'patch' };
-      });
-
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
-
-      const result = await CommandLine.askForArtifactVersionBumpType({ ...defaultInputs, publishedVersion: '1.1.10' } );
-
-      expect(result.bumpVersion).to.equal('patch');
-      expect(result.ranNpmVersion).to.equal(true);
-    });
-
-    it('Should not run update version command if the user answers "no" when ask for the artifact version bump type', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { bump: 'no' };
-      });
-
-      sinon
-        .mock(childProcess)
-        .expects('execSync')
-        .never();
-
-      defaultInputs.publishedVersion = '1.1.10';
-
-      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
-
-      expect(result.bump).to.equal('no');
-    });
-
-    it('Should not prompt for artifact version bump type if the module has not been published', async () => {
-      sinon
-        .mock(inquirer)
-        .expects('prompt')
-        .never();
-
-      sinon
-        .mock(childProcess)
-        .expects('execSync')
-        .never();
-
-      defaultInputs.publishedVersion = undefined;
-
-      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
-
-      expect(result.publishedVersion).to.equal(undefined);
-    });
-
     it('Should publish artifact to the registry if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
         return { publish: true };
@@ -206,8 +147,88 @@ describe('Command Line unit tests', () => {
 
       expect(result.ranNpmPublish).to.equal(undefined);
     });
+  });
 
+  describe('NPM version bumping...', () => {
+    it('Should run npm version', () => {
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
 
+      const result = CommandLine.runNpmVersion(defaultInputs);
+
+      expect(result.ranNpmVersion).to.be.true;
+    });
+
+    it('Should bump artifact version if explicitly told to', async () => {
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '1.2.10';
+      });
+
+      const result = await CommandLine.askForArtifactVersionBumpType({
+        ...defaultInputs,
+        publishedVersion: '1.1.10',
+        bumpVersion: 'minor'
+      });
+
+      expect(result.publishedVersion).to.equal('1.1.10');
+      expect(result.bumpVersion).to.equal('minor');
+      expect(result.bumpedVersion).to.equal('1.2.10');
+      expect(result.ranNpmVersion).to.equal(true);
+    });
+
+    it('Should ask for the artifact version bump type (major, minor, patch)', async () => {
+      sinon.stub(inquirer, 'prompt').callsFake(async () => {
+        return { bumpVersion: 'patch' };
+      });
+
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
+
+      const result = await CommandLine.askForArtifactVersionBumpType({ ...defaultInputs, publishedVersion: '1.1.10' });
+
+      expect(result.bumpVersion).to.equal('patch');
+      expect(result.ranNpmVersion).to.equal(true);
+    });
+
+    it('Should not run update version command if the user answers "no" when ask for the artifact version bump type', async () => {
+      sinon.stub(inquirer, 'prompt').callsFake(async () => {
+        return { bump: 'no' };
+      });
+
+      sinon
+        .mock(childProcess)
+        .expects('execSync')
+        .never();
+
+      defaultInputs.publishedVersion = '1.1.10';
+
+      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
+
+      expect(result.bump).to.equal('no');
+    });
+
+    it('Should not prompt for artifact version bump type if the module has not been published', async () => {
+      sinon
+        .mock(inquirer)
+        .expects('prompt')
+        .never();
+
+      sinon
+        .mock(childProcess)
+        .expects('execSync')
+        .never();
+
+      defaultInputs.publishedVersion = undefined;
+
+      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
+
+      expect(result.publishedVersion).to.equal(undefined);
+    });
+  });
+
+  describe('NPM installing...', () => {
     it('Should run npm install', () => {
       sinon.stub(childProcess, 'execSync').callsFake(() => {
         return '';
@@ -223,7 +244,7 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, install:true });
+      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, install: true });
 
       expect(result.ranNpmInstall).to.equal(true);
     });
@@ -253,19 +274,61 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not install artifact if user did not specify install, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, noprompt:true });
+      const result = await CommandLine.askForArtifactToBeInstalled({ ...defaultInputs, noprompt: true });
 
       expect(result.ranNpmInstall).to.equal(undefined);
     });
+  });
 
-    it('Should run npm version', () => {
+  describe('Running Widoco...', () => {
+    it('Should run Widoco', () => {
       sinon.stub(childProcess, 'execSync').callsFake(() => {
         return '';
       });
 
-      const result = CommandLine.runNpmVersion(defaultInputs);
+      const result = CommandLine.runWidoco(defaultInputs);
 
-      expect(result.ranNpmVersion).to.be.true;
+      expect(result.ranWidoco).to.be.true;
+    });
+
+    it('Should generate documentation if user explicitly told to', async () => {
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
+
+      const result = await CommandLine.askForArtifactToBeDocumented({ ...defaultInputs, runWidoco: true });
+
+      expect(result.ranWidoco).to.equal(true);
+    });
+
+    it('Should generate documentation if user confirms yes', async () => {
+      sinon.stub(inquirer, 'prompt').callsFake(async () => {
+        return { widoco: true };
+      });
+
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
+
+      const result = await CommandLine.askForArtifactToBeDocumented(defaultInputs);
+
+      expect(result.ranWidoco).to.equal(true);
+    });
+
+    it('Should not generate documentation if user confirms no', async () => {
+      sinon.stub(inquirer, 'prompt').callsFake(async () => {
+        return { widoco: false };
+      });
+
+      const result = await CommandLine.askForArtifactToBeDocumented(defaultInputs);
+
+      expect(result.ranWidoco).to.equal(undefined);
+    });
+
+    it('Should not generate documentation if user did not specify, and also set no prompting', async () => {
+      const result = await CommandLine.askForArtifactToBeDocumented({ ...defaultInputs, noprompt: true });
+
+      expect(result.ranWidoco).to.equal(undefined);
     });
   });
 });

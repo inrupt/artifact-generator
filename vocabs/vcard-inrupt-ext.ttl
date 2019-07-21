@@ -20,7 +20,7 @@ vcard-inrupt-ext:
     rdfs:comment "Extension to VCARD terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
     vann:preferredNamespacePrefix "vcard" ;
     vann:preferredNamespaceUri "http://www.w3.org/2006/vcard/ns#" ;
-    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 :fn a rdf:Property ;
     schema:alternateName "Name"@en ;

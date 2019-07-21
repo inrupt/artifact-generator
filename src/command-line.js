@@ -1,8 +1,13 @@
+const path = require('path');
 const inquirer = require('inquirer');
 
 const ChildProcess = require('child_process');
 
 module.exports = class CommandLine {
+  static getParentFolder(directory) {
+    return path.dirname(directory);
+  }
+
   static async askForArtifactInfo(data) {
     if (data.noprompt) {
       return CommandLine.findPublishedVersionOfModule(data);
@@ -148,12 +153,37 @@ module.exports = class CommandLine {
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
+  static async askForArtifactToBeDocumented(data) {
+    if (data.widoco) {
+      return { ...data, ...CommandLine.runWidoco(data) }; // Merge the answers in with the data and return
+    }
+
+    let answer = {};
+    if (!data.noprompt) {
+      const publishQuestion = [
+        {
+          type: 'confirm',
+          name: 'widoco',
+          message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
+          default: false,
+        },
+      ];
+
+      answer = await inquirer.prompt(publishQuestion);
+
+      if (answer.widoco) {
+        answer = { ...answer, ...CommandLine.runWidoco(data) };
+      }
+    }
+
+    return { ...data, ...answer }; // Merge the answers in with the data and return
+  }
+
   static runNpmInstall(data) {
     console.log(
       `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
     );
     ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
-    // ChildProcess.execSync(`cd ${data.outputDirectory}`);
 
     console.log(
       `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
@@ -192,5 +222,24 @@ module.exports = class CommandLine {
     );
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
+  }
+
+  static runWidoco(data) {
+    console.log(`Running Widoco for artifact [${data.artifactName}]...`);
+
+    const widocoJar =
+      '/home/pmcb55/Work/Installs/Widoco/jar/widoco-1.4.11-jar-with-dependencies.jar';
+
+    ChildProcess.execSync(
+      `cd ${data.outputDirectory} && java -jar ${widocoJar} -ontFile ${
+        data.inputVocabList[0]
+      } -outFolder ${CommandLine.getParentFolder(
+        data.outputDirectory
+      )}/Widoco -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
+    );
+
+    console.log(`Widoco documentation generated for [${data.artifactName}].`);
+
+    return { ...data, ...{ ranWidoco: true } }; // Merge the answers in with the data and return
   }
 };

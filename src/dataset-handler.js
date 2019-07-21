@@ -107,6 +107,7 @@ module.exports = class DatasetHandler {
     result.properties = [];
     result.literals = [];
 
+    result.inputVocabList = this.argv.input;
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
@@ -120,6 +121,7 @@ module.exports = class DatasetHandler {
     result.install = this.argv.install;
     result.publish = this.argv.publish;
     result.bumpVersion = this.argv.bumpVersion;
+    result.widoco = this.argv.widoco;
     result.noprompt = this.argv.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);

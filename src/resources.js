@@ -18,9 +18,9 @@ module.exports = class Resources {
   }
 
   async readResources(processDatasetsCallback) {
-    const datasetsProm = this.datasetFiles.map(e => Resources.readResource(e));
+    const datasetsPromises = this.datasetFiles.map(e => Resources.readResource(e));
 
-    const datasets = await Promise.all(datasetsProm);
+    const datasets = await Promise.all(datasetsPromises);
 
     let subjectsOnlyDataset;
     if (this.subjectsOnlyFile) {
