@@ -227,8 +227,8 @@ module.exports = class CommandLine {
   static runWidoco(data) {
     console.log(`Running Widoco for artifact [${data.artifactName}]...`);
 
-    const widocoJar =
-      '/home/pmcb55/Work/Installs/Widoco/jar/widoco-1.4.11-jar-with-dependencies.jar';
+    // Run Widoco from our local 'lib' directory...
+    const widocoJar = '../lib/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
 
     ChildProcess.execSync(
       `cd ${data.outputDirectory} && java -jar ${widocoJar} -ontFile ${

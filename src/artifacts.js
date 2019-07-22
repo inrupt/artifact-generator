@@ -19,7 +19,7 @@ function createArtifacts(argv, templateData) {
   // To support running from any arbitrary directory, reference our templates relative to this file, and not the
   // current working directory.
   createArtifact(
-    `${__dirname}/../templates/template.hbs`,
+    `${__dirname}/../templates/javascript-rdf-ext.hbs`,
     `${argv.outputDirectory}/index.js`,
     templateData
   );
