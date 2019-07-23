@@ -70,6 +70,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 });
 
+async function deleteDirectory(directory) {
+  const deletedPaths = await del([`${directory}/*`], { force: true });
+  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
+}
+
 async function generateVocabArtifact(argv) {
   await deleteDirectory(argv.outputDirectory);
 
@@ -81,6 +86,7 @@ async function generateVocabArtifact(argv) {
     .then(CommandLine.askForArtifactToBeInstalled)
     .then(CommandLine.askForArtifactToBePublished)
     .then(CommandLine.askForArtifactToBeDocumented)
+    .then(console.log(`Generation process successful!`))
     .catch(error => {
       console.log(`Generation process failed: [${error}]`);
       console.error(error);
@@ -89,11 +95,7 @@ async function generateVocabArtifact(argv) {
 
   expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
 
-  CommandLine.runNpmInstall(data);
-  expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
-}
-
-async function deleteDirectory(directory) {
-  const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
+  if (argv.install) {
+    expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
+  }
 }
