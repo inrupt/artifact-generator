@@ -5,7 +5,7 @@ const { LitVocabTerm } = require('@lit/vocab-term')
   from the source RDF file [${sourceRdfResource}]
   at '${generatedTimestamp}'.
 
-  
+  Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
  */
 
 const _NAMESPACE = "http://schema.org/";
@@ -78,7 +78,7 @@ const SCHEMA_INRUPT_EXT = {
 ,
 
     /**
-     * The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.
+     * The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.
      */
     addressCountry: new LitVocabTerm(_NS('addressCountry'), localStorage, true)
       .addLabel('', 'addressCountry')

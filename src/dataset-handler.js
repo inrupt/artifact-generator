@@ -219,7 +219,11 @@ module.exports = class DatasetHandler {
 
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
-      const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, DCTERMS.description, null);
+      const onologyComments = this.fullDataset.match(
+        owlOntologyTerms.subject,
+        DCTERMS.description,
+        null
+      );
 
       return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
     });

@@ -1,6 +1,6 @@
 'use strict';
 
-require('mock-local-storage')
+require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
@@ -67,9 +67,13 @@ const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-    rdf.quad(extSubject, RDFS.comment, rdf.literal("Extension comment with special ' character!")),
+    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
+    rdf.quad(
+      extSubject,
+      DCTERMS.description,
+      rdf.literal("Extension comment with special ' character!")
+    ),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
     rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
   ]);

@@ -15,8 +15,8 @@ schema-inrupt-ext:
     owl:versionInfo "1" ;
     dcterms:creator "Jarlath Holleran" ;
     dcterms:date "2019/06/18" ;
-    rdfs:label "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
-    rdfs:comment "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
+    dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
+    dcterms:description "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
     vann:preferredNamespacePrefix "lit_gen" ;
     vann:preferredNamespaceUri "https://w3id.org/lit/vocab/code-generation#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
