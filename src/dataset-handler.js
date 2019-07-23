@@ -78,6 +78,7 @@ module.exports = class DatasetHandler {
     if (DatasetHandler.doesNotContainLanguage(array, quad)) {
       array.push({
         value: quad.object.value,
+        valueEscapedForJavascript: DatasetHandler.escapeStringForJavascript(quad.object.value),
         language: quad.object.language,
       });
     }
@@ -241,6 +242,10 @@ module.exports = class DatasetHandler {
     // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
     const escaped = JSON.stringify(value);
     return escaped.substr(1, escaped.length - 2);
+  }
+
+  static escapeStringForJavascript(value) {
+    return value.replace('`', '\\`');
   }
 
   findAuthor() {

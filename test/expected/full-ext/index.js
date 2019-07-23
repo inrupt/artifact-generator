@@ -18,17 +18,17 @@ const SCHEMA_INRUPT_EXT = {
     // *****************
     // All the Classes.
     // *****************
-    
+
     /**
      * A person (alive, dead, undead, or fictional).
      */
     Person: new LitVocabTerm(_NS('Person'), localStorage, true)
-      .addLabel('', 'Person')
-      .addLabel('en', 'Person')
-      .addLabel('fr', 'La personne')
-      .addLabel('de', 'Person')
-      .addLabel('es', 'Persona')
-      .addLabel('it', 'Persona')
+      .addLabel('', `Person`)
+      .addLabel('en', `Person`)
+      .addLabel('fr', `La personne`)
+      .addLabel('de', `Person`)
+      .addLabel('es', `Persona`)
+      .addLabel('it', `Persona`)
       .addComment('', `A person (alive, dead, undead, or fictional).`)
       .addComment('en', `A person (alive, dead, undead, or fictional).`)
       .addComment('fr', `Une personne (vivante, morte, mort-vivant ou fictive).`)
@@ -45,12 +45,12 @@ const SCHEMA_INRUPT_EXT = {
      * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
      */
     givenName: new LitVocabTerm(_NS('givenName'), localStorage, true)
-      .addLabel('', 'givenName')
-      .addLabel('en', 'Given Name')
-      .addLabel('fr', 'Prénom')
-      .addLabel('de', 'Vorname')
-      .addLabel('es', 'Nombre de pila')
-      .addLabel('it', 'Nome di battesimo')
+      .addLabel('', `givenName`)
+      .addLabel('en', `Given Name`)
+      .addLabel('fr', `Prénom`)
+      .addLabel('de', `Vorname`)
+      .addLabel('es', `Nombre de pila`)
+      .addLabel('it', `Nome di battesimo`)
       .addComment('', `Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.`)
       .addComment('en', `Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.`)
       .addComment('fr', `Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name.`)
@@ -63,12 +63,12 @@ const SCHEMA_INRUPT_EXT = {
      * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
      */
     familyName: new LitVocabTerm(_NS('familyName'), localStorage, true)
-      .addLabel('', 'familyName')
-      .addLabel('en', 'Family Name')
-      .addLabel('fr', 'Nom de famille')
-      .addLabel('de', 'Nachname')
-      .addLabel('es', 'Apellido')
-      .addLabel('it', 'Cognome')
+      .addLabel('', `familyName`)
+      .addLabel('en', `Family Name`)
+      .addLabel('fr', `Nom de famille`)
+      .addLabel('de', `Nachname`)
+      .addLabel('es', `Apellido`)
+      .addLabel('it', `Cognome`)
       .addComment('', `Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.`)
       .addComment('en', `Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.`)
       .addComment('fr', `Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name.`)
@@ -81,20 +81,20 @@ const SCHEMA_INRUPT_EXT = {
      * The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.
      */
     addressCountry: new LitVocabTerm(_NS('addressCountry'), localStorage, true)
-      .addLabel('', 'addressCountry')
-      .addComment('', `The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.`)
+      .addLabel('', `addressCountry`)
+      .addComment('', `The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.`)
 ,
 
     /**
      * An additional name for a Person, can be used for a middle name.
      */
     additionalName: new LitVocabTerm(_NS('additionalName'), localStorage, true)
-      .addLabel('', 'additionalName')
-      .addLabel('en', 'Additional Name')
-      .addLabel('fr', 'Nom additionnel')
-      .addLabel('de', 'Zusätzlicher Name')
-      .addLabel('es', 'Nombre adicional')
-      .addLabel('it', 'Nome aggiuntivo')
+      .addLabel('', `additionalName`)
+      .addLabel('en', `Additional Name`)
+      .addLabel('fr', `Nom additionnel`)
+      .addLabel('de', `Zusätzlicher Name`)
+      .addLabel('es', `Nombre adicional`)
+      .addLabel('it', `Nome aggiuntivo`)
       .addComment('en', `An additional name for a Person, can be used for a middle name.`)
       .addComment('fr', `Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom.`)
       .addComment('de', `Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden.`)
@@ -106,7 +106,7 @@ const SCHEMA_INRUPT_EXT = {
      *
      */
     newTerm: new LitVocabTerm(_NS('newTerm'), localStorage, true)
-      .addLabel('', 'newTerm')
+      .addLabel('', `newTerm`)
 ,
 
   //

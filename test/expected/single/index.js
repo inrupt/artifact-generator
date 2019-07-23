@@ -16,12 +16,12 @@ const SCHEMA = {
     // *****************
     // All the Classes.
     // *****************
-    
+
     /**
      * A person (alive, dead, undead, or fictional).
      */
     Person: new LitVocabTerm(_NS('Person'), localStorage, true)
-      .addLabel('', 'Person')
+      .addLabel('', `Person`)
       .addComment('', `A person (alive, dead, undead, or fictional).`)
 ,
 
@@ -33,7 +33,7 @@ const SCHEMA = {
      * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
      */
     givenName: new LitVocabTerm(_NS('givenName'), localStorage, true)
-      .addLabel('', 'givenName')
+      .addLabel('', `givenName`)
       .addComment('', `Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.`)
 ,
 
@@ -41,7 +41,7 @@ const SCHEMA = {
      * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
      */
     familyName: new LitVocabTerm(_NS('familyName'), localStorage, true)
-      .addLabel('', 'familyName')
+      .addLabel('', `familyName`)
       .addComment('', `Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.`)
 ,
 
@@ -49,8 +49,8 @@ const SCHEMA = {
      * The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.
      */
     addressCountry: new LitVocabTerm(_NS('addressCountry'), localStorage, true)
-      .addLabel('', 'addressCountry')
-      .addComment('', `The country. For example, USA. You can also provide the two-letter &lt;a href&#x3D;&quot;http://en.wikipedia.org/wiki/ISO_3166-1&quot;&gt;ISO 3166-1 alpha-2 country code&lt;/a&gt;.`)
+      .addLabel('', `addressCountry`)
+      .addComment('', `The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.`)
 ,
 
   //

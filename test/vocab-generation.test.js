@@ -1,10 +1,9 @@
-'use strict';
-
 require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
-const expect = chai.expect;
+
+const { expect } = chai;
 
 const fs = require('fs');
 
@@ -12,6 +11,36 @@ const del = require('del');
 
 const Generator = require('../src/generator');
 const CommandLine = require('../src/command-line');
+
+async function deleteDirectory(directory) {
+  const deletedPaths = await del([`${directory}/*`], { force: true });
+  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
+}
+
+async function generateVocabArtifact(argv) {
+  await deleteDirectory(argv.outputDirectory);
+
+  const generator = new Generator({ ...argv, noprompt: true });
+
+  await generator
+    .generate(CommandLine.askForArtifactInfo)
+    .then(CommandLine.askForArtifactVersionBumpType)
+    .then(CommandLine.askForArtifactToBeInstalled)
+    .then(CommandLine.askForArtifactToBePublished)
+    .then(CommandLine.askForArtifactToBeDocumented)
+    .then(console.log(`Generation process successful!`))
+    .catch(error => {
+      console.log(`Generation process failed: [${error}]`);
+      console.error(error);
+      throw new Error(error);
+    });
+
+  expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
+
+  if (argv.install) {
+    expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
+  }
+}
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
   it.skip('LIT vocabs - WE DO NOT YET SUPPORT MULTIPLE VOCABS IN THIS JAVASCRIPT CODEBASE', async () => {
@@ -38,8 +67,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
       outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
-      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.11',
+      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+      // litVocabTermVersion: '^1.0.11',
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
       widoco: true,
@@ -69,33 +98,3 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 });
-
-async function deleteDirectory(directory) {
-  const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
-}
-
-async function generateVocabArtifact(argv) {
-  await deleteDirectory(argv.outputDirectory);
-
-  const generator = new Generator({ ...argv, noprompt: true });
-
-  const data = await generator
-    .generate(CommandLine.askForArtifactInfo)
-    .then(CommandLine.askForArtifactVersionBumpType)
-    .then(CommandLine.askForArtifactToBeInstalled)
-    .then(CommandLine.askForArtifactToBePublished)
-    .then(CommandLine.askForArtifactToBeDocumented)
-    .then(console.log(`Generation process successful!`))
-    .catch(error => {
-      console.log(`Generation process failed: [${error}]`);
-      console.error(error);
-      throw new Error(error);
-    });
-
-  expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
-
-  if (argv.install) {
-    expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
-  }
-}

@@ -22,16 +22,16 @@ const {{vocabNameUpperCase}} = {
     // All the Classes.
     // *****************
     {{#each classes}}
-    
+
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{name}}: new LitVocabTerm(_NS('{{name}}'), localStorage, true)
+    {{name}}: new LitVocabTerm(_NS('{{{name}}}'), localStorage, true)
 {{#each labels}}
-      .addLabel('{{language}}', '{{value}}')
+      .addLabel('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each comments}}
-      .addComment('{{language}}', `{{value}}`)
+      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}},
     {{/each}}
 {{/if}}
@@ -45,12 +45,12 @@ const {{vocabNameUpperCase}} = {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{name}}: new LitVocabTerm(_NS('{{name}}'), localStorage, true)
+    {{name}}: new LitVocabTerm(_NS('{{{name}}}'), localStorage, true)
 {{#each labels}}
-      .addLabel('{{language}}', '{{value}}')
+      .addLabel('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each comments}}
-      .addComment('{{language}}', `{{value}}`)
+      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}},
     {{/each}}
 {{/if}}
@@ -64,15 +64,15 @@ const {{vocabNameUpperCase}} = {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{name}}: new LitVocabTerm(_NS('{{name}}'), localStorage, true)
+    {{name}}: new LitVocabTerm(_NS('{{{name}}}'), localStorage, true)
 {{#each labels}}
-      .addLabel('{{language}}', '{{value}}')
+      .addLabel('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each comments}}
-      .addComment('{{language}}', `{{value}}`)
+      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each definitions}}
-      .addMessage('{{language}}', `{{value}}`)
+      .addMessage('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}},
     {{/each}}
 {{/if}}
