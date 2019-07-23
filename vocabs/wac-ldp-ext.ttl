@@ -1,0 +1,38 @@
+@prefix acl: <http://www.w3.org/ns/auth/acl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix wac-ldp-ext: <http://inrupt.com/> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+prefix owl: <http://www.w3.org/2002/07/owl#>
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix lit_core: <https://w3id.org/lit/vocab/core#> .
+
+wac-ldp-ext:
+    a owl:Ontology, lit_core:Ontology ;
+    dcterms:creator "Michiel de Jong" ;
+    dcterms:date "2019/07/23" ;
+    rdfs:label "ACL terms used in wac-ldp" ;
+    rdfs:comment "" ;
+    vann:preferredNamespacePrefix "acl" ;
+    vann:preferredNamespaceUri "http://www.w3.org/ns/auth/acl#" ;
+    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+
+acl:AuthenticatedAgent a rdfs:Class.
+acl:Authorization a rdfs:Class.
+acl:Read a rdfs:Class.
+acl:Write a rdfs:Class.
+acl:Control a rdfs:Class.
+acl:Append a rdfs:Class.
+acl:accessTo a rdfs:Class.
+acl:default a rdfs:Class.
+acl:agent a rdfs:Class.
+acl:agentGroup a rdfs:Class.
+acl:agentClass a rdfs:Class.
+acl:mode a rdfs:Class.
+acl:origin a rdfs:Class.
+acl:trustedApp a rdfs:Class.
