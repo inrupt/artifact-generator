@@ -1,10 +1,14 @@
 {
   "name": "@lit/artifact-generator",
   "version": "1.0.0",
-  "description": "A simple generator for building ontology artifacts",
+  "description": "A generator for building ontology artifacts",
   "main": "index.js",
+  "bin": {
+    "lit-artifact-generator": "./index.js"
+  },
+  "preferGlobal": true,
   "scripts": {
-    "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha \"./test/**/*.test.js\"",
+    "test": "npm run format && npm run lint && mkdir -p test/resources/output && nyc mocha --require mock-local-storage \"./test/**/*.test.js\"",
     "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/expected/**\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
@@ -16,12 +20,11 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "global-npm": "^0.3.0",
+    "@lit/vocab-term": "^1.0.11",
+    "@lit/generated-vocab-common": "^1.2.9",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
-    "@lit/vocab-term": "^1.0.10",
-    "@lit/generated-vocab-common": "^1.2.8",
-    "npm": "^6.10.0",
+    "mock-local-storage": "^1.1.8",
     "rdf-ext": "^1.2.2",
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",

@@ -25,6 +25,14 @@ module.exports = class DatasetHandler {
   handleTerms(quad, namespace) {
     const labels = [];
 
+    const fullName = quad.subject.value;
+    if (!fullName.startsWith(namespace)) {
+      throw new Error(
+        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] - currently this is disallowed (as it indicates a probable typo!)`
+      );
+    }
+    const name = fullName.split(namespace)[1];
+
     this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
@@ -60,9 +68,6 @@ module.exports = class DatasetHandler {
     this.fullDataset.match(quad.subject, SKOS.definition, null).forEach(subQuad => {
       DatasetHandler.add(definitions, subQuad);
     });
-
-    const fullName = quad.subject.value;
-    const name = fullName.split(namespace)[1];
 
     const comment = DatasetHandler.getComment(comments);
 
@@ -107,6 +112,7 @@ module.exports = class DatasetHandler {
     result.properties = [];
     result.literals = [];
 
+    result.inputVocabList = this.argv.input;
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
@@ -117,6 +123,11 @@ module.exports = class DatasetHandler {
     result.npmRegistry = this.argv.npmRegistry;
     result.outputDirectory = this.argv.outputDirectory;
     result.author = this.findAuthor();
+    result.install = this.argv.install;
+    result.publish = this.argv.publish;
+    result.bumpVersion = this.argv.bumpVersion;
+    result.widoco = this.argv.widoco;
+    result.noprompt = this.argv.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {

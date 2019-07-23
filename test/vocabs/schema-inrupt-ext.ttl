@@ -18,7 +18,7 @@ schema-inrupt-ext:
     rdfs:comment "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
     vann:preferredNamespacePrefix "schema-inrupt-ext" ;
     vann:preferredNamespaceUri "http://schema.org/" ;
-    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
 

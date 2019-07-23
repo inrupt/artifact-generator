@@ -16,8 +16,18 @@ function createArtifacts(argv, templateData) {
     fs.mkdirSync(argv.outputDirectory, { recursive: true });
   }
 
-  createArtifact('templates/template.hbs', `${argv.outputDirectory}/index.js`, templateData);
-  createArtifact('templates/package.hbs', `${argv.outputDirectory}/package.json`, templateData);
+  // To support running from any arbitrary directory, reference our templates relative to this file, and not the
+  // current working directory.
+  createArtifact(
+    `${__dirname}/../templates/javascript-rdf-ext.hbs`,
+    `${argv.outputDirectory}/index.js`,
+    templateData
+  );
+  createArtifact(
+    `${__dirname}/../templates/package.hbs`,
+    `${argv.outputDirectory}/package.json`,
+    templateData
+  );
 }
 
 module.exports.createArtifacts = createArtifacts;
