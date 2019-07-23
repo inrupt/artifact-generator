@@ -1,5 +1,7 @@
 'use strict';
 
+require('mock-local-storage')
+
 const chai = require('chai');
 chai.use(require('chai-string'));
 const expect = chai.expect;
@@ -67,7 +69,7 @@ const owlOntologyDataset = rdf
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
     rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-    rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
+    rdf.quad(extSubject, RDFS.comment, rdf.literal("Extension comment with special ' character!")),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
     rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
   ]);
@@ -500,7 +502,7 @@ describe('Artifact generator unit tests', () => {
       expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
       expect(result.namespace).to.equal('http://rdf-extension.com');
       expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
-      expect(result.description).to.equal('Extension comment');
+      expect(result.description).to.equal("Extension comment with special ' character!");
     });
 
     it('should default description to empty string if rdfs:comment of an owl:Ontology term is not found', () => {

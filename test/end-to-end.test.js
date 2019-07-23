@@ -1,5 +1,7 @@
 'use strict';
 
+require('mock-local-storage')
+
 const chai = require('chai').use(require('chai-as-promised'));
 chai.use(require('chai-string'));
 const expect = chai.expect;

@@ -84,8 +84,8 @@ module.exports = class DatasetHandler {
   }
 
   /**
-   * Finds a comment from the comments array. First check if there is a english comment, next check for a default language
-   * comment (''), then just get the first comment or default to empty string.
+   * Finds a comment from the comments array. First check if there is an English comment, next check for a default language
+   * comment (''), then just get the first comment, or finally default to empty string.
    * @param comments An array of comments containing comments and there language.
    * @returns {string} Returns a string of the comment if founds, else empty string is returned.
    */
@@ -219,9 +219,8 @@ module.exports = class DatasetHandler {
 
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
-      const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
+      const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, DCTERMS.description, null);
 
-      // Escape this description so that we can use it in the 'package.json' file.
       return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
     });
   }
