@@ -1,0 +1,21 @@
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix wac-vcard-ext: <http://inrupt.com/ns/wac-vcard-ext> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+prefix owl: <http://www.w3.org/2002/07/owl#>
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix lit_core: <https://w3id.org/lit/vocab/core#> .
+
+wac-vcard-ext:
+    a owl:Ontology, lit_core:Ontology ;
+    dcterms:creator "Michiel de Jong" ;
+    dcterms:date "2019/07/23" ;
+    rdfs:label "ACL terms used in wac-vcard" ;
+    rdfs:comment "" ;
+    vann:preferredNamespacePrefix "vcard" ;
+    vann:preferredNamespaceUri "http://xmlns.com/vcard/0.1/" ;
+    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+
+vcard:hasMember a rdfs:Class.

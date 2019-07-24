@@ -1,0 +1,22 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix wac-ldp-ext: <http://inrupt.com/ns/wac-ldp-ext> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+prefix owl: <http://www.w3.org/2002/07/owl#>
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix lit_core: <https://w3id.org/lit/vocab/core#> .
+
+wac-ldp-ext:
+    a owl:Ontology, lit_core:Ontology ;
+    dcterms:creator "Michiel de Jong" ;
+    dcterms:date "2019/07/23" ;
+    rdfs:label "ACL terms used in wac-ldp" ;
+    rdfs:comment "" ;
+    vann:preferredNamespacePrefix "foaf" ;
+    vann:preferredNamespaceUri "http://xmlns.com/foaf/0.1/" ;
+    dcterms:license <http://www.opendatacommons.org/licenses/pddl/> .
+
+foaf:Agent a rdfs:Class.
+
