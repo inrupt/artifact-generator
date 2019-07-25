@@ -81,7 +81,7 @@ const argv = require('yargs')
     'runWidoco',
     'If set, will run Widoco to generate documentation for this vocabulary.'
   )
-  .default('runWidoco', false)
+  .default('runWidoco', true)
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
@@ -94,10 +94,13 @@ function handleError(error) {
   console.error(error);
 }
 
-generator
-  .generate(CommandLine.askForArtifactInfo)
-  .then(CommandLine.askForArtifactVersionBumpType)
-  .then(CommandLine.askForArtifactToBeInstalled)
-  .then(CommandLine.askForArtifactToBePublished)
-  .then(CommandLine.askForArtifactToBeDocumented)
-  .catch(handleError);
+async () => {
+  generator
+      .generate(await CommandLine.askForArtifactInfo)
+      .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+      // .then(await CommandLine.askForArtifactToBeYalced)
+      .then(await CommandLine.askForArtifactToBeNpmInstalled)
+      .then(await CommandLine.askForArtifactToBeNpmPublished)
+      .then(await CommandLine.askForArtifactToBeDocumented)
+      .catch(handleError);
+};

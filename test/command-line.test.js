@@ -91,7 +91,10 @@ describe('Command Line unit tests', () => {
         return '1.1.10';
       });
 
-      const result = CommandLine.findPublishedVersionOfModule({ ...defaultInputs, publish: true });
+      const result = CommandLine.findPublishedVersionOfModule({
+        ...defaultInputs,
+        runNpmPublish: true,
+      });
 
       expect(result.publishedVersion).to.equal('1.1.10');
       expect(result.version).to.equal('1.1.10');
@@ -100,23 +103,28 @@ describe('Command Line unit tests', () => {
     it('Should not add to the result if artifact has not been published to the registry', () => {
       sinon.stub(childProcess, 'execSync').throws();
 
-      const result = CommandLine.findPublishedVersionOfModule({ ...defaultInputs, publish: true });
+      const result = CommandLine.findPublishedVersionOfModule({
+        ...defaultInputs,
+        runNpmPublish: true,
+      });
 
       expect(result.publishedVersion).to.equal(undefined);
       expect(result.version).to.equal(undefined);
     });
+
     it('Should publish artifact to the registry if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { publish: true };
+        return { runNpmPublish: true };
       });
 
       sinon.stub(childProcess, 'execSync').callsFake(() => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBePublished(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
-      expect(result.publish).to.equal(true);
+      expect(result.runNpmPublish).to.equal(true);
+      expect(result.ranNpmPublish).to.equal(true);
     });
 
     it('Should publish artifact to the registry if given explicit inputs', async () => {
@@ -124,18 +132,18 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBePublished({
+      const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
-        publish: true,
+        runNpmPublish: true,
       });
 
-      expect(result.publish).to.equal(true);
+      expect(result.runNpmPublish).to.equal(true);
       expect(result.ranNpmPublish).to.equal(true);
     });
 
     it('Should not publish artifact to the registry if user confirms no', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { publish: false };
+        return { runNpmPublish: false };
       });
 
       sinon
@@ -143,13 +151,14 @@ describe('Command Line unit tests', () => {
         .expects('execSync')
         .never();
 
-      const result = await CommandLine.askForArtifactToBePublished(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
-      expect(result.publish).to.equal(false);
+      expect(result.runNpmPublish).to.equal(false);
+      expect(result.ranNpmPublish).to.be.undefined;
     });
 
     it('Should not publish artifact if user did not specify publish, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBePublished({
+      const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
         noprompt: true,
       });
@@ -174,7 +183,7 @@ describe('Command Line unit tests', () => {
         return '1.2.10';
       });
 
-      const result = await CommandLine.askForArtifactVersionBumpType({
+      const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
         publishedVersion: '1.1.10',
         bumpVersion: 'minor',
@@ -195,7 +204,7 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactVersionBumpType({
+      const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
         publishedVersion: '1.1.10',
       });
@@ -216,7 +225,7 @@ describe('Command Line unit tests', () => {
 
       defaultInputs.publishedVersion = '1.1.10';
 
-      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmVersionBumped(defaultInputs);
 
       expect(result.bump).to.equal('no');
     });
@@ -234,7 +243,7 @@ describe('Command Line unit tests', () => {
 
       defaultInputs.publishedVersion = undefined;
 
-      const result = await CommandLine.askForArtifactVersionBumpType(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmVersionBumped(defaultInputs);
 
       expect(result.publishedVersion).to.equal(undefined);
     });
@@ -256,7 +265,7 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeInstalled({
+      const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
         install: true,
       });
@@ -273,7 +282,7 @@ describe('Command Line unit tests', () => {
         return '';
       });
 
-      const result = await CommandLine.askForArtifactToBeInstalled(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
       expect(result.ranNpmInstall).to.equal(true);
     });
@@ -283,13 +292,13 @@ describe('Command Line unit tests', () => {
         return { install: false };
       });
 
-      const result = await CommandLine.askForArtifactToBeInstalled(defaultInputs);
+      const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
       expect(result.ranNpmInstall).to.equal(undefined);
     });
 
     it('Should not install artifact if user did not specify install, and also set no prompting', async () => {
-      const result = await CommandLine.askForArtifactToBeInstalled({
+      const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
         noprompt: true,
       });
@@ -322,7 +331,7 @@ describe('Command Line unit tests', () => {
         ...defaultInputs,
         inputVocabList: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
-        widoco: true,
+        runWidoco: true,
       });
 
       expect(result.ranWidoco).to.equal(true);
@@ -330,7 +339,7 @@ describe('Command Line unit tests', () => {
 
     it('Should generate documentation if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { widoco: true };
+        return { runWidoco: true };
       });
 
       sinon.stub(childProcess, 'execSync').callsFake(() => {
@@ -348,7 +357,7 @@ describe('Command Line unit tests', () => {
 
     it('Should not generate documentation if user confirms no', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { widoco: false };
+        return { runWidoco: false };
       });
 
       const result = await CommandLine.askForArtifactToBeDocumented({

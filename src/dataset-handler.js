@@ -125,9 +125,10 @@ module.exports = class DatasetHandler {
     result.outputDirectory = this.argv.outputDirectory;
     result.author = this.findAuthor();
     result.install = this.argv.install;
-    result.publish = this.argv.publish;
+    result.runYalcCommand = this.argv.runYalcCommand;
+    result.runNpmPublish = this.argv.runNpmPublish;
     result.bumpVersion = this.argv.bumpVersion;
-    result.widoco = this.argv.widoco;
+    result.runWidoco = this.argv.runWidoco;
     result.noprompt = this.argv.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);

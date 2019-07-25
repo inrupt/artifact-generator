@@ -14,7 +14,7 @@ const CommandLine = require('../src/command-line');
 
 async function deleteDirectory(directory) {
   const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
+  console.log('Deleted all files and folders:\n', deletedPaths.join('\n'));
 }
 
 async function generateVocabArtifact(argv) {
@@ -23,12 +23,12 @@ async function generateVocabArtifact(argv) {
   const generator = new Generator({ ...argv, noprompt: true });
 
   await generator
-    .generate(CommandLine.askForArtifactInfo)
-    .then(CommandLine.askForArtifactVersionBumpType)
-    .then(CommandLine.askForArtifactToBeInstalled)
-    .then(CommandLine.askForArtifactToBePublished)
-    .then(CommandLine.askForArtifactToBeDocumented)
-    .then(console.log(`Generation process successful!`))
+    .generate(await CommandLine.askForArtifactInfo)
+    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    // .then(await CommandLine.askForArtifactToBeYalced)
+    .then(await CommandLine.askForArtifactToBeNpmInstalled)
+    .then(await CommandLine.askForArtifactToBeNpmPublished)
+    .then(await CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
       console.log(`Generation process failed: [${error}]`);
       console.error(error);
@@ -40,6 +40,8 @@ async function generateVocabArtifact(argv) {
   if (argv.install) {
     expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
   }
+
+  console.log(`Generation process successful!`);
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
@@ -67,11 +69,12 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
       outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
-      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      // litVocabTermVersion: '^1.0.11',
+      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+      litVocabTermVersion: '^1.0.13',
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
-      widoco: true,
+      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+      runWidoco: true,
     });
   });
 
@@ -81,10 +84,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
       // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.11',
+      litVocabTermVersion: '^1.0.13',
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
-      widoco: true,
+      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+      runWidoco: true,
     });
   });
 
