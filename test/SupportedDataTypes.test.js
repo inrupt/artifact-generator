@@ -10,7 +10,7 @@ const fs = require('fs');
 
 const del = require('del');
 
-const Generator = require('../src/generator');
+const GeneratorVocab = require('../src/generator/VocabGenerator');
 
 const doNothingPromise = data => {
   return new Promise((resolve, reject) => {
@@ -21,22 +21,20 @@ const doNothingPromise = data => {
 describe('Supported Data Type', () => {
   const outputDirectory = 'generated';
 
-  beforeEach(async () => {
+  it('should be able to generate vocabs for all the supported class data types', async () => {
     const deletedPaths = await del([`${outputDirectory}/*`]);
     console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
 
-    const generator = new Generator({
-      input: ['./test/vocabs/supported-data-types.ttl'],
+    const generator = new GeneratorVocab({
+      input: ['./test/resources/vocabs/supported-data-types.ttl'],
       outputDirectory: outputDirectory,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
     });
 
-    await generator.generate(doNothingPromise);
-  });
+    await generator.generate();
 
-  it('should be able to generate vocabs for all the supported class data types', async () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
+    var indexOutput = fs.readFileSync(`${outputDirectory}/Generated/lit_gen.js`).toString();
 
     expect(indexOutput).to.contains("class1: new LitVocabTerm(_NS('class1'), localStorage, true)");
     expect(indexOutput).to.contains(".addLabel('', `A rdfs class`)");
@@ -54,10 +52,6 @@ describe('Supported Data Type', () => {
       "class5: new LitVocabTerm(_NS('class5'), localStorage, true)"
     );
     expect(indexOutput).to.not.contains(".addLabel('', `Not supported class`)");
-  });
-
-  it('should be able to generate vocabs for all the supported property data types', () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).to.contains(
       "property1: new LitVocabTerm(_NS('property1'), localStorage, true)"
@@ -93,10 +87,10 @@ describe('Supported Data Type', () => {
       "property7: new LitVocabTerm(_NS('property7'), localStorage, true)"
     );
     expect(indexOutput).to.not.contains(".addLabel('', `Not supported property`)");
-  });
-
-  it('should be able to generate vocabs for all the supported literal data types', async () => {
-    var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
+    // });
+    //
+    // it('should be able to generate vocabs for all the supported literal data types', async () => {
+    //   var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).to.contains(
       "literal1: new LitVocabTerm(_NS('literal1'), localStorage, true)"

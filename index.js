@@ -7,18 +7,24 @@
 // they need a mocked local storage to work with.
 require('mock-local-storage')
 
-const Generator = require('./src/generator');
+const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
+const Generator = require('./src/generator/VocabGenerator');
 
-const CommandLine = require('./src/command-line');
+const CommandLine = require('./src/CommandLine');
 
 const argv = require('yargs')
   .array('input')
   .alias('input', 'i')
   .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
-  .demandOption(
-    'input',
-    'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
-  )
+  // Not mandatory, since we want the option of a vocab list file too...
+  // .demandOption(
+  //   'input',
+  //   'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
+  // )
+
+  .alias('vocabListFile', 'l')
+  .describe('vocabListFile', 'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.')
+
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
   .default('litVocabTermVersion', '^1.0.10')
@@ -85,22 +91,27 @@ const argv = require('yargs')
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
-  .strict().argv;
 
-const generator = new Generator(argv);
+  // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
+  // least one of these two...?)
+  .conflicts('input', 'vocabListFile')
+  .strict().argv;
 
 function handleError(error) {
   console.log(`Generation process failed: [${error}]`);
   console.error(error);
 }
 
+
+
+const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
 async () => {
-  generator
-      .generate(await CommandLine.askForArtifactInfo)
-      .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
-      // .then(await CommandLine.askForArtifactToBeYalced)
-      .then(await CommandLine.askForArtifactToBeNpmInstalled)
-      .then(await CommandLine.askForArtifactToBeNpmPublished)
-      .then(await CommandLine.askForArtifactToBeDocumented)
-      .catch(handleError);
-};
+  artifactGenerator
+    .generate()
+    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    // .then(await CommandLine.askForArtifactToBeYalced)
+    .then(await CommandLine.askForArtifactToBeNpmInstalled)
+    .then(await CommandLine.askForArtifactToBeNpmPublished)
+    .then(await CommandLine.askForArtifactToBeDocumented)
+    .catch(handleError);
+}}
