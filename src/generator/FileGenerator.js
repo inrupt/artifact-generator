@@ -25,7 +25,8 @@ function createSourceCodeFile(argv, templateData) {
   createFileFromTemplate(
     '../../templates/javascript-rdf-ext.hbs',
     templateData,
-    `${argv.outputDirectory}/Generated/${templateData.vocabName}.js`
+    `${argv.outputDirectory}/Generated/${templateData.vocabNameAndPrefixOverride ||
+      templateData.vocabName}.js`
   );
 }
 

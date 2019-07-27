@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "lit-js@inrupt.com",
+  "authors": "lit-js@inrupt.com",
   "license": "MIT",
   "dependencies": {
     "@lit/vocab-term": "^1.0.10"

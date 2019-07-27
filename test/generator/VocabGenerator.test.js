@@ -305,6 +305,7 @@ describe('Artifact generator unit tests', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
+
       const result = generator.buildTemplateInput(
         VocabGenerator.merge([dataset]),
         VocabGenerator.merge([])
@@ -319,6 +320,7 @@ describe('Artifact generator unit tests', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
+
       const result = generator.buildTemplateInput(
         VocabGenerator.merge([literalDataset]),
         VocabGenerator.merge([])
@@ -351,6 +353,7 @@ describe('Artifact generator unit tests', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
+
       const result = generator.buildTemplateInput(
         VocabGenerator.merge([literalDataset]),
         VocabGenerator.merge([])
@@ -383,6 +386,7 @@ describe('Artifact generator unit tests', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
+
       const result = generator.buildTemplateInput(
         VocabGenerator.merge([literalDataset]),
         VocabGenerator.merge([])
@@ -492,6 +496,7 @@ describe('Artifact generator unit tests', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
+
       const result = generator.buildTemplateInput(
         VocabGenerator.merge([dataset, literalDataset]),
         VocabGenerator.merge([literalDataset])
@@ -551,16 +556,16 @@ describe('Artifact generator unit tests', () => {
       expect(result.description).to.equal('');
     });
 
-    it('should read author from owl:Ontology terms', () => {
+    it('should read authors from owl:Ontology terms', () => {
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataset, owlOntologyDataset]),
         VocabGenerator.merge([owlOntologyDataset])
       );
 
-      expect(result.author).to.equal('Jarlath Holleran');
+      expect(result.authorSet).to.include('Jarlath Holleran');
     });
 
-    it('should default to lit-js@inrupt.com if author in not contained in owl:Ontology terms', () => {
+    it('should default to lit-js@inrupt.com if authors in not contained in owl:Ontology terms', () => {
       const owlOntologyDatasetWithNoAuthor = rdf
         .dataset()
         .addAll([
@@ -575,7 +580,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([owlOntologyDatasetWithNoAuthor])
       );
 
-      expect(result.author).to.equal('@lit/artifact-generator-js');
+      expect(result.authorSet).to.include('@lit/artifact-generator-js');
     });
   });
 });

@@ -8,8 +8,13 @@ const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
-    this.argv = argv;
+    this.artifactData = argv;
     this.inquirerProcess = inquirerProcess;
+
+    // This collection will be populated with an entry per generated vocab (when processing a vocab list file, we may
+    // be generating an artifact that bundles many generated vocabs).
+    this.artifactData.generatedVocabs = [];
+    this.artifactData.authorSet = new Set();
   }
 
   /**
@@ -22,53 +27,82 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
-    if (this.argv.vocabListFile) {
+    console.log();
+
+    if (this.artifactData.vocabListFile) {
       if (this.inquirerProcess) {
-        this.argv = await this.inquirerProcess(this.argv);
+        this.artifactData = await this.inquirerProcess(this.artifactData);
       }
+
+      console.log(
+        `Generating artifact from vocabulary list file: [${this.artifactData.vocabListFile}]`
+      );
 
       await this.generateFromVocabListFile();
     } else {
-      this.argv = await new VocabGenerator(this.argv, this.inquirerProcess).generate();
-      this.argv.generatedVocabs = [
-        { vocabName: this.argv.vocabName, vocabNameUpperCase: this.argv.vocabNameUpperCase },
-      ];
+      console.log(
+        `Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`
+      );
+
+      const vocabData = await new VocabGenerator(
+        this.artifactData,
+        this.inquirerProcess
+      ).generate();
+
+      this.artifactData.artifactName = vocabData.artifactName;
+      this.artifactData.description = vocabData.description;
+      this.artifactData.authors = Array.from(vocabData.authorSet).join(', ');
+      this.artifactData.generatedVocabs.push({
+        vocabName: vocabData.vocabName,
+        vocabNameUpperCase: vocabData.vocabNameUpperCase,
+      });
     }
 
-    return FileGenerator.createPackagingFiles(this.argv);
+    return FileGenerator.createPackagingFiles(this.artifactData);
   }
 
   async generateFromVocabListFile() {
     let generationDetails;
     try {
-      generationDetails = yaml.safeLoad(fs.readFileSync(this.argv.vocabListFile, 'utf8'));
+      console.log(`Processing YAML file...`);
+      generationDetails = yaml.safeLoad(fs.readFileSync(this.artifactData.vocabListFile, 'utf8'));
     } catch (error) {
-      throw new Error(`Failed to read vocabulary list file [${this.argv.vocabListFile}]: ${error}`);
+      throw new Error(
+        `Failed to read vocabulary list file [${this.artifactData.vocabListFile}]: ${error}`
+      );
     }
 
     // Set our overall artifact name directly from the YAML value.
-    this.argv.artifactName = generationDetails.artifactName;
+    this.artifactData.artifactName = generationDetails.artifactName;
 
     const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
       // Override our vocab inputs using this vocab list entry.
-      this.argv.input = vocabDetails.inputFiles;
-      this.argv.vocabTermsFrom = vocabDetails.termSelectionFile;
+      this.artifactData.input = vocabDetails.inputFiles;
+      this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
+      this.artifactData.vocabNameAndPrefixOverride = vocabDetails.vocabNameAndPrefixOverride;
 
-      return new VocabGenerator(this.argv, undefined).generate();
+      return new VocabGenerator(this.artifactData).generate();
     });
 
     // Wait for all our vocabs to be generated.
     const datasets = await Promise.all(vocabGenerationPromises);
 
     // Collect details from each generated vocab (to bundle them all together into our packaging artifact).
-    const authors = new Set();
+    const authorsAcrossAllVocabs = new Set();
     let description = `Bundle of vocabularies that includes the following:`;
     datasets.forEach(vocabData => {
       description += `\n  ${vocabData.vocabName}: ${vocabData.description}`;
-      authors.add(`${vocabData.author}`);
+      vocabData.authorSet.forEach(author => authorsAcrossAllVocabs.add(author));
+
+      this.artifactData.generatedVocabs.push({
+        vocabName: vocabData.vocabName,
+        vocabNameUpperCase: vocabData.vocabNameUpperCase,
+      });
     });
 
-    this.argv.author = `Vocabularies authored by: ${[...authors].join(', ')}.`;
-    this.argv.description = DatasetHandler.escapeStringForJson(description);
+    this.artifactData.authors = `Vocabularies authored by: ${Array.from(
+      authorsAcrossAllVocabs
+    ).join(', ')}.`;
+    this.artifactData.description = DatasetHandler.escapeStringForJson(description);
   }
 };

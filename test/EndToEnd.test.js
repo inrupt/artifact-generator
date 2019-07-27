@@ -5,9 +5,7 @@ require('mock-local-storage');
 const chai = require('chai').use(require('chai-as-promised'));
 chai.use(require('chai-string'));
 const expect = chai.expect;
-
 const fs = require('fs');
-
 const del = require('del');
 
 const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
@@ -26,7 +24,7 @@ describe('Ontology Generator', () => {
     console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
   });
 
-  describe('Builds node modules artifacts', () => {
+  describe('Build node module artifacts', () => {
     it('should fail if no ontology file', async () => {
       const errorFilename = './test/resources/vocabs/does.not.exist.ttl';
 
@@ -62,7 +60,7 @@ describe('Ontology Generator', () => {
           throw new Error('Should fail!');
         })
         .catch(error => {
-          expect(error).to.contain('Failed', errorFilename);
+          expect(error).contains('Failed', errorFilename);
         });
     });
 
@@ -84,7 +82,7 @@ describe('Ontology Generator', () => {
           throw new Error('Should fail!');
         })
         .catch(error => {
-          expect(error).to.contain(
+          expect(error).contains(
             'sampleTerm',
             'https://inrupt.net/vocab/different-IRI#',
             'https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#',
@@ -136,12 +134,12 @@ describe('Ontology Generator', () => {
       await generator.generate();
 
       expect(fs.existsSync(`${outputDirectory}/Generated/schema.js`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString()).contains(
         "Person: new LitVocabTerm(_NS('Person'), localStorage, true)"
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema"'
       );
     }).timeout(5000);
@@ -193,10 +191,10 @@ describe('Ontology Generator', () => {
         .readFileSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)
         .toString();
 
-      expect(indexOutput).to.contain("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contain("address: new LitVocabTerm(_NS('address')");
-      expect(indexOutput).to.contain("additionalName: new LitVocabTerm(_NS('additionalName')");
-      expect(indexOutput).to.contain(".addLabel('es', `Nombre adicional`)");
+      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
+      expect(indexOutput).contains("address: new LitVocabTerm(_NS('address')");
+      expect(indexOutput).contains("additionalName: new LitVocabTerm(_NS('additionalName')");
+      expect(indexOutput).contains(".addLabel('es', `Nombre adicional`)");
     }).timeout(5000);
 
     it('should be able to extend an ontology but only creates triples from extension file', async () => {
@@ -216,15 +214,15 @@ describe('Ontology Generator', () => {
         .readFileSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)
         .toString();
 
-      expect(indexOutput).to.contain("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contain(".addLabel('en', `Person`)");
-      expect(indexOutput).to.contain(".addLabel('fr', `La personne`)");
+      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
+      expect(indexOutput).contains(".addLabel('en', `Person`)");
+      expect(indexOutput).contains(".addLabel('fr', `La personne`)");
 
-      expect(indexOutput).to.contain('additionalName: new LitVocabTerm');
-      expect(indexOutput).to.contain('familyName: new LitVocabTerm');
-      expect(indexOutput).to.contain('givenName: new LitVocabTerm');
-      expect(indexOutput).to.contain(".addLabel('es', `Nombre de pila`)");
-      expect(indexOutput).to.contain(".addLabel('it', `Nome di battesimo`)");
+      expect(indexOutput).contains('additionalName: new LitVocabTerm');
+      expect(indexOutput).contains('familyName: new LitVocabTerm');
+      expect(indexOutput).contains('givenName: new LitVocabTerm');
+      expect(indexOutput).contains(".addLabel('es', `Nombre de pila`)");
+      expect(indexOutput).contains(".addLabel('it', `Nome di battesimo`)");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
     }).timeout(5000);
@@ -244,15 +242,15 @@ describe('Ontology Generator', () => {
 
       var indexOutput = fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString();
 
-      expect(indexOutput).to.contain("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contain(".addLabel('en', `Person`)");
-      expect(indexOutput).to.contain(".addLabel('fr', `La personne`)");
+      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
+      expect(indexOutput).contains(".addLabel('en', `Person`)");
+      expect(indexOutput).contains(".addLabel('fr', `La personne`)");
 
-      expect(indexOutput).to.contain('additionalName: new LitVocabTerm');
-      expect(indexOutput).to.contain('familyName: new LitVocabTerm');
-      expect(indexOutput).to.contain('givenName: new LitVocabTerm');
-      expect(indexOutput).to.contain(".addLabel('es', `Nombre de pila`)");
-      expect(indexOutput).to.contain(".addLabel('it', `Nome di battesimo`)");
+      expect(indexOutput).contains('additionalName: new LitVocabTerm');
+      expect(indexOutput).contains('familyName: new LitVocabTerm');
+      expect(indexOutput).contains('givenName: new LitVocabTerm');
+      expect(indexOutput).contains(".addLabel('es', `Nombre de pila`)");
+      expect(indexOutput).contains(".addLabel('it', `Nome di battesimo`)");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
     }).timeout(5000);
@@ -271,7 +269,7 @@ describe('Ontology Generator', () => {
       await generator.generate();
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"version": "1.0.5"'
       );
     });
@@ -306,7 +304,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema",'
       );
 
@@ -321,7 +319,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema-inrupt-ext",'
       );
     });
@@ -339,13 +337,13 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
           'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
       );
     });
 
-    it('should add a author inside the package.json', async () => {
+    it('should add a authors inside the package.json', async () => {
       const generator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory: outputDirectory,
@@ -358,7 +356,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.contain(
+      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
         '"author": "Jarlath Holleran"'
       );
     });

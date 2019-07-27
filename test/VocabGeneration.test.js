@@ -2,11 +2,9 @@ require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
-
 const { expect } = chai;
 
 const fs = require('fs');
-
 const del = require('del');
 
 const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
@@ -14,15 +12,15 @@ const CommandLine = require('../src/CommandLine');
 
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
+  // vocabListFile: '../../../vocab/Vocab-List-TEST.yml',
   outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: '1.0.0',
   // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
   litVocabTermVersion: '^1.0.13',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'lit-common',
-  install: true,
+  install: false,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-  runWidoco: false,
 };
 
 const GenerationConfigSolidComponent = {
@@ -51,7 +49,8 @@ const GenerationConfigSolidGeneratorUi = {
 
 async function deleteDirectory(directory) {
   const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log('Deleted all files and folders:\n', deletedPaths.join('\n'));
+  console.log(`Deleting all files and folders from [${directory}]:`);
+  console.log(deletedPaths.join('\n'));
 }
 
 async function generateVocabArtifact(argv) {
@@ -85,16 +84,6 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it.skip('Test Demo App', async () => {
-    generateVocabArtifact({
-      input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      outputDirectory: './generated',
-      artifactVersion: '1.0.0',
-      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      moduleNamePrefix: '@lit/generated-vocab-',
-    });
-  });
-
   // it('Generate ALL vocabs', async () => {
   it.skip('Generate ALL vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
@@ -124,6 +113,16 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       artifactVersion: '1.0.0',
       litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
       moduleNamePrefix: '@solid/generated-vocab-',
+    });
+  });
+
+  it.skip('Test Demo App', async () => {
+    generateVocabArtifact({
+      input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
+      outputDirectory: './generated',
+      artifactVersion: '1.0.0',
+      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+      moduleNamePrefix: '@lit/generated-vocab-',
     });
   });
 });

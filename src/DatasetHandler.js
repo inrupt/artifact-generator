@@ -16,10 +16,10 @@ const SUPPORTED_PROPERTIES = [
 const SUPPORTED_LITERALS = [RDFS.Literal];
 
 module.exports = class DatasetHandler {
-  constructor(fullDataset, subjectsOnlyDataset, argv) {
+  constructor(fullDataset, subjectsOnlyDataset, vocabData) {
     this.fullDataset = fullDataset;
     this.subjectsOnlyDataset = subjectsOnlyDataset;
-    this.argv = argv;
+    this.vocabData = vocabData;
   }
 
   handleTerms(quad, namespace) {
@@ -69,7 +69,7 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    const comment = DatasetHandler.getComment(comments);
+    const comment = DatasetHandler.getFirstComment(comments);
 
     return { name, comment, labels, comments, definitions };
   }
@@ -87,10 +87,10 @@ module.exports = class DatasetHandler {
   /**
    * Finds a comment from the comments array. First check if there is an English comment, next check for a default language
    * comment (''), then just get the first comment, or finally default to empty string.
-   * @param comments An array of comments containing comments and there language.
-   * @returns {string} Returns a string of the comment if founds, else empty string is returned.
+   * @param comments An array of comments containing comments and their language.
+   * @returns {string} Returns a string of the comment if found, else an empty string is returned.
    */
-  static getComment(comments) {
+  static getFirstComment(comments) {
     let found = comments.find(e => e.language === 'en');
 
     if (found === undefined) {
@@ -113,28 +113,24 @@ module.exports = class DatasetHandler {
     result.properties = [];
     result.literals = [];
 
-    result.inputVocabList = this.argv.input;
+    result.inputVocabList = this.vocabData.input;
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
-    result.vocabName = this.findPrefix();
+    result.vocabName = this.vocabData.vocabNameAndPrefixOverride || this.findPrefix();
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(result.vocabName);
     result.description = this.findDescription();
-    result.artifactVersion = this.argv.artifactVersion;
-    result.litVocabTermVersion = this.argv.litVocabTermVersion;
-    result.npmRegistry = this.argv.npmRegistry;
-    result.outputDirectory = this.argv.outputDirectory;
-    result.author = this.findAuthor();
-    result.install = this.argv.install;
-    result.runYalcCommand = this.argv.runYalcCommand;
-    result.runNpmPublish = this.argv.runNpmPublish;
-    result.bumpVersion = this.argv.bumpVersion;
-    result.runWidoco = this.argv.runWidoco;
-    result.noprompt = this.argv.noprompt;
-
-    // This collection will be populated with an entry per generated vocab (when processing a vocab list file, we may
-    // be generating an artifact that bundles many generated vocabs).
-    this.argv.generatedVocabs = [];
+    result.artifactVersion = this.vocabData.artifactVersion;
+    result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
+    result.npmRegistry = this.vocabData.npmRegistry;
+    result.outputDirectory = this.vocabData.outputDirectory;
+    result.authorSet = this.findAuthors();
+    result.install = this.vocabData.install;
+    result.runYalcCommand = this.vocabData.runYalcCommand;
+    result.runNpmPublish = this.vocabData.runNpmPublish;
+    result.bumpVersion = this.vocabData.bumpVersion;
+    result.runWidoco = this.vocabData.runWidoco;
+    result.noprompt = this.vocabData.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -212,8 +208,8 @@ module.exports = class DatasetHandler {
 
   artifactName() {
     return (
-      this.argv.artifactName ||
-      this.argv.moduleNamePrefix +
+      this.vocabData.artifactName ||
+      this.vocabData.moduleNamePrefix +
         this.findPrefix()
           .toLowerCase()
           .replace(/_/g, '-')
@@ -254,15 +250,20 @@ module.exports = class DatasetHandler {
     return value.replace('`', '\\`');
   }
 
-  findAuthor() {
+  findAuthors() {
     return this.findOwlOntology(owlOntologyTerms => {
       const onologyAuthors = this.fullDataset.match(
         owlOntologyTerms.subject,
         DCTERMS.creator,
         null
       );
-      return LitUtils.firstDatasetValue(onologyAuthors, DEFAULT_AUTHOR);
-    }, DEFAULT_AUTHOR);
+
+      return new Set(
+        onologyAuthors.size === 0
+          ? [DEFAULT_AUTHOR]
+          : onologyAuthors.toArray().map(authorQuad => authorQuad.object.value)
+      );
+    }, new Set([DEFAULT_AUTHOR]));
   }
 
   findOwlOntology(callback, defaultResult) {
@@ -273,6 +274,7 @@ module.exports = class DatasetHandler {
     if (owlOntologyTerms) {
       return callback(owlOntologyTerms);
     }
+
     return defaultResult || ''; // Default to return empty string
   }
 

@@ -8,41 +8,45 @@ const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class VocabGenerator {
-  constructor(argv, inquirerProcess) {
-    this.argv = argv;
+  constructor(artifactData, inquirerProcess) {
+    // Make sure we clone our input data (to keep it specific to our instance!).
+    this.vocabData = { ...artifactData };
+
+    this.artifactData = artifactData;
+
     this.inquirerProcess = inquirerProcess;
   }
 
   generate() {
-    const fileResourcesRelativeTo = this.argv.vocabListFile
-      ? path.dirname(this.argv.vocabListFile)
-      : '.';
     this.resources = new Resources(
-      this.argv.input,
-      this.argv.vocabTermsFrom,
-      fileResourcesRelativeTo
+      this.vocabData.input,
+      this.vocabData.vocabTermsFrom,
+      this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
     );
 
     return this.generateData()
       .then(data => {
         return this.inquirerProcess ? this.inquirerProcess(data) : data;
       })
-      .then(mergedData => {
-        return new Promise(resolve => {
-          this.argv.generatedVocabs.push({
-            vocabName: mergedData.vocabName,
-            vocabNameUpperCase: mergedData.vocabNameUpperCase,
-          });
+      .then(vocabGenerationData => {
+        console.log();
+        console.log(
+          `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
+            this.vocabData.vocabNameAndPrefixOverride ? '( from override)' : ''
+          }...`
+        );
+        console.log(`Input vocabulary file(s) [${this.vocabData.input.toString()}]...`);
 
-          GeneratorFile.createSourceCodeFile(this.argv, mergedData);
-          resolve(mergedData);
+        return new Promise(resolve => {
+          GeneratorFile.createSourceCodeFile(this.vocabData, vocabGenerationData);
+          resolve(vocabGenerationData);
         });
       });
   }
 
   generateData() {
-    return new Promise((resolve, reject) => {
-      this.resources
+    return new Promise(async (resolve, reject) => {
+      await this.resources
         .processInputs((fullDatasetsArray, vocabTermsOnlyDataset) => {
           const parsed = this.parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset);
           resolve(parsed);
@@ -62,7 +66,7 @@ module.exports = class VocabGenerator {
   }
 
   buildTemplateInput(fullData, subjectsOnlyDataset) {
-    const datasetHandler = new DatasetHandler(fullData, subjectsOnlyDataset, this.argv);
+    const datasetHandler = new DatasetHandler(fullData, subjectsOnlyDataset, this.vocabData);
     return datasetHandler.buildTemplateInput();
   }
 

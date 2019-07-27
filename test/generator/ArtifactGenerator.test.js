@@ -77,7 +77,7 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${testOutputDirectory}/index.js`)).to.be.true;
       expect(fs.existsSync(`${testOutputDirectory}/package.json`)).to.be.true;
 
-      expect(fs.existsSync(`${testOutputDirectory}/Generated/lit_gen.js`)).to.be.true;
+      expect(fs.existsSync(`${testOutputDirectory}/Generated/override-name.js`)).to.be.true;
       expect(fs.existsSync(`${testOutputDirectory}/Generated/schema-inrupt-ext.js`)).to.be.true;
 
       const indexOutput = fs.readFileSync(`${testOutputDirectory}/index.js`).toString();

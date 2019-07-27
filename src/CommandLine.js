@@ -33,12 +33,12 @@ module.exports = class CommandLine {
       });
     }
 
-    if (!data.author) {
+    if (!data.authorSet) {
       questions.push({
-        type: 'input',
-        name: 'author',
-        message: 'Artifact author ...',
-        default: data.author,
+        type: 'list',
+        name: 'authorSet',
+        message: 'Artifact authors ...',
+        default: data.authorSet,
       });
     }
 
@@ -272,7 +272,7 @@ module.exports = class CommandLine {
 
     ChildProcess.execSync(
       `cd ${data.outputDirectory} && java -jar ${widocoJar} -ontFile ${
-        data.inputVocabList[0]
+        data.input[0]
       } -outFolder ${CommandLine.getParentFolder(
         data.outputDirectory
       )}/Widoco -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`

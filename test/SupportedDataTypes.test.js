@@ -10,7 +10,7 @@ const fs = require('fs');
 
 const del = require('del');
 
-const GeneratorVocab = require('../src/generator/VocabGenerator');
+const VocabGenerator = require('../src/generator/VocabGenerator');
 
 const doNothingPromise = data => {
   return new Promise((resolve, reject) => {
@@ -25,16 +25,19 @@ describe('Supported Data Type', () => {
     const deletedPaths = await del([`${outputDirectory}/*`]);
     console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
 
-    const generator = new GeneratorVocab({
+    const generator = new VocabGenerator({
       input: ['./test/resources/vocabs/supported-data-types.ttl'],
       outputDirectory: outputDirectory,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
+
+      generatedVocabs: [],
+      authorSet: new Set(),
     });
 
     await generator.generate();
 
-    var indexOutput = fs.readFileSync(`${outputDirectory}/Generated/lit_gen.js`).toString();
+    const indexOutput = fs.readFileSync(`${outputDirectory}/Generated/lit_gen.js`).toString();
 
     expect(indexOutput).to.contain("class1: new LitVocabTerm(_NS('class1'), localStorage, true)");
     expect(indexOutput).to.contain(".addLabel('', `A rdfs class`)");
