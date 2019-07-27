@@ -19,7 +19,7 @@ const GenerationConfigLitCommon = {
   litVocabTermVersion: '^1.0.13',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'lit-common',
-  install: false,
+  install: true,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
 };
 
