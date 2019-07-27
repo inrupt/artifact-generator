@@ -12,145 +12,7 @@ const del = require('del');
 const ArtifactGenerator = require('../../src/generator/ArtifactGenerator');
 
 describe('Artifact Generator', () => {
-  describe('Processing vocab list file...', () => {
-    it('should ignore comments and empty lines', () => {
-      expect(ArtifactGenerator.extractLinesWithDetails('')).to.be.empty;
-      expect(ArtifactGenerator.extractLinesWithDetails('\n\n\n')).to.be.empty;
-      expect(ArtifactGenerator.extractLinesWithDetails('     ')).to.be.empty;
-      expect(ArtifactGenerator.extractLinesWithDetails('#')).to.be.empty;
-      expect(ArtifactGenerator.extractLinesWithDetails('   #')).to.be.empty;
-      expect(ArtifactGenerator.extractLinesWithDetails('   # Comment...')).to.be.empty;
-    });
-
-    it('should tokenize list of input files', () => {
-      const x = ArtifactGenerator.extractLinesWithDetails('file1.txt file2.txt', 1, 'inputFile');
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails('file1.txt file2.txt', 1, 'inputFile')[0]
-      ).to.deep.equal({ inputFiles: ['file1.txt', 'file2.txt'], lineNumber: 1 });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails(
-          '   file1.txt    file2.txt    ',
-          1,
-          'inputFile'
-        )[0]
-      ).to.deep.equal({ inputFiles: ['file1.txt', 'file2.txt'], lineNumber: 1 });
-    });
-
-    it('should fail if no valid selection file', () => {
-      expect(() => ArtifactGenerator.extractLinesWithDetails('[]', 1, 'inputFile')).to.throw(
-        'Invalid term selection file',
-        'empty term selection filename'
-      );
-      expect(() => ArtifactGenerator.extractLinesWithDetails(' [ ] ', 1, 'inputFile')).to.throw(
-        'Invalid term selection file',
-        'empty term selection filename'
-      );
-      expect(() =>
-        ArtifactGenerator.extractLinesWithDetails('file1 file2 [ ] ', 1, 'inputFile')
-      ).to.throw('Invalid term selection file', 'empty term selection filename');
-    });
-
-    it('should fail if valid selection file, but no inputs', () => {
-      expect(() => ArtifactGenerator.extractLinesWithDetails(' [file] ', 1, 'inputFile')).to.throw(
-        'Invalid term selection file',
-        '[file]',
-        'no input files'
-      );
-      expect(() => ArtifactGenerator.extractLinesWithDetails(' [ file] ', 1, 'inputFile')).to.throw(
-        'Invalid term selection file',
-        '[file]',
-        'no input files'
-      );
-      expect(() => ArtifactGenerator.extractLinesWithDetails(' [file ] ', 1, 'inputFile')).to.throw(
-        'Invalid term selection file',
-        '[file]',
-        'no input files'
-      );
-      expect(() =>
-        ArtifactGenerator.extractLinesWithDetails(' [ file ] ', 1, 'inputFile')
-      ).to.throw('Invalid term selection file', '[file]', 'no input files');
-    });
-
-    it('should fail if validly delimited selection file', () => {
-      expect(() =>
-        ArtifactGenerator.extractLinesWithDetails(' file1 file2 ] ', 1, 'inputFile')
-      ).to.throw(
-        'Invalid term selection file',
-        '[file]',
-        'incorrectly specified term selection filename'
-      );
-    });
-
-    it('should tokenize list of input files and selection file', () => {
-      expect(
-        ArtifactGenerator.extractLinesWithDetails('file1.txt file2.txt [x]', 1, 'inputFile')[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'x',
-        lineNumber: 1,
-      });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails('file1.txt file2.txt [file3]', 1, 'inputFile')[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'file3',
-        lineNumber: 1,
-      });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails(
-          '   file1.txt    file2.txt  [     file3 ]  ',
-          1,
-          'inputFile'
-        )[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'file3',
-        lineNumber: 1,
-      });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails(
-          '   file1.txt    file2.txt  [     file3]  ',
-          1,
-          'inputFile'
-        )[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'file3',
-        lineNumber: 1,
-      });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails(
-          '   file1.txt    file2.txt  [file3 ]  ',
-          1,
-          'inputFile'
-        )[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'file3',
-        lineNumber: 1,
-      });
-
-      expect(
-        ArtifactGenerator.extractLinesWithDetails(
-          '   file1.txt    file2.txt  [file3 ]  ',
-          1,
-          'inputFile'
-        )[0]
-      ).to.deep.equal({
-        inputFiles: ['file1.txt', 'file2.txt'],
-        selectTermsFromFile: 'file3',
-        lineNumber: 1,
-      });
-    });
-  });
-
-  describe('Processing valid vocab list file.', () => {
+  describe('Processing vocab list file.', () => {
     const outputDirectory = 'generated';
 
     beforeEach(() => {
@@ -160,9 +22,23 @@ describe('Artifact Generator', () => {
       })();
     });
 
+    it('should fail with non-existent vocab list file', async () => {
+      const nonExistFile = ' nonsense file name';
+      expect(new ArtifactGenerator({ vocabListFile: nonExistFile }).generate()).to.eventually.throw(
+        nonExistFile
+      );
+    });
+
+    it('should fail with invalid YAML vocab list file', async () => {
+      const notYamlFile = './test/resources/vocabs/vocab-list.txt';
+      expect(new ArtifactGenerator({ vocabListFile: notYamlFile }).generate()).to.eventually.throw(
+        notYamlFile
+      );
+    });
+
     it('should generate artifact from vocab list file', async () => {
       const artifactGenerator = new ArtifactGenerator({
-        vocabListFile: './test/resources/vocabs/vocab-list.txt',
+        vocabListFile: './test/resources/vocabs/vocab-list.yml',
         outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
         litVocabTermVersion: '^1.0.10',
@@ -171,23 +47,13 @@ describe('Artifact Generator', () => {
       });
 
       await artifactGenerator.generate();
-
-      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-
-      expect(fs.existsSync(`${outputDirectory}/Generated/lit_gen.js`)).to.be.true;
-      expect(fs.existsSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)).to.be.true;
-
-      const indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
-      expect(indexOutput).to.contains(
-        "module.exports.SCHEMA_INRUPT_EXT = require('./Generated/schema-inrupt-ext')"
-      );
+      verifyVocabList();
     });
 
-    it('should generate artifact from vocab list file', async () => {
+    it('should generate artifact from vocab list file (with inquirer)', async () => {
       let inquirerCalled = false;
       const inquirerProcess = data => {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
           inquirerCalled = true;
           resolve(data);
         });
@@ -195,30 +61,33 @@ describe('Artifact Generator', () => {
 
       const artifactGenerator = new ArtifactGenerator(
         {
-          vocabListFile: './test/resources/vocabs/vocab-list.txt',
+          vocabListFile: './test/resources/vocabs/vocab-list.yml',
           outputDirectory: outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
           moduleNamePrefix: '@lit/generated-vocab-',
-          noprompt: true,
         },
         inquirerProcess
       );
 
       await artifactGenerator.generate();
-
       expect(inquirerCalled).to.be.true;
+      verifyVocabList();
+    });
 
+    function verifyVocabList() {
       expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
 
       expect(fs.existsSync(`${outputDirectory}/Generated/lit_gen.js`)).to.be.true;
-      expect(fs.existsSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)).to.be.true;
+      // expect(fs.existsSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectory}/Generated/schema.js`)).to.be.true;
 
       const indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
       expect(indexOutput).to.contains(
-        "module.exports.SCHEMA_INRUPT_EXT = require('./Generated/schema-inrupt-ext')"
+        // "module.exports.SCHEMA_INRUPT_EXT = require('./Generated/schema-inrupt-ext')"
+        "module.exports.SCHEMA = require('./Generated/schema')"
       );
-    });
+    }
   });
 });

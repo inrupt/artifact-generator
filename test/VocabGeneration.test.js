@@ -12,6 +12,43 @@ const del = require('del');
 const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
 const CommandLine = require('../src/CommandLine');
 
+const GenerationConfigLitCommon = {
+  vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
+  outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+  artifactVersion: '1.0.0',
+  // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+  litVocabTermVersion: '^1.0.13',
+  moduleNamePrefix: '@lit/generated-vocab-',
+  artifactName: 'lit-common',
+  install: true,
+  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+  runWidoco: false,
+};
+
+const GenerationConfigSolidComponent = {
+  input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
+  outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
+  artifactVersion: '1.0.0',
+  // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+  litVocabTermVersion: '^1.0.13',
+  moduleNamePrefix: '@solid/generated-vocab-',
+  install: true,
+  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+  runWidoco: true,
+};
+
+const GenerationConfigSolidGeneratorUi = {
+  input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
+  outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
+  artifactVersion: '1.0.0',
+  // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+  litVocabTermVersion: '^1.0.13',
+  moduleNamePrefix: '@solid/generated-vocab-',
+  install: true,
+  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+  runWidoco: true,
+};
+
 async function deleteDirectory(directory) {
   const deletedPaths = await del([`${directory}/*`], { force: true });
   console.log('Deleted all files and folders:\n', deletedPaths.join('\n'));
@@ -44,7 +81,7 @@ async function generateVocabArtifact(argv) {
     expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
   }
 
-  console.log(`Generation process successful!`);
+  console.log(`Generation process successful!\n`);
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
@@ -58,50 +95,26 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 
+  // it('Generate ALL vocabs', async () => {
+  it.skip('Generate ALL vocabs', async () => {
+    await generateVocabArtifact(GenerationConfigLitCommon);
+    await generateVocabArtifact(GenerationConfigSolidComponent);
+    await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
+  }).timeout(30000);
+
   // it('LIT COMMON vocabs', async () => {
   it.skip('LIT vocabs', async () => {
-    await generateVocabArtifact({
-      vocabListFile: '../../../vocab/Vocab-List-LIT-Common.txt',
-      outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
-      artifactVersion: '1.0.0',
-      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.13',
-      moduleNamePrefix: '@solid/generated-vocab-',
-      artifactName: 'lit-common',
-      install: false,
-      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-      runWidoco: false,
-    });
+    await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
   // it('Solid Generator UI vocab', async () => {
   it.skip('Solid Generator UI vocab', async () => {
-    generateVocabArtifact({
-      input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
-      outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
-      artifactVersion: '1.0.0',
-      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.13',
-      moduleNamePrefix: '@solid/generated-vocab-',
-      install: true,
-      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-      runWidoco: true,
-    });
+    await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   });
 
   // it('Solid Component vocab', async () => {
   it.skip('Solid Component vocab', async () => {
-    generateVocabArtifact({
-      input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
-      outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
-      artifactVersion: '1.0.0',
-      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.13',
-      moduleNamePrefix: '@solid/generated-vocab-',
-      install: true,
-      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-      runWidoco: true,
-    });
+    await generateVocabArtifact(GenerationConfigSolidComponent);
   });
 
   it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
