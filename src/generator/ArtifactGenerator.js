@@ -46,14 +46,13 @@ module.exports = class ArtifactGenerator {
       throw new Error(`Failed to read vocabulary list file [${this.argv.vocabListFile}]: ${error}`);
     }
 
-    // // Read the vocab list file and generate a vocab for each valid line entry...
-    // const vocabGenerationPromises = ArtifactGenerator.extractLinesWithDetails(
-    //   fs.readFileSync(this.argv.vocabListFile, 'utf-8')
-    // )
+    // Set our overall artifact name directly from the YAML value.
+    this.argv.artifactName = generationDetails.artifactName;
+
     const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
-      // Override our vocab inputs using this file line entry
+      // Override our vocab inputs using this vocab list entry.
       this.argv.input = vocabDetails.inputFiles;
-      this.argv.vocabTermsFrom = vocabDetails.selectTermsFromFile;
+      this.argv.vocabTermsFrom = vocabDetails.termSelectionFile;
 
       return new VocabGenerator(this.argv, undefined).generate();
     });
@@ -69,7 +68,6 @@ module.exports = class ArtifactGenerator {
       authors.add(`${vocabData.author}`);
     });
 
-    this.argv.artifactName = `${this.argv.moduleNamePrefix}`;
     this.argv.author = `Vocabularies authored by: ${[...authors].join(', ')}.`;
     this.argv.description = DatasetHandler.escapeStringForJson(description);
   }

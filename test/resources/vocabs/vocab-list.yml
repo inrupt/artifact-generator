@@ -2,7 +2,7 @@
 # This file contains a simple list of vocabularies that we bundle together to
 # form the collective set vocabularies within a single artifact.
 #
-artifactName: "@lit/generated-vocab-common"
+artifactName: "@lit/generated-vocab-common-TEST"
 vocabList:
   - vocabName: schame.org
     inputFiles:

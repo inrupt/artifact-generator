@@ -212,10 +212,11 @@ module.exports = class DatasetHandler {
 
   artifactName() {
     return (
+      this.argv.artifactName ||
       this.argv.moduleNamePrefix +
-      this.findPrefix()
-        .toLowerCase()
-        .replace(/_/g, '-')
+        this.findPrefix()
+          .toLowerCase()
+          .replace(/_/g, '-')
     );
   }
 
