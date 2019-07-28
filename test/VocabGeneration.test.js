@@ -96,15 +96,15 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it('Generate ALL vocabs', async () => {
-  // it.skip('Generate ALL vocabs', async () => {
+  // it('Generate ALL vocabs', async () => {
+  it.skip('Generate ALL vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }).timeout(30000);
 
-  it('LIT COMMON vocabs', async () => {
-    // it.skip('LIT vocabs', async () => {
+  // it('LIT COMMON vocabs', async () => {
+  it.skip('LIT vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
   }).timeout(20000);
 
@@ -128,8 +128,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 
-  // it.skip('Test Demo App', async () => {
-  it('Test Demo App', async () => {
+  it.skip('Test Demo App', async () => {
+    // it('Test Demo App', async () => {
     generateVocabArtifact({
       // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
 

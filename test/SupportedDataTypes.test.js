@@ -21,9 +21,33 @@ const doNothingPromise = data => {
 describe('Supported Data Type', () => {
   const outputDirectory = 'generated';
 
+  it('should test the special-case handling for the OWL vocabulary', async () => {
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator({
+      input: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
+      outputDirectory: outputDirectory,
+      artifactVersion: '1.0.0',
+      moduleNamePrefix: 'lit-generated-vocab-',
+      vocabNameAndPrefixOverride: 'owl',
+
+      generatedVocabs: [],
+      authorSet: new Set(),
+    });
+
+    await generator.generate();
+
+    const indexOutput = fs.readFileSync(`${outputDirectory}/Generated/owl.js`).toString();
+
+    expect(indexOutput).to.contain('NAMESPACE = "http://www.w3.org/2002/07/owl#');
+    expect(indexOutput).to.contain(
+      "AllDifferent: new LitVocabTerm(_NS('AllDifferent'), localStorage, true)"
+    );
+    expect(indexOutput).to.contain(".addLabel('', `AllDifferent`)");
+  });
+
   it('should be able to generate vocabs for all the supported class data types', async () => {
-    const deletedPaths = await del([`${outputDirectory}/*`]);
-    console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
+    await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator({
       input: ['./test/resources/vocabs/supported-data-types.ttl'],

@@ -1,4 +1,4 @@
-const { RDF, RDFS, SCHEMA_INRUPT_EXT, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
@@ -6,7 +6,7 @@ const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
 // 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
-const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept];
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA.PaymentStatusType];
 
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
@@ -47,7 +47,7 @@ module.exports = class DatasetHandler {
     const name = fullName.split(namespace)[1];
     const nameEscapedForLanguage = name.replace(/-/g, '_');
 
-    this.subjectsOnlyDataset.match(quad.subject, SCHEMA_INRUPT_EXT.alternateName, null).forEach(subQuad => {
+    this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
@@ -59,7 +59,7 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(labels, subQuad);
     });
 
-    this.fullDataset.match(quad.subject, SCHEMA_INRUPT_EXT.alternateName, null).forEach(subQuad => {
+    this.fullDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
@@ -89,7 +89,7 @@ module.exports = class DatasetHandler {
   }
 
   static add(array, quad) {
-    if (DatasetHandler.doesNotContainLanguage(array, quad)) {
+    if (DatasetHandler.doesNotContainValueForLanguageAlready(array, quad)) {
       array.push({
         value: quad.object.value,
         valueEscapedForJavascript: DatasetHandler.escapeStringForJavascript(quad.object.value),
@@ -117,7 +117,7 @@ module.exports = class DatasetHandler {
     return found.value;
   }
 
-  static doesNotContainLanguage(array, quad) {
+  static doesNotContainValueForLanguageAlready(array, quad) {
     return array.length === 0 || !array.some(e => e.language === quad.object.language);
   }
 
