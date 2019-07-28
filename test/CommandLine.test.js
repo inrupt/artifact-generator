@@ -265,7 +265,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
-        install: true,
+        runNpmInstall: true,
       });
 
       expect(result.ranNpmInstall).to.equal(true);
@@ -273,7 +273,7 @@ describe('Command Line unit tests', () => {
 
     it('Should install artifact if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { install: true };
+        return { runNpmInstall: true };
       });
 
       sinon.stub(childProcess, 'execSync').callsFake(() => {
@@ -287,7 +287,7 @@ describe('Command Line unit tests', () => {
 
     it('Should not install artifact if user confirms no', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { install: false };
+        return { runNpmInstall: false };
       });
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);

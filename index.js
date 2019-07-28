@@ -33,18 +33,18 @@ const argv = require('yargs')
   .describe('outputDirectory', 'The output directory for the generated artifact.')
   .default('outputDirectory', './generated')
 
-  .boolean('install')
-  .alias('install', 'in')
+  .boolean('runNpmInstall')
+  .alias('runNpmInstall', 'in')
   .describe(
-    'install',
+    'runNpmInstall',
     'If set, will attempt to NPM install the generated artifact from within the output directory.'
   )
-  .default('install', false)
+  .default('runNpmInstall', false)
 
-  .boolean('publish')
-  .alias('publish', 'p')
-  .describe('publish', 'If set, will attempt to publish to the configured NPM registry.')
-  .default('publish', false)
+  .boolean('runNpmPublish')
+  .alias('runNpmPublish', 'p')
+  .describe('runNpmPublish', 'If set, will attempt to publish to the configured NPM registry.')
+  .default('runNpmPublish', false)
 
   .alias('bumpVersion', 'b')
   .describe(

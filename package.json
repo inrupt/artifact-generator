@@ -1,6 +1,6 @@
 {
   "name": "@lit/artifact-generator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A generator for building ontology artifacts",
   "main": "index.js",
   "bin": {
@@ -20,8 +20,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@lit/generated-vocab-common": "^1.2.9",
-    "@lit/vocab-term": "^1.0.11",
+    "@lit/generated-vocab-common": "^0.1.0",
+    "@lit/vocab-term": "^0.1.0",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
     "js-yaml": "^3.13.1",

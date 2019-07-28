@@ -103,7 +103,7 @@ module.exports = class CommandLine {
   }
 
   static async askForArtifactToBeNpmInstalled(data) {
-    if (data.install) {
+    if (data.runNpmInstall) {
       return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
     }
 
@@ -112,7 +112,7 @@ module.exports = class CommandLine {
       const npmInstallQuestion = [
         {
           type: 'confirm',
-          name: 'install',
+          name: 'runNpmInstall',
           message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
           default: true,
         },
@@ -120,7 +120,7 @@ module.exports = class CommandLine {
 
       answer = await inquirer.prompt(npmInstallQuestion);
 
-      if (answer.install) {
+      if (answer.runNpmInstall) {
         answer = { ...answer, ...CommandLine.runNpmInstall(data) };
       }
     }

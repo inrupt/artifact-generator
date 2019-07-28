@@ -12,8 +12,6 @@ module.exports = class VocabGenerator {
     // Make sure we clone our input data (to keep it specific to our instance!).
     this.vocabData = { ...artifactData };
 
-    this.artifactData = artifactData;
-
     this.inquirerProcess = inquirerProcess;
   }
 

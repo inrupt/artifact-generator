@@ -1,9 +1,13 @@
-const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, SCHEMA_INRUPT_EXT, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
-const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA.PaymentStatusType];
+// TODO: Special case here for Schema.org. The proper way to address this I
+// think is to allow use of inference, which would find automatically that
+// 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept];
+
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
   RDFS.Datatype,
@@ -13,6 +17,7 @@ const SUPPORTED_PROPERTIES = [
   OWL.AnnotationProperty,
   OWL.DatatypeProperty,
 ];
+
 const SUPPORTED_LITERALS = [RDFS.Literal];
 
 module.exports = class DatasetHandler {
@@ -31,9 +36,18 @@ module.exports = class DatasetHandler {
         `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] - currently this is disallowed (as it indicates a probable typo!)`
       );
     }
-    const name = fullName.split(namespace)[1];
 
-    this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
+    // We need to have the term name, but also that name escaped to be a valid
+    // variable name in our target programming languages. For example, DCTERMS
+    // defines the term 'http://purl.org/dc/terms/ISO639-2', but 'ISO639-2' is
+    // an invalid variable name. So we need to 'escape' it to be 'ISO639_2',
+    // but also have access (in our templates) to the actual term for use in
+    // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
+    // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
+    const name = fullName.split(namespace)[1];
+    const nameEscapedForLanguage = name.replace(/-/g, '_');
+
+    this.subjectsOnlyDataset.match(quad.subject, SCHEMA_INRUPT_EXT.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
@@ -45,7 +59,7 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(labels, subQuad);
     });
 
-    this.fullDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
+    this.fullDataset.match(quad.subject, SCHEMA_INRUPT_EXT.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
@@ -71,7 +85,7 @@ module.exports = class DatasetHandler {
 
     const comment = DatasetHandler.getFirstComment(comments);
 
-    return { name, comment, labels, comments, definitions };
+    return { name, nameEscapedForLanguage, comment, labels, comments, definitions };
   }
 
   static add(array, quad) {
@@ -117,7 +131,8 @@ module.exports = class DatasetHandler {
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
-    result.vocabName = this.vocabData.vocabNameAndPrefixOverride || this.findPrefix();
+    result.vocabName =
+      this.vocabData.vocabNameAndPrefixOverride || this.findPreferredNamespacePrefix();
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(result.vocabName);
     result.description = this.findDescription();
     result.artifactVersion = this.vocabData.artifactVersion;
@@ -125,7 +140,7 @@ module.exports = class DatasetHandler {
     result.npmRegistry = this.vocabData.npmRegistry;
     result.outputDirectory = this.vocabData.outputDirectory;
     result.authorSet = this.findAuthors();
-    result.install = this.vocabData.install;
+    result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runYalcCommand = this.vocabData.runYalcCommand;
     result.runNpmPublish = this.vocabData.runNpmPublish;
     result.bumpVersion = this.vocabData.bumpVersion;
@@ -137,34 +152,34 @@ module.exports = class DatasetHandler {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }
 
-    subjectSet.forEach(entry => {
-      this.handleClasses(entry, result);
-      this.handleProperties(entry, result);
-      this.handleLiterals(entry, result);
+    subjectSet.forEach(subject => {
+      this.handleClasses(subject, result);
+      this.handleProperties(subject, result);
+      this.handleLiterals(subject, result);
     });
 
     return result;
   }
 
-  handleClasses(entry, result) {
+  handleClasses(subject, result) {
     SUPPORTED_CLASSES.forEach(classType => {
-      this.fullDataset.match(entry, null, classType).forEach(quad => {
+      this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
         result.classes.push(this.handleTerms(quad, result.namespace));
       });
     });
   }
 
-  handleProperties(entry, result) {
+  handleProperties(subject, result) {
     SUPPORTED_PROPERTIES.forEach(propertyType => {
-      this.fullDataset.match(entry, null, propertyType).forEach(quad => {
+      this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
         result.properties.push(this.handleTerms(quad, result.namespace));
       });
     });
   }
 
-  handleLiterals(entry, result) {
+  handleLiterals(subject, result) {
     SUPPORTED_LITERALS.forEach(literalType => {
-      this.fullDataset.match(entry, null, literalType).forEach(quad => {
+      this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
         result.literals.push(this.handleTerms(quad, result.namespace));
       });
     });
@@ -182,12 +197,23 @@ module.exports = class DatasetHandler {
 
     if (!namespace) {
       const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
-      namespace = first.substring(0, first.lastIndexOf('/') + 1);
+
+      // Special-case handling for OWL, since it explicitly marks the IRI 'http://www.w3.org/2002/07/owl' as being the
+      // ontology, and not 'http://www.w3.org/2002/07/owl#', which I think it should be!
+      if (first === 'http://www.w3.org/2002/07/owl') {
+        namespace = 'http://www.w3.org/2002/07/owl#';
+      } else {
+        namespace = first.substring(
+          0,
+          Math.max(first.lastIndexOf('/'), first.lastIndexOf('#')) + 1
+        );
+      }
     }
+
     return namespace;
   }
 
-  findPrefix() {
+  findPreferredNamespacePrefix() {
     let prefix = this.findOwlOntology(owlOntologyTerms => {
       const ontologyPrefixes = this.fullDataset.match(
         owlOntologyTerms.subject,
@@ -210,7 +236,7 @@ module.exports = class DatasetHandler {
     return (
       this.vocabData.artifactName ||
       this.vocabData.moduleNamePrefix +
-        this.findPrefix()
+        this.findPreferredNamespacePrefix()
           .toLowerCase()
           .replace(/_/g, '-')
     );
