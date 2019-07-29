@@ -24,4 +24,4 @@ vcard-inrupt-ext:
 
 :fn a rdf:Property ;
     schema:alternateName "Name"@en ;
-    rdfs:comment "The formatted name of an agent (e.g. person or orgainization)."@en .
+    rdfs:comment "The formatted name of an agent (e.g. person or organisation)."@en .

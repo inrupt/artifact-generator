@@ -3,7 +3,6 @@ const yaml = require('js-yaml');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
-
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class ArtifactGenerator {

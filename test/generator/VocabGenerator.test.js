@@ -99,6 +99,13 @@ const dataSetC = rdf
     rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Family Name'), 'en'),
   ]);
 
+const dataSetD = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(SCHEMA.familyName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA.familyName, SKOS.definition, rdf.literal('Family Name'), 'en'),
+  ]);
+
 const overrideLabelTerms = rdf
   .dataset()
   .addAll([
@@ -266,7 +273,7 @@ describe('Artifact generator unit tests', () => {
       expect(result.properties.length).to.equal(0);
     });
 
-    it('Should have an empty comment for the class or property if one cant be found', () => {
+    it('Should use the label value if no comment and no definition', () => {
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetB])
@@ -274,7 +281,18 @@ describe('Artifact generator unit tests', () => {
 
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal('');
+      expect(result.properties[0].comment).to.equal('Given Name');
+    });
+
+    it('Should use the definition value if no comment', () => {
+      const result = vocabGenerator.buildTemplateInput(
+        dataSetD,
+        VocabGenerator.merge([emptyDataSet])
+      );
+
+      expect(result.properties[0].name).to.equal('familyName');
+      expect(result.properties.length).to.equal(1);
+      expect(result.properties[0].comment).to.equal('Family Name');
     });
 
     it('Should take any comment for the class or property if english or default cant be found', () => {
@@ -297,6 +315,21 @@ describe('Artifact generator unit tests', () => {
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties.length).to.equal(1);
       expect(result.properties[0].comment).to.equal('Given Name comment in french');
+    });
+
+    it('Should return empty comment if nothing found at all', () => {
+      const noDescriptivePredicates = rdf
+        .dataset()
+        .add(rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property));
+
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, noDescriptivePredicates]),
+        VocabGenerator.merge([noDescriptivePredicates])
+      );
+
+      expect(result.properties[0].name).to.equal('givenName');
+      expect(result.properties.length).to.equal(1);
+      expect(result.properties[0].comment).to.equal('');
     });
 
     it('Should allow the prefix for the name of the module can be configured', () => {
