@@ -78,14 +78,15 @@ module.exports = class DatasetHandler {
     if (DatasetHandler.doesNotContainLanguage(array, quad)) {
       array.push({
         value: quad.object.value,
+        valueEscapedForJavascript: DatasetHandler.escapeStringForJavascript(quad.object.value),
         language: quad.object.language,
       });
     }
   }
 
   /**
-   * Finds a comment from the comments array. First check if there is a english comment, next check for a default language
-   * comment (''), then just get the first comment or default to empty string.
+   * Finds a comment from the comments array. First check if there is an English comment, next check for a default language
+   * comment (''), then just get the first comment, or finally default to empty string.
    * @param comments An array of comments containing comments and there language.
    * @returns {string} Returns a string of the comment if founds, else empty string is returned.
    */
@@ -124,9 +125,10 @@ module.exports = class DatasetHandler {
     result.outputDirectory = this.argv.outputDirectory;
     result.author = this.findAuthor();
     result.install = this.argv.install;
-    result.publish = this.argv.publish;
+    result.runYalcCommand = this.argv.runYalcCommand;
+    result.runNpmPublish = this.argv.runNpmPublish;
     result.bumpVersion = this.argv.bumpVersion;
-    result.widoco = this.argv.widoco;
+    result.runWidoco = this.argv.runWidoco;
     result.noprompt = this.argv.noprompt;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
@@ -219,9 +221,12 @@ module.exports = class DatasetHandler {
 
   findDescription() {
     return this.findOwlOntology(owlOntologyTerms => {
-      const onologyComments = this.fullDataset.match(owlOntologyTerms.subject, RDFS.comment, null);
+      const onologyComments = this.fullDataset.match(
+        owlOntologyTerms.subject,
+        DCTERMS.description,
+        null
+      );
 
-      // Escape this description so that we can use it in the 'package.json' file.
       return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
     });
   }
@@ -238,6 +243,10 @@ module.exports = class DatasetHandler {
     // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
     const escaped = JSON.stringify(value);
     return escaped.substr(1, escaped.length - 2);
+  }
+
+  static escapeStringForJavascript(value) {
+    return value.replace('`', '\\`');
   }
 
   findAuthor() {

@@ -1,5 +1,7 @@
 'use strict';
 
+require('mock-local-storage');
+
 const chai = require('chai').use(require('chai-as-promised'));
 chai.use(require('chai-string'));
 const expect = chai.expect;
@@ -168,7 +170,7 @@ describe('Ontology Generator', () => {
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).to.contains("address: new LitVocabTerm(_NS('address')");
       expect(indexOutput).to.contains("additionalName: new LitVocabTerm(_NS('additionalName')");
-      expect(indexOutput).to.contains(".addLabel('es', 'Nombre adicional')");
+      expect(indexOutput).to.contains(".addLabel('es', `Nombre adicional`)");
     }).timeout(5000);
 
     it('should be able to extend an ontology but only creates triples from extention file', async () => {
@@ -186,14 +188,14 @@ describe('Ontology Generator', () => {
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contains(".addLabel('en', 'Person')");
-      expect(indexOutput).to.contains(".addLabel('fr', 'La personne')");
+      expect(indexOutput).to.contains(".addLabel('en', `Person`)");
+      expect(indexOutput).to.contains(".addLabel('fr', `La personne`)");
 
       expect(indexOutput).to.contains('additionalName: new LitVocabTerm');
       expect(indexOutput).to.contains('familyName: new LitVocabTerm');
       expect(indexOutput).to.contains('givenName: new LitVocabTerm');
-      expect(indexOutput).to.contains(".addLabel('es', 'Nombre de pila')");
-      expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
+      expect(indexOutput).to.contains(".addLabel('es', `Nombre de pila`)");
+      expect(indexOutput).to.contains(".addLabel('it', `Nome di battesimo`)");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
     }).timeout(5000);
@@ -213,14 +215,14 @@ describe('Ontology Generator', () => {
       var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
       expect(indexOutput).to.contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).to.contains(".addLabel('en', 'Person')");
-      expect(indexOutput).to.contains(".addLabel('fr', 'La personne')");
+      expect(indexOutput).to.contains(".addLabel('en', `Person`)");
+      expect(indexOutput).to.contains(".addLabel('fr', `La personne`)");
 
       expect(indexOutput).to.contains('additionalName: new LitVocabTerm');
       expect(indexOutput).to.contains('familyName: new LitVocabTerm');
       expect(indexOutput).to.contains('givenName: new LitVocabTerm');
-      expect(indexOutput).to.contains(".addLabel('es', 'Nombre de pila')");
-      expect(indexOutput).to.contains(".addLabel('it', 'Nome di battesimo')");
+      expect(indexOutput).to.contains(".addLabel('es', `Nombre de pila`)");
+      expect(indexOutput).to.contains(".addLabel('it', `Nome di battesimo`)");
 
       expect(indexOutput).to.not.contains('address: new LitVocabTerm');
     }).timeout(5000);

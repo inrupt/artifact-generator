@@ -1,5 +1,7 @@
 'use strict';
 
+require('mock-local-storage');
+
 const chai = require('chai');
 chai.use(require('chai-string'));
 const expect = chai.expect;
@@ -65,9 +67,13 @@ const owlOntologyDataset = rdf
   .dataset()
   .addAll([
     rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
     rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-    rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
+    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
+    rdf.quad(
+      extSubject,
+      DCTERMS.description,
+      rdf.literal("Extension comment with special ' character!")
+    ),
     rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
     rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
   ]);
@@ -162,19 +168,23 @@ describe('Artifact generator unit tests', () => {
       var personLabels = result.classes[0].labels;
       expect(personLabels).to.deep.include({
         value: 'Person',
+        valueEscapedForJavascript: 'Person',
         language: 'en',
       });
 
       expect(personLabels).to.deep.include({
         value: 'Person-fr',
+        valueEscapedForJavascript: 'Person-fr',
         language: 'fr',
       });
       expect(personLabels).to.deep.include({
         value: 'Person-de',
+        valueEscapedForJavascript: 'Person-de',
         language: 'de',
       });
       expect(personLabels).to.deep.include({
         value: 'Person-es',
+        valueEscapedForJavascript: 'Person-es',
         language: 'es',
       });
 
@@ -184,18 +194,22 @@ describe('Artifact generator unit tests', () => {
 
       expect(givenNameLabels).to.deep.include({
         value: 'Given Name',
+        valueEscapedForJavascript: 'Given Name',
         language: 'en',
       });
       expect(givenNameLabels).to.deep.include({
         value: 'Given Name-fr',
+        valueEscapedForJavascript: 'Given Name-fr',
         language: 'fr',
       });
       expect(givenNameLabels).to.deep.include({
         value: 'Given Name-de',
+        valueEscapedForJavascript: 'Given Name-de',
         language: 'de',
       });
       expect(givenNameLabels).to.deep.include({
         value: 'Given Name-es',
+        valueEscapedForJavascript: 'Given Name-es',
         language: 'es',
       });
     });
@@ -313,16 +327,19 @@ describe('Artifact generator unit tests', () => {
 
       expect(messageLiterals).to.deep.include({
         value: 'Hello',
+        valueEscapedForJavascript: 'Hello',
         language: 'en',
       });
 
       expect(messageLiterals).to.deep.include({
         value: 'Hola',
+        valueEscapedForJavascript: 'Hola',
         language: 'es',
       });
 
       expect(messageLiterals).to.deep.include({
         value: 'Bonjour',
+        valueEscapedForJavascript: 'Bonjour',
         language: 'fr',
       });
     });
@@ -342,16 +359,19 @@ describe('Artifact generator unit tests', () => {
 
       expect(messageComments).to.deep.include({
         value: 'Hello there',
+        valueEscapedForJavascript: 'Hello there',
         language: 'en',
       });
 
       expect(messageComments).to.deep.include({
         value: 'Hola',
+        valueEscapedForJavascript: 'Hola',
         language: 'es',
       });
 
       expect(messageComments).to.deep.include({
         value: 'Bonjour',
+        valueEscapedForJavascript: 'Bonjour',
         language: 'fr',
       });
     });
@@ -371,16 +391,19 @@ describe('Artifact generator unit tests', () => {
 
       expect(messageDefinitions).to.deep.include({
         value: 'Welcome',
+        valueEscapedForJavascript: 'Welcome',
         language: 'en',
       });
 
       expect(messageDefinitions).to.deep.include({
         value: 'Bienvenido',
+        valueEscapedForJavascript: 'Bienvenido',
         language: 'es',
       });
 
       expect(messageDefinitions).to.deep.include({
         value: 'Bienvenue',
+        valueEscapedForJavascript: 'Bienvenue',
         language: 'fr',
       });
     });
@@ -477,16 +500,19 @@ describe('Artifact generator unit tests', () => {
 
       expect(messageDefinitions).to.deep.include({
         value: 'Welcome',
+        valueEscapedForJavascript: 'Welcome',
         language: 'en',
       });
 
       expect(messageDefinitions).to.deep.include({
         value: 'Bienvenido',
+        valueEscapedForJavascript: 'Bienvenido',
         language: 'es',
       });
 
       expect(messageDefinitions).to.deep.include({
         value: 'Bienvenue',
+        valueEscapedForJavascript: 'Bienvenue',
         language: 'fr',
       });
     });
@@ -500,7 +526,7 @@ describe('Artifact generator unit tests', () => {
       expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
       expect(result.namespace).to.equal('http://rdf-extension.com');
       expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
-      expect(result.description).to.equal('Extension comment');
+      expect(result.description).to.equal("Extension comment with special ' character!");
     });
 
     it('should default description to empty string if rdfs:comment of an owl:Ontology term is not found', () => {

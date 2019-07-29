@@ -1,8 +1,9 @@
-'use strict';
+require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
-const expect = chai.expect;
+
+const { expect } = chai;
 
 const fs = require('fs');
 
@@ -10,6 +11,38 @@ const del = require('del');
 
 const Generator = require('../src/generator');
 const CommandLine = require('../src/command-line');
+
+async function deleteDirectory(directory) {
+  const deletedPaths = await del([`${directory}/*`], { force: true });
+  console.log('Deleted all files and folders:\n', deletedPaths.join('\n'));
+}
+
+async function generateVocabArtifact(argv) {
+  await deleteDirectory(argv.outputDirectory);
+
+  const generator = new Generator({ ...argv, noprompt: true });
+
+  await generator
+    .generate(await CommandLine.askForArtifactInfo)
+    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    // .then(await CommandLine.askForArtifactToBeYalced)
+    .then(await CommandLine.askForArtifactToBeNpmInstalled)
+    .then(await CommandLine.askForArtifactToBeNpmPublished)
+    .then(await CommandLine.askForArtifactToBeDocumented)
+    .catch(error => {
+      console.log(`Generation process failed: [${error}]`);
+      console.error(error);
+      throw new Error(error);
+    });
+
+  expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
+
+  if (argv.install) {
+    expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
+  }
+
+  console.log(`Generation process successful!`);
+}
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
   it.skip('LIT vocabs - WE DO NOT YET SUPPORT MULTIPLE VOCABS IN THIS JAVASCRIPT CODEBASE', async () => {
@@ -37,10 +70,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
       // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.11',
+      litVocabTermVersion: '^1.0.13',
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
-      widoco: true,
+      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+      runWidoco: true,
     });
   });
 
@@ -50,10 +84,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
       // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      litVocabTermVersion: '^1.0.11',
+      litVocabTermVersion: '^1.0.13',
       moduleNamePrefix: '@solid/generated-vocab-',
       install: true,
-      widoco: true,
+      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+      runWidoco: true,
     });
   });
 
@@ -67,31 +102,3 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 });
-
-async function generateVocabArtifact(argv) {
-  await deleteDirectory(argv.outputDirectory);
-
-  const generator = new Generator({ ...argv, noprompt: true });
-
-  const data = await generator
-    .generate(CommandLine.askForArtifactInfo)
-    .then(CommandLine.askForArtifactVersionBumpType)
-    .then(CommandLine.askForArtifactToBeInstalled)
-    .then(CommandLine.askForArtifactToBePublished)
-    .then(CommandLine.askForArtifactToBeDocumented)
-    .catch(error => {
-      console.log(`Generation process failed: [${error}]`);
-      console.error(error);
-      throw new Error(error);
-    });
-
-  expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
-
-  CommandLine.runNpmInstall(data);
-  expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
-}
-
-async function deleteDirectory(directory) {
-  const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log('Deleted all there files and folders:\n', deletedPaths.join('\n'));
-}

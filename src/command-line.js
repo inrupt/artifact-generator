@@ -51,7 +51,7 @@ module.exports = class CommandLine {
 
   static findPublishedVersionOfModule(data) {
     const cloneData = { ...data };
-    if (data.publish) {
+    if (data.runNpmPublish) {
       try {
         const publishedVersion = ChildProcess.execSync(`npm view ${data.artifactName} version`)
           .toString()
@@ -73,11 +73,12 @@ module.exports = class CommandLine {
     return cloneData;
   }
 
-  static async askForArtifactVersionBumpType(data) {
+  static async askForArtifactToBeNpmVersionBumped(data) {
     if (data.bumpVersion && data.publishedVersion) {
       return { ...data, ...CommandLine.runNpmVersion(data) }; // Merge the answers in with the data and return
     }
 
+    let answer = {};
     if (!data.noprompt && data.publishedVersion) {
       const bumpQuestion = [
         {
@@ -89,7 +90,7 @@ module.exports = class CommandLine {
         },
       ];
 
-      let answer = await inquirer.prompt(bumpQuestion);
+      answer = await inquirer.prompt(bumpQuestion);
 
       if (answer.bumpVersion && answer.bumpVersion !== 'no') {
         answer = { ...answer, ...CommandLine.runNpmVersion(data) };
@@ -101,23 +102,23 @@ module.exports = class CommandLine {
     return data;
   }
 
-  static async askForArtifactToBeInstalled(data) {
+  static async askForArtifactToBeNpmInstalled(data) {
     if (data.install) {
       return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
     }
 
-    let answer;
+    let answer = {};
     if (!data.noprompt) {
-      const publishQuestion = [
+      const npmInstallQuestion = [
         {
           type: 'confirm',
           name: 'install',
-          message: `Do you want to NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
+          message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
           default: true,
         },
       ];
 
-      answer = await inquirer.prompt(publishQuestion);
+      answer = await inquirer.prompt(npmInstallQuestion);
 
       if (answer.install) {
         answer = { ...answer, ...CommandLine.runNpmInstall(data) };
@@ -127,25 +128,25 @@ module.exports = class CommandLine {
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
-  static async askForArtifactToBePublished(data) {
-    if (data.publish && data.npmRegistry) {
+  static async askForArtifactToBeNpmPublished(data) {
+    if (data.runNpmPublish && data.npmRegistry) {
       return { ...data, ...CommandLine.runNpmPublish(data) }; // Merge the answers in with the data and return
     }
 
     let answer = {};
     if (!data.noprompt && data.npmRegistry) {
-      const publishQuestion = [
+      const npmPublishQuestion = [
         {
           type: 'confirm',
-          name: 'publish',
-          message: `Do you want to publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
+          name: 'runNpmPublish',
+          message: `Do you want to run NPM publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
           default: false,
         },
       ];
 
-      answer = await inquirer.prompt(publishQuestion);
+      answer = await inquirer.prompt(npmPublishQuestion);
 
-      if (answer.publish) {
+      if (answer.runNpmPublish) {
         answer = { ...answer, ...CommandLine.runNpmPublish(data) };
       }
     }
@@ -153,25 +154,51 @@ module.exports = class CommandLine {
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
+  // static async askForArtifactToBeYalced(data) {
+  //   if (data.runYalcCommand) {
+  //     return { ...data, ...CommandLine.runYalcCommand2(data) }; // Merge the answers in with the data and return
+  //   }
+  //
+  //   let answer = {};
+  //   if (!data.noprompt) {
+  //     const yalcQuestion = [
+  //       {
+  //         type: 'input',
+  //         name: 'runYalcCommand',
+  //         message: `Do you want to run yalc for [${data.artifactName}] (e.g. 'yalc publish' or 'yalc link @lit/vocab-term')?`,
+  //         default: '',
+  //       },
+  //     ];
+  //
+  //     answer = await inquirer.prompt(yalcQuestion);
+  //
+  //     if (answer.runYalcCommand && answer.runYalcCommand.trim().length > 0) {
+  //       answer = { ...answer, ...CommandLine.runYalcCommand({ ...data, ...answer }) };
+  //     }
+  //   }
+  //
+  //   return { ...data, ...answer }; // Merge the answers in with the data and return
+  // }
+
   static async askForArtifactToBeDocumented(data) {
-    if (data.widoco) {
+    if (data.runWidoco) {
       return { ...data, ...CommandLine.runWidoco(data) }; // Merge the answers in with the data and return
     }
 
     let answer = {};
     if (!data.noprompt) {
-      const publishQuestion = [
+      const runWidocoQuestion = [
         {
           type: 'confirm',
-          name: 'widoco',
+          name: 'runWidoco',
           message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
           default: false,
         },
       ];
 
-      answer = await inquirer.prompt(publishQuestion);
+      answer = await inquirer.prompt(runWidocoQuestion);
 
-      if (answer.widoco) {
+      if (answer.runWidoco) {
         answer = { ...answer, ...CommandLine.runWidoco(data) };
       }
     }
@@ -224,11 +251,24 @@ module.exports = class CommandLine {
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
 
+  // static runYalcCommand2(data) {
+  //   console.log(
+  //     `Running yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`
+  //   );
+  //
+  //   ChildProcess.execSync(`cd ${data.outputDirectory} && ${data.runYalcCommand}`);
+  //
+  //   console.log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
+  //
+  //   return { ...data, ...{ ranYalcCommand: true } }; // Merge the answers in with the data and return
+  // }
+
   static runWidoco(data) {
     console.log(`Running Widoco for artifact [${data.artifactName}]...`);
 
-    // Run Widoco from our local 'lib' directory...
-    const widocoJar = '../lib/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
+    // Run Widoco using environment variable (putting the JAR in a local 'lib'
+    // directory doesn't work with NPM publish, as it's too big at 46MB!)...
+    const widocoJar = '$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
 
     ChildProcess.execSync(
       `cd ${data.outputDirectory} && java -jar ${widocoJar} -ontFile ${
