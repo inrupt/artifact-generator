@@ -13,13 +13,11 @@ const CommandLine = require('../src/CommandLine');
 
 const defaultInputs = {
   artifactName: '@lit/generator-vocab-schema-ext',
-  author: 'lit@inrupt.com',
+  authorSet: new Set(['lit@inrupt.com']),
   npmRegistry: 'http://localhost:4873/',
 };
 
 describe('Command Line unit tests', () => {
-  beforeEach(() => {});
-
   afterEach(() => {
     // Restore the default sandbox here
     sinon.restore();
@@ -30,12 +28,12 @@ describe('Command Line unit tests', () => {
       const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, noprompt: true });
 
       expect(result.artifactName).to.equal('@lit/generator-vocab-schema-ext');
-      expect(result.author).to.equal('lit@inrupt.com');
+      expect(result.authorSet).to.include('lit@inrupt.com');
     });
 
     it('Should ask for artifact name', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { artifactName: 'lit-gen-schema-ext', author: 'inrupt' };
+        return { artifactName: 'lit-gen-schema-ext', authorSet: new Set(['inrupt']) };
       });
 
       sinon.stub(childProcess, 'execSync').callsFake(() => {
@@ -45,7 +43,7 @@ describe('Command Line unit tests', () => {
       const result = await CommandLine.askForArtifactInfo(defaultInputs);
 
       expect(result.artifactName).to.equal('lit-gen-schema-ext');
-      expect(result.author).to.equal('inrupt');
+      expect(result.authorSet).to.include('inrupt');
     });
 
     it('Should ask for artifact module name prefix, and override provided value', async () => {
@@ -74,14 +72,14 @@ describe('Command Line unit tests', () => {
       expect(result.litVocabTermVersion).to.equal('^1.2.3');
     });
 
-    it('Should ask for artifact author information if none provided', async () => {
+    it('Should ask for artifact authors information if none provided', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { author: 'test-inrupt' };
+        return { authorSet: ['test-inrupt'] };
       });
 
-      const result = await CommandLine.askForArtifactInfo(delete defaultInputs.author);
+      const result = await CommandLine.askForArtifactInfo(delete defaultInputs.authorSet);
 
-      expect(result.author).to.equal('test-inrupt');
+      expect(result.authorSet).to.include('test-inrupt');
     });
   });
 
@@ -267,7 +265,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
-        install: true,
+        runNpmInstall: true,
       });
 
       expect(result.ranNpmInstall).to.equal(true);
@@ -275,7 +273,7 @@ describe('Command Line unit tests', () => {
 
     it('Should install artifact if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { install: true };
+        return { runNpmInstall: true };
       });
 
       sinon.stub(childProcess, 'execSync').callsFake(() => {
@@ -289,7 +287,7 @@ describe('Command Line unit tests', () => {
 
     it('Should not install artifact if user confirms no', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { install: false };
+        return { runNpmInstall: false };
       });
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
@@ -315,7 +313,7 @@ describe('Command Line unit tests', () => {
 
       const result = CommandLine.runWidoco({
         ...defaultInputs,
-        inputVocabList: ['Dummy_vocab_file'],
+        input: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -329,7 +327,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputVocabList: ['Dummy_vocab_file'],
+        input: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
         runWidoco: true,
       });
@@ -348,7 +346,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputVocabList: ['Dummy_vocab_file'],
+        input: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -362,7 +360,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputVocabList: ['Dummy_vocab_file'],
+        input: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 

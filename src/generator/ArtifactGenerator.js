@@ -1,5 +1,5 @@
 const fs = require('fs');
-// const yaml = require('js-yaml');
+const yaml = require('js-yaml');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
@@ -8,8 +8,15 @@ const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
-    this.argv = argv;
+    this.artifactData = argv;
     this.inquirerProcess = inquirerProcess;
+
+    // This collection will be populated with an entry per generated vocab (when processing a vocab list file, we may
+    // be generating an artifact that bundles many generated vocabs).
+    this.artifactData.generatedVocabs = [];
+
+    // This collection will be populated with the authors per generated vocab.
+    this.artifactData.authorSet = new Set();
   }
 
   /**
@@ -22,118 +29,82 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
-    if (this.argv.vocabListFile) {
-      if (this.inquirerProcess) {
-        this.argv = await this.inquirerProcess(this.argv);
-      }
-
-      await this.generateFromVocabListFile();
-    } else {
-      this.argv = await new VocabGenerator(this.argv, this.inquirerProcess).generate();
-      this.argv.generatedVocabs = [
-        { vocabName: this.argv.vocabName, vocabNameUpperCase: this.argv.vocabNameUpperCase },
-      ];
+    console.log(); // Just a blank line on our output.
+    if (this.inquirerProcess) {
+      this.artifactData = await this.inquirerProcess(this.artifactData);
     }
 
-    return FileGenerator.createPackagingFiles(this.argv);
+    if (this.artifactData.vocabListFile) {
+      await this.generateFromVocabListFile();
+    } else {
+      await this.generateFromSingleVocab();
+    }
+
+    return FileGenerator.createPackagingFiles(this.artifactData);
+  }
+
+  async generateFromSingleVocab() {
+    console.log(
+      `Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`
+    );
+
+    const vocabData = await new VocabGenerator(this.artifactData, this.inquirerProcess).generate();
+
+    this.artifactData.artifactName = vocabData.artifactName;
+    this.artifactData.description = vocabData.description;
+    this.artifactData.authors = Array.from(vocabData.authorSet).join(', ');
+    this.artifactData.generatedVocabs.push({
+      vocabName: vocabData.vocabName,
+      vocabNameUpperCase: vocabData.vocabNameUpperCase,
+    });
   }
 
   async generateFromVocabListFile() {
-    // try {
-    //   var doc = yaml.safeLoad(fs.readFileSync(this.argv.vocabListFile, 'utf8'));
-    //   console.log(doc);
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    //
+    console.log(
+      `Generating artifact from vocabulary list file: [${this.artifactData.vocabListFile}]`
+    );
 
-    // Read the vocab list file and generate a vocab for each valid line entry...
-    const vocabGenerationPromises = ArtifactGenerator.extractLinesWithDetails(
-      fs.readFileSync(this.argv.vocabListFile, 'utf-8')
-    ).map(lineDetails => {
-      // Override our vocab inputs using this file line entry
-      this.argv.input = lineDetails.inputFiles;
-      this.argv.vocabTermsFrom = lineDetails.selectTermsFromFile;
+    let generationDetails;
+    try {
+      console.log(`Processing YAML file...`);
+      generationDetails = yaml.safeLoad(fs.readFileSync(this.artifactData.vocabListFile, 'utf8'));
+    } catch (error) {
+      throw new Error(
+        `Failed to read vocabulary list file [${this.artifactData.vocabListFile}]: ${error}`
+      );
+    }
 
-      return new VocabGenerator(this.argv, undefined).generate();
+    // Set our overall artifact name directly from the YAML value.
+    this.artifactData.artifactName = generationDetails.artifactName;
+
+    const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
+      // Override our vocab inputs using this vocab list entry.
+      this.artifactData.input = vocabDetails.inputFiles;
+      this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
+      this.artifactData.vocabNameAndPrefixOverride = vocabDetails.vocabNameAndPrefixOverride;
+
+      return new VocabGenerator(this.artifactData).generate();
     });
 
     // Wait for all our vocabs to be generated.
     const datasets = await Promise.all(vocabGenerationPromises);
 
     // Collect details from each generated vocab (to bundle them all together into our packaging artifact).
-    const authors = new Set();
+    const authorsAcrossAllVocabs = new Set();
     let description = `Bundle of vocabularies that includes the following:`;
     datasets.forEach(vocabData => {
       description += `\n  ${vocabData.vocabName}: ${vocabData.description}`;
-      authors.add(`${vocabData.author}`);
+      vocabData.authorSet.forEach(author => authorsAcrossAllVocabs.add(author));
+
+      this.artifactData.generatedVocabs.push({
+        vocabName: vocabData.vocabName,
+        vocabNameUpperCase: vocabData.vocabNameUpperCase,
+      });
     });
 
-    this.argv.artifactName = `${this.argv.moduleNamePrefix}`;
-    this.argv.author = `Vocabularies authored by: ${[...authors].join(', ')}.`;
-    this.argv.description = DatasetHandler.escapeStringForJson(description);
-  }
-
-  /**
-   * Read each line of our file, augment with it's line number (very useful when error reporting), filter out empty or
-   * comment lines, extract data on input vocabs and optional term selection file, then generate a vocab for each one.
-   *
-   * @param fileData
-   * @returns Collection of vocab-generation detail objects (one per vocab to be generated).
-   */
-  static extractLinesWithDetails(fileData) {
-    return fileData
-      .split(/\r?\n/)
-      .map((line, i) => ({ line, lineNumber: i + 1 }))
-      .filter(ArtifactGenerator.hasDetails)
-      .map(ArtifactGenerator.splitVocabListLine);
-  }
-
-  static hasDetails(lineData) {
-    const trimmedLine = lineData.line.trim();
-    return !(trimmedLine.length === 0 || trimmedLine.startsWith('#'));
-  }
-
-  static splitVocabListLine(lineData) {
-    const tokens = lineData.line.match(/\S+/g);
-    let lastToken = tokens[tokens.length - 1];
-
-    if (lastToken.endsWith(']')) {
-      // If we have a term selection filename last, then pop off this token, and remove the delimiter from the end...
-      lastToken = tokens.pop().slice(0, -1);
-
-      // If this last token is now empty (e.g. file was specified as '... [ file ]'), then pop again (to get 'file').
-      if (lastToken.length === 0) {
-        lastToken = tokens.pop();
-      }
-
-      // If our last token starts with '[' (e.g. file was specified as '... [file]' or '... [file ]')...
-      if (lastToken.startsWith('[')) {
-        lastToken = lastToken.substring(1);
-        if (lastToken.length === 0) {
-          throw new Error(
-            `Invalid term selection file - line [${lineData.lineNumber}] appears to have empty term selection filename (i.e. delimited by '[' and ']').`
-          );
-        }
-      } else if (tokens.pop() !== '[') {
-        throw new Error(
-          `Invalid term selection file - line [${lineData.lineNumber}] appears to have incorrectly specified term selection filename (needs to be delimited by '[' and ']').`
-        );
-      }
-
-      if (tokens.length === 0) {
-        throw new Error(
-          `Invalid term selection file - line [${lineData.lineNumber}] appears to have specified a term selection filename [${lastToken}], but no input files!`
-        );
-      }
-
-      return {
-        inputFiles: tokens,
-        selectTermsFromFile: lastToken,
-        lineNumber: lineData.lineNumber,
-      };
-    }
-
-    return { inputFiles: tokens, lineNumber: lineData.lineNumber };
+    this.artifactData.authors = `Vocabularies authored by: ${Array.from(
+      authorsAcrossAllVocabs
+    ).join(', ')}.`;
+    this.artifactData.description = DatasetHandler.escapeStringForJson(description);
   }
 };

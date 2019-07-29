@@ -7,7 +7,9 @@ const { LitUtils } = require('@lit/vocab-term');
 const formats = {
   parsers: new rdf.Parsers({
     'text/turtle': N3Parser,
+    'text/n3': N3Parser, // The OLO vocab returns this content type.
     'application/x-turtle': N3Parser, // This is needed as schema.org will returns this as the content type.
+    // 'application/rdf+xml': ???, // No XML parser available at the moment (https://github.com/rdf-ext/documentation).
   }),
 };
 

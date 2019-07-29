@@ -2,10 +2,14 @@
 # This file contains a simple list of vocabularies that we bundle together to
 # form the collective set vocabularies within a single artifact.
 #
-artifact:
-  vocabulary:
-    inputFiles: [ ./schema.ttl ]
-    termSelectFile: schema-inrupt-ext.ttl
+artifactName: "@lit/generated-vocab-common-TEST"
+vocabList:
+  - vocabDescriptiom: Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputFiles:
+      - schema.ttl
+    termSelectionFile: schema-inrupt-ext.ttl
 
-  vocabulary:
-    inputFiles: [ ./test/resources/vocabs/supported-data-types.ttl ]
+  - vocabDescriptiom: Vocab for testing predicate types...
+    vocabNameAndPrefixOverride: override-name
+    inputFiles:
+      - ./supported-data-types.ttl
