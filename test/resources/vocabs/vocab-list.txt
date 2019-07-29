@@ -1,0 +1,10 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+# Currently (JUly 2019) - the name of the generated artifact will be taken from the filename (prefixed with a
+# command-line prefix argument to the generator)...
+#
+
+schema.ttl [ schema-inrupt-ext.ttl ]
+supported-data-types.ttl

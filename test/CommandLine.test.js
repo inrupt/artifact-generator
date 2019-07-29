@@ -9,7 +9,7 @@ const inquirer = require('inquirer');
 
 const childProcess = require('child_process');
 
-const CommandLine = require('../src/command-line');
+const CommandLine = require('../src/CommandLine');
 
 const defaultInputs = {
   artifactName: '@lit/generator-vocab-schema-ext',

@@ -10,14 +10,12 @@ const rdf = require('rdf-ext');
 
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 
-const Generator = require('../src/generator');
-const generator = new Generator({
+const VocabGenerator = require('../../src/generator/VocabGenerator');
+const vocabGenerator = new VocabGenerator({
   input: [],
   artifactVersion: '1.0.0',
   moduleNamePrefix: 'lit-generated-vocab-',
 });
-
-const DatasetHandler = require('../src/dataset-handler');
 
 const dataset = rdf
   .dataset()
@@ -155,9 +153,9 @@ describe('Artifact generator unit tests', () => {
 
   describe('Building the Template input', () => {
     it('should create a simple JSON object with all the fields', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataset, datasetExtension]),
-        Generator.merge([datasetExtension])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataset, datasetExtension]),
+        VocabGenerator.merge([datasetExtension])
       );
       expect(result.namespace).to.equal('http://schema.org/');
       expect(result.artifactName).to.equal('lit-generated-vocab-schema');
@@ -215,9 +213,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB]),
-        Generator.merge([dataSetA, dataSetB])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -225,9 +223,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from A (not B)', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB]),
-        Generator.merge([dataSetA])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([dataSetA])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -235,9 +233,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A and B, and generate code from B (not A)', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB]),
-        Generator.merge([dataSetB])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([dataSetB])
       );
 
       expect(result.classes.length).to.equal(0);
@@ -245,9 +243,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB, dataSetC]),
-        Generator.merge([dataSetA, dataSetB])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB, dataSetC]),
+        VocabGenerator.merge([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).to.equal('Person');
@@ -256,9 +254,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should handle empty datasets', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([emptyDataSet]),
-        Generator.merge([emptyDataSet])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([emptyDataSet]),
+        VocabGenerator.merge([emptyDataSet])
       );
 
       expect(result.namespace).to.equal('');
@@ -269,9 +267,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should have an empty comment for the class or property if one cant be found', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB]),
-        Generator.merge([dataSetB])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([dataSetB])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
@@ -291,9 +289,9 @@ describe('Artifact generator unit tests', () => {
           ),
         ]);
 
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetFrenchOnlyComment]),
-        Generator.merge([dataSetFrenchOnlyComment])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetFrenchOnlyComment]),
+        VocabGenerator.merge([dataSetFrenchOnlyComment])
       );
 
       expect(result.properties[0].name).to.equal('givenName');
@@ -302,25 +300,28 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should allow the prefix for the name of the module can be configured', () => {
-      const generator = new Generator({
-        input: [],
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: 'my-company-prefix-',
-      });
-      const result = generator.buildTemplateInput(Generator.merge([dataset]), Generator.merge([]));
-
-      expect(result.artifactName).to.equal('my-company-prefix-schema');
-    });
-
-    it('Should create label vocab terms for literals', () => {
-      const generator = new Generator({
+      const generator = new VocabGenerator({
         input: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
       const result = generator.buildTemplateInput(
-        Generator.merge([literalDataset]),
-        Generator.merge([])
+        VocabGenerator.merge([dataset]),
+        VocabGenerator.merge([])
+      );
+
+      expect(result.artifactName).to.equal('my-company-prefix-schema');
+    });
+
+    it('Should create label vocab terms for literals', () => {
+      const generator = new VocabGenerator({
+        input: [],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      });
+      const result = generator.buildTemplateInput(
+        VocabGenerator.merge([literalDataset]),
+        VocabGenerator.merge([])
       );
 
       var messageLiterals = result.literals[0].labels;
@@ -345,14 +346,14 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should create comments vocab terms for literals', () => {
-      const generator = new Generator({
+      const generator = new VocabGenerator({
         input: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
       const result = generator.buildTemplateInput(
-        Generator.merge([literalDataset]),
-        Generator.merge([])
+        VocabGenerator.merge([literalDataset]),
+        VocabGenerator.merge([])
       );
 
       var messageComments = result.literals[0].comments;
@@ -377,14 +378,14 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('Should create defination vocab terms for literals', () => {
-      const generator = new Generator({
+      const generator = new VocabGenerator({
         input: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
       const result = generator.buildTemplateInput(
-        Generator.merge([literalDataset]),
-        Generator.merge([])
+        VocabGenerator.merge([literalDataset]),
+        VocabGenerator.merge([])
       );
 
       var messageDefinitions = result.literals[0].definitions;
@@ -409,11 +410,11 @@ describe('Artifact generator unit tests', () => {
     });
   });
 
-  describe('Vocab terms from extention dataset', () => {
+  describe('Vocab terms from extension dataset', () => {
     it('should override label terms of the main datasets', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
-        Generator.merge([overrideLabelTerms])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB, dataSetC, overrideLabelTerms]),
+        VocabGenerator.merge([overrideLabelTerms])
       );
 
       var person = result.classes[0];
@@ -436,9 +437,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should override comment terms of the main datasets', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
-        Generator.merge([overrideCommentTerms])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB, dataSetC, overrideCommentTerms]),
+        VocabGenerator.merge([overrideCommentTerms])
       );
 
       var person = result.classes[0];
@@ -461,9 +462,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should override label with alternativeNames from the vocab terms', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
-        Generator.merge([overrideAtlNameTerms])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataSetA, dataSetB, dataSetC, overrideAtlNameTerms]),
+        VocabGenerator.merge([overrideAtlNameTerms])
       );
 
       var person = result.classes[0];
@@ -485,15 +486,15 @@ describe('Artifact generator unit tests', () => {
       expect(familyName.labels[0].value).to.equal('Alt Family Name');
     });
 
-    it('Should create definition vocab terms for literals from extentions', () => {
-      const generator = new Generator({
+    it('Should create definition vocab terms for literals from extensions', () => {
+      const generator = new VocabGenerator({
         input: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
       const result = generator.buildTemplateInput(
-        Generator.merge([dataset, literalDataset]),
-        Generator.merge([literalDataset])
+        VocabGenerator.merge([dataset, literalDataset]),
+        VocabGenerator.merge([literalDataset])
       );
 
       var messageDefinitions = result.literals[0].definitions;
@@ -518,9 +519,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should take description from the rdfs:comment of an owl:Ontology term', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataset, owlOntologyDataset]),
-        Generator.merge([owlOntologyDataset])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataset, owlOntologyDataset]),
+        VocabGenerator.merge([owlOntologyDataset])
       );
 
       expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
@@ -539,9 +540,9 @@ describe('Artifact generator unit tests', () => {
           rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
         ]);
 
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataset, owlOntologyDatasetWithNoComment]),
-        Generator.merge([owlOntologyDatasetWithNoComment])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataset, owlOntologyDatasetWithNoComment]),
+        VocabGenerator.merge([owlOntologyDatasetWithNoComment])
       );
 
       expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
@@ -551,9 +552,9 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should read author from owl:Ontology terms', () => {
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataset, owlOntologyDataset]),
-        Generator.merge([owlOntologyDataset])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataset, owlOntologyDataset]),
+        VocabGenerator.merge([owlOntologyDataset])
       );
 
       expect(result.author).to.equal('Jarlath Holleran');
@@ -569,9 +570,9 @@ describe('Artifact generator unit tests', () => {
           rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
           rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
         ]);
-      const result = generator.buildTemplateInput(
-        Generator.merge([dataset, owlOntologyDatasetWithNoAuthor]),
-        Generator.merge([owlOntologyDatasetWithNoAuthor])
+      const result = vocabGenerator.buildTemplateInput(
+        VocabGenerator.merge([dataset, owlOntologyDatasetWithNoAuthor]),
+        VocabGenerator.merge([owlOntologyDatasetWithNoAuthor])
       );
 
       expect(result.author).to.equal('@lit/artifact-generator-js');

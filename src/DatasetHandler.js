@@ -117,7 +117,8 @@ module.exports = class DatasetHandler {
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
-    result.vocabNameUpperCase = this.vocabNameUpperCase();
+    result.vocabName = this.findPrefix();
+    result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(result.vocabName);
     result.description = this.findDescription();
     result.artifactVersion = this.argv.artifactVersion;
     result.litVocabTermVersion = this.argv.litVocabTermVersion;
@@ -130,6 +131,10 @@ module.exports = class DatasetHandler {
     result.bumpVersion = this.argv.bumpVersion;
     result.runWidoco = this.argv.runWidoco;
     result.noprompt = this.argv.noprompt;
+
+    // This collection will be populated with an entry per generated vocab (when processing a vocab list file, we may
+    // be generating an artifact that bundles many generated vocabs).
+    this.argv.generatedVocabs = [];
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -193,6 +198,7 @@ module.exports = class DatasetHandler {
         VANN.preferredNamespacePrefix,
         null
       );
+
       return LitUtils.firstDatasetValue(ontologyPrefixes);
     });
 
@@ -213,10 +219,8 @@ module.exports = class DatasetHandler {
     );
   }
 
-  vocabNameUpperCase() {
-    return this.findPrefix()
-      .toUpperCase()
-      .replace(/-/g, '_');
+  static vocabNameUpperCase(name) {
+    return name.toUpperCase().replace(/-/g, '_');
   }
 
   findDescription() {

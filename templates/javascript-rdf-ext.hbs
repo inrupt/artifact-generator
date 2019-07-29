@@ -31,8 +31,8 @@ const {{vocabNameUpperCase}} = {
       .addLabel('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each comments}}
-      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
-{{/each}},
+      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`){{#if @last}},{{/if}}
+{{/each}}
     {{/each}}
 {{/if}}
 
@@ -50,8 +50,8 @@ const {{vocabNameUpperCase}} = {
       .addLabel('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each comments}}
-      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
-{{/each}},
+      .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`){{#if @last}},{{/if}}
+{{/each}}
     {{/each}}
 {{/if}}
 
@@ -72,8 +72,8 @@ const {{vocabNameUpperCase}} = {
       .addComment('{{language}}', `{{{valueEscapedForJavascript}}}`)
 {{/each}}
 {{#each definitions}}
-      .addMessage('{{language}}', `{{{valueEscapedForJavascript}}}`)
-{{/each}},
+      .addMessage('{{language}}', `{{{valueEscapedForJavascript}}}`){{#if @last}},{{/if}}
+{{/each}}
     {{/each}}
 {{/if}}
   //

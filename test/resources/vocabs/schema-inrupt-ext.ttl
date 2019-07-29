@@ -74,4 +74,5 @@ schema:additionalName a rdf:Property ;
     rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
 
 schema:newTerm a rdf:Property ;
-    rdfs:label "newTerm" .
+    rdfs:label "newTerm" ;
+    rdfs:comment "Must have comment too!"@en .

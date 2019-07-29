@@ -9,8 +9,8 @@ const fs = require('fs');
 
 const del = require('del');
 
-const Generator = require('../src/generator');
-const CommandLine = require('../src/command-line');
+const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
+const CommandLine = require('../src/CommandLine');
 
 async function deleteDirectory(directory) {
   const deletedPaths = await del([`${directory}/*`], { force: true });
@@ -20,10 +20,13 @@ async function deleteDirectory(directory) {
 async function generateVocabArtifact(argv) {
   await deleteDirectory(argv.outputDirectory);
 
-  const generator = new Generator({ ...argv, noprompt: true });
+  const generator = new ArtifactGenerator(
+    { ...argv, noprompt: true },
+    CommandLine.askForArtifactInfo
+  );
 
   await generator
-    .generate(await CommandLine.askForArtifactInfo)
+    .generate()
     .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
     .then(await CommandLine.askForArtifactToBeNpmInstalled)
@@ -45,15 +48,6 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it.skip('LIT vocabs - WE DO NOT YET SUPPORT MULTIPLE VOCABS IN THIS JAVASCRIPT CODEBASE', async () => {
-    generateVocabArtifact(
-      ['SHOULD BE RDF, RDFS, Schema.org, etc.'],
-      '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
-      '1.0.0',
-      '^1.0.0'
-    );
-  });
-
   it.skip('Test Demo App', async () => {
     generateVocabArtifact({
       input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
@@ -64,6 +58,23 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 
+  // it('LIT COMMON vocabs', async () => {
+  it.skip('LIT vocabs', async () => {
+    await generateVocabArtifact({
+      vocabListFile: '../../../vocab/Vocab-List-LIT-Common.txt',
+      outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+      artifactVersion: '1.0.0',
+      // litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
+      litVocabTermVersion: '^1.0.13',
+      moduleNamePrefix: '@solid/generated-vocab-',
+      artifactName: 'lit-common',
+      install: false,
+      // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+      runWidoco: false,
+    });
+  });
+
+  // it('Solid Generator UI vocab', async () => {
   it.skip('Solid Generator UI vocab', async () => {
     generateVocabArtifact({
       input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
@@ -78,6 +89,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 
+  // it('Solid Component vocab', async () => {
   it.skip('Solid Component vocab', async () => {
     generateVocabArtifact({
       input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
