@@ -1,7 +1,7 @@
 
 # Ontology Artifact Generator
 
-Builds deployable artifacts for various programming languages (e.g. NPM Node modules for Javascript, or JARs for Java, or assemblies for C#, etc.) that contain source code files defining programming-language-specific constants for RDF vocabulary terms. For example, our generator might produce the following Javascript constant to represent the Person class from Schema.org:
+Builds deployable artifacts for various programming languages (e.g. NPM Node modules for Javascript, or JARs for Java, or assemblies for C#, etc.) that have source files defining programming-language-specific constants for RDF vocabulary terms. For example, our generator might produce the following Javascript constant to represent the Person class from Schema.org (i.e. `https://schema.org/Person`):
 ```
     /**
      * A person (alive, dead, undead, or fictional).
@@ -11,15 +11,17 @@ Builds deployable artifacts for various programming languages (e.g. NPM Node mod
       .addComment('en', `A person (alive, dead, undead, or fictional).`),
 ```
 
-The generator can crete source-code for Classes and Properties found in existing common vocabularies today (e.g. Schema.org, FOAF, VCard, GConsent, etc.), or from local vocabularies (for example local Turtle files).
+The generator can create source-code for Classes and Properties found in existing online vocabularies today (e.g. Schema.org, FOAF, VCard, GConsent, etc.), or from local vocabularies (for example local Turtle files).
 
-It also allows aspects of vocabulary terms (e.g. a term's rdfs:label, or rdfs:comment) to be overridden with new values (e.g. if you don't like Schema.org's label for the property `givenName`, then you can define your own value of `Given name` to override it), or to include new translations for existing term labels or comments (e.g. to provide a Spanish rdfs:comment for Schema.org's Person class of 'Una persona (viva, muerta, no muerta o ficticia)').
+It also allows aspects of vocabulary terms (e.g. a term's rdfs:label, or rdfs:comment) to be overridden with new values (e.g. if you don't like Schema.org's label for the property `givenName`, then you can define your own value of `Given name` to override it). Or you may wish to include new translations for existing term labels or comments (e.g. to provide a Spanish rdfs:comment for Schema.org's Person class, say 'Una persona (viva, muerta, no muerta o ficticia)').
 
-Another useful feature is the ability to select only specific terms from an existing vocabulary. For instance, Schema.org today defines alomost 2,000 terms. But perhaps you only want to use 20 of those terms in your application. To do this, we can simply define our own local vocabulary that lists those 20 terms we do want, and specify that when running our generator using the `--vocabTermsFrom` command-line argument (see examples below).
+Another useful feature is the ability to select only specific terms from an existing vocabulary. For instance, Schema.org today defines almost 2,000 terms. But perhaps you only want to use 20 of those terms in your application. To do this, we can simply define our own local vocabulary that lists those 20 terms we want, and specify that when running our generator using the `--vocabTermsFrom` command-line argument (see examples below).
 
 Putting this all together, we can very easily create our own vocabularies in any standard W3C serialization of RDF (e.g. Turtle, JSON-LD, N-Triples, etc.), and immediately allow our developers use the terms in those vocabularies directly in their development IDE's (with full code-completion and live JSDoc/JavaDoc). 
 
-And we can easily reuse existing vocabularies, or just the part s of those vocabularies we wish to use, while also being able to easily extend them, for example to add our own translations, or override some, or all, of their existing `labels` or `comments`.
+And we can easily reuse existing vocabularies, or just the parts of those vocabularies we wish to use, while also being able to easily extend them, for example to add our own translations, or override some, or all, of their existing `labels` or `comments`.
+
+Ultimately, perhaps the biggest benefit of the artifact generator is that it allows us easily define our own vocabularies in interoperable RDF that can be easily used, shared and evolved by our existing development teams.
 
 # How to build
 
