@@ -25,7 +25,7 @@ The output is a Node Module containing a Javascript file with constants defined 
 
 Here are some examples of running the tool:
 
-Local ontology file
+Local ontology file:
 
 ```shell
 node index.js --input ./vocabs/schema.ttl
@@ -37,9 +37,9 @@ Multiple local ontology files:
 node index.js --input ./vocabs/schema.ttl ./vocabs/schema-inrupt-ext.ttl
 ```
 
-Generate vocab terms from only a specified vocabulary (here we provide the full Schema.org vocab as input, but we only want generated constants from the terms mentioned in the 'schema-inrupt-ext.ttl' vocab):
+Generate vocab terms from only a specified vocabulary (here we provide the full ACL vocab as input, but we only want generated constants from the terms mentioned in the 'wac-ldp-ext-acl.ttl' vocab):
 ```shell
-node index.js --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+node index.js --input https://www.w3.org/ns/auth/acl --vocabTermsFrom ./vocabs/wac-ldp-ext-acl.ttl
 ```
 
 Providing IRI's for remote vocabularies:
@@ -47,7 +47,7 @@ Providing IRI's for remote vocabularies:
 node index.js --input  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
-Specifing a version for the output module:
+Specifying a version for the output module:
 ```shell
 node index.js --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
 ```
