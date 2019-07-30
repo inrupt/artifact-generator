@@ -83,7 +83,7 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    const comment = DatasetHandler.getFirstComment(comments);
+    const comment = DatasetHandler.getTermDescription(comments, definitions, labels);
 
     return { name, nameEscapedForLanguage, comment, labels, comments, definitions };
   }
@@ -104,17 +104,31 @@ module.exports = class DatasetHandler {
    * @param comments An array of comments containing comments and their language.
    * @returns {string} Returns a string of the comment if found, else an empty string is returned.
    */
-  static getFirstComment(comments) {
-    let found = comments.find(e => e.language === 'en');
+  static getTermDescription(comments, definitions, labels) {
+    let result = DatasetHandler.lookupEnglishOrNoLanguage(comments);
+    if (result === undefined) {
+      result = DatasetHandler.lookupEnglishOrNoLanguage(definitions);
 
-    if (found === undefined) {
-      found = comments.find(e => e.language === '');
+      if (result === undefined) {
+        result = DatasetHandler.lookupEnglishOrNoLanguage(labels);
+      }
+
+      if (result === undefined) {
+        result = comments[0] ? comments[0] : { value: '' };
+      }
     }
 
-    if (found === undefined) {
-      found = comments[0] ? comments[0] : { value: '' };
+    return result.value;
+  }
+
+  static lookupEnglishOrNoLanguage(collection) {
+    let result = collection.find(e => e.language === 'en');
+
+    if (result === undefined) {
+      result = collection.find(e => e.language === '');
     }
-    return found.value;
+
+    return result;
   }
 
   static doesNotContainValueForLanguageAlready(array, quad) {

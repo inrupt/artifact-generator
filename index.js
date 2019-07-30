@@ -6,13 +6,13 @@
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
 require('mock-local-storage')
+const yargs = require('yargs')
 
 const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
-const Generator = require('./src/generator/VocabGenerator');
 
 const CommandLine = require('./src/CommandLine');
 
-const argv = require('yargs')
+const argv = yargs
   .array('input')
   .alias('input', 'i')
   .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
@@ -102,8 +102,6 @@ function handleError(error) {
   console.error(error);
 }
 
-
-
 const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
 async () => {
   artifactGenerator
@@ -114,4 +112,4 @@ async () => {
     .then(await CommandLine.askForArtifactToBeNpmPublished)
     .then(await CommandLine.askForArtifactToBeDocumented)
     .catch(handleError);
-}}
+}

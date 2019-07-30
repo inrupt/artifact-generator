@@ -16,13 +16,15 @@ const VERSION_ARTIFACT_GENERATED = '0.1.0';
 // const VERSION_LIT_VOCAB_TERM = 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
 const VERSION_LIT_VOCAB_TERM = '^0.1.0';
 const NPM_REGISTRY = 'http://localhost:4873';
-const RUN_NPM_INSTALL = true;
-const RUN_NPM_PUBLISH = true;
+const RUN_NPM_INSTALL = false;
+const RUN_NPM_PUBLISH = false;
 
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
   // vocabListFile: '../../../vocab/Vocab-List-TEST.yml',
-  outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+  // outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+  outputDirectory:
+    '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -35,7 +37,9 @@ const GenerationConfigLitCommon = {
 
 const GenerationConfigSolidComponent = {
   input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
-  outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
+  // outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
+  outputDirectory:
+    '../../../../Solid/MonoRepo/testLit/packages/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -48,7 +52,9 @@ const GenerationConfigSolidComponent = {
 
 const GenerationConfigSolidGeneratorUi = {
   input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
-  outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
+  // outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
+  outputDirectory:
+    '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -113,8 +119,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }).timeout(20000);
 
-  // it('Solid Component vocab', async () => {
-  it.skip('Solid Component vocab', async () => {
+  it('Solid Component vocab', async () => {
+    // it.skip('Solid Component vocab', async () => {
     await generateVocabArtifact(GenerationConfigSolidComponent);
   }).timeout(20000);
 
