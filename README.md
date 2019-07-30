@@ -5,6 +5,9 @@ Builds deployable artifacts for various programming languages (e.g. Node modules
 
 It also allows aspects of vocab terms (e.g. a term's rdfs:label, or rdfs:comment) to be overridden with new values (e.g. if you don't like Schema.org's label for the property 'givenName', then you can define your own value of 'Given name' to override it), or to include new translations for existing term labels or comments (e.g. to provide a Spanish rdfs:comment for Schema.org's Person class of 'Una persona (viva, muerta, no muerta o ficticia)').
 
+Another useful feature is the ability to select only specific terms from an existing vocabulary. For instance, Schema.org today defines alomost 2,000 terms. But perhaps you only want to use 20 of those terms in your application. (To do this, we simply define our own vocabulary that simply lists those 20 terms we do want, and reference that using the `--vocabTermsFrom` command line argument, see examples below).
+
+Putting this all together, we can very easily create our own vocabularies in W3C standard RDF, and quickly have our developers working with those vocabularies directly in the development IDE's. Or we easily reuse existing vocabularies and selectively extend them to add our own translations, or override their existing `labels` or `comments`.
 
 # How to build
 
@@ -13,10 +16,19 @@ npm set registry https://verdaccio.inrupt.com
 npm install
 ```
 
+Or to install globally (so you can run the generator from any directory):
+```shell
+npm set registry https://verdaccio.inrupt.com
+npm -g install @lit/artifact-generator
+
+lit-artifact-generator --help
+```
+
+
 # How to run
 
 ```shell
-node index.js --input <ontology files> --subjects <subjects only ontology file> --mversion <version number>
+node index.js --input <ontology files>
 ```
 
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'input' flag. This module is located inside the **./generated** folder by default.
@@ -28,28 +40,35 @@ Here are some examples of running the tool:
 Local ontology file
 
 ```shell
-node index.js --input ./vocabs/schema.ttl
+node index.js --input ./example/PetRocks.ttl
+```
+
+Remote ontology file
+
+```shell
+node index.js --input https://schema.org/version/latest/schema.ttl
 ```
 
 Multiple local ontology files:
 
 ```shell
-node index.js --input ./vocabs/schema.ttl ./vocabs/schema-inrupt-ext.ttl
+node index.js --input ./example/Skydiving.ttl ./example/PetRocks.ttl
 ```
 
-Generate vocab terms from only a specified vocabulary (here we provide the full Schema.org vocab as input, but we only want generated constants from the terms mentioned in the 'schema-inrupt-ext.ttl' vocab):
+Selecting only specific terms from a vocabulary.
+Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
 ```shell
-node index.js --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+node index.js --input https://schema.org/version/latest/schema.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
-Providing IRI's for remote vocabularies:
+Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:
 ```shell
 node index.js --input  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
-Specifing a version for the output module:
+Providing the version for the output module:
 ```shell
-node index.js --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifact-version 1.0.1
+node index.js --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifactVersion 1.0.1
 ```
 
 Specifing a custom prefix for the output module name:
@@ -57,7 +76,7 @@ Specifing a custom prefix for the output module name:
 node index.js --input ./vocabs/schema.ttl --moduleNamePrefix my-company-prefix-
 ```
 
-Specifing a custom npm registry for where the output module will be published:
+Specifing a custom NPM registry to where the output module will be published:
 ```shell
 node index.js --input ./vocabs/schema.ttl --npmRegistry http://my.company.registry/npm/
 ```
