@@ -103,13 +103,11 @@ function handleError(error) {
 }
 
 const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
-async () => {
-  artifactGenerator
+artifactGenerator
     .generate()
-    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
-    .then(await CommandLine.askForArtifactToBeNpmInstalled)
-    .then(await CommandLine.askForArtifactToBeNpmPublished)
-    .then(await CommandLine.askForArtifactToBeDocumented)
+    .then(CommandLine.askForArtifactToBeNpmInstalled)
+    .then(CommandLine.askForArtifactToBeNpmPublished)
+    .then(CommandLine.askForArtifactToBeDocumented)
     .catch(handleError);
-}
