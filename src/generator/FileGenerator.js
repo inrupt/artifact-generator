@@ -20,12 +20,12 @@ function createDirectory(directory) {
 }
 
 function createSourceCodeFile(argv, templateData) {
-  createDirectory(`${argv.outputDirectory}/Generated`);
+  createDirectory(`${argv.outputDirectory}/GeneratedVocab`);
 
   createFileFromTemplate(
     '../../templates/javascript-rdf-ext.hbs',
     templateData,
-    `${argv.outputDirectory}/Generated/${templateData.vocabNameAndPrefixOverride ||
+    `${argv.outputDirectory}/GeneratedVocab/${templateData.vocabNameAndPrefixOverride ||
       templateData.vocabName}.js`
   );
 }

@@ -22,6 +22,7 @@
   "dependencies": {
     "@lit/generated-vocab-common": "^0.1.0",
     "@lit/vocab-term": "^0.1.0",
+    "@rdfjs/parser-jsonld": "^1.1.2",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
     "js-yaml": "^3.13.1",

@@ -77,12 +77,13 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${testOutputDirectory}/index.js`)).to.be.true;
       expect(fs.existsSync(`${testOutputDirectory}/package.json`)).to.be.true;
 
-      expect(fs.existsSync(`${testOutputDirectory}/Generated/override-name.js`)).to.be.true;
-      expect(fs.existsSync(`${testOutputDirectory}/Generated/schema-inrupt-ext.js`)).to.be.true;
+      expect(fs.existsSync(`${testOutputDirectory}/GeneratedVocab/override-name.js`)).to.be.true;
+      expect(fs.existsSync(`${testOutputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)).to.be
+        .true;
 
       const indexOutput = fs.readFileSync(`${testOutputDirectory}/index.js`).toString();
       expect(indexOutput).to.contain(
-        "module.exports.SCHEMA_INRUPT_EXT = require('./Generated/schema-inrupt-ext')"
+        "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/schema-inrupt-ext')"
       );
 
       const packageOutput = fs.readFileSync(`${testOutputDirectory}/package.json`).toString();

@@ -1,6 +1,7 @@
 const rdf = require('rdf-ext');
 const rdfFetch = require('rdf-fetch-lite');
 const N3Parser = require('rdf-parser-n3');
+const ParserJsonld = require('@rdfjs/parser-jsonld');
 
 const { LitUtils } = require('@lit/vocab-term');
 
@@ -8,7 +9,8 @@ const formats = {
   parsers: new rdf.Parsers({
     'text/turtle': N3Parser,
     'text/n3': N3Parser, // The OLO vocab returns this content type.
-    'application/x-turtle': N3Parser, // This is needed as schema.org will returns this as the content type.
+    'application/x-turtle': N3Parser, // This is needed as schema.org returns this as the content type.
+    'application/ld+json': ParserJsonld, // Activity streams only supports JSON-LD and HTML.
     // 'application/rdf+xml': ???, // No XML parser available at the moment (https://github.com/rdf-ext/documentation).
   }),
 };
@@ -45,6 +47,17 @@ module.exports = class Resources {
   readResource(datasetFile) {
     console.log(`Loading resource: [${datasetFile}]...`);
     if (datasetFile.startsWith('http')) {
+      // [PMcB] - Fails trying to read the Activity Streams vocab, so tried
+      // this manual Parsing of JSON-LD, but I don't know how to construct the
+      // input properly...
+      //
+      // const parserJsonld = new ParserJsonld()
+      // const output = parserJsonld.import(input)
+      //
+      // output.on('data', quad => {
+      //   console.log(`${quad.subject.value} - ${quad.predicate.value} - ${quad.object.value}`)
+      // })
+
       return rdfFetch(datasetFile, { formats }).then(resource => {
         return resource.dataset();
       });
