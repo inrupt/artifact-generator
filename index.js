@@ -66,7 +66,7 @@ const argv = yargs
 
   .alias('artifactVersion', 'av')
   .describe('artifactVersion', 'The version of the Node module that will be generated.')
-  .default('artifactVersion', '1.0.1')
+  .default('artifactVersion', '0.0.1')
 
   .alias('artifactType', 'at')
   .describe('artifactType', 'The artifact type that will be generated.')
