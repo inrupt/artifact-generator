@@ -111,8 +111,13 @@ describe('Ontology Generator', () => {
         fs.readFileSync('test/resources/expectedOutputs/single/index.js').toString()
       );
 
-      expect(fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString()).to.equal(
-        fs.readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js').toString()
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString();
+      const expected = fs
+        .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js')
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).to.equal(
+        expected.substring(expected.indexOf(' */'))
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -159,14 +164,15 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(
-        fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`).toString()
-      ).to.equal(
-        fs
-          .readFileSync(
-            'test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js'
-          )
-          .toString()
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
+        .toString();
+      const expected = fs
+        .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js')
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).to.equal(
+        expected.substring(expected.indexOf(' */'))
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;

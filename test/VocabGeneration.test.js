@@ -21,9 +21,9 @@ const RUN_NPM_PUBLISH = false;
 
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
-  // vocabListFile: '../../../vocab/Vocab-List-TEST.yml',
   outputDirectory:
-    '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+    // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+    './generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -35,7 +35,7 @@ const GenerationConfigLitCommon = {
 };
 
 const GenerationConfigSolidComponent = {
-  input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
+  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/SolidComponent.ttl'],
   outputDirectory:
     '../../../../Solid/MonoRepo/testLit/packages/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -49,7 +49,7 @@ const GenerationConfigSolidComponent = {
 };
 
 const GenerationConfigSolidGeneratorUi = {
-  input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
+  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/SolidGeneratorUi.ttl'],
   outputDirectory:
     '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -76,7 +76,7 @@ async function generateVocabArtifact(argv) {
     CommandLine.askForArtifactInfo
   );
 
-  generator
+  await generator
     .generate()
     .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
@@ -139,7 +139,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     // it('Test Demo App', async () => {
     await generateVocabArtifact({
       // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      input: ['../example/PetRocks.ttl'],
+      input: ['./example/PetRocks.ttl'],
 
       // input: ['http://www.w3.org/2006/vcard/ns#'],
       // vocabNameAndPrefixOverride: 'vcard',

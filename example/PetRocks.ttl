@@ -14,7 +14,7 @@ pet_rock:
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
     dcterms:title "Pet Rock vocabulary" ;
-    dcterms:description "Vocabulary for Pet Rock collectors, including terms of their characteristics..." ;
+    dcterms:description "Vocabulary for Pet Rock collectors, including terms for their characteristics..." ;
     vann:preferredNamespacePrefix "pats_app" ;
     vann:preferredNamespaceUri "http://pat.com/vocab/my_app#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .

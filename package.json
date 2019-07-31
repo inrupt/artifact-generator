@@ -27,6 +27,7 @@
     "inquirer": "^6.4.1",
     "js-yaml": "^3.13.1",
     "mock-local-storage": "^1.1.8",
+    "moment": "^2.24.0",
     "rdf-ext": "^1.2.2",
     "rdf-fetch-lite": "^1.1.2",
     "rdf-parser-jsonld": "^1.1.0",
