@@ -1,5 +1,7 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
+const moment = require('moment');
+const packageDotJson = require('../../package.json');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
@@ -16,6 +18,10 @@ module.exports = class ArtifactGenerator {
 
     // This collection will be populated with the authors per generated vocab.
     this.artifactData.authorSet = new Set();
+
+    this.artifactData.generatedTimestamp = moment().format('LLLL');
+    this.artifactData.generatorName = packageDotJson.name;
+    this.artifactData.generatorVersion = packageDotJson.version;
   }
 
   /**

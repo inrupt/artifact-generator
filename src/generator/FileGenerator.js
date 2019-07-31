@@ -35,6 +35,8 @@ function createPackagingFiles(argv) {
 
   createFileFromTemplate('../../templates/index.hbs', argv, `${argv.outputDirectory}/index.js`);
 
+  createFileFromTemplate('../../templates/README.hbs', argv, `${argv.outputDirectory}/README.MD`);
+
   createFileFromTemplate(
     '../../templates/package.hbs',
     argv,

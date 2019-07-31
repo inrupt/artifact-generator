@@ -135,8 +135,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 
-  it.skip('Test Demo App', async () => {
-    // it('Test Demo App', async () => {
+  // it.skip('Test Demo App', async () => {
+  it('Test Demo App', async () => {
     await generateVocabArtifact({
       // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
       input: ['./example/PetRocks.ttl'],
