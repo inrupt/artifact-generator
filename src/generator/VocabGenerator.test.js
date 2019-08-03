@@ -1,9 +1,5 @@
 require('mock-local-storage');
 
-const chai = require('chai');
-
-const { expect } = chai;
-
 const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 
@@ -162,59 +158,91 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataset, datasetExtension]),
         VocabGenerator.merge([datasetExtension])
       );
-      expect(result.namespace).to.equal('http://schema.org/');
-      expect(result.artifactName).to.equal('lit-generated-vocab-schema');
-      expect(result.vocabNameUpperCase).to.equal('SCHEMA');
-      expect(result.classes[0].name).to.equal('Person');
-      expect(result.classes[0].comment).to.equal('Person dead or alive');
+      expect(result.namespace).toBe('http://schema.org/');
+      expect(result.artifactName).toBe('lit-generated-vocab-schema');
+      expect(result.vocabNameUpperCase).toBe('SCHEMA');
+      expect(result.classes[0].name).toBe('Person');
+      expect(result.classes[0].comment).toBe('Person dead or alive');
 
       const personLabels = result.classes[0].labels;
-      expect(personLabels).to.deep.include({
-        value: 'Person',
-        valueEscapedForJavascript: 'Person',
-        language: 'en',
-      });
+      expect(personLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Person',
+            valueEscapedForJavascript: 'Person',
+            language: 'en',
+          },
+        ])
+      );
 
-      expect(personLabels).to.deep.include({
-        value: 'Person-fr',
-        valueEscapedForJavascript: 'Person-fr',
-        language: 'fr',
-      });
-      expect(personLabels).to.deep.include({
-        value: 'Person-de',
-        valueEscapedForJavascript: 'Person-de',
-        language: 'de',
-      });
-      expect(personLabels).to.deep.include({
-        value: 'Person-es',
-        valueEscapedForJavascript: 'Person-es',
-        language: 'es',
-      });
+      expect(personLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Person-fr',
+            valueEscapedForJavascript: 'Person-fr',
+            language: 'fr',
+          },
+        ])
+      );
+      expect(personLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Person-de',
+            valueEscapedForJavascript: 'Person-de',
+            language: 'de',
+          },
+        ])
+      );
+      expect(personLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Person-es',
+            valueEscapedForJavascript: 'Person-es',
+            language: 'es',
+          },
+        ])
+      );
 
-      expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties[0].comment).to.equal('A given name is the first name of a person.');
+      expect(result.properties[0].name).toBe('givenName');
+      expect(result.properties[0].comment).toBe('A given name is the first name of a person.');
       const givenNameLabels = result.properties[0].labels;
 
-      expect(givenNameLabels).to.deep.include({
-        value: 'Given Name',
-        valueEscapedForJavascript: 'Given Name',
-        language: 'en',
-      });
-      expect(givenNameLabels).to.deep.include({
-        value: 'Given Name-fr',
-        valueEscapedForJavascript: 'Given Name-fr',
-        language: 'fr',
-      });
-      expect(givenNameLabels).to.deep.include({
-        value: 'Given Name-de',
-        valueEscapedForJavascript: 'Given Name-de',
-        language: 'de',
-      });
-      expect(givenNameLabels).to.deep.include({
-        value: 'Given Name-es',
-        valueEscapedForJavascript: 'Given Name-es',
-        language: 'es',
-      });
+      expect(givenNameLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Given Name',
+            valueEscapedForJavascript: 'Given Name',
+            language: 'en',
+          },
+        ])
+      );
+      expect(givenNameLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Given Name-fr',
+            valueEscapedForJavascript: 'Given Name-fr',
+            language: 'fr',
+          },
+        ])
+      );
+      expect(givenNameLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Given Name-de',
+            valueEscapedForJavascript: 'Given Name-de',
+            language: 'de',
+          },
+        ])
+      );
+      expect(givenNameLabels).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Given Name-es',
+            valueEscapedForJavascript: 'Given Name-es',
+            language: 'es',
+          },
+        ])
+      );
     });
 
     it('Should merge A and B, and generate code from A and B', () => {
@@ -223,8 +251,8 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetA, dataSetB])
       );
 
-      expect(result.classes[0].name).to.equal('Person');
-      expect(result.properties[0].name).to.equal('givenName');
+      expect(result.classes[0].name).toBe('Person');
+      expect(result.properties[0].name).toBe('givenName');
     });
 
     it('Should merge A and B, and generate code from A (not B)', () => {
@@ -233,8 +261,8 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetA])
       );
 
-      expect(result.classes[0].name).to.equal('Person');
-      expect(result.properties.length).to.equal(0);
+      expect(result.classes[0].name).toBe('Person');
+      expect(result.properties.length).toBe(0);
     });
 
     it('Should merge A and B, and generate code from B (not A)', () => {
@@ -243,8 +271,8 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetB])
       );
 
-      expect(result.classes.length).to.equal(0);
-      expect(result.properties[0].name).to.equal('givenName');
+      expect(result.classes.length).toBe(0);
+      expect(result.properties[0].name).toBe('givenName');
     });
 
     it('Should merge A B and C, and generate code from A and B (not C)', () => {
@@ -253,9 +281,9 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetA, dataSetB])
       );
 
-      expect(result.classes[0].name).to.equal('Person');
-      expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties.length).to.equal(1);
+      expect(result.classes[0].name).toBe('Person');
+      expect(result.properties[0].name).toBe('givenName');
+      expect(result.properties.length).toBe(1);
     });
 
     it('Should handle empty datasets', () => {
@@ -264,11 +292,11 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([emptyDataSet])
       );
 
-      expect(result.namespace).to.equal('');
-      expect(result.artifactName).to.equal('lit-generated-vocab-');
-      expect(result.vocabNameUpperCase).to.equal('');
-      expect(result.classes.length).to.equal(0);
-      expect(result.properties.length).to.equal(0);
+      expect(result.namespace).toBe('');
+      expect(result.artifactName).toBe('lit-generated-vocab-');
+      expect(result.vocabNameUpperCase).toBe('');
+      expect(result.classes.length).toBe(0);
+      expect(result.properties.length).toBe(0);
     });
 
     it('Should use the label value if no comment and no definition', () => {
@@ -277,9 +305,9 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetB])
       );
 
-      expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal('Given Name');
+      expect(result.properties[0].name).toBe('givenName');
+      expect(result.properties.length).toBe(1);
+      expect(result.properties[0].comment).toBe('Given Name');
     });
 
     it('Should use the definition value if no comment', () => {
@@ -288,9 +316,9 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([emptyDataSet])
       );
 
-      expect(result.properties[0].name).to.equal('familyName');
-      expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal('Family Name');
+      expect(result.properties[0].name).toBe('familyName');
+      expect(result.properties.length).toBe(1);
+      expect(result.properties[0].comment).toBe('Family Name');
     });
 
     it('Should take any comment for the class or property if english or default cant be found', () => {
@@ -310,9 +338,9 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([dataSetFrenchOnlyComment])
       );
 
-      expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal('Given Name comment in french');
+      expect(result.properties[0].name).toBe('givenName');
+      expect(result.properties.length).toBe(1);
+      expect(result.properties[0].comment).toBe('Given Name comment in french');
     });
 
     it('Should return empty comment if nothing found at all', () => {
@@ -325,9 +353,9 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([noDescriptivePredicates])
       );
 
-      expect(result.properties[0].name).to.equal('givenName');
-      expect(result.properties.length).to.equal(1);
-      expect(result.properties[0].comment).to.equal('');
+      expect(result.properties[0].name).toBe('givenName');
+      expect(result.properties.length).toBe(1);
+      expect(result.properties[0].comment).toBe('');
     });
 
     it('Should allow the prefix for the name of the module can be configured', () => {
@@ -342,7 +370,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([])
       );
 
-      expect(result.artifactName).to.equal('my-company-prefix-schema');
+      expect(result.artifactName).toBe('my-company-prefix-schema');
     });
 
     it('Should create label vocab terms for literals', () => {
@@ -359,23 +387,35 @@ describe('Artifact generator unit tests', () => {
 
       const messageLiterals = result.literals[0].labels;
 
-      expect(messageLiterals).to.deep.include({
-        value: 'Hello',
-        valueEscapedForJavascript: 'Hello',
-        language: 'en',
-      });
+      expect(messageLiterals).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Hello',
+            valueEscapedForJavascript: 'Hello',
+            language: 'en',
+          },
+        ])
+      );
 
-      expect(messageLiterals).to.deep.include({
-        value: 'Hola',
-        valueEscapedForJavascript: 'Hola',
-        language: 'es',
-      });
+      expect(messageLiterals).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Hola',
+            valueEscapedForJavascript: 'Hola',
+            language: 'es',
+          },
+        ])
+      );
 
-      expect(messageLiterals).to.deep.include({
-        value: 'Bonjour',
-        valueEscapedForJavascript: 'Bonjour',
-        language: 'fr',
-      });
+      expect(messageLiterals).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bonjour',
+            valueEscapedForJavascript: 'Bonjour',
+            language: 'fr',
+          },
+        ])
+      );
     });
 
     it('Should create comments vocab terms for literals', () => {
@@ -392,23 +432,35 @@ describe('Artifact generator unit tests', () => {
 
       const messageComments = result.literals[0].comments;
 
-      expect(messageComments).to.deep.include({
-        value: 'Hello there',
-        valueEscapedForJavascript: 'Hello there',
-        language: 'en',
-      });
+      expect(messageComments).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Hello there',
+            valueEscapedForJavascript: 'Hello there',
+            language: 'en',
+          },
+        ])
+      );
 
-      expect(messageComments).to.deep.include({
-        value: 'Hola',
-        valueEscapedForJavascript: 'Hola',
-        language: 'es',
-      });
+      expect(messageComments).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Hola',
+            valueEscapedForJavascript: 'Hola',
+            language: 'es',
+          },
+        ])
+      );
 
-      expect(messageComments).to.deep.include({
-        value: 'Bonjour',
-        valueEscapedForJavascript: 'Bonjour',
-        language: 'fr',
-      });
+      expect(messageComments).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bonjour',
+            valueEscapedForJavascript: 'Bonjour',
+            language: 'fr',
+          },
+        ])
+      );
     });
 
     it('Should create defination vocab terms for literals', () => {
@@ -425,23 +477,35 @@ describe('Artifact generator unit tests', () => {
 
       const messageDefinitions = result.literals[0].definitions;
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Welcome',
-        valueEscapedForJavascript: 'Welcome',
-        language: 'en',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Welcome',
+            valueEscapedForJavascript: 'Welcome',
+            language: 'en',
+          },
+        ])
+      );
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Bienvenido',
-        valueEscapedForJavascript: 'Bienvenido',
-        language: 'es',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bienvenido',
+            valueEscapedForJavascript: 'Bienvenido',
+            language: 'es',
+          },
+        ])
+      );
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Bienvenue',
-        valueEscapedForJavascript: 'Bienvenue',
-        language: 'fr',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bienvenue',
+            valueEscapedForJavascript: 'Bienvenue',
+            language: 'fr',
+          },
+        ])
+      );
     });
   });
 
@@ -454,21 +518,21 @@ describe('Artifact generator unit tests', () => {
 
       const person = result.classes[0];
 
-      expect(person.name).to.equal('Person');
-      expect(person.labels.length).to.equal(1);
-      expect(person.labels[0].value).to.equal('Override Person');
+      expect(person.name).toBe('Person');
+      expect(person.labels.length).toBe(1);
+      expect(person.labels[0].value).toBe('Override Person');
 
       const givenName = result.properties[0];
 
-      expect(givenName.name).to.equal('givenName');
-      expect(givenName.labels.length).to.equal(1);
-      expect(givenName.labels[0].value).to.equal('Override Given Name');
+      expect(givenName.name).toBe('givenName');
+      expect(givenName.labels.length).toBe(1);
+      expect(givenName.labels[0].value).toBe('Override Given Name');
 
       const familyName = result.properties[1];
 
-      expect(familyName.name).to.equal('familyName');
-      expect(familyName.labels.length).to.equal(1);
-      expect(familyName.labels[0].value).to.equal('Override Family Name');
+      expect(familyName.name).toBe('familyName');
+      expect(familyName.labels.length).toBe(1);
+      expect(familyName.labels[0].value).toBe('Override Family Name');
     });
 
     it('should override comment terms of the main datasets', () => {
@@ -479,21 +543,21 @@ describe('Artifact generator unit tests', () => {
 
       const person = result.classes[0];
 
-      expect(person.name).to.equal('Person');
-      expect(person.comments.length).to.equal(1);
-      expect(person.comments[0].value).to.equal('Override comment for Person');
+      expect(person.name).toBe('Person');
+      expect(person.comments.length).toBe(1);
+      expect(person.comments[0].value).toBe('Override comment for Person');
 
       const givenName = result.properties[0];
 
-      expect(givenName.name).to.equal('givenName');
-      expect(givenName.comments.length).to.equal(1);
-      expect(givenName.comments[0].value).to.equal('Override comment for Given Name');
+      expect(givenName.name).toBe('givenName');
+      expect(givenName.comments.length).toBe(1);
+      expect(givenName.comments[0].value).toBe('Override comment for Given Name');
 
       const familyName = result.properties[1];
 
-      expect(familyName.name).to.equal('familyName');
-      expect(familyName.comments.length).to.equal(1);
-      expect(familyName.comments[0].value).to.equal('Override comment for Family Name');
+      expect(familyName.name).toBe('familyName');
+      expect(familyName.comments.length).toBe(1);
+      expect(familyName.comments[0].value).toBe('Override comment for Family Name');
     });
 
     it('should override label with alternativeNames from the vocab terms', () => {
@@ -504,21 +568,21 @@ describe('Artifact generator unit tests', () => {
 
       const person = result.classes[0];
 
-      expect(person.name).to.equal('Person');
-      expect(person.labels.length).to.equal(1);
-      expect(person.labels[0].value).to.equal('Alt Person');
+      expect(person.name).toBe('Person');
+      expect(person.labels.length).toBe(1);
+      expect(person.labels[0].value).toBe('Alt Person');
 
       const givenName = result.properties[0];
 
-      expect(givenName.name).to.equal('givenName');
-      expect(givenName.labels.length).to.equal(1);
-      expect(givenName.labels[0].value).to.equal('Alt Given Name');
+      expect(givenName.name).toBe('givenName');
+      expect(givenName.labels.length).toBe(1);
+      expect(givenName.labels[0].value).toBe('Alt Given Name');
 
       const familyName = result.properties[1];
 
-      expect(familyName.name).to.equal('familyName');
-      expect(familyName.labels.length).to.equal(1);
-      expect(familyName.labels[0].value).to.equal('Alt Family Name');
+      expect(familyName.name).toBe('familyName');
+      expect(familyName.labels.length).toBe(1);
+      expect(familyName.labels[0].value).toBe('Alt Family Name');
     });
 
     it('Should create definition vocab terms for literals from extensions', () => {
@@ -535,23 +599,35 @@ describe('Artifact generator unit tests', () => {
 
       const messageDefinitions = result.literals[0].definitions;
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Welcome',
-        valueEscapedForJavascript: 'Welcome',
-        language: 'en',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Welcome',
+            valueEscapedForJavascript: 'Welcome',
+            language: 'en',
+          },
+        ])
+      );
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Bienvenido',
-        valueEscapedForJavascript: 'Bienvenido',
-        language: 'es',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bienvenido',
+            valueEscapedForJavascript: 'Bienvenido',
+            language: 'es',
+          },
+        ])
+      );
 
-      expect(messageDefinitions).to.deep.include({
-        value: 'Bienvenue',
-        valueEscapedForJavascript: 'Bienvenue',
-        language: 'fr',
-      });
+      expect(messageDefinitions).toEqual(
+        expect.arrayContaining([
+          {
+            value: 'Bienvenue',
+            valueEscapedForJavascript: 'Bienvenue',
+            language: 'fr',
+          },
+        ])
+      );
     });
 
     it('should take description from the rdfs:comment of an owl:Ontology term', () => {
@@ -560,10 +636,10 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([owlOntologyDataset])
       );
 
-      expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
-      expect(result.namespace).to.equal('http://rdf-extension.com');
-      expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
-      expect(result.description).to.equal("Extension comment with special ' character!");
+      expect(result.artifactName).toBe('lit-generated-vocab-ext-prefix');
+      expect(result.namespace).toBe('http://rdf-extension.com');
+      expect(result.vocabNameUpperCase).toBe('EXT_PREFIX');
+      expect(result.description).toBe("Extension comment with special ' character!");
     });
 
     it('should default description to empty string if rdfs:comment of an owl:Ontology term is not found', () => {
@@ -581,10 +657,10 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([owlOntologyDatasetWithNoComment])
       );
 
-      expect(result.artifactName).to.equal('lit-generated-vocab-ext-prefix');
-      expect(result.namespace).to.equal('http://rdf-extension.com');
-      expect(result.vocabNameUpperCase).to.equal('EXT_PREFIX');
-      expect(result.description).to.equal('');
+      expect(result.artifactName).toBe('lit-generated-vocab-ext-prefix');
+      expect(result.namespace).toBe('http://rdf-extension.com');
+      expect(result.vocabNameUpperCase).toBe('EXT_PREFIX');
+      expect(result.description).toBe('');
     });
 
     it('should read authors from owl:Ontology terms', () => {
@@ -593,7 +669,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([owlOntologyDataset])
       );
 
-      expect(result.authorSet).to.include('Jarlath Holleran');
+      expect(result.authorSet.has('Jarlath Holleran'));
     });
 
     it('should default to lit-js@inrupt.com if authors in not contained in owl:Ontology terms', () => {
@@ -611,7 +687,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([owlOntologyDatasetWithNoAuthor])
       );
 
-      expect(result.authorSet).to.include('@lit/artifact-generator-js');
+      expect(result.authorSet.has('@lit/artifact-generator-js'));
     });
   });
 });

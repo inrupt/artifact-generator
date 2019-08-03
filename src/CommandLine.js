@@ -2,6 +2,7 @@ const path = require('path');
 const inquirer = require('inquirer');
 
 const ChildProcess = require('child_process');
+const logger = require('debug')('lit-artifact-generator:CommandLine');
 
 module.exports = class CommandLine {
   static getParentFolder(directory) {
@@ -59,11 +60,11 @@ module.exports = class CommandLine {
         cloneData.publishedVersion = publishedVersion;
         cloneData.version = publishedVersion;
 
-        console.log(
+        logger(
           `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`
         );
       } catch (error) {
-        console.log(
+        logger(
           `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}]: ${error}`
         );
         // Its ok to ignore this. It just means that the module hasn't been published before.
@@ -207,12 +208,12 @@ module.exports = class CommandLine {
   }
 
   static runNpmInstall(data) {
-    console.log(
+    logger(
       `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
     );
     ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
 
-    console.log(
+    logger(
       `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
@@ -220,7 +221,7 @@ module.exports = class CommandLine {
   }
 
   static runNpmVersion(data) {
-    console.log(
+    logger(
       `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
     );
 
@@ -228,7 +229,7 @@ module.exports = class CommandLine {
       `cd ${data.outputDirectory} && npm version ${data.bumpVersion}`
     );
 
-    console.log(
+    logger(
       `Ran 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
@@ -236,7 +237,7 @@ module.exports = class CommandLine {
   }
 
   static runNpmPublish(data) {
-    console.log(
+    logger(
       `Running 'npm publish' for artifact [${data.artifactName}] to registry [${data.npmRegistry}]...`
     );
 
@@ -244,21 +245,19 @@ module.exports = class CommandLine {
       `cd ${data.outputDirectory} && npm publish --registry ${data.npmRegistry}`
     );
 
-    console.log(
-      `Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`
-    );
+    logger(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
 
   // static runYalcCommand2(data) {
-  //   console.log(
+  //   log(
   //     `Running yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`
   //   );
   //
   //   ChildProcess.execSync(`cd ${data.outputDirectory} && ${data.runYalcCommand}`);
   //
-  //   console.log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
+  //   log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
   //
   //   return { ...data, ...{ ranYalcCommand: true } }; // Merge the answers in with the data and return
   // }
@@ -273,7 +272,7 @@ module.exports = class CommandLine {
     const destDirectory = `${data.outputDirectory}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./src/test/resources/log4j.properties"`;
 
-    console.log(
+    logger(
       `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
     );
 
@@ -281,7 +280,7 @@ module.exports = class CommandLine {
       `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
     );
 
-    console.log(
+    logger(
       `Widoco documentation generated for [${
         data.artifactName
       }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`

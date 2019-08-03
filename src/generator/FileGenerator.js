@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Handlebars = require('handlebars');
+const logger = require('debug')('lit-artifact-generator:FileGenerator');
 
 const ARTIFACT_DIRECTORY_JAVASCRIPT = '/GeneratedSourceCodeArtifacts/Javascript';
 
@@ -12,7 +13,7 @@ function createFileFromTemplate(templateFile, templateData, outputFile) {
   const contents = template(templateData);
 
   fs.writeFileSync(outputFile, contents);
-  console.log(`Created file: [${outputFile}]`);
+  logger(`Created file: [${outputFile}]`);
 }
 
 function createDirectory(directory) {

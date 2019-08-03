@@ -1,4 +1,4 @@
-generated/
+coverage/
 example/generated/
 test/generated/
 
@@ -6,11 +6,7 @@ node_modules/
 
 .idea
 .vscode/
-lit-js.iml
 
-.nyc_output/
 package-lock.json
 
-docs/
-coverage/
 

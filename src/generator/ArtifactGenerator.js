@@ -7,6 +7,7 @@ const packageDotJson = require('../../package.json');
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
 const DatasetHandler = require('../DatasetHandler');
+const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 module.exports = class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
@@ -25,10 +26,10 @@ module.exports = class ArtifactGenerator {
     this.artifactData.generatorVersion = packageDotJson.version;
   }
 
-  static async deleteDirectory(directory) {
+  async deleteDirectory(directory) {
     const deletedPaths = await del([`${directory}/*`], { force: true });
-    console.log(`Deleting all files and folders from [${directory}]:`);
-    console.log(deletedPaths.join('\n'));
+    logger(`Deleting all files and folders from [${directory}]:`);
+    logger(deletedPaths.join('\n'));
   }
 
   /**
@@ -41,11 +42,10 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
-    await ArtifactGenerator.deleteDirectory(
+    await this.deleteDirectory(
       `${this.artifactData.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}`
     );
 
-    console.log(); // Just a blank line on our output.
     if (this.inquirerProcess) {
       this.artifactData = await this.inquirerProcess(this.artifactData);
     }
@@ -60,9 +60,7 @@ module.exports = class ArtifactGenerator {
   }
 
   async generateSingleVocab() {
-    console.log(
-      `Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`
-    );
+    logger(`Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`);
 
     const vocabData = await new VocabGenerator(this.artifactData, this.inquirerProcess).generate();
 
@@ -76,13 +74,11 @@ module.exports = class ArtifactGenerator {
   }
 
   async generateFromVocabListFile() {
-    console.log(
-      `Generating artifact from vocabulary list file: [${this.artifactData.vocabListFile}]`
-    );
+    logger(`Generating artifact from vocabulary list file: [${this.artifactData.vocabListFile}]`);
 
     let generationDetails;
     try {
-      console.log(`Processing YAML file...`);
+      logger(`Processing YAML file...`);
       generationDetails = yaml.safeLoad(fs.readFileSync(this.artifactData.vocabListFile, 'utf8'));
     } catch (error) {
       throw new Error(

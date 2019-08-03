@@ -1,8 +1,5 @@
 require('mock-local-storage');
 
-const chai = require('chai');
-
-const { expect } = chai;
 const fs = require('fs');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
@@ -73,8 +70,7 @@ async function generateVocabArtifact(argv) {
     .then(CommandLine.askForArtifactToBeNpmPublished)
     .then(CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
-      console.log(`Generation process failed: [${error}]`);
-      console.error(error);
+      console.error(`Generation process failed: [${error}]`);
       throw new Error(error);
     });
 
@@ -82,14 +78,14 @@ async function generateVocabArtifact(argv) {
     fs.existsSync(
       `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package.json`
     )
-  ).to.be.true;
+  ).toBe(true);
 
   if (argv.runNpmInstall) {
     expect(
       fs.existsSync(
         `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package-lock.json`
       )
-    ).to.be.true;
+    ).toBe(true);
   }
 
   if (argv.ranWidoco) {
@@ -97,7 +93,7 @@ async function generateVocabArtifact(argv) {
       fs.existsSync(
         `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/Widoco/index-en.html`
       )
-    ).to.be.true;
+    ).toBe(true);
   }
 
   console.log(`Generation process successful!\n`);
@@ -109,22 +105,22 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigLitCommon);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
-  }).timeout(30000);
+  });
 
   // it('LIT COMMON vocabs', async () => {
   it.skip('LIT vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
-  }).timeout(20000);
+  });
 
   // it('Solid Generator UI vocab', async () => {
   it.skip('Solid Generator UI vocab', async () => {
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
-  }).timeout(20000);
+  });
 
   // it('Solid Component vocab', async () => {
   it.skip('Solid Component vocab', async () => {
     await generateVocabArtifact(GenerationConfigSolidComponent);
-  }).timeout(20000);
+  });
 
   it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
     await generateVocabArtifact({
@@ -164,5 +160,5 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       moduleNamePrefix: '@lit/generated-vocab-',
       runWidoco: true,
     });
-  }).timeout(20000);
+  });
 });

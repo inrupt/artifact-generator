@@ -12,6 +12,9 @@ const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
 
 const CommandLine = require('./src/CommandLine');
 
+const debug = require('debug');
+const logger = debug('lit-artifact-generator:index');
+
 const argv = yargs
   .array('input')
   .alias('input', 'i')
@@ -61,6 +64,14 @@ const argv = yargs
   )
   .default('noprompt', false)
 
+  .boolean('quiet')
+  .alias('quiet', 'q')
+  .describe(
+      'quiet',
+      `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
+  )
+  .default('quiet', false)
+
   .alias('vocabTermsFrom', 'vtf')
   .describe('vocabTermsFrom', 'Generates Vocab Terms from only the specified ontology file.')
 
@@ -97,21 +108,27 @@ const argv = yargs
   .strict().argv;
 
 function handleError(error) {
-  console.log(`Generation process failed: [${error}]`);
-  console.error(error);
+  logger(`Generation process failed: [${error}]`);
+  process.exit(-2);
 }
 
 if (!argv.input && !argv.vocabListFile) {
   yargs.showHelp();
-  console.log("\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.")
-} else {
-  const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
-  artifactGenerator
-    .generate()
-    .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-    // .then(await CommandLine.askForArtifactToBeYalced)
-    .then(CommandLine.askForArtifactToBeNpmInstalled)
-    .then(CommandLine.askForArtifactToBeNpmPublished)
-    .then(CommandLine.askForArtifactToBeDocumented)
-    .catch(handleError);
+  debug.enable('lit-artifact-generator:*');
+  logger("\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.")
+  process.exit(-1);
 }
+
+if (!argv.quiet) {
+  debug.enable('lit-artifact-generator:*');
+}
+
+const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
+artifactGenerator
+  .generate()
+  .then(CommandLine.askForArtifactToBeNpmVersionBumped)
+  // .then(await CommandLine.askForArtifactToBeYalced)
+  .then(CommandLine.askForArtifactToBeNpmInstalled)
+  .then(CommandLine.askForArtifactToBeNpmPublished)
+  .then(CommandLine.askForArtifactToBeDocumented)
+  .catch(handleError);
