@@ -10,13 +10,15 @@ const fs = require('fs');
 
 const del = require('del');
 const ArtifactGenerator = require('../../src/generator/ArtifactGenerator');
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('../../src/generator/FileGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
-    const testOutputDirectory = 'generated';
+    const outputDirectory = 'generated';
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
     beforeEach(() => {
-      const deletedPaths = del.sync([`${testOutputDirectory}/*`]);
+      const deletedPaths = del.sync([`${outputDirectory}/*`]);
       console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
     });
 
@@ -37,7 +39,7 @@ describe('Artifact Generator', () => {
     it('should generate artifact from vocab list file', async () => {
       const artifactGenerator = new ArtifactGenerator({
         vocabListFile: './test/resources/vocabs/vocab-list.yml',
-        outputDirectory: testOutputDirectory,
+        outputDirectory: outputDirectory,
         artifactVersion: '1.0.0',
         litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
@@ -60,7 +62,7 @@ describe('Artifact Generator', () => {
       const artifactGenerator = new ArtifactGenerator(
         {
           vocabListFile: './test/resources/vocabs/vocab-list.yml',
-          outputDirectory: testOutputDirectory,
+          outputDirectory: outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
           moduleNamePrefix: '@lit/generated-vocab-',
@@ -74,19 +76,20 @@ describe('Artifact Generator', () => {
     });
 
     function verifyVocabList() {
-      expect(fs.existsSync(`${testOutputDirectory}/index.js`)).to.be.true;
-      expect(fs.existsSync(`${testOutputDirectory}/package.json`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
 
-      expect(fs.existsSync(`${testOutputDirectory}/GeneratedVocab/override-name.js`)).to.be.true;
-      expect(fs.existsSync(`${testOutputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)).to.be
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/override-name.js`)).to.be
         .true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)).to
+        .be.true;
 
-      const indexOutput = fs.readFileSync(`${testOutputDirectory}/index.js`).toString();
+      const indexOutput = fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString();
       expect(indexOutput).to.contain(
         "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/schema-inrupt-ext')"
       );
 
-      const packageOutput = fs.readFileSync(`${testOutputDirectory}/package.json`).toString();
+      const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
       expect(packageOutput).to.contain('"name": "@lit/generated-vocab-common-TEST",');
     }
   });

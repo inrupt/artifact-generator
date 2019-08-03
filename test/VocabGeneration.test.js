@@ -5,9 +5,10 @@ chai.use(require('chai-string'));
 const { expect } = chai;
 
 const fs = require('fs');
-const del = require('del');
+// const del = require('del');
 
 const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
+const FileGenerator = require('../src/generator/FileGenerator');
 const CommandLine = require('../src/CommandLine');
 
 const VERSION_ARTIFACT_GENERATED = '0.1.0';
@@ -22,7 +23,7 @@ const RUN_NPM_PUBLISH = false;
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
   outputDirectory:
-    // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+    // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common',
     './generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
@@ -36,8 +37,7 @@ const GenerationConfigLitCommon = {
 
 const GenerationConfigSolidComponent = {
   input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/SolidComponent.ttl'],
-  outputDirectory:
-    '../../../../Solid/MonoRepo/testLit/packages/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidComponent',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -50,8 +50,7 @@ const GenerationConfigSolidComponent = {
 
 const GenerationConfigSolidGeneratorUi = {
   input: ['../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/SolidGeneratorUi.ttl'],
-  outputDirectory:
-    '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -62,21 +61,13 @@ const GenerationConfigSolidGeneratorUi = {
   runWidoco: true,
 };
 
-async function deleteDirectory(directory) {
-  const deletedPaths = await del([`${directory}/*`], { force: true });
-  console.log(`Deleting all files and folders from [${directory}]:`);
-  console.log(deletedPaths.join('\n'));
-}
-
 async function generateVocabArtifact(argv) {
-  await deleteDirectory(argv.outputDirectory);
-
-  const generator = new ArtifactGenerator(
+  const artifactGenerator = new ArtifactGenerator(
     { ...argv, noprompt: true },
     CommandLine.askForArtifactInfo
   );
 
-  await generator
+  await artifactGenerator
     .generate()
     .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
@@ -89,14 +80,26 @@ async function generateVocabArtifact(argv) {
       throw new Error(error);
     });
 
-  expect(fs.existsSync(`${argv.outputDirectory}/package.json`)).to.be.true;
+  expect(
+    fs.existsSync(
+      `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package.json`
+    )
+  ).to.be.true;
 
   if (argv.runNpmInstall) {
-    expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
+    expect(
+      fs.existsSync(
+        `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package-lock.json`
+      )
+    ).to.be.true;
   }
 
   if (argv.ranWidoco) {
-    expect(fs.existsSync(`${argv.outputDirectory}/Widoco/index-en.html`)).to.be.true;
+    expect(
+      fs.existsSync(
+        `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/Widoco/index-en.html`
+      )
+    ).to.be.true;
   }
 
   console.log(`Generation process successful!\n`);
@@ -128,18 +131,18 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
     await generateVocabArtifact({
       input: [''],
-      outputDirectory: '../../../../Vocab/Schema.org/GeneratedSourceCodeArtifacts/Javascript',
+      outputDirectory: '../../../../Vocab/Schema.org',
       artifactVersion: '1.0.0',
       litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
       moduleNamePrefix: '@solid/generated-vocab-',
     });
   });
 
-  // it.skip('Test Demo App', async () => {
-  it('Test Demo App', async () => {
+  it.skip('Test Demo App', async () => {
+    // it('Test Demo App', async () => {
     await generateVocabArtifact({
       // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      input: ['./example/PetRocks.ttl'],
+      input: ['./example/vocab/PetRocks.ttl'],
 
       // input: ['http://www.w3.org/2006/vcard/ns#'],
       // vocabNameAndPrefixOverride: 'vcard',
@@ -156,13 +159,12 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // input: ['https://www.w3.org/ns/activitystreams#'],
       // vocabNameAndPrefixOverride: 'as',
 
-      outputDirectory: './generated',
-      // outputDirectory:
-      //   '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/GeneratedSourceCodeArtifacts/Javascript',
+      // outputDirectory: './generated',
+      outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
       runWidoco: true,
     });
-  });
+  }).timeout(20000);
 });

@@ -1,4 +1,7 @@
 generated/
+example/generated/
+test/generated/
+
 node_modules/
 
 .idea

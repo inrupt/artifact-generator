@@ -9,15 +9,11 @@ const fs = require('fs');
 const del = require('del');
 
 const VocabGenerator = require('../src/generator/VocabGenerator');
-
-const doNothingPromise = data => {
-  return new Promise((resolve, reject) => {
-    resolve(data);
-  });
-};
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('../src/generator/FileGenerator');
 
 describe('Supported Data Type', () => {
-  const outputDirectory = 'generated';
+  const outputDirectory = `generated`;
+  const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
   it('should test the special-case handling for the OWL vocabulary', async () => {
     await del([`${outputDirectory}/*`]);
@@ -35,7 +31,9 @@ describe('Supported Data Type', () => {
 
     await generator.generate();
 
-    const indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/owl.js`).toString();
+    const indexOutput = fs
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/owl.js`)
+      .toString();
 
     expect(indexOutput).to.contain('NAMESPACE = "http://www.w3.org/2002/07/owl#');
     expect(indexOutput).to.contain(
@@ -59,7 +57,9 @@ describe('Supported Data Type', () => {
 
     await generator.generate();
 
-    const indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/lit_gen.js`).toString();
+    const indexOutput = fs
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/lit_gen.js`)
+      .toString();
 
     expect(indexOutput).to.contain("class1: new LitVocabTerm(_NS('class1'), localStorage, true)");
     expect(indexOutput).to.contain(".addLabel('', `A rdfs class`)");

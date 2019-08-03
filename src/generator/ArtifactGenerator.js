@@ -1,4 +1,5 @@
 const fs = require('fs');
+const del = require('del');
 const yaml = require('js-yaml');
 const moment = require('moment');
 const packageDotJson = require('../../package.json');
@@ -24,6 +25,12 @@ module.exports = class ArtifactGenerator {
     this.artifactData.generatorVersion = packageDotJson.version;
   }
 
+  static async deleteDirectory(directory) {
+    const deletedPaths = await del([`${directory}/*`], { force: true });
+    console.log(`Deleting all files and folders from [${directory}]:`);
+    console.log(deletedPaths.join('\n'));
+  }
+
   /**
    * If we are bundling vocabs from a list, then we run our inquirer first, then run our generation. But if we are
    * only generating a single vocab, then process our inputs first and then run our inquirer, as our input vocab may
@@ -34,6 +41,10 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
+    await ArtifactGenerator.deleteDirectory(
+      `${this.artifactData.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}`
+    );
+
     console.log(); // Just a blank line on our output.
     if (this.inquirerProcess) {
       this.artifactData = await this.inquirerProcess(this.artifactData);

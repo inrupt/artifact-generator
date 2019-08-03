@@ -335,6 +335,21 @@ describe('Command Line unit tests', () => {
       expect(result.ranWidoco).to.equal(true);
     });
 
+    it('Should generate documentation (from HTTP vocab) if user explicitly told to', async () => {
+      sinon.stub(childProcess, 'execSync').callsFake(() => {
+        return '';
+      });
+
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        input: ['http://Dummy_vocab_file'],
+        outputDirectory: 'needs/a/parent/directory',
+        runWidoco: true,
+      });
+
+      expect(result.ranWidoco).to.equal(true);
+    });
+
     it('Should generate documentation if user confirms yes', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
         return { runWidoco: true };

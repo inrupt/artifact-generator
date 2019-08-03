@@ -2,7 +2,7 @@ const path = require('path');
 
 const rdf = require('rdf-ext');
 
-const GeneratorFile = require('./FileGenerator');
+const FileGenerator = require('./FileGenerator');
 
 const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
@@ -36,7 +36,7 @@ module.exports = class VocabGenerator {
         console.log(`Input vocabulary file(s) [${this.vocabData.input.toString()}]...`);
 
         return new Promise(resolve => {
-          GeneratorFile.createSourceCodeFile(this.vocabData, vocabGenerationData);
+          FileGenerator.createSourceCodeFile(this.vocabData, vocabGenerationData);
           resolve(vocabGenerationData);
         });
       });

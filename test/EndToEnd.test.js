@@ -9,6 +9,7 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('../src/generator/FileGenerator');
 
 const doNothingPromise = data => {
   return new Promise((resolve, reject) => {
@@ -18,6 +19,7 @@ const doNothingPromise = data => {
 
 describe('Ontology Generator', () => {
   const outputDirectory = 'generated';
+  const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
   beforeEach(() => {
     const deletedPaths = del.sync([`${outputDirectory}/*`]);
@@ -106,13 +108,15 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/index.js`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString()).to.equal(
         fs.readFileSync('test/resources/expectedOutputs/single/index.js').toString()
       );
 
       // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
-      const output = fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString();
+      const output = fs
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)
+        .toString();
       const expected = fs
         .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js')
         .toString();
@@ -120,8 +124,8 @@ describe('Ontology Generator', () => {
         expected.substring(expected.indexOf(' */'))
       );
 
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).to.equal(
         fs.readFileSync('test/resources/expectedOutputs/single/package.json').toString()
       );
     });
@@ -138,13 +142,13 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/GeneratedVocab/schema.js`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString()).contains(
-        "Person: new LitVocabTerm(_NS('Person'), localStorage, true)"
-      );
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)).to.be.true;
+      expect(
+        fs.readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`).toString()
+      ).contains("Person: new LitVocabTerm(_NS('Person'), localStorage, true)");
 
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema"'
       );
     }).timeout(5000);
@@ -166,7 +170,7 @@ describe('Ontology Generator', () => {
 
       // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
       const expected = fs
         .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js')
@@ -175,8 +179,8 @@ describe('Ontology Generator', () => {
         expected.substring(expected.indexOf(' */'))
       );
 
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).to.equal(
         fs.readFileSync('test/resources/expectedOutputs/full-ext/package.json').toString()
       );
     });
@@ -193,10 +197,10 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
 
       var indexOutput = fs
-        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
@@ -219,7 +223,7 @@ describe('Ontology Generator', () => {
       await generator.generate();
 
       var indexOutput = fs
-        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
@@ -248,7 +252,9 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      var indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString();
+      var indexOutput = fs
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)
+        .toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).contains(".addLabel('en', `Person`)");
@@ -276,8 +282,8 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"version": "1.0.5"'
       );
     });
@@ -296,8 +302,8 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
-      expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
     });
 
     it('module names should by default start with @lit/generated-vocab-*', async () => {
@@ -312,7 +318,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema",'
       );
 
@@ -327,7 +333,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"name": "@lit/generated-vocab-schema-inrupt-ext",'
       );
     });
@@ -345,7 +351,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
           'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
       );
@@ -364,7 +370,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.readFileSync(`${outputDirectory}/package.json`).toString()).contains(
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
         '"author": "Jarlath Holleran"'
       );
     });
