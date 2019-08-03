@@ -11,7 +11,7 @@ const VocabGenerator = require('./generator/VocabGenerator');
 const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./generator/FileGenerator');
 
 describe('Supported Data Type', () => {
-  const outputDirectory = `generated`;
+  const outputDirectory = 'test/generated';
   const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
   it('should test the special-case handling for the OWL vocabulary', async () => {

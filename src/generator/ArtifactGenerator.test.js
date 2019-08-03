@@ -12,7 +12,7 @@ const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./FileGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
-    const outputDirectory = 'generated';
+    const outputDirectory = 'test/generated';
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
     beforeEach(() => {

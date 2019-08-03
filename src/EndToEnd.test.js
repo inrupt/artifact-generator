@@ -18,7 +18,7 @@ const doNothingPromise = data => {
 };
 
 describe('Ontology Generator', () => {
-  const outputDirectory = 'generated';
+  const outputDirectory = 'test/generated';
   const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
 
   beforeEach(() => {

@@ -23,7 +23,7 @@ const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
   outputDirectory:
     // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common',
-    './generated',
+    './test/generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -158,7 +158,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // input: ['https://www.w3.org/ns/activitystreams#'],
       // vocabNameAndPrefixOverride: 'as',
 
-      // outputDirectory: './generated',
+      // outputDirectory: './test/generated',
       outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
