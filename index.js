@@ -7,12 +7,10 @@
 // they need a mocked local storage to work with.
 require('mock-local-storage')
 const yargs = require('yargs')
-
 const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
-
 const CommandLine = require('./src/CommandLine');
-
 const debug = require('debug');
+
 const logger = debug('lit-artifact-generator:index');
 
 const argv = yargs
@@ -119,8 +117,20 @@ if (!argv.input && !argv.vocabListFile) {
   process.exit(-1);
 }
 
+// Unless specifically told to be quiet (i.e. no logging output, although that
+// will still be overridden by the DEBUG environment variable!), then
+// determine if any generator-specific namespaces have been enabled. If they
+// haven't been, then turn them all on,
 if (!argv.quiet) {
-  debug.enable('lit-artifact-generator:*');
+  // Retrieve all currently enabled debug namespaces (and then restore them!).
+  const namespaces = debug.disable();
+  debug.enable(namespaces);
+
+  // Unless our generator's debug logging has been explicitly configured, turn
+  // all debugging on.
+  if (namespaces.indexOf('lit-artifact-generator') === -1) {
+    debug.enable('lit-artifact-generator:*');
+  }
 }
 
 const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
@@ -131,4 +141,6 @@ artifactGenerator
   .then(CommandLine.askForArtifactToBeNpmInstalled)
   .then(CommandLine.askForArtifactToBeNpmPublished)
   .then(CommandLine.askForArtifactToBeDocumented)
+  .then(() => process.exit(0))
   .catch(handleError);
+
