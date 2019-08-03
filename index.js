@@ -5,8 +5,8 @@
 // localStorage for runtime context (e.g. the currently selected language).
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
-require('mock-local-storage')
-const yargs = require('yargs')
+require('mock-local-storage');
+const yargs = require('yargs');
 const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
 const CommandLine = require('./src/CommandLine');
 const debug = require('debug');
@@ -24,7 +24,10 @@ const argv = yargs
   // )
 
   .alias('vocabListFile', 'l')
-  .describe('vocabListFile', 'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.')
+  .describe(
+    'vocabListFile',
+    'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.'
+  )
 
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
@@ -65,8 +68,8 @@ const argv = yargs
   .boolean('quiet')
   .alias('quiet', 'q')
   .describe(
-      'quiet',
-      `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
+    'quiet',
+    `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
   )
   .default('quiet', false)
 
@@ -92,10 +95,7 @@ const argv = yargs
 
   .boolean('runWidoco')
   .alias('runWidoco', 'w')
-  .describe(
-    'runWidoco',
-    'If set, will run Widoco to generate documentation for this vocabulary.'
-  )
+  .describe('runWidoco', 'If set, will run Widoco to generate documentation for this vocabulary.')
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
@@ -113,7 +113,9 @@ function handleError(error) {
 if (!argv.input && !argv.vocabListFile) {
   yargs.showHelp();
   debug.enable('lit-artifact-generator:*');
-  logger("\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.")
+  logger(
+    "\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies."
+  );
   process.exit(-1);
 }
 
@@ -143,4 +145,3 @@ artifactGenerator
   .then(CommandLine.askForArtifactToBeDocumented)
   .then(() => process.exit(0))
   .catch(handleError);
-

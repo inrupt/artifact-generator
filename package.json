@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run format && npm run lint && jest",
     "start": "node index.js",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/resources/**\"",
+    "format": "prettier --single-quote --trailing-comma es5 --write \"index.js\" \"src/**/*.js\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "author": "inrupt, Inc.",

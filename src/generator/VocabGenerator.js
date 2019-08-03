@@ -1,10 +1,8 @@
 const path = require('path');
-
 const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
-
 const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
 
