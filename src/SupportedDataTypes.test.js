@@ -1,7 +1,6 @@
 require('mock-local-storage');
 
 const chai = require('chai');
-chai.use(require('chai-string'));
 
 const { expect } = chai;
 const fs = require('fs');
