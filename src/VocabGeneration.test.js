@@ -2,14 +2,13 @@ require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
+
 const { expect } = chai;
-
 const fs = require('fs');
-// const del = require('del');
 
-const ArtifactGenerator = require('../src/generator/ArtifactGenerator');
-const FileGenerator = require('../src/generator/FileGenerator');
-const CommandLine = require('../src/CommandLine');
+const ArtifactGenerator = require('./generator/ArtifactGenerator');
+const FileGenerator = require('./generator/FileGenerator');
+const CommandLine = require('./CommandLine');
 
 const VERSION_ARTIFACT_GENERATED = '0.1.0';
 // const VERSION_BUMP_EXISTING = true; // Not sure yet if this is really needed, or how it would work...!

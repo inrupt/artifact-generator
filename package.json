@@ -8,7 +8,7 @@
   },
   "preferGlobal": true,
   "scripts": {
-    "test": "npm run format && npm run lint && nyc mocha \"./test/**/*.test.js\"",
+    "test": "npm run format && npm run lint && nyc mocha \"./src/**/*.test.js\"",
     "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/resources/**\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
@@ -64,7 +64,9 @@
     "include": [
       "src/**/*.js"
     ],
-    "exclude": [],
+    "exclude": [
+      "src/**/*.test.js"
+    ],
     "reporter": [
       "lcov",
       "text"

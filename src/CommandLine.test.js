@@ -1,15 +1,13 @@
-'use strict';
-
 const chai = require('chai');
 chai.use(require('chai-string'));
-const expect = chai.expect;
+
+const { expect } = chai;
+
 const sinon = require('sinon');
-
 const inquirer = require('inquirer');
-
 const childProcess = require('child_process');
 
-const CommandLine = require('../src/CommandLine');
+const CommandLine = require('./CommandLine');
 
 const defaultInputs = {
   artifactName: '@lit/generator-vocab-schema-ext',
@@ -34,10 +32,6 @@ describe('Command Line unit tests', () => {
     it('Should ask for artifact name', async () => {
       sinon.stub(inquirer, 'prompt').callsFake(async () => {
         return { artifactName: 'lit-gen-schema-ext', authorSet: new Set(['inrupt']) };
-      });
-
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '1.1.10';
       });
 
       const result = await CommandLine.askForArtifactInfo(defaultInputs);

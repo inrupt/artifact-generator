@@ -1,15 +1,14 @@
-'use strict';
-
 require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
-const expect = chai.expect;
+
+const { expect } = chai;
 const fs = require('fs');
 const del = require('del');
 
-const VocabGenerator = require('../src/generator/VocabGenerator');
-const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('../src/generator/FileGenerator');
+const VocabGenerator = require('./generator/VocabGenerator');
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./generator/FileGenerator');
 
 describe('Supported Data Type', () => {
   const outputDirectory = `generated`;
@@ -20,7 +19,7 @@ describe('Supported Data Type', () => {
 
     const generator = new VocabGenerator({
       input: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
-      outputDirectory: outputDirectory,
+      outputDirectory,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
       vocabNameAndPrefixOverride: 'owl',
@@ -47,7 +46,7 @@ describe('Supported Data Type', () => {
 
     const generator = new VocabGenerator({
       input: ['./test/resources/vocabs/supported-data-types.ttl'],
-      outputDirectory: outputDirectory,
+      outputDirectory,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
 

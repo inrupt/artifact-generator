@@ -1,7 +1,12 @@
 {
   "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],
+  "env": {
+    "node": true,
+    "mocha": true
+  },
   "rules": {
+    "no-unused-expressions": "off",
     "prettier/prettier": ["error", {
       "trailingComma": "es5"
     }
