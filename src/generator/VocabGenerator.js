@@ -28,7 +28,7 @@ module.exports = class VocabGenerator {
       .then(vocabGenerationData => {
         logger(
           `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-            this.vocabData.vocabNameAndPrefixOverride ? '( from override)' : ''
+            this.vocabData.nameAndPrefixOverride ? '( from override)' : ''
           }...`
         );
         logger(`Input vocabulary file(s) [${this.vocabData.input.toString()}]...`);

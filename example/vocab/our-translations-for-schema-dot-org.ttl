@@ -8,7 +8,14 @@ prefix lit_core: <https://w3id.org/lit/vocab/core#>
 
 prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation/schema#>
 
-
+#
+# NOTE: This file is just an example. One open question (as of Aug 2019) is do
+# we provide values with explicit 'en' language tags? Schema.org does provide
+# labels and comments in English, but without an explicit language tag. Is it
+# good enough to say we rely on any developers using Schema.org to look for
+# explicit English values, but if not found they should default to looking for
+# 'no lnaguage tag' values?
+#
 our-translations-for-schema-dot-org:
     a owl:Ontology, lit_core:Ontology ;
     owl:versionInfo "0.0.1" ;

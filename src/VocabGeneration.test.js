@@ -139,19 +139,19 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       input: ['./example/vocab/PetRocks.ttl'],
 
       // input: ['http://www.w3.org/2006/vcard/ns#'],
-      // vocabNameAndPrefixOverride: 'vcard',
+      // nameAndPrefixOverride: 'vcard',
       //
       // input: ['http://www.w3.org/2002/07/owl#'],
-      // vocabNameAndPrefixOverride: 'owl',
+      // nameAndPrefixOverride: 'owl',
 
       // input: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#'],
-      // vocabNameAndPrefixOverride: 'RDF',
+      // nameAndPrefixOverride: 'RDF',
 
       // input: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
-      // vocabNameAndPrefixOverride: 'DCTERMS',
+      // nameAndPrefixOverride: 'DCTERMS',
 
       // input: ['https://www.w3.org/ns/activitystreams#'],
-      // vocabNameAndPrefixOverride: 'as',
+      // nameAndPrefixOverride: 'as',
 
       // outputDirectory: './test/generated',
       outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',

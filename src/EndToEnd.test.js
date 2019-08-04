@@ -232,7 +232,6 @@ describe('End-to-end tests', () => {
       expect(indexOutput).toEqual(
         expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
       );
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('en', `Person`)"));
       expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
 
       expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));
@@ -267,7 +266,6 @@ describe('End-to-end tests', () => {
       expect(indexOutput).toEqual(
         expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
       );
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('en', `Person`)"));
       expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
 
       expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));

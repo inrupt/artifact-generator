@@ -17,7 +17,7 @@ describe('Supported Data Type', () => {
       outputDirectory,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
-      vocabNameAndPrefixOverride: 'owl',
+      nameAndPrefixOverride: 'owl',
 
       generatedVocabs: [],
       authorSet: new Set(),

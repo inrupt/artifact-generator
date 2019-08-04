@@ -93,7 +93,7 @@ module.exports = class ArtifactGenerator {
       // Override our vocab inputs using this vocab list entry.
       this.artifactData.input = vocabDetails.inputFiles;
       this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
-      this.artifactData.vocabNameAndPrefixOverride = vocabDetails.vocabNameAndPrefixOverride;
+      this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
 
       return new VocabGenerator(this.artifactData).generate();
     });

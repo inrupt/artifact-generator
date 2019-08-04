@@ -33,7 +33,7 @@ class FileGenerator {
       templateData,
       `${
         argv.outputDirectory
-      }${ARTIFACT_DIRECTORY_JAVASCRIPT}/GeneratedVocab/${templateData.vocabNameAndPrefixOverride ||
+      }${ARTIFACT_DIRECTORY_JAVASCRIPT}/GeneratedVocab/${templateData.nameAndPrefixOverride ||
         templateData.vocabName}.js`
     );
   }

@@ -21,7 +21,9 @@ module.exports = class App {
       this.yargsConfig.showHelp();
       debug.enable('lit-artifact-generator:*');
       logger(`\nInvalid inputs.`);
-      throw new Error("You must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.");
+      throw new Error(
+        "You must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies."
+      );
     }
 
     // Unless specifically told to be quiet (i.e. no logging output, although that

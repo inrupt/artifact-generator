@@ -30,71 +30,71 @@ vocabList:
   # (used in our Java artifact generator) will not follow the 301 redirect from
   # 'http://', and so our RDF4J model will be empty and therefore so will our
   # generated source.
-  - vocabDescriptiom: Schema.org (the full vocabulary)
+  - description: Schema.org (the full vocabulary)
     inputFiles:
       - https://schema.org/version/latest/schema.ttl
 
-#  - vocabDescriptiom: Schema.org with selective terms having translations
-#    vocabNameAndPrefixOverride: schema-inrupt-ext
+#  - description: Schema.org with selective terms having translations
+#    nameAndPrefixOverride: schema-inrupt-ext
 #    inputFiles:
 #      - https://schema.org/version/latest/schema.ttl
 #    termSelectionFile: ./rdf/Extensions/schema-inrupt-ext.ttl
 
 
-  - vocabDescriptiom: VCARD (the full vocabulary)
-    vocabNameAndPrefixOverride: vcard
+  - description: VCARD (the full vocabulary)
+    nameAndPrefixOverride: vcard
     inputFiles:
       - http://www.w3.org/2006/vcard/ns#
 
-#  - vocabDescriptiom: VCARD with selective terms having translations
-#    vocabNameAndPrefixOverride: vcard-inrupt-ext
+#  - description: VCARD with selective terms having translations
+#    nameAndPrefixOverride: vcard-inrupt-ext
 #    inputFiles:
 #      - http://www.w3.org/2006/vcard/ns#
 #    termSelectionFile: ./rdf/Extensions/vcard-inrupt-ext.ttl
 
 
-  - vocabDescriptiom: RDF (the full vocabulary)
-    vocabNameAndPrefixOverride: rdf
+  - description: RDF (the full vocabulary)
+    nameAndPrefixOverride: rdf
     inputFiles:
       - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
-#  - vocabDescriptiom: RDF with selective terms having translations
-#    vocabNameAndPrefixOverride: rdf-inrupt-ext
+#  - description: RDF with selective terms having translations
+#    nameAndPrefixOverride: rdf-inrupt-ext
 #    inputFiles:
 #      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 #    termSelectionFile: ./rdf/Extensions/rdf-inrupt-ext.ttl
 
 
 
-  - vocabDescriptiom: rdfs
-    vocabNameAndPrefixOverride: rdfs
+  - description: rdfs
+    nameAndPrefixOverride: rdfs
     inputFiles:
       - http://www.w3.org/2000/01/rdf-schema#
 
   # OWL seems to have a bug in that the ontology itself is identified using a subject IRI without the
   # hash, yet the 'owl:' prefix correctly appends the hash.
-  - vocabDescriptiom: OWL
-    vocabNameAndPrefixOverride: owl
+  - description: OWL
+    nameAndPrefixOverride: owl
     inputFiles:
       - http://www.w3.org/2002/07/owl#
 
-  - vocabDescriptiom: LDP
+  - description: LDP
     inputFiles:
       - https://www.w3.org/ns/ldp#
 
   # Default serialization is RDF/XML (and we have no parser available)...
-#  - vocabDescriptiom: http
-#    vocabNameAndPrefixOverride: http
+#  - description: http
+#    nameAndPrefixOverride: http
 #    inputFiles:
 #      - http://www.w3.org/2011/http#
 
-  - vocabDescriptiom: The Ordered List Ontology
-    vocabNameAndPrefixOverride: olo
+  - description: The Ordered List Ontology
+    nameAndPrefixOverride: olo
     inputFiles:
       - http://svn.code.sf.net/p/smiy/code/orderedlistonto/trunk/rdf/orderedlistontology.n3
 
-#  - vocabDescriptiom: Simple Knowledge Organisation System (SKOS)
-#    vocabNameAndPrefixOverride: skos
+#  - description: Simple Knowledge Organisation System (SKOS)
+#    nameAndPrefixOverride: skos
 #    inputFiles:
 ##
 ## Both these 'authoritative' endpoints only seem to ever return RDF/XML (for which we don't have a parser!), so
@@ -108,15 +108,15 @@ vocabList:
   # Currently fails generation process with this error (i.e. terms uses '#', but namespace ends in '/'...
   #   Vocabulary term [http://www.w3.org/ns/ui#NumericField] found that is not in our namespace [https://www.w3.org/ns/] - currently this is disallowed (as it indicates a probable typo!)
   #
-#  - vocabDescriptiom: ui
+#  - description: ui
 #    inputFiles:
 #      - https://www.w3.org/ns/ui.ttl
 
-#  - vocabDescriptiom: The LIT Core vocabulary
+#  - description: The LIT Core vocabulary
 #    inputFiles:
 #      - ./rdf/OntologyDirMarker/Lit-Core.ttl
 #
-#  - vocabDescriptiom: The LIT Consent vocabulary
+#  - description: The LIT Consent vocabulary
 #    inputFiles:
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
@@ -127,11 +127,11 @@ vocabList:
   # authorative one (and once I add RDF/XML parsing to the generator I can
   # remove this local version...!)
   #
-#  - vocabDescriptiom: vann
+#  - description: vann
 #    inputFiles:
 #      - ./rdf/CopyOfVocabs/vann.ttl
 
-  - vocabDescriptiom: dcterms
-    vocabNameAndPrefixOverride: dcterms
+  - description: dcterms
+    nameAndPrefixOverride: dcterms
     inputFiles:
       - http://dublincore.org/2012/06/14/dcterms.ttl

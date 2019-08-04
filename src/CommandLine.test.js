@@ -1,4 +1,6 @@
-const sinon = require('sinon');
+jest.mock('inquirer');
+jest.mock('child_process');
+
 const inquirer = require('inquirer');
 const childProcess = require('child_process');
 
@@ -11,11 +13,6 @@ const defaultInputs = {
 };
 
 describe('Command Line unit tests', () => {
-  afterEach(() => {
-    // Restore the default sandbox here.
-    sinon.restore();
-  });
-
   describe('Requesting input from the user', () => {
     it('Should not ask for artifact information if explicitly told not to', async () => {
       const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, noprompt: true });
@@ -25,9 +22,13 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should ask for artifact name', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { artifactName: 'lit-gen-schema-ext', authorSet: new Set(['inrupt']) };
-      });
+      inquirer.prompt.mockImplementation(
+        jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ artifactName: 'lit-gen-schema-ext', authorSet: new Set(['inrupt']) })
+          )
+      );
 
       const result = await CommandLine.askForArtifactInfo(defaultInputs);
 
@@ -36,9 +37,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should ask for artifact module name prefix, and override provided value', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { artifactName: 'test-prefix-' };
-      });
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve({ artifactName: 'test-prefix-' }))
+      );
 
       const result = await CommandLine.askForArtifactInfo({
         ...defaultInputs,
@@ -49,9 +50,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should ask for LIT Vocab Term version, and override provided value', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { litVocabTermVersion: '^1.2.3' };
-      });
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve({ litVocabTermVersion: '^1.2.3' }))
+      );
 
       const result = await CommandLine.askForArtifactInfo({
         ...defaultInputs,
@@ -62,9 +63,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should ask for artifact authors information if none provided', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { authorSet: new Set().add('test-inrupt') };
-      });
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve({ authorSet: new Set().add('test-inrupt') }))
+      );
 
       const result = await CommandLine.askForArtifactInfo(delete defaultInputs.authorSet);
 
@@ -74,9 +75,7 @@ describe('Command Line unit tests', () => {
 
   describe('NPM publishing...', () => {
     it('Should find the latest published artifact from registry', () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '1.1.10';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue('1.1.10'));
 
       const result = CommandLine.findPublishedVersionOfModule({
         ...defaultInputs,
@@ -88,7 +87,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not add to the result if artifact has not been published to the registry', () => {
-      sinon.stub(childProcess, 'execSync').throws();
+      childProcess.execSync.mockImplementation(() => {
+        throw new Error('Mocked test error');
+      });
 
       const result = CommandLine.findPublishedVersionOfModule({
         ...defaultInputs,
@@ -100,13 +101,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should publish artifact to the registry if user confirms yes', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runNpmPublish: true };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runNpmPublish: true }));
 
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
@@ -115,9 +112,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should publish artifact to the registry if given explicit inputs', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
@@ -129,14 +124,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not publish artifact to the registry if user confirms no', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runNpmPublish: false };
-      });
-
-      sinon
-        .mock(childProcess)
-        .expects('execSync')
-        .never();
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runNpmPublish: false }));
 
       const result = await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
@@ -156,9 +144,7 @@ describe('Command Line unit tests', () => {
 
   describe('NPM version bumping...', () => {
     it('Should run npm version', () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = CommandLine.runNpmVersion(defaultInputs);
 
@@ -166,9 +152,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should bump artifact version if explicitly told to', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '1.2.10';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue('1.2.10'));
 
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
@@ -183,13 +167,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should ask for the artifact version bump type (major, minor, patch)', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { bumpVersion: 'patch' };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ bumpVersion: 'patch' }));
 
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
@@ -201,33 +181,17 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not run update version command if the user answers "no" when ask for the artifact version bump type', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { bump: 'no' };
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ bumpVersion: 'no' }));
+
+      const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
+        ...defaultInputs,
+        publishedVersion: '1.1.10',
       });
 
-      sinon
-        .mock(childProcess)
-        .expects('execSync')
-        .never();
-
-      defaultInputs.publishedVersion = '1.1.10';
-
-      const result = await CommandLine.askForArtifactToBeNpmVersionBumped(defaultInputs);
-
-      expect(result.bump).toBe('no');
+      expect(result.bumpVersion).toBe('no');
     });
 
     it('Should not prompt for artifact version bump type if the module has not been published', async () => {
-      sinon
-        .mock(inquirer)
-        .expects('prompt')
-        .never();
-
-      sinon
-        .mock(childProcess)
-        .expects('execSync')
-        .never();
-
       defaultInputs.publishedVersion = undefined;
 
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped(defaultInputs);
@@ -238,9 +202,7 @@ describe('Command Line unit tests', () => {
 
   describe('NPM installing...', () => {
     it('Should run npm install', () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = CommandLine.runNpmInstall(defaultInputs);
 
@@ -248,9 +210,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should install artifact if user explicitly told to', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
@@ -261,13 +221,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should install artifact if user confirms yes', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runNpmInstall: true };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runNpmInstall: true }));
 
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
@@ -275,9 +231,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not install artifact if user confirms no', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runNpmInstall: false };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runNpmInstall: false }));
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
@@ -296,9 +250,7 @@ describe('Command Line unit tests', () => {
 
   describe('Running Widoco...', () => {
     it('Should run Widoco', () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = CommandLine.runWidoco({
         ...defaultInputs,
@@ -310,9 +262,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should generate documentation if user explicitly told to', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
@@ -325,9 +275,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should generate documentation (from HTTP vocab) if user explicitly told to', async () => {
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
@@ -340,13 +288,9 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should generate documentation if user confirms yes', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runWidoco: true };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runWidoco: true }));
 
-      sinon.stub(childProcess, 'execSync').callsFake(() => {
-        return '';
-      });
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
@@ -358,9 +302,7 @@ describe('Command Line unit tests', () => {
     });
 
     it('Should not generate documentation if user confirms no', async () => {
-      sinon.stub(inquirer, 'prompt').callsFake(async () => {
-        return { runWidoco: false };
-      });
+      inquirer.prompt.mockImplementation(jest.fn().mockReturnValue({ runWidoco: false }));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,

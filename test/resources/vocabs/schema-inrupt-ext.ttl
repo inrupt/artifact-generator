@@ -23,12 +23,10 @@ schema-inrupt-ext:
 
 
 schema:Person
-    schema:alternateName "Person"@en ;
     schema:alternateName "La personne"@fr ;
     schema:alternateName "Person"@de ;
     schema:alternateName "Persona"@es ;
     schema:alternateName "Persona"@it ;
-    rdfs:comment "A person (alive, dead, undead, or fictional)."@en ;
     rdfs:comment "Une personne (vivante, morte, mort-vivant ou fictive)."@fr ;
     rdfs:comment "Eine Person (lebendig, tot, untot oder fiktiv)."@de ;
     rdfs:comment "Una persona (viva, muerta, no muerta o ficticia)."@es ;
@@ -41,33 +39,27 @@ schema:givenName
     schema:alternateName "Vorname"@de ;
     schema:alternateName "Nombre de pila"@es ;
     schema:alternateName "Nome di battesimo"@it ;
-    rdfs:comment "Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property."@en ;
     rdfs:comment "Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name."@fr ;
     rdfs:comment "Vorname. In den USA der Vorname einer Person. Dies kann zusammen mit familyName anstelle der Eigenschaft name verwendet werden."@de ;
     rdfs:comment "Nombre de pila. En los EE. UU., El primer nombre de una persona. Esto se puede usar junto con familyName en lugar de la propiedad name."@es ;
     rdfs:comment "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it .
 
 schema:familyName a rdf:Property ;
-    rdfs:label "familyName" ;
-    schema:alternateName "Family Name"@en ;
     schema:alternateName "Nom de famille"@fr ;
     schema:alternateName "Nachname"@de ;
     schema:alternateName "Apellido"@es ;
     schema:alternateName "Cognome"@it ;
-    rdfs:comment "Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property."@en ;
     rdfs:comment "Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name."@fr ;
     rdfs:comment "Nachname. In den USA der Nachname einer Person. Dies kann zusammen mit givenName anstelle der Eigenschaft name verwendet werden."@de ;
     rdfs:comment "Apellido. En los EE.UU., el apellido de una persona. Esto se puede usar junto con givenName en lugar de la propiedad name."@es ;
     rdfs:comment "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it .
 
 schema:additionalName a rdf:Property ;
-    rdfs:label "additionalName" ;
     schema:alternateName "Additional Name"@en ;
     schema:alternateName "Nom additionnel"@fr ;
     schema:alternateName "Zusätzlicher Name"@de ;
     schema:alternateName "Nombre adicional"@es ;
     schema:alternateName "Nome aggiuntivo"@it ;
-    rdfs:comment "An additional name for a Person, can be used for a middle name."@en ;
     rdfs:comment "Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom."@fr ;
     rdfs:comment "Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden."@de ;
     rdfs:comment "Un nombre adicional para una persona, se puede utilizar para un segundo nombre."@es ;

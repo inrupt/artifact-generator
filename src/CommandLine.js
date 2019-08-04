@@ -270,7 +270,7 @@ module.exports = class CommandLine {
     const inputResource = data.input[0];
     const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
     const destDirectory = `${data.outputDirectory}/Widoco`;
-    const log4jPropertyFile = `-Dlog4j.configuration=file:"./src/test/resources/log4j.properties"`;
+    const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
     logger(
       `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
