@@ -1,6 +1,6 @@
 require('mock-local-storage');
-
 const fs = require('fs');
+const logger = require('debug')('lit-artifact-generator:FileGenerator');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const FileGenerator = require('./generator/FileGenerator');
@@ -70,7 +70,7 @@ async function generateVocabArtifact(argv) {
     .then(CommandLine.askForArtifactToBeNpmPublished)
     .then(CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
-      console.error(`Generation process failed: [${error}]`);
+      logger(`Generation process failed: [${error}]`);
       throw new Error(error);
     });
 
@@ -96,7 +96,7 @@ async function generateVocabArtifact(argv) {
     ).toBe(true);
   }
 
-  console.log(`Generation process successful!\n`);
+  logger(`Generation process successful!\n`);
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {

@@ -9,7 +9,6 @@
     "prettier/prettier": ["error", {
       "trailingComma": "es5"
     }
-    ],
-    "no-console": "off"
+    ]
   }
 }

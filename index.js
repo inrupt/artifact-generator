@@ -6,14 +6,12 @@
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
 require('mock-local-storage');
+
+const logger = require('debug')('lit-artifact-generator:index');
 const yargs = require('yargs');
-const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
-const CommandLine = require('./src/CommandLine');
-const debug = require('debug');
+const App = require('./src/App');
 
-const logger = debug('lit-artifact-generator:index');
-
-const argv = yargs
+const yargsConfig = yargs
   .array('input')
   .alias('input', 'i')
   .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
@@ -103,45 +101,15 @@ const argv = yargs
   // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
   // least one of these two...?)
   .conflicts('input', 'vocabListFile')
-  .strict().argv;
+  .strict();
 
-function handleError(error) {
-  logger(`Generation process failed: [${error}]`);
-  process.exit(-2);
-}
-
-if (!argv.input && !argv.vocabListFile) {
-  yargs.showHelp();
-  debug.enable('lit-artifact-generator:*');
-  logger(
-    "\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies."
-  );
-  process.exit(-1);
-}
-
-// Unless specifically told to be quiet (i.e. no logging output, although that
-// will still be overridden by the DEBUG environment variable!), then
-// determine if any generator-specific namespaces have been enabled. If they
-// haven't been, then turn them all on,
-if (!argv.quiet) {
-  // Retrieve all currently enabled debug namespaces (and then restore them!).
-  const namespaces = debug.disable();
-  debug.enable(namespaces);
-
-  // Unless our generator's debug logging has been explicitly configured, turn
-  // all debugging on.
-  if (namespaces.indexOf('lit-artifact-generator') === -1) {
-    debug.enable('lit-artifact-generator:*');
-  }
-}
-
-const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
-artifactGenerator
-  .generate()
-  .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-  // .then(await CommandLine.askForArtifactToBeYalced)
-  .then(CommandLine.askForArtifactToBeNpmInstalled)
-  .then(CommandLine.askForArtifactToBeNpmPublished)
-  .then(CommandLine.askForArtifactToBeDocumented)
-  .then(() => process.exit(0))
-  .catch(handleError);
+new App(yargsConfig)
+  .run()
+  .then(data => {
+    logger(`\nGeneration process successful to directory [${data.outputDirectory}]!`);
+    process.exit(0);
+  })
+  .catch(error => {
+    logger(`Generation process failed: [${error}]`);
+    process.exit(-1);
+  });

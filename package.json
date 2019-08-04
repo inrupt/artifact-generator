@@ -1,7 +1,7 @@
 {
   "name": "@lit/artifact-generator",
   "version": "0.1.0",
-  "description": "A generator for building ontology artifacts",
+  "description": "A generator for building NPM modules (artifacts) from RDF vocabularies",
   "main": "index.js",
   "bin": {
     "lit-artifact-generator": "./index.js"

@@ -12,7 +12,7 @@ const defaultInputs = {
 
 describe('Command Line unit tests', () => {
   afterEach(() => {
-    // Restore the default sandbox here
+    // Restore the default sandbox here.
     sinon.restore();
   });
 
