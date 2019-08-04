@@ -114,7 +114,7 @@ module.exports = class CommandLine {
           type: 'confirm',
           name: 'runNpmInstall',
           message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
-          default: true,
+          default: false,
         },
       ];
 
@@ -278,7 +278,11 @@ module.exports = class CommandLine {
       )}/Widoco -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
     );
 
-    console.log(`Widoco documentation generated for [${data.artifactName}].`);
+    console.log(
+      `Widoco documentation generated for [${
+        data.artifactName
+      }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`
+    );
 
     return { ...data, ...{ ranWidoco: true } }; // Merge the answers in with the data and return
   }

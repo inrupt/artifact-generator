@@ -21,10 +21,9 @@ const RUN_NPM_PUBLISH = false;
 
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
-  // vocabListFile: '../../../vocab/Vocab-List-TEST.yml',
-  // outputDirectory: '../../../../Vocab/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
   outputDirectory:
-    '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+    // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common/GeneratedSourceCodeArtifacts/Javascript',
+    './generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -36,8 +35,7 @@ const GenerationConfigLitCommon = {
 };
 
 const GenerationConfigSolidComponent = {
-  input: ['../../../../Vocab/SolidComponent/SolidComponent.ttl'],
-  // outputDirectory: '../../../../Vocab/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
+  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/SolidComponent.ttl'],
   outputDirectory:
     '../../../../Solid/MonoRepo/testLit/packages/SolidComponent/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -51,8 +49,7 @@ const GenerationConfigSolidComponent = {
 };
 
 const GenerationConfigSolidGeneratorUi = {
-  input: ['../../../../Vocab/SolidGeneratorUi/SolidGeneratorUi.ttl'],
-  // outputDirectory: '../../../../Vocab/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
+  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/SolidGeneratorUi.ttl'],
   outputDirectory:
     '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/GeneratedSourceCodeArtifacts/Javascript',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -81,11 +78,11 @@ async function generateVocabArtifact(argv) {
 
   await generator
     .generate()
-    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
-    .then(await CommandLine.askForArtifactToBeNpmInstalled)
-    .then(await CommandLine.askForArtifactToBeNpmPublished)
-    .then(await CommandLine.askForArtifactToBeDocumented)
+    .then(CommandLine.askForArtifactToBeNpmInstalled)
+    .then(CommandLine.askForArtifactToBeNpmPublished)
+    .then(CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
       console.log(`Generation process failed: [${error}]`);
       console.error(error);
@@ -96,6 +93,10 @@ async function generateVocabArtifact(argv) {
 
   if (argv.runNpmInstall) {
     expect(fs.existsSync(`${argv.outputDirectory}/package-lock.json`)).to.be.true;
+  }
+
+  if (argv.ranWidoco) {
+    expect(fs.existsSync(`${argv.outputDirectory}/Widoco/index-en.html`)).to.be.true;
   }
 
   console.log(`Generation process successful!\n`);
@@ -119,13 +120,13 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }).timeout(20000);
 
-  it('Solid Component vocab', async () => {
-    // it.skip('Solid Component vocab', async () => {
+  // it('Solid Component vocab', async () => {
+  it.skip('Solid Component vocab', async () => {
     await generateVocabArtifact(GenerationConfigSolidComponent);
   }).timeout(20000);
 
   it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
-    generateVocabArtifact({
+    await generateVocabArtifact({
       input: [''],
       outputDirectory: '../../../../Vocab/Schema.org/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
@@ -136,11 +137,12 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   it.skip('Test Demo App', async () => {
     // it('Test Demo App', async () => {
-    generateVocabArtifact({
+    await generateVocabArtifact({
       // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
+      input: ['./example/PetRocks.ttl'],
 
-      input: ['http://www.w3.org/2006/vcard/ns#'],
-      vocabNameAndPrefixOverride: 'vcard',
+      // input: ['http://www.w3.org/2006/vcard/ns#'],
+      // vocabNameAndPrefixOverride: 'vcard',
       //
       // input: ['http://www.w3.org/2002/07/owl#'],
       // vocabNameAndPrefixOverride: 'owl',
@@ -151,10 +153,16 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // input: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
       // vocabNameAndPrefixOverride: 'DCTERMS',
 
+      // input: ['https://www.w3.org/ns/activitystreams#'],
+      // vocabNameAndPrefixOverride: 'as',
+
       outputDirectory: './generated',
+      // outputDirectory:
+      //   '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/GeneratedSourceCodeArtifacts/Javascript',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
+      runWidoco: true,
     });
   });
 });

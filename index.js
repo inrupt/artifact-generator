@@ -27,7 +27,7 @@ const argv = yargs
 
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
-  .default('litVocabTermVersion', '^1.0.10')
+  .default('litVocabTermVersion', '^0.1.0')
 
   .alias('outputDirectory', 'o')
   .describe('outputDirectory', 'The output directory for the generated artifact.')
@@ -66,7 +66,7 @@ const argv = yargs
 
   .alias('artifactVersion', 'av')
   .describe('artifactVersion', 'The version of the Node module that will be generated.')
-  .default('artifactVersion', '1.0.1')
+  .default('artifactVersion', '0.0.1')
 
   .alias('artifactType', 'at')
   .describe('artifactType', 'The artifact type that will be generated.')
@@ -87,7 +87,6 @@ const argv = yargs
     'runWidoco',
     'If set, will run Widoco to generate documentation for this vocabulary.'
   )
-  .default('runWidoco', true)
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
@@ -102,14 +101,17 @@ function handleError(error) {
   console.error(error);
 }
 
-const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
-async () => {
+if (!argv.input && !argv.vocabListFile) {
+  yargs.showHelp();
+  console.log("\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.")
+} else {
+  const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
   artifactGenerator
     .generate()
-    .then(await CommandLine.askForArtifactToBeNpmVersionBumped)
+    .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
-    .then(await CommandLine.askForArtifactToBeNpmInstalled)
-    .then(await CommandLine.askForArtifactToBeNpmPublished)
-    .then(await CommandLine.askForArtifactToBeDocumented)
+    .then(CommandLine.askForArtifactToBeNpmInstalled)
+    .then(CommandLine.askForArtifactToBeNpmPublished)
+    .then(CommandLine.askForArtifactToBeDocumented)
     .catch(handleError);
 }

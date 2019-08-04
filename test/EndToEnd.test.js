@@ -111,8 +111,13 @@ describe('Ontology Generator', () => {
         fs.readFileSync('test/resources/expectedOutputs/single/index.js').toString()
       );
 
-      expect(fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString()).to.equal(
-        fs.readFileSync('test/resources/expectedOutputs/single/Generated/schema.js').toString()
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString();
+      const expected = fs
+        .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js')
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).to.equal(
+        expected.substring(expected.indexOf(' */'))
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -133,8 +138,8 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(fs.existsSync(`${outputDirectory}/Generated/schema.js`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString()).contains(
+      expect(fs.existsSync(`${outputDirectory}/GeneratedVocab/schema.js`)).to.be.true;
+      expect(fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString()).contains(
         "Person: new LitVocabTerm(_NS('Person'), localStorage, true)"
       );
 
@@ -159,12 +164,15 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      expect(
-        fs.readFileSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`).toString()
-      ).to.equal(
-        fs
-          .readFileSync('test/resources/expectedOutputs/full-ext/Generated/schema-inrupt-ext.js')
-          .toString()
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
+        .toString();
+      const expected = fs
+        .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js')
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).to.equal(
+        expected.substring(expected.indexOf(' */'))
       );
 
       expect(fs.existsSync(`${outputDirectory}/package.json`)).to.be.true;
@@ -188,7 +196,7 @@ describe('Ontology Generator', () => {
       expect(fs.existsSync(`${outputDirectory}/index.js`)).to.be.true;
 
       var indexOutput = fs
-        .readFileSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
@@ -211,7 +219,7 @@ describe('Ontology Generator', () => {
       await generator.generate();
 
       var indexOutput = fs
-        .readFileSync(`${outputDirectory}/Generated/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectory}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
@@ -240,7 +248,7 @@ describe('Ontology Generator', () => {
 
       await generator.generate();
 
-      var indexOutput = fs.readFileSync(`${outputDirectory}/Generated/schema.js`).toString();
+      var indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/schema.js`).toString();
 
       expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
       expect(indexOutput).contains(".addLabel('en', `Person`)");

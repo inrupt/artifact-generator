@@ -36,13 +36,13 @@ module.exports = class ArtifactGenerator {
     if (this.artifactData.vocabListFile) {
       await this.generateFromVocabListFile();
     } else {
-      await this.generateFromSingleVocab();
+      await this.generateSingleVocab();
     }
 
     return FileGenerator.createPackagingFiles(this.artifactData);
   }
 
-  async generateFromSingleVocab() {
+  async generateSingleVocab() {
     console.log(
       `Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`
     );

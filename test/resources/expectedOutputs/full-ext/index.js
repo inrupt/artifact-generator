@@ -1,1 +1,1 @@
-module.exports.SCHEMA = require('./Generated/schema');
+module.exports.SCHEMA = require('./GeneratedVocab/schema');

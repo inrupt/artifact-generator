@@ -5,9 +5,7 @@ require('mock-local-storage');
 const chai = require('chai');
 chai.use(require('chai-string'));
 const expect = chai.expect;
-
 const fs = require('fs');
-
 const del = require('del');
 
 const VocabGenerator = require('../src/generator/VocabGenerator');
@@ -37,7 +35,7 @@ describe('Supported Data Type', () => {
 
     await generator.generate();
 
-    const indexOutput = fs.readFileSync(`${outputDirectory}/Generated/owl.js`).toString();
+    const indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/owl.js`).toString();
 
     expect(indexOutput).to.contain('NAMESPACE = "http://www.w3.org/2002/07/owl#');
     expect(indexOutput).to.contain(
@@ -61,7 +59,7 @@ describe('Supported Data Type', () => {
 
     await generator.generate();
 
-    const indexOutput = fs.readFileSync(`${outputDirectory}/Generated/lit_gen.js`).toString();
+    const indexOutput = fs.readFileSync(`${outputDirectory}/GeneratedVocab/lit_gen.js`).toString();
 
     expect(indexOutput).to.contain("class1: new LitVocabTerm(_NS('class1'), localStorage, true)");
     expect(indexOutput).to.contain(".addLabel('', `A rdfs class`)");
