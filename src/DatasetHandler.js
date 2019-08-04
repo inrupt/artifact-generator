@@ -1,7 +1,5 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
-const moment = require('moment');
-const packageDotJson = require('../package.json');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
@@ -139,9 +137,10 @@ module.exports = class DatasetHandler {
 
   buildTemplateInput() {
     const result = {};
-    result.generatedTimestamp = moment().format('LLLL');
-    result.generatorName = packageDotJson.name;
-    result.generatorVersion = packageDotJson.version;
+
+    result.generatedTimestamp = this.vocabData.generatedTimestamp;
+    result.generatorName = this.vocabData.generatorName;
+    result.generatorVersion = this.vocabData.generatorVersion;
     result.sourceRdfResources = this.vocabData.vocabListFile
       ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
       : `Vocabulary built from input${

@@ -10,7 +10,7 @@ prefix skydiving: <http://pat.com/vocab/skydiving#>
 
 skydiving:
     a owl:Ontology, lit_core:Ontology ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "0.0.1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
     dcterms:title "Skydiving vocabulary" ;
@@ -20,18 +20,19 @@ skydiving:
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-skydiving:DropZone a rdfs:Class ;
+skydiving:DropZone a owl:Class ;
   rdfs:label "Drop Zone"@en ;
   rdfs:label "Zona de descenso"@es ;
   rdfs:comment "Location designated as the landing zone for skydivers."@en ;
   rdfs:comment "Lugar designado como zona de aterrizaje para paracaidistas."@es .
 
-skydiving:ranking a rdf:Property ;
+skydiving:ranking a owl:ObjectProperty ;
   rdfs:label "Ranking"@en ;
   rdfs:label "Clasificación"@es ;
-  rdfs:comment "A ranking describes a skydivers proficiency in the sport."@en .
+  rdfs:comment "A ranking denoting a skydivers proficiency in the sport."@en .
 
-skydiving:eight-way a rdf:Property ;
-  rdfs:label "Rarity"@en ;
-  rdfs:label "Rareza"@es ;
-  rdfs:comment "The class of all rocks that this app considers excellent Pet's."@es .
+skydiving:eight-way a owl:ObjectProperty ;
+  rdfs:label "Eight-Way"@en ;
+  rdfs:label "Ocho vías"@es ;
+  rdfs:comment "Freefall formation with 8 skydivers arranging into geometric patterns."@en ;
+  rdfs:comment "Formación de caída libre con 8 paracaidistas organizados en patrones geométricos."@es .

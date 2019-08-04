@@ -11,19 +11,17 @@ prefix just-the-terms-we-want-from-schema-org: <http://inrupt.com/vocab/just-the
 
 just-the-terms-we-want-from-schema-org:
     a owl:Ontology, lit_core:Ontology ;
-    owl:versionInfo "1" ;
+    owl:versionInfo "0.0.1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
-    dcterms:title "Inrupt example show how to select specific terms from Schema.org." ;
-    dcterms:description "Inrupt example show how to select specific terms from Schema.org." ;
+    dcterms:title "Inrupt example showing how to select specific terms from Schema.org." ;
+    dcterms:description "Inrupt example showing how to select specific terms from Schema.org." ;
     vann:preferredNamespacePrefix "just-the-terms-we-want-from-schema-org" ;
-    vann:preferredNamespaceUri "http://inrupt.com/vocab/just-the-terms-we-want-from-schema-org#" ;
+    vann:preferredNamespaceUri "http://schema.org/" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
 schema:Person a rdfs:Class .
-# schema:Person a lit_core:vocabTerm .
-
 schema:givenName a rdf:Property .
 
 schema:familyName a rdf:Property .

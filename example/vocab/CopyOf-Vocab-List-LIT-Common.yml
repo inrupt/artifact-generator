@@ -1,0 +1,137 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set of LIT 'Common' vocabularies.
+#
+# These are the vocabs that we feel will be the most commonly used across
+# general RDF development efforts, and so we list them here to allow our 
+# artifact generators to create programming-language-specific bundles
+# providing convenient constants representing the terms from these 
+# vocabularies.
+#
+# For example, for Java developers we can generate a single JAR, or for
+# Javascript we can generate a single NPM module, that developers can depend
+# on directly and easily get immediate access to source-code constants for all
+# the terms in all of these vocabularies.
+#
+# Local vocabularies can be provided relative to the location of this resource
+# list file.
+#
+# NOTE: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL LIT-COMMON ARTIFACT
+# (as of August 2019). WE DO *NOT* APPLY OUR EXTENSIONS HERE FOR VOCABS LIKE
+# Schema.org, OR VCard (OR INCLUDE LOCAL REFERENCES TO VOCABS THAT DON'T HAVE
+# TURTLE SERIALIZATIONS (LIKE the VANN OR HTTP VOCABS) AS WE'D NEED TO
+# REFERENCE THOSE EXTENSIONS FROM HERE, WHICH WOULD TIE US TO THEIR RELATIVE
+# POSITION ON THE FILE SYSTEM.
+#
+artifactName: "@lit/generated-vocab-common"
+
+vocabList:
+  # NOTE: We *MUST* use the 'https://' URI for Schema.org, since the RIO parser
+  # (used in our Java artifact generator) will not follow the 301 redirect from
+  # 'http://', and so our RDF4J model will be empty and therefore so will our
+  # generated source.
+  - vocabDescriptiom: Schema.org (the full vocabulary)
+    inputFiles:
+      - https://schema.org/version/latest/schema.ttl
+
+#  - vocabDescriptiom: Schema.org with selective terms having translations
+#    vocabNameAndPrefixOverride: schema-inrupt-ext
+#    inputFiles:
+#      - https://schema.org/version/latest/schema.ttl
+#    termSelectionFile: ./rdf/Extensions/schema-inrupt-ext.ttl
+
+
+  - vocabDescriptiom: VCARD (the full vocabulary)
+    vocabNameAndPrefixOverride: vcard
+    inputFiles:
+      - http://www.w3.org/2006/vcard/ns#
+
+#  - vocabDescriptiom: VCARD with selective terms having translations
+#    vocabNameAndPrefixOverride: vcard-inrupt-ext
+#    inputFiles:
+#      - http://www.w3.org/2006/vcard/ns#
+#    termSelectionFile: ./rdf/Extensions/vcard-inrupt-ext.ttl
+
+
+  - vocabDescriptiom: RDF (the full vocabulary)
+    vocabNameAndPrefixOverride: rdf
+    inputFiles:
+      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+#  - vocabDescriptiom: RDF with selective terms having translations
+#    vocabNameAndPrefixOverride: rdf-inrupt-ext
+#    inputFiles:
+#      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
+#    termSelectionFile: ./rdf/Extensions/rdf-inrupt-ext.ttl
+
+
+
+  - vocabDescriptiom: rdfs
+    vocabNameAndPrefixOverride: rdfs
+    inputFiles:
+      - http://www.w3.org/2000/01/rdf-schema#
+
+  # OWL seems to have a bug in that the ontology itself is identified using a subject IRI without the
+  # hash, yet the 'owl:' prefix correctly appends the hash.
+  - vocabDescriptiom: OWL
+    vocabNameAndPrefixOverride: owl
+    inputFiles:
+      - http://www.w3.org/2002/07/owl#
+
+  - vocabDescriptiom: LDP
+    inputFiles:
+      - https://www.w3.org/ns/ldp#
+
+  # Default serialization is RDF/XML (and we have no parser available)...
+#  - vocabDescriptiom: http
+#    vocabNameAndPrefixOverride: http
+#    inputFiles:
+#      - http://www.w3.org/2011/http#
+
+  - vocabDescriptiom: The Ordered List Ontology
+    vocabNameAndPrefixOverride: olo
+    inputFiles:
+      - http://svn.code.sf.net/p/smiy/code/orderedlistonto/trunk/rdf/orderedlistontology.n3
+
+#  - vocabDescriptiom: Simple Knowledge Organisation System (SKOS)
+#    vocabNameAndPrefixOverride: skos
+#    inputFiles:
+##
+## Both these 'authoritative' endpoints only seem to ever return RDF/XML (for which we don't have a parser!), so
+## reference a local copy converted (using https://rdf-translator.appspot.com/) to Turtle instead.
+##      - http://www.w3.org/2009/08/skos-reference/skos.rdf
+##      - http://www.w3.org/2004/02/skos/core#
+#      - ./rdf/CopyOfVocabs/skos-as-turtle.ttl
+
+  # Tim Berners-Lee's UI vocabulary.
+  #
+  # Currently fails generation process with this error (i.e. terms uses '#', but namespace ends in '/'...
+  #   Vocabulary term [http://www.w3.org/ns/ui#NumericField] found that is not in our namespace [https://www.w3.org/ns/] - currently this is disallowed (as it indicates a probable typo!)
+  #
+#  - vocabDescriptiom: ui
+#    inputFiles:
+#      - https://www.w3.org/ns/ui.ttl
+
+#  - vocabDescriptiom: The LIT Core vocabulary
+#    inputFiles:
+#      - ./rdf/OntologyDirMarker/Lit-Core.ttl
+#
+#  - vocabDescriptiom: The LIT Consent vocabulary
+#    inputFiles:
+#      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
+#      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
+
+  #
+  # Could not find an RDF representation for VANN initially, so I created my
+  # own. But Jarlath found an RDF/XML version somewhere, so that should be the
+  # authorative one (and once I add RDF/XML parsing to the generator I can
+  # remove this local version...!)
+  #
+#  - vocabDescriptiom: vann
+#    inputFiles:
+#      - ./rdf/CopyOfVocabs/vann.ttl
+
+  - vocabDescriptiom: dcterms
+    vocabNameAndPrefixOverride: dcterms
+    inputFiles:
+      - http://dublincore.org/2012/06/14/dcterms.ttl

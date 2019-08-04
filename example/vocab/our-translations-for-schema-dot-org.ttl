@@ -5,29 +5,27 @@ prefix schema: <http://schema.org/>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix lit_core: <https://w3id.org/lit/vocab/core#>
-prefix schema-inrupt-ext: <http://inrupt.com/>
+
+prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation/schema#>
 
 
-schema-inrupt-ext:
+our-translations-for-schema-dot-org:
     a owl:Ontology, lit_core:Ontology ;
-    owl:versionInfo "1" ;
+    owl:versionInfo "0.0.1" ;
     dcterms:creator "Jarlath Holleran" ;
     dcterms:date "2019/06/18" ;
     dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
     dcterms:description "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
-    vann:preferredNamespacePrefix "schema-inrupt-ext" ;
+    vann:preferredNamespacePrefix "our-translations-for-schema-dot-org" ;
     vann:preferredNamespaceUri "http://schema.org/" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-
 schema:Person
-    schema:alternateName "Person"@en ;
     schema:alternateName "La personne"@fr ;
     schema:alternateName "Person"@de ;
     schema:alternateName "Persona"@es ;
     schema:alternateName "Persona"@it ;
-    rdfs:comment "A person (alive, dead, undead, or fictional)."@en ;
     rdfs:comment "Une personne (vivante, morte, mort-vivant ou fictive)."@fr ;
     rdfs:comment "Eine Person (lebendig, tot, untot oder fiktiv)."@de ;
     rdfs:comment "Una persona (viva, muerta, no muerta o ficticia)."@es ;
@@ -47,7 +45,6 @@ schema:givenName
     rdfs:comment "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it .
 
 schema:familyName a rdf:Property ;
-    rdfs:label "familyName" ;
     schema:alternateName "Family Name"@en ;
     schema:alternateName "Nom de famille"@fr ;
     schema:alternateName "Nachname"@de ;
@@ -60,7 +57,6 @@ schema:familyName a rdf:Property ;
     rdfs:comment "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it .
 
 schema:additionalName a rdf:Property ;
-    rdfs:label "additionalName" ;
     schema:alternateName "Additional Name"@en ;
     schema:alternateName "Nom additionnel"@fr ;
     schema:alternateName "Zusätzlicher Name"@de ;
@@ -73,8 +69,6 @@ schema:additionalName a rdf:Property ;
     rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
 
 schema:address a rdf:Property ;
-    rdfs:label "address" ;
-    schema:alternateName "Address"@en ;
     schema:alternateName "Adresse"@fr ;
     schema:alternateName "Adresse"@de ;
     schema:alternateName "Dirección"@es ;
@@ -86,7 +80,6 @@ schema:address a rdf:Property ;
     rdfs:comment "Adresse physique de l'article."@it .
 
 schema:streetAddress a rdf:Property ;
-    rdfs:label "streetAddress" ;
     schema:alternateName "Street Address"@en ;
     schema:alternateName "Adresse de rue"@fr ;
     schema:alternateName "Adresse"@de ;
@@ -99,7 +92,6 @@ schema:streetAddress a rdf:Property ;
     rdfs:comment "L'indirizzo Ad esempio, 1600 Amphitheatre Pkwy."@it .
 
 schema:addressLocality a rdf:Property ;
-    rdfs:label "addressLocality" ;
     schema:alternateName "Locality"@en ;
     schema:alternateName "Adresse Localité"@fr ;
     schema:alternateName "Adresse Ort"@de ;
@@ -112,7 +104,6 @@ schema:addressLocality a rdf:Property ;
     rdfs:comment "La località in cui si trova l'indirizzo e che si trova nella regione. Ad esempio, Mountain View."@it .
 
 schema:addressRegion a rdf:Property ;
-    rdfs:label "addressRegion"@en ;
     schema:alternateName "Region"@en ;
     schema:alternateName "Adresse Région"@fr ;
     schema:alternateName "Adresse Region"@de ;
@@ -125,7 +116,6 @@ schema:addressRegion a rdf:Property ;
     rdfs:comment "La regione in cui si trova la località e che si trova nel paese. Ad esempio, in California o in un'altra <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\"> divisione amministrativa </a> di primo livello di primo livello"@it .
 
 schema:addressCountry a rdf:Property ;
-    rdfs:label "addressCountry" ;
     schema:alternateName "Address Country"@en ;
     schema:alternateName "Adresse Pays"@fr ;
     schema:alternateName "Adresse Land"@de ;
@@ -138,7 +128,6 @@ schema:addressCountry a rdf:Property ;
     rdfs:comment "Paese. Ad esempio, USA. Puoi anche fornire il <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\"> codice paese ISO 3166-1 alfa-2 </a> di due lettere."@it .
 
 schema:postalCode a rdf:Property ;
-    rdfs:label "postalCode" ;
     schema:alternateName "Postal Code"@en ;
     schema:alternateName "code postal"@fr ;
     schema:alternateName "Postleitzahl"@de ;
@@ -152,7 +141,6 @@ schema:postalCode a rdf:Property ;
 
 
 schema:birthDate a rdf:Property ;
-    rdfs:label "birthDate" ;
     schema:alternateName "Date of birth"@en ;
     schema:alternateName "Date de naissance"@fr ;
     schema:alternateName "Geburtsdatum"@de ;
@@ -166,7 +154,6 @@ schema:birthDate a rdf:Property ;
 
 
 schema:birthPlace a rdf:Property ;
-    rdfs:label "birthPlace" ;
     schema:alternateName "Birth Place"@en ;
     schema:alternateName "Luogo di nascita"@fr ;
     schema:alternateName "Geburtsort"@de ;
@@ -179,7 +166,6 @@ schema:birthPlace a rdf:Property ;
     rdfs:comment "Il luogo in cui la persona è nata."@it .
 
 schema:deathDate a rdf:Property ;
-    rdfs:label "deathDate" ;
     schema:alternateName "Death Date"@en ;
     schema:alternateName "Date de mort"@fr ;
     schema:alternateName "Todesdatum"@de ;
@@ -192,7 +178,6 @@ schema:deathDate a rdf:Property ;
     rdfs:comment "Data di morte."@it .
 
 schema:deathPlace a rdf:Property ;
-    rdfs:label "deathPlace" ;
     schema:alternateName "Death Place"@en ;
     schema:alternateName "Lieu de la mort"@fr ;
     schema:alternateName "Todesort"@de ;
@@ -205,7 +190,6 @@ schema:deathPlace a rdf:Property ;
     rdfs:comment "Il luogo in cui la persona è morta."@it .
 
 schema:email a rdf:Property ;
-    rdfs:label "email" ;
     schema:alternateName "Email"@en ;
     schema:alternateName "Email"@fr ;
     schema:alternateName "Email"@de ;
@@ -218,7 +202,6 @@ schema:email a rdf:Property ;
     rdfs:comment "Indirizzo email."@it .
 
 schema:telephone a rdf:Property ;
-    rdfs:label "telephone" ;
     schema:alternateName "Telephone"@en ;
     schema:alternateName "Téléphone"@fr ;
     schema:alternateName "Telefon"@de ;
@@ -231,7 +214,6 @@ schema:telephone a rdf:Property ;
     rdfs:comment "Il numero di telefono."@it .
 
 schema:gender a rdf:Property ;
-    rdfs:label "gender" ;
     schema:alternateName "Gender"@en ;
     schema:alternateName "Le sexe"@fr ;
     schema:alternateName "Geschlecht"@de ;
@@ -244,7 +226,6 @@ schema:gender a rdf:Property ;
     rdfs:comment "Sesso della persona. Mentre http://schema.org/Male e http://schema.org/Female possono essere utilizzati, le stringhe di testo sono accettabili anche per le persone che non si identificano come un genere binario."@it .
 
 schema:nationality a rdf:Property ;
-    rdfs:label "nationality" ;
     schema:alternateName "Nationality"@en ;
     schema:alternateName "Nationalité"@fr ;
     schema:alternateName "Staatsangehörigkeit"@de ;
@@ -257,7 +238,6 @@ schema:nationality a rdf:Property ;
     rdfs:comment "Nazionalità della persona."@it .
 
 schema:height a rdf:Property ;
-    rdfs:label "height" ;
     schema:alternateName "Height"@en ;
     schema:alternateName "la taille"@fr ;
     schema:alternateName "Höhe"@de ;
@@ -270,7 +250,6 @@ schema:height a rdf:Property ;
     rdfs:comment "L'altezza dell'oggetto"@it .
 
 schema:weight a rdf:Property ;
-    rdfs:label "weight" ;
     schema:alternateName "Weight"@en ;
     schema:alternateName "Poids"@fr ;
     schema:alternateName "Gewicht"@de ;

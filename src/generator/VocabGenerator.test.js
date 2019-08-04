@@ -1,16 +1,15 @@
-'use strict';
-
 require('mock-local-storage');
 
 const chai = require('chai');
 chai.use(require('chai-string'));
-const expect = chai.expect;
+
+const { expect } = chai;
 
 const rdf = require('rdf-ext');
-
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 
-const VocabGenerator = require('../../src/generator/VocabGenerator');
+const VocabGenerator = require('./VocabGenerator');
+
 const vocabGenerator = new VocabGenerator({
   input: [],
   artifactVersion: '1.0.0',
@@ -170,7 +169,7 @@ describe('Artifact generator unit tests', () => {
       expect(result.classes[0].name).to.equal('Person');
       expect(result.classes[0].comment).to.equal('Person dead or alive');
 
-      var personLabels = result.classes[0].labels;
+      const personLabels = result.classes[0].labels;
       expect(personLabels).to.deep.include({
         value: 'Person',
         valueEscapedForJavascript: 'Person',
@@ -195,7 +194,7 @@ describe('Artifact generator unit tests', () => {
 
       expect(result.properties[0].name).to.equal('givenName');
       expect(result.properties[0].comment).to.equal('A given name is the first name of a person.');
-      var givenNameLabels = result.properties[0].labels;
+      const givenNameLabels = result.properties[0].labels;
 
       expect(givenNameLabels).to.deep.include({
         value: 'Given Name',
@@ -359,7 +358,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([])
       );
 
-      var messageLiterals = result.literals[0].labels;
+      const messageLiterals = result.literals[0].labels;
 
       expect(messageLiterals).to.deep.include({
         value: 'Hello',
@@ -392,7 +391,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([])
       );
 
-      var messageComments = result.literals[0].comments;
+      const messageComments = result.literals[0].comments;
 
       expect(messageComments).to.deep.include({
         value: 'Hello there',
@@ -425,7 +424,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([])
       );
 
-      var messageDefinitions = result.literals[0].definitions;
+      const messageDefinitions = result.literals[0].definitions;
 
       expect(messageDefinitions).to.deep.include({
         value: 'Welcome',
@@ -454,19 +453,19 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([overrideLabelTerms])
       );
 
-      var person = result.classes[0];
+      const person = result.classes[0];
 
       expect(person.name).to.equal('Person');
       expect(person.labels.length).to.equal(1);
       expect(person.labels[0].value).to.equal('Override Person');
 
-      var givenName = result.properties[0];
+      const givenName = result.properties[0];
 
       expect(givenName.name).to.equal('givenName');
       expect(givenName.labels.length).to.equal(1);
       expect(givenName.labels[0].value).to.equal('Override Given Name');
 
-      var familyName = result.properties[1];
+      const familyName = result.properties[1];
 
       expect(familyName.name).to.equal('familyName');
       expect(familyName.labels.length).to.equal(1);
@@ -479,19 +478,19 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([overrideCommentTerms])
       );
 
-      var person = result.classes[0];
+      const person = result.classes[0];
 
       expect(person.name).to.equal('Person');
       expect(person.comments.length).to.equal(1);
       expect(person.comments[0].value).to.equal('Override comment for Person');
 
-      var givenName = result.properties[0];
+      const givenName = result.properties[0];
 
       expect(givenName.name).to.equal('givenName');
       expect(givenName.comments.length).to.equal(1);
       expect(givenName.comments[0].value).to.equal('Override comment for Given Name');
 
-      var familyName = result.properties[1];
+      const familyName = result.properties[1];
 
       expect(familyName.name).to.equal('familyName');
       expect(familyName.comments.length).to.equal(1);
@@ -504,19 +503,19 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([overrideAtlNameTerms])
       );
 
-      var person = result.classes[0];
+      const person = result.classes[0];
 
       expect(person.name).to.equal('Person');
       expect(person.labels.length).to.equal(1);
       expect(person.labels[0].value).to.equal('Alt Person');
 
-      var givenName = result.properties[0];
+      const givenName = result.properties[0];
 
       expect(givenName.name).to.equal('givenName');
       expect(givenName.labels.length).to.equal(1);
       expect(givenName.labels[0].value).to.equal('Alt Given Name');
 
-      var familyName = result.properties[1];
+      const familyName = result.properties[1];
 
       expect(familyName.name).to.equal('familyName');
       expect(familyName.labels.length).to.equal(1);
@@ -535,7 +534,7 @@ describe('Artifact generator unit tests', () => {
         VocabGenerator.merge([literalDataset])
       );
 
-      var messageDefinitions = result.literals[0].definitions;
+      const messageDefinitions = result.literals[0].definitions;
 
       expect(messageDefinitions).to.deep.include({
         value: 'Welcome',

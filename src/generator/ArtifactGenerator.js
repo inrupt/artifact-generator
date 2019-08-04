@@ -1,5 +1,8 @@
 const fs = require('fs');
+const del = require('del');
 const yaml = require('js-yaml');
+const moment = require('moment');
+const packageDotJson = require('../../package.json');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
@@ -16,6 +19,16 @@ module.exports = class ArtifactGenerator {
 
     // This collection will be populated with the authors per generated vocab.
     this.artifactData.authorSet = new Set();
+
+    this.artifactData.generatedTimestamp = moment().format('LLLL');
+    this.artifactData.generatorName = packageDotJson.name;
+    this.artifactData.generatorVersion = packageDotJson.version;
+  }
+
+  static async deleteDirectory(directory) {
+    const deletedPaths = await del([`${directory}/*`], { force: true });
+    console.log(`Deleting all files and folders from [${directory}]:`);
+    console.log(deletedPaths.join('\n'));
   }
 
   /**
@@ -28,6 +41,10 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
+    await ArtifactGenerator.deleteDirectory(
+      `${this.artifactData.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}`
+    );
+
     console.log(); // Just a blank line on our output.
     if (this.inquirerProcess) {
       this.artifactData = await this.inquirerProcess(this.artifactData);

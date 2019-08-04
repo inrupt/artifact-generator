@@ -5,37 +5,40 @@ prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix lit_core: <https://w3id.org/lit/vocab/core#>
 
-prefix pet_rock: <http://pat.com/vocab/my_app#>
+prefix pet_rock: <http://pats_apps.com/vocab/pet_rock#>
 
 
 pet_rock:
     a owl:Ontology, lit_core:Ontology ;
-    owl:versionInfo "1.0.0" ;
+    owl:versionInfo "0.0.1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
     dcterms:title "Pet Rock vocabulary" ;
     dcterms:description "Vocabulary for Pet Rock collectors, including terms for their characteristics..." ;
-    vann:preferredNamespacePrefix "pats_app" ;
-    vann:preferredNamespaceUri "http://pat.com/vocab/my_app#" ;
+    vann:preferredNamespacePrefix "pet_rock" ;
+    vann:preferredNamespaceUri "http://pats_apps.com/vocab/pet_rock#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-pet_rock:PetRock a rdfs:Class ;
+pet_rock:PetRock a owl:Class ;
+  rdfs:isDefinedBy pet_rock: ;
   rdfs:label "Pet Rock"@en ;
   rdfs:label "Pierre de compagnie"@fr ;
   rdfs:label "Pet Rock"@es ;
-  rdfs:comment "The class of all rocks that this app considers excellent Pet's."@en ;
+  rdfs:comment "The class of all rocks that this app considers excellent Pets."@en ;
   rdfs:comment "La clase de todas las rocas que esta aplicación considera excelentes mascotas."@es .
 
-pet_rock:shinyness a rdf:Property ;
+pet_rock:shinyness a owl:ObjectProperty ;
+  rdfs:domain pet_rock:PetRock ;
   rdfs:label "Shinyness"@en ;
   rdfs:label "Brillo"@es ;
   rdfs:comment "How wonderfully shiny a rock is."@en ;
   rdfs:comment "Qué maravillosamente brillante es una roca."@es .
 
-pet_rock:rarity a rdf:Property ;
+pet_rock:rarity a owl:ObjectProperty ;
+  rdfs:domain pet_rock:PetRock ;
   rdfs:label "Rarity"@en ;
   rdfs:label "Rareté"@fr ;
   rdfs:label "Rareza"@es ;
-  rdfs:comment "The class of all rocks that this app considers excellent Pet's."@en ;
-  rdfs:comment "The class of all rocks that this app considers excellent Pet's."@es .
+  rdfs:comment "How rare this rock is (related to it value on the lucrative pet-rock market)."@en ;
+  rdfs:comment "Cuán rara es esta roca (relacionada con su valor en el lucrativo mercado de pet-rock)."@es .
