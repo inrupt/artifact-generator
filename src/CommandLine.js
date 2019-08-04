@@ -1,6 +1,5 @@
 const path = require('path');
 const inquirer = require('inquirer');
-
 const ChildProcess = require('child_process');
 const logger = require('debug')('lit-artifact-generator:CommandLine');
 
@@ -263,14 +262,15 @@ module.exports = class CommandLine {
   // }
 
   static runWidoco(data) {
-    // Run Widoco using environment variable (putting the JAR in a local 'lib'
-    // directory doesn't work with NPM publish, as it's too big at 46MB!)...
+    // Run Widoco using environment variable (since putting the JAR in a local
+    // 'lib' directory doesn't work with NPM publish, as it's too big at
+    // 46MB!)...
     const widocoJar = '$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
 
     const inputResource = data.input[0];
     const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
     const destDirectory = `${data.outputDirectory}/Widoco`;
-    const log4jPropertyFile = `-Dlog4j.configuration=file:"./src/test/resources/log4j.properties"`;
+    const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
     logger(
       `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`

@@ -5,17 +5,13 @@
 // localStorage for runtime context (e.g. the currently selected language).
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
-require('mock-local-storage')
-const yargs = require('yargs')
+require('mock-local-storage');
 
-const ArtifactGenerator = require('./src/generator/ArtifactGenerator');
+const logger = require('debug')('lit-artifact-generator:index');
+const yargs = require('yargs');
+const App = require('./src/App');
 
-const CommandLine = require('./src/CommandLine');
-
-const debug = require('debug');
-const logger = debug('lit-artifact-generator:index');
-
-const argv = yargs
+const yargsConfig = yargs
   .array('input')
   .alias('input', 'i')
   .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
@@ -26,7 +22,10 @@ const argv = yargs
   // )
 
   .alias('vocabListFile', 'l')
-  .describe('vocabListFile', 'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.')
+  .describe(
+    'vocabListFile',
+    'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.'
+  )
 
   .alias('litVocabTermVersion', 'lv')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
@@ -67,8 +66,8 @@ const argv = yargs
   .boolean('quiet')
   .alias('quiet', 'q')
   .describe(
-      'quiet',
-      `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
+    'quiet',
+    `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
   )
   .default('quiet', false)
 
@@ -94,10 +93,7 @@ const argv = yargs
 
   .boolean('runWidoco')
   .alias('runWidoco', 'w')
-  .describe(
-    'runWidoco',
-    'If set, will run Widoco to generate documentation for this vocabulary.'
-  )
+  .describe('runWidoco', 'If set, will run Widoco to generate documentation for this vocabulary.')
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
@@ -105,30 +101,15 @@ const argv = yargs
   // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
   // least one of these two...?)
   .conflicts('input', 'vocabListFile')
-  .strict().argv;
+  .strict();
 
-function handleError(error) {
-  logger(`Generation process failed: [${error}]`);
-  process.exit(-2);
-}
-
-if (!argv.input && !argv.vocabListFile) {
-  yargs.showHelp();
-  debug.enable('lit-artifact-generator:*');
-  logger("\nYou must provide input, either a single vocabulary using '-input' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '-inputVocabFile' listing multiple vocabularies.")
-  process.exit(-1);
-}
-
-if (!argv.quiet) {
-  debug.enable('lit-artifact-generator:*');
-}
-
-const artifactGenerator = new ArtifactGenerator(argv, CommandLine.askForArtifactInfo);
-artifactGenerator
-  .generate()
-  .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-  // .then(await CommandLine.askForArtifactToBeYalced)
-  .then(CommandLine.askForArtifactToBeNpmInstalled)
-  .then(CommandLine.askForArtifactToBeNpmPublished)
-  .then(CommandLine.askForArtifactToBeDocumented)
-  .catch(handleError);
+new App(yargsConfig)
+  .run()
+  .then(data => {
+    logger(`\nGeneration process successful to directory [${data.outputDirectory}]!`);
+    process.exit(0);
+  })
+  .catch(error => {
+    logger(`Generation process failed: [${error}]`);
+    process.exit(-1);
+  });

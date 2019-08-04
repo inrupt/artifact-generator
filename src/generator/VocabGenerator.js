@@ -1,10 +1,8 @@
 const path = require('path');
-
 const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
-
 const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
 
@@ -30,7 +28,7 @@ module.exports = class VocabGenerator {
       .then(vocabGenerationData => {
         logger(
           `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-            this.vocabData.vocabNameAndPrefixOverride ? '( from override)' : ''
+            this.vocabData.nameAndPrefixOverride ? '( from override)' : ''
           }...`
         );
         logger(`Input vocabulary file(s) [${this.vocabData.input.toString()}]...`);

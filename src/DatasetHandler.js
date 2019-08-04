@@ -155,8 +155,7 @@ module.exports = class DatasetHandler {
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
-    result.vocabName =
-      this.vocabData.vocabNameAndPrefixOverride || this.findPreferredNamespacePrefix();
+    result.vocabName = this.vocabData.nameAndPrefixOverride || this.findPreferredNamespacePrefix();
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(result.vocabName);
     result.description = this.findDescription();
     result.artifactVersion = this.vocabData.artifactVersion;

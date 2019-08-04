@@ -1,12 +1,8 @@
-coverage/
-example/generated/
-test/generated/
-
 node_modules/
+
+coverage/
+
+generated/
 
 .idea
 .vscode/
-
-package-lock.json
-
-

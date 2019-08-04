@@ -4,12 +4,12 @@
 #
 artifactName: "@lit/generated-vocab-common-TEST"
 vocabList:
-  - vocabDescriptiom: Schema.org from Google, Microsoft, Yahoo and Yandex
+  - description: Schema.org from Google, Microsoft, Yahoo and Yandex
     inputFiles:
       - schema.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
-  - vocabDescriptiom: Vocab for testing predicate types...
-    vocabNameAndPrefixOverride: override-name
+  - description: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
     inputFiles:
       - ./supported-data-types.ttl

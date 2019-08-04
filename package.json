@@ -1,7 +1,7 @@
 {
   "name": "@lit/artifact-generator",
   "version": "0.1.0",
-  "description": "A generator for building ontology artifacts",
+  "description": "A generator for building NPM modules (artifacts) from RDF vocabularies",
   "main": "index.js",
   "bin": {
     "lit-artifact-generator": "./index.js"
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run format && npm run lint && jest",
     "start": "node index.js",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/resources/**\"",
+    "format": "prettier --single-quote --trailing-comma es5 --write \"index.js\" \"src/**/*.js\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
   },
   "author": "inrupt, Inc.",
@@ -51,8 +51,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "sinon": "^7.3.2"
+    "prettier": "^1.18.2"
   },
   "jest": {
     "collectCoverage": true,
