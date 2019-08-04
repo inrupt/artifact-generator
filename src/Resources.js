@@ -2,6 +2,7 @@ const rdf = require('rdf-ext');
 const rdfFetch = require('rdf-fetch-lite');
 const N3Parser = require('rdf-parser-n3');
 const ParserJsonld = require('@rdfjs/parser-jsonld');
+const logger = require('debug')('lit-artifact-generator:Resources');
 
 const { LitUtils } = require('@lit/vocab-term');
 
@@ -45,7 +46,7 @@ module.exports = class Resources {
   }
 
   readResource(datasetFile) {
-    console.log(`Loading resource: [${datasetFile}]...`);
+    logger(`Loading resource: [${datasetFile}]...`);
     if (datasetFile.startsWith('http')) {
       // [PMcB] - Fails trying to read the Activity Streams vocab, so tried
       // this manual Parsing of JSON-LD, but I don't know how to construct the

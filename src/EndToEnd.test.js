@@ -1,10 +1,5 @@
 require('mock-local-storage');
 
-const chai = require('chai').use(require('chai-as-promised'));
-chai.use(require('chai-string'));
-
-const { expect } = chai;
-
 const fs = require('fs');
 const del = require('del');
 
@@ -17,17 +12,11 @@ const doNothingPromise = data => {
   });
 };
 
-describe('Ontology Generator', () => {
-  const outputDirectory = 'test/generated';
-  const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
-
-  beforeEach(() => {
-    const deletedPaths = del.sync([`${outputDirectory}/*`]);
-    console.log('Deleted files and folders:\n', deletedPaths.join('\n'));
-  });
-
+describe('End-to-end tests', () => {
   describe('Build node module artifacts', () => {
     it('should fail if no ontology file', async () => {
+      const outputDirectory = 'test/generated/End-to-End/no-ontology';
+      del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/does.not.exist.ttl';
 
       const artifactGenerator = new ArtifactGenerator(
@@ -41,32 +30,27 @@ describe('Ontology Generator', () => {
         doNothingPromise
       );
 
-      await expect(artifactGenerator.generate()).to.be.rejectedWith(
-        Error,
+      await expect(artifactGenerator.generate()).rejects.toThrow(
         "Failed to generate: Error: ENOENT: no such file or directory, open '././test/resources/vocabs/does.not.exist.ttl'"
       );
     });
 
     it('should fail if ontology file invalid', async () => {
+      const outputDirectory = 'test/generated/End-to-End/invalid-ontology';
+      del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/invalid-turtle.ttl';
-
       const artifactGenerator = new ArtifactGenerator({
         input: [errorFilename],
         outputDirectory,
         noprompt: true,
       });
 
-      artifactGenerator
-        .generate()
-        .then(() => {
-          throw new Error('Should fail!');
-        })
-        .catch(error => {
-          expect(error).contains('Failed', errorFilename);
-        });
+      await expect(artifactGenerator.generate()).rejects.toThrow('Failed', 'line 4', errorFilename);
     });
 
     it('should fail if ontology file has term from different namespace', async () => {
+      const outputDirectory = 'test/generated/End-to-End/different-namespace';
+      del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/mismatched-namespaces.ttl';
 
       const artifactGenerator = new ArtifactGenerator(
@@ -79,29 +63,18 @@ describe('Ontology Generator', () => {
       );
 
       // TODO: Not sure the correct syntax to get this working - but should be something like this!
-      // expect(() => artifactGenerator.generate).to.throw(
-      //   'sampleTerm',
-      //   'https://inrupt.net/vocab/different-IRI#',
-      //   'https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#',
-      //   errorFilename
-      // );
-
-      artifactGenerator
-        .generate()
-        .then(() => {
-          throw new Error('Should fail!');
-        })
-        .catch(error => {
-          expect(error).contains(
-            'sampleTerm',
-            'https://inrupt.net/vocab/different-IRI#',
-            'https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#',
-            errorFilename
-          );
-        });
+      await expect(artifactGenerator.generate()).rejects.toThrow(
+        'sampleTerm',
+        'https://inrupt.net/vocab/different-IRI#',
+        'https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#',
+        errorFilename
+      );
     });
 
     it('should create from an ontology file', async () => {
+      const outputDirectory = 'test/generated/End-to-End/create-ontology';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         {
           input: ['./test/resources/vocabs/schema.ttl'],
@@ -116,8 +89,8 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString()).toBe(
         fs.readFileSync('test/resources/expectedOutputs/single/index.js').toString()
       );
 
@@ -128,17 +101,20 @@ describe('Ontology Generator', () => {
       const expected = fs
         .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js')
         .toString();
-      expect(output.substring(output.indexOf(' */'))).to.equal(
+      expect(output.substring(output.indexOf(' */'))).toBe(
         expected.substring(expected.indexOf(' */'))
       );
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toBe(
         fs.readFileSync('test/resources/expectedOutputs/single/package.json').toString()
       );
     });
 
     it('should create from an ontology link', async () => {
+      const outputDirectory = 'test/generated/End-to-End/create-ontology-link';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -150,18 +126,23 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)).toBe(true);
       expect(
         fs.readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`).toString()
-      ).contains("Person: new LitVocabTerm(_NS('Person'), localStorage, true)");
-
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"name": "@lit/generated-vocab-schema"'
+      ).toEqual(
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person'), localStorage, true)")
       );
-    }).timeout(5000);
+
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('"name": "@lit/generated-vocab-schema"')
+      );
+    });
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
+      const outputDirectory = 'test/generated/End-to-End/multiple-inputs';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: [
           './test/resources/vocabs/schema.ttl',
@@ -176,24 +157,29 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
+
       const expected = fs
         .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js')
         .toString();
-      expect(output.substring(output.indexOf(' */'))).to.equal(
+
+      expect(output.substring(output.indexOf(' */'))).toBe(
         expected.substring(expected.indexOf(' */'))
       );
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).to.equal(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toBe(
         fs.readFileSync('test/resources/expectedOutputs/full-ext/package.json').toString()
       );
     });
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
+      const outputDirectory = 'test/generated/End-to-End/multiple-urls';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['https://schema.org/Person.ttl', './test/resources/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory,
@@ -205,19 +191,28 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
 
       const indexOutput = fs
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
-      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).contains("address: new LitVocabTerm(_NS('address')");
-      expect(indexOutput).contains("additionalName: new LitVocabTerm(_NS('additionalName')");
-      expect(indexOutput).contains(".addLabel('es', `Nombre adicional`)");
-    }).timeout(5000);
+      expect(indexOutput).toEqual(
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+      );
+      expect(indexOutput).toEqual(
+        expect.stringContaining("address: new LitVocabTerm(_NS('address')")
+      );
+      expect(indexOutput).toEqual(
+        expect.stringContaining("additionalName: new LitVocabTerm(_NS('additionalName')")
+      );
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre adicional`)"));
+    });
 
     it('should be able to extend an ontology but only creates triples from extension file', async () => {
+      const outputDirectory = 'test/generated/End-to-End/extension-file';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -234,20 +229,25 @@ describe('Ontology Generator', () => {
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
         .toString();
 
-      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).contains(".addLabel('en', `Person`)");
-      expect(indexOutput).contains(".addLabel('fr', `La personne`)");
+      expect(indexOutput).toEqual(
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+      );
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('en', `Person`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
 
-      expect(indexOutput).contains('additionalName: new LitVocabTerm');
-      expect(indexOutput).contains('familyName: new LitVocabTerm');
-      expect(indexOutput).contains('givenName: new LitVocabTerm');
-      expect(indexOutput).contains(".addLabel('es', `Nombre de pila`)");
-      expect(indexOutput).contains(".addLabel('it', `Nome di battesimo`)");
+      expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre de pila`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('it', `Nome di battesimo`)"));
 
-      expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    }).timeout(5000);
+      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTerm'));
+    });
 
     it('should be able to extend an ontology but only create triples from extension URL links', async () => {
+      const outputDirectory = 'test/generated/End-to-End/extension-urls';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -264,20 +264,25 @@ describe('Ontology Generator', () => {
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)
         .toString();
 
-      expect(indexOutput).contains("Person: new LitVocabTerm(_NS('Person')");
-      expect(indexOutput).contains(".addLabel('en', `Person`)");
-      expect(indexOutput).contains(".addLabel('fr', `La personne`)");
+      expect(indexOutput).toEqual(
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+      );
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('en', `Person`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
 
-      expect(indexOutput).contains('additionalName: new LitVocabTerm');
-      expect(indexOutput).contains('familyName: new LitVocabTerm');
-      expect(indexOutput).contains('givenName: new LitVocabTerm');
-      expect(indexOutput).contains(".addLabel('es', `Nombre de pila`)");
-      expect(indexOutput).contains(".addLabel('it', `Nome di battesimo`)");
+      expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre de pila`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('it', `Nome di battesimo`)"));
 
-      expect(indexOutput).to.not.contains('address: new LitVocabTerm');
-    }).timeout(5000);
+      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTerm'));
+    });
 
     it('should take in a version for the output module', async () => {
+      const outputDirectory = 'test/generated/End-to-End/module-version';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -290,14 +295,16 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"version": "1.0.5"'
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('"version": "1.0.5"')
       );
     });
 
     it('should handle creating generated folder if it does not exist already', async () => {
-      del.sync([outputDirectory]);
+      const outputDirectory = 'test/generated/End-to-End/dest-folder-not-exist';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
@@ -310,11 +317,14 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).to.be.true;
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).to.be.true;
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
     });
 
     it('module names should by default start with @lit/generated-vocab-*', async () => {
+      const outputDirectory = 'test/generated/End-to-End/module-default-name';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -326,8 +336,8 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"name": "@lit/generated-vocab-schema",'
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('"name": "@lit/generated-vocab-schema",')
       );
 
       artifactGenerator = new ArtifactGenerator({
@@ -341,12 +351,15 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"name": "@lit/generated-vocab-schema-inrupt-ext",'
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('"name": "@lit/generated-vocab-schema-inrupt-ext",')
       );
     });
 
     it('should add a description inside the package.json', async () => {
+      const outputDirectory = 'test/generated/End-to-End/package-description';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -359,13 +372,18 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
-          'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining(
+          '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
+            'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
+        )
       );
     });
 
-    it('should add a authors inside the package.json', async () => {
+    it('should add authors inside the package.json', async () => {
+      const outputDirectory = 'test/generated/End-to-End/authors-in-package';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
         input: ['./test/resources/vocabs/schema.ttl'],
         outputDirectory,
@@ -378,8 +396,8 @@ describe('Ontology Generator', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).contains(
-        '"author": "Jarlath Holleran"'
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('"author": "Jarlath Holleran"')
       );
     });
   });

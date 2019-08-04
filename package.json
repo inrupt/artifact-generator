@@ -6,9 +6,8 @@
   "bin": {
     "lit-artifact-generator": "./index.js"
   },
-  "preferGlobal": true,
   "scripts": {
-    "test": "npm run format && npm run lint && nyc mocha \"./src/**/*.test.js\"",
+    "test": "npm run format && npm run lint && jest",
     "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.ts\" \"{src,test}/**/*.js\" \"!test/resources/**\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx"
@@ -18,11 +17,18 @@
     "Jarlath Holleran (https://github.com/jholleran)",
     "Pat McBennett (https://github.com/pmcb55)"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:inrupt/lit-artifact-generator-js.git"
+  },
   "license": "MIT",
+  "preferGlobal": true,
+  "keywords": [],
   "dependencies": {
     "@lit/generated-vocab-common": "^0.1.0",
     "@lit/vocab-term": "^0.1.0",
     "@rdfjs/parser-jsonld": "^1.1.2",
+    "debug": "^4.1.1",
     "del": "^4.1.1",
     "handlebars": "^4.1.2",
     "inquirer": "^6.4.1",
@@ -36,50 +42,30 @@
     "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "chai-string": "^1.5.0",
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jest": "^22.14.1",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
+    "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "sinon": "^7.3.2"
   },
-  "directories": {
-    "test": "test"
-  },
-  "nyc": {
-    "check-coverage": true,
-    "per-file": true,
-    "lines": 98,
-    "statements": 98,
-    "functions": 98,
-    "branches": 98,
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "src/**/*.test.js"
-    ],
-    "reporter": [
-      "lcov",
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
       "text"
     ],
-    "require": [],
-    "extension": [],
-    "cache": true,
-    "all": true,
-    "report-dir": "./.nyc_output/alternative"
-  },
-  "keywords": [],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:inrupt/lit-artifact-generator-js.git"
+    "coverageThreshold": {
+      "global": {
+        "lines": 100,
+        "functions": 100,
+        "statements": 100,
+        "branches": 100
+      }
+    }
   }
 }
