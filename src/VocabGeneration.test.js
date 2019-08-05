@@ -1,19 +1,18 @@
 require('mock-local-storage');
 const fs = require('fs');
-const logger = require('debug')('lit-artifact-generator:FileGenerator');
+const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
-const FileGenerator = require('./generator/FileGenerator');
 const CommandLine = require('./CommandLine');
 
 const VERSION_ARTIFACT_GENERATED = '0.1.0';
-// const VERSION_BUMP_EXISTING = true; // Not sure yet if this is really needed, or how it would work...!
 
 // const VERSION_LIT_VOCAB_TERM = 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
 const VERSION_LIT_VOCAB_TERM = '^0.1.0';
 const NPM_REGISTRY = 'http://localhost:4873';
-const RUN_NPM_INSTALL = false;
+const RUN_NPM_INSTALL = true;
 const RUN_NPM_PUBLISH = false;
+const SUPPORT_BUNDLING = true;
 
 const GenerationConfigLitCommon = {
   vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
@@ -27,11 +26,12 @@ const GenerationConfigLitCommon = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
 };
 
 const GenerationConfigSolidComponent = {
-  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/SolidComponent.ttl'],
+  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/Vocab/SolidComponent.ttl'],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidComponent',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
@@ -39,12 +39,15 @@ const GenerationConfigSolidComponent = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-  runWidoco: true,
+  runWidoco: false,
 };
 
 const GenerationConfigSolidGeneratorUi = {
-  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/SolidGeneratorUi.ttl'],
+  input: [
+    '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
+  ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
@@ -52,8 +55,9 @@ const GenerationConfigSolidGeneratorUi = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-  runWidoco: true,
+  runWidoco: false,
 };
 
 async function generateVocabArtifact(argv) {
@@ -62,7 +66,7 @@ async function generateVocabArtifact(argv) {
     CommandLine.askForArtifactInfo
   );
 
-  await artifactGenerator
+  const result = await artifactGenerator
     .generate()
     .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
@@ -74,26 +78,16 @@ async function generateVocabArtifact(argv) {
       throw new Error(error);
     });
 
-  expect(
-    fs.existsSync(
-      `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package.json`
-    )
-  ).toBe(true);
+  expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package.json`)).toBe(true);
 
-  if (argv.runNpmInstall) {
-    expect(
-      fs.existsSync(
-        `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/package-lock.json`
-      )
-    ).toBe(true);
+  if (result.runNpmInstall) {
+    expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
   }
 
-  if (argv.ranWidoco) {
-    expect(
-      fs.existsSync(
-        `${argv.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}/Widoco/index-en.html`
-      )
-    ).toBe(true);
+  if (result.runWidoco) {
+    // Check if our documentation is in the root output directory (not the
+    // artifact directory!).
+    expect(fs.existsSync(`${result.outputDirectory}/Widoco/index-en.html`)).toBe(true);
   }
 
   logger(`Generation process successful!\n`);
@@ -158,7 +152,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
-      runWidoco: true,
+      supportBundling: true,
+      runWidoco: false,
     });
   });
 });

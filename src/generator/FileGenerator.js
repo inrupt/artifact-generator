@@ -47,7 +47,7 @@ class FileGenerator {
       `${argv.outputDirectoryForArtifact}/index.js`
     );
 
-    if (argv.useBundling) {
+    if (argv.supportBundling) {
       FileGenerator.createDirectory(`${argv.outputDirectoryForArtifact}/config`);
 
       FileGenerator.createFileFromTemplate(

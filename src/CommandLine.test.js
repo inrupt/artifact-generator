@@ -214,7 +214,7 @@ describe('Command Line unit tests', () => {
 
       const result = CommandLine.runNpmInstall({
         ...defaultInputs,
-        useBundling: true,
+        supportBundling: true,
       });
 
       expect(result.ranNpmInstall).toBe(true);

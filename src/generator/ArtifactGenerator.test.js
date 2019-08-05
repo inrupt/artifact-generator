@@ -104,7 +104,7 @@ describe('Artifact Generator', () => {
         litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
-        useBundling: true,
+        supportBundling: true,
       });
 
       await artifactGenerator.generate();
@@ -126,7 +126,7 @@ describe('Artifact Generator', () => {
         litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
-        useBundling: false,
+        supportBundling: false,
       });
 
       await artifactGenerator.generate();

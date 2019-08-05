@@ -42,7 +42,7 @@ class ArtifactGenerator {
   }
 
   /**
-   * If we are useBundling vocabs from a list, then we run our inquirer first, then run our generation. But if we are
+   * If we are bundling vocabs from a list, then we run our inquirer first, then run our generation. But if we are
    * only generating a single vocab, then process our inputs first and then run our inquirer, as our input vocab may
    * have provided suggested default values for our inquirer (e.g. the suggested name of the vocab may come from the
    * vocab itself).

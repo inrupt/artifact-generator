@@ -208,18 +208,18 @@ module.exports = class CommandLine {
 
   static runNpmInstall(data) {
     logger(
-      `Running 'npm install' ${data.useBundling ? '(and bundling) ' : ''}for artifact [${
+      `Running 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
         data.artifactName
       }] in directory [${data.outputDirectoryForArtifact}]...`
     );
 
     const commandLine = `cd ${data.outputDirectoryForArtifact} && npm install${
-      data.useBundling ? ' && npm run dev' : ''
+      data.supportBundling ? ' && npm run dev' : ''
     }`;
     ChildProcess.execSync(commandLine);
 
     logger(
-      `Ran 'npm install' ${data.useBundling ? '(and bundling) ' : ''}for artifact [${
+      `Ran 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
         data.artifactName
       }] in directory [${data.outputDirectory}].`
     );

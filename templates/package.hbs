@@ -3,7 +3,7 @@
   "version": "{{artifactVersion}}",
   "description": "{{description}}",
   "main": "index.js",
-{{#if useBundling}}
+{{#if supportBundling}}
   "scripts": {
     "dev": "webpack --config ./config/webpack.dev.config.js",
     "prod": "webpack --config ./config/webpack.prod.config.js"
@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@lit/vocab-term": "{{litVocabTermVersion}}"
-  }{{#if useBundling}},
+  }{{#if supportBundling}},
   "devDependencies": {
     "@babel/core": "{{versionBabelCore}}",
     "babel-loader": "{{versionBabelLoader}}",

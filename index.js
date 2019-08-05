@@ -11,15 +11,11 @@ const logger = require('debug')('lit-artifact-generator:index');
 const yargs = require('yargs');
 const App = require('./src/App');
 
+console.log(`Command: [${process.argv.join(' ')}]`);
 const yargsConfig = yargs
-  .alias('i', 'input')
-  .array('input')
-  .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
-  // Not mandatory, since we want the option of a vocab list file too...
-  // .demandOption(
-  //   'input',
-  //   'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
-  // )
+  .alias('i', 'inputFiles')
+  .array('inputFiles')
+  .describe('inputFiles', 'One or more ontology files that will be used to build Vocab Terms from.')
 
   .alias('l', 'vocabListFile')
   .describe(
@@ -95,20 +91,20 @@ const yargsConfig = yargs
   .boolean('runWidoco')
   .describe('runWidoco', 'If set will run Widoco to generate documentation for this vocabulary.')
 
-  .alias('u', 'useBundling')
-  .boolean('useBundling')
+  .alias('s', 'supportBundling')
+  .boolean('supportBundling')
   .describe(
-    'useBundling',
+    'supportBundling',
     'If set will use bundling support within generated artifact (currently supports Webpack only).'
   )
-  .default('useBundling', true)
+  .default('supportBundling', true)
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')
 
   // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
   // least one of these two...?)
-  .conflicts('input', 'vocabListFile')
+  .conflicts('inputFiles', 'vocabListFile')
   .strict();
 
 new App(yargsConfig)

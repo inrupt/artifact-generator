@@ -174,7 +174,7 @@ module.exports = class DatasetHandler {
     result.bumpVersion = this.vocabData.bumpVersion;
     result.runWidoco = this.vocabData.runWidoco;
     result.noprompt = this.vocabData.noprompt;
-    result.useBundling = this.vocabData.useBundling;
+    result.supportBundling = this.vocabData.supportBundling;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
