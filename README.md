@@ -60,7 +60,7 @@ node index.js --input ./example/PetRocks.ttl
 Remote ontology file
 
 ```shell
-node index.js --input https://schema.org/version/latest/schema.ttl
+node index.js --input https://schema.org/version/latest/schema-snippet.ttl
 ```
 
 Multiple local ontology files:
@@ -72,7 +72,7 @@ node index.js --input ./example/Skydiving.ttl ./example/PetRocks.ttl
 Selecting only specific terms from a vocabulary.
 Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
 ```shell
-node index.js --input https://schema.org/version/latest/schema.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
+node index.js --input https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:
@@ -87,24 +87,24 @@ node index.js --input http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl
 
 Specifing a custom prefix for the output module name:
 ```shell
-node index.js --input ./vocabs/schema.ttl --moduleNamePrefix my-company-prefix-
+node index.js --input ./vocabs/schema-snippet.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Specifing a custom NPM registry to where the output module will be published:
 ```shell
-node index.js --input ./vocabs/schema.ttl --npmRegistry http://my.company.registry/npm/
+node index.js --input ./vocabs/schema-snippet.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
 Using short-form alaises for the command-line flags:
 ```shell
-node index.js --i ./vocabs/schema.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
+node index.js --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
 Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
 *NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-vocab-term` to pick up that local copy.
 ```shell
-node index.js --i ./vocabs/schema.ttl --litVocabTermVersion ^1.0.10
+node index.js --i ./vocabs/schema-snippet.ttl --litVocabTermVersion ^1.0.10
 ```
 
 
@@ -128,7 +128,7 @@ When you run the tool you will be prompted with questions that will quide you th
 
 Here is an example of what this will look like on the output:
 ```shell
-[lit-artifact-generator-js]$ node index.js --input ./vocabs/schema.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+[lit-artifact-generator-js]$ node index.js --input ./vocabs/schema-snippet.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ? Artifact name ... @lit/generated-vocab-schema-inrupt-ext
 ? Artifact author ... Jarlath Holleran
 Created artifact: [./generated/index.js]

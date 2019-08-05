@@ -138,6 +138,11 @@ module.exports = class DatasetHandler {
   buildTemplateInput() {
     const result = {};
 
+    result.versionWebpack = this.vocabData.versionWebpack;
+    result.versionWebpackCli = this.vocabData.versionWebpackCli;
+    result.versionBabelCore = this.vocabData.versionBabelCore;
+    result.versionBabelLoader = this.vocabData.versionBabelLoader;
+
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
     result.generatorVersion = this.vocabData.generatorVersion;
@@ -169,6 +174,7 @@ module.exports = class DatasetHandler {
     result.bumpVersion = this.vocabData.bumpVersion;
     result.runWidoco = this.vocabData.runWidoco;
     result.noprompt = this.vocabData.noprompt;
+    result.useBundling = this.vocabData.useBundling;
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {

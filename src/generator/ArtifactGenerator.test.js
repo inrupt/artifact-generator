@@ -4,7 +4,7 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('./ArtifactGenerator');
-const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./FileGenerator');
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./ArtifactGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
@@ -91,6 +91,50 @@ describe('Artifact Generator', () => {
       await artifactGenerator.generate();
       expect(inquirerCalled).toBe(true);
       verifyVocabList(outputDirectory);
+    });
+
+    it('Should generate artifact with bundling', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
+      del.sync([`${outputDirectory}/*`]);
+
+      const artifactGenerator = new ArtifactGenerator({
+        input: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        useBundling: true,
+      });
+
+      await artifactGenerator.generate();
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+
+      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
+      const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
+      expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
+    });
+
+    it('Should generate artifact without bundling', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      del.sync([`${outputDirectory}/*`]);
+
+      const artifactGenerator = new ArtifactGenerator({
+        input: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        useBundling: false,
+      });
+
+      await artifactGenerator.generate();
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+
+      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(false);
+      const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
+      expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
   });
 });

@@ -12,8 +12,8 @@ const yargs = require('yargs');
 const App = require('./src/App');
 
 const yargsConfig = yargs
+  .alias('i', 'input')
   .array('input')
-  .alias('input', 'i')
   .describe('input', 'One or more ontology files that will be used to build Vocab Terms from.')
   // Not mandatory, since we want the option of a vocab list file too...
   // .demandOption(
@@ -21,69 +21,69 @@ const yargsConfig = yargs
   //   'At least one input vocabulary (i.e. RDF file) is required (since we have nothing to generate from otherwise!).'
   // )
 
-  .alias('vocabListFile', 'l')
+  .alias('l', 'vocabListFile')
   .describe(
     'vocabListFile',
     'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.'
   )
 
-  .alias('litVocabTermVersion', 'lv')
+  .alias('lv', 'litVocabTermVersion')
   .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
   .default('litVocabTermVersion', '^0.1.0')
 
-  .alias('outputDirectory', 'o')
-  .describe('outputDirectory', 'The output directory for the generated artifact.')
+  .alias('o', 'outputDirectory')
+  .describe('outputDirectory', 'The output directory for the generated artifacts.')
   .default('outputDirectory', './generated')
 
+  .alias('in', 'runNpmInstall')
   .boolean('runNpmInstall')
-  .alias('runNpmInstall', 'in')
   .describe(
     'runNpmInstall',
-    'If set, will attempt to NPM install the generated artifact from within the output directory.'
+    'If set will attempt to NPM install the generated artifact from within the output directory.'
   )
   .default('runNpmInstall', false)
 
+  .alias('p', 'runNpmPublish')
   .boolean('runNpmPublish')
-  .alias('runNpmPublish', 'p')
-  .describe('runNpmPublish', 'If set, will attempt to publish to the configured NPM registry.')
+  .describe('runNpmPublish', 'If set will attempt to publish to the configured NPM registry.')
   .default('runNpmPublish', false)
 
-  .alias('bumpVersion', 'b')
+  .alias('b', 'bumpVersion')
   .describe(
     'bumpVersion',
     'Bump up the semantic version of the artifact from the currently published version.'
   )
   .choices('bumpVersion', ['patch', 'minor', 'major'])
 
+  .alias('np', 'noprompt')
   .boolean('noprompt')
-  .alias('noprompt', 'np')
   .describe(
     'noprompt',
-    'If set, will not ask any interactive questions and will attempt to perform artifact generation automatically.'
+    'If set will not ask any interactive questions and will attempt to perform artifact generation automatically.'
   )
   .default('noprompt', false)
 
+  .alias('q', 'quiet')
   .boolean('quiet')
-  .alias('quiet', 'q')
   .describe(
     'quiet',
-    `If set, will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
+    `If set will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
   )
   .default('quiet', false)
 
-  .alias('vocabTermsFrom', 'vtf')
+  .alias('vtf', 'vocabTermsFrom')
   .describe('vocabTermsFrom', 'Generates Vocab Terms from only the specified ontology file.')
 
-  .alias('artifactVersion', 'av')
+  .alias('av', 'artifactVersion')
   .describe('artifactVersion', 'The version of the Node module that will be generated.')
   .default('artifactVersion', '0.0.1')
 
-  .alias('artifactType', 'at')
+  .alias('at', 'artifactType')
   .describe('artifactType', 'The artifact type that will be generated.')
   .choices('artifactType', ['nodejs']) // Add to this when other languages are supported.
   .default('artifactType', 'nodejs')
 
-  .alias('moduleNamePrefix', 'mnp')
+  .alias('mnp', 'moduleNamePrefix')
   .describe('moduleNamePrefix', 'A prefix for the name of the output module')
   .default('moduleNamePrefix', '@lit/generated-vocab-')
 
@@ -91,9 +91,17 @@ const yargsConfig = yargs
   .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
   .default('npmRegistry', 'https://verdaccio.inrupt.com')
 
+  .alias('w', 'runWidoco')
   .boolean('runWidoco')
-  .alias('runWidoco', 'w')
-  .describe('runWidoco', 'If set, will run Widoco to generate documentation for this vocabulary.')
+  .describe('runWidoco', 'If set will run Widoco to generate documentation for this vocabulary.')
+
+  .alias('u', 'useBundling')
+  .boolean('useBundling')
+  .describe(
+    'useBundling',
+    'If set will use bundling support within generated artifact (currently supports Webpack only).'
+  )
+  .default('useBundling', true)
 
   // Can't provide an explicit version, and then also request a version bump!
   .conflicts('artifactVersion', 'bumpVersion')

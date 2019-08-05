@@ -209,6 +209,17 @@ describe('Command Line unit tests', () => {
       expect(result.ranNpmInstall).toBe(true);
     });
 
+    it('Should run npm install with bundling', () => {
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
+
+      const result = CommandLine.runNpmInstall({
+        ...defaultInputs,
+        useBundling: true,
+      });
+
+      expect(result.ranNpmInstall).toBe(true);
+    });
+
     it('Should install artifact if user explicitly told to', async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 

@@ -210,7 +210,11 @@ module.exports = class CommandLine {
     logger(
       `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
     );
-    ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
+
+    const commandLine = `cd ${data.outputDirectory} && npm install${
+      data.useBundling ? ' && npm run dev' : ''
+    }`;
+    ChildProcess.execSync(commandLine);
 
     logger(
       `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`

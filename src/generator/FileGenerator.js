@@ -2,8 +2,6 @@ const fs = require('fs');
 const Handlebars = require('handlebars');
 const logger = require('debug')('lit-artifact-generator:FileGenerator');
 
-const ARTIFACT_DIRECTORY_JAVASCRIPT = '/GeneratedSourceCodeArtifacts/Javascript';
-
 class FileGenerator {
   static createFileFromTemplate(templateFile, templateData, outputFile) {
     // To support running from any arbitrary directory, reference our templates relative to this file, and not the
@@ -24,16 +22,12 @@ class FileGenerator {
   }
 
   static createSourceCodeFile(argv, templateData) {
-    FileGenerator.createDirectory(
-      `${argv.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}/GeneratedVocab`
-    );
+    FileGenerator.createDirectory(`${argv.outputDirectoryForArtifact}/GeneratedVocab`);
 
     FileGenerator.createFileFromTemplate(
       '../../templates/javascript-rdf-ext.hbs',
       templateData,
-      `${
-        argv.outputDirectory
-      }${ARTIFACT_DIRECTORY_JAVASCRIPT}/GeneratedVocab/${templateData.nameAndPrefixOverride ||
+      `${argv.outputDirectoryForArtifact}/GeneratedVocab/${templateData.nameAndPrefixOverride ||
         templateData.vocabName}.js`
     );
   }
@@ -42,9 +36,36 @@ class FileGenerator {
     FileGenerator.createDirectory(argv.outputDirectory);
 
     FileGenerator.createFileFromTemplate(
+      '../../templates/.gitignore.hbs',
+      argv,
+      `${argv.outputDirectoryForArtifact}/.gitignore`
+    );
+
+    FileGenerator.createFileFromTemplate(
       '../../templates/index.hbs',
       argv,
-      `${argv.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}/index.js`
+      `${argv.outputDirectoryForArtifact}/index.js`
+    );
+
+    if (argv.useBundling) {
+      FileGenerator.createDirectory(`${argv.outputDirectoryForArtifact}/config`);
+
+      FileGenerator.createFileFromTemplate(
+        '../../templates/webpack.dev.config.hbs',
+        argv,
+        `${argv.outputDirectoryForArtifact}/config/webpack.dev.config.js`
+      );
+      FileGenerator.createFileFromTemplate(
+        '../../templates/webpack.prod.config.hbs',
+        argv,
+        `${argv.outputDirectoryForArtifact}/config/webpack.prod.config.js`
+      );
+    }
+
+    FileGenerator.createFileFromTemplate(
+      '../../templates/package.hbs',
+      argv,
+      `${argv.outputDirectoryForArtifact}/package.json`
     );
 
     // For our README (which uses Markdown format), if our artifact was made up
@@ -58,13 +79,7 @@ class FileGenerator {
     FileGenerator.createFileFromTemplate(
       '../../templates/README.hbs',
       dataWithMarkdownDescription,
-      `${argv.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}/README.MD`
-    );
-
-    FileGenerator.createFileFromTemplate(
-      '../../templates/package.hbs',
-      argv,
-      `${argv.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}/package.json`
+      `${argv.outputDirectoryForArtifact}/README.MD`
     );
 
     return argv;
@@ -72,4 +87,3 @@ class FileGenerator {
 }
 
 module.exports = FileGenerator;
-module.exports.ARTIFACT_DIRECTORY_JAVASCRIPT = ARTIFACT_DIRECTORY_JAVASCRIPT;

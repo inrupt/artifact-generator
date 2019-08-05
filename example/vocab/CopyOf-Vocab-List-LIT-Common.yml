@@ -32,7 +32,7 @@ vocabList:
   # generated source.
   - description: Schema.org (the full vocabulary)
     inputFiles:
-      - https://schema.org/version/latest/schema.ttl
+      - https://schema.org/version/latest/schema-snippet.ttl
 
 #  - description: Schema.org with selective terms having translations
 #    nameAndPrefixOverride: schema-inrupt-ext
