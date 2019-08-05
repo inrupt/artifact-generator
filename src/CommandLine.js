@@ -208,16 +208,20 @@ module.exports = class CommandLine {
 
   static runNpmInstall(data) {
     logger(
-      `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+      `Running 'npm install' ${data.useBundling ? '(and bundling) ' : ''}for artifact [${
+        data.artifactName
+      }] in directory [${data.outputDirectoryForArtifact}]...`
     );
 
-    const commandLine = `cd ${data.outputDirectory} && npm install${
+    const commandLine = `cd ${data.outputDirectoryForArtifact} && npm install${
       data.useBundling ? ' && npm run dev' : ''
     }`;
     ChildProcess.execSync(commandLine);
 
     logger(
-      `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
+      `Ran 'npm install' ${data.useBundling ? '(and bundling) ' : ''}for artifact [${
+        data.artifactName
+      }] in directory [${data.outputDirectory}].`
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
@@ -225,11 +229,11 @@ module.exports = class CommandLine {
 
   static runNpmVersion(data) {
     logger(
-      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
     );
 
     const newVersion = ChildProcess.execSync(
-      `cd ${data.outputDirectory} && npm version ${data.bumpVersion}`
+      `cd ${data.outputDirectoryForArtifact} && npm version ${data.bumpVersion}`
     );
 
     logger(
@@ -245,7 +249,7 @@ module.exports = class CommandLine {
     );
 
     ChildProcess.execSync(
-      `cd ${data.outputDirectory} && npm publish --registry ${data.npmRegistry}`
+      `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`
     );
 
     logger(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
@@ -258,7 +262,7 @@ module.exports = class CommandLine {
   //     `Running yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`
   //   );
   //
-  //   ChildProcess.execSync(`cd ${data.outputDirectory} && ${data.runYalcCommand}`);
+  //   ChildProcess.execSync(`cd ${data.outputDirectoryForArtifact} && ${data.runYalcCommand}`);
   //
   //   log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
   //
