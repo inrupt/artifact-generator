@@ -15,10 +15,10 @@ const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = true;
 
 const GenerationConfigLitCommon = {
-  vocabListFile: '../../../vocab/Vocab-List-LIT-Common.yml',
-  outputDirectory:
-    // '../../../../Solid/MonoRepo/testLit/packages/LIT/Common',
-    './test/generated',
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
+  // './test/generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -30,9 +30,25 @@ const GenerationConfigLitCommon = {
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
 };
 
+const GenerationConfigLitCore = {
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
+  moduleNamePrefix: '@lit/generated-vocab-',
+  artifactName: 'core',
+  artifactVersion: VERSION_ARTIFACT_GENERATED,
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
+};
+
 const GenerationConfigSolidComponent = {
-  input: ['../../../../Solid/MonoRepo/testLit/packages/SolidComponent/Vocab/SolidComponent.ttl'],
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidComponent',
+  input: [
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent/Vocab/SolidComponent.ttl',
+  ],
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -40,15 +56,14 @@ const GenerationConfigSolidComponent = {
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
-  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
   runWidoco: true,
 };
 
 const GenerationConfigSolidGeneratorUi = {
   input: [
-    '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/SolidGeneratorUi',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -56,7 +71,6 @@ const GenerationConfigSolidGeneratorUi = {
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
-  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
   runWidoco: true,
 };
 
@@ -98,13 +112,19 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   // it('Generate ALL vocabs', async () => {
   it.skip('Generate ALL vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
+    await generateVocabArtifact(GenerationConfigLitCore);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
+  }, 60000);
+
+  // it('LIT Common vocabs', async () => {
+  it.skip('LIT Common vocabs', async () => {
+    await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
-  // it('LIT COMMON vocabs', async () => {
-  it.skip('LIT vocabs', async () => {
-    await generateVocabArtifact(GenerationConfigLitCommon);
+  // it('LIT Core vocabs', async () => {
+  it.skip('LIT Core vocabs', async () => {
+    await generateVocabArtifact(GenerationConfigLitCore);
   });
 
   // it('Solid Generator UI vocab', async () => {
@@ -115,16 +135,6 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   // it('Solid Component vocab', async () => {
   it.skip('Solid Component vocab', async () => {
     await generateVocabArtifact(GenerationConfigSolidComponent);
-  });
-
-  it.skip('Schema.org vocab (we only want a tiny subset of terms from the thousands defined there)', async () => {
-    await generateVocabArtifact({
-      input: [''],
-      outputDirectory: '../../../../Vocab/Schema.org',
-      artifactVersion: '1.0.0',
-      litVocabTermVersion: 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-      moduleNamePrefix: '@solid/generated-vocab-',
-    });
   });
 
   it.skip('Test Demo App', async () => {
