@@ -9,8 +9,9 @@ const VocabGenerator = require('./VocabGenerator');
 const DatasetHandler = require('../DatasetHandler');
 const packageDotJson = require('../../package.json');
 
-const ARTIFACT_DIRECTORY_ROOT = '/GeneratedSourceCodeArtifacts';
-const ARTIFACT_DIRECTORY_JAVASCRIPT = `${ARTIFACT_DIRECTORY_ROOT}/Javascript`;
+const ARTIFACT_DIRECTORY_ROOT = '/Generated';
+const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const ARTIFACT_DIRECTORY_JAVASCRIPT = `${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
 class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
@@ -134,4 +135,5 @@ class ArtifactGenerator {
 }
 
 module.exports = ArtifactGenerator;
+module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
 module.exports.ARTIFACT_DIRECTORY_JAVASCRIPT = ARTIFACT_DIRECTORY_JAVASCRIPT;

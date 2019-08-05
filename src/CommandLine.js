@@ -3,6 +3,8 @@ const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const logger = require('debug')('lit-artifact-generator:CommandLine');
 
+const { ARTIFACT_DIRECTORY_ROOT } = require('./generator/ArtifactGenerator');
+
 module.exports = class CommandLine {
   static getParentFolder(directory) {
     return path.dirname(directory);
@@ -277,7 +279,7 @@ module.exports = class CommandLine {
 
     const inputResource = data.input[0];
     const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
-    const destDirectory = `${data.outputDirectory}/Widoco`;
+    const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
     logger(
@@ -294,6 +296,6 @@ module.exports = class CommandLine {
       }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`
     );
 
-    return { ...data, ...{ ranWidoco: true } }; // Merge the answers in with the data and return
+    return { ...data, ...{ ranWidoco: true, documentationDirectory: destDirectory } }; // Merge the answers in with the data and return
   }
 };

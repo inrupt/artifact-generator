@@ -41,7 +41,7 @@ const GenerationConfigSolidComponent = {
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-  runWidoco: false,
+  runWidoco: true,
 };
 
 const GenerationConfigSolidGeneratorUi = {
@@ -57,7 +57,7 @@ const GenerationConfigSolidGeneratorUi = {
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
-  runWidoco: false,
+  runWidoco: true,
 };
 
 async function generateVocabArtifact(argv) {
@@ -87,7 +87,8 @@ async function generateVocabArtifact(argv) {
   if (result.runWidoco) {
     // Check if our documentation is in the root output directory (not the
     // artifact directory!).
-    expect(fs.existsSync(`${result.outputDirectory}/Widoco/index-en.html`)).toBe(true);
+    expect(result.documentationDirectory).toMatch(/Widoco/);
+    expect(fs.existsSync(`${result.documentationDirectory}/index-en.html`)).toBe(true);
   }
 
   logger(`Generation process successful!\n`);
