@@ -16,7 +16,7 @@ module.exports = class VocabGenerator {
 
   generate() {
     this.resources = new Resources(
-      this.vocabData.input,
+      this.vocabData.inputFiles,
       this.vocabData.vocabTermsFrom,
       this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
     );
@@ -31,7 +31,7 @@ module.exports = class VocabGenerator {
             this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
           }...`
         );
-        logger(`Input vocabulary file(s) [${this.vocabData.input.toString()}]...`);
+        logger(`Input vocabulary file(s) [${this.vocabData.inputFiles.toString()}]...`);
 
         return new Promise(resolve => {
           FileGenerator.createSourceCodeFile(this.vocabData, vocabGenerationData);

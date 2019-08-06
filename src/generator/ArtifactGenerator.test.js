@@ -98,7 +98,7 @@ describe('Artifact Generator', () => {
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator({
-        input: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.0',
         litVocabTermVersion: '^1.0.10',
@@ -120,7 +120,7 @@ describe('Artifact Generator', () => {
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator({
-        input: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.0',
         litVocabTermVersion: '^1.0.10',

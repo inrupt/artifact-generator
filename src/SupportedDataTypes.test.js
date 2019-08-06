@@ -13,7 +13,7 @@ describe('Supported Data Type', () => {
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator({
-      input: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
+      inputFiles: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
       outputDirectory,
       // We need to provide the artifact-specific output directory.
       outputDirectoryForArtifact: outputDirectoryJavascript,
@@ -50,7 +50,7 @@ describe('Supported Data Type', () => {
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator({
-      input: ['./test/resources/vocabs/supported-data-types.ttl'],
+      inputFiles: ['./test/resources/vocabs/supported-data-types.ttl'],
       outputDirectory,
       // We need to provide the artifact-specific output directory.
       outputDirectoryForArtifact: outputDirectoryJavascript,

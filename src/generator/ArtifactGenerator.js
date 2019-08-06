@@ -73,7 +73,9 @@ class ArtifactGenerator {
   }
 
   async generateSingleVocab() {
-    logger(`Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`);
+    logger(
+      `Generating artifact from vocabulary files: [${this.artifactData.inputFiles.toString()}]`
+    );
 
     const vocabData = await new VocabGenerator(this.artifactData, this.inquirerProcess).generate();
 
@@ -104,7 +106,7 @@ class ArtifactGenerator {
 
     const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
       // Override our vocab inputs using this vocab list entry.
-      this.artifactData.input = vocabDetails.inputFiles;
+      this.artifactData.inputFiles = vocabDetails.inputFiles;
       this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
       this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
 

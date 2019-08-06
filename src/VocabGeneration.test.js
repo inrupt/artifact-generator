@@ -45,7 +45,7 @@ const GenerationConfigLitCore = {
 };
 
 const GenerationConfigSolidComponent = {
-  input: [
+  inputFiles: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent/Vocab/SolidComponent.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
@@ -60,7 +60,7 @@ const GenerationConfigSolidComponent = {
 };
 
 const GenerationConfigSolidGeneratorUi = {
-  input: [
+  inputFiles: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
@@ -140,22 +140,23 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('Test Demo App', async () => {
     // it('Test Demo App', async () => {
     await generateVocabArtifact({
-      // input: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      input: ['./example/vocab/PetRocks.ttl'],
+      // inputFiles: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
+      // inputFiles: ['./example/vocab/PetRocks.ttl'],
+      inputFiles: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
 
-      // input: ['http://www.w3.org/2006/vcard/ns#'],
+      // inputFiles: ['http://www.w3.org/2006/vcard/ns#'],
       // nameAndPrefixOverride: 'vcard',
       //
-      // input: ['http://www.w3.org/2002/07/owl#'],
+      // inputFiles: ['http://www.w3.org/2002/07/owl#'],
       // nameAndPrefixOverride: 'owl',
 
-      // input: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#'],
+      // inputFiles: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#'],
       // nameAndPrefixOverride: 'RDF',
 
-      // input: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
+      // inputFiles: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
       // nameAndPrefixOverride: 'DCTERMS',
 
-      // input: ['https://www.w3.org/ns/activitystreams#'],
+      // inputFiles: ['https://www.w3.org/ns/activitystreams#'],
       // nameAndPrefixOverride: 'as',
 
       // outputDirectory: './test/generated',
@@ -163,8 +164,10 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
-      supportBundling: true,
-      runWidoco: false,
+      runNpmInstall: RUN_NPM_INSTALL,
+      runNpmPublish: RUN_NPM_PUBLISH,
+      supportBundling: SUPPORT_BUNDLING,
+      runWidoco: true,
     });
   });
 });

@@ -149,14 +149,15 @@ module.exports = class DatasetHandler {
     result.sourceRdfResources = this.vocabData.vocabListFile
       ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
       : `Vocabulary built from input${
-          this.vocabData.input.length === 1 ? '' : 's'
-        }: [${this.vocabData.input.join(', ')}].`;
+          this.vocabData.inputFiles.length === 1 ? '' : 's'
+        }: [${this.vocabData.inputFiles.join(', ')}].`;
 
     result.classes = [];
     result.properties = [];
     result.literals = [];
 
-    result.inputVocabList = this.vocabData.input;
+    result.inputFiles = this.vocabData.inputFiles;
+    result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.findNamespace();
 
     result.artifactName = this.artifactName();
