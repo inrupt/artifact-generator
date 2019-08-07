@@ -27,11 +27,32 @@ module.exports = class DatasetHandler {
     this.vocabData = vocabData;
   }
 
-  handleTerms(quad, namespace) {
+  /**
+   * Handles a specific term.
+   *
+   * NOTE: Term may need to be ignored, in which case we can return 'null'.
+   *
+   * @param quad
+   * @param namespace
+   * @returns {{comments: *, nameEscapedForLanguage: *, name: *, comment: *, definitions: *, labels: *}}
+   */
+  handleTerm(quad, namespace) {
     const labels = [];
 
     const fullName = quad.subject.value;
+    // Ensure we only have terms from our vocabulary's namespace (because we
+    // are only generating a single artifact representing this vocabulary, so
+    // having terms from two (or more!) vocabularies means we won't know what
+    // to name our artifact?
     if (!fullName.startsWith(namespace)) {
+      // ...but some vocabs reference terms from other vocabs (like ActivityStreams 2.0)!
+      if (
+        fullName.startsWith(RDF.NAMESPACE) ||
+        fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
+      ) {
+        return null;
+      }
+
       throw new Error(
         `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] - currently this is disallowed (as it indicates a probable typo!)`
       );
@@ -99,10 +120,13 @@ module.exports = class DatasetHandler {
   }
 
   /**
-   * Finds a comment from the comments array. First check if there is an English comment, next check for a default language
-   * comment (''), then just get the first comment, or finally default to empty string.
-   * @param comments An array of comments containing comments and their language.
-   * @returns {string} Returns a string of the comment if found, else an empty string is returned.
+   * Finds a comment from the comments array. First check if there is an
+   * English comment, next check for a default language comment (''), then
+   * just get the first comment, or finally default to empty string.
+   * @param comments An array of comments containing comments and their
+   * language.
+   * @returns {string} Returns a string of the comment if found, else an empty
+   * string is returned.
    */
   static getTermDescription(comments, definitions, labels) {
     let result = DatasetHandler.lookupEnglishOrNoLanguage(comments);
@@ -194,7 +218,7 @@ module.exports = class DatasetHandler {
   handleClasses(subject, result) {
     SUPPORTED_CLASSES.forEach(classType => {
       this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
-        result.classes.push(this.handleTerms(quad, result.namespace));
+        result.classes.push(this.handleTerm(quad, result.namespace));
       });
     });
   }
@@ -202,7 +226,10 @@ module.exports = class DatasetHandler {
   handleProperties(subject, result) {
     SUPPORTED_PROPERTIES.forEach(propertyType => {
       this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
-        result.properties.push(this.handleTerms(quad, result.namespace));
+        const term = this.handleTerm(quad, result.namespace);
+        if (term) {
+          result.properties.push(term);
+        }
       });
     });
   }
@@ -210,7 +237,7 @@ module.exports = class DatasetHandler {
   handleLiterals(subject, result) {
     SUPPORTED_LITERALS.forEach(literalType => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
-        result.literals.push(this.handleTerms(quad, result.namespace));
+        result.literals.push(this.handleTerm(quad, result.namespace));
       });
     });
   }

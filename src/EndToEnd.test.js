@@ -402,5 +402,4 @@ describe('End-to-end tests', () => {
       );
     });
   });
-  // Set timeout for entire suite to 10 seconds (as we work with a lot of files!).
-}, 10000);
+});
