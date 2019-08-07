@@ -3,9 +3,21 @@
   "version": "{{artifactVersion}}",
   "description": "{{description}}",
   "main": "index.js",
+{{#if supportBundling}}
+  "scripts": {
+    "dev": "webpack --config ./config/webpack.dev.config.js",
+    "prod": "webpack --config ./config/webpack.prod.config.js"
+  },
+{{/if}}
   "author": "{{authors}}",
   "license": "MIT",
   "dependencies": {
     "@lit/vocab-term": "{{litVocabTermVersion}}"
-  }
+  }{{#if supportBundling}},
+  "devDependencies": {
+    "@babel/core": "{{versionBabelCore}}",
+    "babel-loader": "{{versionBabelLoader}}",
+    "webpack": "{{versionWebpack}}",
+    "webpack-cli": "{{versionWebpackCli}}"
+  }{{/if}}
 }

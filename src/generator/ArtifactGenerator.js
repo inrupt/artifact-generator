@@ -9,7 +9,11 @@ const VocabGenerator = require('./VocabGenerator');
 const DatasetHandler = require('../DatasetHandler');
 const packageDotJson = require('../../package.json');
 
-module.exports = class ArtifactGenerator {
+const ARTIFACT_DIRECTORY_ROOT = '/Generated';
+const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const ARTIFACT_DIRECTORY_JAVASCRIPT = `${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+
+class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
     this.artifactData = argv;
     this.inquirerProcess = inquirerProcess;
@@ -24,6 +28,12 @@ module.exports = class ArtifactGenerator {
     this.artifactData.generatedTimestamp = moment().format('LLLL');
     this.artifactData.generatorName = packageDotJson.name;
     this.artifactData.generatorVersion = packageDotJson.version;
+
+    // TODO: Just hard-coding for the moment (still investigating Webpack...)
+    this.artifactData.versionWebpack = '^4.39.1';
+    this.artifactData.versionWebpackCli = '^3.3.6';
+    this.artifactData.versionBabelCore = '^7.5.5';
+    this.artifactData.versionBabelLoader = '^8.0.6';
   }
 
   static async deleteDirectory(directory) {
@@ -42,9 +52,12 @@ module.exports = class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
-    await ArtifactGenerator.deleteDirectory(
-      `${this.artifactData.outputDirectory}${FileGenerator.ARTIFACT_DIRECTORY_JAVASCRIPT}`
-    );
+    // This value will be overridden for each artifact we generate (e.g. for
+    // each of the programming-language artifacts we're configured to
+    // generate).
+    this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+
+    await ArtifactGenerator.deleteDirectory(this.artifactData.outputDirectoryForArtifact);
 
     if (this.inquirerProcess) {
       this.artifactData = await this.inquirerProcess(this.artifactData);
@@ -60,7 +73,9 @@ module.exports = class ArtifactGenerator {
   }
 
   async generateSingleVocab() {
-    logger(`Generating artifact from vocabulary files: [${this.artifactData.input.toString()}]`);
+    logger(
+      `Generating artifact from vocabulary files: [${this.artifactData.inputFiles.toString()}]`
+    );
 
     const vocabData = await new VocabGenerator(this.artifactData, this.inquirerProcess).generate();
 
@@ -91,7 +106,7 @@ module.exports = class ArtifactGenerator {
 
     const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
       // Override our vocab inputs using this vocab list entry.
-      this.artifactData.input = vocabDetails.inputFiles;
+      this.artifactData.inputFiles = vocabDetails.inputFiles;
       this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
       this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
 
@@ -119,4 +134,8 @@ module.exports = class ArtifactGenerator {
     ).join(', ')}.`;
     this.artifactData.description = DatasetHandler.escapeStringForJson(description);
   }
-};
+}
+
+module.exports = ArtifactGenerator;
+module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
+module.exports.ARTIFACT_DIRECTORY_JAVASCRIPT = ARTIFACT_DIRECTORY_JAVASCRIPT;

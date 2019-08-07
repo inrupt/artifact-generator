@@ -209,6 +209,17 @@ describe('Command Line unit tests', () => {
       expect(result.ranNpmInstall).toBe(true);
     });
 
+    it('Should run npm install with bundling', () => {
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
+
+      const result = CommandLine.runNpmInstall({
+        ...defaultInputs,
+        supportBundling: true,
+      });
+
+      expect(result.ranNpmInstall).toBe(true);
+    });
+
     it('Should install artifact if user explicitly told to', async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
 
@@ -254,7 +265,7 @@ describe('Command Line unit tests', () => {
 
       const result = CommandLine.runWidoco({
         ...defaultInputs,
-        input: ['Dummy_vocab_file'],
+        inputFiles: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -266,7 +277,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        input: ['Dummy_vocab_file'],
+        inputFiles: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
         runWidoco: true,
       });
@@ -279,7 +290,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        input: ['http://Dummy_vocab_file'],
+        inputFiles: ['http://Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
         runWidoco: true,
       });
@@ -294,7 +305,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        input: ['Dummy_vocab_file'],
+        inputFiles: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -306,7 +317,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        input: ['Dummy_vocab_file'],
+        inputFiles: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 

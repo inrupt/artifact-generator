@@ -6,7 +6,7 @@ artifactName: "@lit/generated-vocab-common-TEST"
 vocabList:
   - description: Schema.org from Google, Microsoft, Yahoo and Yandex
     inputFiles:
-      - schema.ttl
+      - schema-snippet.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
   - description: Vocab for testing predicate types...

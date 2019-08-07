@@ -3,6 +3,8 @@ const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const logger = require('debug')('lit-artifact-generator:CommandLine');
 
+const { ARTIFACT_DIRECTORY_ROOT } = require('./generator/ArtifactGenerator');
+
 module.exports = class CommandLine {
   static getParentFolder(directory) {
     return path.dirname(directory);
@@ -208,12 +210,20 @@ module.exports = class CommandLine {
 
   static runNpmInstall(data) {
     logger(
-      `Running 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+      `Running 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
+        data.artifactName
+      }] in directory [${data.outputDirectoryForArtifact}]...`
     );
-    ChildProcess.execSync(`cd ${data.outputDirectory} && npm install`);
+
+    const commandLine = `cd ${data.outputDirectoryForArtifact} && npm install${
+      data.supportBundling ? ' && npm run dev' : ''
+    }`;
+    ChildProcess.execSync(commandLine);
 
     logger(
-      `Ran 'npm install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
+      `Ran 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
+        data.artifactName
+      }] in directory [${data.outputDirectory}].`
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
@@ -221,11 +231,11 @@ module.exports = class CommandLine {
 
   static runNpmVersion(data) {
     logger(
-      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}]...`
+      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
     );
 
     const newVersion = ChildProcess.execSync(
-      `cd ${data.outputDirectory} && npm version ${data.bumpVersion}`
+      `cd ${data.outputDirectoryForArtifact} && npm version ${data.bumpVersion}`
     );
 
     logger(
@@ -241,7 +251,7 @@ module.exports = class CommandLine {
     );
 
     ChildProcess.execSync(
-      `cd ${data.outputDirectory} && npm publish --registry ${data.npmRegistry}`
+      `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`
     );
 
     logger(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
@@ -254,7 +264,7 @@ module.exports = class CommandLine {
   //     `Running yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`
   //   );
   //
-  //   ChildProcess.execSync(`cd ${data.outputDirectory} && ${data.runYalcCommand}`);
+  //   ChildProcess.execSync(`cd ${data.outputDirectoryForArtifact} && ${data.runYalcCommand}`);
   //
   //   log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
   //
@@ -267,9 +277,9 @@ module.exports = class CommandLine {
     // 46MB!)...
     const widocoJar = '$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
 
-    const inputResource = data.input[0];
+    const inputResource = data.inputFiles[0];
     const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
-    const destDirectory = `${data.outputDirectory}/Widoco`;
+    const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
     logger(
@@ -286,6 +296,6 @@ module.exports = class CommandLine {
       }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`
     );
 
-    return { ...data, ...{ ranWidoco: true } }; // Merge the answers in with the data and return
+    return { ...data, ...{ ranWidoco: true, documentationDirectory: destDirectory } }; // Merge the answers in with the data and return
   }
 };

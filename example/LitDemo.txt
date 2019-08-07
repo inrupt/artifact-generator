@@ -72,7 +72,7 @@ lit-artifact-generator --vocabListFile ./vocab/CopyOf-Vocab-List-LIT-Common.yml 
 
 
 11) Create a simple new custom vocab...
-lit-artifact-generator -i ./vocab/PetRocks.ttl --noprompt
+lit-artifact-generator -i ./vocab/PetRock.ttl --noprompt
 
 cd generated/Widoco/
 python -m SimpleHTTPServer 8889

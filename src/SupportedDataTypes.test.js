@@ -4,7 +4,7 @@ const fs = require('fs');
 const del = require('del');
 
 const VocabGenerator = require('./generator/VocabGenerator');
-const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./generator/FileGenerator');
+const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./generator/ArtifactGenerator');
 
 describe('Supported Data Type', () => {
   it('should test the special-case handling for the OWL vocabulary', async () => {
@@ -13,8 +13,10 @@ describe('Supported Data Type', () => {
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator({
-      input: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
+      inputFiles: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
       outputDirectory,
+      // We need to provide the artifact-specific output directory.
+      outputDirectoryForArtifact: outputDirectoryJavascript,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
       nameAndPrefixOverride: 'owl',
@@ -48,8 +50,10 @@ describe('Supported Data Type', () => {
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator({
-      input: ['./test/resources/vocabs/supported-data-types.ttl'],
+      inputFiles: ['./test/resources/vocabs/supported-data-types.ttl'],
       outputDirectory,
+      // We need to provide the artifact-specific output directory.
+      outputDirectoryForArtifact: outputDirectoryJavascript,
       artifactVersion: '1.0.0',
       moduleNamePrefix: 'lit-generated-vocab-',
 

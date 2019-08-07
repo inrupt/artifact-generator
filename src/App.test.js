@@ -40,7 +40,7 @@ describe('App tests', () => {
       debug.enable('lit-artifact-generator:*');
 
       const config = {
-        argv: { input: 'some_file.ttl', quiet: false, noprompt: true },
+        argv: { inputFiles: 'some_file.ttl', quiet: false, noprompt: true },
       };
 
       const mockedResponse = await new App(config).run();
@@ -52,7 +52,7 @@ describe('App tests', () => {
       debug.disable('lit-artifact-generator:*');
 
       const config = {
-        argv: { input: 'some_file.ttl', quiet: false, noprompt: true },
+        argv: { inputFiles: 'some_file.ttl', quiet: false, noprompt: true },
       };
 
       const mockedResponse = await new App(config).run();
@@ -62,7 +62,7 @@ describe('App tests', () => {
 
     it('should pass through in quiet mode', async () => {
       const config = {
-        argv: { input: 'some_file.ttl', quiet: true, noprompt: true },
+        argv: { inputFiles: 'some_file.ttl', quiet: true, noprompt: true },
       };
 
       const mockedResponse = await new App(config).run();

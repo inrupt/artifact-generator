@@ -6,7 +6,7 @@ const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-
 const VocabGenerator = require('./VocabGenerator');
 
 const vocabGenerator = new VocabGenerator({
-  input: [],
+  inputFiles: [],
   artifactVersion: '1.0.0',
   moduleNamePrefix: 'lit-generated-vocab-',
 });
@@ -360,7 +360,7 @@ describe('Artifact generator unit tests', () => {
 
     it('Should allow the prefix for the name of the module can be configured', () => {
       const generator = new VocabGenerator({
-        input: [],
+        inputFiles: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
@@ -375,7 +375,7 @@ describe('Artifact generator unit tests', () => {
 
     it('Should create label vocab terms for literals', () => {
       const generator = new VocabGenerator({
-        input: [],
+        inputFiles: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
@@ -420,7 +420,7 @@ describe('Artifact generator unit tests', () => {
 
     it('Should create comments vocab terms for literals', () => {
       const generator = new VocabGenerator({
-        input: [],
+        inputFiles: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
@@ -465,7 +465,7 @@ describe('Artifact generator unit tests', () => {
 
     it('Should create defination vocab terms for literals', () => {
       const generator = new VocabGenerator({
-        input: [],
+        inputFiles: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
@@ -587,7 +587,7 @@ describe('Artifact generator unit tests', () => {
 
     it('Should create definition vocab terms for literals from extensions', () => {
       const generator = new VocabGenerator({
-        input: [],
+        inputFiles: [],
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'my-company-prefix-',
       });
