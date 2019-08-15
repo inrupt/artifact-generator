@@ -117,8 +117,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }, 60000);
 
-  // it('LIT Common vocabs', async () => {
-  it.skip('LIT Common vocabs', async () => {
+  it('LIT Common vocabs', async () => {
+    // it.skip('LIT Common vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
 

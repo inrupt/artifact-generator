@@ -44,6 +44,41 @@ describe('Supported Data Type', () => {
     expect(indexOutput).toEqual(expect.stringContaining(".addLabel('', `AllDifferent`)"));
   });
 
+  it('should test the special-case handling for the HTTP vocabulary', async () => {
+    const outputDirectory = 'test/generated/SupportedDataType/http-test';
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator({
+      inputFiles: ['./test/resources/vocabs/special-case-http-snippet.ttl'],
+      outputDirectory,
+      // We need to provide the artifact-specific output directory.
+      outputDirectoryForArtifact: outputDirectoryJavascript,
+      artifactVersion: '1.0.0',
+      moduleNamePrefix: 'lit-generated-vocab-',
+      nameAndPrefixOverride: 'http',
+
+      generatedVocabs: [],
+      authorSet: new Set(),
+    });
+
+    await generator.generate();
+
+    const indexOutput = fs
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/http.js`)
+      .toString();
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining('NAMESPACE = "http://www.w3.org/2011/http#')
+    );
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining("Connection: new LitVocabTerm(_NS('Connection'), localStorage, true)")
+    );
+
+    expect(indexOutput).toEqual(expect.stringContaining(".addLabel('en', `Connection`)"));
+  });
+
   it('should be able to generate vocabs for all the supported class data types', async () => {
     const outputDirectory = 'test/generated/SupportedDataType/data-types';
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;

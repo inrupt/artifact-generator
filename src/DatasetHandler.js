@@ -255,10 +255,10 @@ module.exports = class DatasetHandler {
     if (!namespace) {
       const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
 
-      // Special-case handling for OWL, since it explicitly marks the IRI 'http://www.w3.org/2002/07/owl' as being the
-      // ontology, and not 'http://www.w3.org/2002/07/owl#', which I think it should be!
-      if (first === 'http://www.w3.org/2002/07/owl') {
-        namespace = 'http://www.w3.org/2002/07/owl#';
+      // Special-case handling for OWL (and HTTP), since they explicitly mark
+      // their ontologies without a trailing '#', which I think it should be!
+      if (first === 'http://www.w3.org/2002/07/owl' || first === 'http://www.w3.org/2011/http') {
+        namespace = `${first}#`;
       } else {
         namespace = first.substring(
           0,
