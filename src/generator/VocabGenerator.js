@@ -7,9 +7,11 @@ const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class VocabGenerator {
-  constructor(artifactData, inquirerProcess) {
+  constructor(artifactData, artifactDetails, inquirerProcess) {
     // Make sure we clone our input data (to keep it specific to our instance!).
     this.vocabData = { ...artifactData };
+
+    this.artifactDetails = artifactDetails;
 
     this.inquirerProcess = inquirerProcess;
   }
@@ -34,7 +36,11 @@ module.exports = class VocabGenerator {
         logger(`Input vocabulary file(s) [${this.vocabData.inputFiles.toString()}]...`);
 
         return new Promise(resolve => {
-          FileGenerator.createSourceCodeFile(this.vocabData, vocabGenerationData);
+          FileGenerator.createSourceCodeFile(
+            this.vocabData,
+            this.artifactDetails,
+            vocabGenerationData
+          );
           resolve(vocabGenerationData);
         });
       });

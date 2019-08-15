@@ -4,26 +4,34 @@ const fs = require('fs');
 const del = require('del');
 
 const VocabGenerator = require('./generator/VocabGenerator');
-const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./generator/ArtifactGenerator');
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 
 describe('Supported Data Type', () => {
   it('should test the special-case handling for the OWL vocabulary', async () => {
     const outputDirectory = 'test/generated/SupportedDataType/owl-test';
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
-    const generator = new VocabGenerator({
-      inputFiles: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
-      outputDirectory,
-      // We need to provide the artifact-specific output directory.
-      outputDirectoryForArtifact: outputDirectoryJavascript,
-      artifactVersion: '1.0.0',
-      moduleNamePrefix: 'lit-generated-vocab-',
-      nameAndPrefixOverride: 'owl',
+    const generator = new VocabGenerator(
+      {
+        inputFiles: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
+        outputDirectory,
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
+        nameAndPrefixOverride: 'owl',
 
-      generatedVocabs: [],
-      authorSet: new Set(),
-    });
+        generatedVocabs: [],
+        authorSet: new Set(),
+      },
+      {
+        programmingLanguage: 'Javascript',
+        artifactFolderName: 'Javascript',
+        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        sourceFileExtension: 'js',
+      }
+    );
 
     await generator.generate();
 
@@ -46,21 +54,29 @@ describe('Supported Data Type', () => {
 
   it('should test the special-case handling for the HTTP vocabulary', async () => {
     const outputDirectory = 'test/generated/SupportedDataType/http-test';
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
-    const generator = new VocabGenerator({
-      inputFiles: ['./test/resources/vocabs/special-case-http-snippet.ttl'],
-      outputDirectory,
-      // We need to provide the artifact-specific output directory.
-      outputDirectoryForArtifact: outputDirectoryJavascript,
-      artifactVersion: '1.0.0',
-      moduleNamePrefix: 'lit-generated-vocab-',
-      nameAndPrefixOverride: 'http',
+    const generator = new VocabGenerator(
+      {
+        inputFiles: ['./test/resources/vocabs/special-case-http-snippet.ttl'],
+        outputDirectory,
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
+        nameAndPrefixOverride: 'http',
 
-      generatedVocabs: [],
-      authorSet: new Set(),
-    });
+        generatedVocabs: [],
+        authorSet: new Set(),
+      },
+      {
+        programmingLanguage: 'Javascript',
+        artifactFolderName: 'Javascript',
+        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        sourceFileExtension: 'js',
+      }
+    );
 
     await generator.generate();
 
@@ -81,20 +97,28 @@ describe('Supported Data Type', () => {
 
   it('should be able to generate vocabs for all the supported class data types', async () => {
     const outputDirectory = 'test/generated/SupportedDataType/data-types';
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
-    const generator = new VocabGenerator({
-      inputFiles: ['./test/resources/vocabs/supported-data-types.ttl'],
-      outputDirectory,
-      // We need to provide the artifact-specific output directory.
-      outputDirectoryForArtifact: outputDirectoryJavascript,
-      artifactVersion: '1.0.0',
-      moduleNamePrefix: 'lit-generated-vocab-',
+    const generator = new VocabGenerator(
+      {
+        inputFiles: ['./test/resources/vocabs/supported-data-types.ttl'],
+        outputDirectory,
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'lit-generated-vocab-',
 
-      generatedVocabs: [],
-      authorSet: new Set(),
-    });
+        generatedVocabs: [],
+        authorSet: new Set(),
+      },
+      {
+        programmingLanguage: 'Javascript',
+        artifactFolderName: 'Javascript',
+        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        sourceFileExtension: 'js',
+      }
+    );
 
     await generator.generate();
 

@@ -167,6 +167,8 @@ module.exports = class DatasetHandler {
     result.versionBabelCore = this.vocabData.versionBabelCore;
     result.versionBabelLoader = this.vocabData.versionBabelLoader;
 
+    result.javaPackageName = this.vocabData.javaPackageName;
+
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
     result.generatorVersion = this.vocabData.generatorVersion;

@@ -4,12 +4,12 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('./ArtifactGenerator');
-const { ARTIFACT_DIRECTORY_JAVASCRIPT } = require('./ArtifactGenerator');
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./ArtifactGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
     function verifyVocabList(outputDirectory) {
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
       expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
@@ -108,7 +108,7 @@ describe('Artifact Generator', () => {
       });
 
       await artifactGenerator.generate();
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
       expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
@@ -130,7 +130,7 @@ describe('Artifact Generator', () => {
       });
 
       await artifactGenerator.generate();
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
       expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(false);
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();

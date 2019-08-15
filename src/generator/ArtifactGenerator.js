@@ -11,7 +11,6 @@ const packageDotJson = require('../../package.json');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
-const ARTIFACT_DIRECTORY_JAVASCRIPT = `${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
 class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
@@ -52,13 +51,6 @@ class ArtifactGenerator {
    * @returns {Promise<void>}
    */
   async generate() {
-    // This value will be overridden for each artifact we generate (e.g. for
-    // each of the programming-language artifacts we're configured to
-    // generate).
-    this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_JAVASCRIPT}`;
-
-    await ArtifactGenerator.deleteDirectory(this.artifactData.outputDirectoryForArtifact);
-
     if (this.inquirerProcess) {
       this.artifactData = await this.inquirerProcess(this.artifactData);
     }
@@ -77,7 +69,28 @@ class ArtifactGenerator {
       `Generating artifact from vocabulary files: [${this.artifactData.inputFiles.toString()}]`
     );
 
-    const vocabData = await new VocabGenerator(this.artifactData, this.inquirerProcess).generate();
+    this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+
+    await ArtifactGenerator.deleteDirectory(this.artifactData.outputDirectoryForArtifact);
+
+    // We weren't provided with a configuration file, so manually provide
+    // defaults.
+    this.artifactData.generationDetails = {
+      artifactToGenerate: [
+        {
+          programmingLanguage: 'Javascript',
+          artifactFolderName: 'Javascript',
+          handlebarsTemplate: 'javascript-rdf-ext.hbs',
+          sourceFileExtension: 'js',
+        },
+      ],
+    };
+
+    const vocabData = await new VocabGenerator(
+      this.artifactData,
+      this.artifactData.generationDetails.artifactToGenerate[0],
+      this.inquirerProcess
+    ).generate();
 
     this.artifactData.artifactName = vocabData.artifactName;
     this.artifactData.description = vocabData.description;
@@ -104,22 +117,53 @@ class ArtifactGenerator {
     // Set our overall artifact name directly from the YAML value.
     this.artifactData.artifactName = generationDetails.artifactName;
 
-    const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
+    // Provide access to our entire YAML data.
+    this.artifactData.generationDetails = generationDetails;
+
+    // For each programming language artifact we generate, first clear out the destination directories.
+    const directoryDeletionPromises = generationDetails.artifactToGenerate.map(artifactDetails => {
+      return ArtifactGenerator.deleteDirectory(
+        `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`
+      );
+    });
+    await Promise.all(directoryDeletionPromises);
+
+    const vocabGenerationPromises = generationDetails.vocabList.map(async vocabDetails => {
+      // const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
+
       // Override our vocab inputs using this vocab list entry.
       this.artifactData.inputFiles = vocabDetails.inputFiles;
       this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
       this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
 
-      return new VocabGenerator(this.artifactData).generate();
-    });
+      const artifactPromises = generationDetails.artifactToGenerate.map(artifactDetails => {
+        this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
 
-    // Wait for all our vocabs to be generated.
-    const datasets = await Promise.all(vocabGenerationPromises);
+        // TODO: Currently we need to very explicitly add this Java-specific
+        //  data to our data being passed into the vocab generator, from where
+        //  it needs to be copied again into the template data, so that our
+        //  Java-only Handlebars templates can access it!
+        this.artifactData.javaPackageName = artifactDetails.javaPackageName;
+
+        return new VocabGenerator(this.artifactData, artifactDetails).generate();
+      });
+
+      // Wait for all our artifacts to be generated.
+      await Promise.all(artifactPromises);
+
+      // Only return the first one, as we don't want duplicate info.
+      return artifactPromises[0];
+
+      // return new VocabGenerator(this.artifactData).generate();
+    });
+    //
+    // // Wait for all our vocabs to be generated.
+    const vocabDatasets = await Promise.all(vocabGenerationPromises);
 
     // Collect details from each generated vocab (to bundle them all together into our packaging artifact).
     const authorsAcrossAllVocabs = new Set();
     let description = `Bundle of vocabularies that includes the following:`;
-    datasets.forEach(vocabData => {
+    vocabDatasets.forEach(vocabData => {
       description += `\n  ${vocabData.vocabName}: ${vocabData.description}`;
       vocabData.authorSet.forEach(author => authorsAcrossAllVocabs.add(author));
 
@@ -138,4 +182,4 @@ class ArtifactGenerator {
 
 module.exports = ArtifactGenerator;
 module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
-module.exports.ARTIFACT_DIRECTORY_JAVASCRIPT = ARTIFACT_DIRECTORY_JAVASCRIPT;
+module.exports.ARTIFACT_DIRECTORY_SOURCE_CODE = ARTIFACT_DIRECTORY_SOURCE_CODE;

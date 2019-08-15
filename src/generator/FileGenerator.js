@@ -21,14 +21,24 @@ class FileGenerator {
     }
   }
 
-  static createSourceCodeFile(argv, templateData) {
-    FileGenerator.createDirectory(`${argv.outputDirectoryForArtifact}/GeneratedVocab`);
+  static createSourceCodeFile(argv, artifactDetails, templateData) {
+    const outputDirectoryForSourceCode = argv.outputDirectoryForArtifact;
+
+    // For source files that might be packaged (i.e. Java), convert all '.'
+    // (dots) in the package name to directory slashes and add to our
+    // directory and source file name.
+    const packagingDirectory = templateData.javaPackageName
+      ? `/${templateData.javaPackageName.replace(/\./g, '/')}`
+      : '';
+    FileGenerator.createDirectory(
+      `${outputDirectoryForSourceCode}/GeneratedVocab${packagingDirectory}`
+    );
 
     FileGenerator.createFileFromTemplate(
-      '../../templates/javascript-rdf-ext.hbs',
+      `../../templates/${artifactDetails.handlebarsTemplate}`,
       templateData,
-      `${argv.outputDirectoryForArtifact}/GeneratedVocab/${templateData.nameAndPrefixOverride ||
-        templateData.vocabName}.js`
+      `${outputDirectoryForSourceCode}/GeneratedVocab${packagingDirectory}/${templateData.nameAndPrefixOverride ||
+        templateData.vocabName}.${artifactDetails.sourceFileExtension}`
     );
   }
 
