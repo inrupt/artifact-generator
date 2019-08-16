@@ -5,13 +5,14 @@ const { RDF, RDFS, OWL, VANN } = require('@lit/generated-vocab-common');
 
 const DatasetHandler = require('./DatasetHandler');
 
-const extSubject = rdf.namedNode('http://rdf-extension.com');
+const NAMESPACE = 'http://rdf-extension.com#';
+const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
 
 const vocabMetadata = rdf
   .dataset()
   .addAll([
-    rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(extSubject, VANN.preferredNamespaceUri, extSubject),
+    rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
   ]);
 
 describe('Dataset Handler', () => {
@@ -41,5 +42,35 @@ describe('Dataset Handler', () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), { inputFiles: ['does not matter'] });
     const result = handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
+  });
+
+  it('should de-duplicate terms defined with multiple predicates we looks for', () => {
+    const testTermClass = `${NAMESPACE}testTermClass`;
+    const testTermProperty = `${NAMESPACE}testTermProperty`;
+    const testTermLiteral = `${NAMESPACE}testTermLiteral`;
+    const dataset = rdf
+      .dataset()
+      .addAll(vocabMetadata)
+      .addAll([
+        rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class),
+        rdf.quad(rdf.namedNode(testTermClass), RDF.type, OWL.Class),
+
+        rdf.quad(rdf.namedNode(testTermProperty), RDF.type, RDF.Property),
+        rdf.quad(rdf.namedNode(testTermProperty), RDF.type, RDFS.Datatype),
+
+        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDF.Property),
+        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDFS.Literal),
+      ]);
+
+    const handler = new DatasetHandler(dataset, rdf.dataset(), { inputFiles: ['does not matter'] });
+    const result = handler.buildTemplateInput();
+    expect(result.classes.length).toEqual(1);
+    expect(result.classes[0].name).toEqual('testTermClass');
+
+    expect(result.properties.length).toEqual(2);
+    expect(result.properties[0].name).toEqual('testTermProperty');
+    expect(result.properties[1].name).toEqual('testTermLiteral');
+
+    expect(result.literals.length).toEqual(0);
   });
 });

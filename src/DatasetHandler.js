@@ -25,6 +25,8 @@ module.exports = class DatasetHandler {
     this.fullDataset = fullDataset;
     this.subjectsOnlyDataset = subjectsOnlyDataset;
     this.vocabData = vocabData;
+
+    this.termsProcessed = new Map();
   }
 
   /**
@@ -119,6 +121,10 @@ module.exports = class DatasetHandler {
     }
   }
 
+  static doesNotContainValueForLanguageAlready(array, quad) {
+    return array.length === 0 || !array.some(e => e.language === quad.object.language);
+  }
+
   /**
    * Finds a comment from the comments array. First check if there is an
    * English comment, next check for a default language comment (''), then
@@ -153,10 +159,6 @@ module.exports = class DatasetHandler {
     }
 
     return result;
-  }
-
-  static doesNotContainValueForLanguageAlready(array, quad) {
-    return array.length === 0 || !array.some(e => e.language === quad.object.language);
   }
 
   buildTemplateInput() {
@@ -220,7 +222,9 @@ module.exports = class DatasetHandler {
   handleClasses(subject, result) {
     SUPPORTED_CLASSES.forEach(classType => {
       this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
-        result.classes.push(this.handleTerm(quad, result.namespace));
+        if (this.isNewTerm(quad.subject.value)) {
+          result.classes.push(this.handleTerm(quad, result.namespace));
+        }
       });
     });
   }
@@ -230,7 +234,9 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
         const term = this.handleTerm(quad, result.namespace);
         if (term) {
-          result.properties.push(term);
+          if (this.isNewTerm(quad.subject.value)) {
+            result.properties.push(term);
+          }
         }
       });
     });
@@ -239,9 +245,20 @@ module.exports = class DatasetHandler {
   handleLiterals(subject, result) {
     SUPPORTED_LITERALS.forEach(literalType => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
-        result.literals.push(this.handleTerm(quad, result.namespace));
+        if (this.isNewTerm(quad.subject.value)) {
+          result.literals.push(this.handleTerm(quad, result.namespace));
+        }
       });
     });
+  }
+
+  isNewTerm(term) {
+    const result = this.termsProcessed.has(term);
+    if (!result) {
+      this.termsProcessed.set(term, null);
+    }
+
+    return !result;
   }
 
   findNamespace() {
