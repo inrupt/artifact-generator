@@ -25,6 +25,8 @@ module.exports = class DatasetHandler {
     this.fullDataset = fullDataset;
     this.subjectsOnlyDataset = subjectsOnlyDataset;
     this.vocabData = vocabData;
+
+    this.termsProcessed = new Map();
   }
 
   /**
@@ -119,6 +121,10 @@ module.exports = class DatasetHandler {
     }
   }
 
+  static doesNotContainValueForLanguageAlready(array, quad) {
+    return array.length === 0 || !array.some(e => e.language === quad.object.language);
+  }
+
   /**
    * Finds a comment from the comments array. First check if there is an
    * English comment, next check for a default language comment (''), then
@@ -155,10 +161,6 @@ module.exports = class DatasetHandler {
     return result;
   }
 
-  static doesNotContainValueForLanguageAlready(array, quad) {
-    return array.length === 0 || !array.some(e => e.language === quad.object.language);
-  }
-
   buildTemplateInput() {
     const result = {};
 
@@ -166,6 +168,8 @@ module.exports = class DatasetHandler {
     result.versionWebpackCli = this.vocabData.versionWebpackCli;
     result.versionBabelCore = this.vocabData.versionBabelCore;
     result.versionBabelLoader = this.vocabData.versionBabelLoader;
+
+    result.javaPackageName = this.vocabData.javaPackageName;
 
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
@@ -218,7 +222,9 @@ module.exports = class DatasetHandler {
   handleClasses(subject, result) {
     SUPPORTED_CLASSES.forEach(classType => {
       this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
-        result.classes.push(this.handleTerm(quad, result.namespace));
+        if (this.isNewTerm(quad.subject.value)) {
+          result.classes.push(this.handleTerm(quad, result.namespace));
+        }
       });
     });
   }
@@ -228,7 +234,9 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
         const term = this.handleTerm(quad, result.namespace);
         if (term) {
-          result.properties.push(term);
+          if (this.isNewTerm(quad.subject.value)) {
+            result.properties.push(term);
+          }
         }
       });
     });
@@ -237,9 +245,20 @@ module.exports = class DatasetHandler {
   handleLiterals(subject, result) {
     SUPPORTED_LITERALS.forEach(literalType => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
-        result.literals.push(this.handleTerm(quad, result.namespace));
+        if (this.isNewTerm(quad.subject.value)) {
+          result.literals.push(this.handleTerm(quad, result.namespace));
+        }
       });
     });
+  }
+
+  isNewTerm(term) {
+    const result = this.termsProcessed.has(term);
+    if (!result) {
+      this.termsProcessed.set(term, null);
+    }
+
+    return !result;
   }
 
   findNamespace() {
@@ -255,10 +274,10 @@ module.exports = class DatasetHandler {
     if (!namespace) {
       const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
 
-      // Special-case handling for OWL, since it explicitly marks the IRI 'http://www.w3.org/2002/07/owl' as being the
-      // ontology, and not 'http://www.w3.org/2002/07/owl#', which I think it should be!
-      if (first === 'http://www.w3.org/2002/07/owl') {
-        namespace = 'http://www.w3.org/2002/07/owl#';
+      // Special-case handling for OWL (and HTTP), since they explicitly mark
+      // their ontologies without a trailing '#', which I think it should be!
+      if (first === 'http://www.w3.org/2002/07/owl' || first === 'http://www.w3.org/2011/http') {
+        namespace = `${first}#`;
       } else {
         namespace = first.substring(
           0,

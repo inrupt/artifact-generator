@@ -83,7 +83,7 @@ const yargsConfig = yargs
   .describe('moduleNamePrefix', 'A prefix for the name of the output module')
   .default('moduleNamePrefix', '@lit/generated-vocab-')
 
-  .alias('npmRegistry', 'nr')
+  .alias('nr', 'npmRegistry')
   .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
   .default('npmRegistry', 'https://verdaccio.inrupt.com')
 

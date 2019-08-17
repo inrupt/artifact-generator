@@ -14,6 +14,26 @@ const RUN_NPM_INSTALL = false;
 const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = true;
 
+const ConfigJavaAndJavascript = {
+  artifactToGenerate: [
+    {
+      programmingLanguage: 'Java',
+      description: 'Generate Java JAR',
+      javaPackageName: 'com.inrupt.testing.java',
+      artifactFolderName: 'Java',
+      handlebarsTemplate: 'java.hbs',
+      sourceFileExtension: 'java',
+    },
+    {
+      programmingLanguage: 'Javascript',
+      description: 'Generate Javascript NPM module',
+      artifactFolderName: 'Javascript',
+      handlebarsTemplate: 'javascript-rdf-ext.hbs',
+      sourceFileExtension: 'js',
+    },
+  ],
+};
+
 const GenerationConfigLitCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
@@ -111,8 +131,8 @@ async function generateVocabArtifact(argv) {
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
   // it('Generate ALL vocabs', async () => {
   it.skip('Generate ALL vocabs', async () => {
-    await generateVocabArtifact(GenerationConfigLitCommon);
-    await generateVocabArtifact(GenerationConfigLitCore);
+    await generateVocabArtifact(GenerationConfigLitCommon, ConfigJavaAndJavascript);
+    await generateVocabArtifact(GenerationConfigLitCore, ConfigJavaAndJavascript);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }, 60000);
