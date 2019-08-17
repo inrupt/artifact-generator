@@ -176,8 +176,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
       // nameAndPrefixOverride: 'DCTERMS',
 
-      inputResources: ['https://www.w3.org/ns/activitystreams-owl'],
-      nameAndPrefixOverride: 'as',
+      // inputResources: ['https://www.w3.org/ns/activitystreams-owl'],
+      // nameAndPrefixOverride: 'as',
+
+      inputResources: ['http://www.w3.org/2007/ont/httph#'],
+      nameAndPrefixOverride: 'httph',
 
       outputDirectory: './test/generated',
       // outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',

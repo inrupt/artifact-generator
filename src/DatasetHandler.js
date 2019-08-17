@@ -275,31 +275,57 @@ module.exports = class DatasetHandler {
    * @returns {*}
    */
   findNamespace() {
+    // First see if we have an explicitly defined ontology (i.e. an entity
+    // with RDF.type of 'owl:Ontology' or 'LIT:Ontology') that explicitly
+    // provides it's namespace IRI.
+    let ontologyIri;
+
     let namespace = this.findOwlOntology(owlOntologyTerms => {
       const ontologyNamespaces = this.fullDataset.match(
         owlOntologyTerms.subject,
         VANN.preferredNamespaceUri,
         null
       );
+
+      // Store the ontology name if we got one.
+      ontologyIri = owlOntologyTerms.subject.value;
       return LitUtils.firstDatasetValue(ontologyNamespaces);
     });
 
+    // If no explicitly provided namespace IRI, try and determine the
+    // namespace from the term names themselves.
     if (!namespace) {
-      const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
+      // We arbitrarily pick the term with the longest name, simply to prevent
+      // cases (like OWL, HTTP 2011, VANN, HTTPH) where the ontology itself
+      // uses the namespace IRI but without the trailing hash or slash.
+      // We also provide the ontology IRI (if there was one), to only include
+      // terms that start with that IRI (this was added specifically for the
+      // strange HTTPH namespace document, that defines a term for the author
+      // which is actually longer than the IRI of the only other term defined
+      // (i.e. the HTTP Content-Type header).
+      //
+      // BUT NOTE: as described above, the ontology IRI and the actual
+      // namespace for terms can be completely different, but how else can we
+      // accurately determine the namespace in cases like HTTPH above!?
+      const longestTermName = DatasetHandler.findLongestTermName(
+        DatasetHandler.subjectsOnly(this.fullDataset),
+        ontologyIri
+      );
 
-      // Special-case handling for OWL (and HTTP), since they explicitly mark
-      // their ontologies without a trailing '#', which I think it should be!
-      if (first === 'http://www.w3.org/2002/07/owl' || first === 'http://www.w3.org/2011/http') {
-        namespace = `${first}#`;
-      } else {
-        namespace = first.substring(
-          0,
-          Math.max(first.lastIndexOf('/'), first.lastIndexOf('#')) + 1
-        );
-      }
+      // The namespace is simply the IRI up to the last hash or slash.
+      namespace = longestTermName.substring(
+        0,
+        Math.max(longestTermName.lastIndexOf('/'), longestTermName.lastIndexOf('#')) + 1
+      );
     }
 
     return namespace;
+  }
+
+  static findLongestTermName(terms, ontologyIri) {
+    return terms
+      .filter(a => (ontologyIri ? a.startsWith(ontologyIri) : true))
+      .reduce((a, b) => (a.length > b.length ? a : b), '');
   }
 
   findPreferredNamespacePrefix() {

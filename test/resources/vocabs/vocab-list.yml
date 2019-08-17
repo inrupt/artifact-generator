@@ -18,7 +18,6 @@ artifactToGenerate:
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
 
-
 vocabList:
   - description: Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
