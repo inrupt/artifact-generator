@@ -42,10 +42,10 @@ lit-artifact-generator --help
 # How to run
 
 ```shell
-node index.js --inputFiles <ontology files>
+node index.js --inputResources <ontology files>
 ```
 
-The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'inputFiles' flag. This module is located inside the **./generated** folder by default.
+The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.
 
 ## Examples
 
@@ -54,45 +54,45 @@ Here are some examples of running the tool:
 Local ontology file
 
 ```shell
-node index.js --inputFiles ./example/PetRocks.ttl
+node index.js --inputResources ./example/PetRocks.ttl
 ```
 
 Remote ontology file
 
 ```shell
-node index.js --inputFiles https://schema.org/version/latest/schema-snippet.ttl
+node index.js --inputResources https://schema.org/version/latest/schema-snippet.ttl
 ```
 
 Multiple local ontology files:
 
 ```shell
-node index.js --inputFiles ./example/Skydiving.ttl ./example/PetRocks.ttl
+node index.js --inputResources ./example/Skydiving.ttl ./example/PetRocks.ttl
 ```
 
 Selecting only specific terms from a vocabulary.
 Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
 ```shell
-node index.js --inputFiles https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
+node index.js --inputResources https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:
 ```shell
-node index.js --inputFiles  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
+node index.js --inputResources  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
 Providing the version for the output module:
 ```shell
-node index.js --inputFiles http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifactVersion 1.0.1
+node index.js --inputResources http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifactVersion 1.0.1
 ```
 
 Specifing a custom prefix for the output module name:
 ```shell
-node index.js --inputFiles ./vocabs/schema-snippet.ttl --moduleNamePrefix my-company-prefix-
+node index.js --inputResources ./vocabs/schema-snippet.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Specifing a custom NPM registry to where the output module will be published:
 ```shell
-node index.js --inputFiles ./vocabs/schema-snippet.ttl --npmRegistry http://my.company.registry/npm/
+node index.js --inputResources ./vocabs/schema-snippet.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
 Using short-form alaises for the command-line flags:
@@ -128,7 +128,7 @@ When you run the tool you will be prompted with questions that will quide you th
 
 Here is an example of what this will look like on the output:
 ```shell
-[lit-artifact-generator-js]$ node index.js --inputFiles ./vocabs/schema-snippet.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+[lit-artifact-generator-js]$ node index.js --inputResources ./vocabs/schema-snippet.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ? Artifact name ... @lit/generated-vocab-schema-inrupt-ext
 ? Artifact author ... Jarlath Holleran
 Created artifact: [./generated/index.js]

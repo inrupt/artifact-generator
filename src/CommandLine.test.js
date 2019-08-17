@@ -265,7 +265,7 @@ describe('Command Line unit tests', () => {
 
       const result = CommandLine.runWidoco({
         ...defaultInputs,
-        inputFiles: ['Dummy_vocab_file'],
+        inputResources: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -277,7 +277,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputFiles: ['Dummy_vocab_file'],
+        inputResources: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
         runWidoco: true,
       });
@@ -290,7 +290,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputFiles: ['http://Dummy_vocab_file'],
+        inputResources: ['http://Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
         runWidoco: true,
       });
@@ -305,7 +305,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputFiles: ['Dummy_vocab_file'],
+        inputResources: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 
@@ -317,7 +317,7 @@ describe('Command Line unit tests', () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputFiles: ['Dummy_vocab_file'],
+        inputResources: ['Dummy_vocab_file'],
         outputDirectory: 'needs/a/parent/directory',
       });
 

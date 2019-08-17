@@ -13,9 +13,12 @@ const App = require('./src/App');
 
 console.log(`Command: [${process.argv.join(' ')}]`);
 const yargsConfig = yargs
-  .alias('i', 'inputFiles')
-  .array('inputFiles')
-  .describe('inputFiles', 'One or more ontology files that will be used to build Vocab Terms from.')
+  .alias('i', 'inputResources')
+  .array('inputResources')
+  .describe(
+    'inputResources',
+    "One or more ontology resources (i.e. local RDF files, or HTTP URI's) used to generate source-code artifacts representing the contained vocabulary terms."
+  )
 
   .alias('l', 'vocabListFile')
   .describe(
@@ -104,7 +107,7 @@ const yargsConfig = yargs
 
   // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
   // least one of these two...?)
-  .conflicts('inputFiles', 'vocabListFile')
+  .conflicts('inputResources', 'vocabListFile')
   .strict();
 
 new App(yargsConfig)

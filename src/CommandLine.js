@@ -277,7 +277,7 @@ module.exports = class CommandLine {
     // 46MB!)...
     const widocoJar = '$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
 
-    const inputResource = data.inputFiles[0];
+    const inputResource = data.inputResources[0];
     const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
     const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;

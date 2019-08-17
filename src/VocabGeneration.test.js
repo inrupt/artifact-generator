@@ -65,7 +65,7 @@ const GenerationConfigLitCore = {
 };
 
 const GenerationConfigSolidComponent = {
-  inputFiles: [
+  inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent/Vocab/SolidComponent.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
@@ -80,7 +80,7 @@ const GenerationConfigSolidComponent = {
 };
 
 const GenerationConfigSolidGeneratorUi = {
-  inputFiles: [
+  inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
@@ -139,6 +139,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('LIT Common vocabs', async () => {
   it.skip('LIT Common vocabs', async () => {
+    jest.setTimeout(15000);
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
@@ -160,24 +161,27 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('Test Demo App', async () => {
     // it('Test Demo App', async () => {
     await generateVocabArtifact({
-      // inputFiles: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      // inputFiles: ['./example/vocab/PetRocks.ttl'],
-      // inputFiles: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
+      // inputResources: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
+      // inputResources: ['./example/vocab/PetRocks.ttl'],
+      // inputResources: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
 
-      // inputFiles: ['http://www.w3.org/2006/vcard/ns#'],
+      // inputResources: ['http://www.w3.org/2006/vcard/ns#'],
       // nameAndPrefixOverride: 'vcard',
       //
-      // inputFiles: ['http://www.w3.org/2002/07/owl#'],
+      // inputResources: ['http://www.w3.org/2002/07/owl#'],
       // nameAndPrefixOverride: 'owl',
 
-      // inputFiles: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#'],
+      // inputResources: ['http://www.w3.org/1999/02/22-rdf-syntax-ns#'],
       // nameAndPrefixOverride: 'RDF',
 
-      // inputFiles: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
+      // inputResources: ['http://dublincore.org/2012/06/14/dcterms.ttl'],
       // nameAndPrefixOverride: 'DCTERMS',
 
-      inputFiles: ['https://www.w3.org/ns/activitystreams-owl'],
-      nameAndPrefixOverride: 'as',
+      // inputResources: ['https://www.w3.org/ns/activitystreams-owl'],
+      // nameAndPrefixOverride: 'as',
+
+      inputResources: ['http://www.w3.org/2007/ont/httph#'],
+      nameAndPrefixOverride: 'httph',
 
       outputDirectory: './test/generated',
       // outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
