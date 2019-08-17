@@ -31,36 +31,36 @@ vocabList:
   # 'http://', and so our RDF4J model will be empty and therefore so will our
   # generated source.
   - description: Schema.org (the full vocabulary)
-    inputFiles:
+    inputResources:
       - https://schema.org/version/latest/schema-snippet.ttl
 
 #  - description: Schema.org with selective terms having translations
 #    nameAndPrefixOverride: schema-inrupt-ext
-#    inputFiles:
+#    inputResources:
 #      - https://schema.org/version/latest/schema.ttl
 #    termSelectionFile: ./rdf/Extensions/schema-inrupt-ext.ttl
 
 
   - description: VCARD (the full vocabulary)
     nameAndPrefixOverride: vcard
-    inputFiles:
+    inputResources:
       - http://www.w3.org/2006/vcard/ns#
 
 #  - description: VCARD with selective terms having translations
 #    nameAndPrefixOverride: vcard-inrupt-ext
-#    inputFiles:
+#    inputResources:
 #      - http://www.w3.org/2006/vcard/ns#
 #    termSelectionFile: ./rdf/Extensions/vcard-inrupt-ext.ttl
 
 
   - description: RDF (the full vocabulary)
     nameAndPrefixOverride: rdf
-    inputFiles:
+    inputResources:
       - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
 #  - description: RDF with selective terms having translations
 #    nameAndPrefixOverride: rdf-inrupt-ext
-#    inputFiles:
+#    inputResources:
 #      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 #    termSelectionFile: ./rdf/Extensions/rdf-inrupt-ext.ttl
 
@@ -68,34 +68,34 @@ vocabList:
 
   - description: rdfs
     nameAndPrefixOverride: rdfs
-    inputFiles:
+    inputResources:
       - http://www.w3.org/2000/01/rdf-schema#
 
   # OWL seems to have a bug in that the ontology itself is identified using a subject IRI without the
   # hash, yet the 'owl:' prefix correctly appends the hash.
   - description: OWL
     nameAndPrefixOverride: owl
-    inputFiles:
+    inputResources:
       - http://www.w3.org/2002/07/owl#
 
   - description: LDP
-    inputFiles:
+    inputResources:
       - https://www.w3.org/ns/ldp#
 
   # Default serialization is RDF/XML (and we have no parser available)...
 #  - description: http
 #    nameAndPrefixOverride: http
-#    inputFiles:
+#    inputResources:
 #      - http://www.w3.org/2011/http#
 
   - description: The Ordered List Ontology
     nameAndPrefixOverride: olo
-    inputFiles:
+    inputResources:
       - http://svn.code.sf.net/p/smiy/code/orderedlistonto/trunk/rdf/orderedlistontology.n3
 
 #  - description: Simple Knowledge Organisation System (SKOS)
 #    nameAndPrefixOverride: skos
-#    inputFiles:
+#    inputResources:
 ##
 ## Both these 'authoritative' endpoints only seem to ever return RDF/XML (for which we don't have a parser!), so
 ## reference a local copy converted (using https://rdf-translator.appspot.com/) to Turtle instead.
@@ -109,15 +109,15 @@ vocabList:
   #   Vocabulary term [http://www.w3.org/ns/ui#NumericField] found that is not in our namespace [https://www.w3.org/ns/] - currently this is disallowed (as it indicates a probable typo!)
   #
 #  - description: ui
-#    inputFiles:
+#    inputResources:
 #      - https://www.w3.org/ns/ui.ttl
 
 #  - description: The LIT Core vocabulary
-#    inputFiles:
+#    inputResources:
 #      - ./rdf/OntologyDirMarker/Lit-Core.ttl
 #
 #  - description: The LIT Consent vocabulary
-#    inputFiles:
+#    inputResources:
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
 
@@ -128,10 +128,10 @@ vocabList:
   # remove this local version...!)
   #
 #  - description: vann
-#    inputFiles:
+#    inputResources:
 #      - ./rdf/CopyOfVocabs/vann.ttl
 
   - description: dcterms
     nameAndPrefixOverride: dcterms
-    inputFiles:
+    inputResources:
       - http://dublincore.org/2012/06/14/dcterms.ttl

@@ -17,12 +17,12 @@ module.exports = class App {
     // Process the YARGS config data...
     this.argv = this.yargsConfig.argv;
 
-    if (!this.argv.inputFiles && !this.argv.vocabListFile) {
+    if (!this.argv.inputResources && !this.argv.vocabListFile) {
       this.yargsConfig.showHelp();
       debug.enable('lit-artifact-generator:*');
       logger(`\nInvalid inputs.`);
       throw new Error(
-        "You must provide input, either a single vocabulary using '--inputFiles' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
+        "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
       );
     }
 

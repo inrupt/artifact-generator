@@ -21,11 +21,11 @@ artifactToGenerate:
 
 vocabList:
   - description: Schema.org from Google, Microsoft, Yahoo and Yandex
-    inputFiles:
+    inputResources:
       - schema-snippet.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
   - description: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
-    inputFiles:
+    inputResources:
       - ./supported-data-types.ttl

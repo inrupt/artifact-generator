@@ -177,14 +177,14 @@ module.exports = class DatasetHandler {
     result.sourceRdfResources = this.vocabData.vocabListFile
       ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
       : `Vocabulary built from input${
-          this.vocabData.inputFiles.length === 1 ? '' : 's'
-        }: [${this.vocabData.inputFiles.join(', ')}].`;
+          this.vocabData.inputResources.length === 1 ? '' : 's'
+        }: [${this.vocabData.inputResources.join(', ')}].`;
 
     result.classes = [];
     result.properties = [];
     result.literals = [];
 
-    result.inputFiles = this.vocabData.inputFiles;
+    result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.findNamespace();
 
@@ -261,6 +261,19 @@ module.exports = class DatasetHandler {
     return !result;
   }
 
+  /**
+   * Important to note here that there is a very distinct difference between
+   * the 'ontology' and the 'namespace' for any given vocabulary. Generally
+   * they are one-and-the-same (e.g. RDF, RDFS), but this is not always the
+   * case (e.g. OWL, HTTP 2011, or SKOS), and we can't assume it is. Every
+   * vocabulary/namespace will define a 'namespace', which is effectively the
+   * prefix for all the terms defined within that vocab, but the 'ontology'
+   * document itself, that describes those terms, can have a completely
+   * different IRI (although if it is different, it is typically only
+   * different in that it removes the trailing hash '#' symbol).
+   *
+   * @returns {*}
+   */
   findNamespace() {
     let namespace = this.findOwlOntology(owlOntologyTerms => {
       const ontologyNamespaces = this.fullDataset.match(
@@ -373,6 +386,7 @@ module.exports = class DatasetHandler {
       .match(null, RDF.type, OWL.Ontology)
       .toArray()
       .shift();
+
     if (owlOntologyTerms) {
       return callback(owlOntologyTerms);
     }

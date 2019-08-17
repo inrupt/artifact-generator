@@ -21,7 +21,7 @@ describe('End-to-end tests', () => {
 
       const artifactGenerator = new ArtifactGenerator(
         {
-          inputFiles: [errorFilename],
+          inputResources: [errorFilename],
           outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
@@ -40,7 +40,7 @@ describe('End-to-end tests', () => {
       del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/invalid-turtle.ttl';
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: [errorFilename],
+        inputResources: [errorFilename],
         outputDirectory,
         noprompt: true,
       });
@@ -55,7 +55,7 @@ describe('End-to-end tests', () => {
 
       const artifactGenerator = new ArtifactGenerator(
         {
-          inputFiles: [errorFilename],
+          inputResources: [errorFilename],
           outputDirectory,
           noprompt: true,
         },
@@ -77,7 +77,7 @@ describe('End-to-end tests', () => {
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         {
-          inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
           outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
@@ -116,7 +116,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.0',
         litVocabTermVersion: '^1.0.10',
@@ -144,7 +144,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: [
+        inputResources: [
           './test/resources/vocabs/schema-snippet.ttl',
           './test/resources/vocabs/schema-inrupt-ext.ttl',
         ],
@@ -181,7 +181,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: [
+        inputResources: [
           'https://schema.org/Person.ttl',
           './test/resources/vocabs/schema-inrupt-ext.ttl',
         ],
@@ -217,7 +217,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
@@ -251,7 +251,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.0',
@@ -285,7 +285,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
@@ -308,7 +308,7 @@ describe('End-to-end tests', () => {
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.5',
         litVocabTermVersion: '^1.0.10',
@@ -327,7 +327,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.5',
         litVocabTermVersion: '^1.0.10',
@@ -342,7 +342,7 @@ describe('End-to-end tests', () => {
       );
 
       artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-inrupt-ext.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-inrupt-ext.ttl'],
         outputDirectory,
         artifactVersion: '1.0.5',
         litVocabTermVersion: '^1.0.10',
@@ -362,7 +362,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',
@@ -386,7 +386,7 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator({
-        inputFiles: ['./test/resources/vocabs/schema-snippet.ttl'],
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
         artifactVersion: '1.0.5',

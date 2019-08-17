@@ -22,7 +22,9 @@ describe('Dataset Handler', () => {
       .addAll(vocabMetadata)
       .add(rdf.quad(RDF.langString, RDF.type, RDFS.Datatype));
 
-    const handler = new DatasetHandler(dataset, rdf.dataset(), { inputFiles: ['does not matter'] });
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
     const result = handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
   });
@@ -39,7 +41,9 @@ describe('Dataset Handler', () => {
         )
       );
 
-    const handler = new DatasetHandler(dataset, rdf.dataset(), { inputFiles: ['does not matter'] });
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
     const result = handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
   });
@@ -62,7 +66,9 @@ describe('Dataset Handler', () => {
         rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDFS.Literal),
       ]);
 
-    const handler = new DatasetHandler(dataset, rdf.dataset(), { inputFiles: ['does not matter'] });
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
     const result = handler.buildTemplateInput();
     expect(result.classes.length).toEqual(1);
     expect(result.classes[0].name).toEqual('testTermClass');
