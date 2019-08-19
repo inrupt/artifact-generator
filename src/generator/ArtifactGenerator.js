@@ -6,7 +6,6 @@ const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
-const DatasetHandler = require('../DatasetHandler');
 const packageDotJson = require('../../package.json');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
@@ -55,13 +54,9 @@ class ArtifactGenerator {
       this.artifactData = await this.inquirerProcess(this.artifactData);
     }
 
-    if (this.artifactData.vocabListFile) {
-      await this.generateFromVocabListFile();
-    } else {
-      await this.generateSingleVocab();
-    }
-
-    return FileGenerator.createPackagingFiles(this.artifactData);
+    return this.artifactData.vocabListFile
+      ? this.generateFromVocabListFile()
+      : this.generateSingleVocab();
   }
 
   async generateSingleVocab() {
@@ -99,6 +94,8 @@ class ArtifactGenerator {
       vocabName: vocabData.vocabName,
       vocabNameUpperCase: vocabData.vocabNameUpperCase,
     });
+
+    return FileGenerator.createPackagingFiles(this.artifactData, 'Javascript');
   }
 
   async generateFromVocabListFile() {
@@ -144,6 +141,8 @@ class ArtifactGenerator {
         //  it needs to be copied again into the template data, so that our
         //  Java-only Handlebars templates can access it!
         this.artifactData.javaPackageName = artifactDetails.javaPackageName;
+        this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
+        this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
 
         return new VocabGenerator(this.artifactData, artifactDetails).generate();
       });
@@ -153,11 +152,9 @@ class ArtifactGenerator {
 
       // Only return the first one, as we don't want duplicate info.
       return artifactPromises[0];
-
-      // return new VocabGenerator(this.artifactData).generate();
     });
-    //
-    // // Wait for all our vocabs to be generated.
+
+    // Wait for all our vocabs to be generated.
     const vocabDatasets = await Promise.all(vocabGenerationPromises);
 
     // Collect details from each generated vocab (to bundle them all together into our packaging artifact).
@@ -176,7 +173,19 @@ class ArtifactGenerator {
     this.artifactData.authors = `Vocabularies authored by: ${Array.from(
       authorsAcrossAllVocabs
     ).join(', ')}.`;
-    this.artifactData.description = DatasetHandler.escapeStringForJson(description);
+    // this.artifactData.description = FileGenerator.escapeStringForJson(description);
+    this.artifactData.description = description;
+
+    // Generate packaging details for each generated artifact.
+    generationDetails.artifactToGenerate.forEach(artifactDetails => {
+      this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
+      this.artifactData.javaPackageName = artifactDetails.javaPackageName;
+      this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
+      this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
+      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails.programmingLanguage);
+    });
+
+    return this.artifactData;
   }
 }
 

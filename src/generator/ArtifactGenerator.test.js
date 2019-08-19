@@ -56,7 +56,6 @@ describe('Artifact Generator', () => {
         vocabListFile: './test/resources/vocabs/vocab-list.yml',
         outputDirectory,
         artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
       });
@@ -82,7 +81,6 @@ describe('Artifact Generator', () => {
           vocabListFile: './test/resources/vocabs/vocab-list.yml',
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
           moduleNamePrefix: '@lit/generated-vocab-',
         },
         inquirerProcess
@@ -101,7 +99,6 @@ describe('Artifact Generator', () => {
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
         supportBundling: true,

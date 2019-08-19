@@ -18,7 +18,6 @@ const ConfigJavaAndJavascript = {
   artifactToGenerate: [
     {
       programmingLanguage: 'Java',
-      description: 'Generate Java JAR',
       javaPackageName: 'com.inrupt.testing.java',
       artifactFolderName: 'Java',
       handlebarsTemplate: 'java.hbs',
@@ -26,7 +25,7 @@ const ConfigJavaAndJavascript = {
     },
     {
       programmingLanguage: 'Javascript',
-      description: 'Generate Javascript NPM module',
+      npmModuleScope: '@lit/',
       artifactFolderName: 'Javascript',
       handlebarsTemplate: 'javascript-rdf-ext.hbs',
       sourceFileExtension: 'js',
@@ -57,7 +56,6 @@ const GenerationConfigLitCore = {
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'core',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
@@ -70,7 +68,6 @@ const GenerationConfigSolidComponent = {
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -85,7 +82,6 @@ const GenerationConfigSolidGeneratorUi = {
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -137,8 +133,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }, 60000);
 
-  // it('LIT Common vocabs', async () => {
-  it.skip('LIT Common vocabs', async () => {
+  it('LIT Common vocabs', async () => {
+  // it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(GenerationConfigLitCommon);
   });

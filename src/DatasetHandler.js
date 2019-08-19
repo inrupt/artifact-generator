@@ -1,6 +1,8 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
+const FileGenerator = require('./generator/FileGenerator');
+
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
 // TODO: Special case here for Schema.org. The proper way to address this I
@@ -115,7 +117,7 @@ module.exports = class DatasetHandler {
     if (DatasetHandler.doesNotContainValueForLanguageAlready(array, quad)) {
       array.push({
         value: quad.object.value,
-        valueEscapedForJavascript: DatasetHandler.escapeStringForJavascript(quad.object.value),
+        valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(quad.object.value),
         language: quad.object.language,
       });
     }
@@ -169,7 +171,10 @@ module.exports = class DatasetHandler {
     result.versionBabelCore = this.vocabData.versionBabelCore;
     result.versionBabelLoader = this.vocabData.versionBabelLoader;
 
+    // These values come from the artifact-specific configuration.
     result.javaPackageName = this.vocabData.javaPackageName;
+    result.npmModuleScope = this.vocabData.npmModuleScope;
+    result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
 
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
@@ -369,26 +374,9 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
+      // return FileGenerator.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
+      return LitUtils.firstDatasetValue(onologyComments, '');
     });
-  }
-
-  /**
-   * Simple utility function that encodes the specified value for use within JSON (e.g. escapes newline characters).
-   * NOTE: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
-   * quotes!
-   *
-   * @param value The value to escape
-   * @returns {string} The escaped string
-   */
-  static escapeStringForJson(value) {
-    // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
-    const escaped = JSON.stringify(value);
-    return escaped.substr(1, escaped.length - 2);
-  }
-
-  static escapeStringForJavascript(value) {
-    return value.replace('`', '\\`');
   }
 
   findAuthors() {

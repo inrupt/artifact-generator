@@ -21,6 +21,35 @@ class FileGenerator {
     }
   }
 
+  /**
+   * We may need to escape parts of our template data for the generated file
+   * (based on it's type).
+   */
+  static formatTemplateData(templateData, fileExtension) {
+    let descriptionToUse = templateData.description;
+    // let litVocabTermVersionToUse = templateData.litVocabTermVersion;
+
+    switch (fileExtension.toLowerCase()) {
+      case 'json':
+        descriptionToUse = FileGenerator.escapeStringForJson(templateData.description);
+        break;
+
+      // case 'pom.xml':
+      //   // Remove any leading NPM-specific semver characters.
+      //   litVocabTermVersionToUse = templateData.litVocabTermVersion.replace(/^[\^*~]/, '');
+      //   break;
+      //
+      default:
+        break;
+    }
+
+    return {
+      ...templateData,
+      description: descriptionToUse,
+      // litVocabTermVersion: litVocabTermVersionToUse,
+    };
+  }
+
   static createSourceCodeFile(argv, artifactDetails, templateData) {
     const outputDirectoryForSourceCode = argv.outputDirectoryForArtifact;
 
@@ -36,14 +65,28 @@ class FileGenerator {
 
     FileGenerator.createFileFromTemplate(
       `../../templates/${artifactDetails.handlebarsTemplate}`,
-      templateData,
+      FileGenerator.formatTemplateData(templateData, artifactDetails.sourceFileExtension),
       `${outputDirectoryForSourceCode}/GeneratedVocab${packagingDirectory}/${templateData.nameAndPrefixOverride ||
         templateData.vocabName}.${artifactDetails.sourceFileExtension}`
     );
   }
 
-  static createPackagingFiles(argv) {
+  static createPackagingFiles(argv, programmingLanguage) {
     FileGenerator.createDirectory(argv.outputDirectory);
+
+    switch (programmingLanguage.toLowerCase()) {
+      case 'java':
+        FileGenerator.createPackagingFilesJava(argv);
+        break;
+
+      case 'javascript':
+        FileGenerator.createPackagingFilesJavascript(argv);
+        break;
+      default:
+        throw new Error(
+          `Unsupported programming language [${programmingLanguage}], we don't know how to create an packaging artifact for this language.`
+        );
+    }
 
     FileGenerator.createFileFromTemplate(
       '../../templates/.gitignore.hbs',
@@ -51,6 +94,24 @@ class FileGenerator {
       `${argv.outputDirectoryForArtifact}/.gitignore`
     );
 
+    // For our README (which uses Markdown format), if our artifact was made up
+    // of multiple vocabs, break up our description into a list representation.
+    // (TODO: if a vocab description contains a newline, this will split it out
+    // into another list item!).
+    const dataWithMarkdownDescription = argv.vocabListFile
+      ? { ...argv, description: argv.description.replace(/\\n/g, '\n\n  *') }
+      : argv;
+
+    FileGenerator.createFileFromTemplate(
+      '../../templates/README.hbs',
+      dataWithMarkdownDescription,
+      `${argv.outputDirectoryForArtifact}/README.MD`
+    );
+
+    return argv;
+  }
+
+  static createPackagingFilesJavascript(argv) {
     FileGenerator.createFileFromTemplate(
       '../../templates/index.hbs',
       argv,
@@ -74,25 +135,39 @@ class FileGenerator {
 
     FileGenerator.createFileFromTemplate(
       '../../templates/package.hbs',
-      argv,
+      FileGenerator.formatTemplateData(argv, 'json'),
       `${argv.outputDirectoryForArtifact}/package.json`
     );
 
-    // For our README (which uses Markdown format), if our artifact was made up
-    // of multiple vocabs, break up our description into a list representation.
-    // (TODO: if a vocab description contains a newline, this will split it out
-    // into another list item!).
-    const dataWithMarkdownDescription = argv.vocabListFile
-      ? { ...argv, description: argv.description.replace(/\\n/g, '\n\n  *') }
-      : argv;
+    return argv;
+  }
 
+  static createPackagingFilesJava(argv) {
     FileGenerator.createFileFromTemplate(
-      '../../templates/README.hbs',
-      dataWithMarkdownDescription,
-      `${argv.outputDirectoryForArtifact}/README.MD`
+      '../../templates/pom.hbs',
+      FileGenerator.formatTemplateData(argv, 'pom.xml'),
+      `${argv.outputDirectoryForArtifact}/pom.xml`
     );
 
     return argv;
+  }
+
+  /**
+   * Simple utility function that encodes the specified value for use within JSON (e.g. escapes newline characters).
+   * NOTE: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
+   * quotes!
+   *
+   * @param value The value to escape
+   * @returns {string} The escaped string
+   */
+  static escapeStringForJson(value) {
+    // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
+    const escaped = JSON.stringify(value);
+    return escaped.substr(1, escaped.length - 2);
+  }
+
+  static escapeStringForJavascript(value) {
+    return value.replace('`', '\\`');
   }
 }
 
