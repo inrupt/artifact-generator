@@ -118,6 +118,7 @@ module.exports = class DatasetHandler {
       array.push({
         value: quad.object.value,
         valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(quad.object.value),
+        valueEscapedForJava: FileGenerator.escapeStringForJava(quad.object.value),
         language: quad.object.language,
       });
     }

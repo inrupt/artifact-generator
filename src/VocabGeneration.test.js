@@ -37,7 +37,6 @@ const GenerationConfigLitCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
-  // './test/generated',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
@@ -47,6 +46,20 @@ const GenerationConfigLitCommon = {
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
+};
+
+const GenerationConfigSolidCommon = {
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon/Vocab/Vocab-List-Solid-Common.yml',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon',
+  moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW...!?
+  artifactName: 'common',
+  artifactVersion: VERSION_ARTIFACT_GENERATED,
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
 };
 
 const GenerationConfigLitCore = {
@@ -137,6 +150,12 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(GenerationConfigLitCommon);
+  });
+
+  // it('Solid Common vocabs', async () => {
+  it.skip('Solid Common vocabs', async () => {
+    jest.setTimeout(15000);
+    await generateVocabArtifact(GenerationConfigSolidCommon);
   });
 
   // it('LIT Core vocabs', async () => {

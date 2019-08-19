@@ -29,8 +29,8 @@ public class {{vocabNameUpperCase}} {
      *{{#if comment}} {{{comment}}}{{/if}}
      */
     public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}};
+      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
+      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
 {{/if}}
 
@@ -44,8 +44,8 @@ public class {{vocabNameUpperCase}} {
      *{{#if comment}} {{{comment}}}{{/if}}
      */
     public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}};
+      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
+      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
 {{/if}}
 
@@ -59,9 +59,9 @@ public class {{vocabNameUpperCase}} {
      *{{#if comment}} {{{comment}}}{{/if}}
      */
     public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}}{{#each definitions}}
-      .addMessage("{{language}}", "{{{valueEscapedForJavascript}}}"){{/each}};
+      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
+      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each definitions}}
+      .addMessage("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
 {{/if}}
 }

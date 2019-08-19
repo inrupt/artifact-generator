@@ -167,7 +167,15 @@ class FileGenerator {
   }
 
   static escapeStringForJavascript(value) {
-    return value.replace('`', '\\`');
+    return value.replace(/`/g, '\\`');
+  }
+
+  static escapeStringForJava(value) {
+    return value.replace(
+      /\n/g,
+      `\\n" +
+"`
+    );
   }
 }
 
