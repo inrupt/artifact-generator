@@ -133,8 +133,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   }, 60000);
 
-  it('LIT Common vocabs', async () => {
-  // it.skip('LIT Common vocabs', async () => {
+  // it('LIT Common vocabs', async () => {
+  it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
@@ -154,8 +154,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidComponent);
   });
 
-  it.skip('Test Demo App', async () => {
-    // it('Test Demo App', async () => {
+  // it.skip('Test Demo App', async () => {
+  it('Test Demo App', async () => {
     await generateVocabArtifact({
       // inputResources: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
       // inputResources: ['./example/vocab/PetRocks.ttl'],

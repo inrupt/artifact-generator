@@ -257,6 +257,25 @@ describe('Command Line unit tests', () => {
 
       expect(result.ranNpmInstall).toBeUndefined();
     });
+
+    it('Should install artifact with Maven if Java, but ignore non-Java artifacts', async () => {
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
+
+      const result = await CommandLine.askForArtifactToBeNpmInstalled({
+        ...defaultInputs,
+        runNpmInstall: true,
+        generationDetails: [
+          {
+            programmingLanguage: 'Java',
+          },
+          {
+            programmingLanguage: 'C#',
+          },
+        ],
+      });
+
+      expect(result.ranNpmInstall).toBe(true);
+    });
   });
 
   describe('Running Widoco...', () => {
