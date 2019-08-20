@@ -96,10 +96,10 @@ describe('End-to-end tests', () => {
 
       // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
         .toString();
       const expected = fs
-        .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/schema.js')
+        .readFileSync('test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA.js')
         .toString();
       expect(output.substring(output.indexOf(' */'))).toBe(
         expected.substring(expected.indexOf(' */'))
@@ -126,9 +126,9 @@ describe('End-to-end tests', () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)).toBe(true);
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`).toString()
+        fs.readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`).toString()
       ).toEqual(
         expect.stringContaining("Person: new LitVocabTerm(_NS('Person'), localStorage, true)")
       );
@@ -159,11 +159,11 @@ describe('End-to-end tests', () => {
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
         .toString();
 
       const expected = fs
-        .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/schema-inrupt-ext.js')
+        .readFileSync('test/resources/expectedOutputs/full-ext/GeneratedVocab/SCHEMA_INRUPT_EXT.js')
         .toString();
 
       expect(output.substring(output.indexOf(' */'))).toBe(
@@ -197,7 +197,7 @@ describe('End-to-end tests', () => {
       expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
 
       const indexOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
         .toString();
 
       expect(indexOutput).toEqual(
@@ -229,7 +229,7 @@ describe('End-to-end tests', () => {
       await artifactGenerator.generate();
 
       const indexOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
         .toString();
 
       expect(indexOutput).toEqual(
@@ -263,7 +263,7 @@ describe('End-to-end tests', () => {
       await artifactGenerator.generate();
 
       const indexOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/schema.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
         .toString();
 
       expect(indexOutput).toEqual(

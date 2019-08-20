@@ -161,7 +161,7 @@ class ArtifactGenerator {
     const authorsAcrossAllVocabs = new Set();
     let description = `Bundle of vocabularies that includes the following:`;
     vocabDatasets.forEach(vocabData => {
-      description += `\n  ${vocabData.vocabName}: ${vocabData.description}`;
+      description += `\n\n  ${vocabData.vocabName}: ${vocabData.description}`;
       vocabData.authorSet.forEach(author => authorsAcrossAllVocabs.add(author));
 
       this.artifactData.generatedVocabs.push({

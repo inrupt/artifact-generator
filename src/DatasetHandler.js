@@ -70,7 +70,18 @@ module.exports = class DatasetHandler {
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
     const name = fullName.split(namespace)[1];
-    const nameEscapedForLanguage = name.replace(/-/g, '_');
+    const nameEscapedForLanguage = name
+      .replace(/-/g, '_')
+      // TODO: Currently these alterations are required only for Java-specific
+      //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
+      //  term 'abstract'). But these should only be applied for Java-generated
+      //  code, but right now it's awkward to determine the current artifact
+      //  we're generating for right here, so leaving that until the big
+      //  refactor to clean things up. In the meantime, I've added the concept
+      //  of 'list of keywords to append an underscore for in this programming
+      //  language' to the current YAML files.
+      .replace(/^class$/, 'class_')
+      .replace(/^abstract$/, 'abstract_');
 
     this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
@@ -204,6 +215,7 @@ module.exports = class DatasetHandler {
     result.outputDirectory = this.vocabData.outputDirectory;
     result.authorSet = this.findAuthors();
     result.runNpmInstall = this.vocabData.runNpmInstall;
+    result.runMavenInstall = this.vocabData.runMavenInstall;
     result.runYalcCommand = this.vocabData.runYalcCommand;
     result.runNpmPublish = this.vocabData.runNpmPublish;
     result.bumpVersion = this.vocabData.bumpVersion;

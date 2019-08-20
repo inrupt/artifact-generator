@@ -14,17 +14,17 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/override-name.js`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/OVERRIDE_NAME.js`)).toBe(
         true
       );
       expect(
-        fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
+        fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
       ).toBe(true);
 
       const indexOutput = fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString();
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/schema-inrupt-ext')"
+          "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/SCHEMA_INRUPT_EXT')"
         )
       );
 

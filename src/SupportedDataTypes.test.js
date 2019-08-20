@@ -36,7 +36,7 @@ describe('Supported Data Type', () => {
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/owl.js`)
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/OWL.js`)
       .toString();
 
     expect(indexOutput).toEqual(
@@ -81,7 +81,7 @@ describe('Supported Data Type', () => {
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/http.js`)
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/HTTP.js`)
       .toString();
 
     expect(indexOutput).toEqual(
@@ -123,7 +123,7 @@ describe('Supported Data Type', () => {
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/lit_gen.js`)
+      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/LIT_GEN.js`)
       .toString();
 
     expect(indexOutput).toEqual(

@@ -5,44 +5,28 @@ const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const CommandLine = require('./CommandLine');
 
+// These values are not expected to be specified in vocab list files - they
+// are expected to be provided as runtime arguments.
 const VERSION_ARTIFACT_GENERATED = '0.1.0';
 
-// const VERSION_LIT_VOCAB_TERM = 'file:/home/pmcb55/Work/Projects/LIT/src/javascript/lit-vocab-term-js',
-const VERSION_LIT_VOCAB_TERM = '^0.1.0';
+const VERSION_LIT_VOCAB_TERM = '^0.1.0'; // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES, AS THEY PROVIDE PER PROGRAMMING LANGUAGE)...!?
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
+const RUN_MAVEN_INSTALL = true;
 const RUN_NPM_PUBLISH = false;
-const SUPPORT_BUNDLING = true;
-
-const ConfigJavaAndJavascript = {
-  artifactToGenerate: [
-    {
-      programmingLanguage: 'Java',
-      javaPackageName: 'com.inrupt.testing.java',
-      artifactFolderName: 'Java',
-      handlebarsTemplate: 'java.hbs',
-      sourceFileExtension: 'java',
-    },
-    {
-      programmingLanguage: 'Javascript',
-      npmModuleScope: '@lit/',
-      artifactFolderName: 'Javascript',
-      handlebarsTemplate: 'javascript-rdf-ext.hbs',
-      sourceFileExtension: 'js',
-    },
-  ],
-};
+const SUPPORT_BUNDLING = false;
 
 const GenerationConfigLitCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
-  moduleNamePrefix: '@lit/generated-vocab-',
+  moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
+  runMavenInstall: RUN_MAVEN_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
@@ -52,12 +36,13 @@ const GenerationConfigSolidCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon/Vocab/Vocab-List-Solid-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon',
-  moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW...!?
+  moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
   artifactVersion: VERSION_ARTIFACT_GENERATED,
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
+  runMavenInstall: RUN_MAVEN_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
 };
@@ -114,6 +99,7 @@ async function generateVocabArtifact(argv) {
     .then(CommandLine.askForArtifactToBeNpmVersionBumped)
     // .then(await CommandLine.askForArtifactToBeYalced)
     .then(CommandLine.askForArtifactToBeNpmInstalled)
+    .then(CommandLine.runMavenInstall)
     .then(CommandLine.askForArtifactToBeNpmPublished)
     .then(CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
@@ -140,11 +126,13 @@ async function generateVocabArtifact(argv) {
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
   // it('Generate ALL vocabs', async () => {
   it.skip('Generate ALL vocabs', async () => {
-    await generateVocabArtifact(GenerationConfigLitCommon, ConfigJavaAndJavascript);
-    await generateVocabArtifact(GenerationConfigLitCore, ConfigJavaAndJavascript);
+    jest.setTimeout(60000);
+    await generateVocabArtifact(GenerationConfigLitCommon);
+    await generateVocabArtifact(GenerationConfigLitCore);
+    await generateVocabArtifact(GenerationConfigSolidCommon);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
-  }, 60000);
+  });
 
   // it('LIT Common vocabs', async () => {
   it.skip('LIT Common vocabs', async () => {
@@ -173,8 +161,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigSolidComponent);
   });
 
-  // it.skip('Test Demo App', async () => {
-  it('Test Demo App', async () => {
+  it.skip('Test Demo App', async () => {
+    // it('Test Demo App', async () => {
     await generateVocabArtifact({
       // inputResources: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
       // inputResources: ['./example/vocab/PetRocks.ttl'],

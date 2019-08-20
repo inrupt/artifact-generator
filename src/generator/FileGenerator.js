@@ -26,27 +26,14 @@ class FileGenerator {
    * (based on it's type).
    */
   static formatTemplateData(templateData, fileExtension) {
-    let descriptionToUse = templateData.description;
-    // let litVocabTermVersionToUse = templateData.litVocabTermVersion;
-
-    switch (fileExtension.toLowerCase()) {
-      case 'json':
-        descriptionToUse = FileGenerator.escapeStringForJson(templateData.description);
-        break;
-
-      // case 'pom.xml':
-      //   // Remove any leading NPM-specific semver characters.
-      //   litVocabTermVersionToUse = templateData.litVocabTermVersion.replace(/^[\^*~]/, '');
-      //   break;
-      //
-      default:
-        break;
-    }
+    const descriptionToUse =
+      fileExtension.toLowerCase() === 'json'
+        ? FileGenerator.escapeStringForJson(templateData.description)
+        : templateData.description;
 
     return {
       ...templateData,
       description: descriptionToUse,
-      // litVocabTermVersion: litVocabTermVersionToUse,
     };
   }
 
@@ -56,18 +43,19 @@ class FileGenerator {
     // For source files that might be packaged (i.e. Java), convert all '.'
     // (dots) in the package name to directory slashes and add to our
     // directory and source file name.
+    // Also for Java files, we follow the Maven convention of putting source
+    // code in the directory 'src/main/java' (meaning a simple 'mvn install'
+    // will find them automatically).
     const packagingDirectory = templateData.javaPackageName
-      ? `/${templateData.javaPackageName.replace(/\./g, '/')}`
-      : '';
-    FileGenerator.createDirectory(
-      `${outputDirectoryForSourceCode}/GeneratedVocab${packagingDirectory}`
-    );
+      ? `/src/main/java/${templateData.javaPackageName.replace(/\./g, '/')}`
+      : 'GeneratedVocab';
+    FileGenerator.createDirectory(`${outputDirectoryForSourceCode}/${packagingDirectory}`);
 
     FileGenerator.createFileFromTemplate(
       `../../templates/${artifactDetails.handlebarsTemplate}`,
       FileGenerator.formatTemplateData(templateData, artifactDetails.sourceFileExtension),
-      `${outputDirectoryForSourceCode}/GeneratedVocab${packagingDirectory}/${templateData.nameAndPrefixOverride ||
-        templateData.vocabName}.${artifactDetails.sourceFileExtension}`
+      `${outputDirectoryForSourceCode}/${packagingDirectory}/${templateData.nameAndPrefixOverride ||
+        templateData.vocabNameUpperCase}.${artifactDetails.sourceFileExtension}`
     );
   }
 
@@ -96,8 +84,8 @@ class FileGenerator {
 
     // For our README (which uses Markdown format), if our artifact was made up
     // of multiple vocabs, break up our description into a list representation.
-    // (TODO: if a vocab description contains a newline, this will split it out
-    // into another list item!).
+    // TODO: if a vocab description contains a newline, this will split it out
+    //  into another list item!
     const dataWithMarkdownDescription = argv.vocabListFile
       ? { ...argv, description: argv.description.replace(/\\n/g, '\n\n  *') }
       : argv;
@@ -171,7 +159,7 @@ class FileGenerator {
   }
 
   static escapeStringForJava(value) {
-    return value.replace(
+    return value.replace(/"/g, '\\"').replace(
       /\n/g,
       `\\n" +
 "`
