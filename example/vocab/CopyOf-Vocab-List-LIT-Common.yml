@@ -30,7 +30,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactFolderName: Java
-    handlebarsTemplate: java.hbs
+    handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
 
   - programmingLanguage: Javascript

@@ -9,7 +9,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactFolderName: Java
-    handlebarsTemplate: java.hbs
+    handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as the occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:

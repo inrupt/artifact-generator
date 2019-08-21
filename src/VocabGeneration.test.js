@@ -56,6 +56,7 @@ const GenerationConfigLitCore = {
   artifactVersion: VERSION_ARTIFACT_GENERATED,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
+  runMavenInstall: RUN_MAVEN_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
 };
@@ -130,6 +131,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigLitCommon);
     await generateVocabArtifact(GenerationConfigLitCore);
     await generateVocabArtifact(GenerationConfigSolidCommon);
+
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   });
