@@ -34,6 +34,7 @@ class FileGenerator {
     return {
       ...templateData,
       description: descriptionToUse,
+      vocabPrefix: templateData.nameAndPrefixOverride || templateData.vocabName,
     };
   }
 

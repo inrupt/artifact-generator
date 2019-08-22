@@ -18,6 +18,7 @@ import org.pmcb55.lit.vocabTerm.LitVocabTerm;
 {{/if}}
  */
 public class {{vocabNameUpperCase}} implements LitVocab {
+    public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";
 
     public static final IRI NAMESPACE_IRI = SimpleValueFactory.getInstance().createIRI("{{namespace}}");
