@@ -170,3 +170,23 @@ For some examples see:
 - [./vocabs/schema-inrupt-ext.tt](./vocabs/schema-inrupt-ext.ttl)
 - [./vocabs/vcard-inrupt-ext.tt](./vocabs/vcard-inrupt-ext.ttl)
 - [./vocabs/owl-inrupt-ext.tt](./vocabs/owl-inrupt-ext.ttl)
+
+
+# Debugging
+
+The code uses the NPM `debug` package for reporting log information during operation. To turn on logging, simply set the `DEBUG` environment variable. For example, to see all logging for all artifact-generator operation, set:
+
+`DEBUG=lit-artifact-generator*`
+
+To only see logging for the `VocabGenerator` component, set:
+
+`DEBUG=lit-artifact-generator:VocabGenerator`
+
+To see logging for the entire operation (including dependencies that also use `debug`), set:
+
+`DEBUG=*`
+
+## IntelliJ
+
+When running tests in IntelliJ, simply edit the 'Run/Debug Configurations' settings to add the appropriate `DEBUG=...` setting in the Environment Variables editbox.
+
