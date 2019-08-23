@@ -12,6 +12,7 @@ const _NAMESPACE = "http://schema.org/";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
 const SCHEMA_INRUPT_EXT = {
+  PREFIX: 'schema-inrupt-ext',
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 
