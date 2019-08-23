@@ -48,7 +48,7 @@ module.exports = class VocabGenerator {
 
   generateData() {
     return new Promise(async (resolve, reject) => {
-      await this.resources
+      this.resources
         .processInputs((fullDatasetsArray, vocabTermsOnlyDataset) => {
           const parsed = this.parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset);
           resolve(parsed);

@@ -32,6 +32,10 @@ module.exports = class Resources {
   }
 
   async processInputs(processInputsCallback) {
+    logger(`Procesing datasetFiles: [${this.datasetFiles}]...`);
+    if (this.datasetFiles === undefined) {
+      logger(`NULL...`);
+    }
     const datasetsPromises = this.datasetFiles.map(e => this.readResource(e));
 
     const datasets = await Promise.all(datasetsPromises);
