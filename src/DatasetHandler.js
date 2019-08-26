@@ -204,6 +204,7 @@ module.exports = class DatasetHandler {
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.findNamespace();
+    result.gitRepository = this.vocabData.gitRepository;
 
     result.artifactName = this.artifactName();
     result.vocabName = this.vocabData.nameAndPrefixOverride || this.findPreferredNamespacePrefix();

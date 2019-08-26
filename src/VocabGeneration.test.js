@@ -142,15 +142,15 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
+  // it('LIT Core vocabs', async () => {
+  it.skip('LIT Core vocabs', async () => {
+    await generateVocabArtifact(GenerationConfigLitCore);
+  });
+
   // it('Solid Common vocabs', async () => {
   it.skip('Solid Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(GenerationConfigSolidCommon);
-  });
-
-  // it('LIT Core vocabs', async () => {
-  it.skip('LIT Core vocabs', async () => {
-    await generateVocabArtifact(GenerationConfigLitCore);
   });
 
   // it('Solid Generator UI vocab', async () => {

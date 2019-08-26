@@ -11,6 +11,12 @@
 {{/if}}
   "author": "{{authors}}",
   "license": "MIT",
+{{#if gitRepository}}
+  "repository": {
+    "type": "git",
+    "url": "{{gitRepository}}"
+  },
+{{/if}}
   "dependencies": {
     "@lit/vocab-term": "{{litVocabTermVersion}}"
   }{{#if supportBundling}},
