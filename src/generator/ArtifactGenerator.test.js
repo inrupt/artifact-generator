@@ -14,17 +14,17 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/override-name.js`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/OVERRIDE_NAME.js`)).toBe(
         true
       );
       expect(
-        fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/schema-inrupt-ext.js`)
+        fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
       ).toBe(true);
 
       const indexOutput = fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString();
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/schema-inrupt-ext')"
+          "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/SCHEMA_INRUPT_EXT')"
         )
       );
 
@@ -56,7 +56,6 @@ describe('Artifact Generator', () => {
         vocabListFile: './test/resources/vocabs/vocab-list.yml',
         outputDirectory,
         artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
       });
@@ -82,7 +81,6 @@ describe('Artifact Generator', () => {
           vocabListFile: './test/resources/vocabs/vocab-list.yml',
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
           moduleNamePrefix: '@lit/generated-vocab-',
         },
         inquirerProcess
@@ -101,7 +99,6 @@ describe('Artifact Generator', () => {
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
         supportBundling: true,

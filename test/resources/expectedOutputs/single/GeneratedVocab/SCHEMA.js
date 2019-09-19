@@ -10,6 +10,7 @@ const _NAMESPACE = "http://schema.org/";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
 const SCHEMA = {
+  PREFIX: 'schema',
   NAMESPACE: _NAMESPACE,
   NS: _NS,
 

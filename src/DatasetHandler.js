@@ -1,6 +1,8 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
 
+const FileGenerator = require('./generator/FileGenerator');
+
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
 // TODO: Special case here for Schema.org. The proper way to address this I
@@ -68,7 +70,18 @@ module.exports = class DatasetHandler {
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
     const name = fullName.split(namespace)[1];
-    const nameEscapedForLanguage = name.replace(/-/g, '_');
+    const nameEscapedForLanguage = name
+      .replace(/-/g, '_')
+      // TODO: Currently these alterations are required only for Java-specific
+      //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
+      //  term 'abstract'). But these should only be applied for Java-generated
+      //  code, but right now it's awkward to determine the current artifact
+      //  we're generating for right here, so leaving that until the big
+      //  refactor to clean things up. In the meantime, I've added the concept
+      //  of 'list of keywords to append an underscore for in this programming
+      //  language' to the current YAML files.
+      .replace(/^class$/, 'class_')
+      .replace(/^abstract$/, 'abstract_');
 
     this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
@@ -115,7 +128,8 @@ module.exports = class DatasetHandler {
     if (DatasetHandler.doesNotContainValueForLanguageAlready(array, quad)) {
       array.push({
         value: quad.object.value,
-        valueEscapedForJavascript: DatasetHandler.escapeStringForJavascript(quad.object.value),
+        valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(quad.object.value),
+        valueEscapedForJava: FileGenerator.escapeStringForJava(quad.object.value),
         language: quad.object.language,
       });
     }
@@ -169,7 +183,10 @@ module.exports = class DatasetHandler {
     result.versionBabelCore = this.vocabData.versionBabelCore;
     result.versionBabelLoader = this.vocabData.versionBabelLoader;
 
+    // These values come from the artifact-specific configuration.
     result.javaPackageName = this.vocabData.javaPackageName;
+    result.npmModuleScope = this.vocabData.npmModuleScope;
+    result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
 
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
@@ -187,6 +204,7 @@ module.exports = class DatasetHandler {
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.findNamespace();
+    result.gitRepository = this.vocabData.gitRepository;
 
     result.artifactName = this.artifactName();
     result.vocabName = this.vocabData.nameAndPrefixOverride || this.findPreferredNamespacePrefix();
@@ -198,6 +216,7 @@ module.exports = class DatasetHandler {
     result.outputDirectory = this.vocabData.outputDirectory;
     result.authorSet = this.findAuthors();
     result.runNpmInstall = this.vocabData.runNpmInstall;
+    result.runMavenInstall = this.vocabData.runMavenInstall;
     result.runYalcCommand = this.vocabData.runYalcCommand;
     result.runNpmPublish = this.vocabData.runNpmPublish;
     result.bumpVersion = this.vocabData.bumpVersion;
@@ -369,26 +388,9 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return DatasetHandler.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
+      // return FileGenerator.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
+      return LitUtils.firstDatasetValue(onologyComments, '');
     });
-  }
-
-  /**
-   * Simple utility function that encodes the specified value for use within JSON (e.g. escapes newline characters).
-   * NOTE: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
-   * quotes!
-   *
-   * @param value The value to escape
-   * @returns {string} The escaped string
-   */
-  static escapeStringForJson(value) {
-    // Just use JSON.stringify, but make sure we strip off the enclosing quotes!
-    const escaped = JSON.stringify(value);
-    return escaped.substr(1, escaped.length - 2);
-  }
-
-  static escapeStringForJavascript(value) {
-    return value.replace('`', '\\`');
   }
 
   findAuthors() {

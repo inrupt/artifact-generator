@@ -170,6 +170,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Person',
             valueEscapedForJavascript: 'Person',
+            valueEscapedForJava: 'Person',
             language: 'en',
           },
         ])
@@ -180,6 +181,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Person-fr',
             valueEscapedForJavascript: 'Person-fr',
+            valueEscapedForJava: 'Person-fr',
             language: 'fr',
           },
         ])
@@ -189,6 +191,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Person-de',
             valueEscapedForJavascript: 'Person-de',
+            valueEscapedForJava: 'Person-de',
             language: 'de',
           },
         ])
@@ -198,6 +201,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Person-es',
             valueEscapedForJavascript: 'Person-es',
+            valueEscapedForJava: 'Person-es',
             language: 'es',
           },
         ])
@@ -212,6 +216,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Given Name',
             valueEscapedForJavascript: 'Given Name',
+            valueEscapedForJava: 'Given Name',
             language: 'en',
           },
         ])
@@ -221,6 +226,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Given Name-fr',
             valueEscapedForJavascript: 'Given Name-fr',
+            valueEscapedForJava: 'Given Name-fr',
             language: 'fr',
           },
         ])
@@ -230,6 +236,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Given Name-de',
             valueEscapedForJavascript: 'Given Name-de',
+            valueEscapedForJava: 'Given Name-de',
             language: 'de',
           },
         ])
@@ -239,6 +246,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Given Name-es',
             valueEscapedForJavascript: 'Given Name-es',
+            valueEscapedForJava: 'Given Name-es',
             language: 'es',
           },
         ])
@@ -392,6 +400,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Hello',
             valueEscapedForJavascript: 'Hello',
+            valueEscapedForJava: 'Hello',
             language: 'en',
           },
         ])
@@ -402,6 +411,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Hola',
             valueEscapedForJavascript: 'Hola',
+            valueEscapedForJava: 'Hola',
             language: 'es',
           },
         ])
@@ -412,6 +422,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bonjour',
             valueEscapedForJavascript: 'Bonjour',
+            valueEscapedForJava: 'Bonjour',
             language: 'fr',
           },
         ])
@@ -437,6 +448,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Hello there',
             valueEscapedForJavascript: 'Hello there',
+            valueEscapedForJava: 'Hello there',
             language: 'en',
           },
         ])
@@ -447,6 +459,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Hola',
             valueEscapedForJavascript: 'Hola',
+            valueEscapedForJava: 'Hola',
             language: 'es',
           },
         ])
@@ -457,6 +470,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bonjour',
             valueEscapedForJavascript: 'Bonjour',
+            valueEscapedForJava: 'Bonjour',
             language: 'fr',
           },
         ])
@@ -482,6 +496,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Welcome',
             valueEscapedForJavascript: 'Welcome',
+            valueEscapedForJava: 'Welcome',
             language: 'en',
           },
         ])
@@ -492,6 +507,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bienvenido',
             valueEscapedForJavascript: 'Bienvenido',
+            valueEscapedForJava: 'Bienvenido',
             language: 'es',
           },
         ])
@@ -502,6 +518,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bienvenue',
             valueEscapedForJavascript: 'Bienvenue',
+            valueEscapedForJava: 'Bienvenue',
             language: 'fr',
           },
         ])
@@ -604,6 +621,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Welcome',
             valueEscapedForJavascript: 'Welcome',
+            valueEscapedForJava: 'Welcome',
             language: 'en',
           },
         ])
@@ -614,6 +632,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bienvenido',
             valueEscapedForJavascript: 'Bienvenido',
+            valueEscapedForJava: 'Bienvenido',
             language: 'es',
           },
         ])
@@ -624,6 +643,7 @@ describe('Artifact generator unit tests', () => {
           {
             value: 'Bienvenue',
             valueEscapedForJavascript: 'Bienvenue',
+            valueEscapedForJava: 'Bienvenue',
             language: 'fr',
           },
         ])

@@ -3,7 +3,10 @@ const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const logger = require('debug')('lit-artifact-generator:CommandLine');
 
-const { ARTIFACT_DIRECTORY_ROOT } = require('./generator/ArtifactGenerator');
+const {
+  ARTIFACT_DIRECTORY_ROOT,
+  ARTIFACT_DIRECTORY_SOURCE_CODE,
+} = require('./generator/ArtifactGenerator');
 
 module.exports = class CommandLine {
   static getParentFolder(directory) {
@@ -227,6 +230,29 @@ module.exports = class CommandLine {
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
+  }
+
+  static runMavenInstall(data) {
+    if (data.runMavenInstall) {
+      logger(
+        `Running 'mvn install' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
+      );
+
+      // Quick addition to also support Maven install for Java artifacts.
+      if (data.generationDetails) {
+        const javaDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+        data.generationDetails.artifactToGenerate.forEach(artifact => {
+          if (artifact.programmingLanguage.toLowerCase() === 'java') {
+            const commandLineMaven = `cd ${javaDirectory} && mvn install`;
+            ChildProcess.execSync(commandLineMaven);
+          }
+        });
+      }
+
+      return { ...data, ranMavenInstall: true }; // Merge the answers in with the data and return
+    }
+
+    return data;
   }
 
   static runNpmVersion(data) {

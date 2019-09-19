@@ -2,8 +2,6 @@ const debug = require('debug');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const CommandLine = require('./CommandLine');
 
-const logger = debug('lit-artifact-generator:App');
-
 module.exports = class App {
   constructor(yargsConfig) {
     if (!yargsConfig) {
@@ -20,7 +18,6 @@ module.exports = class App {
     if (!this.argv.inputResources && !this.argv.vocabListFile) {
       this.yargsConfig.showHelp();
       debug.enable('lit-artifact-generator:*');
-      logger(`\nInvalid inputs.`);
       throw new Error(
         "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
       );

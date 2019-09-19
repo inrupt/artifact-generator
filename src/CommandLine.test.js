@@ -259,6 +259,47 @@ describe('Command Line unit tests', () => {
     });
   });
 
+  describe('Maven installing...', () => {
+    it('Should install artifact with Maven if Java, but ignore non-Java artifacts', async () => {
+      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
+
+      const result = await CommandLine.runMavenInstall({
+        ...defaultInputs,
+        runMavenInstall: true,
+        generationDetails: {
+          artifactToGenerate: [
+            {
+              programmingLanguage: 'Java',
+            },
+            {
+              programmingLanguage: 'C#',
+            },
+          ],
+        },
+      });
+
+      expect(result.ranMavenInstall).toBe(true);
+    });
+
+    it('Should ignore Maven install if no explicit flag set', async () => {
+      const result = await CommandLine.runMavenInstall({
+        ...defaultInputs,
+        runMavenInstall: false,
+      });
+
+      expect(result.ranMavenInstall).toBe(undefined);
+    });
+
+    it('Should ignore Maven install if no generation details', async () => {
+      const result = await CommandLine.runMavenInstall({
+        ...defaultInputs,
+        runMavenInstall: true,
+      });
+
+      expect(result.ranMavenInstall).toBe(true);
+    });
+  });
+
   describe('Running Widoco...', () => {
     it('Should run Widoco', () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(''));
