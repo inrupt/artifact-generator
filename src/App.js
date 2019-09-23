@@ -41,14 +41,11 @@ module.exports = class App {
 
     const artifactGenerator = new ArtifactGenerator(this.argv, CommandLine.askForArtifactInfo);
 
-    return (
-      artifactGenerator
-        .generate()
-        .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-        // .then(await CommandLine.askForArtifactToBeYalced)
-        .then(CommandLine.askForArtifactToBeNpmInstalled)
-        .then(CommandLine.askForArtifactToBeNpmPublished)
-        .then(CommandLine.askForArtifactToBeDocumented)
-    );
+    return artifactGenerator
+      .generate()
+      .then(CommandLine.askForArtifactToBeNpmVersionBumped)
+      .then(CommandLine.askForArtifactToBeNpmInstalled)
+      .then(CommandLine.askForArtifactToBeNpmPublished)
+      .then(CommandLine.askForArtifactToBeDocumented);
   }
 };

@@ -217,7 +217,6 @@ module.exports = class DatasetHandler {
     result.authorSet = this.findAuthors();
     result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runMavenInstall = this.vocabData.runMavenInstall;
-    result.runYalcCommand = this.vocabData.runYalcCommand;
     result.runNpmPublish = this.vocabData.runNpmPublish;
     result.bumpVersion = this.vocabData.bumpVersion;
     result.runWidoco = this.vocabData.runWidoco;
