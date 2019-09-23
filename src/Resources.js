@@ -1,19 +1,28 @@
 const rdf = require('rdf-ext');
-const rdfFetch = require('rdf-fetch-lite');
-const N3Parser = require('rdf-parser-n3');
+const rdfFetch = require('@rdfjs/fetch-lite');
+
+const ParserN3 = require('@rdfjs/parser-n3');
 const ParserJsonld = require('@rdfjs/parser-jsonld');
+const ParserRdfXml = require('rdfxml-streaming-parser').RdfXmlParser;
+
+const SinkMap = require('@rdfjs/sink-map');
+
 const logger = require('debug')('lit-artifact-generator:Resources');
 
 const { LitUtils } = require('@lit/vocab-term');
 
+const parserN3 = new ParserN3();
+const parserJsonld = new ParserJsonld();
+const parserRdfXml = new ParserRdfXml();
+
 const formats = {
-  parsers: new rdf.Parsers({
-    'text/turtle': N3Parser,
-    'text/n3': N3Parser, // The OLO vocab returns this content type.
-    'application/x-turtle': N3Parser, // This is needed as schema.org returns this as the content type.
-    'application/ld+json': ParserJsonld, // Activity streams only supports JSON-LD and HTML.
-    // 'application/rdf+xml': ???, // No XML parser available at the moment (https://github.com/rdf-ext/documentation).
-  }),
+  parsers: new SinkMap([
+    ['text/turtle', parserN3],
+    ['text/n3', parserN3], // The OLO vocab returns this content type.
+    ['application/x-turtle', parserN3], // This is needed as schema.org returns this as the content type.
+    ['application/ld+json', parserJsonld], // Activity streams only supports JSON-LD and HTML.
+    ['application/rdf+xml', parserRdfXml],
+  ]),
 };
 
 module.exports = class Resources {
@@ -49,18 +58,7 @@ module.exports = class Resources {
   readResource(datasetFile) {
     logger(`Loading resource: [${datasetFile}]...`);
     if (datasetFile.startsWith('http')) {
-      // [PMcB] - Fails trying to read the Activity Streams vocab, so tried
-      // this manual Parsing of JSON-LD, but I don't know how to construct the
-      // input properly...
-      //
-      // const parserJsonld = new ParserJsonld()
-      // const output = parserJsonld.import(input)
-      //
-      // output.on('data', quad => {
-      //   console.log(`${quad.subject.value} - ${quad.predicate.value} - ${quad.object.value}`)
-      // })
-
-      return rdfFetch(datasetFile, { formats }).then(resource => {
+      return rdfFetch(datasetFile, { factory: rdf, formats }).then(resource => {
         return resource.dataset();
       });
     }

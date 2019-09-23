@@ -40,5 +40,5 @@ pet_rock:rarity a owl:ObjectProperty ;
   rdfs:label "Rarity"@en ;
   rdfs:label "Rareté"@fr ;
   rdfs:label "Rareza"@es ;
-  rdfs:comment "How rare this rock is (related to it value on the lucrative pet-rock market)."@en ;
+  rdfs:comment "How rare this rock is (related to it's value on the lucrative pet-rock market)."@en ;
   rdfs:comment "Cuán rara es esta roca (relacionada con su valor en el lucrativo mercado de pet-rock)."@es .
