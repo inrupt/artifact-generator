@@ -159,32 +159,6 @@ module.exports = class CommandLine {
     return { ...data, ...answer }; // Merge the answers in with the data and return
   }
 
-  // static async askForArtifactToBeYalced(data) {
-  //   if (data.runYalcCommand) {
-  //     return { ...data, ...CommandLine.runYalcCommand2(data) }; // Merge the answers in with the data and return
-  //   }
-  //
-  //   let answer = {};
-  //   if (!data.noprompt) {
-  //     const yalcQuestion = [
-  //       {
-  //         type: 'input',
-  //         name: 'runYalcCommand',
-  //         message: `Do you want to run yalc for [${data.artifactName}] (e.g. 'yalc publish' or 'yalc link @lit/vocab-term')?`,
-  //         default: '',
-  //       },
-  //     ];
-  //
-  //     answer = await inquirer.prompt(yalcQuestion);
-  //
-  //     if (answer.runYalcCommand && answer.runYalcCommand.trim().length > 0) {
-  //       answer = { ...answer, ...CommandLine.runYalcCommand({ ...data, ...answer }) };
-  //     }
-  //   }
-  //
-  //   return { ...data, ...answer }; // Merge the answers in with the data and return
-  // }
-
   static async askForArtifactToBeDocumented(data) {
     if (data.runWidoco) {
       return { ...data, ...CommandLine.runWidoco(data) }; // Merge the answers in with the data and return
@@ -284,18 +258,6 @@ module.exports = class CommandLine {
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
-
-  // static runYalcCommand2(data) {
-  //   log(
-  //     `Running yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`
-  //   );
-  //
-  //   ChildProcess.execSync(`cd ${data.outputDirectoryForArtifact} && ${data.runYalcCommand}`);
-  //
-  //   log(`Ran yalc command [${data.runYalcCommand}] for artifact [${data.artifactName}]...`);
-  //
-  //   return { ...data, ...{ ranYalcCommand: true } }; // Merge the answers in with the data and return
-  // }
 
   static runWidoco(data) {
     // Run Widoco using environment variable (since putting the JAR in a local

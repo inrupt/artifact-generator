@@ -31,7 +31,8 @@ describe('End-to-end tests', () => {
       );
 
       await expect(artifactGenerator.generate()).rejects.toThrow(
-        "Failed to generate: Error: ENOENT: no such file or directory, open '././test/resources/vocabs/does.not.exist.ttl'"
+        'Failed to generate',
+        errorFilename
       );
     });
 

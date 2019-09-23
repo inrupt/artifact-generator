@@ -7,7 +7,7 @@ const CommandLine = require('./CommandLine');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
-const VERSION_ARTIFACT_GENERATED = '0.1.0';
+const VERSION_ARTIFACT_GENERATED = '0.1.0-SNAPSHOT';
 
 const VERSION_LIT_VOCAB_TERM = '^0.1.0'; // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES, AS THEY PROVIDE PER PROGRAMMING LANGUAGE)...!?
 const NPM_REGISTRY = 'http://localhost:4873';
@@ -29,7 +29,6 @@ const GenerationConfigLitCommon = {
   runMavenInstall: RUN_MAVEN_INSTALL,
   runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
-  // runYalcCommand: 'yalc link @lit/vocab-term && yalc publish',
 };
 
 const GenerationConfigSolidCommon = {
@@ -98,13 +97,12 @@ async function generateVocabArtifact(argv) {
   const result = await artifactGenerator
     .generate()
     .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-    // .then(await CommandLine.askForArtifactToBeYalced)
     .then(CommandLine.askForArtifactToBeNpmInstalled)
     .then(CommandLine.runMavenInstall)
     .then(CommandLine.askForArtifactToBeNpmPublished)
     .then(CommandLine.askForArtifactToBeDocumented)
     .catch(error => {
-      logger(`Generation process failed: [${error}]`);
+      logger(`Generation process failed: [${error}]. Stack: ${error.stack.toString()}`);
       throw new Error(error);
     });
 
@@ -167,12 +165,15 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     // it('Test Demo App', async () => {
     await generateVocabArtifact({
       // inputResources: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-      // inputResources: ['./example/vocab/PetRocks.ttl'],
+
       // inputResources: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
+
+      inputResources: ['./example/vocab/PetRock.ttl'],
+      outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
 
       // inputResources: ['http://www.w3.org/2006/vcard/ns#'],
       // nameAndPrefixOverride: 'vcard',
-      //
+
       // inputResources: ['http://www.w3.org/2002/07/owl#'],
       // nameAndPrefixOverride: 'owl',
 
@@ -185,14 +186,17 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['https://www.w3.org/ns/activitystreams-owl'],
       // nameAndPrefixOverride: 'as',
 
-      inputResources: ['http://www.w3.org/2007/ont/httph#'],
-      nameAndPrefixOverride: 'httph',
+      // inputResources: ['http://www.w3.org/2007/ont/httph#'],
+      // nameAndPrefixOverride: 'httph',
 
-      outputDirectory: './test/generated',
-      // outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
+      // inputResources: ['http://www.w3.org/2011/http-headers#'],
+      // nameAndPrefixOverride: 'http-headers',
+
+      // outputDirectory: './test/generated',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
+      npmRegistry: NPM_REGISTRY,
       runNpmInstall: RUN_NPM_INSTALL,
       runNpmPublish: RUN_NPM_PUBLISH,
       supportBundling: SUPPORT_BUNDLING,

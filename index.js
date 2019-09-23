@@ -23,7 +23,7 @@ const yargsConfig = yargs
   .alias('l', 'vocabListFile')
   .describe(
     'vocabListFile',
-    'Name of a file providing a list of individual vocabs (one per line) to bundle together into one artifact.'
+    'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
   )
 
   .alias('lv', 'litVocabTermVersion')
