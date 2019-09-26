@@ -74,12 +74,12 @@ const yargsConfig = yargs
   .describe('vocabTermsFrom', 'Generates Vocab Terms from only the specified ontology file.')
 
   .alias('av', 'artifactVersion')
-  .describe('artifactVersion', 'The version of the Node module that will be generated.')
+  .describe('artifactVersion', 'The version of the artifact(s) to be generated.')
   .default('artifactVersion', '0.0.1')
 
   .alias('at', 'artifactType')
   .describe('artifactType', 'The artifact type that will be generated.')
-  .choices('artifactType', ['nodejs']) // Add to this when other languages are supported.
+  .choices('artifactType', ['nodejs', 'java']) // Add to this when other languages are supported.
   .default('artifactType', 'nodejs')
 
   .alias('mnp', 'moduleNamePrefix')
