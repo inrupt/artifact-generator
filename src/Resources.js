@@ -29,14 +29,14 @@ module.exports = class Resources {
   /**
    *
    * @param datasetFiles
-   * @param vocabTermsFromFile
+   * @param vocabTermsFromResource
    * @param fileResourcesRelativeTo If we load resources locally from the file system, make them relative to this path
    * (e.g. for reading resources from a vocab list file that can be anywhere, all local resources referenced in it
    * should be relative to wherever that list file itself is!).
    */
-  constructor(datasetFiles, vocabTermsFromFile, fileResourcesRelativeTo) {
+  constructor(datasetFiles, vocabTermsFromResource, fileResourcesRelativeTo) {
     this.datasetFiles = datasetFiles;
-    this.subjectsOnlyFile = vocabTermsFromFile;
+    this.vocabTermsFromResource = vocabTermsFromResource;
     this.fileResourcesRelativeTo = fileResourcesRelativeTo;
   }
 
@@ -46,13 +46,17 @@ module.exports = class Resources {
 
     const datasets = await Promise.all(datasetsPromises);
 
-    let subjectsOnlyDataset;
-    if (this.subjectsOnlyFile) {
-      subjectsOnlyDataset = await this.readResource(this.subjectsOnlyFile);
-      datasets.push(subjectsOnlyDataset); // Adds the extension to the full data set.
+    let vocabTermsFromDataset;
+    if (this.vocabTermsFromResource) {
+      vocabTermsFromDataset = await this.readResource(this.vocabTermsFromResource);
+
+      // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
+      // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
+      // terms).
+      datasets.push(vocabTermsFromDataset);
     }
 
-    processInputsCallback(datasets, subjectsOnlyDataset);
+    processInputsCallback(datasets, vocabTermsFromDataset);
   }
 
   readResource(datasetFile) {

@@ -7,8 +7,6 @@ const CommandLine = require('./CommandLine');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
-const VERSION_ARTIFACT_GENERATED = '0.1.0-SNAPSHOT';
-
 const VERSION_LIT_VOCAB_TERM = '^0.1.0'; // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES, AS THEY PROVIDE PER PROGRAMMING LANGUAGE)...!?
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
@@ -22,7 +20,6 @@ const GenerationConfigLitCommon = {
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
   moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
-  artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -37,7 +34,6 @@ const GenerationConfigSolidCommon = {
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon',
   moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
-  artifactVersion: VERSION_ARTIFACT_GENERATED,
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -52,7 +48,6 @@ const GenerationConfigLitCore = {
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'core',
-  artifactVersion: VERSION_ARTIFACT_GENERATED,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runMavenInstall: RUN_MAVEN_INSTALL,
@@ -65,7 +60,7 @@ const GenerationConfigSolidComponent = {
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent/Vocab/SolidComponent.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
-  artifactVersion: VERSION_ARTIFACT_GENERATED,
+  artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -79,7 +74,7 @@ const GenerationConfigSolidGeneratorUi = {
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
-  artifactVersion: VERSION_ARTIFACT_GENERATED,
+  artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,

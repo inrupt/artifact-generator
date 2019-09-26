@@ -98,6 +98,12 @@ class ArtifactGenerator {
     return FileGenerator.createPackagingFiles(this.artifactData, 'Javascript');
   }
 
+  /**
+   * This method can generate multiple artifacts for different programming languages (e.g. a Java JAR and an NPM
+   * module), each of which can be comprised of a bundle of RDF vocabs.
+   *
+   * @returns {Promise<*>}
+   */
   async generateFromVocabListFile() {
     logger(`Generating artifact from vocabulary list file: [${this.artifactData.vocabListFile}]`);
 
@@ -125,6 +131,10 @@ class ArtifactGenerator {
     });
     await Promise.all(directoryDeletionPromises);
 
+    // TODO: This code evolved from where we originally only had a list of
+    //  vocabs to generate from. But now we can create artifacts for multiple
+    //  programming languages. But this code was extended to provide the
+    //  language-specific details within this original vocab-iterating loop.
     const vocabGenerationPromises = generationDetails.vocabList.map(async vocabDetails => {
       // const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
 
@@ -133,7 +143,10 @@ class ArtifactGenerator {
       this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
       this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
 
+      // Generate this vocab for each artifact we are generating for.
       const artifactPromises = generationDetails.artifactToGenerate.map(artifactDetails => {
+        this.artifactData.artifactVersion = artifactDetails.artifactVersion;
+
         this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
 
         // TODO: Currently we need to very explicitly add this Java-specific
@@ -178,6 +191,8 @@ class ArtifactGenerator {
 
     // Generate packaging details for each generated artifact.
     generationDetails.artifactToGenerate.forEach(artifactDetails => {
+      this.artifactData.artifactVersion = artifactDetails.artifactVersion;
+
       this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
       this.artifactData.javaPackageName = artifactDetails.javaPackageName;
       this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;

@@ -32,6 +32,11 @@ describe('Artifact Generator', () => {
       expect(packageOutput).toEqual(
         expect.stringContaining('"name": "@lit/generated-vocab-common-TEST",')
       );
+      expect(packageOutput).toEqual(expect.stringContaining('"version": "10.11.12"'));
+
+      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      const pomOutput = fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString();
+      expect(pomOutput).toEqual(expect.stringContaining('<version>3.2.1-SNAPSHOT</version>'));
     }
 
     it('should fail with non-existent vocab list file', async () => {
@@ -55,7 +60,7 @@ describe('Artifact Generator', () => {
       const artifactGenerator = new ArtifactGenerator({
         vocabListFile: './test/resources/vocabs/vocab-list.yml',
         outputDirectory,
-        artifactVersion: '1.0.0',
+        // artifactVersion: '1.0.0',
         moduleNamePrefix: '@lit/generated-vocab-',
         noprompt: true,
       });
