@@ -123,8 +123,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     jest.setTimeout(60000);
     await generateVocabArtifact(GenerationConfigLitCommon);
     await generateVocabArtifact(GenerationConfigLitCore);
-    await generateVocabArtifact(GenerationConfigSolidCommon);
 
+    await generateVocabArtifact(GenerationConfigSolidCommon);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   });
@@ -135,8 +135,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
-  it('LIT Core vocabs', async () => {
-    // it.skip('LIT Core vocabs', async () => {
+  // it('LIT Core vocabs', async () => {
+  it.skip('LIT Core vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCore);
   });
 
