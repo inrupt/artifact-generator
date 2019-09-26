@@ -140,8 +140,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(GenerationConfigLitCommon);
   });
 
-  // it('LIT Core vocabs', async () => {
-  it.skip('LIT Core vocabs', async () => {
+  it('LIT Core vocabs', async () => {
+    // it.skip('LIT Core vocabs', async () => {
     await generateVocabArtifact(GenerationConfigLitCore);
   });
 

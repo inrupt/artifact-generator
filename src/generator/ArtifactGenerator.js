@@ -183,6 +183,8 @@ class ArtifactGenerator {
       this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
       this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
       this.artifactData.gitRepository = artifactDetails.gitRepository;
+      this.artifactData.repository = artifactDetails.repository;
+
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails.programmingLanguage);
     });
 
