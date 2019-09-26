@@ -27,16 +27,18 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+{{#if repository}}
     <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <url>https://nexus.inrupt.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>https://nexus.inrupt.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
+    {{#each repository}}
+        {{#if enabled}}
+        <{{type}}>
+            <id>{{id}}</id>
+            <url>{{url}}</url>
+        </{{type}}>
+        {{/if}}
+    {{/each}}
     </distributionManagement>
+{{/if}}
 
     <dependencies>
         <dependency>

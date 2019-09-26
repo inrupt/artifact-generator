@@ -123,8 +123,8 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
     jest.setTimeout(60000);
     await generateVocabArtifact(GenerationConfigLitCommon);
     await generateVocabArtifact(GenerationConfigLitCore);
-    await generateVocabArtifact(GenerationConfigSolidCommon);
 
+    await generateVocabArtifact(GenerationConfigSolidCommon);
     await generateVocabArtifact(GenerationConfigSolidComponent);
     await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
   });
