@@ -163,8 +163,13 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
       // inputResources: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
 
-      inputResources: ['./example/vocab/PetRock.ttl'],
-      outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
+      // inputResources: ['./example/vocab/PetRock.ttl'],
+      // outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
+
+      inputResources: [
+        'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl',
+      ],
+      nameAndPrefixOverride: 'cube',
 
       // inputResources: ['http://www.w3.org/2006/vcard/ns#'],
       // nameAndPrefixOverride: 'vcard',
@@ -187,7 +192,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['http://www.w3.org/2011/http-headers#'],
       // nameAndPrefixOverride: 'http-headers',
 
-      // outputDirectory: './test/generated',
+      outputDirectory: './test/generated',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',
