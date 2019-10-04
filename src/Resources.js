@@ -22,6 +22,11 @@ const formats = {
     ['application/x-turtle', parserN3], // This is needed as schema.org returns this as the content type.
     ['application/ld+json', parserJsonld], // Activity streams only supports JSON-LD and HTML.
     ['application/rdf+xml', parserRdfXml],
+
+    // The vocab
+    // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
+    // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
+    ['text/plain', parserN3],
   ]),
 };
 
