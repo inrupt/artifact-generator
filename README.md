@@ -41,8 +41,13 @@ lit-artifact-generator --help
 
 # How to run
 
+1. To generate source code from a vocabulary or from a config YAML file:
 ```shell
-node index.js --inputResources <ontology files>
+node index.js generate --inputResources <ontology files>
+```
+2. To create an initial YAML file that should be edited manually
+```shell
+node index.js init
 ```
 
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.

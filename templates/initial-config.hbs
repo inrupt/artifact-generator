@@ -1,0 +1,51 @@
+artifactName: defaultName # FIXME
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 0.1.0-SNAPSHOT
+    javaPackageName: com.example.java.packagename # FIXME
+    litVocabTermVersion: 0.1.0-SNAPSHOT
+    artifactFolderName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class     # Defined in VCard.
+      - abstract  # Defined in DCTerms.
+#    repository:
+#      - enabled: true
+#        type: repository
+#        id: nexus-releases
+#        url: https://nexus.mycompany.com/repository/maven-releases/
+
+  - programmingLanguage: Javascript
+    artifactVersion: 0.1.0
+#    gitRepository: git@github.com:some_user/some_project.git
+    npmModuleScope: "@exampleScope/" # FIXME
+    litVocabTermVersion: "^0.1.0"
+    artifactFolderName: Javascript
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+#    repository:
+#      - enabled: true
+#        registry: http://localhost:4873/
+
+
+vocabList:
+  # Example for an online vocabulary
+  - description: Some vocabulary # FIXME
+    nameAndPrefixOverride: vocab
+    inputResources:
+      - https://example.org/ns # FIXME
+# The following option enables to import a different vocabulary that extends the core one,
+# adding new terms, multilingual support, etc.
+#    termSelectionFile: /path/to/file
+
+#  # Example for a local vocabulary
+#  - description: Schema.org with selective terms having translations
+#    nameAndPrefixOverride: schema-inrupt-ext
+#    inputResources:
+#      - /path/to/vocabulary
+# The following option enables to import a different vocabulary that extends the core one,
+# adding new terms, multilingual support, etc.
+#    termSelectionFile: /path/to/file

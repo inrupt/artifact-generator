@@ -8,3 +8,6 @@ generated/
 .idea/
 *.iml
 .vscode/
+
+# VSCode
+vscode_wspace.code-workspace
