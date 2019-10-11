@@ -177,7 +177,7 @@ function runInitialization(argv) {
   new App(argv)
     .init()
     .then(data => {
-      logger(`\nSuccessfully initialized config file ${data}`);
+      logger(`\nSuccessfully initialized config file [${data}]`);
       process.exit(0);
     })
     .catch(error => {

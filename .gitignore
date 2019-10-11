@@ -7,7 +7,7 @@ generated/
 
 .idea/
 *.iml
-.vscode/
 
 # VSCode
+.vscode/
 vscode_wspace.code-workspace

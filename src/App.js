@@ -3,6 +3,8 @@ const path = require('path');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const CommandLine = require('./CommandLine');
 const FileGenerator = require('./generator/FileGenerator');
+const packageDotJson = require('../package.json');
+const moment = require('moment');
 
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
@@ -14,6 +16,11 @@ module.exports = class App {
     }
 
     this.argv = argv;
+
+    // Extend the received arguments with contextual data
+    this.argv.generatedTimestamp = moment().format('LLLL');
+    this.argv.generatorName = packageDotJson.name;
+    this.argv.generatorVersion = packageDotJson.version;
   }
 
   async run() {
@@ -45,7 +52,8 @@ module.exports = class App {
       FileGenerator.createDirectory(this.argv.outputDirectory);
       // This method is synchronous, so the wrapping promise just provices uniformity
       // with the other methods of the class
-      FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, null, targetPath);
+      
+      FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, this.argv, targetPath);
       resolve(targetPath);
     });
   }
