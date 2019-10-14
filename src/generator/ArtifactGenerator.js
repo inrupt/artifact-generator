@@ -125,6 +125,12 @@ class ArtifactGenerator {
     });
     await Promise.all(directoryDeletionPromises);
 
+    // If the vocab list is non-existant of empty (e.g. after initialization), the generator
+    // cannot run.
+    if (generationDetails.vocabList === undefined || generationDetails.vocabList === null) {
+      return this.artifactData;
+    }
+
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
     //  programming languages. But this code was extended to provide the
