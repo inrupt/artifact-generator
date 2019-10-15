@@ -4,7 +4,10 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('./ArtifactGenerator');
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./ArtifactGenerator');
+const {
+  ARTIFACT_DIRECTORY_SOURCE_CODE,
+  NoVocabularyProvidedError,
+} = require('./ArtifactGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
@@ -137,6 +140,19 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(false);
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
+    });
+
+    it('should throw an error trying to generate from an empty vocab list', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/';
+      del.sync([`${outputDirectory}/*`]);
+
+      const artifactGenerator = new ArtifactGenerator({
+        vocabListFile: './test/resources/vocabs/empty-vocab-list.yml',
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+      });
+      await expect(artifactGenerator.generate()).rejects.toThrow(NoVocabularyProvidedError);
     });
   });
 });
