@@ -9,9 +9,6 @@ const VocabGenerator = require('./VocabGenerator');
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
 
-// This error is thrown when the list of vocabularies in the provided config is empty
-class NoVocabularyProvidedError extends Error {}
-
 class ArtifactGenerator {
   constructor(argv, inquirerProcess) {
     this.artifactData = argv;
@@ -123,9 +120,9 @@ class ArtifactGenerator {
     // If the vocab list is non-existent or empty (e.g. after initialization), the generator
     // cannot run.
     if (!generationDetails.vocabList) {
-      throw new NoVocabularyProvidedError(
+      throw new Error(
         'No vocabularies found: nothing to generate. ' +
-          'Please edit the YAML configuration file to provide vocabularies to generate from.'
+          `Please edit the YAML configuration file [${this.artifactData.vocabListFile}] to provide vocabularies to generate from.`
       );
     }
 
@@ -214,6 +211,5 @@ class ArtifactGenerator {
 }
 
 module.exports = ArtifactGenerator;
-module.exports.NoVocabularyProvidedError = NoVocabularyProvidedError;
 module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
 module.exports.ARTIFACT_DIRECTORY_SOURCE_CODE = ARTIFACT_DIRECTORY_SOURCE_CODE;

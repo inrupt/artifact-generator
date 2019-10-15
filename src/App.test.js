@@ -28,17 +28,6 @@ describe('App tests', () => {
     expect(() => new App(config)).not.toThrow();
   });
 
-  // This check is now directly done by yargs
-  // TODO: When moving functionnalities towards a yaml-only approach, this test should evolve to test the validity of the config file.
-  // it('should fail with missing input', async () => {
-  //   const config = {
-  //     argv: {},
-  //     showHelp: () => {},
-  //   };
-
-  //   await expect(new App(config).run()).rejects.toThrow('You must provide input');
-  // });
-
   describe('Testing mocked generator...', () => {
     it('should pass through in non-quiet mode (with DEBUG setting too)', async () => {
       debug.enable('lit-artifact-generator:*');

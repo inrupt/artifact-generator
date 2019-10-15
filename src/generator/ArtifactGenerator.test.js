@@ -4,10 +4,7 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('./ArtifactGenerator');
-const {
-  ARTIFACT_DIRECTORY_SOURCE_CODE,
-  NoVocabularyProvidedError,
-} = require('./ArtifactGenerator');
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./ArtifactGenerator');
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
@@ -152,7 +149,10 @@ describe('Artifact Generator', () => {
         artifactVersion: '1.0.0',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
-      await expect(artifactGenerator.generate()).rejects.toThrow(NoVocabularyProvidedError);
+      // Test that the error message contains the expected explanation
+      await expect(artifactGenerator.generate()).rejects.toThrow(/^No vocabularies found/);
+      // Test that the error message contains the expected file name
+      await expect(artifactGenerator.generate()).rejects.toThrow(/empty-vocab-list.yml/);
     });
   });
 });
