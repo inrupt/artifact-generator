@@ -143,16 +143,20 @@ describe('Artifact Generator', () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/';
       del.sync([`${outputDirectory}/*`]);
 
+      const configFile = 'empty-vocab-list.yml';
+      const configPath = `./test/resources/vocabs/${configFile}`;
+
       const artifactGenerator = new ArtifactGenerator({
-        vocabListFile: './test/resources/vocabs/empty-vocab-list.yml',
+        vocabListFile: configPath,
         outputDirectory,
         artifactVersion: '1.0.0',
         moduleNamePrefix: '@lit/generated-vocab-',
       });
-      // Test that the error message contains the expected explanation
-      await expect(artifactGenerator.generate()).rejects.toThrow(/^No vocabularies found/);
-      // Test that the error message contains the expected file name
-      await expect(artifactGenerator.generate()).rejects.toThrow(/empty-vocab-list.yml/);
+      // Test that the error message contains the expected explanation and file name
+      await expect(artifactGenerator.generate()).rejects.toThrow(
+        /^No vocabularies found/,
+        configFile
+      );
     });
   });
 });
