@@ -138,5 +138,25 @@ describe('Artifact Generator', () => {
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
+
+    it('should throw an error trying to generate from an empty vocab list', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/';
+      del.sync([`${outputDirectory}/*`]);
+
+      const configFile = 'empty-vocab-list.yml';
+      const configPath = `./test/resources/vocabs/${configFile}`;
+
+      const artifactGenerator = new ArtifactGenerator({
+        vocabListFile: configPath,
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+      });
+      // Test that the error message contains the expected explanation and file name
+      await expect(artifactGenerator.generate()).rejects.toThrow(
+        /^No vocabularies found/,
+        configFile
+      );
+    });
   });
 });

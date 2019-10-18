@@ -1,12 +1,10 @@
 const fs = require('fs');
 const del = require('del');
 const yaml = require('js-yaml');
-const moment = require('moment');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
-const packageDotJson = require('../../package.json');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
@@ -22,10 +20,6 @@ class ArtifactGenerator {
 
     // This collection will be populated with the authors per generated vocab.
     this.artifactData.authorSet = new Set();
-
-    this.artifactData.generatedTimestamp = moment().format('LLLL');
-    this.artifactData.generatorName = packageDotJson.name;
-    this.artifactData.generatorVersion = packageDotJson.version;
 
     // TODO: Just hard-coding for the moment (still investigating Webpack...)
     this.artifactData.versionWebpack = '^4.39.1';
@@ -122,6 +116,15 @@ class ArtifactGenerator {
 
     // Provide access to our entire YAML data.
     this.artifactData.generationDetails = generationDetails;
+
+    // If the vocab list is non-existent or empty (e.g. after initialization), the generator
+    // cannot run.
+    if (!generationDetails.vocabList) {
+      throw new Error(
+        'No vocabularies found: nothing to generate. ' +
+          `Please edit the YAML configuration file [${this.artifactData.vocabListFile}] to provide vocabularies to generate from.`
+      );
+    }
 
     // For each programming language artifact we generate, first clear out the destination directories.
     const directoryDeletionPromises = generationDetails.artifactToGenerate.map(artifactDetails => {

@@ -1,5 +1,7 @@
 require('mock-local-storage');
 const debug = require('debug');
+const fs = require('fs');
+const path = require('path');
 
 const App = require('./App');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
@@ -24,15 +26,6 @@ describe('App tests', () => {
     };
 
     expect(() => new App(config)).not.toThrow();
-  });
-
-  it('should fail with missing input', async () => {
-    const config = {
-      argv: {},
-      showHelp: () => {},
-    };
-
-    await expect(new App(config).run()).rejects.toThrow('You must provide input');
   });
 
   describe('Testing mocked generator...', () => {
@@ -68,6 +61,16 @@ describe('App tests', () => {
       const mockedResponse = await new App(config).run();
       expect(mockedResponse.noprompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
+    });
+
+    it('should generate a default file', async () => {
+      const directoryPath = path.join('.', '.tmp');
+      const filePath = path.join(directoryPath, 'lit-vocab.yml');
+      const argv = { outputDirectory: directoryPath, quiet: false, noprompt: true };
+      await new App(argv).init();
+      expect(fs.existsSync(filePath)).toBe(true);
+      fs.unlinkSync(filePath);
+      fs.rmdirSync(directoryPath);
     });
   });
 });
