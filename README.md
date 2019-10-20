@@ -41,81 +41,129 @@ lit-artifact-generator --help
 
 # How to run
 
-1. To generate source code from a vocabulary or from a config YAML file:
+- To **generate** source code from a vocabulary:
 ```shell
 node index.js generate --inputResources <ontology files>
-```
-2. To create an initial YAML file that should be edited manually
-```shell
-node index.js init
 ```
 
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.
 
-## Examples
 
-Here are some examples of running the tool:
+- To **initialize** a YAML file that should be edited manually
+```shell
+node index.js init
+```
+
+The output is a YAML file (by default `./lit-vocab.yml`), that where options can be specified to generate artifacts in different languages (Java, Javascript) from a list of vocabularies. 
+
+## CLI Examples
+
+Here are some examples of running the tool using CLI options:
 
 Local ontology file
 
 ```shell
-node index.js --inputResources ./example/PetRocks.ttl
+node index.js generate --inputResources ./example/PetRocks.ttl
 ```
 
 Remote ontology file
 
 ```shell
-node index.js --inputResources https://schema.org/version/latest/schema-snippet.ttl
+node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl
 ```
 
 Multiple local ontology files:
 
 ```shell
-node index.js --inputResources ./example/Skydiving.ttl ./example/PetRocks.ttl
+node index.js generate --inputResources ./example/Skydiving.ttl ./example/PetRocks.ttl
 ```
 
 Selecting only specific terms from a vocabulary.
 Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
 ```shell
-node index.js --inputResources https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
+node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:
 ```shell
-node index.js --inputResources  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
+node index.js generate --inputResources  http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
 Providing the version for the output module:
 ```shell
-node index.js --inputResources http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifactVersion 1.0.1
+node index.js generate --inputResources http://www.w3.org/2002/07/owl# ./vocabs/owl-inrupt-ext.ttl --artifactVersion 1.0.1
 ```
 
 Specifing a custom prefix for the output module name:
 ```shell
-node index.js --inputResources ./vocabs/schema-snippet.ttl --moduleNamePrefix my-company-prefix-
+node index.js generate --inputResources ./vocabs/schema-snippet.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Specifing a custom NPM registry to where the output module will be published:
 ```shell
-node index.js --inputResources ./vocabs/schema-snippet.ttl --npmRegistry http://my.company.registry/npm/
+node index.js generate --inputResources ./vocabs/schema-snippet.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
 Using short-form alaises for the command-line flags:
 ```shell
-node index.js --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
+node index.js generate --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
 Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
 *NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-vocab-term` to pick up that local copy.
 ```shell
-node index.js --i ./vocabs/schema-snippet.ttl --litVocabTermVersion ^1.0.10
+node index.js generate --i ./vocabs/schema-snippet.ttl --litVocabTermVersion ^1.0.10
 ```
-
 
 For help run:
 ```shell
 node index.js --help
+```
+
+## Configuring options using the YAML file
+
+Once you initialized the config file with `node index.js init`, you can edit it to add information about the artifacts you want to generate and the vocabularies you want to use. 
+
+### Artifacts information
+
+Information about each artifact is an object in the list `artifactToGenerate`.
+
+- Options shared among **all programming languages**:
+  - Mandatory:
+    - `programmingLanguage`: Supported values `Java`, `Javascript`
+    - `artifactVersion`: The version of the generated artifact. Be aware that versionning policies differ depending on the package manager (e.g. npm does not allow republication of the same version, while maven does)
+    - `litVocabTermVersion`: The version of the library upon which vocabularies are built. 
+    - `artifactFolderName`: Name of the folder in which the artifacts are stored, child of the output folder of the generation process
+    - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data.
+    - `sourceFileExtension`: Extension added to the generated source files
+  - Optional
+    - `languageKeywordsToUnderscore`: List of terms defined by the vocabulary that are keywords of the target language
+    - `repository`: Artifact repository to which the artifacts may be published.
+    - `gitRepository`: Address of the git repository.
+- **Language-specific** options
+  - Javascript
+    - `npmModuleScope`: useful for publication on NPM
+  - Java
+    - `javaPackageName`: Package name shared by all the generated vocabularies of the artifact
+
+### Vocabulary information
+
+Information about each vocabulary is an object in the list `vocabList`.
+
+- Mandatory:
+  - `inputResources`: A list of resources addresses (local files or IRI) from which the vocabulary is going to be built
+- Optional:
+  - `nameAndPrefixOverride`: The name of the generated vocabulary. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look for the `vann:preferredNamespacePrefix` property, and if it is not defined it will propose a default based on the domain name. 
+  - `description`: A description of the vocabulary, that will be used as a comment describing the generated class
+  - `termSelectionFile`: When using only a portion of a large vocabulary, this option uses a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control on (e.g. translations, labels...)
+
+### Generating artifacts using the YAML file
+
+Once you edited your config file, you can use it to generate your artifacts: 
+
+```shell
+node index.js generate --vocabListFile <./path/to/the/yaml/file>
 ```
 
 # How to build and deploy the module to an npm registry
@@ -133,7 +181,7 @@ When you run the tool you will be prompted with questions that will quide you th
 
 Here is an example of what this will look like on the output:
 ```shell
-[lit-artifact-generator-js]$ node index.js --inputResources ./vocabs/schema-snippet.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
+[lit-artifact-generator-js]$ node index.js generate --inputResources ./vocabs/schema-snippet.ttl --vocabTermsFrom ./vocabs/schema-inrupt-ext.ttl
 ? Artifact name ... @lit/generated-vocab-schema-inrupt-ext
 ? Artifact author ... Jarlath Holleran
 Created artifact: [./generated/index.js]
