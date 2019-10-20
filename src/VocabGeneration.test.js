@@ -30,7 +30,7 @@ const GenerationConfigLitCommon = {
 
 const GenerationConfigSolidCommon = {
   vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon/Vocab/Vocab-List-Solid-Common.yml',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common/Vocab/Vocab-List-Solid-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidCommon',
   moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
@@ -57,7 +57,7 @@ const GenerationConfigLitCore = {
 
 const GenerationConfigSolidComponent = {
   inputResources: [
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent/Vocab/SolidComponent.ttl',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component/Vocab/SolidComponent.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidComponent',
   artifactVersion: '0.1.0',
@@ -71,7 +71,7 @@ const GenerationConfigSolidComponent = {
 
 const GenerationConfigSolidGeneratorUi = {
   inputResources: [
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi/Vocab/SolidGeneratorUi.ttl',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/SolidGeneratorUi',
   artifactVersion: '0.1.0',
