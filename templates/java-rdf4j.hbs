@@ -44,7 +44,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
@@ -59,7 +59,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
@@ -74,7 +74,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), "<Context>", true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each definitions}}
       .addMessage("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
