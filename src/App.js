@@ -35,19 +35,17 @@ module.exports = class App {
   }
 
   async init() {
-    return new Promise(async resolve => {
-      const targetPath = path.join(this.argv.outputDirectory, DEFAULT_CONFIG_NAME);
-      FileGenerator.createDirectory(this.argv.outputDirectory);
+    const targetPath = path.join(this.argv.outputDirectory, DEFAULT_CONFIG_NAME);
+    FileGenerator.createDirectory(this.argv.outputDirectory);
 
-      const configGen = new ConfigFileGenerator(this.argv);
-      if (this.argv.noprompt) {
-        configGen.generateDefaultConfigFile(targetPath);
-      } else {
-        // By default, the user will be asked info about the artifacts to generate
-        await configGen.collectConfigInfo();
-        configGen.generateConfigFile(targetPath);
-      }
-      resolve(targetPath);
-    });
+    const configGen = new ConfigFileGenerator(this.argv);
+    if (this.argv.noprompt) {
+      configGen.generateDefaultConfigFile(targetPath);
+    } else {
+      // By default, the user will be asked info about the artifacts to generate
+      await configGen.collectConfigInfo();
+      configGen.generateConfigFile(targetPath);
+    }
+    return targetPath;
   }
 };
