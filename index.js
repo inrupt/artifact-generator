@@ -12,10 +12,25 @@ const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
 
-console.log(`Command: [${process.argv.join(' ')}]`);
+const GENERATE_COMMAND = 'generate';
+const INITIALIZE_COMMAND = 'init'
+const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND]
+
+function validateCommandLine(argv, options) {
+  // argv._ contains the commands passed to the program
+  if (argv._.length !== 1 ) {
+    // Only one command is expected
+    throw new Error(`Exactly one command is expected, one of [${SUPPORTED_COMMANDS}].`);
+  }
+  if ( SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1 ) {
+    throw new Error(`Unknown command: [${argv._[0]}] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`);
+  }
+  return true;
+}
+
 const yargsConfig = yargs
   .command(
-    'generate',
+    GENERATE_COMMAND,
     'generate code artifacts from RDF',
     yargs =>
       yargs
@@ -110,7 +125,7 @@ const yargsConfig = yargs
     }
   )
   .command(
-    'init',
+    INITIALIZE_COMMAND,
     'initializes a config file used for generation',
     yargs => yargs,
     argv => {
@@ -137,7 +152,7 @@ const yargsConfig = yargs
   .alias('o', 'outputDirectory')
   .describe('outputDirectory', 'The output directory for the generated artifacts.')
   .default('outputDirectory', './generated')
-
+  .check(validateCommandLine)
   .help().argv;
 
 function configureLog(argv) {
