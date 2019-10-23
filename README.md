@@ -133,7 +133,7 @@ Each artifact to generate (e.g. Java JAR, NPM module, etc.) is configured indivi
   - Mandatory:
     - `programmingLanguage`: Supported values `Java`, `Javascript`
     - `artifactVersion`: The version of the generated artifact. Be aware that versioning policies differ depending on the package manager (e.g. NPM does not allow re-publication of the same version, while maven does)
-    - `litVocabTermVersion`: The version of the library upon which the generated vocabularies will depend
+    - `litVocabTermVersion`: The version of the library LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for Javascript, https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies will depend
     - `artifactFolderName`: Name of the folder in which the artifacts are stored, child of the output folder of the generation process
     - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data
     - `sourceFileExtension`: Extension added to the generated source files
@@ -156,7 +156,7 @@ Information about each vocabulary is an object in the list `vocabList`.
 - Optional:
   - `nameAndPrefixOverride`: The name of the generated vocabulary. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the `vann:preferredNamespacePrefix` property, and if it is not defined it will propose a default based on the domain name. This defaut is composed of the complete domain name, excluding the country extension, e.g. `http://vocab.example.org/` would default to `vocab.example`.
   - `description`: A description of the vocabulary, that will be used as a comment describing the generated class
-  - `termSelectionFile`: When using only a portion of a large vocabulary, this option uses a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control on (e.g. adding translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.)
+  - `termSelectionFile`: When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.)
 
 ### Generating artifacts using the YAML file
 
