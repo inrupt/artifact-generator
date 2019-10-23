@@ -11,7 +11,7 @@ class NodeArtifactConfig extends ArtifactConfig {
     this.questions.push({
       type: 'input',
       name: 'npmModuleScope',
-      message: 'Scope for the npm module',
+      message: 'Scope for the NPM module',
       default: '@exampleScope/',
     });
 

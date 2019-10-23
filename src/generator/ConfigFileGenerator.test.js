@@ -10,9 +10,11 @@ const { ConfigFileGenerator, validateLanguageCheckboxes } = require('./ConfigFil
 
 // This line will have to change if one day we decide to support Ook (spoiler alert:
 // it is unlikely https://en.wikipedia.org/wiki/Brainfuck#Derivatives).
-const UNSUPPORTED_LANGUAGE = 'Ook';
+const UNSUPORTED_LANGUAGE = 'Ook';
 
-const TARGET_PATH = './lit-vocab.yml';
+const TARGET_DIR = './test/generated/config/';
+const TARGET_FILE = 'lit-vocab.yml';
+const TARGET_PATH = TARGET_DIR + TARGET_FILE;
 const REFERENCE_PROMPTED_YAML = './test/resources/expectedOutputs/lit-vocab.yml';
 const REFERENCE_DEFAULT_YAML = './test/resources/expectedOutputs/default-lit-vocab.yml';
 
@@ -76,14 +78,18 @@ const MOCK_VOCAB_PROMPT = jest
 
 describe('ConfigFile Generator', () => {
   it('should not validate empty configs', () => {
-    expect(ConfigFileGenerator.isValidConfig(INVALID_CONFIG)).toEqual(false);
-    expect(ConfigFileGenerator.isValidConfig(SAMPLE_CONFIG)).toEqual(true);
+    expect(() => {
+      ConfigFileGenerator.validateConfig(INVALID_CONFIG);
+    }).toThrow('Invalid configuration');
+    expect(() => {
+      ConfigFileGenerator.validateConfig(SAMPLE_CONFIG);
+    }).not.toThrow();
   });
 
   it('should fail when asking for a config generator of an unsupported language', () => {
     expect(() => {
-      ConfigFileGenerator.buildConfigGenerator(UNSUPPORTED_LANGUAGE);
-    }).toThrow(UNSUPPORTED_LANGUAGE, 'Unsported language');
+      ConfigFileGenerator.buildConfigGenerator(UNSUPORTED_LANGUAGE);
+    }).toThrow(UNSUPORTED_LANGUAGE, 'Unsported language');
   });
 
   it('should fail when less than one language is checked', () => {
@@ -103,7 +109,7 @@ describe('ConfigFile Generator', () => {
     configGenerator.config = INVALID_CONFIG;
     expect(() => {
       configGenerator.generateConfigFile(TARGET_PATH);
-    }).toThrow('invalid configuration');
+    }).toThrow('Invalid configuration');
   });
 
   it('should use the provided config', () => {
@@ -139,6 +145,7 @@ describe('ConfigFile Generator', () => {
   it('should generate a complete file when directly setting the config', () => {
     const configGenerator = new ConfigFileGenerator();
     configGenerator.setConfig(COMPLETE_CONFIG);
+    fs.mkdirSync(TARGET_DIR, { recursive: true });
     if (fs.existsSync(TARGET_PATH)) {
       fs.unlinkSync(TARGET_PATH);
     }
@@ -147,11 +154,11 @@ describe('ConfigFile Generator', () => {
     expect(fs.readFileSync(TARGET_PATH).toString()).toBe(
       fs.readFileSync(REFERENCE_PROMPTED_YAML).toString()
     );
-    fs.unlinkSync(TARGET_PATH);
   });
 
   it('should generate a default file even with an empty config', () => {
     const configGenerator = new ConfigFileGenerator({});
+    fs.mkdirSync(TARGET_DIR, { recursive: true });
     if (fs.existsSync(TARGET_PATH)) {
       fs.unlinkSync(TARGET_PATH);
     }
@@ -160,6 +167,5 @@ describe('ConfigFile Generator', () => {
     expect(fs.readFileSync(TARGET_PATH).toString()).toBe(
       fs.readFileSync(REFERENCE_DEFAULT_YAML).toString()
     );
-    fs.unlinkSync(TARGET_PATH);
   });
 });

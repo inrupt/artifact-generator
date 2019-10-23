@@ -69,11 +69,8 @@ class ConfigFileGenerator {
    * @param {*} config
    */
   setConfig(config) {
-    if (ConfigFileGenerator.isValidConfig(config)) {
-      this.config = config;
-    } else {
-      throw new Error(`Invalid configuration: trying to set the config file data to ${config}`);
-    }
+    ConfigFileGenerator.validateConfig(config);
+    this.config = config;
   }
 
   static buildConfigGenerator(language) {
@@ -94,7 +91,7 @@ class ConfigFileGenerator {
     // The previous inquirer returns
     for (let i = 0; i < languages.length; i += 1) {
       const generator = ConfigFileGenerator.buildConfigGenerator(languages[i]);
-      // All generator should extend the ArtifactConfig class,
+      // All generators should extend the ArtifactConfig class,
       // and therefore implement the prompt() method
       artifacts.push(generator.prompt());
     }
@@ -134,9 +131,13 @@ class ConfigFileGenerator {
   /**
    * Validates if the config is valid.
    */
-  static isValidConfig(config) {
+  static validateConfig(config) {
     // Currently, we only check that some properties have been set
-    return Object.entries(config).length !== 0;
+    if (Object.entries(config).length === 0) {
+      throw new Error(
+        `Invalid configuration: [${config}] cannot be used to generate the configuration YAML file.`
+      );
+    }
   }
 
   /**
@@ -146,13 +147,8 @@ class ConfigFileGenerator {
    * @param {string} targetPath the path to the generated file
    */
   generateConfigFile(targetPath) {
-    if (ConfigFileGenerator.isValidConfig(this.config)) {
-      FileGenerator.createFileFromTemplate(CONFIG_TEMPLATE_PATH, this.config, targetPath);
-    } else {
-      throw new Error(
-        `Trying to generate a config file from invalid configuration ${this.config}.`
-      );
-    }
+    ConfigFileGenerator.validateConfig(this.config);
+    FileGenerator.createFileFromTemplate(CONFIG_TEMPLATE_PATH, this.config, targetPath);
   }
 
   /**

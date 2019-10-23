@@ -5,10 +5,11 @@ const DEFAULT_ARTIFACT_VERSION = '0.1.0';
 const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract'];
 
 /**
- * ArtifactConfig is an abstract class: it should be extended for each supported language.
- * ArtifactConfig defines the prompted questions and the values for options shared by all
- * the artifacts.
- * See the './artifacts' for extensions examples.
+ * This is an abstract class that is intended to be extended for each supported programming language.
+ * We define the user-prompt questions (and default answers for those questions) that we expect to be
+ * shared across all programming languages.
+ *
+ * See the './artifacts' folder for examples of programming-language-specific extensions of this class.
  */
 class ArtifactConfig {
   constructor() {
@@ -39,12 +40,11 @@ class ArtifactConfig {
       throw new Error(
         'Unspecified artifact generator. This should be called from a class extending ArtifactConfig'
       );
-    } else {
-      // The language-specific options have been set when constructing the extending class
-      logger(`[${this.language}] artifact generator`);
-      this.config = { ...this.config, ...(await inquirer.prompt(this.questions)) };
-      return this.config;
     }
+    // The language-specific options have been set when constructing the extending class
+    logger(`[${this.language}] artifact generator`);
+    this.config = { ...this.config, ...(await inquirer.prompt(this.questions)) };
+    return this.config;
   }
 }
 

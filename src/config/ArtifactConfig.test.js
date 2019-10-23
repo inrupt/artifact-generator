@@ -13,7 +13,7 @@ const DUMMY_JAVA_ARTIFACT = {
 
 const DUMMY_JS_ARTIFACT = {
   artifactVersion: '1.0.1',
-  javaPackageName: 'com.example.dummy.packagename',
+  npmModuleScope: '@example',
 };
 
 describe('ArtifactConfig Generator', () => {
