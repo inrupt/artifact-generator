@@ -2,7 +2,7 @@ jest.mock('inquirer');
 const inquirer = require('inquirer');
 
 require('mock-local-storage');
-const { VocabConfig, splitInputResources } = require('./VocabularyConfig');
+const { VocabularyConfig, splitInputResources } = require('./VocabularyConfig');
 
 const DUMMY_VOCAB = {
   inputResources: ['test', 'anotherTest'],
@@ -15,6 +15,6 @@ describe('VocabuaryConfig Generator', () => {
 
   it('should return the values prompted by the user', () => {
     inquirer.prompt.mockImplementation(jest.fn().mockReturnValue(Promise.resolve(DUMMY_VOCAB)));
-    expect(VocabConfig.prompt()).resolves.toEqual(DUMMY_VOCAB);
+    expect(VocabularyConfig.prompt()).resolves.toEqual(DUMMY_VOCAB);
   });
 });

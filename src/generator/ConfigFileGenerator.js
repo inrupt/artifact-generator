@@ -7,7 +7,7 @@ const {
   NodeArtifactConfig,
   LANGUAGE: JAVASCRIPT,
 } = require('../config/artifacts/NodeArtifactConfig');
-const VocabularyConfig = require('../config/VocabularyConfig');
+const { VocabularyConfig } = require('../config/VocabularyConfig');
 
 const SUPPORTED_LANGUAGES = {};
 SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfig;
@@ -125,10 +125,10 @@ class ConfigFileGenerator {
     this.config = { ...this.config, ...(await inquirer.prompt(GENERAL_QUESTIONS)) };
     // Get the artifact information
     // List the different artifacts to generate in a map containing only one key-value pair
-    const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES).languages;
-    this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(languages);
+    const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES);
+    this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(languages.languages);
     // Get the vocabulary information
-    this.config.vocabList = await this.promptVocabularies();
+    this.config.vocabList = await ConfigFileGenerator.promptVocabularies();
   }
 
   /**
@@ -145,11 +145,13 @@ class ConfigFileGenerator {
    * by the app.
    * @param {string} targetPath the path to the generated file
    */
-  async generateConfigFile(targetPath) {
+  generateConfigFile(targetPath) {
     if (ConfigFileGenerator.isValidConfig(this.config)) {
       FileGenerator.createFileFromTemplate(CONFIG_TEMPLATE_PATH, this.config, targetPath);
     } else {
-      throw new Error(`Trying to generate a config file from invalid config ${this.config}.`);
+      throw new Error(
+        `Trying to generate a config file from invalid configuration ${this.config}.`
+      );
     }
   }
 
@@ -157,7 +159,7 @@ class ConfigFileGenerator {
    * Generates a default config file, relying on no input from the user.
    * @param {string} targetPath the path to the generated file
    */
-  async generateDefaultConfigFile(targetPath) {
+  generateDefaultConfigFile(targetPath) {
     // this.config is required here, because it contains at least contextual information
     // provided by the global app context, such as time of generation or app version
     FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, this.config, targetPath);

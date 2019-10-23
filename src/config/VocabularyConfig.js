@@ -30,11 +30,11 @@ const VOCAB_QUESTIONS = [
   },
 ];
 
-class VocabConfig {
+class VocabularyConfig {
   static async prompt() {
     return inquirer.prompt(VOCAB_QUESTIONS);
   }
 }
 
-module.exports.VocabConfig = VocabConfig;
+module.exports.VocabularyConfig = VocabularyConfig;
 module.exports.splitInputResources = splitInputResources;
