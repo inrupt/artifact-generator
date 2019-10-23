@@ -43,10 +43,10 @@ lit-artifact-generator --help
 
 - To **generate** source code from a vocabulary:
 ```shell
-node index.js generate --inputResources <ontology files>
+node index.js generate --inputResources <ontology resources (e.g. local files, or remote IRI's)>
 ```
 
-The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.
+The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary (or multiple vocabularies) specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.
 
 
 - To **initialize** a YAML file that should be edited manually
@@ -54,11 +54,11 @@ The output is a Node Module containing a Javascript file with constants defined 
 node index.js init
 ```
 
-The output is a YAML file (by default `./lit-vocab.yml`), that where options can be specified to generate artifacts in different languages (Java, Javascript) from a list of vocabularies. 
+The output is a YAML file (by default `./lit-vocab.yml`), within which options can be specified to generate artifacts in different languages (e.g. Java, Javascript, Typescript, etc.) from a list of vocabularies. 
 
 ## CLI Examples
 
-Here are some examples of running the tool using CLI options:
+Here are some examples of running the tool using the Command Line Interface (CLI) options:
 
 Local ontology file
 
@@ -123,22 +123,22 @@ node index.js --help
 
 ## Configuring options using the YAML file
 
-Once you initialized the config file with `node index.js init`, you can edit it to add information about the artifacts you want to generate and the vocabularies you want to use. 
+Once you've created a YAML configuration file using `node index.js init`, you can add information about the artifacts you want to generate, and the vocabularies you want to use. 
 
 ### Artifacts information
 
-Information about each artifact is an object in the list `artifactToGenerate`.
+Each artifact to generate (e.g. Java JAR, NPM module, etc.) is configured individually as an entry in the `artifactToGenerate` list.
 
-- Options shared among **all programming languages**:
+- Options shared across **all programming languages**:
   - Mandatory:
     - `programmingLanguage`: Supported values `Java`, `Javascript`
-    - `artifactVersion`: The version of the generated artifact. Be aware that versionning policies differ depending on the package manager (e.g. npm does not allow republication of the same version, while maven does)
-    - `litVocabTermVersion`: The version of the library upon which vocabularies are built. 
+    - `artifactVersion`: The version of the generated artifact. Be aware that versioning policies differ depending on the package manager (e.g. NPM does not allow re-publication of the same version, while maven does)
+    - `litVocabTermVersion`: The version of the library upon which the generated vocabularies will depend
     - `artifactFolderName`: Name of the folder in which the artifacts are stored, child of the output folder of the generation process
-    - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data.
+    - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data
     - `sourceFileExtension`: Extension added to the generated source files
   - Optional
-    - `languageKeywordsToUnderscore`: List of terms defined by the vocabulary that are keywords of the target language
+    - `languageKeywordsToUnderscore`: List of terms defined by the vocabulary that are keywords of the target language, and which will generate corresponding constant names prefixed with an underscore to prevent compiler errors.'
     - `repository`: Artifact repository to which the artifacts may be published.
     - `gitRepository`: Address of the git repository.
 - **Language-specific** options
@@ -152,15 +152,15 @@ Information about each artifact is an object in the list `artifactToGenerate`.
 Information about each vocabulary is an object in the list `vocabList`.
 
 - Mandatory:
-  - `inputResources`: A list of resources addresses (local files or IRI) from which the vocabulary is going to be built
+  - `inputResources`: A list of resources, which can be any mixture of local RDF files (whose path may be absolute, or relative to the YAML file itself) or remote IRI's, from which a single vocabulary source file will be generated.
 - Optional:
-  - `nameAndPrefixOverride`: The name of the generated vocabulary. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look for the `vann:preferredNamespacePrefix` property, and if it is not defined it will propose a default based on the domain name. 
+  - `nameAndPrefixOverride`: The name of the generated vocabulary. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the `vann:preferredNamespacePrefix` property, and if it is not defined it will propose a default based on the domain name. This defaut is composed of the complete domain name, excluding the country extension, e.g. `http://vocab.example.org/` would default to `vocab.example`.
   - `description`: A description of the vocabulary, that will be used as a comment describing the generated class
-  - `termSelectionFile`: When using only a portion of a large vocabulary, this option uses a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control on (e.g. translations, labels...)
+  - `termSelectionFile`: When using only a portion of a large vocabulary, this option uses a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control on (e.g. adding translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.)
 
 ### Generating artifacts using the YAML file
 
-Once you edited your config file, you can use it to generate your artifacts: 
+Once you've edited your config file, you can use it to generate your artifacts: 
 
 ```shell
 node index.js generate --vocabListFile <./path/to/the/yaml/file>
