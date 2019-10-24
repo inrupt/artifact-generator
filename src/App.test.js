@@ -4,13 +4,32 @@ const fs = require('fs');
 const path = require('path');
 
 const App = require('./App');
+const FileGenerator = require('./generator/FileGenerator');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
+const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
+
+const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
 jest.mock('./generator/ArtifactGenerator');
 ArtifactGenerator.mockImplementation(() => {
   return {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
+    },
+  };
+});
+
+jest.mock('./generator/ConfigFileGenerator');
+ConfigFileGenerator.mockImplementation(() => {
+  return {
+    collectConfigInfo: async () => {
+      return Promise.resolve({});
+    },
+    generateDefaultConfigFile: targetPath => {
+      FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, {}, targetPath);
+    },
+    generateConfigFile: targetPath => {
+      FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, {}, targetPath);
     },
   };
 });
@@ -67,6 +86,17 @@ describe('App tests', () => {
       const directoryPath = path.join('.', '.tmp');
       const filePath = path.join(directoryPath, 'lit-vocab.yml');
       const argv = { outputDirectory: directoryPath, quiet: false, noprompt: true };
+      await new App(argv).init();
+      expect(fs.existsSync(filePath)).toBe(true);
+      fs.unlinkSync(filePath);
+      fs.rmdirSync(directoryPath);
+    });
+
+    it('should generate a file through prompt', async () => {
+      const directoryPath = path.join('.', '.tmp');
+      const filePath = path.join(directoryPath, 'lit-vocab.yml');
+      const argv = { outputDirectory: directoryPath };
+      // init will call the prompt, which is mocked here
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);
       fs.unlinkSync(filePath);
