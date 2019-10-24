@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const inquirer = require('inquirer');
-const { LANGUAGE: JAVA } = require('../config/artifacts/JavaArtifactConfig');
+const { LANGUAGE: JAVA } = require('../config/artifacts/JavaArtifactConfigurator');
 
 jest.mock('inquirer');
 

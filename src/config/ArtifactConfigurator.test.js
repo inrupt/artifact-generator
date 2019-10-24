@@ -2,9 +2,15 @@ jest.mock('inquirer');
 const inquirer = require('inquirer');
 
 require('mock-local-storage');
-const ArtifactConfig = require('./ArtifactConfig');
-const { JavaArtifactConfig, LANGUAGE: JAVA } = require('./artifacts/JavaArtifactConfig');
-const { NodeArtifactConfig, LANGUAGE: JAVASCRIPT } = require('./artifacts/NodeArtifactConfig');
+const ArtifactConfigurator = require('./ArtifactConfigurator');
+const {
+  JavaArtifactConfigurator,
+  LANGUAGE: JAVA,
+} = require('./artifacts/JavaArtifactConfigurator');
+const {
+  NodeArtifactConfigurator,
+  LANGUAGE: JAVASCRIPT,
+} = require('./artifacts/NodeArtifactConfigurator');
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: '0.0.1',
@@ -18,14 +24,14 @@ const DUMMY_JS_ARTIFACT = {
 
 describe('ArtifactConfig Generator', () => {
   it('should throw when calling prompt from base class', () => {
-    expect(new ArtifactConfig().prompt()).rejects.toThrow('Unspecified artifact generator');
+    expect(new ArtifactConfigurator().prompt()).rejects.toThrow('Unspecified artifact generator');
   });
 
   it('should use the values provided by the user', async () => {
     inquirer.prompt.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(DUMMY_JAVA_ARTIFACT))
     );
-    const artifact = await new JavaArtifactConfig().prompt();
+    const artifact = await new JavaArtifactConfigurator().prompt();
     expect(artifact.javaPackageName).toEqual(DUMMY_JAVA_ARTIFACT.javaPackageName);
   });
 
@@ -33,7 +39,7 @@ describe('ArtifactConfig Generator', () => {
     inquirer.prompt.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(DUMMY_JAVA_ARTIFACT))
     );
-    const javaArtifact = new JavaArtifactConfig();
+    const javaArtifact = new JavaArtifactConfigurator();
     await javaArtifact.prompt();
     expect(javaArtifact.language).toEqual(JAVA);
     expect(javaArtifact.config.artifactVersion).toEqual(DUMMY_JAVA_ARTIFACT.artifactVersion);
@@ -41,7 +47,7 @@ describe('ArtifactConfig Generator', () => {
       jest.fn().mockReturnValue(Promise.resolve(DUMMY_JS_ARTIFACT))
     );
 
-    const jsArtifact = new NodeArtifactConfig();
+    const jsArtifact = new NodeArtifactConfigurator();
     await jsArtifact.prompt();
     expect(jsArtifact.language).toEqual(JAVASCRIPT);
     expect(jsArtifact.config.artifactVersion).toEqual(DUMMY_JS_ARTIFACT.artifactVersion);
