@@ -11,9 +11,9 @@ const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
-const { GENERATE_COMMAND, INITIALIZE_COMMAND } = require('./src/App');
+const { GENERATE_COMMAND, INITIALIZE_COMMAND, WATCH_COMMAND } = require('./src/App');
 
-const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND];
+const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND, WATCH_COMMAND];
 
 function validateCommandLine(argv, options) {
   // argv._ contains the commands passed to the program
@@ -130,6 +130,21 @@ const yargsConfig = yargs
       runInitialization(argv);
     }
   )
+  .command(
+    WATCH_COMMAND,
+    'starts a daemon process watching vocabularies, and re-generating artifacts accordingly',
+    yargs =>
+      yargs
+        .alias('l', 'vocabListFile')
+        .describe(
+          'vocabListFile',
+          'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
+        ),
+    argv => {
+      runWatcher(argv);
+    }
+  )
+
   // The following options are shared between the different commands
   .alias('q', 'quiet')
   .boolean('quiet')
@@ -197,4 +212,18 @@ function runInitialization(argv) {
       logger(`Generation process failed: [${error}]`);
       process.exit(-1);
     });
+}
+
+function runWatcher(argv) {
+  configureLog(argv);
+  const app = new App(argv);
+  app.watch();
+  logger(`\nSuccessfully initialized file watcher`);
+  console.log('Press Enter to terminate');
+  process.stdin.on('data', () => {
+    // On user input, exit
+    console.log('Stopping watcher');
+    app.unwatch();
+    process.exit(0);
+  });
 }

@@ -1,4 +1,5 @@
 const yaml = require('js-yaml');
+const path = require('path');
 const moment = require('moment');
 const logger = require('debug')('lit-artifact-generator:GeneratorConfiguration');
 const fs = require('fs');
@@ -43,6 +44,28 @@ class GeneratorConfiguration {
     this.inquirerProcess = inquirerProcess;
   }
 
+  static normalizeResources(vocab, yamlPath) {
+    const normalizedVocab = vocab;
+    for (let i = 0; i < vocab.inputResources.length; i += 1) {
+      if (!vocab.inputResources[i].startsWith('http')) {
+        // This modification makes the local vocabulary path relative to the root of the project,
+        // rather that to the configuration file. It makes it consistent with vocabularies passed
+        // on the command line.
+        normalizedVocab.inputResources[i] = path.join(
+          path.dirname(yamlPath),
+          vocab.inputResources[i]
+        );
+      }
+    }
+    if (vocab.termSelectionFile) {
+      normalizedVocab.termSelectionFile = path.join(
+        path.dirname(yamlPath),
+        vocab.termSelectionFile
+      );
+    }
+    return normalizedVocab;
+  }
+
   /**
    * Validates if all the required values are present in the config file, and throws an error otherwise.
    * @param {Object} config the object loaded from the YAML config
@@ -76,16 +99,22 @@ class GeneratorConfiguration {
   /**
    * Parses the provided YAML file, and returns the read configuration it it is valid.
    *
-   * @param {string} path path to the config file
+   * @param {string} yamlPath path to the config file
    */
-  static fromYaml(path) {
+  static fromYaml(yamlPath) {
     let yamlConfiguration = {};
     try {
       logger(`Processing YAML file...`);
-      yamlConfiguration = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
-      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, path);
+      yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
+      for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
+        yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizeResources(
+          yamlConfiguration.vocabList[i],
+          yamlPath
+        );
+      }
+      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
     } catch (error) {
-      throw new Error(`Failed to read configuration file [${path}]: ${error}`);
+      throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }
     return yamlConfiguration;
   }

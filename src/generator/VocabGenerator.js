@@ -1,4 +1,4 @@
-const path = require('path');
+// const path = require('path');
 const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
@@ -17,26 +17,31 @@ module.exports = class VocabGenerator {
     this.resources = new Resources(
       this.vocabData.inputResources,
       this.vocabData.vocabTermsFrom,
-      this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
+      // TODO: Cleanup the following parameter in the Resource class, since it is now handled in the configuration
+      '.' // this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
     );
 
-    return this.generateData().then(vocabGenerationData => {
-      logger(
-        `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-          this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
-        }...`
-      );
-      logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
-
-      return new Promise(resolve => {
-        FileGenerator.createSourceCodeFile(
-          this.vocabData,
-          this.artifactDetails,
-          vocabGenerationData
+    return this.generateData()
+      .then(vocabGenerationData => {
+        logger(
+          `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
+            this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
+          }...`
         );
-        resolve(vocabGenerationData);
+        logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
+
+        return new Promise(resolve => {
+          FileGenerator.createSourceCodeFile(
+            this.vocabData,
+            this.artifactDetails,
+            vocabGenerationData
+          );
+          resolve(vocabGenerationData);
+        });
+      })
+      .catch(error => {
+        throw error;
       });
-    });
   }
 
   generateData() {
