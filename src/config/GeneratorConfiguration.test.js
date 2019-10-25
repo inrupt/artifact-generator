@@ -5,19 +5,19 @@ const GeneratorConfiguration = require('./GeneratorConfiguration');
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
     description: 'Schema.org from Google, Microsoft, Yahoo and Yandex',
-    inputResources: ['schema-snippet.ttl'],
-    termSelectionFile: 'schema-inrupt-ext.ttl',
+    inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
+    termSelectionFile: 'test/resources/vocabs/schema-inrupt-ext.ttl',
   },
   {
     description: 'Vocab for testing predicate types...',
     nameAndPrefixOverride: 'override-name',
-    inputResources: ['./supported-data-types.ttl'],
+    inputResources: ['test/resources/vocabs/supported-data-types.ttl'],
   },
 ];
 
 const EXPECTED_VOCAB_LIST_FROM_CLI = [
   {
-    inputResources: ['schema-snippet.ttl'],
+    inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
   },
 ];
 
@@ -70,7 +70,6 @@ describe('Generator configuration', () => {
         {
           _: ['generate'],
           vocabListFile: './test/resources/vocabs/vocab-list.yml',
-          moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         },
         undefined
@@ -100,7 +99,7 @@ describe('Generator configuration', () => {
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
-          inputResources: ['schema-snippet.ttl'],
+          inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         },

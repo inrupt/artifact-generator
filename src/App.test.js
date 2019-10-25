@@ -7,6 +7,7 @@ const App = require('./App');
 const FileGenerator = require('./generator/FileGenerator');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
+const VocabWatcher = require('./VocabWatcher');
 
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
@@ -16,6 +17,14 @@ ArtifactGenerator.mockImplementation(() => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
+  };
+});
+
+jest.mock('./VocabWatcher');
+VocabWatcher.mockImplementation(() => {
+  return {
+    watch: jest.fn(x => x),
+    unwatch: jest.fn(x => x),
   };
 });
 
@@ -111,5 +120,15 @@ describe('App tests', () => {
       fs.unlinkSync(filePath);
       fs.rmdirSync(directoryPath);
     });
+  });
+
+  describe('Testing mocked watcher...', () => {
+    const argv = { _: ['watch'], vocabListFile: './test/resources/watcher/vocab-list.yml' };
+    // init will call the prompt, which is mocked here
+    const app = new App(argv);
+    app.watch();
+    app.unwatch();
+    expect(app.watcher.watch.mock.calls.length).toBe(1);
+    expect(app.watcher.unwatch.mock.calls.length).toBe(1);
   });
 });
