@@ -38,12 +38,6 @@ class ArtifactGenerator {
     logger(deletedPaths.join('\n'));
   }
 
-  /**
-   * This method can generate multiple artifacts for different programming languages (e.g. a Java JAR and an NPM
-   * module), each of which can be comprised of a bundle of RDF vocabs.
-   *
-   * @returns {Object} the configuration, extended by the generation details
-   */
   async generate() {
     // For each programming language artifact we generate, first clear out the destination directories.
     const directoryDeletionPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
@@ -52,23 +46,46 @@ class ArtifactGenerator {
       );
     });
     await Promise.all(directoryDeletionPromises);
-
-    const vocabDatasets = await this.generateVocabs();
-    await this.collectGeneratedVocabDetails(vocabDatasets);
-    // If the generator takes its input from the command line, the artifact name may not have been set
-    if (
-      !this.artifactData.artifactName ||
-      !this.artifactData.litVocabTermVersion ||
-      !this.artifactData.authorSet ||
-      this.artifactData.authorSet.size === 0
-    ) {
-      const vocabData = vocabDatasets[0];
-      this.artifactData.artifactName = vocabData.artifactName;
-      // If the generation was not sufficient to collect all the required information, the user is asked for it
-      await this.configuration.askAdditionalQuestions();
-    }
-    await this.generatePackaging();
-    return this.artifactData;
+    return this.generateVocabs()
+      .then(vocabDatasets => {
+        this.collectGeneratedVocabDetails(vocabDatasets);
+        return vocabDatasets;
+      })
+      .then(async vocabDatasets => {
+        // If the generator takes its input from the command line, the artifact name may not have been set
+        if (
+          !this.artifactData.artifactName ||
+          !this.artifactData.litVocabTermVersion ||
+          !this.artifactData.authorSet ||
+          this.artifactData.authorSet.size === 0
+        ) {
+          const vocabData = vocabDatasets[0];
+          this.artifactData.artifactName = vocabData.artifactName;
+          // If the generation was not sufficient to collect all the required information, the user is asked for it
+          await this.configuration.askAdditionalQuestions();
+        }
+      })
+      .then(() => this.generatePackaging())
+      .then(() => this.artifactData)
+      .catch(error => {
+        throw error;
+      });
+    // const vocabDatasets = await this.generateVocabs();
+    // await this.collectGeneratedVocabDetails(vocabDatasets);
+    // // If the generator takes its input from the command line, the artifact name may not have been set
+    // if (
+    //   !this.artifactData.artifactName ||
+    //   !this.artifactData.litVocabTermVersion ||
+    //   !this.artifactData.authorSet ||
+    //   this.artifactData.authorSet.size === 0
+    // ) {
+    //   const vocabData = vocabDatasets[0];
+    //   this.artifactData.artifactName = vocabData.artifactName;
+    //   // If the generation was not sufficient to collect all the required information, the user is asked for it
+    //   await this.configuration.askAdditionalQuestions();
+    // }
+    // await this.generatePackaging();
+    // return this.artifactData;
   }
 
   async generateVocabs() {

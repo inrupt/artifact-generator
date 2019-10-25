@@ -62,8 +62,6 @@ describe('Artifact Generator', () => {
           {
             vocabListFile: './test/resources/vocabs/vocab-list.yml',
             outputDirectory,
-            // artifactVersion: '1.0.0',
-            moduleNamePrefix: '@lit/generated-vocab-',
             noprompt: true,
           },
           undefined

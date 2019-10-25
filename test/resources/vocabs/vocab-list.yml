@@ -28,7 +28,7 @@ artifactToGenerate:
 vocabList:
   - description: Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - schema-snippet.ttl
+      - ./schema-snippet.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
   - description: Vocab for testing predicate types...
