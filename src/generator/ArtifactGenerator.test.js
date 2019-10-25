@@ -3,8 +3,22 @@ require('mock-local-storage');
 const fs = require('fs');
 const del = require('del');
 
+jest.mock('inquirer');
+const inquirer = require('inquirer');
+
 const ArtifactGenerator = require('./ArtifactGenerator');
+const GeneratorConfiguration = require('../config/GeneratorConfiguration');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./ArtifactGenerator');
+
+const MOCKED_ARTIFACT_NAME = 'testArtifact';
+const MOCKED_LIT_VOCAB_TERM_VERSION = '0.0.1';
+const MOCKED_AUTHORS = ['Jules Caesar (https://jcaesar.solid.community/profile/card#me)'];
+
+const MOCKED_USER_INPUT = {
+  artifactName: MOCKED_ARTIFACT_NAME,
+  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
+  authorSet: MOCKED_AUTHORS,
+};
 
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
@@ -39,31 +53,22 @@ describe('Artifact Generator', () => {
       expect(pomOutput).toEqual(expect.stringContaining('<version>3.2.1-SNAPSHOT</version>'));
     }
 
-    it('should fail with non-existent vocab list file', async () => {
-      const nonExistFile = ' nonsense file name';
-      await expect(
-        new ArtifactGenerator({ vocabListFile: nonExistFile }).generate()
-      ).rejects.toThrow(nonExistFile);
-    });
-
-    it('should fail with invalid YAML vocab list file', async () => {
-      const notYamlFile = './test/resources/vocabs/vocab-list.txt';
-      await expect(
-        new ArtifactGenerator({ vocabListFile: notYamlFile }).generate()
-      ).rejects.toThrow(notYamlFile);
-    });
-
     it('should generate artifact from vocab list file', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/vocab-list-file';
       del.sync([`${outputDirectory}/*`]);
 
-      const artifactGenerator = new ArtifactGenerator({
-        vocabListFile: './test/resources/vocabs/vocab-list.yml',
-        outputDirectory,
-        // artifactVersion: '1.0.0',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            vocabListFile: './test/resources/vocabs/vocab-list.yml',
+            outputDirectory,
+            // artifactVersion: '1.0.0',
+            moduleNamePrefix: '@lit/generated-vocab-',
+            noprompt: true,
+          },
+          undefined
+        )
+      );
 
       await artifactGenerator.generate();
       verifyVocabList(outputDirectory);
@@ -82,13 +87,14 @@ describe('Artifact Generator', () => {
       };
 
       const artifactGenerator = new ArtifactGenerator(
-        {
-          vocabListFile: './test/resources/vocabs/vocab-list.yml',
-          outputDirectory,
-          artifactVersion: '1.0.0',
-          moduleNamePrefix: '@lit/generated-vocab-',
-        },
-        inquirerProcess
+        new GeneratorConfiguration(
+          {
+            vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
+            outputDirectory,
+            moduleNamePrefix: '@lit/generated-vocab-',
+          },
+          inquirerProcess
+        )
       );
 
       await artifactGenerator.generate();
@@ -100,14 +106,20 @@ describe('Artifact Generator', () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
       del.sync([`${outputDirectory}/*`]);
 
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-        supportBundling: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            artifactVersion: '1.0.0',
+            moduleNamePrefix: '@lit/generated-vocab-',
+            noprompt: true,
+            supportBundling: true,
+          },
+          undefined
+        )
+      );
 
       await artifactGenerator.generate();
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
@@ -116,20 +128,28 @@ describe('Artifact Generator', () => {
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
+  });
 
+  describe('Processing command line vocab.', () => {
     it('Should generate artifact without bundling', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
       del.sync([`${outputDirectory}/*`]);
 
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-        supportBundling: false,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            artifactVersion: '1.0.0',
+            litVocabTermVersion: '^1.0.10',
+            moduleNamePrefix: '@lit/generated-vocab-',
+            noprompt: true,
+            supportBundling: false,
+          },
+          undefined
+        )
+      );
 
       await artifactGenerator.generate();
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
@@ -139,24 +159,121 @@ describe('Artifact Generator', () => {
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
 
-    it('should throw an error trying to generate from an empty vocab list', async () => {
-      const outputDirectory = 'test/generated/ArtifactGenerator/';
-      del.sync([`${outputDirectory}/*`]);
-
-      const configFile = 'empty-vocab-list.yml';
-      const configPath = `./test/resources/vocabs/${configFile}`;
-
-      const artifactGenerator = new ArtifactGenerator({
-        vocabListFile: configPath,
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: '@lit/generated-vocab-',
-      });
-      // Test that the error message contains the expected explanation and file name
-      await expect(artifactGenerator.generate()).rejects.toThrow(
-        /^No vocabularies found/,
-        configFile
+    it('should not ask for user input when no information is missing', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
+
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            artifactName: 'testName',
+            litVocabTermVersion: '^1.0.10',
+            authorSet: new Set(['Cleopatra']),
+          },
+          inquirer.prompt
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(inquirer.prompt.mock.calls.length).toEqual(0);
     });
+
+    it('should ask for user input when version information missing', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+      );
+
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            authorSet: new Set(['Cleopatra']),
+          },
+          inquirer.prompt
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(inquirer.prompt.mock.calls.length).toEqual(1);
+    });
+
+    it('should ask for user input when author list is empty', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+      );
+
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            artifactName: 'testName',
+            litVocabTermVersion: '^1.0.10',
+            authorSet: new Set([]),
+          },
+          inquirer.prompt
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(inquirer.prompt.mock.calls.length).toEqual(2);
+    });
+
+    it('should ask for user input when author information missing', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+      );
+
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: 'generate',
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            litVocabTermVersion: '^1.0.10',
+          },
+          inquirer.prompt
+        )
+      );
+
+      await artifactGenerator.generate();
+      expect(inquirer.prompt.mock.calls.length).toEqual(3);
+    });
+  });
+
+  it('should ask for user input when multiple information is missing', async () => {
+    const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+    inquirer.prompt.mockImplementation(
+      jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+    );
+
+    const artifactGenerator = new ArtifactGenerator(
+      new GeneratorConfiguration(
+        {
+          _: 'generate',
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+        },
+        inquirer.prompt
+      )
+    );
+
+    await artifactGenerator.generate();
+
+    expect(inquirer.prompt.mock.calls.length).toEqual(4);
   });
 });

@@ -39,12 +39,12 @@ describe('App tests', () => {
     expect(() => new App()).toThrow('must be initialised with a configuration');
   });
 
-  it('should construct Ok', () => {
+  it('should fail to construct', () => {
     const config = {
       argv: {},
     };
 
-    expect(() => new App(config)).not.toThrow();
+    expect(() => new App(config)).toThrow('Missing input resource');
   });
 
   describe('Testing mocked generator...', () => {
@@ -52,7 +52,10 @@ describe('App tests', () => {
       debug.enable('lit-artifact-generator:*');
 
       const config = {
-        argv: { inputResources: 'some_file.ttl', quiet: false, noprompt: true },
+        _: ['generate'],
+        inputResources: 'some_file.ttl',
+        quiet: false,
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -64,7 +67,10 @@ describe('App tests', () => {
       debug.disable('lit-artifact-generator:*');
 
       const config = {
-        argv: { inputResources: 'some_file.ttl', quiet: false, noprompt: true },
+        _: ['generate'],
+        inputResources: 'some_file.ttl',
+        quiet: false,
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -74,7 +80,10 @@ describe('App tests', () => {
 
     it('should pass through in quiet mode', async () => {
       const config = {
-        argv: { inputResources: 'some_file.ttl', quiet: true, noprompt: true },
+        _: ['generate'],
+        inputResources: 'some_file.ttl',
+        quiet: true,
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -85,7 +94,7 @@ describe('App tests', () => {
     it('should generate a default file', async () => {
       const directoryPath = path.join('.', '.tmp');
       const filePath = path.join(directoryPath, 'lit-vocab.yml');
-      const argv = { outputDirectory: directoryPath, quiet: false, noprompt: true };
+      const argv = { _: ['init'], outputDirectory: directoryPath, quiet: false, noprompt: true };
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);
       fs.unlinkSync(filePath);
@@ -95,7 +104,7 @@ describe('App tests', () => {
     it('should generate a file through prompt', async () => {
       const directoryPath = path.join('.', '.tmp');
       const filePath = path.join(directoryPath, 'lit-vocab.yml');
-      const argv = { outputDirectory: directoryPath };
+      const argv = { _: ['init'], outputDirectory: directoryPath };
       // init will call the prompt, which is mocked here
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);

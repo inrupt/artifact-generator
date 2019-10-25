@@ -11,9 +11,8 @@ const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
+const { GENERATE_COMMAND, INITIALIZE_COMMAND } = require('./src/App');
 
-const GENERATE_COMMAND = 'generate';
-const INITIALIZE_COMMAND = 'init';
 const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND];
 
 function validateCommandLine(argv, options) {
