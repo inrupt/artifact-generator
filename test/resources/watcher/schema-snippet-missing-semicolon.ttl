@@ -19,7 +19,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix xsd1: <hhttp://www.w3.org/2001/XMLSchema#> .
 
-
+# The following line is missing a semicolon
 schema:Person a rdfs:Class 
     rdfs:label "Person" ;
     dct:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_rNews> ;

@@ -4,6 +4,7 @@ const moment = require('moment');
 const logger = require('debug')('lit-artifact-generator:GeneratorConfiguration');
 const fs = require('fs');
 const packageDotJson = require('../../package.json');
+const CommandLine = require('../CommandLine');
 
 // TODO: Find out why this is undefined
 // const { INITIALIZE_COMMAND, GENERATE_COMMAND } = require('../App');
@@ -21,9 +22,9 @@ class GeneratorConfiguration {
    * - noprompt
    * - quiet
    * @param {Object} initialConfig the command line options
-   * @param {*} inquirerProcess additional user prompt
+   * @param {*} inquierArtifactInfo additional user prompt
    */
-  constructor(initialConfig, inquirerProcess) {
+  constructor(initialConfig) {
     if (initialConfig.vocabListFile) {
       // The command line contains a yaml file
       this.configuration = {
@@ -40,8 +41,6 @@ class GeneratorConfiguration {
     this.configuration.generatedTimestamp = moment().format('LLLL');
     this.configuration.generatorName = packageDotJson.name;
     this.configuration.generatorVersion = packageDotJson.version;
-    // Enable asking for additional info
-    this.inquirerProcess = inquirerProcess;
   }
 
   static normalizeResources(vocab, yamlPath) {
@@ -160,18 +159,35 @@ class GeneratorConfiguration {
     if (args.litVocabTermVersion) {
       cliConfig.artifactToGenerate[0].litVocabTermVersion = args.litVocabTermVersion;
     }
-
     return cliConfig;
   }
 
   /**
    * This function is asked when generating a single vocab, if processing the vocab did not provide the expected
-   * additional information.
+   * additional information. These information may be completed when generating the vocabularies, and will not
+   * necessarily be asked to the user.
    */
   async askAdditionalQuestions() {
-    if (this.inquirerProcess) {
-      this.configuration = await this.inquirerProcess(this.configuration);
+    this.configuration = await CommandLine.askForArtifactInfo(this.configuration);
+  }
+
+  /**
+   * If receiving the config from the command line, some information may be missing that we know the vocabulary generation
+   * will not provide. These must be asked to the user.
+   *
+   */
+  async completeInitialConfiguration() {
+    if (!this.configuration.artifactToGenerate[0].litVocabTermVersion) {
+      if (!this.configuration.noprompt) {
+        const input = await CommandLine.askForLitVocabTermVersion();
+        this.configuration.artifactToGenerate[0].litVocabTermVersion = input.litVocabTermVersion;
+      } else {
+        throw new Error(
+          'Missing LIT VocabTerm version: The LIT VocabTerm version was not provided as a CLI option, and user prompt is deactivated.'
+        );
+      }
     }
+    return this;
   }
 }
 

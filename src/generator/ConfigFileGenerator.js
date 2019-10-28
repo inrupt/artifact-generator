@@ -109,10 +109,8 @@ class ConfigFileGenerator {
     const vocabularies = [];
     let addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION);
     while (addVocab.addVocab) {
-      // The next lines require the usage of an await inside a loop,
-      // because re-entering the loop depends on user input, and
-      // not waiting for the vocabulary prompt to finish before the
-      // conformation makes it messy.
+      // Here we require 'await' inside a loop, because iterations
+      // must be sequential, as they require user input.
       vocabularies.push(await VocabularyConfigurator.prompt()); // eslint-disable-line no-await-in-loop
       addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION); // eslint-disable-line no-await-in-loop
     }

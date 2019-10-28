@@ -1,10 +1,13 @@
 require('mock-local-storage');
 
+jest.mock('inquirer');
+const inquirer = require('inquirer');
+
 const GeneratorConfiguration = require('./GeneratorConfiguration');
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
-    description: 'Schema.org from Google, Microsoft, Yahoo and Yandex',
+    description: 'Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex',
     inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
     termSelectionFile: 'test/resources/vocabs/schema-inrupt-ext.ttl',
   },
@@ -29,6 +32,8 @@ const DEFAULT_CLI_ARTIFACT = [
     sourceFileExtension: 'js',
   },
 ];
+
+const MOCKED_USER_INPUT = { authorSet: new Set(['Cleopatra']), artifactName: 'someName' };
 
 describe('Generator configuration', () => {
   describe('Processing vocab list file.', () => {
@@ -101,44 +106,44 @@ describe('Generator configuration', () => {
           _: ['generate'],
           inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
           moduleNamePrefix: '@lit/generated-vocab-',
+          authorSet: new Set(['Cleopatra']),
           noprompt: true,
         },
         undefined
       );
 
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
+      expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_CLI);
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(DEFAULT_CLI_ARTIFACT);
     });
   });
 
   describe('Additional questions.', () => {
-    it('should call the callback function when prompting questions', async () => {
-      const mockCallback = jest.fn(x => x);
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          vocabListFile: './test/resources/vocabs/vocab-list.yml',
-          moduleNamePrefix: '@lit/generated-vocab-',
-          noprompt: true,
-        },
-        mockCallback
+    it('should set missing information when prompting questions', async () => {
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
-      generatorConfiguration.askAdditionalQuestions();
-      expect(mockCallback.mock.calls.length).toBe(1);
+
+      const generatorConfiguration = new GeneratorConfiguration({
+        vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
+      });
+      await generatorConfiguration.askAdditionalQuestions();
+      expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));
     });
 
-    it('should do nothing when the callback is not specified', async () => {
-      const mockCallback = jest.fn(x => x);
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          vocabListFile: './test/resources/vocabs/vocab-list.yml',
-          moduleNamePrefix: '@lit/generated-vocab-',
-          noprompt: true,
-        },
-        undefined
+    it('should fail when not providing info and preventing prompt', async () => {
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
-      generatorConfiguration.askAdditionalQuestions();
-      expect(mockCallback.mock.calls.length).toBe(0);
+
+      const generatorConfiguration = new GeneratorConfiguration({
+        inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
+        noprompt: true,
+      });
+      expect(generatorConfiguration.completeInitialConfiguration()).rejects.toThrow(
+        'Missing LIT VocabTerm version'
+      );
     });
   });
 });

@@ -1,0 +1,24 @@
+artifactName: testSchema
+authorSet: Cleopatra (https://cleopatra.solid.community/profile/card#me)
+
+artifactToGenerate:
+  - programmingLanguage: "Java"
+    artifactVersion: "0.1.0"
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactFolderName: "Java"
+    handlebarsTemplate: "java-rdf4j.hbs"
+    sourceFileExtension: "java"
+    languageKeywordsToUnderscore:
+      - "class"
+      - "abstract"
+    javaPackageName: "com.example.java.packagename"
+
+
+vocabList:
+  - inputResources:
+    ###
+    #  This resource is malformed
+    ###
+      - "schema-snippet-missing-semicolon.ttl"
+    nameAndPrefixOverride: "schema"
+    description: "A schema snippet"
