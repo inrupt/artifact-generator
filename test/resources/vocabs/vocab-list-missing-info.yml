@@ -2,8 +2,8 @@
 # This file contains a simple list of vocabularies that we bundle together to
 # form the collective set vocabularies within a single artifact.
 #
-# No author is set, so additional information will be asked to the user
 artifactName: generated-vocab-common-TEST
+# NOTE: No author is set, so additional information will be asked to the user
 
 artifactToGenerate:
   - programmingLanguage: Java

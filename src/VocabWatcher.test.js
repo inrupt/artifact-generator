@@ -8,6 +8,8 @@ const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 const VocabWatcher = require('./VocabWatcher');
 
+const SLEEP_TIME = 50;
+
 function sleep(ms) {
   return new Promise(resolve => {
     setTimeout(resolve, ms);
@@ -45,20 +47,16 @@ describe('Vocabulary watcher', () => {
     const outputDirectory = 'test/generated/watcher/initial';
     del.sync([`${outputDirectory}/*`]);
 
-    const watcher = new VocabWatcher(
-      new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: './test/resources/watcher/vocab-list.yml',
-            outputDirectory,
-          },
-          undefined
-        )
-      )
-    );
-    watcher.watch();
-    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(500);
+    const config = new GeneratorConfiguration({
+      vocabListFile: './test/resources/watcher/vocab-list.yml',
+      outputDirectory,
+    });
+    await config.completeInitialConfiguration();
+
+    const vocabWatcher = new VocabWatcher(new ArtifactGenerator(config));
+    vocabWatcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if the generation was successful
+    await sleep(SLEEP_TIME);
     const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
     const packageHierarchy = 'src/main/java/com/example/java/packagename';
     const generatedFilePath = `${outputDirectoryJava}/${packageHierarchy}/SCHEMA.java`;
@@ -75,7 +73,7 @@ describe('Vocabulary watcher', () => {
         .toString()
         .replace('(alive, dead, undead, or fictional)', '(alive, dead, or fictional)')
     );
-    await sleep(1000);
+    await sleep(SLEEP_TIME);
     expect(fs.statSync(generatedFilePath)).not.toEqual(initialFileStat);
 
     // The following changes the vocabulary back
@@ -127,7 +125,7 @@ describe('Vocabulary watcher', () => {
     );
     watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(500);
+    await sleep(SLEEP_TIME);
 
     const watchedVocabPath = './test/resources/watcher/schema-snippet.ttl';
     // The following changes a comment in the vocabulary
@@ -138,7 +136,7 @@ describe('Vocabulary watcher', () => {
         .toString()
         .replace('schema:Person a rdfs:Class ;', 'schema:Person a rdfs:Class')
     );
-    await sleep(1000);
+    await sleep(SLEEP_TIME);
 
     // The following changes the vocabulary back
     fs.writeFileSync(
@@ -159,7 +157,7 @@ describe('Vocabulary watcher', () => {
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
-            vocabListFile: './test/resources/watcher/incorrect-vocab-list.yml',
+            vocabListFile: './test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml',
             outputDirectory,
           },
           undefined
@@ -168,7 +166,7 @@ describe('Vocabulary watcher', () => {
     );
     watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(500);
+    await sleep(SLEEP_TIME);
     // Completing this test is proof that nothing was thrown
   });
 
@@ -189,7 +187,7 @@ describe('Vocabulary watcher', () => {
     );
     watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(500);
+    await sleep(SLEEP_TIME);
     const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
     const packageHierarchy = 'src/main/java/com/example/java/packagename';
     const generatedFilePath = `${outputDirectoryJava}/${packageHierarchy}/SCHEMA.java`;
@@ -205,7 +203,7 @@ describe('Vocabulary watcher', () => {
         .toString()
         .replace('(alive, dead, undead, or fictional)', '(alive, dead, or fictional)')
     );
-    await sleep(1000);
+    await sleep(SLEEP_TIME);
     const newerFileStat = fs.statSync(generatedFilePath);
     expect(newerFileStat).not.toEqual(initialFileStat);
     watcher.unwatch();
