@@ -40,7 +40,7 @@ module.exports = class VocabGenerator {
         });
       })
       .catch(error => {
-        throw error;
+        throw new Error(`Data generation for vocabs failed: ${error}`);
       });
   }
 

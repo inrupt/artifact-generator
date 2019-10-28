@@ -48,44 +48,21 @@ class ArtifactGenerator {
     await Promise.all(directoryDeletionPromises);
     return this.generateVocabs()
       .then(vocabDatasets => {
-        this.collectGeneratedVocabDetails(vocabDatasets);
-        return vocabDatasets;
+        return this.collectGeneratedVocabDetails(vocabDatasets);
       })
       .then(async vocabDatasets => {
-        // If the generator takes its input from the command line, the artifact name may not have been set
-        if (
-          !this.artifactData.artifactName ||
-          !this.artifactData.litVocabTermVersion ||
-          !this.artifactData.authorSet ||
-          this.artifactData.authorSet.size === 0
-        ) {
-          const vocabData = vocabDatasets[0];
-          this.artifactData.artifactName = vocabData.artifactName;
-          // If the generation was not sufficient to collect all the required information, the user is asked for it
-          await this.configuration.askAdditionalQuestions();
+        if (!this.artifactData.artifactName) {
+          this.artifactData.artifactName = vocabDatasets[0].artifactName;
         }
+
+        // If the generation was not sufficient to collect all the required information, the user is asked for it
+        await this.configuration.askAdditionalQuestions();
       })
       .then(() => this.generatePackaging())
       .then(() => this.artifactData)
       .catch(error => {
         throw error;
       });
-    // const vocabDatasets = await this.generateVocabs();
-    // await this.collectGeneratedVocabDetails(vocabDatasets);
-    // // If the generator takes its input from the command line, the artifact name may not have been set
-    // if (
-    //   !this.artifactData.artifactName ||
-    //   !this.artifactData.litVocabTermVersion ||
-    //   !this.artifactData.authorSet ||
-    //   this.artifactData.authorSet.size === 0
-    // ) {
-    //   const vocabData = vocabDatasets[0];
-    //   this.artifactData.artifactName = vocabData.artifactName;
-    //   // If the generation was not sufficient to collect all the required information, the user is asked for it
-    //   await this.configuration.askAdditionalQuestions();
-    // }
-    // await this.generatePackaging();
-    // return this.artifactData;
   }
 
   async generateVocabs() {
@@ -144,6 +121,7 @@ class ArtifactGenerator {
     this.artifactData.authors = `Vocabularies authored by: ${Array.from(
       authorsAcrossAllVocabs
     ).join(', ')}.`;
+    return vocabDatasets;
   }
 
   async generatePackaging() {

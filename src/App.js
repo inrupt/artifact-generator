@@ -20,12 +20,16 @@ module.exports = class App {
     }
 
     this.argv = argv;
-    this.configuration = new GeneratorConfiguration(argv, CommandLine.askForArtifactInfo);
     this.watcher = undefined;
   }
 
+  async configure() {
+    const configuration = new GeneratorConfiguration(this.argv);
+    return configuration.completeInitialConfiguration();
+  }
+
   async run() {
-    const artifactGenerator = new ArtifactGenerator(this.configuration);
+    const artifactGenerator = new ArtifactGenerator(await this.configure());
 
     return artifactGenerator
       .generate()
@@ -50,8 +54,8 @@ module.exports = class App {
     return targetPath;
   }
 
-  watch() {
-    this.watcher = new VocabWatcher(new ArtifactGenerator(this.configuration));
+  async watch() {
+    this.watcher = new VocabWatcher(new ArtifactGenerator(await this.configure()));
     this.watcher.watch();
   }
 

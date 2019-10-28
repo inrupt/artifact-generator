@@ -48,14 +48,6 @@ describe('App tests', () => {
     expect(() => new App()).toThrow('must be initialised with a configuration');
   });
 
-  it('should fail to construct', () => {
-    const config = {
-      argv: {},
-    };
-
-    expect(() => new App(config)).toThrow('Missing input resource');
-  });
-
   describe('Testing mocked generator...', () => {
     it('should pass through in non-quiet mode (with DEBUG setting too)', async () => {
       debug.enable('lit-artifact-generator:*');
@@ -63,6 +55,7 @@ describe('App tests', () => {
       const config = {
         _: ['generate'],
         inputResources: 'some_file.ttl',
+        litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
       };
@@ -78,6 +71,7 @@ describe('App tests', () => {
       const config = {
         _: ['generate'],
         inputResources: 'some_file.ttl',
+        litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
       };
@@ -91,6 +85,7 @@ describe('App tests', () => {
       const config = {
         _: ['generate'],
         inputResources: 'some_file.ttl',
+        litVocabTermVersion: '1.1.1',
         quiet: true,
         noprompt: true,
       };
@@ -123,12 +118,14 @@ describe('App tests', () => {
   });
 
   describe('Testing mocked watcher...', () => {
-    const argv = { _: ['watch'], vocabListFile: './test/resources/watcher/vocab-list.yml' };
-    // init will call the prompt, which is mocked here
-    const app = new App(argv);
-    app.watch();
-    app.unwatch();
-    expect(app.watcher.watch.mock.calls.length).toBe(1);
-    expect(app.watcher.unwatch.mock.calls.length).toBe(1);
+    it('should be possible to watch and unwatch vocabularies', async () => {
+      const argv = { _: ['watch'], vocabListFile: './test/resources/watcher/vocab-list.yml' };
+      // init will call the prompt, which is mocked here
+      const app = new App(argv);
+      await app.watch();
+      app.unwatch();
+      expect(app.watcher.watch.mock.calls.length).toBe(1);
+      expect(app.watcher.unwatch.mock.calls.length).toBe(1);
+    });
   });
 });

@@ -57,16 +57,13 @@ describe('Artifact Generator', () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/vocab-list-file';
       del.sync([`${outputDirectory}/*`]);
 
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: './test/resources/vocabs/vocab-list.yml',
-            outputDirectory,
-            noprompt: true,
-          },
-          undefined
-        )
-      );
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/vocabs/vocab-list.yml',
+        outputDirectory,
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
       verifyVocabList(outputDirectory);
@@ -75,49 +72,39 @@ describe('Artifact Generator', () => {
     it('should generate artifact from vocab list file (with inquirer)', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/vocab-list-file-inquirer';
       del.sync([`${outputDirectory}/*`]);
-
-      let inquirerCalled = false;
-      const inquirerProcess = data => {
-        return new Promise(resolve => {
-          inquirerCalled = true;
-          resolve(data);
-        });
-      };
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
-            outputDirectory,
-            moduleNamePrefix: '@lit/generated-vocab-',
-          },
-          inquirerProcess
-        )
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
+      // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
 
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
+        outputDirectory,
+        moduleNamePrefix: '@lit/generated-vocab-',
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
-      expect(inquirerCalled).toBe(true);
+      expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
       verifyVocabList(outputDirectory);
     });
 
     it('Should generate artifact with bundling', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
       del.sync([`${outputDirectory}/*`]);
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            artifactVersion: '1.0.0',
-            moduleNamePrefix: '@lit/generated-vocab-',
-            noprompt: true,
-            supportBundling: true,
-          },
-          undefined
-        )
-      );
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^0.1.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        supportBundling: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
@@ -132,22 +119,18 @@ describe('Artifact Generator', () => {
     it('Should generate artifact without bundling', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
       del.sync([`${outputDirectory}/*`]);
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            artifactVersion: '1.0.0',
-            litVocabTermVersion: '^1.0.10',
-            moduleNamePrefix: '@lit/generated-vocab-',
-            noprompt: true,
-            supportBundling: false,
-          },
-          undefined
-        )
-      );
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^1.0.10',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        supportBundling: false,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
@@ -162,47 +145,51 @@ describe('Artifact Generator', () => {
       inquirer.prompt.mockImplementation(
         jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            artifactName: 'testName',
-            litVocabTermVersion: '^1.0.10',
-            authorSet: new Set(['Cleopatra']),
-          },
-          inquirer.prompt
-        )
-      );
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactName: 'someName',
+        litVocabTermVersion: '^1.0.10',
+        authorSet: new Set(['Cleopatra']),
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
 
-      expect(inquirer.prompt.mock.calls.length).toEqual(0);
+      expect(artifactGenerator.artifactData.artifactName).toEqual('someName');
+      expect(artifactGenerator.artifactData.litVocabTermVersion).toEqual('^1.0.10');
+      expect(artifactGenerator.artifactData.authorSet).toEqual(new Set(['Cleopatra']));
+      expect(artifactGenerator.artifactData.artifactName).not.toEqual(MOCKED_ARTIFACT_NAME);
+      expect(artifactGenerator.artifactData.litVocabTermVersion).not.toEqual(
+        MOCKED_LIT_VOCAB_TERM_VERSION
+      );
+      expect(artifactGenerator.artifactData.authorSet).not.toEqual(MOCKED_AUTHORS);
     });
 
     it('should ask for user input when version information missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+        jest.fn().mockReturnValue(Promise.resolve({ ...MOCKED_USER_INPUT }))
       );
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            authorSet: new Set(['Cleopatra']),
-          },
-          inquirer.prompt
-        )
-      );
+      // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        authorSet: new Set(['Cleopatra']),
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
 
-      expect(inquirer.prompt.mock.calls.length).toEqual(1);
+      expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
+      expect(artifactGenerator.artifactData.artifactToGenerate[0].litVocabTermVersion).toEqual(
+        MOCKED_LIT_VOCAB_TERM_VERSION
+      );
     });
 
     it('should ask for user input when author list is empty', async () => {
@@ -210,24 +197,22 @@ describe('Artifact Generator', () => {
       inquirer.prompt.mockImplementation(
         jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            artifactName: 'testName',
-            litVocabTermVersion: '^1.0.10',
-            authorSet: new Set([]),
-          },
-          inquirer.prompt
-        )
-      );
+      // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactName: 'testName',
+        litVocabTermVersion: '^1.0.10',
+        authorSet: new Set([]),
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
 
-      expect(inquirer.prompt.mock.calls.length).toEqual(2);
+      expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
     });
 
     it('should ask for user input when author information missing', async () => {
@@ -235,43 +220,40 @@ describe('Artifact Generator', () => {
       inquirer.prompt.mockImplementation(
         jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
       );
-
-      const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: 'generate',
-            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-            outputDirectory,
-            litVocabTermVersion: '^1.0.10',
-          },
-          inquirer.prompt
-        )
-      );
+      // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        litVocabTermVersion: '^1.0.10',
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      expect(inquirer.prompt.mock.calls.length).toEqual(3);
+      expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
     });
   });
 
-  it('should ask for user input when multiple information is missing', async () => {
+  it('should ask for user input twice when multiple information is missing', async () => {
     const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
     inquirer.prompt.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
     );
-
-    const artifactGenerator = new ArtifactGenerator(
-      new GeneratorConfiguration(
-        {
-          _: 'generate',
-          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-          outputDirectory,
-        },
-        inquirer.prompt
-      )
-    );
+    // There are side-effects from test to test in the mocked functions, so we only count the new calls
+    const before = inquirer.prompt.mock.calls.length;
+    const config = new GeneratorConfiguration({
+      _: 'generate',
+      inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+      outputDirectory,
+    });
+    config.completeInitialConfiguration();
+    const artifactGenerator = new ArtifactGenerator(config);
 
     await artifactGenerator.generate();
 
-    expect(inquirer.prompt.mock.calls.length).toEqual(4);
+    // One call is for litVocabterm version, the other for artifact name and authors
+    expect(inquirer.prompt.mock.calls.length - before).toEqual(2);
   });
 });
