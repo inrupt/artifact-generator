@@ -4,6 +4,7 @@ const fs = require('fs');
 const del = require('del');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
+const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 
 const doNothingPromise = data => {
@@ -20,13 +21,14 @@ describe('End-to-end tests', () => {
       const errorFilename = './test/resources/vocabs/does.not.exist.ttl';
 
       const artifactGenerator = new ArtifactGenerator(
-        {
+        new GeneratorConfiguration({
+          _: ['generate'],
           inputResources: [errorFilename],
           outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
           noprompt: true,
-        },
+        }),
         doNothingPromise
       );
 
@@ -40,11 +42,14 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/invalid-ontology';
       del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/invalid-turtle.ttl';
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: [errorFilename],
-        outputDirectory,
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: [errorFilename],
+          outputDirectory,
+          noprompt: true,
+        })
+      );
 
       await expect(artifactGenerator.generate()).rejects.toThrow('Failed', 'line 4', errorFilename);
     });
@@ -55,12 +60,15 @@ describe('End-to-end tests', () => {
       const errorFilename = './test/resources/vocabs/mismatched-namespaces.ttl';
 
       const artifactGenerator = new ArtifactGenerator(
-        {
-          inputResources: [errorFilename],
-          outputDirectory,
-          noprompt: true,
-        },
-        doNothingPromise
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            inputResources: [errorFilename],
+            outputDirectory,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
       );
 
       // TODO: Not sure the correct syntax to get this working - but should be something like this!
@@ -77,15 +85,18 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        {
-          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-          outputDirectory,
-          artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
-          moduleNamePrefix: 'lit-generated-vocab-',
-          noprompt: true,
-        },
-        doNothingPromise
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+            outputDirectory,
+            artifactVersion: '1.0.0',
+            litVocabTermVersion: '^1.0.10',
+            moduleNamePrefix: 'lit-generated-vocab-',
+            noprompt: true,
+          },
+          doNothingPromise
+        )
       );
 
       await artifactGenerator.generate();
@@ -116,14 +127,17 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/create-ontology-link';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          artifactVersion: '1.0.0',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -144,17 +158,20 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/multiple-inputs';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: [
-          './test/resources/vocabs/schema-snippet.ttl',
-          './test/resources/vocabs/schema-inrupt-ext.ttl',
-        ],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: 'lit-generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: [
+            './test/resources/vocabs/schema-snippet.ttl',
+            './test/resources/vocabs/schema-inrupt-ext.ttl',
+          ],
+          outputDirectory,
+          artifactVersion: '1.0.0',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: 'lit-generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -181,17 +198,20 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/multiple-urls';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: [
-          'https://schema.org/Person.ttl',
-          './test/resources/vocabs/schema-inrupt-ext.ttl',
-        ],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: [
+            'https://schema.org/Person.ttl',
+            './test/resources/vocabs/schema-inrupt-ext.ttl',
+          ],
+          outputDirectory,
+          artifactVersion: '1.0.0',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -217,15 +237,18 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/extension-file';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
+          artifactVersion: '1.0.0',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -251,15 +274,18 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/extension-urls';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          vocabTermsFrom: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
+          artifactVersion: '1.0.0',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -285,15 +311,18 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/module-version';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -308,14 +337,17 @@ describe('End-to-end tests', () => {
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
 
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -327,14 +359,17 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/module-default-name';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      let artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      let artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -342,14 +377,17 @@ describe('End-to-end tests', () => {
         expect.stringContaining('"name": "@lit/generated-vocab-schema",')
       );
 
-      artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-inrupt-ext.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-inrupt-ext.ttl'],
+          outputDirectory,
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
@@ -362,22 +400,24 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/package-description';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
       expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
         expect.stringContaining(
-          '"description": "Extension to Schema.org terms providing multilingual alternative names and translations for ' +
-            'comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)"'
+          '"description": "Bundle of vocabularies that includes the following:\\n\\n  schema-inrupt-ext: Extension to Schema.org terms'
         )
       );
     });
@@ -386,20 +426,23 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/generated/End-to-End/authors-in-package';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
-      const artifactGenerator = new ArtifactGenerator({
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
-        artifactVersion: '1.0.5',
-        litVocabTermVersion: '^1.0.10',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-      });
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration({
+          _: ['generate'],
+          inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+          outputDirectory,
+          vocabTermsFrom: './test/resources/vocabs/schema-inrupt-ext.ttl',
+          artifactVersion: '1.0.5',
+          litVocabTermVersion: '^1.0.10',
+          moduleNamePrefix: '@lit/generated-vocab-',
+          noprompt: true,
+        })
+      );
 
       await artifactGenerator.generate();
 
       expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
-        expect.stringContaining('"author": "Jarlath Holleran"')
+        expect.stringContaining('"author": "Vocabularies authored by: Jarlath Holleran.')
       );
     });
   });

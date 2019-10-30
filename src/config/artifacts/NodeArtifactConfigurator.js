@@ -1,10 +1,10 @@
-const ArtifactConfig = require('../ArtifactConfig');
+const ArtifactConfigurator = require('../ArtifactConfigurator');
 
 const DEFAULT_TEMPLATE = 'javascript-rdf-ext.hbs';
 const DEFAULT_EXTENSION = 'js';
 const LANGUAGE = 'Javascript';
 
-class NodeArtifactConfig extends ArtifactConfig {
+class NodeArtifactConfigurator extends ArtifactConfigurator {
   constructor() {
     super();
     this.language = LANGUAGE;
@@ -22,5 +22,5 @@ class NodeArtifactConfig extends ArtifactConfig {
   }
 }
 
-module.exports.NodeArtifactConfig = NodeArtifactConfig;
+module.exports.NodeArtifactConfigurator = NodeArtifactConfigurator;
 module.exports.LANGUAGE = LANGUAGE;

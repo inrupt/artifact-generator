@@ -1,13 +1,15 @@
 const path = require('path');
-const moment = require('moment');
 
+const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
 const CommandLine = require('./CommandLine');
 const FileGenerator = require('./generator/FileGenerator');
-const packageDotJson = require('../package.json');
 
 const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
+
+const GENERATE_COMMAND = 'generate';
+const INITIALIZE_COMMAND = 'init';
 
 module.exports = class App {
   constructor(argv) {
@@ -16,15 +18,11 @@ module.exports = class App {
     }
 
     this.argv = argv;
-
-    // Extend the received arguments with contextual data
-    this.argv.generatedTimestamp = moment().format('LLLL');
-    this.argv.generatorName = packageDotJson.name;
-    this.argv.generatorVersion = packageDotJson.version;
+    this.configuration = new GeneratorConfiguration(argv, CommandLine.askForArtifactInfo);
   }
 
   async run() {
-    const artifactGenerator = new ArtifactGenerator(this.argv, CommandLine.askForArtifactInfo);
+    const artifactGenerator = new ArtifactGenerator(this.configuration);
 
     return artifactGenerator
       .generate()
@@ -49,3 +47,6 @@ module.exports = class App {
     return targetPath;
   }
 };
+
+module.exports.GENERATE_COMMAND = GENERATE_COMMAND;
+module.exports.INITIALIZE_COMMAND = INITIALIZE_COMMAND;

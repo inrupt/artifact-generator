@@ -21,12 +21,11 @@ module.exports = class CommandLine {
     // Craft questions to present to users.
     const questions = [];
 
-    if (!data.moduleNamePrefix)
+    if (!data.artifactName)
       questions.push({
         type: 'input',
         name: 'artifactName',
         message: 'Artifact name ...',
-        default: data.artifactName,
       });
 
     if (!data.litVocabTermVersion) {
@@ -34,16 +33,14 @@ module.exports = class CommandLine {
         type: 'input',
         name: 'litVocabTermVersion',
         message: 'Version string for LIT Vocab Term dependency ...',
-        default: data.litVocabTermVersion,
       });
     }
 
-    if (!data.authorSet) {
+    if (!data.authorSet || data.authorSet.size === 0) {
       questions.push({
-        type: 'list',
+        type: 'input',
         name: 'authorSet',
         message: 'Artifact authors ...',
-        default: data.authorSet,
       });
     }
 

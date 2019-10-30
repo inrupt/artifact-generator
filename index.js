@@ -11,19 +11,22 @@ const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
+const { GENERATE_COMMAND, INITIALIZE_COMMAND } = require('./src/App');
 
-const GENERATE_COMMAND = 'generate';
-const INITIALIZE_COMMAND = 'init'
-const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND]
+const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND];
 
 function validateCommandLine(argv, options) {
   // argv._ contains the commands passed to the program
-  if (argv._.length !== 1 ) {
+  if (argv._.length !== 1) {
     // Only one command is expected
     throw new Error(`Exactly one command is expected, one of [${SUPPORTED_COMMANDS}].`);
   }
-  if ( SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1 ) {
-    throw new Error(`Unknown command: [${argv._[0]}] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`);
+  if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
+    throw new Error(
+      `Unknown command: [${
+        argv._[0]
+      }] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
+    );
   }
   return true;
 }

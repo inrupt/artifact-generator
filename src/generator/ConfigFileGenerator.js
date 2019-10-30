@@ -2,16 +2,19 @@ const inquirer = require('inquirer');
 const FileGenerator = require('./FileGenerator');
 
 // Config generators
-const { JavaArtifactConfig, LANGUAGE: JAVA } = require('../config/artifacts/JavaArtifactConfig');
 const {
-  NodeArtifactConfig,
+  JavaArtifactConfigurator,
+  LANGUAGE: JAVA,
+} = require('../config/artifacts/JavaArtifactConfigurator');
+const {
+  NodeArtifactConfigurator,
   LANGUAGE: JAVASCRIPT,
-} = require('../config/artifacts/NodeArtifactConfig');
-const { VocabularyConfig } = require('../config/VocabularyConfig');
+} = require('../config/artifacts/NodeArtifactConfigurator');
+const { VocabularyConfigurator } = require('../config/VocabularyConfigurator');
 
 const SUPPORTED_LANGUAGES = {};
-SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfig;
-SUPPORTED_LANGUAGES[JAVASCRIPT] = NodeArtifactConfig;
+SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfigurator;
+SUPPORTED_LANGUAGES[JAVASCRIPT] = NodeArtifactConfigurator;
 
 // Templates
 const CONFIG_TEMPLATE_PATH = '../../templates/empty-config.hbs';
@@ -106,7 +109,7 @@ class ConfigFileGenerator {
     const vocabularies = [];
     let addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION);
     while (addVocab.addVocab) {
-      vocabularies.push(VocabularyConfig.prompt());
+      vocabularies.push(VocabularyConfigurator.prompt());
       // The next line requires the usage of an await inside a loop,
       // because re-entering the loop depends on user input
       addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION); // eslint-disable-line no-await-in-loop

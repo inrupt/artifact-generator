@@ -1,4 +1,4 @@
-const logger = require('debug')('lit-artifact-generator:ArtifactConfig');
+const logger = require('debug')('lit-artifact-generator:ArtifactConfigurator');
 const inquirer = require('inquirer');
 
 const DEFAULT_ARTIFACT_VERSION = '0.1.0';
@@ -11,7 +11,7 @@ const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract'];
  *
  * See the './artifacts' folder for examples of programming-language-specific extensions of this class.
  */
-class ArtifactConfig {
+class ArtifactConfigurator {
   constructor() {
     this.config = {};
     this.questions = [];
@@ -38,7 +38,7 @@ class ArtifactConfig {
     if (this.language === undefined) {
       // This method should only be called from an extending class
       throw new Error(
-        'Unspecified artifact generator. This should be called from a class extending ArtifactConfig'
+        'Unspecified artifact generator. This should be called from a class extending ArtifactConfigurator'
       );
     }
     // The language-specific options have been set when constructing the extending class
@@ -48,4 +48,4 @@ class ArtifactConfig {
   }
 }
 
-module.exports = ArtifactConfig;
+module.exports = ArtifactConfigurator;

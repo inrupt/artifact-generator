@@ -7,13 +7,10 @@ const Resources = require('../Resources');
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class VocabGenerator {
-  constructor(artifactData, artifactDetails, inquirerProcess) {
+  constructor(artifactData, artifactDetails) {
     // Make sure we clone our input data (to keep it specific to our instance!).
     this.vocabData = { ...artifactData };
-
     this.artifactDetails = artifactDetails;
-
-    this.inquirerProcess = inquirerProcess;
   }
 
   generate() {
@@ -23,27 +20,23 @@ module.exports = class VocabGenerator {
       this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
     );
 
-    return this.generateData()
-      .then(data => {
-        return this.inquirerProcess ? this.inquirerProcess(data) : data;
-      })
-      .then(vocabGenerationData => {
-        logger(
-          `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-            this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
-          }...`
-        );
-        logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
+    return this.generateData().then(vocabGenerationData => {
+      logger(
+        `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
+          this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
+        }...`
+      );
+      logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
 
-        return new Promise(resolve => {
-          FileGenerator.createSourceCodeFile(
-            this.vocabData,
-            this.artifactDetails,
-            vocabGenerationData
-          );
-          resolve(vocabGenerationData);
-        });
+      return new Promise(resolve => {
+        FileGenerator.createSourceCodeFile(
+          this.vocabData,
+          this.artifactDetails,
+          vocabGenerationData
+        );
+        resolve(vocabGenerationData);
       });
+    });
   }
 
   generateData() {
