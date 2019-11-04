@@ -43,26 +43,56 @@ class GeneratorConfiguration {
     this.configuration.generatorVersion = packageDotJson.version;
   }
 
+  /**
+   *  This function makes the local vocabulary path relative to the root of the project,
+   *  rather that to the configuration file. It makes it consistent with vocabularies passed
+   *  on the command line.
+   * @param {*} vocab the path of the vocabulary, relative to the YAML config
+   * @param {*} yamlPath the path of the YAML config, relative to the project root
+   */
   static normalizeResources(vocab, yamlPath) {
     const normalizedVocab = vocab;
+    const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
+      yamlPath,
+      process.cwd()
+    );
     for (let i = 0; i < vocab.inputResources.length; i += 1) {
       if (!vocab.inputResources[i].startsWith('http')) {
-        // This modification makes the local vocabulary path relative to the root of the project,
-        // rather that to the configuration file. It makes it consistent with vocabularies passed
-        // on the command line.
+        // The vocab path is normalized by appending the normalized path of the YAML file to
+        // the vocab path.
         normalizedVocab.inputResources[i] = path.join(
-          path.dirname(yamlPath),
-          vocab.inputResources[i]
+          path.dirname(normalizedYamlPath),
+          // Vocabularies are all made relative to the YAML file
+          GeneratorConfiguration.normalizeAbsolutePath(
+            vocab.inputResources[i],
+            path.dirname(normalizedYamlPath)
+          )
         );
       }
     }
     if (vocab.termSelectionFile) {
       normalizedVocab.termSelectionFile = path.join(
-        path.dirname(yamlPath),
-        vocab.termSelectionFile
+        path.dirname(normalizedYamlPath),
+        GeneratorConfiguration.normalizeAbsolutePath(
+          vocab.termSelectionFile,
+          path.dirname(normalizedYamlPath)
+        )
       );
     }
     return normalizedVocab;
+  }
+
+  /**
+   * This function takes an absolute path, and makes it relative to the provided base. If the provided path is
+   * already relative, it is returned without modification.
+   * @param {*} absolute the absolute path to the vocabulary
+   * @param {*} base the path we want the vocabulary to be relative to (typically the project root)
+   */
+  static normalizeAbsolutePath(absolute, base) {
+    if (absolute.startsWith('/')) {
+      return path.relative(base, absolute);
+    }
+    return absolute;
   }
 
   /**
@@ -125,6 +155,13 @@ class GeneratorConfiguration {
   static collectVocabFromCLI(args) {
     const vocab = {};
     vocab.inputResources = args.inputResources;
+    for (let i = 0; i < vocab.inputResources.length; i += 1) {
+      // If the vocab passed on the CLI is absolute, it is normalized
+      vocab.inputResources[i] = GeneratorConfiguration.normalizeAbsolutePath(
+        vocab.inputResources[i],
+        process.cwd()
+      );
+    }
     if (args.vocabTermsFrom) {
       vocab.termSelectionFile = args.vocabTermsFrom;
     }

@@ -54,7 +54,7 @@ describe('App tests', () => {
 
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
@@ -70,7 +70,7 @@ describe('App tests', () => {
 
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
@@ -84,7 +84,7 @@ describe('App tests', () => {
     it('should pass through in quiet mode', async () => {
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
         litVocabTermVersion: '1.1.1',
         quiet: true,
         noprompt: true,
