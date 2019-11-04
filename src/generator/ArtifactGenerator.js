@@ -1,11 +1,14 @@
 const del = require('del');
+const path = require('path');
 const logger = require('debug')('lit-artifact-generator:ArtifactGenerator');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
-const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
+const ARTIFACTS_INFO_TEMPLATE = '../../templates/artifacts-info.hbs';
+const ARTIFACTS_INFO_FILENAME = '.artifacts-info.txt';
 
 class ArtifactGenerator {
   /**
@@ -42,7 +45,11 @@ class ArtifactGenerator {
     // For each programming language artifact we generate, first clear out the destination directories.
     const directoryDeletionPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
       return ArtifactGenerator.deleteDirectory(
-        `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`
+        path.join(
+          this.artifactData.outputDirectory,
+          ARTIFACT_DIRECTORY_SOURCE_CODE,
+          artifactDetails.artifactFolderName
+        )
       );
     });
     await Promise.all(directoryDeletionPromises);
@@ -59,6 +66,19 @@ class ArtifactGenerator {
         await this.configuration.askAdditionalQuestions();
       })
       .then(() => this.generatePackaging())
+      .then(() => {
+        // This file is generated after all the artifacts. This way, if a vocabulary resource
+        // has been modified more recently than this file, we know that the artifacts are outdated
+        FileGenerator.createFileFromTemplate(
+          ARTIFACTS_INFO_TEMPLATE,
+          this.artifactData,
+          path.join(
+            this.artifactData.outputDirectory,
+            ARTIFACT_DIRECTORY_ROOT,
+            ARTIFACTS_INFO_FILENAME
+          )
+        );
+      })
       .then(() => this.artifactData)
       .catch(error => {
         throw error;
@@ -83,7 +103,11 @@ class ArtifactGenerator {
         const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
           this.artifactData.artifactVersion = artifactDetails.artifactVersion;
 
-          this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
+          this.artifactData.outputDirectoryForArtifact = path.join(
+            this.artifactData.outputDirectory,
+            ARTIFACT_DIRECTORY_SOURCE_CODE,
+            artifactDetails.artifactFolderName
+          );
 
           // TODO: Currently we need to very explicitly add this Java-specific
           //  data to our data being passed into the vocab generator, from where
@@ -128,7 +152,11 @@ class ArtifactGenerator {
     this.artifactData.artifactToGenerate.forEach(artifactDetails => {
       this.artifactData.artifactVersion = artifactDetails.artifactVersion;
 
-      this.artifactData.outputDirectoryForArtifact = `${this.artifactData.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/${artifactDetails.artifactFolderName}`;
+      this.artifactData.outputDirectoryForArtifact = path.join(
+        this.artifactData.outputDirectory,
+        ARTIFACT_DIRECTORY_SOURCE_CODE,
+        artifactDetails.artifactFolderName
+      );
       this.artifactData.javaPackageName = artifactDetails.javaPackageName;
       this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
       this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
