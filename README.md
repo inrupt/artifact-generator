@@ -46,7 +46,7 @@ lit-artifact-generator --help
 node index.js generate --inputResources <ontology resources (e.g. local files, or remote IRI's)>
 ```
 
-The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary (or multiple vocabularies) specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default.
+The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary (or multiple vocabularies) specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default. To generate artifacts in a different language, a YAML configuration file must be used (see below).
 
 
 - To **initialize** a YAML file that should be edited manually
