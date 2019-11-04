@@ -1,5 +1,6 @@
 const chokidar = require('chokidar');
 const logger = require('debug')('lit-artifact-generator:VocabWatcher');
+// const fs = require('fs');
 
 class VocabWatcher {
   constructor(generator) {
