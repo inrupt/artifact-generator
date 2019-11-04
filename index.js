@@ -81,11 +81,6 @@ const yargsConfig = yargs
         .describe('artifactVersion', 'The version of the artifact(s) to be generated.')
         .default('artifactVersion', '0.0.1')
 
-        .alias('at', 'artifactType')
-        .describe('artifactType', 'The artifact type that will be generated.')
-        .choices('artifactType', ['nodejs', 'java']) // Add to this when other languages are supported.
-        .default('artifactType', 'nodejs')
-
         .alias('mnp', 'moduleNamePrefix')
         .describe('moduleNamePrefix', 'A prefix for the name of the output module')
         .default('moduleNamePrefix', '@lit/generated-vocab-')
