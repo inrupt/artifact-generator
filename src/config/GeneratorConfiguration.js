@@ -47,8 +47,8 @@ class GeneratorConfiguration {
    *  This function makes the local vocabulary path relative to the root of the project,
    *  rather that to the configuration file. It makes it consistent with vocabularies passed
    *  on the command line.
-   * @param {*} vocab the path of the vocabulary, relative to the yaml config
-   * @param {*} yamlPath the path of the yaml config, relative to the project root
+   * @param {*} vocab the path of the vocabulary, relative to the YAML config
+   * @param {*} yamlPath the path of the YAML config, relative to the project root
    */
   static normalizeResources(vocab, yamlPath) {
     const normalizedVocab = vocab;
@@ -58,11 +58,11 @@ class GeneratorConfiguration {
     );
     for (let i = 0; i < vocab.inputResources.length; i += 1) {
       if (!vocab.inputResources[i].startsWith('http')) {
-        // The vocab path is normalized by appending the normalized path of the yaml file to
+        // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
         normalizedVocab.inputResources[i] = path.join(
           path.dirname(normalizedYamlPath),
-          // Vocabularies are all made relative to the yaml file
+          // Vocabularies are all made relative to the YAML file
           GeneratorConfiguration.normalizeAbsolutePath(
             vocab.inputResources[i],
             path.dirname(normalizedYamlPath)
