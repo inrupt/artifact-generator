@@ -1,8 +1,10 @@
 const yaml = require('js-yaml');
+const path = require('path');
 const moment = require('moment');
 const logger = require('debug')('lit-artifact-generator:GeneratorConfiguration');
 const fs = require('fs');
 const packageDotJson = require('../../package.json');
+const CommandLine = require('../CommandLine');
 
 // TODO: Find out why this is undefined
 // const { INITIALIZE_COMMAND, GENERATE_COMMAND } = require('../App');
@@ -20,9 +22,9 @@ class GeneratorConfiguration {
    * - noprompt
    * - quiet
    * @param {Object} initialConfig the command line options
-   * @param {*} inquirerProcess additional user prompt
+   * @param {*} inquierArtifactInfo additional user prompt
    */
-  constructor(initialConfig, inquirerProcess) {
+  constructor(initialConfig) {
     if (initialConfig.vocabListFile) {
       // The command line contains a yaml file
       this.configuration = {
@@ -39,8 +41,58 @@ class GeneratorConfiguration {
     this.configuration.generatedTimestamp = moment().format('LLLL');
     this.configuration.generatorName = packageDotJson.name;
     this.configuration.generatorVersion = packageDotJson.version;
-    // Enable asking for additional info
-    this.inquirerProcess = inquirerProcess;
+  }
+
+  /**
+   *  This function makes the local vocabulary path relative to the root of the project,
+   *  rather that to the configuration file. It makes it consistent with vocabularies passed
+   *  on the command line.
+   * @param {*} vocab the path of the vocabulary, relative to the YAML config
+   * @param {*} yamlPath the path of the YAML config, relative to the project root
+   */
+  static normalizeResources(vocab, yamlPath) {
+    const normalizedVocab = vocab;
+    const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
+      yamlPath,
+      process.cwd()
+    );
+    for (let i = 0; i < vocab.inputResources.length; i += 1) {
+      if (!vocab.inputResources[i].startsWith('http')) {
+        // The vocab path is normalized by appending the normalized path of the YAML file to
+        // the vocab path.
+        normalizedVocab.inputResources[i] = path.join(
+          path.dirname(normalizedYamlPath),
+          // Vocabularies are all made relative to the YAML file
+          GeneratorConfiguration.normalizeAbsolutePath(
+            vocab.inputResources[i],
+            path.dirname(normalizedYamlPath)
+          )
+        );
+      }
+    }
+    if (vocab.termSelectionFile) {
+      normalizedVocab.termSelectionFile = path.join(
+        path.dirname(normalizedYamlPath),
+        GeneratorConfiguration.normalizeAbsolutePath(
+          vocab.termSelectionFile,
+          path.dirname(normalizedYamlPath)
+        )
+      );
+    }
+    return normalizedVocab;
+  }
+
+  /**
+   * This function takes an absolute path, and makes it relative to the provided base. If the provided path is
+   * already relative, it is returned without modification.
+   * @param {*} absolute the absolute path to the vocabulary
+   * @param {*} base the path we want the vocabulary to be relative to (typically the project root)
+   */
+  static normalizeAbsolutePath(absolute, base) {
+    if (absolute.startsWith('/')) {
+      return path.relative(base, absolute);
+    }
+    return absolute;
   }
 
   /**
@@ -76,16 +128,22 @@ class GeneratorConfiguration {
   /**
    * Parses the provided YAML file, and returns the read configuration it it is valid.
    *
-   * @param {string} path path to the config file
+   * @param {string} yamlPath path to the config file
    */
-  static fromYaml(path) {
+  static fromYaml(yamlPath) {
     let yamlConfiguration = {};
     try {
       logger(`Processing YAML file...`);
-      yamlConfiguration = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
-      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, path);
+      yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
+      for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
+        yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizeResources(
+          yamlConfiguration.vocabList[i],
+          yamlPath
+        );
+      }
+      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
     } catch (error) {
-      throw new Error(`Failed to read configuration file [${path}]: ${error}`);
+      throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }
     return yamlConfiguration;
   }
@@ -97,6 +155,13 @@ class GeneratorConfiguration {
   static collectVocabFromCLI(args) {
     const vocab = {};
     vocab.inputResources = args.inputResources;
+    for (let i = 0; i < vocab.inputResources.length; i += 1) {
+      // If the vocab passed on the CLI is absolute, it is normalized
+      vocab.inputResources[i] = GeneratorConfiguration.normalizeAbsolutePath(
+        vocab.inputResources[i],
+        process.cwd()
+      );
+    }
     if (args.vocabTermsFrom) {
       vocab.termSelectionFile = args.vocabTermsFrom;
     }
@@ -131,18 +196,35 @@ class GeneratorConfiguration {
     if (args.litVocabTermVersion) {
       cliConfig.artifactToGenerate[0].litVocabTermVersion = args.litVocabTermVersion;
     }
-
     return cliConfig;
   }
 
   /**
    * This function is asked when generating a single vocab, if processing the vocab did not provide the expected
-   * additional information.
+   * additional information. These information may be completed when generating the vocabularies, and will not
+   * necessarily be asked to the user.
    */
   async askAdditionalQuestions() {
-    if (this.inquirerProcess) {
-      this.configuration = await this.inquirerProcess(this.configuration);
+    this.configuration = await CommandLine.askForArtifactInfo(this.configuration);
+  }
+
+  /**
+   * If receiving the config from the command line, some information may be missing that we know the vocabulary generation
+   * will not provide. These must be asked to the user.
+   *
+   */
+  async completeInitialConfiguration() {
+    if (!this.configuration.artifactToGenerate[0].litVocabTermVersion) {
+      if (!this.configuration.noprompt) {
+        const input = await CommandLine.askForLitVocabTermVersion();
+        this.configuration.artifactToGenerate[0].litVocabTermVersion = input.litVocabTermVersion;
+      } else {
+        throw new Error(
+          'Missing LIT VocabTerm version: The LIT VocabTerm version was not provided as a CLI option, and user prompt is deactivated.'
+        );
+      }
     }
+    return this;
   }
 }
 

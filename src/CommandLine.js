@@ -13,6 +13,14 @@ module.exports = class CommandLine {
     return path.dirname(directory);
   }
 
+  static async askForLitVocabTermVersion() {
+    return inquirer.prompt({
+      type: 'input',
+      name: 'litVocabTermVersion',
+      message: 'Version string for LIT Vocab Term dependency ...',
+    });
+  }
+
   static async askForArtifactInfo(data) {
     if (data.noprompt) {
       return CommandLine.findPublishedVersionOfModule(data);
@@ -21,18 +29,11 @@ module.exports = class CommandLine {
     // Craft questions to present to users.
     const questions = [];
 
-    if (!data.artifactName)
+    if (!data.artifactName) {
       questions.push({
         type: 'input',
         name: 'artifactName',
         message: 'Artifact name ...',
-      });
-
-    if (!data.litVocabTermVersion) {
-      questions.push({
-        type: 'input',
-        name: 'litVocabTermVersion',
-        message: 'Version string for LIT Vocab Term dependency ...',
       });
     }
 
@@ -44,9 +45,13 @@ module.exports = class CommandLine {
       });
     }
 
-    const artifactInfoAnswers = await inquirer.prompt(questions);
+    let mergedData = data;
 
-    const mergedData = { ...data, ...artifactInfoAnswers }; // Merge the answers in with the data
+    if (questions.length > 0) {
+      const artifactInfoAnswers = await inquirer.prompt(questions);
+
+      mergedData = { ...data, ...artifactInfoAnswers }; // Merge the answers in with the data
+    }
 
     return CommandLine.findPublishedVersionOfModule(mergedData);
   }

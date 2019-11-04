@@ -30,7 +30,7 @@ describe('Command Line unit tests', () => {
           )
       );
 
-      const result = await CommandLine.askForArtifactInfo(defaultInputs);
+      const result = await CommandLine.askForArtifactInfo({});
 
       expect(result.artifactName).toBe('lit-gen-schema-ext');
       expect(result.authorSet.has('inrupt'));
@@ -42,21 +42,20 @@ describe('Command Line unit tests', () => {
       );
 
       const result = await CommandLine.askForArtifactInfo({
-        ...defaultInputs,
         moduleNamePrefix: 'override-this-prefix-',
       });
 
       expect(result.artifactName).toBe('test-prefix-');
     });
 
-    it('Should ask for LIT Vocab Term version, and override provided value', async () => {
+    it('Should ask for information other than LIT Vocab Term version, and not override provided value', async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve({ litVocabTermVersion: '^1.2.3' }))
+        jest.fn().mockReturnValue(Promise.resolve({ defaultInputs }))
       );
 
       const result = await CommandLine.askForArtifactInfo({
-        ...defaultInputs,
-        litVocabTermVersion: '0.0.0',
+        // ...defaultInputs,
+        litVocabTermVersion: '^1.2.3',
       });
 
       expect(result.litVocabTermVersion).toBe('^1.2.3');

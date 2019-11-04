@@ -7,6 +7,7 @@ const App = require('./App');
 const FileGenerator = require('./generator/FileGenerator');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
+const VocabWatcher = require('./VocabWatcher');
 
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
@@ -16,6 +17,14 @@ ArtifactGenerator.mockImplementation(() => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
+  };
+});
+
+jest.mock('./VocabWatcher');
+VocabWatcher.mockImplementation(() => {
+  return {
+    watch: jest.fn(x => x),
+    unwatch: jest.fn(x => x),
   };
 });
 
@@ -39,21 +48,14 @@ describe('App tests', () => {
     expect(() => new App()).toThrow('must be initialised with a configuration');
   });
 
-  it('should fail to construct', () => {
-    const config = {
-      argv: {},
-    };
-
-    expect(() => new App(config)).toThrow('Missing input resource');
-  });
-
   describe('Testing mocked generator...', () => {
     it('should pass through in non-quiet mode (with DEBUG setting too)', async () => {
       debug.enable('lit-artifact-generator:*');
 
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
       };
@@ -68,7 +70,8 @@ describe('App tests', () => {
 
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
       };
@@ -81,7 +84,8 @@ describe('App tests', () => {
     it('should pass through in quiet mode', async () => {
       const config = {
         _: ['generate'],
-        inputResources: 'some_file.ttl',
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
         quiet: true,
         noprompt: true,
       };
@@ -110,6 +114,18 @@ describe('App tests', () => {
       expect(fs.existsSync(filePath)).toBe(true);
       fs.unlinkSync(filePath);
       fs.rmdirSync(directoryPath);
+    });
+  });
+
+  describe('Testing mocked watcher...', () => {
+    it('should be possible to watch and unwatch vocabularies', async () => {
+      const argv = { _: ['watch'], vocabListFile: './test/resources/watcher/vocab-list.yml' };
+      // init will call the prompt, which is mocked here
+      const app = new App(argv);
+      await app.watch();
+      app.unwatch();
+      expect(app.watcher.watch.mock.calls.length).toBe(1);
+      expect(app.watcher.unwatch.mock.calls.length).toBe(1);
     });
   });
 });
