@@ -2,6 +2,7 @@ require('mock-local-storage');
 
 jest.mock('inquirer');
 const inquirer = require('inquirer');
+const path = require('path');
 
 const GeneratorConfiguration = require('./GeneratorConfiguration');
 
@@ -83,6 +84,21 @@ describe('Generator configuration', () => {
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_YAML);
     });
+
+    it('should normalize the yaml absolute path', async () => {
+      const absolutePath = path.join(`${process.cwd()}`, './test/resources/vocabs/vocab-list.yml');
+      const generatorConfiguration = new GeneratorConfiguration(
+        {
+          _: ['generate'],
+          vocabListFile: absolutePath,
+          noprompt: true,
+        },
+        undefined
+      );
+
+      expect(generatorConfiguration.configuration.noprompt).toBe(true);
+      expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_YAML);
+    });
   });
 
   describe('Processing command line.', () => {
@@ -116,6 +132,24 @@ describe('Generator configuration', () => {
       expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_CLI);
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(DEFAULT_CLI_ARTIFACT);
+    });
+
+    it('should normalize absolute paths', async () => {
+      const absolutePath = path.join(
+        `${process.cwd()}`,
+        'test/resources/vocabs/schema-snippet.ttl'
+      );
+      const generatorConfiguration = new GeneratorConfiguration(
+        {
+          _: ['generate'],
+          inputResources: [absolutePath],
+          moduleNamePrefix: '@lit/generated-vocab-',
+          authorSet: new Set(['Cleopatra']),
+          noprompt: true,
+        },
+        undefined
+      );
+      expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_CLI);
     });
   });
 
