@@ -81,7 +81,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should create from an ontology file', async () => {
-      const outputDirectory = 'test/generated/End-to-End/create-ontology';
+      const outputDirectory = 'test/generated/End-to-End/create-ontology/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -124,7 +124,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should create from an ontology link', async () => {
-      const outputDirectory = 'test/generated/End-to-End/create-ontology-link';
+      const outputDirectory = 'test/generated/End-to-End/create-ontology-link/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -155,7 +155,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
-      const outputDirectory = 'test/generated/End-to-End/multiple-inputs';
+      const outputDirectory = 'test/generated/End-to-End/multiple-inputs/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -195,7 +195,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
-      const outputDirectory = 'test/generated/End-to-End/multiple-urls';
+      const outputDirectory = 'test/generated/End-to-End/multiple-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -234,7 +234,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to extend an ontology but only creates triples from extension file', async () => {
-      const outputDirectory = 'test/generated/End-to-End/extension-file';
+      const outputDirectory = 'test/generated/End-to-End/extension-file/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -271,7 +271,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to extend an ontology but only create triples from extension URL links', async () => {
-      const outputDirectory = 'test/generated/End-to-End/extension-urls';
+      const outputDirectory = 'test/generated/End-to-End/extension-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -308,7 +308,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should take in a version for the output module', async () => {
-      const outputDirectory = 'test/generated/End-to-End/module-version';
+      const outputDirectory = 'test/generated/End-to-End/module-version/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -333,7 +333,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should handle creating generated folder if it does not exist already', async () => {
-      const outputDirectory = 'test/generated/End-to-End/dest-folder-not-exist';
+      const outputDirectory = 'test/generated/End-to-End/dest-folder-not-exist/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
 
@@ -356,7 +356,7 @@ describe('End-to-end tests', () => {
     });
 
     it('module names should by default start with @lit/generated-vocab-*', async () => {
-      const outputDirectory = 'test/generated/End-to-End/module-default-name';
+      const outputDirectory = 'test/generated/End-to-End/module-default-name/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator(
@@ -397,7 +397,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should add a description inside the package.json', async () => {
-      const outputDirectory = 'test/generated/End-to-End/package-description';
+      const outputDirectory = 'test/generated/End-to-End/package-description/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -423,7 +423,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should add authors inside the package.json', async () => {
-      const outputDirectory = 'test/generated/End-to-End/authors-in-package';
+      const outputDirectory = 'test/generated/End-to-End/authors-in-package/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
