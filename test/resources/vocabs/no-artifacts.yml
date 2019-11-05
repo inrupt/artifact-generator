@@ -1,0 +1,18 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+
+artifactToGenerate:
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ./schema-snippet.ttl
+    termSelectionFile: schema-inrupt-ext.ttl
+
+  - description: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
+    inputResources:
+      - ./supported-data-types.ttl

@@ -12,6 +12,7 @@ const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
 const GENERATE_COMMAND = 'generate';
 const INITIALIZE_COMMAND = 'init';
 const WATCH_COMMAND = 'watch';
+const VALIDATE_COMMAND = 'validate';
 
 module.exports = class App {
   constructor(argv) {
@@ -54,6 +55,19 @@ module.exports = class App {
     return targetPath;
   }
 
+  async validate() {
+    try {
+      const configuration = new GeneratorConfiguration(this.argv);
+      GeneratorConfiguration.validateYamlConfig(
+        configuration.configuration,
+        this.argv.vocabListFile
+      );
+    } catch (error) {
+      throw new Error(`Invalid config file: ${error}`);
+    }
+    return true;
+  }
+
   async watch() {
     this.watcher = new VocabWatcher(new ArtifactGenerator(await this.configure()));
     this.watcher.watch();
@@ -67,3 +81,4 @@ module.exports = class App {
 module.exports.GENERATE_COMMAND = GENERATE_COMMAND;
 module.exports.INITIALIZE_COMMAND = INITIALIZE_COMMAND;
 module.exports.WATCH_COMMAND = WATCH_COMMAND;
+module.exports.VALIDATE_COMMAND = VALIDATE_COMMAND;

@@ -100,8 +100,14 @@ class GeneratorConfiguration {
    * @param {string} file the path to the YAML file, for error message purpose
    */
   static validateYamlConfig(config, file) {
-    // If the vocab list is non-existent or empty (e.g. after initialization), the generator
-    // cannot run.
+    // There must be at least one artifact defined
+    if (!config.artifactToGenerate) {
+      throw new Error(
+        'No artifacts found: nothing to generate. ' +
+          `Please edit the YAML configuration file [${file}] to provide artifacts to be generated.`
+      );
+    }
+    // There must be at least one vocabulary defined
     if (!config.vocabList) {
       throw new Error(
         'No vocabularies found: nothing to generate. ' +
@@ -134,13 +140,16 @@ class GeneratorConfiguration {
     try {
       logger(`Processing YAML file...`);
       yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
+      if (!yamlConfiguration) {
+        throw new Error('Empty YAML file');
+      }
+      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
       for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
         yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizePath(
           yamlConfiguration.vocabList[i],
           yamlPath
         );
       }
-      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }

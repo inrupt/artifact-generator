@@ -105,6 +105,24 @@ describe('App tests', () => {
       fs.rmdirSync(directoryPath);
     });
 
+    it('should validate a correct config file', async () => {
+      const filePath = path.join('test', 'resources', 'vocabs', 'vocab-list.yml');
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(await new App(argv).validate()).toBe(true);
+    });
+
+    it('should throw when validating an incorrect config file', async () => {
+      const filePath = path.join('test', 'resources', 'vocabs', 'no-artifacts.yml');
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(new App(argv).validate()).rejects.toThrow('Invalid config file');
+    });
+
     it('should generate a file through prompt', async () => {
       const directoryPath = path.join('.', '.tmp');
       const filePath = path.join(directoryPath, 'lit-vocab.yml');
