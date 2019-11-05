@@ -96,9 +96,9 @@ class ConfigFileGenerator {
       const generator = ConfigFileGenerator.buildConfigGenerator(languages[i]);
       // All generators should extend the ArtifactConfig class,
       // and therefore implement the prompt() method
-      artifacts.push(generator.prompt());
+      artifacts.push(await generator.prompt()); // eslint-disable-line no-await-in-loop
     }
-    return Promise.all(artifacts);
+    return artifacts;
   }
 
   /**
@@ -109,12 +109,15 @@ class ConfigFileGenerator {
     const vocabularies = [];
     let addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION);
     while (addVocab.addVocab) {
-      vocabularies.push(VocabularyConfigurator.prompt());
-      // The next line requires the usage of an await inside a loop,
-      // because re-entering the loop depends on user input
+      // Here we require 'await' inside a loop, because iterations
+      // must be sequential, as they require user input. For each vocabulary,
+      // the user is queried a series of questions (e.g. input resources or prefix),
+      // and then he/she is asked wether more vocabularies should be added to the
+      // config file or not.
+      vocabularies.push(await VocabularyConfigurator.prompt()); // eslint-disable-line no-await-in-loop
       addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION); // eslint-disable-line no-await-in-loop
     }
-    return Promise.all(vocabularies);
+    return vocabularies;
   }
 
   /**
