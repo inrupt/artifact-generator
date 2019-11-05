@@ -2,7 +2,7 @@ const logger = require('debug')('lit-artifact-generator:ArtifactConfigurator');
 const inquirer = require('inquirer');
 
 const DEFAULT_ARTIFACT_VERSION = '0.1.0';
-const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract'];
+const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract', 'default'];
 
 /**
  * This is an abstract class that is intended to be extended for each supported programming language.

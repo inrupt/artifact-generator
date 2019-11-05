@@ -81,7 +81,8 @@ module.exports = class DatasetHandler {
       //  of 'list of keywords to append an underscore for in this programming
       //  language' to the current YAML files.
       .replace(/^class$/, 'class_')
-      .replace(/^abstract$/, 'abstract_');
+      .replace(/^abstract$/, 'abstract_')
+      .replace(/^default$/, 'default_');
 
     this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
@@ -203,7 +204,7 @@ module.exports = class DatasetHandler {
 
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
-    result.namespace = this.findNamespace();
+    result.namespace = this.vocabData.namespaceOverride || this.findNamespace();
     result.gitRepository = this.vocabData.gitRepository;
     result.repository = this.vocabData.repository;
 
