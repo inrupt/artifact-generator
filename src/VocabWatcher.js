@@ -1,4 +1,5 @@
 const chokidar = require('chokidar');
+const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const logger = require('debug')('lit-artifact-generator:VocabWatcher');
@@ -30,37 +31,54 @@ class VocabWatcher {
     for (let i = 0; i < vocabList.length; i += 1) {
       for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
         const resource = vocabList[i].inputResources[j];
-        if (resource.startsWith('http')) {
-          throw new Error(
-            `Cannot watch online resource [${resource}]. The watcher only watches local files.`
-          );
-        }
         watchList.push(resource);
       }
     }
     return watchList;
   }
 
-  static getResourceLastModificationTime(resource) {
-    let lastModif;
-    if (!resource.startsWith('http')) {
-      lastModif = fs.statSync(resource).mtimeMs;
+  /**
+   * Gets the time of the most recent modification for a resource, either local or remote, in POSIX date.
+   * @param {*} resource
+   */
+  static async getResourceLastModificationTime(resource) {
+    if (resource.startsWith('http')) {
+      return axios({
+        method: 'head',
+        url: resource,
+      })
+        .then(response => {
+          const lastModifDate = Date.parse(response.headers['last-modified']);
+          if (Number.isNaN(lastModifDate)) {
+            throw new Error(`Cannot parse date: ${lastModifDate}`);
+          }
+          return lastModifDate;
+        })
+        .catch(error => {
+          throw new Error(`Cannot get last modification time: ${error}`);
+        });
     }
-    return lastModif;
+    return fs.statSync(resource).mtimeMs;
   }
 
-  generateIfNecessary() {
+  async generateIfNecessary() {
     let artifactsOutdated = false;
     const outputDir = this.generator.configuration.configuration.outputDirectory;
     const artifactInfoPath = path.join(outputDir, ARTIFACT_DIRECTORY_ROOT, ARTIFACTS_INFO_FILENAME);
     if (fs.existsSync(artifactInfoPath)) {
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
+      const vocabsLastModif = [];
       for (let i = 0; i < this.watchedResources.length; i += 1) {
-        const vocabLastGeneration = VocabWatcher.getResourceLastModificationTime(
-          this.watchedResources[i]
+        vocabsLastModif.push(
+          VocabWatcher.getResourceLastModificationTime(this.watchedResources[i])
         );
-        artifactsOutdated = lastGenerationTime < vocabLastGeneration || artifactsOutdated;
       }
+      await Promise.all(vocabsLastModif).then(values => {
+        // The artifact is outdated if one vocabulary is more recent than the artifact
+        artifactsOutdated = values.reduce((accumulator, lastModif) => {
+          return lastGenerationTime < lastModif || accumulator;
+        }, artifactsOutdated);
+      });
     } else {
       // There is no artifacts in the target directory.
       artifactsOutdated = true;
@@ -72,14 +90,19 @@ class VocabWatcher {
     }
   }
 
-  watch() {
+  async watch() {
+    // We try an initial generation here, because chokidar does not watch online resources.
+    // Therefore, no event will ever be received for http resources, preventing the artifacts
+    // from being updated if an online vocabulary changed.
+    await this.generateIfNecessary();
+
     // Add event listeners.
     this.watcher
-      .on('add', eventPath => {
-        // Triggers the initial generation, when the watcher starts
-        logger(`File ${eventPath} has been added`);
-        this.generateIfNecessary();
-      })
+      // .on('add', eventPath => {
+      //   // Triggers the initial generation, when the watcher starts
+      //   logger(`File ${eventPath} has been added`);
+      //   this.generateIfNecessary();
+      // })
       .on('change', eventPath => {
         // Triggers the generation when the file changes
         logger(`File ${eventPath} has been changed`);

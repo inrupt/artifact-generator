@@ -25,6 +25,7 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
+    "axios": "^0.19.0",
     "@lit/generated-vocab-common": "^0.1.0",
     "@lit/vocab-term": "^0.1.0",
     "@rdfjs/fetch-lite": "^2.0.1",
