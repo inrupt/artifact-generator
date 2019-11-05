@@ -2,7 +2,6 @@ const chokidar = require('chokidar');
 const path = require('path');
 const fs = require('fs');
 const logger = require('debug')('lit-artifact-generator:VocabWatcher');
-// const fs = require('fs');
 
 const {
   ARTIFACT_DIRECTORY_ROOT,
