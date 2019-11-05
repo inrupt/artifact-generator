@@ -20,6 +20,10 @@ const MOCKED_USER_INPUT = {
   authorSet: MOCKED_AUTHORS,
 };
 
+beforeEach(() => {
+  inquirer.prompt.mockImplementation(jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT)));
+});
+
 describe('Artifact Generator', () => {
   describe('Processing vocab list file.', () => {
     function verifyVocabList(outputDirectory) {
@@ -72,9 +76,7 @@ describe('Artifact Generator', () => {
     it('should generate artifact from vocab list file (with inquirer)', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/vocab-list-file-inquirer';
       del.sync([`${outputDirectory}/*`]);
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
+
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
       const before = inquirer.prompt.mock.calls.length;
 
@@ -170,9 +172,6 @@ describe('Artifact Generator', () => {
 
     it('should ask for user input when version information missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve({ ...MOCKED_USER_INPUT }))
-      );
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
       const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
@@ -194,9 +193,6 @@ describe('Artifact Generator', () => {
 
     it('should ask for user input when author list is empty', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
       const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
@@ -217,9 +213,6 @@ describe('Artifact Generator', () => {
 
     it('should ask for user input when author information missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
       const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
@@ -238,9 +231,6 @@ describe('Artifact Generator', () => {
 
   it('should ask for user input twice when multiple information is missing', async () => {
     const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-    inquirer.prompt.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-    );
     // There are side-effects from test to test in the mocked functions, so we only count the new calls
     const before = inquirer.prompt.mock.calls.length;
     const config = new GeneratorConfiguration({

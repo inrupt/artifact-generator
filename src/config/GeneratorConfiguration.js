@@ -22,7 +22,6 @@ class GeneratorConfiguration {
    * - noprompt
    * - quiet
    * @param {Object} initialConfig the command line options
-   * @param {*} inquierArtifactInfo additional user prompt
    */
   constructor(initialConfig) {
     if (initialConfig.vocabListFile) {
@@ -47,39 +46,39 @@ class GeneratorConfiguration {
    *  This function makes the local vocabulary path relative to the root of the project,
    *  rather that to the configuration file. It makes it consistent with vocabularies passed
    *  on the command line.
-   * @param {*} vocab the path of the vocabulary, relative to the YAML config
+   * @param {*} vocabPath the path of the vocabulary, relative to the YAML config
    * @param {*} yamlPath the path of the YAML config, relative to the project root
    */
-  static normalizeResources(vocab, yamlPath) {
-    const normalizedVocab = vocab;
+  static normalizePath(vocabPath, yamlPath) {
+    const normalizedVocabPath = vocabPath;
     const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
       yamlPath,
       process.cwd()
     );
-    for (let i = 0; i < vocab.inputResources.length; i += 1) {
-      if (!vocab.inputResources[i].startsWith('http')) {
+    for (let i = 0; i < vocabPath.inputResources.length; i += 1) {
+      if (!vocabPath.inputResources[i].startsWith('http')) {
         // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
-        normalizedVocab.inputResources[i] = path.join(
+        normalizedVocabPath.inputResources[i] = path.join(
           path.dirname(normalizedYamlPath),
           // Vocabularies are all made relative to the YAML file
           GeneratorConfiguration.normalizeAbsolutePath(
-            vocab.inputResources[i],
+            vocabPath.inputResources[i],
             path.dirname(normalizedYamlPath)
           )
         );
       }
     }
-    if (vocab.termSelectionFile) {
-      normalizedVocab.termSelectionFile = path.join(
+    if (vocabPath.termSelectionFile) {
+      normalizedVocabPath.termSelectionFile = path.join(
         path.dirname(normalizedYamlPath),
         GeneratorConfiguration.normalizeAbsolutePath(
-          vocab.termSelectionFile,
+          vocabPath.termSelectionFile,
           path.dirname(normalizedYamlPath)
         )
       );
     }
-    return normalizedVocab;
+    return normalizedVocabPath;
   }
 
   /**
@@ -136,7 +135,7 @@ class GeneratorConfiguration {
       logger(`Processing YAML file...`);
       yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
       for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
-        yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizeResources(
+        yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizePath(
           yamlConfiguration.vocabList[i],
           yamlPath
         );
