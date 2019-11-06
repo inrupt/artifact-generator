@@ -6,10 +6,7 @@ const fs = require('fs');
 const packageDotJson = require('../../package.json');
 const CommandLine = require('../CommandLine');
 
-// TODO: Find out why this is undefined
-// const { INITIALIZE_COMMAND, GENERATE_COMMAND } = require('../App');
-const INITIALIZE_COMMAND = 'init';
-const GENERATE_COMMAND = 'generate';
+const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require('../App');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
@@ -117,13 +114,13 @@ class GeneratorConfiguration {
   }
 
   static validateCommandline(args) {
-    let mode = GENERATE_COMMAND;
+    let mode = COMMAND_GENERATE;
     if (args._) {
       // Only one command is passed to yargs, so this array always contains one element
       [mode] = args._;
     }
     // If the options are provided by command line, at least one input resource must be specified (except for initialization)
-    if (mode !== INITIALIZE_COMMAND && !args.inputResources) {
+    if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
       throw new Error(
         'Missing input resource. Please provide either a YAML configuration file, or at least one input resource.'
       );

@@ -9,10 +9,10 @@ const FileGenerator = require('./generator/FileGenerator');
 
 const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
 
-const GENERATE_COMMAND = 'generate';
-const INITIALIZE_COMMAND = 'init';
-const WATCH_COMMAND = 'watch';
-const VALIDATE_COMMAND = 'validate';
+const COMMAND_GENERATE = 'generate';
+const COMMAND_INITIALIZE = 'init';
+const COMMAND_WATCH = 'watch';
+const COMMAND_VALIDATE = 'validate';
 
 module.exports = class App {
   constructor(argv) {
@@ -63,7 +63,7 @@ module.exports = class App {
         this.argv.vocabListFile
       );
     } catch (error) {
-      throw new Error(`Invalid config file: ${error}`);
+      throw new Error(`Invalid config file: [${error}]`);
     }
     return true;
   }
@@ -78,7 +78,7 @@ module.exports = class App {
   }
 };
 
-module.exports.GENERATE_COMMAND = GENERATE_COMMAND;
-module.exports.INITIALIZE_COMMAND = INITIALIZE_COMMAND;
-module.exports.WATCH_COMMAND = WATCH_COMMAND;
-module.exports.VALIDATE_COMMAND = VALIDATE_COMMAND;
+module.exports.COMMAND_GENERATE = COMMAND_GENERATE;
+module.exports.COMMAND_INITIALIZE = COMMAND_INITIALIZE;
+module.exports.COMMAND_WATCH = COMMAND_WATCH;
+module.exports.COMMAND_VALIDATE = COMMAND_VALIDATE;
