@@ -11,9 +11,14 @@ const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
-const { GENERATE_COMMAND, INITIALIZE_COMMAND, WATCH_COMMAND } = require('./src/App');
+const {
+  COMMAND_GENERATE,
+  COMMAND_INITIALIZE,
+  COMMAND_WATCH,
+  COMMAND_VALIDATE,
+} = require('./src/App');
 
-const SUPPORTED_COMMANDS = [GENERATE_COMMAND, INITIALIZE_COMMAND, WATCH_COMMAND];
+const SUPPORTED_COMMANDS = [COMMAND_GENERATE, COMMAND_INITIALIZE, COMMAND_WATCH, COMMAND_VALIDATE];
 
 function validateCommandLine(argv, options) {
   // argv._ contains the commands passed to the program
@@ -33,7 +38,7 @@ function validateCommandLine(argv, options) {
 
 const yargsConfig = yargs
   .command(
-    GENERATE_COMMAND,
+    COMMAND_GENERATE,
     'generate code artifacts from RDF',
     yargs =>
       yargs
@@ -123,7 +128,7 @@ const yargsConfig = yargs
     }
   )
   .command(
-    INITIALIZE_COMMAND,
+    COMMAND_INITIALIZE,
     'initializes a config file used for generation',
     yargs => yargs,
     argv => {
@@ -131,7 +136,22 @@ const yargsConfig = yargs
     }
   )
   .command(
-    WATCH_COMMAND,
+    COMMAND_VALIDATE,
+    'validates a config file used for generation',
+    yargs =>
+      yargs
+        .alias('l', 'vocabListFile')
+        .describe(
+          'vocabListFile',
+          'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
+        )
+        .demandOption(['vocabListFile']),
+    argv => {
+      runValidation(argv);
+    }
+  )
+  .command(
+    COMMAND_WATCH,
     'starts a daemon process watching vocabularies, and re-generating artifacts accordingly',
     yargs =>
       yargs
@@ -139,7 +159,8 @@ const yargsConfig = yargs
         .describe(
           'vocabListFile',
           'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
-        ),
+        )
+        .demandOption(['vocabListFile']),
     argv => {
       runWatcher(argv);
     }
@@ -210,6 +231,20 @@ function runInitialization(argv) {
     })
     .catch(error => {
       logger(`Generation process failed: [${error}]`);
+      process.exit(-1);
+    });
+}
+
+function runValidation(argv) {
+  configureLog(argv);
+  new App(argv)
+    .validate()
+    .then(data => {
+      logger(`\nThe provided configuration is valid`);
+      process.exit(0);
+    })
+    .catch(error => {
+      logger(`Invalid configuration: [${error}]`);
       process.exit(-1);
     });
 }

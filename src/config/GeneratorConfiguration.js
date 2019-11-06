@@ -6,10 +6,7 @@ const fs = require('fs');
 const packageDotJson = require('../../package.json');
 const CommandLine = require('../CommandLine');
 
-// TODO: Find out why this is undefined
-// const { INITIALIZE_COMMAND, GENERATE_COMMAND } = require('../App');
-const INITIALIZE_COMMAND = 'init';
-const GENERATE_COMMAND = 'generate';
+const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require('../App');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
@@ -100,8 +97,14 @@ class GeneratorConfiguration {
    * @param {string} file the path to the YAML file, for error message purpose
    */
   static validateYamlConfig(config, file) {
-    // If the vocab list is non-existent or empty (e.g. after initialization), the generator
-    // cannot run.
+    // There must be at least one artifact defined
+    if (!config.artifactToGenerate) {
+      throw new Error(
+        'No artifacts found: nothing to generate. ' +
+          `Please edit the YAML configuration file [${file}] to provide artifacts to be generated.`
+      );
+    }
+    // There must be at least one vocabulary defined
     if (!config.vocabList) {
       throw new Error(
         'No vocabularies found: nothing to generate. ' +
@@ -111,13 +114,13 @@ class GeneratorConfiguration {
   }
 
   static validateCommandline(args) {
-    let mode = GENERATE_COMMAND;
+    let mode = COMMAND_GENERATE;
     if (args._) {
       // Only one command is passed to yargs, so this array always contains one element
       [mode] = args._;
     }
     // If the options are provided by command line, at least one input resource must be specified (except for initialization)
-    if (mode !== INITIALIZE_COMMAND && !args.inputResources) {
+    if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
       throw new Error(
         'Missing input resource. Please provide either a YAML configuration file, or at least one input resource.'
       );
@@ -134,13 +137,16 @@ class GeneratorConfiguration {
     try {
       logger(`Processing YAML file...`);
       yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
+      if (!yamlConfiguration) {
+        throw new Error('Empty YAML file');
+      }
+      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
       for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
         yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizePath(
           yamlConfiguration.vocabList[i],
           yamlPath
         );
       }
-      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }

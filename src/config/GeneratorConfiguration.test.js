@@ -53,21 +53,42 @@ describe('Generator configuration', () => {
       }).toThrow('Failed to read configuration file');
     });
 
+    it('should throw an error trying to parse an empty YAML file', async () => {
+      const configFile = 'empty-config-file.yml';
+      const configPath = `./test/resources/vocabs/${configFile}`;
+
+      await expect(() => {
+        GeneratorConfiguration.fromYaml(configPath);
+      }).toThrow('Empty YAML file', configFile);
+    });
+
+    it('should throw an error trying to parse a syntactically incorrect YAML file', async () => {
+      const configFile = 'not-yaml.yml';
+      const configPath = `./test/resources/vocabs/${configFile}`;
+
+      await expect(() => {
+        GeneratorConfiguration.fromYaml(configPath);
+      }).toThrow(/^Failed to read configuration file/, configFile);
+    });
+
     it('should throw an error trying to generate from an empty vocab list', async () => {
       const configFile = 'empty-vocab-list.yml';
       const configPath = `./test/resources/vocabs/${configFile}`;
 
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
-        GeneratorConfiguration.validateYamlConfig(
-          {
-            vocabListFile: configPath,
-            artifactVersion: '1.0.0',
-            moduleNamePrefix: '@lit/generated-vocab-',
-          },
-          configFile
-        );
-      }).toThrow(/^No vocabularies found/, configFile);
+        GeneratorConfiguration.fromYaml(configPath);
+      }).toThrow(/No vocabularies found/, configFile);
+    });
+
+    it('should throw an error trying to generate from an empty artifact list', async () => {
+      const configFile = 'no-artifacts.yml';
+      const configPath = `./test/resources/vocabs/${configFile}`;
+
+      // Test that the error message contains the expected explanation and file name
+      await expect(() => {
+        GeneratorConfiguration.fromYaml(configPath);
+      }).toThrow(/No artifacts found/, configFile);
     });
 
     // SUCCESS CASE
