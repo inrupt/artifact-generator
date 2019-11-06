@@ -78,6 +78,7 @@ class ArtifactGenerator {
         this.artifactData.inputResources = vocabDetails.inputResources;
         this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
         this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
+        this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
         // Generate this vocab for each artifact we are generating for.
         const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {

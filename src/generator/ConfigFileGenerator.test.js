@@ -27,7 +27,7 @@ const PROMPTED_JAVA_ARTIFACT = {
   javaPackageName: 'com.example.java.packagename',
 };
 const COMPLETE_JAVA_ARTIFACT = {
-  languageKeywordsToUnderscore: ['class', 'abstract'],
+  languageKeywordsToUnderscore: ['class', 'abstract', 'default'],
   handlebarsTemplate: 'java-rdf4j.hbs',
   sourceFileExtension: 'java',
   artifactFolderName: 'Java',
