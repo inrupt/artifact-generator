@@ -105,24 +105,6 @@ describe('App tests', () => {
       fs.rmdirSync(directoryPath);
     });
 
-    it('should validate a correct config file', async () => {
-      const filePath = path.join('test', 'resources', 'vocabs', 'vocab-list.yml');
-      const argv = {
-        _: ['validate'],
-        vocabListFile: filePath,
-      };
-      expect(await new App(argv).validate()).toBe(true);
-    });
-
-    it('should throw when validating an incorrect config file', async () => {
-      const filePath = path.join('test', 'resources', 'vocabs', 'no-artifacts.yml');
-      const argv = {
-        _: ['validate'],
-        vocabListFile: filePath,
-      };
-      expect(new App(argv).validate()).rejects.toThrow('Invalid config file');
-    });
-
     it('should generate a file through prompt', async () => {
       const directoryPath = path.join('.', '.tmp');
       const filePath = path.join(directoryPath, 'lit-vocab.yml');
@@ -144,6 +126,67 @@ describe('App tests', () => {
       app.unwatch();
       expect(app.watcher.watch.mock.calls.length).toBe(1);
       expect(app.watcher.unwatch.mock.calls.length).toBe(1);
+    });
+  });
+
+  describe('Testing validation', () => {
+    it('should validate a correct config file', async () => {
+      const filePath = path.join('test', 'resources', 'validation', 'vocab-list.yml');
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      let valid = false;
+      await new App(argv).validate().then(() => {
+        valid = true;
+      });
+      expect(valid).toBe(true);
+    });
+
+    it('should throw when validating an incorrect config file', async () => {
+      const filePath = path.join('test', 'resources', 'vocabs', 'no-artifacts.yml');
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(new App(argv).validate()).rejects.toThrow('Invalid configuration');
+    });
+
+    it('should throw when a local vocabulary is missing', async () => {
+      const filePath = path.join('test', 'resources', 'validation', 'missing-local-vocab-list.yml');
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(new App(argv).validate()).rejects.toThrow();
+    });
+
+    it('should throw when a remote vocabulary is incorrect', async () => {
+      const filePath = path.join(
+        'test',
+        'resources',
+        'validation',
+        'inexistent-online-vocab-list.yml'
+      );
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(new App(argv).validate()).rejects.toThrow();
+    });
+
+    it('should throw when a vocabulary is syntactically incorrect', async () => {
+      const filePath = path.join(
+        'test',
+        'resources',
+        'validation',
+        'vocab-list-containing-invalid-syntax.yml'
+      );
+      const argv = {
+        _: ['validate'],
+        vocabListFile: filePath,
+      };
+      expect(new App(argv).validate()).rejects.toThrow();
     });
   });
 });

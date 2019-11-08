@@ -1,4 +1,5 @@
 const path = require('path');
+const logger = require('debug')('lit-artifact-generator:App');
 
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
@@ -6,6 +7,7 @@ const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
 const VocabWatcher = require('./VocabWatcher');
 const CommandLine = require('./CommandLine');
 const FileGenerator = require('./generator/FileGenerator');
+const Resources = require('./Resources');
 
 const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
 
@@ -56,16 +58,23 @@ module.exports = class App {
   }
 
   async validate() {
+    let configuration;
     try {
-      const configuration = new GeneratorConfiguration(this.argv);
-      GeneratorConfiguration.validateYamlConfig(
-        configuration.configuration,
-        this.argv.vocabListFile
-      );
+      configuration = new GeneratorConfiguration(this.argv);
     } catch (error) {
-      throw new Error(`Invalid config file: [${error}]`);
+      throw new Error(`Invalid configuration: [${error}]`);
     }
-    return true;
+    logger('The configuration options are valid. Testing the vocabularies...');
+    const vocabsToValidate = [];
+    const { vocabList } = configuration.configuration;
+    for (let i = 0; i < vocabList.length; i += 1) {
+      for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
+        vocabsToValidate.push(Resources.readResource(vocabList[i].inputResources[j]));
+      }
+    }
+    return Promise.all(vocabsToValidate).catch(error => {
+      throw new Error(`Invalid vocabulary: [${error}]`);
+    });
   }
 
   async watch() {
