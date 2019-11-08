@@ -14,12 +14,7 @@ module.exports = class VocabGenerator {
   }
 
   generate() {
-    this.resources = new Resources(
-      this.vocabData.inputResources,
-      this.vocabData.vocabTermsFrom,
-      // TODO: Cleanup the following parameter in the Resource class, since it is now handled in the configuration
-      '.' // this.vocabData.vocabListFile ? path.dirname(this.vocabData.vocabListFile) : '.'
-    );
+    this.resources = new Resources(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
 
     return this.generateData()
       .then(vocabGenerationData => {

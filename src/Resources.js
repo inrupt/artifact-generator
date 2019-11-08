@@ -39,21 +39,20 @@ module.exports = class Resources {
    * (e.g. for reading resources from a vocab list file that can be anywhere, all local resources referenced in it
    * should be relative to wherever that list file itself is!).
    */
-  constructor(datasetFiles, vocabTermsFromResource, fileResourcesRelativeTo) {
+  constructor(datasetFiles, vocabTermsFromResource) {
     this.datasetFiles = datasetFiles;
     this.vocabTermsFromResource = vocabTermsFromResource;
-    this.fileResourcesRelativeTo = fileResourcesRelativeTo;
   }
 
   async processInputs(processInputsCallback) {
     logger(`Processing datasetFiles: [${this.datasetFiles}]...`);
-    const datasetsPromises = this.datasetFiles.map(e => this.readResource(e));
+    const datasetsPromises = this.datasetFiles.map(e => Resources.readResource(e));
 
     const datasets = await Promise.all(datasetsPromises);
 
     let vocabTermsFromDataset;
     if (this.vocabTermsFromResource) {
-      vocabTermsFromDataset = await this.readResource(this.vocabTermsFromResource);
+      vocabTermsFromDataset = await Resources.readResource(this.vocabTermsFromResource);
 
       // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
       // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
@@ -64,7 +63,11 @@ module.exports = class Resources {
     processInputsCallback(datasets, vocabTermsFromDataset);
   }
 
-  readResource(datasetFile) {
+  /**
+   * Reads resources, either from a local file or a remote IRI.
+   * @param {string} datasetFile path to the file, or IRI.
+   */
+  static readResource(datasetFile) {
     logger(`Loading resource: [${datasetFile}]...`);
     if (datasetFile.startsWith('http')) {
       return rdfFetch(datasetFile, { factory: rdf, formats }).then(resource => {
@@ -72,8 +75,8 @@ module.exports = class Resources {
       });
     }
 
-    return LitUtils.loadTurtleFileIntoDatasetPromise(
-      `${this.fileResourcesRelativeTo}/${datasetFile}`
-    );
+    return new Promise(resolve => {
+      resolve(LitUtils.loadTurtleFileIntoDatasetPromise(`${datasetFile}`));
+    });
   }
 };

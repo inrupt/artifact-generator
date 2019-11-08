@@ -1,0 +1,20 @@
+artifactName: testSchema
+authorSet: Cleopatra (https://cleopatra.solid.community/profile/card#me)
+
+artifactToGenerate:
+  - programmingLanguage: "Java"
+    artifactVersion: "0.1.0"
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactFolderName: "Java"
+    handlebarsTemplate: "java-rdf4j.hbs"
+    sourceFileExtension: "java"
+    languageKeywordsToUnderscore:
+      - "class"
+      - "abstract"
+    javaPackageName: "com.example.java.packagename"
+
+vocabList:
+  # This vocabulary contains an online input resource that is a correct IRI but does not return RDF, which should fail the validation
+  - inputResources:
+      - "http://example.org/myVocab"
+    nameAndPrefixOverride: "ex"
