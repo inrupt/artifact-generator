@@ -14,7 +14,7 @@ artifactToGenerate:
     javaPackageName: "com.example.java.packagename"
 
 vocabList:
-  # This vocabulary contains an online input resource, which should fail the watcher
+  # This vocabulary contains an online input resource that is a correct IRI but does not return RDF, which should fail the validation
   - inputResources:
       - "http://example.org/myVocab"
-    nameAndPrefixOverride: "foaf"
+    nameAndPrefixOverride: "ex"

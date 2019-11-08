@@ -64,7 +64,7 @@ module.exports = class App {
     } catch (error) {
       throw new Error(`Invalid configuration: [${error}]`);
     }
-    logger('The configuration options are valid. Testing the vocabularies...');
+    logger('The configuration options are valid. Validating the vocabularies...');
     const vocabsToValidate = [];
     const { vocabList } = configuration.configuration;
     for (let i = 0; i < vocabList.length; i += 1) {
