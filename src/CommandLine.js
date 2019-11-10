@@ -211,20 +211,16 @@ module.exports = class CommandLine {
   static runMavenInstall(data) {
     if (data.runMavenInstall) {
       logger(
-        `Running 'mvn install' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
+        `Running 'mvn install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java]...`
       );
-
       // Quick addition to also support Maven install for Java artifacts.
-      if (data.generationDetails) {
-        const javaDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
-        data.generationDetails.artifactToGenerate.forEach(artifact => {
-          if (artifact.programmingLanguage.toLowerCase() === 'java') {
-            const commandLineMaven = `cd ${javaDirectory} && mvn install`;
-            ChildProcess.execSync(commandLineMaven);
-          }
-        });
-      }
-
+      const javaDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      data.artifactToGenerate.forEach(artifact => {
+        if (artifact.programmingLanguage.toLowerCase() === 'java') {
+          const commandLineMaven = `cd ${javaDirectory} && mvn install`;
+          ChildProcess.execSync(commandLineMaven);
+        }
+      });
       return { ...data, ranMavenInstall: true }; // Merge the answers in with the data and return
     }
 

@@ -36,6 +36,7 @@ module.exports = class App {
       .generate()
       .then(CommandLine.askForArtifactToBeNpmVersionBumped)
       .then(CommandLine.askForArtifactToBeNpmInstalled)
+      .then(CommandLine.runMavenInstall)
       .then(CommandLine.askForArtifactToBeNpmPublished)
       .then(CommandLine.askForArtifactToBeDocumented);
   }
