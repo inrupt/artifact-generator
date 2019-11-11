@@ -2,25 +2,24 @@ require('mock-local-storage');
 const fs = require('fs');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
-const ArtifactGenerator = require('./generator/ArtifactGenerator');
-const CommandLine = require('./CommandLine');
+const App = require('./App');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
-const VERSION_LIT_VOCAB_TERM = '^0.1.0'; // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES, AS THEY PROVIDE PER PROGRAMMING LANGUAGE)...!?
+const VERSION_LIT_VOCAB_TERM = '^0.1.0';
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
 const RUN_MAVEN_INSTALL = true;
 const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = false;
 
-const GenerationConfigLitCommon = {
+const ConfigLitCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
   moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runMavenInstall: RUN_MAVEN_INSTALL,
@@ -28,13 +27,13 @@ const GenerationConfigLitCommon = {
   supportBundling: SUPPORT_BUNDLING,
 };
 
-const GenerationConfigSolidCommon = {
+const ConfigSolidCommon = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common/Vocab/Vocab-List-Solid-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common',
   moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM, // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   runMavenInstall: RUN_MAVEN_INSTALL,
@@ -42,7 +41,33 @@ const GenerationConfigSolidCommon = {
   supportBundling: SUPPORT_BUNDLING,
 };
 
-const GenerationConfigLitCore = {
+const ConfigInruptCommon = {
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common/Vocab/Vocab-List-Inrupt-Common.yml',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common',
+  moduleNamePrefix: '@inrupt/generated-vocab-',
+  artifactName: 'common',
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  runMavenInstall: RUN_MAVEN_INSTALL,
+  runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
+};
+
+const ConfigInruptService = {
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service/Vocab/Vocab-List-Inrupt-Service.yml',
+  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service',
+  moduleNamePrefix: '@inrupt/generated-vocab-',
+  artifactName: 'service',
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  runMavenInstall: RUN_MAVEN_INSTALL,
+  runNpmPublish: RUN_NPM_PUBLISH,
+  supportBundling: SUPPORT_BUNDLING,
+};
+
+const ConfigLitCore = {
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
@@ -55,10 +80,12 @@ const GenerationConfigLitCore = {
   supportBundling: SUPPORT_BUNDLING,
 };
 
-const GenerationConfigSolidComponent = {
+const ConfigSolidComponent = {
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component/Vocab/SolidComponent.ttl',
   ],
+  litVocabTermVersion: '^0.1.0',
+
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component',
   artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -69,10 +96,12 @@ const GenerationConfigSolidComponent = {
   runWidoco: true,
 };
 
-const GenerationConfigSolidGeneratorUi = {
+const ConfigSolidGeneratorUi = {
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
+  litVocabTermVersion: '^0.1.0',
+
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi',
   artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
@@ -84,22 +113,9 @@ const GenerationConfigSolidGeneratorUi = {
 };
 
 async function generateVocabArtifact(argv) {
-  const artifactGenerator = new ArtifactGenerator(
-    { ...argv, noprompt: true },
-    CommandLine.askForArtifactInfo
-  );
-
-  const result = await artifactGenerator
-    .generate()
-    .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-    .then(CommandLine.askForArtifactToBeNpmInstalled)
-    .then(CommandLine.runMavenInstall)
-    .then(CommandLine.askForArtifactToBeNpmPublished)
-    .then(CommandLine.askForArtifactToBeDocumented)
-    .catch(error => {
-      logger(`Generation process failed: [${error}]. Stack: ${error.stack.toString()}`);
-      throw new Error(error);
-    });
+  const app = new App({ ...argv, noprompt: true });
+  await app.configure();
+  const result = await app.run();
 
   expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package.json`)).toBe(true);
 
@@ -121,39 +137,73 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   // it('Generate ALL vocabs', async () => {
   it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
-    await generateVocabArtifact(GenerationConfigLitCommon);
-    await generateVocabArtifact(GenerationConfigLitCore);
+    await generateVocabArtifact(ConfigLitCommon);
+    await generateVocabArtifact(ConfigLitCore);
 
-    await generateVocabArtifact(GenerationConfigSolidCommon);
-    await generateVocabArtifact(GenerationConfigSolidComponent);
-    await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
+    await generateVocabArtifact(ConfigSolidCommon);
+    await generateVocabArtifact(ConfigSolidComponent);
+    await generateVocabArtifact(ConfigSolidGeneratorUi);
+
+    await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptService);
+  });
+
+  // it('LIT vocabs', async () => {
+  it.skip('LIT vocabs', async () => {
+    jest.setTimeout(15000);
+    await generateVocabArtifact(ConfigLitCommon);
+    await generateVocabArtifact(ConfigLitCore);
+  });
+
+  // it('Solid vocabs', async () => {
+  it.skip('Solid vocabs', async () => {
+    jest.setTimeout(15000);
+    await generateVocabArtifact(ConfigSolidCommon);
+    await generateVocabArtifact(ConfigSolidGeneratorUi);
+    await generateVocabArtifact(ConfigSolidComponent);
+  });
+
+  // it('Inrupt vocab', async () => {
+  it.skip('Inrupt vocab', async () => {
+    await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptService);
   });
 
   // it('LIT Common vocabs', async () => {
   it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
-    await generateVocabArtifact(GenerationConfigLitCommon);
+    await generateVocabArtifact(ConfigLitCommon);
   });
 
   // it('LIT Core vocabs', async () => {
   it.skip('LIT Core vocabs', async () => {
-    await generateVocabArtifact(GenerationConfigLitCore);
+    await generateVocabArtifact(ConfigLitCore);
   });
 
   // it('Solid Common vocabs', async () => {
   it.skip('Solid Common vocabs', async () => {
     jest.setTimeout(15000);
-    await generateVocabArtifact(GenerationConfigSolidCommon);
+    await generateVocabArtifact(ConfigSolidCommon);
   });
 
   // it('Solid Generator UI vocab', async () => {
   it.skip('Solid Generator UI vocab', async () => {
-    await generateVocabArtifact(GenerationConfigSolidGeneratorUi);
+    await generateVocabArtifact(ConfigSolidGeneratorUi);
   });
 
   // it('Solid Component vocab', async () => {
   it.skip('Solid Component vocab', async () => {
-    await generateVocabArtifact(GenerationConfigSolidComponent);
+    await generateVocabArtifact(ConfigSolidComponent);
+  });
+
+  // it('Inrupt Commmon vocab', async () => {
+  it.skip('Inrupt Commmon vocab', async () => {
+    await generateVocabArtifact(ConfigInruptCommon);
+  });
+
+  // it('Inrupt Service vocab', async () => {
+  it.skip('Inrupt Service vocab', async () => {
+    await generateVocabArtifact(ConfigInruptService);
   });
 
   it.skip('Test Demo App', async () => {

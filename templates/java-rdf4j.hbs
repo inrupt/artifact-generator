@@ -31,7 +31,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
         return NAMESPACE_IRI;
     }
 
-    private static String _NS(final String localName) {
+    private static String FULL_IRI(final String localName) {
         return NAMESPACE + localName;
     }
 
@@ -44,7 +44,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
@@ -59,7 +59,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
 {{/each}}
@@ -74,7 +74,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(_NS("{{{name}}}"), true){{#each labels}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
       .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
       .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each definitions}}
       .addMessage("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};

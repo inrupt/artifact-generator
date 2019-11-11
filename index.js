@@ -72,6 +72,13 @@ const yargsConfig = yargs
         .describe('runNpmPublish', 'If set will attempt to publish to the configured NPM registry.')
         .default('runNpmPublish', false)
 
+        .boolean('runMavenInstall')
+        .describe(
+          'runMavenInstall',
+          'If set, will attempt to install the generated artifact from within the output directory in the local Maven repository.'
+        )
+        .default('runMavenInstall', false)
+
         .alias('b', 'bumpVersion')
         .describe(
           'bumpVersion',
