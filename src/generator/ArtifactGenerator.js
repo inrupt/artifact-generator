@@ -100,26 +100,12 @@ class ArtifactGenerator {
 
         // Generate this vocab for each artifact we are generating for.
         const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
-          this.artifactData.artifactVersion = artifactDetails.artifactVersion;
-
-          // TODO: Make sure that artifact-specific information are stored in the config object at the artifact level
-          // (here artifactConfig), and not at the global level (this.artifactData...). Make sure that the information
-          // are also fetched from the config accordingly
           const artifactConfig = artifactDetails;
-
           artifactConfig.outputDirectoryForArtifact = path.join(
             this.artifactData.outputDirectory,
             ARTIFACT_DIRECTORY_SOURCE_CODE,
             artifactDetails.artifactFolderName
           );
-
-          // TODO: Currently we need to very explicitly add this Java-specific
-          //  data to our data being passed into the vocab generator, from where
-          //  it needs to be copied again into the template data, so that our
-          //  Java-only Handlebars templates can access it!
-          this.artifactData.javaPackageName = artifactDetails.javaPackageName;
-          this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
-          this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
 
           return new VocabGenerator(this.artifactData, artifactConfig).generate();
         });

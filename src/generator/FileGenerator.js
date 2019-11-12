@@ -43,7 +43,7 @@ class FileGenerator {
   }
 
   static createSourceCodeFile(argv, artifactDetails, templateData) {
-    const outputDirectoryForSourceCode = argv.outputDirectoryForArtifact;
+    const outputDirectoryForSourceCode = artifactDetails.outputDirectoryForArtifact;
 
     // For source files that might be packaged (i.e. Java), convert all '.'
     // (dots) in the package name to directory slashes and add to our
@@ -51,8 +51,8 @@ class FileGenerator {
     // Also for Java files, we follow the Maven convention of putting source
     // code in the directory 'src/main/java' (meaning a simple 'mvn install'
     // will find them automatically).
-    const packagingDirectory = templateData.javaPackageName
-      ? `/src/main/java/${templateData.javaPackageName.replace(/\./g, '/')}`
+    const packagingDirectory = artifactDetails.javaPackageName
+      ? `/src/main/java/${artifactDetails.javaPackageName.replace(/\./g, '/')}`
       : 'GeneratedVocab';
     FileGenerator.createDirectory(`${outputDirectoryForSourceCode}/${packagingDirectory}`);
 

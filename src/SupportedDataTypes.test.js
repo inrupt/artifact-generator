@@ -16,8 +16,6 @@ describe('Supported Data Type', () => {
       {
         inputResources: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
         outputDirectory,
-        // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'lit-generated-vocab-',
         nameAndPrefixOverride: 'owl',
@@ -30,6 +28,8 @@ describe('Supported Data Type', () => {
         artifactFolderName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
       }
     );
 
@@ -61,8 +61,6 @@ describe('Supported Data Type', () => {
       {
         inputResources: ['./test/resources/vocabs/special-case-http-snippet.ttl'],
         outputDirectory,
-        // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'lit-generated-vocab-',
         nameAndPrefixOverride: 'http',
@@ -75,6 +73,8 @@ describe('Supported Data Type', () => {
         artifactFolderName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
       }
     );
 
@@ -104,8 +104,6 @@ describe('Supported Data Type', () => {
       {
         inputResources: ['./test/resources/vocabs/supported-data-types.ttl'],
         outputDirectory,
-        // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
         artifactVersion: '1.0.0',
         moduleNamePrefix: 'lit-generated-vocab-',
 
@@ -117,6 +115,8 @@ describe('Supported Data Type', () => {
         artifactFolderName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavascript,
       }
     );
 
