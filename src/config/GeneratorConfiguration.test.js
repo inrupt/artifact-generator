@@ -97,7 +97,6 @@ describe('Generator configuration', () => {
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_YAML);
     });
-
   });
 
   describe('Processing command line.', () => {

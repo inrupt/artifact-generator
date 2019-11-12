@@ -102,17 +102,17 @@ class ArtifactGenerator {
         const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
           this.artifactData.artifactVersion = artifactDetails.artifactVersion;
 
-          this.artifactData.outputDirectoryForArtifact = path.join(
-            this.artifactData.outputDirectory,
-            ARTIFACT_DIRECTORY_SOURCE_CODE,
-            artifactDetails.artifactFolderName
-          );
           // TODO: Make sure that artifact-specific information are stored in the config object at the artifact level
           // (here artifactConfig), and not at the global level (this.artifactData...). Make sure that the information
           // are also fetched from the config accordingly
           const artifactConfig = artifactDetails;
 
-          artifactConfig.outputDirectoryForArtifact = this.artifactData.outputDirectoryForArtifact;
+          artifactConfig.outputDirectoryForArtifact = path.join(
+            this.artifactData.outputDirectory,
+            ARTIFACT_DIRECTORY_SOURCE_CODE,
+            artifactDetails.artifactFolderName
+          );
+
           // TODO: Currently we need to very explicitly add this Java-specific
           //  data to our data being passed into the vocab generator, from where
           //  it needs to be copied again into the template data, so that our
