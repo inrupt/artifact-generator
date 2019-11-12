@@ -92,7 +92,6 @@ class FileGenerator {
     });
 
     FileGenerator.createSharedPackagedFiles(generalInfo, artifactInfo);
-
     return generalInfo;
   }
 
