@@ -265,16 +265,14 @@ describe('Command Line unit tests', () => {
       const result = await CommandLine.runMavenInstall({
         ...defaultInputs,
         runMavenInstall: true,
-        generationDetails: {
-          artifactToGenerate: [
-            {
-              programmingLanguage: 'Java',
-            },
-            {
-              programmingLanguage: 'C#',
-            },
-          ],
-        },
+        artifactToGenerate: [
+          {
+            programmingLanguage: 'Java',
+          },
+          {
+            programmingLanguage: 'C#',
+          },
+        ],
       });
 
       expect(result.ranMavenInstall).toBe(true);
