@@ -11,6 +11,46 @@ const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require('../App');
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
 
+const WEBPACK_DEFAULT = {
+  packagingTool: 'webpack',
+  packagingFolder: 'config',
+  packagingTemplates: [
+    {
+      template: 'webpack.dev.config.hbs',
+      fileName: 'webpack.dev.config.js',
+    },
+    {
+      template: 'webpack.prod.config.hbs',
+      fileName: 'webpack.prod.config.js',
+    },
+  ],
+};
+
+const NPM_DEFAULT = {
+  packagingTool: 'npm',
+  npmModuleScope: '@lit/',
+  packagingTemplates: [
+    {
+      template: 'package.hbs',
+      fileName: 'package.json',
+    },
+    {
+      template: 'index.hbs',
+      fileName: 'index.js',
+    },
+  ],
+};
+
+const DEFAULT_CLI_ARTIFACT = [
+  {
+    programmingLanguage: 'Javascript',
+    artifactFolderName: 'Javascript',
+    handlebarsTemplate: 'javascript-rdf-ext.hbs',
+    sourceFileExtension: 'js',
+    packaging: [NPM_DEFAULT],
+  },
+];
+
 class GeneratorConfiguration {
   /**
    * Constructor for the configuration object. It is passed info collected on the command line, potentially with sensible default values.
@@ -183,16 +223,23 @@ class GeneratorConfiguration {
 
     cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
-    // We weren't provided with a configuration file, so manually provide
-    // defaults.
+    // We weren't provided with a configuration file, so manually provide defaults.
+    // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference, 
+    // and the tests are ran in parallel, it creates thread-safety issues that should be adressed by creating
+    // a depp copy.
     cliConfig.artifactToGenerate = [
       {
         programmingLanguage: 'Javascript',
         artifactFolderName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
+        packaging: [NPM_DEFAULT],
       },
     ];
+
+    if (args.supportBundling) {
+      cliConfig.artifactToGenerate[0].packaging.push(WEBPACK_DEFAULT);
+    }
 
     if (args.artifactVersion) {
       cliConfig.artifactToGenerate[0].artifactVersion = args.artifactVersion;
@@ -234,3 +281,4 @@ class GeneratorConfiguration {
 }
 
 module.exports = GeneratorConfiguration;
+module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;

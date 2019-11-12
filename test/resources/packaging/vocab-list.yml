@@ -3,7 +3,7 @@
 # form the collective set vocabularies within a single artifact.
 #
 artifactName: generated-vocab-common-TEST
-# NOTE: No author is set, so additional information will be asked to the user
+authorSet: "Cleopatra (https://cleopatra.solid.community/profile/car#me)"
 
 artifactToGenerate:
   - programmingLanguage: Java
@@ -23,10 +23,13 @@ artifactToGenerate:
         packagingTemplates: 
         - template: pom.hbs
           fileName: pom.xml
+#      - packagingTool: gradle
+#        groupId: com.inrupt.test
+#        packagingFileName: build.gradle
+#        packagingTemplate: gradle.hbs
 
   - programmingLanguage: Javascript
     artifactVersion: 10.11.12
-    npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactFolderName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
@@ -39,14 +42,21 @@ artifactToGenerate:
             fileName: package.json
           - template: index.hbs
             fileName: index.js
+      - packagingTool: webpack
+        packagingFolder: config
+        packagingTemplates:
+          - template: webpack.dev.config.hbs
+            fileName: webpack.dev.config.js
+          - template: webpack.prod.config.hbs
+            fileName: webpack.prod.config.js
+        # registry: 
 
 vocabList:
-  - description: Schema.org from Google, Microsoft, Yahoo and Yandex
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - schema-snippet.ttl
-    termSelectionFile: schema-inrupt-ext.ttl
+      - ../vocabs/schema-snippet.ttl
 
   - description: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
-      - ./supported-data-types.ttl
+      - ../vocabs/supported-data-types.ttl

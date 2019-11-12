@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Handlebars = require('handlebars');
 const logger = require('debug')('lit-artifact-generator:FileGenerator');
 
@@ -60,85 +61,59 @@ class FileGenerator {
     );
   }
 
-  static createPackagingFiles(argv, programmingLanguage) {
-    FileGenerator.createDirectory(argv.outputDirectory);
-
-    switch (programmingLanguage.toLowerCase()) {
-      case 'java':
-        FileGenerator.createPackagingFilesJava(argv);
-        break;
-
-      case 'javascript':
-        FileGenerator.createPackagingFilesJavascript(argv);
-        break;
-      default:
-        throw new Error(
-          `Unsupported programming language [${programmingLanguage}], we don't know how to create an packaging artifact for this language.`
-        );
+  static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {
+    let packagingFolder;
+    // If no packaging is explicitely defined, packaging files are generated at the root artifact folder
+    if (packagingInfo.packagingFolder) {
+      packagingFolder = path.join(
+        artifactInfo.outputDirectoryForArtifact,
+        packagingInfo.packagingFolder
+      );
+      FileGenerator.createDirectory(packagingFolder);
+    } else {
+      packagingFolder = artifactInfo.outputDirectoryForArtifact;
     }
+    packagingInfo.packagingTemplates.forEach(packagingFile => {
+      FileGenerator.createFileFromTemplate(
+        `../../templates/${packagingFile.template}`,
+        FileGenerator.formatTemplateData(
+          { ...generalInfo, ...artifactInfo, ...packagingInfo },
+          // extname returns the extension prefixed with ., that we want to remove
+          path.extname(packagingFile.fileName).substr(1)
+        ),
+        path.join(packagingFolder, packagingFile.fileName)
+      );
+    });
 
+    FileGenerator.createSharedPackagedFiles(generalInfo, artifactInfo);
+
+    return generalInfo;
+  }
+
+  /**
+   * This function creates the files that are share in all the packaging (README, .gitignore...)
+   * @param {*} argv the generation variables
+   */
+  static createSharedPackagedFiles(generalInfo, artifactInfo) {
     FileGenerator.createFileFromTemplate(
       '../../templates/.gitignore.hbs',
-      argv,
-      `${argv.outputDirectoryForArtifact}/.gitignore`
+      generalInfo,
+      `${artifactInfo.outputDirectoryForArtifact}/.gitignore`
     );
 
     // For our README (which uses Markdown format), if our artifact was made up
     // of multiple vocabs, break up our description into a list representation.
     // TODO: if a vocab description contains a newline, this will split it out
     //  into another list item!
-    const dataWithMarkdownDescription = argv.vocabListFile
-      ? { ...argv, description: argv.description.replace(/\\n/g, '\n\n  *') }
-      : argv;
+    const dataWithMarkdownDescription = generalInfo.vocabListFile
+      ? { ...generalInfo, description: generalInfo.description.replace(/\\n/g, '\n\n  *') }
+      : generalInfo;
 
     FileGenerator.createFileFromTemplate(
       '../../templates/README.hbs',
       dataWithMarkdownDescription,
-      `${argv.outputDirectoryForArtifact}/README.MD`
+      `${artifactInfo.outputDirectoryForArtifact}/README.MD`
     );
-
-    return argv;
-  }
-
-  static createPackagingFilesJavascript(argv) {
-    FileGenerator.createFileFromTemplate(
-      '../../templates/index.hbs',
-      argv,
-      `${argv.outputDirectoryForArtifact}/index.js`
-    );
-
-    if (argv.supportBundling) {
-      FileGenerator.createDirectory(`${argv.outputDirectoryForArtifact}/config`);
-
-      FileGenerator.createFileFromTemplate(
-        '../../templates/webpack.dev.config.hbs',
-        argv,
-        `${argv.outputDirectoryForArtifact}/config/webpack.dev.config.js`
-      );
-      FileGenerator.createFileFromTemplate(
-        '../../templates/webpack.prod.config.hbs',
-        argv,
-        `${argv.outputDirectoryForArtifact}/config/webpack.prod.config.js`
-      );
-    }
-
-    FileGenerator.createFileFromTemplate(
-      '../../templates/package.hbs',
-      FileGenerator.formatTemplateData(argv, 'json'),
-      `${argv.outputDirectoryForArtifact}/package.json`
-    );
-
-    return argv;
-  }
-
-  static createPackagingFilesJava(argv) {
-    FileGenerator.createFileFromTemplate(
-      '../../templates/pom.hbs',
-      FileGenerator.formatTemplateData(argv, 'pom.xml'),
-      `${argv.outputDirectoryForArtifact}/pom.xml`
-    );
-
-    return argv;
   }
 
   /**

@@ -134,7 +134,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           artifactVersion: '1.0.0',
           litVocabTermVersion: '^1.0.10',
-          moduleNamePrefix: '@lit/generated-vocab-',
+          moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
       );
@@ -344,7 +344,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           artifactVersion: '1.0.5',
           litVocabTermVersion: '^1.0.10',
-          moduleNamePrefix: '@lit/generated-vocab-',
+          moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
       );
@@ -366,7 +366,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           artifactVersion: '1.0.5',
           litVocabTermVersion: '^1.0.10',
-          moduleNamePrefix: '@lit/generated-vocab-',
+          moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
       );
@@ -384,7 +384,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           artifactVersion: '1.0.5',
           litVocabTermVersion: '^1.0.10',
-          moduleNamePrefix: '@lit/generated-vocab-',
+          moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
       );

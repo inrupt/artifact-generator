@@ -92,8 +92,6 @@ class ArtifactGenerator {
     //  language-specific details within this original vocab-iterating loop.
     return Promise.all(
       this.artifactData.vocabList.map(async vocabDetails => {
-        // const vocabGenerationPromises = generationDetails.vocabList.map(vocabDetails => {
-
         // Override our vocab inputs using this vocab list entry.
         this.artifactData.inputResources = vocabDetails.inputResources;
         this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
@@ -109,7 +107,12 @@ class ArtifactGenerator {
             ARTIFACT_DIRECTORY_SOURCE_CODE,
             artifactDetails.artifactFolderName
           );
+          // TODO: Make sure that artifact-specific information are stored in the config object at the artifact level
+          // (here artifactConfig), and not at the global level (this.artifactData...). Make sure that the information
+          // are also fetched from the config accordingly
+          const artifactConfig = artifactDetails;
 
+          artifactConfig.outputDirectoryForArtifact = this.artifactData.outputDirectoryForArtifact;
           // TODO: Currently we need to very explicitly add this Java-specific
           //  data to our data being passed into the vocab generator, from where
           //  it needs to be copied again into the template data, so that our
@@ -118,7 +121,7 @@ class ArtifactGenerator {
           this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
           this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
 
-          return new VocabGenerator(this.artifactData, artifactDetails).generate();
+          return new VocabGenerator(this.artifactData, artifactConfig).generate();
         });
 
         // Wait for all our artifacts to be generated.
@@ -151,20 +154,15 @@ class ArtifactGenerator {
 
   async generatePackaging() {
     this.artifactData.artifactToGenerate.forEach(artifactDetails => {
-      this.artifactData.artifactVersion = artifactDetails.artifactVersion;
-
-      this.artifactData.outputDirectoryForArtifact = path.join(
-        this.artifactData.outputDirectory,
-        ARTIFACT_DIRECTORY_SOURCE_CODE,
-        artifactDetails.artifactFolderName
-      );
-      this.artifactData.javaPackageName = artifactDetails.javaPackageName;
-      this.artifactData.npmModuleScope = artifactDetails.npmModuleScope;
-      this.artifactData.litVocabTermVersion = artifactDetails.litVocabTermVersion;
-      this.artifactData.gitRepository = artifactDetails.gitRepository;
-      this.artifactData.repository = artifactDetails.repository;
-
-      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails.programmingLanguage);
+      if (artifactDetails.packaging) {
+        logger(`Generating ${artifactDetails.programmingLanguage} packaging`);
+        // TODO: manage repositories properly
+        this.artifactData.gitRepository = artifactDetails.gitRepository;
+        this.artifactData.repository = artifactDetails.repository;
+        artifactDetails.packaging.forEach(packagingDetails => {
+          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, packagingDetails);
+        });
+      }
     });
   }
 }
