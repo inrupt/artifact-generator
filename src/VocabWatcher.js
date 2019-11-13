@@ -48,11 +48,19 @@ class VocabWatcher {
         url: resource,
       })
         .then(response => {
+<<<<<<< HEAD
           const lastModifiedDate = Date.parse(response.headers['last-modified']);
           if (Number.isNaN(lastModifiedDate)) {
             throw new Error(`Cannot parse date: ${lastModifiedDate}`);
           }
           return lastModifiedDate;
+=======
+          const lastModifDate = Date.parse(response.headers['last-modified']);
+          if (Number.isNaN(lastModifDate)) {
+            throw new Error(`Cannot parse date: ${lastModifDate}`);
+          }
+          return lastModifDate;
+>>>>>>> 3cdfec0161d4e8ef0932a0de899c42d6f4030849
         })
         .catch(error => {
           throw new Error(`Cannot get last modification time: ${error}`);
