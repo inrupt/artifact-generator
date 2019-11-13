@@ -94,6 +94,7 @@ class VocabWatcher {
     // chokidar can't watch online resources, and so we won't ever get an event if an online resource changes. 
     // Therefore we need to poll online resources periodically, checking their last-modified response header to 
     // determine if an online vocabulary has changed.
+    // TODO: Right now, online vocabs are checked only once.
     await this.generateIfNecessary();
 
     // Add event listeners.
