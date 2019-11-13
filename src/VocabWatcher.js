@@ -98,11 +98,6 @@ class VocabWatcher {
 
     // Add event listeners.
     this.watcher
-      // .on('add', eventPath => {
-      //   // Triggers the initial generation, when the watcher starts
-      //   logger(`File ${eventPath} has been added`);
-      //   this.generateIfNecessary();
-      // })
       .on('change', eventPath => {
         // Triggers the generation when the file changes
         logger(`File ${eventPath} has been changed`);
