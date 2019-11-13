@@ -48,19 +48,11 @@ class VocabWatcher {
         url: resource,
       })
         .then(response => {
-<<<<<<< HEAD
           const lastModifiedDate = Date.parse(response.headers['last-modified']);
           if (Number.isNaN(lastModifiedDate)) {
             throw new Error(`Cannot parse date: ${lastModifiedDate}`);
           }
           return lastModifiedDate;
-=======
-          const lastModifDate = Date.parse(response.headers['last-modified']);
-          if (Number.isNaN(lastModifDate)) {
-            throw new Error(`Cannot parse date: ${lastModifDate}`);
-          }
-          return lastModifDate;
->>>>>>> 3cdfec0161d4e8ef0932a0de899c42d6f4030849
         })
         .catch(error => {
           throw new Error(`Cannot get last modification time: ${error}`);
@@ -99,21 +91,20 @@ class VocabWatcher {
   }
 
   async watch() {
-    // chokidar can't watch online resources, and so we won't ever get an event if an online resource changes. 
-    // Therefore we need to poll online resources periodically, checking their last-modified response header to 
+    // chokidar can't watch online resources, and so we won't ever get an event if an online resource changes.
+    // Therefore we need to poll online resources periodically, checking their last-modified response header to
     // determine if an online vocabulary has changed.
     // TODO: Right now, online vocabs are checked only once.
     await this.generateIfNecessary();
 
     // Add event listeners.
-    this.watcher
-      .on('change', eventPath => {
-        // Triggers the generation when the file changes
-        logger(`File ${eventPath} has been changed`);
-        this.generator.generate().catch(error => {
-          logger(error);
-        });
+    this.watcher.on('change', eventPath => {
+      // Triggers the generation when the file changes
+      logger(`File ${eventPath} has been changed`);
+      this.generator.generate().catch(error => {
+        logger(error);
       });
+    });
   }
 
   async unwatch() {
