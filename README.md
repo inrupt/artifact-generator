@@ -41,7 +41,7 @@ lit-artifact-generator --help
 
 # How to run
 
-- To **generate** source code from a vocabulary:
+## **generate** source code from a vocabulary:
 ```shell
 node index.js generate --inputResources <ontology resources (e.g. local files, or remote IRI's)>
 ```
@@ -49,12 +49,45 @@ node index.js generate --inputResources <ontology resources (e.g. local files, o
 The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary (or multiple vocabularies) specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default. To generate artifacts in a different language, a YAML configuration file must be used (see below).
 
 
-- To **initialize** a YAML file that should be edited manually
+## **initialize** a YAML file that should be edited manually
 ```shell
 node index.js init
 ```
 
 The output is a YAML file (by default `./lit-vocab.yml`), within which options can be specified to generate artifacts in different languages (e.g. Java, Javascript, Typescript, etc.) from a list of vocabularies. 
+
+## **validate** a YAML file after it has been manually edited:
+```shell
+node index.js validate --vocabListFile <./path/to/the/yaml/file>
+```
+This command verifies that:
+- the YAML file is syntactically valid, 
+- the mandatory options are specified
+- the vocabularies listed in the configuration are accessible and syntactically valid
+
+## **generate** source code from a YAML config file
+To generate from **multiple vocabularies**, and/or generate artifacts that are **not Node modules**, you can use a YAML config file: 
+```shell
+node index.js generate --vocabListFile <./path/to/the/yaml/file>
+```
+
+The details of the available options are listed in the [dedicated section of the documentation](#yaml)
+
+## **watch** a set of vocabularies
+This command starts a daemon that continuously watches a list of vocabularies, and re-generates artifacts accordingly, you can use the following command:
+```shell
+node index.js watch --vocabListFile <./path/to/the/yaml/file>
+```
+
+The process will run in the foreground until you hit "Enter", and artifacts will be kept up-to-date with vocabularies as long as the daemon is running.
+
+## See the help
+```shell
+node index.js --help
+```
+Will list all the available commands (e.g. `generate`, `init`, `validate`, or `watch`), and the options available for each command.
+
+# Advanced configuration
 
 ## CLI Examples
 
@@ -121,7 +154,7 @@ For help run:
 node index.js --help
 ```
 
-## Configuring options using the YAML file
+## <a id="yaml"/> Configuring options using the YAML file
 
 Once you've created a YAML configuration file using `node index.js init`, you can add information about the artifacts you want to generate, and the vocabularies you want to use. 
 
@@ -157,14 +190,6 @@ Information about each vocabulary is an object in the list `vocabList`.
   - `nameAndPrefixOverride`: The name of the generated vocabulary. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the `vann:preferredNamespacePrefix` property, and if it is not defined it will propose a default based on the domain name. This defaut is composed of the complete domain name, excluding the country extension, e.g. `http://vocab.example.org/` would default to `vocab.example`.
   - `description`: A description of the vocabulary, that will be used as a comment describing the generated class
   - `termSelectionFile`: When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.)
-
-### Generating artifacts using the YAML file
-
-Once you've edited your config file, you can use it to generate your artifacts: 
-
-```shell
-node index.js generate --vocabListFile <./path/to/the/yaml/file>
-```
 
 # How to build and deploy the module to an npm registry
 
