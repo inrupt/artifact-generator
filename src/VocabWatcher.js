@@ -1,4 +1,5 @@
 const chokidar = require('chokidar');
+const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const logger = require('debug')('lit-artifact-generator:VocabWatcher');
@@ -30,39 +31,64 @@ class VocabWatcher {
     for (let i = 0; i < vocabList.length; i += 1) {
       for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
         const resource = vocabList[i].inputResources[j];
-        if (resource.startsWith('http')) {
-          throw new Error(
-            `Cannot watch online resource [${resource}]. The watcher only watches local files.`
-          );
-        }
         watchList.push(resource);
       }
     }
     return watchList;
   }
 
-  static getResourceLastModificationTime(resource) {
-    let lastModif;
-    if (!resource.startsWith('http')) {
-      lastModif = fs.statSync(resource).mtimeMs;
+  /**
+   * Gets the time of the most recent modification for a resource, either local or remote, in POSIX date.
+   * @param {*} resource
+   */
+  static async getResourceLastModificationTime(resource) {
+    if (resource.startsWith('http')) {
+      return axios({
+        method: 'head',
+        url: resource,
+      })
+        .then(response => {
+<<<<<<< HEAD
+          const lastModifiedDate = Date.parse(response.headers['last-modified']);
+          if (Number.isNaN(lastModifiedDate)) {
+            throw new Error(`Cannot parse date: ${lastModifiedDate}`);
+          }
+          return lastModifiedDate;
+=======
+          const lastModifDate = Date.parse(response.headers['last-modified']);
+          if (Number.isNaN(lastModifDate)) {
+            throw new Error(`Cannot parse date: ${lastModifDate}`);
+          }
+          return lastModifDate;
+>>>>>>> 3cdfec0161d4e8ef0932a0de899c42d6f4030849
+        })
+        .catch(error => {
+          throw new Error(`Cannot get last modification time: ${error}`);
+        });
     }
-    return lastModif;
+    return fs.statSync(resource).mtimeMs;
   }
 
-  generateIfNecessary() {
+  async generateIfNecessary() {
     let artifactsOutdated = false;
     const outputDir = this.generator.configuration.configuration.outputDirectory;
     const artifactInfoPath = path.join(outputDir, ARTIFACT_DIRECTORY_ROOT, ARTIFACTS_INFO_FILENAME);
     if (fs.existsSync(artifactInfoPath)) {
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
+      const vocabsLastModif = [];
       for (let i = 0; i < this.watchedResources.length; i += 1) {
-        const vocabLastGeneration = VocabWatcher.getResourceLastModificationTime(
-          this.watchedResources[i]
+        vocabsLastModif.push(
+          VocabWatcher.getResourceLastModificationTime(this.watchedResources[i])
         );
-        artifactsOutdated = lastGenerationTime < vocabLastGeneration || artifactsOutdated;
       }
+      await Promise.all(vocabsLastModif).then(values => {
+        // The artifact is outdated if one vocabulary is more recent than the artifact
+        artifactsOutdated = values.reduce((accumulator, lastModif) => {
+          return lastGenerationTime < lastModif || accumulator;
+        }, artifactsOutdated);
+      });
     } else {
-      // There is no artifacts in the target directory.
+      // There are no artifacts in the target directory.
       artifactsOutdated = true;
     }
     if (artifactsOutdated) {
@@ -72,14 +98,15 @@ class VocabWatcher {
     }
   }
 
-  watch() {
+  async watch() {
+    // chokidar can't watch online resources, and so we won't ever get an event if an online resource changes. 
+    // Therefore we need to poll online resources periodically, checking their last-modified response header to 
+    // determine if an online vocabulary has changed.
+    // TODO: Right now, online vocabs are checked only once.
+    await this.generateIfNecessary();
+
     // Add event listeners.
     this.watcher
-      .on('add', eventPath => {
-        // Triggers the initial generation, when the watcher starts
-        logger(`File ${eventPath} has been added`);
-        this.generateIfNecessary();
-      })
       .on('change', eventPath => {
         // Triggers the generation when the file changes
         logger(`File ${eventPath} has been changed`);

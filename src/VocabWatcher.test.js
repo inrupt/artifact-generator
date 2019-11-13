@@ -2,6 +2,9 @@ require('mock-local-storage');
 
 const fs = require('fs');
 const del = require('del');
+const axios = require('axios');
+
+jest.mock('axios');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
@@ -15,6 +18,25 @@ const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CO
 const JAVA_PACKAGE_HIERARCHY = 'src/main/java/com/example/java/packagename';
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
 const SLEEP_TIME = 200;
+
+// 'Mon, 01 Jan 4000 00:00:59 GMT', in POSIX time
+const MOCKED_LAST_MODIFIED = 64060588859000;
+const VALID_LAST_MODIF_HTTP_RESOURCE = {
+  headers: {
+    // This date should alway be more recent than the considered artifacts (unless you are running this test
+    // 2000 years in the future and are trying to figure out what stopped working)
+    'last-modified': 'Mon, 01 Jan 4000 00:00:59 GMT',
+  },
+};
+
+const INVALID_LAST_MODIF_HTTP_RESOURCE = {
+  headers: {
+    'last-modified': 'This is not a date',
+  },
+};
+
+// const MOCKED_ONLINE_RESOURCE_PATH = './test/resources/watcher/another-schema-snippet.ttl';
+// const MOCKED_ONLINE_RESOURCE_BODY = fs.readFileSync(MOCKED_ONLINE_RESOURCE_PATH).toString();
 
 function sleep(ms) {
   return new Promise(resolve => {
@@ -117,32 +139,12 @@ describe('Vocabulary watcher', () => {
     vocabWatcher.unwatch();
   });
 
-  it('should fail when trying to watch an online resource', async () => {
-    expect(() => {
-      let watcher = new VocabWatcher(
-        new ArtifactGenerator(
-          new GeneratorConfiguration(
-            {
-              vocabListFile: './test/resources/watcher/online-vocab-list.yml',
-              outputDirectory: OUTPUT_DIRECTORY,
-            },
-            undefined
-          )
-        )
-      );
-      // Useless line, construction should throw
-      if (watcher === undefined) {
-        watcher = null;
-      }
-    }).toThrow();
-  });
-
-  it('should not throw when the vocabulary is changed to malformed RDF', async () => {
+  it('should not throw when the vocabulary is initially malformed RDF', async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
-            vocabListFile: './test/resources/watcher/vocab-list.yml',
+            vocabListFile: './test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml',
             outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
@@ -153,14 +155,32 @@ describe('Vocabulary watcher', () => {
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
     await sleep(SLEEP_TIME);
 
-    // Makes the vocabulary syntactically wrong, and restores it
-    expect(
-      changeAndRestoreVocab(
-        WATCHED_VOCAB_PATH,
-        'schema:Person a rdfs:Class ;',
-        'schema:Person a rdfs:Class'
+    // If the watcher process throws, this will fail
+    watcher.unwatch();
+  });
+
+  it('should not throw when the vocabulary is changed to malformed RDF', async () => {
+    const watcher = new VocabWatcher(
+      new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            vocabListFile: VOCAB_LIST_PATH,
+            outputDirectory: OUTPUT_DIRECTORY,
+          },
+          undefined
+        )
       )
-    ).resolves.not.toThrow();
+    );
+    watcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
+    await sleep(SLEEP_TIME);
+    // Makes the vocabulary syntactically wrong, and restores it
+    await changeAndRestoreVocab(
+      WATCHED_VOCAB_PATH,
+      'schema:Person a rdfs:Class ;',
+      'schema:Person a rdfs:Class'
+    );
+    // If the watcher process throws, this will fail
     watcher.unwatch();
   });
 
@@ -229,5 +249,57 @@ describe('Vocabulary watcher', () => {
 
     const newerModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModif).toEqual(firstModif);
+    watcher.unwatch();
+  });
+
+  it('should generate an artifact on startup when the output directory is outdated', async () => {
+    const generator = new ArtifactGenerator(
+      new GeneratorConfiguration(
+        {
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        },
+        undefined
+      )
+    );
+
+    // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
+    await generator.generate();
+
+    const firstModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+
+    await changeAndRestoreVocab(
+      WATCHED_VOCAB_PATH,
+      '(alive, dead, undead, or fictional)',
+      '(alive, dead, or fictional)'
+    );
+
+    const watcher = new VocabWatcher(generator);
+
+    await watcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
+    await sleep(SLEEP_TIME);
+
+    const newerModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+    expect(newerModif).not.toEqual(firstModif);
+    watcher.unwatch();
+  });
+
+  it('should get the resource last modification for online resources', async () => {
+    axios.mockImplementation(
+      jest.fn().mockReturnValue(Promise.resolve(VALID_LAST_MODIF_HTTP_RESOURCE))
+    );
+
+    const lastmodif = await VocabWatcher.getResourceLastModificationTime('http://whatever.org');
+    expect(lastmodif).toEqual(MOCKED_LAST_MODIFIED);
+  });
+
+  it('should throw when the resource last modification for online resources is invalid', async () => {
+    axios.mockImplementation(
+      jest.fn().mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE))
+    );
+    expect(VocabWatcher.getResourceLastModificationTime('http://whatever.org')).rejects.toThrow(
+      'Cannot get last modification time'
+    );
   });
 });

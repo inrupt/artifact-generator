@@ -14,9 +14,9 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
     termSelectionFile: 'test/resources/vocabs/schema-inrupt-ext.ttl',
   },
   {
-    description: 'Vocab for testing predicate types...',
-    nameAndPrefixOverride: 'override-name',
-    inputResources: ['test/resources/vocabs/supported-data-types.ttl'],
+    description: 'Some dummy online vocabulary',
+    nameAndPrefixOverride: 'dummy',
+    inputResources: ['http://some.vocabulary.online/dummy'],
   },
 ];
 
@@ -88,7 +88,7 @@ describe('Generator configuration', () => {
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
-          vocabListFile: './test/resources/vocabs/vocab-list.yml',
+          vocabListFile: './test/resources/vocabs/vocab-list-including-online.yml',
           noprompt: true,
         },
         undefined
