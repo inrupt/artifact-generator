@@ -8,7 +8,13 @@ const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 const VocabWatcher = require('./VocabWatcher');
 
-const SLEEP_TIME = 50;
+const WATCHED_VOCAB_PATH = './test/resources/watcher/schema-snippet.ttl';
+const VOCAB_LIST_PATH = './test/resources/watcher/vocab-list.yml';
+const OUTPUT_DIRECTORY = './test/generated/watcher/initial/';
+const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+const JAVA_PACKAGE_HIERARCHY = 'src/main/java/com/example/java/packagename';
+const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
+const SLEEP_TIME = 200;
 
 function sleep(ms) {
   return new Promise(resolve => {
@@ -16,17 +22,62 @@ function sleep(ms) {
   });
 }
 
-describe('Vocabulary watcher', () => {
-  it('should generate an initial artifact without changes', async () => {
-    const outputDirectory = './test/generated/watcher/initial/';
-    del.sync([`${outputDirectory}/*`]);
+beforeEach(() => {
+  del.sync([`${OUTPUT_DIRECTORY}/*`]);
+});
 
+/**
+ * This function seeks a string in the vocabulary, replaces it, waits, and changes it back.
+ * @param {string} vocabPath The path to the vocabulary
+ * @param {string} before The string that is going to be replaced, and then restored
+ * @param {string} after The string this is going to be used as a replacement, and then removed
+ */
+async function changeAndRestoreVocab(vocabPath, before, after) {
+  fs.writeFileSync(
+    vocabPath,
+    fs
+      .readFileSync(vocabPath)
+      .toString()
+      .replace(before, after)
+  );
+  await sleep(SLEEP_TIME);
+
+  // The following changes the vocabulary back
+  fs.writeFileSync(
+    vocabPath,
+    fs
+      .readFileSync(vocabPath)
+      .toString()
+      .replace(after, before)
+  );
+}
+
+describe('Vocabulary watcher', () => {
+  it('should generate an initial artifact when the output directory is empty', async () => {
+    const watcher = new VocabWatcher(
+      new ArtifactGenerator(
+        new GeneratorConfiguration(
+          { vocabListFile: VOCAB_LIST_PATH, outputDirectory: OUTPUT_DIRECTORY },
+          undefined
+        )
+      )
+    );
+
+    watcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
+    await sleep(SLEEP_TIME);
+
+    expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
+    watcher.unwatch();
+  });
+
+  it('should not generate an initial artifact without changes', async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
-            vocabListFile: './test/resources/watcher/vocab-list.yml',
-            outputDirectory,
+            vocabListFile: VOCAB_LIST_PATH,
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -35,21 +86,16 @@ describe('Vocabulary watcher', () => {
 
     watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(500);
+    await sleep(SLEEP_TIME);
 
-    const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
-    const packageHierarchy = 'src/main/java/com/example/java/packagename';
-
-    expect(fs.existsSync(`${outputDirectoryJava}/${packageHierarchy}/SCHEMA.java`)).toBe(true);
+    expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
+    watcher.unwatch();
   });
 
   it('should trigger artifact generation on change', async () => {
-    const outputDirectory = 'test/generated/watcher/initial';
-    del.sync([`${outputDirectory}/*`]);
-
     const config = new GeneratorConfiguration({
-      vocabListFile: './test/resources/watcher/vocab-list.yml',
-      outputDirectory,
+      vocabListFile: VOCAB_LIST_PATH,
+      outputDirectory: OUTPUT_DIRECTORY,
     });
     await config.completeInitialConfiguration();
 
@@ -57,45 +103,28 @@ describe('Vocabulary watcher', () => {
     vocabWatcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if the generation was successful
     await sleep(SLEEP_TIME);
-    const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
-    const packageHierarchy = 'src/main/java/com/example/java/packagename';
-    const generatedFilePath = `${outputDirectoryJava}/${packageHierarchy}/SCHEMA.java`;
-    expect(fs.existsSync(generatedFilePath)).toBe(true);
+
+    expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
     // This is the state of the generated file before the vocabulary gets updated
-    const initialFileStat = fs.statSync(generatedFilePath);
+    const initialModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
 
-    const watchedVocabPath = './test/resources/watcher/schema-snippet.ttl';
-    // The following changes a comment in the vocabulary
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('(alive, dead, undead, or fictional)', '(alive, dead, or fictional)')
+    await changeAndRestoreVocab(
+      WATCHED_VOCAB_PATH,
+      '(alive, dead, undead, or fictional)',
+      '(alive, dead, or fictional)'
     );
-    await sleep(SLEEP_TIME);
-    expect(fs.statSync(generatedFilePath)).not.toEqual(initialFileStat);
-
-    // The following changes the vocabulary back
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('(alive, dead, or fictional)', '(alive, dead, undead, or fictional)')
-    );
+    expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(initialModif);
+    vocabWatcher.unwatch();
   });
 
   it('should fail when trying to watch an online resource', async () => {
-    const outputDirectory = 'test/generated/watcher/initial';
-    del.sync([`${outputDirectory}/*`]);
     expect(() => {
       let watcher = new VocabWatcher(
         new ArtifactGenerator(
           new GeneratorConfiguration(
             {
               vocabListFile: './test/resources/watcher/online-vocab-list.yml',
-              outputDirectory,
+              outputDirectory: OUTPUT_DIRECTORY,
             },
             undefined
           )
@@ -109,15 +138,12 @@ describe('Vocabulary watcher', () => {
   });
 
   it('should not throw when the vocabulary is changed to malformed RDF', async () => {
-    const outputDirectory = 'test/generated/watcher/initial';
-    del.sync([`${outputDirectory}/*`]);
-
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
             vocabListFile: './test/resources/watcher/vocab-list.yml',
-            outputDirectory,
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -127,96 +153,81 @@ describe('Vocabulary watcher', () => {
     // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
     await sleep(SLEEP_TIME);
 
-    const watchedVocabPath = './test/resources/watcher/schema-snippet.ttl';
-    // The following changes a comment in the vocabulary
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('schema:Person a rdfs:Class ;', 'schema:Person a rdfs:Class')
-    );
-    await sleep(SLEEP_TIME);
-
-    // The following changes the vocabulary back
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('schema:Person a rdfs:Class', 'schema:Person a rdfs:Class ;')
-    );
-    // Completing this test is proof that nothing was thrown
-  });
-
-  it('should not generate when the watcher stops', async () => {
-    const outputDirectory = 'test/generated/watcher/initial';
-    del.sync([`${outputDirectory}/*`]);
-
-    const watcher = new VocabWatcher(
-      new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: './test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml',
-            outputDirectory,
-          },
-          undefined
-        )
+    // Makes the vocabulary syntactically wrong, and restores it
+    expect(
+      changeAndRestoreVocab(
+        WATCHED_VOCAB_PATH,
+        'schema:Person a rdfs:Class ;',
+        'schema:Person a rdfs:Class'
       )
-    );
-    watcher.watch();
-    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(SLEEP_TIME);
-    // Completing this test is proof that nothing was thrown
-  });
-
-  it('should trigger artifact generation on change', async () => {
-    const outputDirectory = 'test/generated/watcher/initial';
-    del.sync([`${outputDirectory}/*`]);
-
-    const watcher = new VocabWatcher(
-      new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: './test/resources/watcher/vocab-list.yml',
-            outputDirectory,
-          },
-          undefined
-        )
-      )
-    );
-    watcher.watch();
-    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
-    await sleep(SLEEP_TIME);
-    const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
-    const packageHierarchy = 'src/main/java/com/example/java/packagename';
-    const generatedFilePath = `${outputDirectoryJava}/${packageHierarchy}/SCHEMA.java`;
-    // This is the state of the generated file before the vocabulary gets updated
-    const initialFileStat = fs.statSync(generatedFilePath);
-
-    const watchedVocabPath = './test/resources/watcher/schema-snippet.ttl';
-    // The following changes a comment in the vocabulary
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('(alive, dead, undead, or fictional)', '(alive, dead, or fictional)')
-    );
-    await sleep(SLEEP_TIME);
-    const newerFileStat = fs.statSync(generatedFilePath);
-    expect(newerFileStat).not.toEqual(initialFileStat);
+    ).resolves.not.toThrow();
     watcher.unwatch();
-    // The following changes the vocabulary back
-    fs.writeFileSync(
-      watchedVocabPath,
-      fs
-        .readFileSync(watchedVocabPath)
-        .toString()
-        .replace('(alive, dead, or fictional)', '(alive, dead, undead, or fictional)')
+  });
+
+  it('should not trigger artifact generation after the watcher stopped', async () => {
+    const watcher = new VocabWatcher(
+      new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            vocabListFile: VOCAB_LIST_PATH,
+            outputDirectory: OUTPUT_DIRECTORY,
+          },
+          undefined
+        )
+      )
     );
-    // There should have been no new generation
-    const newestFileStat = fs.statSync(generatedFilePath);
-    expect(newerFileStat).toEqual(newestFileStat);
+    watcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
+    await sleep(SLEEP_TIME);
+
+    // This is the state of the generated file before the vocabulary gets updated
+    const initialModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+
+    await changeAndRestoreVocab(
+      WATCHED_VOCAB_PATH,
+      '(alive, dead, undead, or fictional)',
+      '(alive, dead, or fictional)'
+    );
+    await sleep(SLEEP_TIME);
+
+    const newerModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+    expect(newerModif).not.toEqual(initialModif);
+
+    watcher.unwatch();
+
+    await changeAndRestoreVocab(
+      WATCHED_VOCAB_PATH,
+      '(alive, dead, undead, or fictional)',
+      '(alive, dead, or fictional)'
+    );
+
+    const newestModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+    expect(newestModif).toEqual(newerModif);
+  });
+
+  it('should not generate an artifact on startup when the output directory is up-to-date', async () => {
+    const generator = new ArtifactGenerator(
+      new GeneratorConfiguration(
+        {
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        },
+        undefined
+      )
+    );
+
+    // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
+    await generator.generate();
+
+    const firstModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+
+    const watcher = new VocabWatcher(generator);
+
+    watcher.watch();
+    // Starting the watcher is not a blocking call, so we need to add a delay to verify if generation was successful
+    await sleep(SLEEP_TIME);
+
+    const newerModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
+    expect(newerModif).toEqual(firstModif);
   });
 });
