@@ -48,11 +48,11 @@ class VocabWatcher {
         url: resource,
       })
         .then(response => {
-          const lastModifDate = Date.parse(response.headers['last-modified']);
-          if (Number.isNaN(lastModifDate)) {
-            throw new Error(`Cannot parse date: ${lastModifDate}`);
+          const lastModifiedDate = Date.parse(response.headers['last-modified']);
+          if (Number.isNaN(lastModifiedDate)) {
+            throw new Error(`Cannot parse date: ${lastModifiedDate}`);
           }
-          return lastModifDate;
+          return lastModifiedDate;
         })
         .catch(error => {
           throw new Error(`Cannot get last modification time: ${error}`);
@@ -80,7 +80,7 @@ class VocabWatcher {
         }, artifactsOutdated);
       });
     } else {
-      // There is no artifacts in the target directory.
+      // There are no artifacts in the target directory.
       artifactsOutdated = true;
     }
     if (artifactsOutdated) {
@@ -91,9 +91,9 @@ class VocabWatcher {
   }
 
   async watch() {
-    // We try an initial generation here, because chokidar does not watch online resources.
-    // Therefore, no event will ever be received for http resources, preventing the artifacts
-    // from being updated if an online vocabulary changed.
+    // chokidar can't watch online resources, and so we won't ever get an event if an online resource changes. 
+    // Therefore we need to poll online resources periodically, checking their last-modified response header to 
+    // determine if an online vocabulary has changed.
     await this.generateIfNecessary();
 
     // Add event listeners.
