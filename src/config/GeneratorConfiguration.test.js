@@ -5,6 +5,7 @@ const inquirer = require('inquirer');
 const path = require('path');
 
 const GeneratorConfiguration = require('./GeneratorConfiguration');
+const { DEFAULT_CLI_ARTIFACT } = require('./GeneratorConfiguration');
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
@@ -22,15 +23,6 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
 const EXPECTED_VOCAB_LIST_FROM_CLI = [
   {
     inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
-  },
-];
-
-const DEFAULT_CLI_ARTIFACT = [
-  {
-    programmingLanguage: 'Javascript',
-    artifactFolderName: 'Javascript',
-    handlebarsTemplate: 'javascript-rdf-ext.hbs',
-    sourceFileExtension: 'js',
   },
 ];
 

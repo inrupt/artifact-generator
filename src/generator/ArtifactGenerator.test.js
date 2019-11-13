@@ -91,30 +91,6 @@ describe('Artifact Generator', () => {
       expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
       verifyVocabList(outputDirectory);
     });
-
-    it('Should generate artifact with bundling', async () => {
-      const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
-      del.sync([`${outputDirectory}/*`]);
-      const config = new GeneratorConfiguration({
-        _: 'generate',
-        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-        outputDirectory,
-        artifactVersion: '1.0.0',
-        litVocabTermVersion: '^0.1.0',
-        moduleNamePrefix: '@lit/generated-vocab-',
-        noprompt: true,
-        supportBundling: true,
-      });
-      config.completeInitialConfiguration();
-      const artifactGenerator = new ArtifactGenerator(config);
-
-      await artifactGenerator.generate();
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
-
-      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
-      const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
-      expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
-    });
   });
 
   describe('Processing command line vocab.', () => {
@@ -132,6 +108,7 @@ describe('Artifact Generator', () => {
         supportBundling: false,
       });
       config.completeInitialConfiguration();
+
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
@@ -144,9 +121,7 @@ describe('Artifact Generator', () => {
 
     it('should not ask for user input when no information is missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
+
       const config = new GeneratorConfiguration({
         _: 'generate',
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
@@ -245,5 +220,29 @@ describe('Artifact Generator', () => {
 
     // One call is for litVocabterm version, the other for artifact name and authors
     expect(inquirer.prompt.mock.calls.length - before).toEqual(2);
+  });
+
+  it('Should generate artifact with bundling', async () => {
+    const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
+    del.sync([`${outputDirectory}/*`]);
+    const config = new GeneratorConfiguration({
+      _: 'generate',
+      inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+      outputDirectory,
+      artifactVersion: '1.0.0',
+      litVocabTermVersion: '^0.1.0',
+      moduleNamePrefix: '@lit/generated-vocab-',
+      noprompt: true,
+      supportBundling: true,
+    });
+    config.completeInitialConfiguration();
+    const artifactGenerator = new ArtifactGenerator(config);
+
+    await artifactGenerator.generate();
+    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+
+    expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
+    const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
+    expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
   });
 });
