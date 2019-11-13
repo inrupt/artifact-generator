@@ -155,7 +155,7 @@ class ArtifactGenerator {
   async generatePackaging() {
     this.artifactData.artifactToGenerate.forEach(artifactDetails => {
       if (artifactDetails.packaging) {
-        logger(`Generating ${artifactDetails.programmingLanguage} packaging`);
+        logger(`Generating [${artifactDetails.programmingLanguage}] packaging`);
         // TODO: manage repositories properly
         this.artifactData.gitRepository = artifactDetails.gitRepository;
         this.artifactData.repository = artifactDetails.repository;

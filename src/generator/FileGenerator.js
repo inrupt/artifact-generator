@@ -3,6 +3,9 @@ const path = require('path');
 const Handlebars = require('handlebars');
 const logger = require('debug')('lit-artifact-generator:FileGenerator');
 
+// TODO: Is this redundant with the language-specific ArtifactConfigurator ?
+const SUPPORTED_LANGUAGES = ['Java', 'Javascript'];
+
 class FileGenerator {
   static createFileFromTemplate(templateFile, templateData, outputFile) {
     // To support running from any arbitrary directory, reference our templates relative to this file, and not the
@@ -63,6 +66,9 @@ class FileGenerator {
 
   static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {
     let packagingFolder;
+    if (!SUPPORTED_LANGUAGES.includes(artifactInfo.programmingLanguage)) {
+      throw new Error(`Unsupported programming language: [${artifactInfo.programmingLanguage}]`);
+    }
     // If no packaging is explicitely defined, packaging files are generated at the root artifact folder
     if (packagingInfo.packagingFolder) {
       packagingFolder = path.join(

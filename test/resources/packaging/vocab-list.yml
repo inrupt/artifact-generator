@@ -3,6 +3,9 @@
 # form the collective set vocabularies within a single artifact.
 #
 artifactName: generated-vocab-common-TEST
+# The authors are provided here so that this file may be used in manual tests
+# using the command `node index.js -l test/resources/packaging/vocab-list.yml` 
+# without being prompted for the authors
 authorSet: "Cleopatra (https://cleopatra.solid.community/profile/car#me)"
 
 artifactToGenerate:

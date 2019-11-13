@@ -224,9 +224,9 @@ class GeneratorConfiguration {
     cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
-    // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference, 
-    // and the tests are ran in parallel, it creates thread-safety issues that should be adressed by creating
-    // a depp copy.
+    // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference,
+    // and the tests are run in parallel, it creates thread-safety issues that should be adressed by creating
+    // a deep copy.
     cliConfig.artifactToGenerate = [
       {
         programmingLanguage: 'Javascript',
