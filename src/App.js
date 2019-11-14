@@ -34,13 +34,14 @@ module.exports = class App {
   async run() {
     const artifactGenerator = new ArtifactGenerator(await this.configure());
 
-    return artifactGenerator
-      .generate()
-      .then(CommandLine.askForArtifactToBeNpmVersionBumped)
-      .then(CommandLine.askForArtifactToBeNpmInstalled)
-      .then(CommandLine.runMavenInstall)
-      .then(CommandLine.askForArtifactToBeNpmPublished)
-      .then(CommandLine.askForArtifactToBeDocumented);
+    return (
+      artifactGenerator
+        .generate()
+        .then(CommandLine.askForArtifactToBeNpmVersionBumped)
+        .then(artifactGenerator.publish)
+        .then(CommandLine.askForArtifactToBeNpmInstalled)
+        .then(CommandLine.askForArtifactToBeDocumented)
+    );
   }
 
   async init() {

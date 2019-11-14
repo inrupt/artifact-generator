@@ -67,10 +67,13 @@ const yargsConfig = yargs
         )
         .default('runNpmInstall', false)
 
-        .alias('p', 'runNpmPublish')
-        .boolean('runNpmPublish')
-        .describe('runNpmPublish', 'If set will attempt to publish to the configured NPM registry.')
-        .default('runNpmPublish', false)
+        .alias('p', 'publish')
+        .boolean('publish')
+        .describe(
+          'publish',
+          'If set will attempt to publish to the configured registries (NPM, Maven, etc).'
+        )
+        .default('publish', false)
 
         .boolean('runMavenInstall')
         .describe(

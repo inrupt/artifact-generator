@@ -17,6 +17,9 @@ ArtifactGenerator.mockImplementation(() => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
+    publish: async () => {
+      return Promise.resolve({ stubbed: true, noprompt: true });
+    },
   };
 });
 
