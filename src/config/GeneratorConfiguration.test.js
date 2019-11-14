@@ -149,6 +149,25 @@ describe('Generator configuration', () => {
       );
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_CLI);
     });
+
+    it('should modify the default publication command if a registry is set', async () => {
+      const registry = 'http://my.registry.ninja';
+      const generatorConfiguration = new GeneratorConfiguration(
+        {
+          _: ['generate'],
+          inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
+          moduleNamePrefix: '@lit/generated-vocab-',
+          authorSet: new Set(['Cleopatra']),
+          noprompt: true,
+          npmRegistry: 'http://my.registry.ninja',
+        },
+        undefined
+      );
+
+      expect(
+        generatorConfiguration.configuration.artifactToGenerate[0].packaging[0].publishCommand
+      ).toEqual(`npm publish --registry ${registry}`);
+    });
   });
 
   describe('Additional questions.', () => {

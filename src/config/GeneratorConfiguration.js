@@ -29,6 +29,7 @@ const WEBPACK_DEFAULT = {
 const NPM_DEFAULT = {
   packagingTool: 'npm',
   npmModuleScope: '@lit/',
+  publishCommand: 'npm publish',
   packagingTemplates: [
     {
       template: 'package.hbs',
@@ -224,6 +225,11 @@ class GeneratorConfiguration {
     cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
+    const packagingInfo = NPM_DEFAULT;
+    // If the registry is set in the command line, a default publication
+    if (args.npmRegistry) {
+      packagingInfo.publishCommand += ` --registry ${args.npmRegistry}`;
+    }
     // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference,
     // and the tests are run in parallel, it creates thread-safety issues that should be adressed by creating
     // a deep copy.
@@ -233,7 +239,7 @@ class GeneratorConfiguration {
         artifactFolderName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
-        packaging: [NPM_DEFAULT],
+        packaging: [packagingInfo],
       },
     ];
 
