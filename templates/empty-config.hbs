@@ -24,8 +24,25 @@ artifactToGenerate:
     {{#if javaPackageName}}
     javaPackageName: "{{javaPackageName}}"
     {{/if}}
-    {{#if npmModuleScope}}
-    npmModuleScope: "{{npmModuleScope}}"
+    {{#if packaging}}
+    packaging:
+    {{#each packaging}}
+      - packagingTool: "{{packagingTool}}"
+        {{#if groupId}}
+        groupId: "{{groupId}}"
+        {{/if}}
+        {{#if npmModuleScope}}
+        npmModuleScope: "{{npmModuleScope}}"
+        {{/if}}
+        {{#if publishCommand}}
+        publishCommand: "{{publishCommand}}"
+        {{/if}}
+        packagingTemplates: 
+        {{#each packagingTemplates}}
+          - template: {{template}}
+            fileName: {{fileName}}
+        {{/each}}
+    {{/each}}
     {{/if}}
 #    gitRepository: git@github.com:some_user/some_project.git
 #    repository:

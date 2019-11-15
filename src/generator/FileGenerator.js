@@ -55,10 +55,13 @@ class FileGenerator {
       ? `/src/main/java/${artifactDetails.javaPackageName.replace(/\./g, '/')}`
       : 'GeneratedVocab';
     FileGenerator.createDirectory(`${outputDirectoryForSourceCode}/${packagingDirectory}`);
-
     FileGenerator.createFileFromTemplate(
       `../../templates/${artifactDetails.handlebarsTemplate}`,
-      FileGenerator.formatTemplateData(templateData, artifactDetails.sourceFileExtension),
+      // Some artifact-specific info may be required in the template (e.g. the java package name)
+      FileGenerator.formatTemplateData(
+        { ...templateData, ...artifactDetails },
+        artifactDetails.sourceFileExtension
+      ),
       `${outputDirectoryForSourceCode}/${packagingDirectory}/${templateData.nameAndPrefixOverride ||
         templateData.vocabNameUpperCase}.${artifactDetails.sourceFileExtension}`
     );
