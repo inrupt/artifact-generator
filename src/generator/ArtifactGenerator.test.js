@@ -202,47 +202,96 @@ describe('Artifact Generator', () => {
       await artifactGenerator.generate();
       expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
     });
-  });
 
-  it('should ask for user input twice when multiple information is missing', async () => {
-    const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
-    // There are side-effects from test to test in the mocked functions, so we only count the new calls
-    const before = inquirer.prompt.mock.calls.length;
-    const config = new GeneratorConfiguration({
-      _: 'generate',
-      inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-      outputDirectory,
+    it('should ask for user input twice when multiple information is missing', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
+      // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      await artifactGenerator.generate();
+
+      // One call is for litVocabterm version, the other for artifact name and authors
+      expect(inquirer.prompt.mock.calls.length - before).toEqual(2);
     });
-    config.completeInitialConfiguration();
-    const artifactGenerator = new ArtifactGenerator(config);
 
-    await artifactGenerator.generate();
+    it('Should generate artifact with bundling', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
+      del.sync([`${outputDirectory}/*`]);
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^0.1.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        supportBundling: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
-    // One call is for litVocabterm version, the other for artifact name and authors
-    expect(inquirer.prompt.mock.calls.length - before).toEqual(2);
-  });
+      await artifactGenerator.generate();
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
 
-  it('Should generate artifact with bundling', async () => {
-    const outputDirectory = 'test/generated/ArtifactGenerator/bundling';
-    del.sync([`${outputDirectory}/*`]);
-    const config = new GeneratorConfiguration({
-      _: 'generate',
-      inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
-      outputDirectory,
-      artifactVersion: '1.0.0',
-      litVocabTermVersion: '^0.1.0',
-      moduleNamePrefix: '@lit/generated-vocab-',
-      noprompt: true,
-      supportBundling: true,
+      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
+      const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
+      expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
-    config.completeInitialConfiguration();
-    const artifactGenerator = new ArtifactGenerator(config);
+  });
+  describe('Publishing artifacts.', () => {
+    it('should not publish artifacts if the publish option is not specified', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionNotSet';
+      del.sync([`${outputDirectory}/*`]);
 
-    await artifactGenerator.generate();
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
+        outputDirectory,
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
 
-    expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
-    const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
-    expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
+      await artifactGenerator
+        .generate()
+        .then(generationData => artifactGenerator.publish(generationData));
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+      expect(
+        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
+      ).toBe(false);
+      expect(
+        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publish`)
+      ).toBe(false);
+    });
+
+    it('should publish artifacts if the publish option is specified', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSet';
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
+        outputDirectory,
+        noprompt: true,
+        publish: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator
+        .generate()
+        .then(generationData => artifactGenerator.publish(generationData));
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+      expect(
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
+      ).toBe(true);
+      expect(
+        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publish`)
+      ).toBe(true);
+    });
   });
 });

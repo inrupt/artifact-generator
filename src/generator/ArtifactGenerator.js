@@ -1,6 +1,7 @@
 const del = require('del');
 const path = require('path');
 const logger = require('debug')('lit-artifact-generator:ArtifactGenerator');
+const ChildProcess = require('child_process');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
@@ -150,6 +151,29 @@ class ArtifactGenerator {
         });
       }
     });
+  }
+
+  publish() {
+    const generationData = this.configuration.configuration;
+    if (generationData.publish) {
+      // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
+      // Ideally, new processes should be spawned, each running a packaging command, but the fork
+      // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
+      // so it is more work than expected. Running it sequentially is fine for now.
+      const homeDir = process.cwd();
+      for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
+        const artifact = generationData.artifactToGenerate[i];
+        for (let j = 0; j < artifact.packaging.length; j += 1) {
+          if (artifact.packaging[j].publishCommand) {
+            process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
+            logger(`Running command [${artifact.packaging[j].publishCommand}]...`);
+            ChildProcess.execSync(artifact.packaging[j].publishCommand);
+          }
+        }
+      }
+      process.chdir(homeDir);
+    }
+    return generationData;
   }
 }
 
