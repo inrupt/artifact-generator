@@ -15,8 +15,10 @@ class ArtifactConfigurator {
   constructor() {
     this.config = {};
     this.questions = [];
+    this.packagingQuestions = [];
     // This member variable will be overriden by extending classes
     this.language = undefined;
+    this.litVocabTermVersion = undefined;
 
     // The following questions are asked for each artifact, regardless of the target language
     this.questions.push({
@@ -30,6 +32,8 @@ class ArtifactConfigurator {
       type: 'input',
       name: 'litVocabTermVersion',
       message: 'Version string for LIT Vocab Term dependency:',
+      // This may be overriden in extending classes.
+      default: this.litVocabTermVersion,
     });
     this.config.languageKeywordsToUnderscore = DEFAULT_KEYWORDS_TO_UNDERSCORE;
   }
@@ -44,6 +48,9 @@ class ArtifactConfigurator {
     // The language-specific options have been set when constructing the extending class
     logger(`[${this.language}] artifact generator`);
     this.config = { ...this.config, ...(await inquirer.prompt(this.questions)) };
+    if (this.config.packagingToInit) {
+      this.config.packaging = await this.promptPackaging(this.config.packagingToInit);
+    }
     return this.config;
   }
 }
