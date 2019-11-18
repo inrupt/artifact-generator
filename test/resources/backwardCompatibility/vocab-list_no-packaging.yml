@@ -1,0 +1,77 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set of LIT 'Common' vocabularies.
+#
+# These are the vocabs that we feel will be the most commonly used across
+# general RDF development efforts, and so we list them here to allow our 
+# artifact generators to create programming-language-specific bundles
+# providing convenient constants representing the terms from these 
+# vocabularies.
+#
+# For example, for Java developers we can generate a single JAR, or for
+# Javascript we can generate a single NPM module, that developers can depend
+# on directly and easily get immediate access to source-code constants for all
+# the terms in all of these vocabularies.
+#
+# Local vocabularies can be provided relative to the location of this resource
+# list file.
+#
+#
+artifactName: generated-vocab-common
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 0.1.0-SNAPSHOT
+    javaPackageName: com.pmcb55.lit.generated.vocab.common
+    litVocabTermVersion: 0.1.0-SNAPSHOT
+    artifactFolderName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class     # Defined in VCard.
+      - abstract  # Defined in DCTerms.
+      ##
+      # No packaging options are explitely set, as the generator initially generated Maven artifacts only for Java code
+      ##
+    repository:
+      - enabled: true
+        type: repository
+        id: nexus-releases
+        url: https://nexus.inrupt.com/repository/maven-releases/
+      - enabled: true
+        type: snapshotRepository
+        id: nexus-snapshots
+        url: https://nexus.inrupt.com/repository/maven-snapshots/
+
+  - programmingLanguage: Javascript
+    artifactVersion: 0.1.0
+    gitRepository: git@github.com:inrupt/lit-generated-vocab-common-js.git
+    npmModuleScope: "@lit/"
+    litVocabTermVersion: "^0.1.0"
+    artifactFolderName: Javascript
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    repository:
+      - enabled: true
+        registry: http://localhost:4873/
+      - enabled: false
+        registry: https://verdaccio.inrupt.com/
+  ##
+  #  This is a dummy artifact that cannot be packaged
+  ##
+  - programmingLanguage: Ook
+    artifactFolderName: Ook
+    sourceFileExtension: ook
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    artifactVersion: 0.1.0
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+
+  - description: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
+    inputResources:
+      - ../vocabs/supported-data-types.ttl
