@@ -149,6 +149,30 @@ class ArtifactGenerator {
         artifactDetails.packaging.forEach(packagingDetails => {
           FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, packagingDetails);
         });
+      } else {
+        // TODO: this is a temporary fix that should be cleaned up after having updated
+        // older YAML files
+        // TODO: manage repositories properly
+        this.artifactData.gitRepository = artifactDetails.gitRepository;
+        this.artifactData.repository = artifactDetails.repository;
+        if (artifactDetails.programmingLanguage === 'Java') {
+          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
+            packagingTool: 'maven',
+            groupId: artifactDetails.javaPackageName,
+            publishCommand: 'mvn install',
+            packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
+          });
+        } else if (artifactDetails.programmingLanguage === 'Javascript') {
+          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
+            packagingTool: 'npm',
+            npmModuleScope: '@lit/',
+            publishCommand: 'npm publish --registry http://localhost:4873/',
+            packagingTemplates: [
+              { template: 'package.hbs', fileName: 'package.json' },
+              { template: 'index.hbs', fileName: 'index.js' },
+            ],
+          });
+        }
       }
     });
   }
