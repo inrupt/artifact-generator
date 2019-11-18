@@ -11,3 +11,10 @@ generated/
 # VSCode
 .vscode/
 vscode_wspace.code-workspace
+
+## VSCode Java extension
+.classpath
+.project
+.settings/
+target/
+

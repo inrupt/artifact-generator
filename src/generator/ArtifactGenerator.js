@@ -152,50 +152,66 @@ class ArtifactGenerator {
       } else {
         // TODO: this is a temporary fix that should be cleaned up after having updated
         // older YAML files
-        // TODO: manage repositories properly
-        this.artifactData.gitRepository = artifactDetails.gitRepository;
-        this.artifactData.repository = artifactDetails.repository;
-        if (artifactDetails.programmingLanguage === 'Java') {
-          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-            packagingTool: 'maven',
-            groupId: artifactDetails.javaPackageName,
-            publishCommand: 'mvn install',
-            packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
-          });
-        } else if (artifactDetails.programmingLanguage === 'Javascript') {
-          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-            packagingTool: 'npm',
-            npmModuleScope: '@lit/',
-            publishCommand: 'npm publish --registry http://localhost:4873/',
-            packagingTemplates: [
-              { template: 'package.hbs', fileName: 'package.json' },
-              { template: 'index.hbs', fileName: 'index.js' },
-            ],
-          });
-        }
+        this.generateDefaultPackaging(artifactDetails);
       }
     });
   }
 
-  publish() {
-    const generationData = this.configuration.configuration;
-    if (generationData.publish) {
-      // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
-      // Ideally, new processes should be spawned, each running a packaging command, but the fork
-      // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
-      // so it is more work than expected. Running it sequentially is fine for now.
-      const homeDir = process.cwd();
-      for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-        const artifact = generationData.artifactToGenerate[i];
-        for (let j = 0; j < artifact.packaging.length; j += 1) {
-          if (artifact.packaging[j].publishCommand) {
-            process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
-            logger(`Running command [${artifact.packaging[j].publishCommand}]...`);
-            ChildProcess.execSync(artifact.packaging[j].publishCommand);
-          }
+  /**
+   * Generates Maven packaging for Java artifacts, and NPM packaging for JS artifacts. This method is used
+   * to maintain backwards compatibility, and is only called when the relevant options are not set.
+   * @param {*} artifactDetails
+   */
+  generateDefaultPackaging(artifactDetails) {
+    // TODO: manage repositories properly
+    this.artifactData.gitRepository = artifactDetails.gitRepository;
+    this.artifactData.repository = artifactDetails.repository;
+    if (artifactDetails.programmingLanguage === 'Java') {
+      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
+        packagingTool: 'maven',
+        groupId: artifactDetails.javaPackageName,
+        publishCommand: 'mvn install',
+        packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
+      });
+    } else if (artifactDetails.programmingLanguage === 'Javascript') {
+      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
+        packagingTool: 'npm',
+        npmModuleScope: '@lit/',
+        publishCommand: 'npm publish --registry http://localhost:4873/',
+        packagingTemplates: [
+          { template: 'package.hbs', fileName: 'package.json' },
+          { template: 'index.hbs', fileName: 'index.js' },
+        ],
+      });
+    } else {
+      logger(
+        `Cannot generate default packaging for unsupported language [${artifactDetails.programmingLanguage}]`
+      );
+    }
+  }
+
+  static publishArtifact(artifact) {
+    const homeDir = process.cwd();
+    if (artifact.packaging) {
+      for (let j = 0; j < artifact.packaging.length; j += 1) {
+        if (artifact.packaging[j].publishCommand) {
+          process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
+          logger(`Running command [${artifact.packaging[j].publishCommand}]...`);
+          ChildProcess.execSync(artifact.packaging[j].publishCommand);
+          process.chdir(homeDir);
         }
       }
-      process.chdir(homeDir);
+    }
+  }
+
+  publish() {
+    const generationData = this.configuration.configuration;
+    // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
+    // Ideally, new processes should be spawned, each running a packaging command, but the fork
+    // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
+    // so it is more work than expected. Running it sequentially is fine for now.
+    for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
+      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i]);
     }
     return generationData;
   }

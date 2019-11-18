@@ -245,31 +245,8 @@ describe('Artifact Generator', () => {
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
   });
+
   describe('Publishing artifacts.', () => {
-    it('should not publish artifacts if the publish option is not specified', async () => {
-      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionNotSet';
-      del.sync([`${outputDirectory}/*`]);
-
-      const config = new GeneratorConfiguration({
-        vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
-        outputDirectory,
-        noprompt: true,
-      });
-      config.completeInitialConfiguration();
-      const artifactGenerator = new ArtifactGenerator(config);
-
-      await artifactGenerator
-        .generate()
-        .then(generationData => artifactGenerator.publish(generationData));
-      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
-      expect(
-        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
-      ).toBe(false);
-      expect(
-        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publish`)
-      ).toBe(false);
-    });
-
     it('should publish artifacts if the publish option is specified', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSet';
       del.sync([`${outputDirectory}/*`]);
@@ -291,6 +268,33 @@ describe('Artifact Generator', () => {
       ).toBe(true);
       expect(
         fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publish`)
+      ).toBe(true);
+    });
+  });
+
+  describe('Testing for backward compatibility features.', () => {
+    it('should generate default packaging options if none are specified in the YAML file', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/backwardCompatibility/';
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/backwardCompatibility/vocab-list_no-packaging.yml',
+        outputDirectory,
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator
+        .generate()
+        .then(generationData => artifactGenerator.publish(generationData));
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+      expect(
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/pom.xml`)
+      ).toBe(true);
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/package.json`
+        )
       ).toBe(true);
     });
   });

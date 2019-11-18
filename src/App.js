@@ -38,7 +38,13 @@ module.exports = class App {
       .generate()
       .then(CommandLine.askForArtifactToBeNpmVersionBumped)
       .then(CommandLine.askForArtifactToBeNpmInstalled)
-      .then(() => artifactGenerator.publish())
+      .then(generationData => {
+        let publicationData = generationData;
+        if (generationData.publish) {
+          publicationData = artifactGenerator.publish();
+        }
+        return publicationData;
+      })
       .then(CommandLine.askForArtifactToBeDocumented);
   }
 

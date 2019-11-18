@@ -11,17 +11,32 @@ const VocabWatcher = require('./VocabWatcher');
 
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
-jest.mock('./generator/ArtifactGenerator');
-ArtifactGenerator.mockImplementation(() => {
+const publishingGenerator = () => {
+  return {
+    generate: async () => {
+      // In a non-mocked setting, the `publish` option passes through the `generate` function,
+      // but here it must be set explicitely
+      return Promise.resolve({ stubbed: true, noprompt: true, publish: true });
+    },
+    publish: async () => {
+      return Promise.resolve({ stubbed: true, noprompt: true, published: true });
+    },
+  };
+};
+
+const nonPublishingGenerator = () => {
   return {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
     publish: async () => {
-      return Promise.resolve({ stubbed: true, noprompt: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, published: true });
     },
   };
-});
+};
+
+jest.mock('./generator/ArtifactGenerator');
+ArtifactGenerator.mockImplementation(nonPublishingGenerator);
 
 jest.mock('./VocabWatcher');
 VocabWatcher.mockImplementation(() => {
@@ -82,6 +97,40 @@ describe('App tests', () => {
       const mockedResponse = await new App(config).run();
       expect(mockedResponse.noprompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
+    });
+
+    it('should publish artifacts if the option is set', async () => {
+      debug.disable('lit-artifact-generator:*');
+
+      ArtifactGenerator.mockImplementation(publishingGenerator);
+
+      const config = {
+        _: ['generate'],
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
+        quiet: false,
+        noprompt: true,
+        publish: true,
+      };
+
+      const mockedResponse = await new App(config).run();
+      expect(mockedResponse.published).toBe(true);
+      ArtifactGenerator.mockImplementation(nonPublishingGenerator);
+    });
+
+    it('should not publish artifacts if not asked to', async () => {
+      debug.disable('lit-artifact-generator:*');
+
+      const config = {
+        _: ['generate'],
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
+        quiet: false,
+        noprompt: true,
+      };
+
+      const mockedResponse = await new App(config).run();
+      expect(mockedResponse.published).toBe(undefined);
     });
 
     it('should pass through in quiet mode', async () => {
