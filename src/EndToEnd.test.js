@@ -446,4 +446,45 @@ describe('End-to-end tests', () => {
       );
     });
   });
+
+  describe('Build Java artifacts', () => {
+    it('should create from an ontology file', async () => {
+      const outputDirectory = 'test/generated/End-to-End/generate-java/';
+      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            vocabListFile: './test/resources/vocabs/vocab-list.yml',
+            outputDirectory,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(fs.existsSync(`${outputDirectoryJava}/pom.xml`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
+        fs.readFileSync('test/resources/expectedOutputs/java-rdf4j/pom.xml').toString()
+      );
+
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(
+          `${outputDirectoryJava}/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java`
+        )
+        .toString();
+      const expected = fs
+        .readFileSync(
+          'test/resources/expectedOutputs/java-rdf4j/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java'
+        )
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).toBe(
+        expected.substring(expected.indexOf(' */'))
+      );
+    });
+  });
 });
