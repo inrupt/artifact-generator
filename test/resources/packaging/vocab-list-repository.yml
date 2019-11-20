@@ -1,0 +1,75 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+# The authors are provided here so that this file may be used in manual tests
+# using the command `node index.js -l test/resources/packaging/vocab-list.yml` 
+# without being prompted for the authors
+authorSet: "Cleopatra (https://cleopatra.solid.community/profile/car#me)"
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactFolderName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class     # Defined in VCard.
+      - abstract  # Defined in DCTerms.
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt.test
+        publishCommand: "mvn install"
+        packagingTemplates: 
+        - template: pom.hbs
+          fileName: pom.xml
+        repository:
+        - enabled: true
+          type: repository
+          id: nexus-releases
+          url: https://nexus.inrupt.com/repository/maven-releases/
+        - enabled: true
+          type: snapshotRepository
+          id: nexus-snapshots
+          url: https://nexus.inrupt.com/repository/maven-snapshots/
+#      - packagingTool: gradle
+#        groupId: com.inrupt.test
+#        packagingFileName: build.gradle
+#        packagingTemplate: gradle.hbs
+
+  - programmingLanguage: Javascript
+    artifactVersion: 10.11.12
+    litVocabTermVersion: "^1.0.10"
+    artifactFolderName: Javascript
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    packaging: 
+      - packagingTool: npm 
+        npmModuleScope: "@lit/"
+        publishCommand: "npm publish --registry http://localhost:4873/"
+        packagingTemplates: 
+          - template: package.hbs
+            fileName: package.json
+          - template: index.hbs
+            fileName: index.js
+      - packagingTool: webpack
+        packagingFolder: config
+        packagingTemplates:
+          - template: webpack.dev.config.hbs
+            fileName: webpack.dev.config.js
+          - template: webpack.prod.config.hbs
+            fileName: webpack.prod.config.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+
+  - description: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
+    inputResources:
+      - ../vocabs/supported-data-types.ttl

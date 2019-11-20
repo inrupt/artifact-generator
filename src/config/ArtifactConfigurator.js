@@ -4,6 +4,13 @@ const inquirer = require('inquirer');
 const DEFAULT_ARTIFACT_VERSION = '0.1.0';
 const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract', 'default'];
 
+const ADD_REPOSITORY_CONFIRMATION = {
+  type: 'confirm',
+  name: 'addRepository',
+  message: 'Do you want to add a repository to the list ?',
+  default: false,
+};
+
 /**
  * This is an abstract class that is intended to be extended for each supported programming language.
  * We define the user-prompt questions (and default answers for those questions) that we expect to be
@@ -56,3 +63,4 @@ class ArtifactConfigurator {
 }
 
 module.exports = ArtifactConfigurator;
+module.exports.ADD_REPOSITORY_CONFIRMATION = ADD_REPOSITORY_CONFIRMATION;
