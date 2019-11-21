@@ -2,9 +2,6 @@ require('mock-local-storage');
 
 const fs = require('fs');
 const del = require('del');
-const axios = require('axios');
-
-jest.mock('axios');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
@@ -18,22 +15,6 @@ const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CO
 const JAVA_PACKAGE_HIERARCHY = 'src/main/java/com/example/java/packagename';
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
 const SLEEP_TIME = 200;
-
-// 'Mon, 01 Jan 4000 00:00:59 GMT', in POSIX time
-const MOCKED_LAST_MODIFIED = 64060588859000;
-const VALID_LAST_MODIF_HTTP_RESOURCE = {
-  headers: {
-    // This date should alway be more recent than the considered artifacts (unless you are running this test
-    // 2000 years in the future and are trying to figure out what stopped working)
-    'last-modified': 'Mon, 01 Jan 4000 00:00:59 GMT',
-  },
-};
-
-const INVALID_LAST_MODIF_HTTP_RESOURCE = {
-  headers: {
-    'last-modified': 'This is not a date',
-  },
-};
 
 // const MOCKED_ONLINE_RESOURCE_PATH = './test/resources/watcher/another-schema-snippet.ttl';
 // const MOCKED_ONLINE_RESOURCE_BODY = fs.readFileSync(MOCKED_ONLINE_RESOURCE_PATH).toString();
@@ -283,23 +264,5 @@ describe('Vocabulary watcher', () => {
     const newerModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModif).not.toEqual(firstModif);
     watcher.unwatch();
-  });
-
-  it('should get the resource last modification for online resources', async () => {
-    axios.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(VALID_LAST_MODIF_HTTP_RESOURCE))
-    );
-
-    const lastmodif = await VocabWatcher.getResourceLastModificationTime('http://whatever.org');
-    expect(lastmodif).toEqual(MOCKED_LAST_MODIFIED);
-  });
-
-  it('should throw when the resource last modification for online resources is invalid', async () => {
-    axios.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE))
-    );
-    expect(VocabWatcher.getResourceLastModificationTime('http://whatever.org')).rejects.toThrow(
-      'Cannot get last modification time'
-    );
   });
 });

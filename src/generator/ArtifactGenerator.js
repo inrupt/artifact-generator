@@ -1,10 +1,11 @@
-const del = require('del');
 const path = require('path');
+const fs = require('fs');
 const logger = require('debug')('lit-artifact-generator:ArtifactGenerator');
 const ChildProcess = require('child_process');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
+const Resources = require('../Resources');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
@@ -36,30 +37,16 @@ class ArtifactGenerator {
     this.artifactData.versionBabelLoader = '^8.0.6';
   }
 
-  static async deleteDirectory(directory) {
-    const deletedPaths = await del([`${directory}/*`], { force: true });
-    logger(`Deleting all files and folders from [${directory}]:`);
-    logger(deletedPaths.join('\n'));
-  }
-
   async generate() {
-    // For each programming language artifact we generate, first clear out the destination directories.
-    const directoryDeletionPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
-      return ArtifactGenerator.deleteDirectory(
-        path.join(
-          this.artifactData.outputDirectory,
-          ARTIFACT_DIRECTORY_SOURCE_CODE,
-          artifactDetails.artifactFolderName
-        )
-      );
-    });
-    await Promise.all(directoryDeletionPromises);
     return this.generateVocabs()
       .then(vocabDatasets => {
-        return this.collectGeneratedVocabDetails(vocabDatasets);
+        if (this.artifactData.generated) {
+          return this.collectGeneratedVocabDetails(vocabDatasets);
+        }
+        return vocabDatasets;
       })
       .then(async vocabDatasets => {
-        if (!this.artifactData.artifactName) {
+        if (this.artifactData.generated && !this.artifactData.artifactName) {
           this.artifactData.artifactName = vocabDatasets[0].artifactName;
         }
 
@@ -86,38 +73,72 @@ class ArtifactGenerator {
       });
   }
 
+  async isGenerationNecessary() {
+    let artifactsOutdated = false;
+    const artifactInfoPath = path.join(
+      this.artifactData.outputDirectory,
+      ARTIFACT_DIRECTORY_ROOT,
+      ARTIFACTS_INFO_FILENAME
+    );
+    if (fs.existsSync(artifactInfoPath)) {
+      // A generated directory exists, so we are going to check the contained
+      // artifacts are up-to-date.
+      const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
+      const vocabsLastModif = [];
+      const resources = this.configuration.getInputResources();
+      for (let i = 0; i < resources.length; i += 1) {
+        vocabsLastModif.push(Resources.getResourceLastModificationTime(resources[i]));
+      }
+      await Promise.all(vocabsLastModif).then(values => {
+        // The artifact is outdated if one vocabulary is more recent than the artifact
+        artifactsOutdated = values.reduce((accumulator, lastModif) => {
+          return lastGenerationTime < lastModif || accumulator;
+        }, artifactsOutdated);
+      });
+    } else {
+      // There are no artifacts in the target directory.
+      artifactsOutdated = true;
+    }
+
+    return artifactsOutdated;
+  }
+
   async generateVocabs() {
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
     //  programming languages. But this code was extended to provide the
     //  language-specific details within this original vocab-iterating loop.
-    return Promise.all(
-      this.artifactData.vocabList.map(async vocabDetails => {
-        // Override our vocab inputs using this vocab list entry.
-        this.artifactData.inputResources = vocabDetails.inputResources;
-        this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
-        this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
-        this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
+    if (await this.isGenerationNecessary()) {
+      this.artifactData.generated = true;
+      return Promise.all(
+        this.artifactData.vocabList.map(async vocabDetails => {
+          // Override our vocab inputs using this vocab list entry.
+          this.artifactData.inputResources = vocabDetails.inputResources;
+          this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
+          this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
+          this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
-        // Generate this vocab for each artifact we are generating for.
-        const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
-          const artifactConfig = artifactDetails;
-          artifactConfig.outputDirectoryForArtifact = path.join(
-            this.artifactData.outputDirectory,
-            ARTIFACT_DIRECTORY_SOURCE_CODE,
-            artifactDetails.artifactFolderName
-          );
-
-          return new VocabGenerator(this.artifactData, artifactConfig).generate();
-        });
-
-        // Wait for all our artifacts to be generated.
-        await Promise.all(artifactPromises);
-
-        // Only return the first one, as we don't want duplicate info.
-        return artifactPromises[0];
-      })
-    );
+          // Generate this vocab for each artifact we are generating for.
+          const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
+            const artifactConfig = artifactDetails;
+            artifactConfig.outputDirectoryForArtifact = path.join(
+              this.artifactData.outputDirectory,
+              ARTIFACT_DIRECTORY_SOURCE_CODE,
+              artifactDetails.artifactFolderName
+            );
+            return new VocabGenerator(this.artifactData, artifactConfig).generate();
+          });
+          // Wait for all our artifacts to be generated.
+          await Promise.all(artifactPromises);
+          // Only return the first one, as we don't want duplicate info.
+          return artifactPromises[0];
+        })
+      );
+    }
+    // In this case, the generation is not necessary
+    this.artifactData.generated = false;
+    // If the generation is not necessary, we just return the initial configuration object
+    return this.artifactData;
   }
 
   async collectGeneratedVocabDetails(vocabDatasets) {
@@ -140,21 +161,28 @@ class ArtifactGenerator {
   }
 
   async generatePackaging() {
-    this.artifactData.artifactToGenerate.forEach(artifactDetails => {
-      if (artifactDetails.packaging) {
-        logger(`Generating [${artifactDetails.programmingLanguage}] packaging`);
-        // TODO: manage repositories properly
-        this.artifactData.gitRepository = artifactDetails.gitRepository;
-        this.artifactData.repository = artifactDetails.repository;
-        artifactDetails.packaging.forEach(packagingDetails => {
-          FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, packagingDetails);
-        });
-      } else {
-        // TODO: this is a temporary fix that should be cleaned up after having updated
-        // older YAML files
-        this.generateDefaultPackaging(artifactDetails);
-      }
-    });
+    // If the artifacts have not been generated, it's not necessary to re-package them
+    if (this.artifactData.generated) {
+      this.artifactData.artifactToGenerate.forEach(artifactDetails => {
+        if (artifactDetails.packaging) {
+          logger(`Generating [${artifactDetails.programmingLanguage}] packaging`);
+          // TODO: manage repositories properly
+          this.artifactData.gitRepository = artifactDetails.gitRepository;
+          this.artifactData.repository = artifactDetails.repository;
+          artifactDetails.packaging.forEach(packagingDetails => {
+            FileGenerator.createPackagingFiles(
+              this.artifactData,
+              artifactDetails,
+              packagingDetails
+            );
+          });
+        } else {
+          // TODO: this is a temporary fix that should be cleaned up after having updated
+          // older YAML files
+          this.generateDefaultPackaging(artifactDetails);
+        }
+      });
+    }
   }
 
   /**

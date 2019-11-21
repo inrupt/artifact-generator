@@ -377,6 +377,8 @@ describe('End-to-end tests', () => {
         expect.stringContaining('"name": "@lit/generated-vocab-schema",')
       );
 
+      del.sync([`${outputDirectory}/*`]);
+
       artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ['generate'],
