@@ -42,6 +42,21 @@ artifactToGenerate:
           - template: {{template}}
             fileName: {{fileName}}
         {{/each}}
+        {{#if repository}}
+        repository:
+          {{#each repository}}
+          - enabled: {{enabled}}
+            {{#if type}}
+            type: {{type}}
+            {{/if}}
+            {{#if id}}
+            id: {{id}}
+            {{/if}}
+            {{#if url}}
+            url: {{url}}
+            {{/if}}
+          {{/each}}
+        {{/if}}
     {{/each}}
     {{/if}}
 #    gitRepository: git@github.com:some_user/some_project.git

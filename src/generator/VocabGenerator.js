@@ -1,4 +1,3 @@
-// const path = require('path');
 const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 

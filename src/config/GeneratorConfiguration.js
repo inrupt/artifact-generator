@@ -284,6 +284,19 @@ class GeneratorConfiguration {
     }
     return this;
   }
+
+  /**
+   * This function returns all the resources (local files and online reposirtories) that are listed in the configuration object
+   */
+  getInputResources() {
+    const resources = [];
+    for (let i = 0; i < this.configuration.vocabList.length; i += 1) {
+      for (let j = 0; j < this.configuration.vocabList[i].inputResources.length; j += 1) {
+        resources.push(this.configuration.vocabList[i].inputResources[j]);
+      }
+    }
+    return resources;
+  }
 }
 
 module.exports = GeneratorConfiguration;

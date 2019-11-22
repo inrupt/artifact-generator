@@ -30,10 +30,6 @@ const DUMMY_MAVEN_ARTIFACT = {
   template: 'pom.hbs',
 };
 
-const MAVEN_CONFIG_PROMPT = jest
-  .fn()
-  .mockReturnValue(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT, packagingToInit: ['maven'] }));
-
 const UNSUPPORTED_CONFIG_PROMPT = jest
   .fn()
   .mockReturnValue(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT, packagingToInit: ['someSystem'] }));
@@ -49,18 +45,6 @@ describe('ArtifactConfig Generator', () => {
     );
     const artifact = await new JavaArtifactConfigurator().prompt();
     expect(artifact.javaPackageName).toEqual(DUMMY_JAVA_ARTIFACT.javaPackageName);
-  });
-
-  it('should use the values provided by the user for maven artifacts', async () => {
-    inquirer.prompt.mockImplementation(MAVEN_CONFIG_PROMPT);
-    const artifact = await new JavaArtifactConfigurator().prompt();
-    expect(artifact.packaging[0].packagingTool).toEqual('maven');
-    expect(artifact.packaging[0].groupId).toEqual(DUMMY_MAVEN_ARTIFACT.groupId);
-    expect(artifact.packaging[0].publishCommand).toEqual(DUMMY_MAVEN_ARTIFACT.publishCommand);
-    expect(artifact.packaging[0].packagingTemplates[0].template).toEqual(
-      DUMMY_MAVEN_ARTIFACT.template
-    );
-    expect(artifact.packaging[0].packagingTemplates[0].fileName).toEqual('pom.xml');
   });
 
   it('should throw when an unsupported packaging system is prompted', async () => {

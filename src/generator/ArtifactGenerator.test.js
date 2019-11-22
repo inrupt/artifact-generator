@@ -148,7 +148,6 @@ describe('Artifact Generator', () => {
     it('should ask for user input when version information missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
-      const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
         _: 'generate',
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
@@ -157,6 +156,8 @@ describe('Artifact Generator', () => {
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
+
+      const before = inquirer.prompt.mock.calls.length;
 
       await artifactGenerator.generate();
 

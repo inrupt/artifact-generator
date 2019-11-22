@@ -1,10 +1,55 @@
 const inquirer = require('inquirer');
 const ArtifactConfigurator = require('../ArtifactConfigurator');
+const { ADD_REPOSITORY_CONFIRMATION } = require('../ArtifactConfigurator');
 
 const DEFAULT_TEMPLATE = 'java-rdf4j.hbs';
 const DEFAULT_EXTENSION = 'java';
 const LANGUAGE = 'Java';
 const DEFAULT_LIT_VOCAB_TERM_VERSION = '0.1.0-SNAPSHOT';
+
+const MAVEN_ARTIFACT_PROMPT = [
+  {
+    type: 'input',
+    name: 'groupId',
+    message: 'Enter Maven groupId',
+    default: 'com.example.groupId',
+  },
+  {
+    type: 'input',
+    name: 'publishCommand',
+    message: 'Enter the command used to publish your artifacts',
+    default: 'mvn install',
+  },
+];
+
+const MAVEN_PACKAGING_TEMPLATES_PROMPT = [
+  {
+    type: 'input',
+    name: 'template',
+    message: 'What POM file template do you want to use ?',
+    default: 'pom.hbs',
+  },
+];
+
+const MAVEN_REPOSITORY_PROMPT = [
+  {
+    type: 'input',
+    name: 'id',
+    message: 'What is the repository id?',
+  },
+  {
+    type: 'list',
+    name: 'type',
+    message: 'What type of repository is it?',
+    choices: ['repository', 'snapshotRepository'],
+    default: 'repository',
+  },
+  {
+    type: 'input',
+    name: 'url',
+    message: 'What is the repository url?',
+  },
+];
 
 class JavaArtifactConfigurator extends ArtifactConfigurator {
   constructor() {
@@ -48,30 +93,30 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
   }
 
   static async promptMaven() {
-    const mavenConfig = {};
-    // This makes the finished config file easier to read
-    mavenConfig.packagingTool = 'maven';
-    mavenConfig.groupId = (await inquirer.prompt({
-      type: 'input',
-      name: 'groupId',
-      message: 'Enter Maven groupId',
-      default: 'com.example.groupId',
-    })).groupId;
-    mavenConfig.publishCommand = (await inquirer.prompt({
-      type: 'input',
-      name: 'publishCommand',
-      message: 'Enter the command used to publish your artifacts',
-      default: 'mvn install',
-    })).publishCommand;
-    const packagingTemplate = {};
-    packagingTemplate.template = (await inquirer.prompt({
-      type: 'input',
-      name: 'template',
-      message: 'What POM file template do you want to use ?',
-      default: 'pom.hbs',
-    })).template;
-    packagingTemplate.fileName = 'pom.xml';
+    // Naming the packaging tool makes the finished config file easier to read
+    const mavenConfig = {
+      packagingTool: 'maven',
+      ...(await inquirer.prompt(MAVEN_ARTIFACT_PROMPT)),
+    };
+    const packagingTemplate = {
+      fileName: 'pom.xml',
+      ...(await inquirer.prompt(MAVEN_PACKAGING_TEMPLATES_PROMPT)),
+    };
     mavenConfig.packagingTemplates = [packagingTemplate];
+    // The following lines require an await in loop to enable user input
+    // eslint-disable-next-line no-await-in-loop
+    while ((await inquirer.prompt(ADD_REPOSITORY_CONFIRMATION)).addRepository) {
+      // The repository attribute is added to the configuration object only if needed
+      if (!mavenConfig.repository) {
+        mavenConfig.repository = [];
+      }
+      // The repository is enabled by default
+      mavenConfig.repository.push({
+        enabled: true,
+        // eslint-disable-next-line no-await-in-loop
+        ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT)),
+      });
+    }
     return mavenConfig;
   }
 }
