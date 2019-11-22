@@ -4,6 +4,8 @@ const logger = require('debug')('lit-artifact-generator:VocabWatcher');
 class VocabWatcher {
   constructor(generator) {
     this.generator = generator;
+    // The watcher overrides the configuration to be no prompt by default
+    this.generator.configuration.configuration.noprompt = true;
 
     this.watcher = chokidar.watch([this.generator.configuration.getInputResources()], {
       persistent: true,
