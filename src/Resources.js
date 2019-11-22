@@ -82,27 +82,30 @@ module.exports = class Resources {
     });
   }
 
+  static async getHttpResourceLastModificationTime(resource) {
+    return axios({
+      method: 'head',
+      url: resource,
+    })
+      .then(response => {
+        const lastModifiedDate = Date.parse(response.headers['last-modified']);
+        if (Number.isNaN(lastModifiedDate)) {
+          throw new Error(`Cannot parse date: ${lastModifiedDate}`);
+        }
+        return lastModifiedDate;
+      })
+      .catch(error => {
+        throw new Error(`Cannot get last modification time: ${error}`);
+      });
+  }
+
   /**
    * Gets the time of the most recent modification for a resource, either local or remote, in POSIX date.
    * @param {*} resource
    */
   static async getResourceLastModificationTime(resource) {
-    if (resource.startsWith('http')) {
-      return axios({
-        method: 'head',
-        url: resource,
-      })
-        .then(response => {
-          const lastModifiedDate = Date.parse(response.headers['last-modified']);
-          if (Number.isNaN(lastModifiedDate)) {
-            throw new Error(`Cannot parse date: ${lastModifiedDate}`);
-          }
-          return lastModifiedDate;
-        })
-        .catch(error => {
-          throw new Error(`Cannot get last modification time: ${error}`);
-        });
-    }
-    return fs.statSync(resource).mtimeMs;
+    return resource.startsWith('http')
+      ? Resources.getHttpResourceLastModificationTime(resource)
+      : fs.statSync(resource).mtimeMs;
   }
 };

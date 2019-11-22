@@ -84,12 +84,12 @@ class ArtifactGenerator {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
-      const vocabsLastModif = [];
+      const vocabsLastModificationTime = [];
       const resources = this.configuration.getInputResources();
       for (let i = 0; i < resources.length; i += 1) {
-        vocabsLastModif.push(Resources.getResourceLastModificationTime(resources[i]));
+        vocabsLastModificationTime.push(Resources.getResourceLastModificationTime(resources[i]));
       }
-      await Promise.all(vocabsLastModif).then(values => {
+      await Promise.all(vocabsLastModificationTime).then(values => {
         // The artifact is outdated if one vocabulary is more recent than the artifact
         artifactsOutdated = values.reduce((accumulator, lastModif) => {
           return lastGenerationTime < lastModif || accumulator;
