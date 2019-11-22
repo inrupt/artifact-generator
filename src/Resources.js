@@ -17,6 +17,10 @@ const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
 const parserRdfXml = new ParserRdfXml();
 
+// In Jan. 1991, the first Web browser was released, so it is unlikely that the resource has been modified earlier
+// This default is used as a generationlast modification date for unreachable online vocabularies to prevent failure
+const DEFAULT_MODIFICATION_DATE = 662688059000;
+
 const formats = {
   parsers: new SinkMap([
     ['text/turtle', parserN3],
@@ -71,10 +75,17 @@ module.exports = class Resources {
    */
   static readResource(datasetFile) {
     logger(`Loading resource: [${datasetFile}]...`);
-    if (datasetFile.startsWith('http')) {
-      return rdfFetch(datasetFile, { factory: rdf, formats }).then(resource => {
-        return resource.dataset();
-      });
+    if (Resources.isOnline(datasetFile)) {
+      return rdfFetch(datasetFile, { factory: rdf, formats })
+        .then(resource => {
+          return resource.dataset();
+        })
+        .catch(error => {
+          logger(
+            `Encountered error [${error}] while fetching [${datasetFile}], attempting to use previously generated file`
+          );
+          return undefined;
+        });
     }
 
     return new Promise(resolve => {
@@ -108,4 +119,10 @@ module.exports = class Resources {
       ? Resources.getHttpResourceLastModificationTime(resource)
       : fs.statSync(resource).mtimeMs;
   }
+
+  static isOnline(resource) {
+    return resource.startsWith('http');
+  }
 };
+
+module.exports.DEFAULT_MODIFICATION_DATE = DEFAULT_MODIFICATION_DATE;

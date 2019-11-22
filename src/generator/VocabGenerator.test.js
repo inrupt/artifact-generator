@@ -2,6 +2,8 @@ require('mock-local-storage');
 
 const rdf = require('rdf-ext');
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
+const fs = require('fs');
+const path = require('path');
 
 const VocabGenerator = require('./VocabGenerator');
 
@@ -709,5 +711,73 @@ describe('Artifact generator unit tests', () => {
 
       expect(result.authorSet.has('@lit/artifact-generator-js'));
     });
+  });
+});
+
+describe('Managing remote vocabularies failures', () => {
+  it('should not override an existing file if the associated vocabulary is unreachable', async () => {
+    const generator = new VocabGenerator(
+      {
+        inputResources: ['http://some.online.resource'],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      },
+      {
+        sourceFileExtension: 'js',
+        outputDirectoryForArtifact: 'test/generated/VocabGenerator/previouslyGenerated',
+      }
+    );
+    const targetDir = path.join(
+      'test',
+      'generated',
+      'VocabGenerator',
+      'previouslyGenerated',
+      'GeneratedVocab'
+    );
+    const targetFile = path.join(targetDir, 'TEST.js');
+    fs.mkdirSync(targetDir, { recursive: true });
+    fs.writeFileSync(targetFile, 'This is a test file');
+    // If the vocabulary cannot be parsed, the following object is returned
+    const vocabGenerationData = {
+      classes: [],
+      properties: [],
+      literals: [],
+      vocabNameUpperCase: 'TEST',
+    };
+    await generator.generateFiles(vocabGenerationData);
+    expect(fs.readFileSync(targetFile).toString()).toEqual('This is a test file');
+  });
+
+  it('should fail to generate if the associated vocabulary is unreachable and no previous file exists', async () => {
+    const generator = new VocabGenerator(
+      {
+        inputResources: ['http://some.online.resource'],
+        artifactVersion: '1.0.0',
+        moduleNamePrefix: 'my-company-prefix-',
+      },
+      {
+        sourceFileExtension: 'js',
+        outputDirectoryForArtifact: 'test/generated/VocabGenerator/notPreviouslyGenerated',
+      }
+    );
+    const targetDir = path.join(
+      'test',
+      'generated',
+      'VocabGenerator',
+      'notPreviouslyGenerated',
+      'GeneratedVocab'
+    );
+    fs.mkdirSync(targetDir, { recursive: true });
+
+    // If the vocabulary cannot be parsed, the following object is returned
+    const vocabGenerationData = {
+      classes: [],
+      properties: [],
+      literals: [],
+      vocabNameUpperCase: 'TEST',
+    };
+    expect(generator.generateFiles(vocabGenerationData)).rejects.toThrow(
+      'unreachable, and no previously generated file is available'
+    );
   });
 });
