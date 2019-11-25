@@ -90,12 +90,12 @@ module.exports = class Resources {
       .then(response => {
         const lastModifiedDate = Date.parse(response.headers['last-modified']);
         if (Number.isNaN(lastModifiedDate)) {
-          throw new Error(`Cannot parse date: ${lastModifiedDate}`);
+          throw new Error(`Cannot parse date: [${lastModifiedDate}]`);
         }
         return lastModifiedDate;
       })
       .catch(error => {
-        throw new Error(`Cannot get last modification time: ${error}`);
+        throw new Error(`Cannot get last modification time: [${error}] for resource [${resource}]`);
       });
   }
 

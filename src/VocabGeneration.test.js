@@ -134,8 +134,8 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  // it('Generate ALL vocabs', async () => {
-  it.skip('Generate ALL vocabs', async () => {
+  it('Generate ALL vocabs', async () => {
+  // it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
