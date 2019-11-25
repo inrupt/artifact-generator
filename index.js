@@ -118,6 +118,14 @@ const yargsConfig = yargs
           'If set will use bundling support within generated artifact (currently supports Webpack only).'
         )
         .default('supportBundling', true)
+
+        .boolean('force')
+        .describe(
+          'force',
+          'Forces generation, even if the target artifacts are considered up-to-date'
+        )
+        .alias('f', 'force')
+        .default('force', false)
         // Can't provide an explicit version, and then also request a version bump!
         .conflicts('artifactVersion', 'bumpVersion')
 

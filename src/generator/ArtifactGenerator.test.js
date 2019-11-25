@@ -1,6 +1,7 @@
 require('mock-local-storage');
 
 const fs = require('fs');
+const path = require('path');
 const del = require('del');
 
 jest.mock('inquirer');
@@ -148,19 +149,18 @@ describe('Artifact Generator', () => {
     it('should ask for user input when version information missing', async () => {
       const outputDirectory = 'test/generated/ArtifactGenerator/no-bundling';
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
+      const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
         _: 'generate',
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         authorSet: new Set(['Cleopatra']),
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
-      const before = inquirer.prompt.mock.calls.length;
-
       await artifactGenerator.generate();
-
       expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
       expect(artifactGenerator.artifactData.artifactToGenerate[0].litVocabTermVersion).toEqual(
         MOCKED_LIT_VOCAB_TERM_VERSION
@@ -178,6 +178,7 @@ describe('Artifact Generator', () => {
         artifactName: 'testName',
         litVocabTermVersion: '^1.0.10',
         authorSet: new Set([]),
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -196,6 +197,7 @@ describe('Artifact Generator', () => {
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
         litVocabTermVersion: '^1.0.10',
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -212,6 +214,7 @@ describe('Artifact Generator', () => {
         _: 'generate',
         inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
         outputDirectory,
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -244,6 +247,69 @@ describe('Artifact Generator', () => {
       expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
       const packageOutput = fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString();
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
+    });
+
+    it('Should not generate artifacts if they target directory is up-to-date', async () => {
+      const outputDirectory = './test/generated/ArtifactGenerator/if-necessary';
+      const generatedFile = path.join(
+        outputDirectory,
+        ARTIFACT_DIRECTORY_SOURCE_CODE,
+        'Javascript',
+        'package.json'
+      );
+      del.sync([`${outputDirectory}/*`]);
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^0.1.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create target source files
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFile)).toBe(true);
+      const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
+
+      // The artifacts are up-to-date, so the generation should be prevented
+      await artifactGenerator.generate();
+      expect(fs.statSync(generatedFile).mtimeMs).toEqual(initialGenerationTime);
+    });
+
+    it('Should generate when forced, even if the target directory is up-to-date', async () => {
+      const outputDirectory = './test/generated/ArtifactGenerator/if-necessary';
+      const generatedFile = path.join(
+        outputDirectory,
+        ARTIFACT_DIRECTORY_SOURCE_CODE,
+        'Javascript',
+        'package.json'
+      );
+      del.sync([`${outputDirectory}/*`]);
+      const config = new GeneratorConfiguration({
+        _: 'generate',
+        inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
+        outputDirectory,
+        artifactVersion: '1.0.0',
+        litVocabTermVersion: '^0.1.0',
+        moduleNamePrefix: '@lit/generated-vocab-',
+        noprompt: true,
+        force: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create target source files
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFile)).toBe(true);
+      const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
+
+      // The artifacts are up-to-date, but the generation is forced anyway
+      await artifactGenerator.generate();
+      expect(fs.statSync(generatedFile).mtimeMs).not.toEqual(initialGenerationTime);
     });
   });
 

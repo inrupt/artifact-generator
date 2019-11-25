@@ -46,12 +46,13 @@ class ArtifactGenerator {
         return vocabDatasets;
       })
       .then(async vocabDatasets => {
-        if (this.artifactData.generated && !this.artifactData.artifactName) {
-          this.artifactData.artifactName = vocabDatasets[0].artifactName;
+        if (this.artifactData.generated) {
+          if (!this.artifactData.artifactName) {
+            this.artifactData.artifactName = vocabDatasets[0].artifactName;
+          }
+          // If the generation was not sufficient to collect all the required information, the user is asked for it
+          await this.configuration.askAdditionalQuestions();
         }
-
-        // If the generation was not sufficient to collect all the required information, the user is asked for it
-        await this.configuration.askAdditionalQuestions();
       })
       .then(() => this.generatePackaging())
       .then(() => {
@@ -74,6 +75,10 @@ class ArtifactGenerator {
   }
 
   async isGenerationNecessary() {
+    // The --force option overrides the logic of this function
+    if (this.artifactData.force) {
+      return true;
+    }
     let artifactsOutdated = false;
     const artifactInfoPath = path.join(
       this.artifactData.outputDirectory,
