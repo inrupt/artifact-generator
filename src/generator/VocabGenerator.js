@@ -2,7 +2,7 @@ const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
-const Resources = require('../Resources');
+const Resource = require('../Resource');
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class VocabGenerator {
@@ -18,7 +18,7 @@ module.exports = class VocabGenerator {
         this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
       }...`
     );
-    logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
+    logger(`Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`);
     if (
       vocabGenerationData.classes.length === 0 &&
       vocabGenerationData.properties.length === 0 &&
@@ -48,7 +48,7 @@ module.exports = class VocabGenerator {
   }
 
   generate() {
-    this.resources = new Resources(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
+    this.resources = new Resource(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
 
     return this.generateData()
       .then(vocabGenerationData => {

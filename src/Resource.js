@@ -36,7 +36,7 @@ const formats = {
   ]),
 };
 
-module.exports = class Resources {
+module.exports = class Resource {
   /**
    *
    * @param datasetFiles
@@ -52,13 +52,13 @@ module.exports = class Resources {
 
   async processInputs(processInputsCallback) {
     logger(`Processing datasetFiles: [${this.datasetFiles}]...`);
-    const datasetsPromises = this.datasetFiles.map(e => Resources.readResource(e));
+    const datasetsPromises = this.datasetFiles.map(e => Resource.readResource(e));
 
     const datasets = await Promise.all(datasetsPromises);
 
     let vocabTermsFromDataset;
     if (this.vocabTermsFromResource) {
-      vocabTermsFromDataset = await Resources.readResource(this.vocabTermsFromResource);
+      vocabTermsFromDataset = await Resource.readResource(this.vocabTermsFromResource);
 
       // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
       // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
@@ -75,7 +75,7 @@ module.exports = class Resources {
    */
   static readResource(datasetFile) {
     logger(`Loading resource: [${datasetFile}]...`);
-    if (Resources.isOnline(datasetFile)) {
+    if (Resource.isOnline(datasetFile)) {
       return rdfFetch(datasetFile, { factory: rdf, formats })
         .then(resource => {
           return resource.dataset();
@@ -116,7 +116,7 @@ module.exports = class Resources {
    */
   static async getResourceLastModificationTime(resource) {
     return resource.startsWith('http')
-      ? Resources.getHttpResourceLastModificationTime(resource)
+      ? Resource.getHttpResourceLastModificationTime(resource)
       : fs.statSync(resource).mtimeMs;
   }
 

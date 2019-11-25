@@ -8,7 +8,7 @@ const rdfFetch = require('@rdfjs/fetch-lite');
 
 jest.mock('@rdfjs/fetch-lite');
 
-const Resources = require('./Resources');
+const Resource = require('./Resource');
 
 // 'Mon, 01 Jan 4000 00:00:59 GMT', in POSIX time
 const MOCKED_LAST_MODIFIED = 64060588859000;
@@ -32,7 +32,7 @@ describe('Resources last modification', () => {
       jest.fn().mockReturnValue(Promise.resolve(VALID_LAST_MODIF_HTTP_RESOURCE))
     );
 
-    const lastmodif = await Resources.getResourceLastModificationTime('http://whatever.org');
+    const lastmodif = await Resource.getResourceLastModificationTime('http://whatever.org');
     expect(lastmodif).toEqual(MOCKED_LAST_MODIFIED);
   });
 
@@ -40,8 +40,8 @@ describe('Resources last modification', () => {
     axios.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE))
     );
-    const lastmodif = await Resources.getResourceLastModificationTime('http://whatever.org');
-    expect(lastmodif).toEqual(Resources.DEFAULT_MODIFICATION_DATE);
+    const lastModificationTime = await Resource.getResourceLastModificationTime('http://whatever.org');
+    expect(lastModificationTime).toEqual(Resource.DEFAULT_MODIFICATION_DATE);
   });
 });
 
@@ -50,7 +50,7 @@ describe('Fetching remote resource', () => {
     rdfFetch.mockImplementation(
       jest.fn().mockReturnValue(Promise.reject(new Error('Unreachable')))
     );
-    const resource = Resources.readResource('http://example.org/ns');
+    const resource = Resource.readResource('http://example.org/ns');
     expect(await resource).toEqual(undefined);
   });
 });
