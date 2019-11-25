@@ -122,7 +122,7 @@ const yargsConfig = yargs
         .boolean('force')
         .describe(
           'force',
-          'Forces generation, even if the target artifacts are considered up-tu-date'
+          'Forces generation, even if the target artifacts are considered up-to-date'
         )
         .alias('f', 'force')
         .default('force', false)
