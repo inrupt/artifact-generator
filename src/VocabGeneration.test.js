@@ -135,8 +135,9 @@ async function generateVocabArtifact(argv) {
     artifact => artifact.programmingLanguage === 'Javascript'
   )[0].outputDirectoryForArtifact;
 
-  logger(`EXPECTING package.json IN THIS FOLDER: [${directoryForJavascriptArtifact}/package.json]`);
-
+  logger(
+    `Expecting 'package.json' in this folder: [${directoryForJavascriptArtifact}/package.json]...`
+  );
   expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(true);
 
   if (result.runNpmInstall) {
