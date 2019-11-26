@@ -97,17 +97,10 @@ module.exports = class Resource {
     return axios({
       method: 'head',
       url: resource,
-    })
-      .then(response => {
-        const lastModifiedDate = Date.parse(response.headers['last-modified']);
-        if (Number.isNaN(lastModifiedDate)) {
-          throw new Error(`Cannot parse date: [${lastModifiedDate}]`);
-        }
-        return lastModifiedDate;
-      })
-      .catch(error => {
-        throw new Error(`Cannot get last modification time: [${error}] for resource [${resource}]`);
-      });
+    }).then(response => {
+      const lastModifiedDate = Date.parse(response.headers['last-modified']);
+      return Number.isNaN(lastModifiedDate) ? DEFAULT_MODIFICATION_DATE : lastModifiedDate;
+    });
   }
 
   /**

@@ -40,7 +40,9 @@ describe('Resources last modification', () => {
     axios.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE))
     );
-    const lastModificationTime = await Resource.getResourceLastModificationTime('http://whatever.org');
+    const lastModificationTime = await Resource.getResourceLastModificationTime(
+      'http://whatever.org'
+    );
     expect(lastModificationTime).toEqual(Resource.DEFAULT_MODIFICATION_DATE);
   });
 });
