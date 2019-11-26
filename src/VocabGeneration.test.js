@@ -14,6 +14,8 @@ const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = false;
 
 const ConfigLitCommon = {
+  _: 'generate',
+  _: 'force',
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
@@ -117,7 +119,13 @@ async function generateVocabArtifact(argv) {
   await app.configure();
   const result = await app.run();
 
-  expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package.json`)).toBe(true);
+  const directoryForJavascriptArtifact = result.artifactToGenerate
+      .filter(artifact => artifact.programmingLanguage === 'Javascript')[0]
+      .artifactFolderName;
+
+  logger(`EXPECTING package.json IN THIS FOLDER: [${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json]`);
+
+  expect(fs.existsSync(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`)).toBe(true);
 
   if (result.runNpmInstall) {
     expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
@@ -134,8 +142,8 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  // it('Generate ALL vocabs', async () => {
-  it.skip('Generate ALL vocabs', async () => {
+  it('Generate ALL vocabs', async () => {
+  // it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
