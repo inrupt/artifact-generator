@@ -42,9 +42,8 @@ class FileGenerator {
     };
   }
 
-  static createSourceCodeFile(argv, artifactDetails, templateData) {
+  static buildTargetSourceCodeFolder(artifactDetails) {
     const outputDirectoryForSourceCode = artifactDetails.outputDirectoryForArtifact;
-
     // For source files that might be packaged (i.e. Java), convert all '.'
     // (dots) in the package name to directory slashes and add to our
     // directory and source file name.
@@ -54,7 +53,31 @@ class FileGenerator {
     const packagingDirectory = artifactDetails.javaPackageName
       ? `/src/main/java/${artifactDetails.javaPackageName.replace(/\./g, '/')}`
       : 'GeneratedVocab';
-    FileGenerator.createDirectory(`${outputDirectoryForSourceCode}/${packagingDirectory}`);
+    return `${outputDirectoryForSourceCode}/${packagingDirectory}`;
+  }
+
+  static buildTargetSourceCodeFilePath(targetFolder, artifactDetails, templateData) {
+    return path.join(
+      targetFolder,
+      `${templateData.nameAndPrefixOverride || templateData.vocabNameUpperCase}.${
+        artifactDetails.sourceFileExtension
+      }`
+    );
+  }
+
+  static previouslyGeneratedFileExists(artifactDetails, templateData) {
+    return fs.existsSync(
+      FileGenerator.buildTargetSourceCodeFilePath(
+        FileGenerator.buildTargetSourceCodeFolder(artifactDetails),
+        artifactDetails,
+        templateData
+      )
+    );
+  }
+
+  static createSourceCodeFile(argv, artifactDetails, templateData) {
+    const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
+    FileGenerator.createDirectory(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
       `../../templates/${artifactDetails.handlebarsTemplate}`,
       // Some artifact-specific info may be required in the template (e.g. the java package name)
@@ -62,8 +85,11 @@ class FileGenerator {
         { ...templateData, ...artifactDetails },
         artifactDetails.sourceFileExtension
       ),
-      `${outputDirectoryForSourceCode}/${packagingDirectory}/${templateData.nameAndPrefixOverride ||
-        templateData.vocabNameUpperCase}.${artifactDetails.sourceFileExtension}`
+      FileGenerator.buildTargetSourceCodeFilePath(
+        outputDirectoryForSourceCode,
+        artifactDetails,
+        templateData
+      )
     );
   }
 

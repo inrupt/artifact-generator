@@ -17,6 +17,10 @@ const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
 const parserRdfXml = new ParserRdfXml();
 
+// In Jan. 1991, the first Web browser was released, so it is unlikely that the resource has been modified earlier
+// This default is used as a generationlast modification date for unreachable online vocabularies to prevent failure
+const DEFAULT_MODIFICATION_DATE = 662688059000;
+
 const formats = {
   parsers: new SinkMap([
     ['text/turtle', parserN3],
@@ -32,7 +36,7 @@ const formats = {
   ]),
 };
 
-module.exports = class Resources {
+module.exports = class Resource {
   /**
    *
    * @param datasetFiles
@@ -48,13 +52,13 @@ module.exports = class Resources {
 
   async processInputs(processInputsCallback) {
     logger(`Processing datasetFiles: [${this.datasetFiles}]...`);
-    const datasetsPromises = this.datasetFiles.map(e => Resources.readResource(e));
+    const datasetsPromises = this.datasetFiles.map(e => Resource.readResource(e));
 
     const datasets = await Promise.all(datasetsPromises);
 
     let vocabTermsFromDataset;
     if (this.vocabTermsFromResource) {
-      vocabTermsFromDataset = await Resources.readResource(this.vocabTermsFromResource);
+      vocabTermsFromDataset = await Resource.readResource(this.vocabTermsFromResource);
 
       // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
       // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
@@ -71,10 +75,17 @@ module.exports = class Resources {
    */
   static readResource(datasetFile) {
     logger(`Loading resource: [${datasetFile}]...`);
-    if (datasetFile.startsWith('http')) {
-      return rdfFetch(datasetFile, { factory: rdf, formats }).then(resource => {
-        return resource.dataset();
-      });
+    if (Resource.isOnline(datasetFile)) {
+      return rdfFetch(datasetFile, { factory: rdf, formats })
+        .then(resource => {
+          return resource.dataset();
+        })
+        .catch(error => {
+          logger(
+            `Encountered error [${error}] while fetching [${datasetFile}], attempting to use previously generated file`
+          );
+          return undefined;
+        });
     }
 
     return new Promise(resolve => {
@@ -105,7 +116,13 @@ module.exports = class Resources {
    */
   static async getResourceLastModificationTime(resource) {
     return resource.startsWith('http')
-      ? Resources.getHttpResourceLastModificationTime(resource)
+      ? Resource.getHttpResourceLastModificationTime(resource)
       : fs.statSync(resource).mtimeMs;
   }
+
+  static isOnline(resource) {
+    return resource.startsWith('http');
+  }
 };
+
+module.exports.DEFAULT_MODIFICATION_DATE = DEFAULT_MODIFICATION_DATE;

@@ -2,7 +2,7 @@ const rdf = require('rdf-ext');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
-const Resources = require('../Resources');
+const Resource = require('../Resource');
 const DatasetHandler = require('../DatasetHandler');
 
 module.exports = class VocabGenerator {
@@ -12,26 +12,47 @@ module.exports = class VocabGenerator {
     this.artifactDetails = artifactDetails;
   }
 
+  async generateFiles(vocabGenerationData) {
+    logger(
+      `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
+        this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
+      }...`
+    );
+    logger(`Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`);
+    if (
+      vocabGenerationData.classes.length === 0 &&
+      vocabGenerationData.properties.length === 0 &&
+      vocabGenerationData.literals.length === 0
+    ) {
+      // In this case, the resource was unreachable, and the source file cannot be generated
+      return new Promise((resolve, reject) => {
+        if (
+          FileGenerator.previouslyGeneratedFileExists(this.artifactDetails, vocabGenerationData)
+        ) {
+          logger(
+            `A source file is reused for unreachable resource ${this.vocabData.inputResources.toString()}`
+          );
+          resolve(vocabGenerationData);
+        }
+        reject(
+          new Error(
+            `${this.vocabData.inputResources.toString()} is unreachable, and no previously generated file is available.`
+          )
+        );
+      });
+    }
+    return new Promise(resolve => {
+      FileGenerator.createSourceCodeFile(this.vocabData, this.artifactDetails, vocabGenerationData);
+      resolve(vocabGenerationData);
+    });
+  }
+
   generate() {
-    this.resources = new Resources(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
+    this.resources = new Resource(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
 
     return this.generateData()
       .then(vocabGenerationData => {
-        logger(
-          `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-            this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
-          }...`
-        );
-        logger(`Input vocabulary file(s) [${this.vocabData.inputResources.toString()}]...`);
-
-        return new Promise(resolve => {
-          FileGenerator.createSourceCodeFile(
-            this.vocabData,
-            this.artifactDetails,
-            vocabGenerationData
-          );
-          resolve(vocabGenerationData);
-        });
+        return this.generateFiles(vocabGenerationData);
       })
       .catch(error => {
         throw new Error(`Data generation for vocabs failed: ${error}`);

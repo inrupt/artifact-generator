@@ -5,7 +5,7 @@ const ChildProcess = require('child_process');
 
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
-const Resources = require('../Resources');
+const Resource = require('../Resource');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
@@ -92,7 +92,7 @@ class ArtifactGenerator {
       const vocabsLastModificationTime = [];
       const resources = this.configuration.getInputResources();
       for (let i = 0; i < resources.length; i += 1) {
-        vocabsLastModificationTime.push(Resources.getResourceLastModificationTime(resources[i]));
+        vocabsLastModificationTime.push(Resource.getResourceLastModificationTime(resources[i]));
       }
       await Promise.all(vocabsLastModificationTime).then(values => {
         // The artifact is outdated if one vocabulary is more recent than the artifact
