@@ -1,10 +1,8 @@
 require('mock-local-storage');
 const fs = require('fs');
-const path = require('path');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const App = require('./App');
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
@@ -18,7 +16,8 @@ const SUPPORT_BUNDLING = false;
 const ConfigLitCommon = {
   _: 'generate',
   force: true,
-  vocabListFile: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
+  vocabListFile:
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
   moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
@@ -132,24 +131,16 @@ async function generateVocabArtifact(argv) {
   await app.configure();
   const result = await app.run();
 
-  const directoryForJavascriptArtifact = path.join(
-    ARTIFACT_DIRECTORY_SOURCE_CODE,
-    result.artifactToGenerate.filter(artifact => artifact.programmingLanguage === 'Javascript')[0]
-      .artifactFolderName
-  );
+  const directoryForJavascriptArtifact = result.artifactToGenerate.filter(
+    artifact => artifact.programmingLanguage === 'Javascript'
+  )[0].outputDirectoryForArtifact;
 
-  logger(
-    `EXPECTING package.json IN THIS FOLDER: [${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json]`
-  );
+  logger(`EXPECTING package.json IN THIS FOLDER: [${directoryForJavascriptArtifact}/package.json]`);
 
-  console.log(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`);
-
-  expect(
-    fs.existsSync(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`)
-  ).toBe(true);
+  expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(true);
 
   if (result.runNpmInstall) {
-    expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
+    expect(fs.existsSync(`${directoryForJavascriptArtifact}/package-lock.json`)).toBe(true);
   }
 
   if (result.runWidoco) {
@@ -199,7 +190,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   // it('LIT Common vocabs', async () => {
-    it.skip('LIT Common vocabs', async () => {
+  it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(ConfigLitCommon);
   });
