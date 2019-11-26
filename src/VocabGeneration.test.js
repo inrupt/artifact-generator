@@ -1,8 +1,10 @@
 require('mock-local-storage');
 const fs = require('fs');
+const path = require('path');
 const logger = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const App = require('./App');
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
@@ -15,9 +17,8 @@ const SUPPORT_BUNDLING = false;
 
 const ConfigLitCommon = {
   _: 'generate',
-  _: 'force',
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
+  force: true,
+  vocabListFile: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
   moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
@@ -31,7 +32,7 @@ const ConfigLitCommon = {
 
 const ConfigSolidCommon = {
   _: 'generate',
-  _: 'force',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common/Vocab/Vocab-List-Solid-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common',
@@ -47,7 +48,7 @@ const ConfigSolidCommon = {
 
 const ConfigInruptCommon = {
   _: 'generate',
-  _: 'force',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common/Vocab/Vocab-List-Inrupt-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common',
@@ -62,7 +63,7 @@ const ConfigInruptCommon = {
 
 const ConfigInruptService = {
   _: 'generate',
-  _: 'force',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service/Vocab/Vocab-List-Inrupt-Service.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service',
@@ -77,7 +78,7 @@ const ConfigInruptService = {
 
 const ConfigLitCore = {
   _: 'generate',
-  _: 'force',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
@@ -92,7 +93,7 @@ const ConfigLitCore = {
 
 const ConfigSolidComponent = {
   _: 'generate',
-  _: 'force',
+  force: true,
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component/Vocab/SolidComponent.ttl',
   ],
@@ -110,7 +111,7 @@ const ConfigSolidComponent = {
 
 const ConfigSolidGeneratorUi = {
   _: 'generate',
-  _: 'force',
+  force: true,
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
@@ -131,31 +132,39 @@ async function generateVocabArtifact(argv) {
   await app.configure();
   const result = await app.run();
 
-  const directoryForJavascriptArtifact = result.artifactToGenerate
-      .filter(artifact => artifact.programmingLanguage === 'Javascript')[0]
-      .artifactFolderName;
+  const directoryForJavascriptArtifact = path.join(
+    ARTIFACT_DIRECTORY_SOURCE_CODE,
+    result.artifactToGenerate.filter(artifact => artifact.programmingLanguage === 'Javascript')[0]
+      .artifactFolderName
+  );
 
-  logger(`EXPECTING package.json IN THIS FOLDER: [${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json]`);
+  logger(
+    `EXPECTING package.json IN THIS FOLDER: [${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json]`
+  );
 
-  // expect(fs.existsSync(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`)).toBe(true);
-  //
-  // if (result.runNpmInstall) {
-  //   expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
-  // }
-  //
-  // if (result.runWidoco) {
-  //   // Check if our documentation is in the root output directory (not the
-  //   // artifact directory!).
-  //   expect(result.documentationDirectory).toMatch(/Widoco/);
-  //   expect(fs.existsSync(`${result.documentationDirectory}/index-en.html`)).toBe(true);
-  // }
+  console.log(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`);
+
+  expect(
+    fs.existsSync(`${result.outputDirectory}/${directoryForJavascriptArtifact}/package.json`)
+  ).toBe(true);
+
+  if (result.runNpmInstall) {
+    expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
+  }
+
+  if (result.runWidoco) {
+    // Check if our documentation is in the root output directory (not the
+    // artifact directory!).
+    expect(result.documentationDirectory).toMatch(/Widoco/);
+    expect(fs.existsSync(`${result.documentationDirectory}/index-en.html`)).toBe(true);
+  }
 
   logger(`Generation process successful!\n`);
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it('Generate ALL vocabs', async () => {
-  // it.skip('Generate ALL vocabs', async () => {
+  // it('Generate ALL vocabs', async () => {
+  it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
@@ -190,7 +199,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   // it('LIT Common vocabs', async () => {
-  it.skip('LIT Common vocabs', async () => {
+    it.skip('LIT Common vocabs', async () => {
     jest.setTimeout(15000);
     await generateVocabArtifact(ConfigLitCommon);
   });
