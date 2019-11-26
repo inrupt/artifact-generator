@@ -14,6 +14,8 @@ const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = false;
 
 const ConfigLitCommon = {
+  _: 'generate',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
@@ -28,6 +30,8 @@ const ConfigLitCommon = {
 };
 
 const ConfigSolidCommon = {
+  _: 'generate',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common/Vocab/Vocab-List-Solid-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common',
@@ -42,6 +46,8 @@ const ConfigSolidCommon = {
 };
 
 const ConfigInruptCommon = {
+  _: 'generate',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common/Vocab/Vocab-List-Inrupt-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common',
@@ -55,6 +61,8 @@ const ConfigInruptCommon = {
 };
 
 const ConfigInruptService = {
+  _: 'generate',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service/Vocab/Vocab-List-Inrupt-Service.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service',
@@ -68,6 +76,8 @@ const ConfigInruptService = {
 };
 
 const ConfigLitCore = {
+  _: 'generate',
+  force: true,
   vocabListFile:
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
@@ -81,6 +91,8 @@ const ConfigLitCore = {
 };
 
 const ConfigSolidComponent = {
+  _: 'generate',
+  force: true,
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component/Vocab/SolidComponent.ttl',
   ],
@@ -97,6 +109,8 @@ const ConfigSolidComponent = {
 };
 
 const ConfigSolidGeneratorUi = {
+  _: 'generate',
+  force: true,
   inputResources: [
     '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi/Vocab/SolidGeneratorUi.ttl',
   ],
@@ -117,10 +131,17 @@ async function generateVocabArtifact(argv) {
   await app.configure();
   const result = await app.run();
 
-  expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package.json`)).toBe(true);
+  const directoryForJavascriptArtifact = result.artifactToGenerate.filter(
+    artifact => artifact.programmingLanguage === 'Javascript'
+  )[0].outputDirectoryForArtifact;
+
+  logger(
+    `Expecting 'package.json' in this folder: [${directoryForJavascriptArtifact}/package.json]...`
+  );
+  expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(true);
 
   if (result.runNpmInstall) {
-    expect(fs.existsSync(`${result.outputDirectoryForArtifact}/package-lock.json`)).toBe(true);
+    expect(fs.existsSync(`${directoryForJavascriptArtifact}/package-lock.json`)).toBe(true);
   }
 
   if (result.runWidoco) {
