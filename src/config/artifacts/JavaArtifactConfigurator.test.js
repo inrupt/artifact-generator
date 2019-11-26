@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 require('mock-local-storage');
 
 const { JavaArtifactConfigurator } = require('./JavaArtifactConfigurator');
+const { UNSUPPORTED_CONFIG_PROMPT } = require('../ArtifactConfigurator.test');
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: '0.0.1',
@@ -81,5 +82,13 @@ describe('Java ArtifactConfig Generator', () => {
     expect(artifact.packaging[0].repository.length).toEqual(2);
     expect(artifact.packaging[0].repository[0]).toEqual({ enabled: true, ...DUMMY_RELEASE_REPO });
     expect(artifact.packaging[0].repository[1]).toEqual({ enabled: true, ...DUMMY_SNAPSHOT_REPO });
+  });
+
+  it('should throw when an unsupported packaging system is prompted', async () => {
+    inquirer.prompt.mockImplementation(UNSUPPORTED_CONFIG_PROMPT);
+    expect(new JavaArtifactConfigurator().prompt()).rejects.toThrow(
+      'Unsupported packaging system',
+      'someSystem'
+    );
   });
 });
