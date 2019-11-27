@@ -9,9 +9,8 @@ const App = require('./App');
 const VERSION_LIT_VOCAB_TERM = '^0.1.0';
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
-const RUN_MAVEN_INSTALL = true;
-const RUN_NPM_PUBLISH = false;
 const SUPPORT_BUNDLING = false;
+const RUN_PACKAGING = true;
 
 const ConfigLitCommon = {
   _: 'generate',
@@ -24,9 +23,8 @@ const ConfigLitCommon = {
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runMavenInstall: RUN_MAVEN_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidCommon = {
@@ -40,9 +38,8 @@ const ConfigSolidCommon = {
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runMavenInstall: RUN_MAVEN_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigInruptCommon = {
@@ -55,9 +52,8 @@ const ConfigInruptCommon = {
   artifactName: 'common',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runMavenInstall: RUN_MAVEN_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigInruptService = {
@@ -70,9 +66,8 @@ const ConfigInruptService = {
   artifactName: 'service',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runMavenInstall: RUN_MAVEN_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigLitCore = {
@@ -85,9 +80,8 @@ const ConfigLitCore = {
   artifactName: 'core',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runMavenInstall: RUN_MAVEN_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidComponent = {
@@ -103,9 +97,9 @@ const ConfigSolidComponent = {
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidGeneratorUi = {
@@ -121,9 +115,9 @@ const ConfigSolidGeneratorUi = {
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
-  runNpmPublish: RUN_NPM_PUBLISH,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
+  publish: RUN_PACKAGING,
 };
 
 async function generateVocabArtifact(argv) {
@@ -269,9 +263,9 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       moduleNamePrefix: '@lit/generated-vocab-',
       npmRegistry: NPM_REGISTRY,
       runNpmInstall: RUN_NPM_INSTALL,
-      runNpmPublish: RUN_NPM_PUBLISH,
       supportBundling: SUPPORT_BUNDLING,
       runWidoco: false,
+      publish: RUN_PACKAGING,
     });
   });
 });
