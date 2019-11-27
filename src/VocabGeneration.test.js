@@ -149,15 +149,20 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  // it('Generate ALL vocabs', async () => {
-  it.skip('Generate ALL vocabs', async () => {
+  it('Generate ALL vocabs', async () => {
+  // it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
 
     await generateVocabArtifact(ConfigSolidCommon);
-    await generateVocabArtifact(ConfigSolidComponent);
-    await generateVocabArtifact(ConfigSolidGeneratorUi);
+
+    // Just note - these configurations generate from single RDF vocab files (i.e. not via YAML
+    // config files), so they'll only generate Javascript (i.e. the command-line default).
+    // TODO: commented out for now until the config's are updated to work with latest packaging
+    //  changes from Nic...
+    // await generateVocabArtifact(ConfigSolidComponent);
+    // await generateVocabArtifact(ConfigSolidGeneratorUi);
 
     await generateVocabArtifact(ConfigInruptCommon);
     await generateVocabArtifact(ConfigInruptService);
