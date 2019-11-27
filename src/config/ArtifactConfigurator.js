@@ -23,6 +23,7 @@ class ArtifactConfigurator {
     this.config = {};
     this.questions = [];
     this.packagingQuestions = [];
+    this.packagingConfig = [];
     // This member variable will be overriden by extending classes
     this.language = undefined;
     this.litVocabTermVersion = undefined;

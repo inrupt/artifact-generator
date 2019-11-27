@@ -47,14 +47,6 @@ describe('ArtifactConfig Generator', () => {
     expect(artifact.javaPackageName).toEqual(DUMMY_JAVA_ARTIFACT.javaPackageName);
   });
 
-  it('should throw when an unsupported packaging system is prompted', async () => {
-    inquirer.prompt.mockImplementation(UNSUPPORTED_CONFIG_PROMPT);
-    expect(new JavaArtifactConfigurator().prompt()).rejects.toThrow(
-      'Unsupported packaging system',
-      'someSystem'
-    );
-  });
-
   it('should use default values provided by the implementations', async () => {
     inquirer.prompt.mockImplementation(
       jest.fn().mockReturnValue(Promise.resolve(DUMMY_JAVA_ARTIFACT))
@@ -73,3 +65,5 @@ describe('ArtifactConfig Generator', () => {
     expect(jsArtifact.config.artifactVersion).toEqual(DUMMY_JS_ARTIFACT.artifactVersion);
   });
 });
+
+module.exports.UNSUPPORTED_CONFIG_PROMPT = UNSUPPORTED_CONFIG_PROMPT;
