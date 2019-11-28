@@ -322,13 +322,13 @@ describe('Artifact Generator', () => {
         vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
         outputDirectory,
         noprompt: true,
-        publish: true,
+        publishLocal: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator
         .generate()
-        .then(generationData => artifactGenerator.publish(generationData));
+        .then(generationData => artifactGenerator.runPublishLocal(generationData));
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
@@ -353,7 +353,7 @@ describe('Artifact Generator', () => {
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator
         .generate()
-        .then(generationData => artifactGenerator.publish(generationData));
+        .then(generationData => artifactGenerator.runPublishLocal(generationData));
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/pom.xml`)

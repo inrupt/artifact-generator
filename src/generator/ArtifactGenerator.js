@@ -203,14 +203,14 @@ class ArtifactGenerator {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: 'maven',
         groupId: artifactDetails.javaPackageName,
-        publishCommand: 'mvn install',
+        publishLocal: 'mvn install',
         packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
       });
     } else if (artifactDetails.programmingLanguage === 'Javascript') {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: 'npm',
         npmModuleScope: '@lit/',
-        publishCommand: 'npm publish --registry http://localhost:4873/',
+        publishLocal: 'npm publish --registry http://localhost:4873/',
         packagingTemplates: [
           { template: 'package.hbs', fileName: 'package.json' },
           { template: 'index.hbs', fileName: 'index.js' },
@@ -223,28 +223,30 @@ class ArtifactGenerator {
     }
   }
 
-  static publishArtifact(artifact) {
+  static publishArtifactLocal(artifact) {
     const homeDir = process.cwd();
     if (artifact.packaging) {
       for (let j = 0; j < artifact.packaging.length; j += 1) {
-        if (artifact.packaging[j].publishCommand) {
+        if (artifact.packaging[j].publishLocal) {
           process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
-          logger(`Running command [${artifact.packaging[j].publishCommand}]...`);
-          ChildProcess.execSync(artifact.packaging[j].publishCommand);
+          logger(
+            `Running command [${artifact.packaging[j].publishLocal}] to publish artifact locally...`
+          );
+          ChildProcess.execSync(artifact.packaging[j].publishLocal);
           process.chdir(homeDir);
         }
       }
     }
   }
 
-  publish() {
+  runPublishLocal() {
     const generationData = this.configuration.configuration;
     // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
     // Ideally, new processes should be spawned, each running a packaging command, but the fork
     // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
     // so it is more work than expected. Running it sequentially is fine for now.
     for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i]);
+      ArtifactGenerator.publishArtifactLocal(generationData.artifactToGenerate[i]);
     }
     return generationData;
   }

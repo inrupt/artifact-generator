@@ -29,7 +29,7 @@ const WEBPACK_DEFAULT = {
 const NPM_DEFAULT = {
   packagingTool: 'npm',
   npmModuleScope: '@lit/',
-  publishCommand: 'npm publish',
+  publishLocal: 'npm publish --registry https://localhost:4873',
   packagingTemplates: [
     {
       template: 'package.hbs',
@@ -232,9 +232,9 @@ class GeneratorConfiguration {
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;
-    // If the registry is set in the command line, a default publication
+    // If the registry is set in the command line, override default
     if (args.npmRegistry) {
-      packagingInfo.publishCommand += ` --registry ${args.npmRegistry}`;
+      packagingInfo.publishLocal = `npm publish --registry ${args.npmRegistry}`;
     }
     // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference,
     // and the tests are run in parallel, it creates thread-safety issues that should be adressed by creating

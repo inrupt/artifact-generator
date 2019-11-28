@@ -16,7 +16,7 @@ const MAVEN_ARTIFACT_PROMPT = [
   },
   {
     type: 'input',
-    name: 'publishCommand',
+    name: 'publishLocal',
     message: 'Enter the command used to publish your artifacts',
     default: 'mvn install',
   },

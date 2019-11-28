@@ -33,15 +33,14 @@ module.exports = class App {
 
   async run() {
     const artifactGenerator = new ArtifactGenerator(await this.configure());
-
     return artifactGenerator
       .generate()
       .then(CommandLine.askForArtifactToBeNpmVersionBumped)
       .then(CommandLine.askForArtifactToBeNpmInstalled)
       .then(generationData => {
         let publicationData = generationData;
-        if (generationData.publish) {
-          publicationData = artifactGenerator.publish();
+        if (generationData.publishLocal) {
+          publicationData = artifactGenerator.runPublishLocal();
         }
         return publicationData;
       })

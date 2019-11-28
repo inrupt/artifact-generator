@@ -16,9 +16,9 @@ const publishingGenerator = () => {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
-      return Promise.resolve({ stubbed: true, noprompt: true, publish: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, publishLocal: true });
     },
-    publish: async () => {
+    runPublishLocal: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true, published: true });
     },
   };
@@ -29,7 +29,7 @@ const nonPublishingGenerator = () => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
-    publish: async () => {
+    runPublishLocal: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true, published: true });
     },
   };
@@ -110,7 +110,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publish: true,
+        publishLocal: true,
       };
 
       const mockedResponse = await new App(config).run();
