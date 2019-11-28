@@ -328,7 +328,7 @@ describe('Artifact Generator', () => {
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator
         .generate()
-        .then(generationData => artifactGenerator.runLocalPublication(generationData));
+        .then(generationData => artifactGenerator.runPublishLocal(generationData));
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
@@ -353,7 +353,7 @@ describe('Artifact Generator', () => {
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator
         .generate()
-        .then(generationData => artifactGenerator.runLocalPublication(generationData));
+        .then(generationData => artifactGenerator.runPublishLocal(generationData));
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/pom.xml`)

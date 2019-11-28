@@ -223,7 +223,7 @@ class ArtifactGenerator {
     }
   }
 
-  static publishArtifactLocally(artifact) {
+  static publishArtifactLocal(artifact) {
     const homeDir = process.cwd();
     if (artifact.packaging) {
       for (let j = 0; j < artifact.packaging.length; j += 1) {
@@ -239,14 +239,14 @@ class ArtifactGenerator {
     }
   }
 
-  runLocalPublication() {
+  runPublishLocal() {
     const generationData = this.configuration.configuration;
     // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
     // Ideally, new processes should be spawned, each running a packaging command, but the fork
     // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
     // so it is more work than expected. Running it sequentially is fine for now.
     for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifactLocally(generationData.artifactToGenerate[i]);
+      ArtifactGenerator.publishArtifactLocal(generationData.artifactToGenerate[i]);
     }
     return generationData;
   }

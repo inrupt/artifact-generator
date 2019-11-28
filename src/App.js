@@ -40,7 +40,7 @@ module.exports = class App {
       .then(generationData => {
         let publicationData = generationData;
         if (generationData.publishLocal) {
-          publicationData = artifactGenerator.runLocalPublication();
+          publicationData = artifactGenerator.runPublishLocal();
         }
         return publicationData;
       })

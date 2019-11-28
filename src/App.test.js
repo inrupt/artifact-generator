@@ -18,7 +18,7 @@ const publishingGenerator = () => {
       // but here it must be set explicitely
       return Promise.resolve({ stubbed: true, noprompt: true, publishLocal: true });
     },
-    runLocalPublication: async () => {
+    runPublishLocal: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true, published: true });
     },
   };
@@ -29,7 +29,7 @@ const nonPublishingGenerator = () => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
-    runLocalPublication: async () => {
+    runPublishLocal: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true, published: true });
     },
   };
