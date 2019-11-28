@@ -2,6 +2,7 @@ const path = require('path');
 const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const logger = require('debug')('lit-artifact-generator:CommandLine');
+const { DEFAULT_AUTHOR } = require('./DatasetHandler');
 
 const {
   ARTIFACT_DIRECTORY_ROOT,
@@ -26,31 +27,25 @@ module.exports = class CommandLine {
       return CommandLine.findPublishedVersionOfModule(data);
     }
 
-    // Craft questions to present to users.
-    const questions = [];
+    const mergedData = { ...data };
 
     if (!data.artifactName) {
-      questions.push({
+      const promptedName = await inquirer.prompt({
         type: 'input',
         name: 'artifactName',
         message: 'Artifact name ...',
       });
+      mergedData.artifactName = promptedName.artifactName;
     }
 
-    if (!data.authorSet || data.authorSet.size === 0) {
-      questions.push({
+    if (!data.authorSet || (data.authorSet.size === 1 && data.authorSet.has(DEFAULT_AUTHOR))) {
+      const authors = await inquirer.prompt({
         type: 'input',
         name: 'authorSet',
         message: 'Artifact authors ...',
+        default: DEFAULT_AUTHOR,
       });
-    }
-
-    let mergedData = data;
-
-    if (questions.length > 0) {
-      const artifactInfoAnswers = await inquirer.prompt(questions);
-
-      mergedData = { ...data, ...artifactInfoAnswers }; // Merge the answers in with the data
+      mergedData.authorSet = new Set([authors.authorSet]);
     }
 
     return CommandLine.findPublishedVersionOfModule(mergedData);

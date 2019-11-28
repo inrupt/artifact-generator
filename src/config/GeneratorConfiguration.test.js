@@ -26,7 +26,7 @@ const EXPECTED_VOCAB_LIST_FROM_CLI = [
   },
 ];
 
-const MOCKED_USER_INPUT = { authorSet: new Set(['Cleopatra']), artifactName: 'someName' };
+const MOCKED_USER_INPUT = { authorSet: 'Cleopatra', artifactName: 'someName' };
 
 describe('Generator configuration', () => {
   describe('Processing vocab list file.', () => {
@@ -177,7 +177,7 @@ describe('Generator configuration', () => {
       );
 
       const generatorConfiguration = new GeneratorConfiguration({
-        vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
+        vocabListFile: './test/resources/vocabs/vocab-list-missing-author.yml',
       });
       await generatorConfiguration.askAdditionalQuestions();
       expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));

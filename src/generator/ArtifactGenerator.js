@@ -52,6 +52,10 @@ class ArtifactGenerator {
           }
           // If the generation was not sufficient to collect all the required information, the user is asked for it
           await this.configuration.askAdditionalQuestions();
+          // TODO: move this formatting directly into the templates
+          this.artifactData.authors = `Vocabularies authored by: ${Array.from(
+            this.artifactData.authorSet
+          ).join(', ')}.`;
         }
       })
       .then(() => this.generatePackaging())
@@ -147,7 +151,6 @@ class ArtifactGenerator {
   }
 
   async collectGeneratedVocabDetails(vocabDatasets) {
-    const authorsAcrossAllVocabs = new Set();
     this.artifactData.description = `Bundle of vocabularies that includes the following:`;
     await Promise.all(
       vocabDatasets.map(async vocabData => {
@@ -156,12 +159,9 @@ class ArtifactGenerator {
           vocabName: vocabData.vocabName,
           vocabNameUpperCase: vocabData.vocabNameUpperCase,
         });
-        vocabData.authorSet.forEach(author => authorsAcrossAllVocabs.add(author));
+        vocabData.authorSet.forEach(author => this.artifactData.authorSet.add(author));
       })
     );
-    this.artifactData.authors = `Vocabularies authored by: ${Array.from(
-      authorsAcrossAllVocabs
-    ).join(', ')}.`;
     return vocabDatasets;
   }
 
