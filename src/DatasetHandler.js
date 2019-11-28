@@ -1,9 +1,15 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
+const logger = require('debug')('lit-artifact-generator:DatasetHandler');
 
 const FileGenerator = require('./generator/FileGenerator');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
+
+// We look for a pattern http://DOMAIN/PATH.
+// The end of the domain is detected with the first slash, and the PATH is optional
+const PREFIX_REGEX = /https?:\/\/(.+?)(\/(.*)|$)/;
+const KNOWN_DOMAINS = new Set(['www.w3.org', 'purl.org', 'w3id.org', 'xmlns.com']);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
@@ -348,7 +354,24 @@ module.exports = class DatasetHandler {
       .reduce((a, b) => (a.length > b.length ? a : b), '');
   }
 
+  static formatForPrefix(iriExtract) {
+    // Replace / and . by _, and remove _ around the obtained prefix
+    return iriExtract.replace(/\.|\//g, '_').replace(/^_|_$/g, '');
+  }
+
+  static guessPrefixFromNamespace(termIri) {
+    const matchResult = PREFIX_REGEX.exec(termIri);
+    const iriDomain = matchResult[1];
+    const iriPath = matchResult[2];
+    if (KNOWN_DOMAINS.has(iriDomain)) {
+      return DatasetHandler.formatForPrefix(iriPath);
+    }
+    // Drop the .org, .com, or .uk from .co.uk before formatting
+    return DatasetHandler.formatForPrefix(iriDomain.substring(0, iriDomain.lastIndexOf('.')));
+  }
+
   findPreferredNamespacePrefix() {
+    const namespace = this.vocabData.namespaceOverride || this.findNamespace();
     let prefix = this.findOwlOntology(owlOntologyTerms => {
       const ontologyPrefixes = this.fullDataset.match(
         owlOntologyTerms.subject,
@@ -360,10 +383,14 @@ module.exports = class DatasetHandler {
     });
 
     if (!prefix) {
-      const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
-      prefix = first.substring(first.lastIndexOf('//') + 2, first.lastIndexOf('.'));
+      if (!namespace) {
+        logger(`Namespace for [${this.vocabData.inputResources[0]}] is empty`);
+        return '';
+      }
+      logger(`WARNING: [${namespace}] does not specify a preferred prefix`);
+      prefix = DatasetHandler.guessPrefixFromNamespace(namespace);
+      logger(`Guessed prefix: [${prefix}]`);
     }
-
     return prefix;
   }
 

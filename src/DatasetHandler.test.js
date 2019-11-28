@@ -79,4 +79,13 @@ describe('Dataset Handler', () => {
 
     expect(result.literals.length).toEqual(0);
   });
+
+  it('should take educated guesses for prefixes if none are provided', () => {
+    // The namespace is not known (slash namespace)
+    expect(DatasetHandler.guessPrefixFromNamespace('https://schema.org/Person')).toEqual('schema');
+    // The namespace is not known (hash namespace)
+    expect(DatasetHandler.guessPrefixFromNamespace('https://test.co.uk#Person')).toEqual('test_co');
+    // The namespace is known, so the path is used
+    expect(DatasetHandler.guessPrefixFromNamespace('https://www.w3.org/person/')).toEqual('person');
+  });
 });
