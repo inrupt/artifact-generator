@@ -436,3 +436,5 @@ module.exports = class DatasetHandler {
     return [...new Set(termSubjects)];
   }
 };
+
+module.exports.DEFAULT_AUTHOR = DEFAULT_AUTHOR;

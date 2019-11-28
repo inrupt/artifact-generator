@@ -188,6 +188,12 @@ class GeneratorConfiguration {
           yamlPath
         );
       }
+      if (yamlConfiguration.authorSet) {
+        // TODO: change authorSet to authors, and make it a list
+        const authors = yamlConfiguration.authorSet;
+        yamlConfiguration.authorSet = new Set();
+        yamlConfiguration.authorSet.add(authors);
+      }
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }

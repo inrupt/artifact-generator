@@ -82,7 +82,7 @@ describe('Artifact Generator', () => {
       const before = inquirer.prompt.mock.calls.length;
 
       const config = new GeneratorConfiguration({
-        vocabListFile: './test/resources/vocabs/vocab-list-missing-info.yml',
+        vocabListFile: './test/resources/vocabs/vocab-list-missing-author.yml',
         outputDirectory,
         moduleNamePrefix: '@lit/generated-vocab-',
       });
