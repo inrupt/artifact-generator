@@ -67,13 +67,13 @@ const yargsConfig = yargs
         )
         .default('runNpmInstall', false)
 
-        .alias('p', 'publish')
-        .boolean('publish')
+        .alias('pl', 'publishLocal')
+        .boolean('publishLocal')
         .describe(
-          'publish',
-          'If set will attempt to publish to the configured registries (NPM, Maven, etc).'
+          'publishLocal',
+          'If set, will attempt to publish to the configured local registries (Verdaccio, Maven Local, etc).'
         )
-        .default('publish', false)
+        .default('publishLocal', false)
 
         .boolean('runMavenInstall')
         .describe(

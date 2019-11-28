@@ -15,9 +15,9 @@ const NPM_MODULE_PROMPT = [
   },
   {
     type: 'input',
-    name: 'publishCommand',
+    name: 'publishLocal',
     message: 'Enter the command used to install your artifacts',
-    default: 'npm install',
+    default: 'npm publish --registry http://localhost:4873',
   },
 ];
 

@@ -26,7 +26,7 @@ artifactToGenerate:
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publishCommand: "touch mvn-publish"
+        publishLocal: "touch mvn-publish"
         packagingTemplates: 
         - template: pom.hbs
           fileName: pom.xml
@@ -47,7 +47,7 @@ artifactToGenerate:
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publishCommand: "touch npm-publish"
+        publishLocal: "touch npm-publish"
         packagingTemplates: 
           - template: package.hbs
             fileName: package.json
