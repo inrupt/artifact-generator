@@ -389,7 +389,10 @@ module.exports = class DatasetHandler {
       }
       logger(`WARNING: [${namespace}] does not specify a preferred prefix`);
       prefix = DatasetHandler.guessPrefixFromNamespace(namespace);
-      logger(`Guessed prefix: [${prefix}]`);
+      logger(
+        `Guessed prefix: [${prefix}]. If this prefix is not satisfactory, consider adding a 
+        'nameAndPrefixOverride:' entry in the YAML config file for [${namespace}]`
+      );
     }
     return prefix;
   }
