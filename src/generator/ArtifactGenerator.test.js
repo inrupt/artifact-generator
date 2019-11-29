@@ -314,27 +314,70 @@ describe('Artifact Generator', () => {
   });
 
   describe('Publishing artifacts.', () => {
-    it('should publish artifacts if the publish option is specified', async () => {
-      const outputDirectory = 'test/Generated/ArtifactGenerator/publish/optionSet';
+    it('should publish artifacts locally if the publication option is specified', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSetLocal';
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
         vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
         outputDirectory,
         noprompt: true,
-        publishLocal: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
-      await artifactGenerator
-        .generate()
-        .then(generationData => artifactGenerator.runPublishLocal(generationData));
-
+      await artifactGenerator.generate().then(() => {
+        artifactGenerator.runPublish(true);
+      });
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
-        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publish`)
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishLocal`)
       ).toBe(true);
       expect(
-        fs.existsSync(`${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publish`)
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishRemote`)
+      ).toBe(false);
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishLocal`
+        )
+      ).toBe(true);
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishRemote`
+        )
+      ).toBe(false);
+    });
+
+    it('should publish artifacts remotely if the publication option is specified', async () => {
+      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSetRemote';
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/packaging/vocab-list-dummy-commands.yml',
+        outputDirectory,
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator.generate().then(() => {
+        artifactGenerator.runPublish(false);
+      });
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+
+      expect(
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishRemote`)
+      ).toBe(true);
+      expect(
+        fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishLocal`)
+      ).toBe(false);
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishLocal`
+        )
+      ).toBe(false);
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishRemote`
+        )
       ).toBe(true);
     });
   });
@@ -351,10 +394,10 @@ describe('Artifact Generator', () => {
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
-      await artifactGenerator
-        .generate()
-        .then(generationData => artifactGenerator.runPublishLocal(generationData));
-
+      await artifactGenerator.generate().then(() => {
+        artifactGenerator.runPublish(true);
+      });
+      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(`${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/pom.xml`)
       ).toBe(true);

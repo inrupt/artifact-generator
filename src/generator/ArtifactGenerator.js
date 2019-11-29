@@ -234,30 +234,44 @@ class ArtifactGenerator {
     }
   }
 
-  static publishArtifactLocal(artifact) {
+  /**
+   * Executes the publication commands associated to a specific artifact.
+   * @param {*} artifact
+   * @param {boolean} local if true, the publication is local, and remote otherwise
+   */
+  static publishArtifact(artifact, local) {
     const homeDir = process.cwd();
     if (artifact.packaging) {
       for (let j = 0; j < artifact.packaging.length; j += 1) {
-        if (artifact.packaging[j].publishLocal) {
+        const publicationCommand = local
+          ? artifact.packaging[j].publishLocal
+          : artifact.packaging[j].publishRemote;
+        if (publicationCommand) {
           process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
           debug(
-            `Running command [${artifact.packaging[j].publishLocal}] to publish artifact locally...`
+            `Running command [${publicationCommand}] to publish artifact [${
+              local ? 'locally' : 'remotely'
+            }]`
           );
-          ChildProcess.execSync(artifact.packaging[j].publishLocal);
+          ChildProcess.execSync(publicationCommand);
           process.chdir(homeDir);
         }
       }
     }
   }
 
-  runPublishLocal() {
+  /**
+   * Executes the publication commands associated to all the declared artifacts.
+   * @param {boolean} local if true, the publication targets local repositories, and remote repositories otherwise
+   */
+  runPublish(local) {
     const generationData = this.configuration.configuration;
     // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
     // Ideally, new processes should be spawned, each running a packaging command, but the fork
     // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
     // so it is more work than expected. Running it sequentially is fine for now.
     for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifactLocal(generationData.artifactToGenerate[i]);
+      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i], local);
     }
     return generationData;
   }
