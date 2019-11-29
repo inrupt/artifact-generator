@@ -84,39 +84,58 @@ class GeneratorConfiguration {
    *  This function makes the local vocabulary path relative to the root of the project,
    *  rather that to the configuration file. It makes it consistent with vocabularies passed
    *  on the command line.
-   * @param {*} vocabPath the path of the vocabulary, relative to the YAML config
+   * @param {*} vocabConfig the path of the vocabulary, relative to the YAML config
    * @param {*} yamlPath the path of the YAML config, relative to the project root
    */
-  static normalizePath(vocabPath, yamlPath) {
-    const normalizedVocabPath = vocabPath;
+  static normalizePath(vocabConfig, yamlPath) {
+    const normalizedVocabConfig = vocabConfig;
     const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
       yamlPath,
       process.cwd()
     );
-    for (let i = 0; i < vocabPath.inputResources.length; i += 1) {
-      if (!vocabPath.inputResources[i].startsWith('http')) {
+    for (let i = 0; i < vocabConfig.inputResources.length; i += 1) {
+      if (!vocabConfig.inputResources[i].startsWith('http')) {
         // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
-        normalizedVocabPath.inputResources[i] = path.join(
+        normalizedVocabConfig.inputResources[i] = path.join(
           path.dirname(normalizedYamlPath),
           // Vocabularies are all made relative to the YAML file
           GeneratorConfiguration.normalizeAbsolutePath(
-            vocabPath.inputResources[i],
+            vocabConfig.inputResources[i],
             path.dirname(normalizedYamlPath)
           )
         );
       }
     }
-    if (vocabPath.termSelectionFile) {
-      normalizedVocabPath.termSelectionFile = path.join(
+    // The following branctermSelectionFilehes set the same property of the normalized configuration,
+    // namely `termSelectionResource`, potentially from two different options
+    // of the initial config (termSelectionResource or termSelectionFile)
+    if (vocabConfig.termSelectionFile) {
+      // Legacy option support
+      logger(
+        `WARNING: Deprecated [termSelectionFile] option specified for [${
+          vocabConfig.inputResources[0]
+        }], please update to [termSelectionResource]`
+      );
+      normalizedVocabConfig.termSelectionResource = path.join(
         path.dirname(normalizedYamlPath),
         GeneratorConfiguration.normalizeAbsolutePath(
-          vocabPath.termSelectionFile,
+          vocabConfig.termSelectionFile,
+          path.dirname(normalizedYamlPath)
+        )
+      );
+      // The legacy term is removed from the configuration
+      delete normalizedVocabConfig.termSelectionFile;
+    } else if (vocabConfig.termSelectionResource) {
+      normalizedVocabConfig.termSelectionResource = path.join(
+        path.dirname(normalizedYamlPath),
+        GeneratorConfiguration.normalizeAbsolutePath(
+          vocabConfig.termSelectionResource,
           path.dirname(normalizedYamlPath)
         )
       );
     }
-    return normalizedVocabPath;
+    return normalizedVocabConfig;
   }
 
   /**
@@ -229,8 +248,8 @@ class GeneratorConfiguration {
         process.cwd()
       );
     }
-    if (args.vocabTermsFrom) {
-      vocab.termSelectionFile = args.vocabTermsFrom;
+    if (args.termSelectionResource) {
+      vocab.termSelectionResource = args.termSelectionResource;
     }
 
     return vocab;

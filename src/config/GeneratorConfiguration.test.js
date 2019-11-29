@@ -11,7 +11,7 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
     description: 'Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex',
     inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
-    termSelectionFile: 'test/resources/vocabs/schema-inrupt-ext.ttl',
+    termSelectionResource: 'test/resources/vocabs/schema-inrupt-ext.ttl',
   },
   {
     description: 'Some dummy online vocabulary',

@@ -133,7 +133,7 @@ class ArtifactGenerator {
         this.artifactData.vocabList.map(async vocabDetails => {
           // Override our vocab inputs using this vocab list entry.
           this.artifactData.inputResources = vocabDetails.inputResources;
-          this.artifactData.vocabTermsFrom = vocabDetails.termSelectionFile;
+          this.artifactData.termSelectionResource = vocabDetails.termSelectionResource;
           this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
