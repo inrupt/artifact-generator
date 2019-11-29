@@ -11,16 +11,44 @@ const VocabWatcher = require('./VocabWatcher');
 
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
-const publishingGenerator = () => {
+const UNCALLED_PUBLISH_FUNCTION = jest.fn();
+const CALLED_PUBLISH_FUNCTION = jest.fn();
+
+const locallyPublishingGenerator = () => {
   return {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
       return Promise.resolve({ stubbed: true, noprompt: true, publishLocal: true });
     },
-    runPublishLocal: async () => {
-      return Promise.resolve({ stubbed: true, noprompt: true, published: true });
+    runPublish: CALLED_PUBLISH_FUNCTION,
+  };
+};
+
+const remotelyPublishingGenerator = () => {
+  return {
+    generate: async () => {
+      // In a non-mocked setting, the `publish` option passes through the `generate` function,
+      // but here it must be set explicitely
+      return Promise.resolve({ stubbed: true, noprompt: true, publishRemote: true });
     },
+    runPublish: CALLED_PUBLISH_FUNCTION,
+  };
+};
+
+const locallyAndRemotelyPublishingGenerator = () => {
+  return {
+    generate: async () => {
+      // In a non-mocked setting, the `publish` option passes through the `generate` function,
+      // but here it must be set explicitely
+      return Promise.resolve({
+        stubbed: true,
+        noprompt: true,
+        publishLocal: true,
+        publishRemote: true,
+      });
+    },
+    runPublish: CALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -29,9 +57,7 @@ const nonPublishingGenerator = () => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
-    runPublishLocal: async () => {
-      return Promise.resolve({ stubbed: true, noprompt: true, published: true });
-    },
+    runPublish: UNCALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -99,10 +125,10 @@ describe('App tests', () => {
       expect(mockedResponse.stubbed).toBe(true);
     });
 
-    it('should publish artifacts if the option is set', async () => {
+    it('should publish artifacts locally if the option is set', async () => {
       debug.disable('lit-artifact-generator:*');
 
-      ArtifactGenerator.mockImplementation(publishingGenerator);
+      ArtifactGenerator.mockImplementation(locallyPublishingGenerator);
 
       const config = {
         _: ['generate'],
@@ -112,9 +138,47 @@ describe('App tests', () => {
         noprompt: true,
         publishLocal: true,
       };
+      const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
+      await new App(config).run();
+      expect(CALLED_PUBLISH_FUNCTION.mock.calls.length).toBe(before + 1);
+      ArtifactGenerator.mockImplementation(nonPublishingGenerator);
+    });
 
-      const mockedResponse = await new App(config).run();
-      expect(mockedResponse.published).toBe(true);
+    it('should publish artifacts remotely if the option is set', async () => {
+      debug.disable('lit-artifact-generator:*');
+      ArtifactGenerator.mockImplementation(remotelyPublishingGenerator);
+
+      const config = {
+        _: ['generate'],
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
+        quiet: false,
+        noprompt: true,
+        publishRemote: true,
+      };
+      const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
+      await new App(config).run();
+      expect(CALLED_PUBLISH_FUNCTION.mock.calls.length).toBe(before + 1);
+      ArtifactGenerator.mockImplementation(nonPublishingGenerator);
+    });
+
+    it('should publish artifacts both locally and remotely if the options are set', async () => {
+      debug.disable('lit-artifact-generator:*');
+
+      ArtifactGenerator.mockImplementation(locallyAndRemotelyPublishingGenerator);
+
+      const config = {
+        _: ['generate'],
+        inputResources: ['some_file.ttl'],
+        litVocabTermVersion: '1.1.1',
+        quiet: false,
+        noprompt: true,
+        publishLocal: true,
+        publishRemote: true,
+      };
+      const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
+      await new App(config).run();
+      expect(CALLED_PUBLISH_FUNCTION.mock.calls.length).toBe(before + 2);
       ArtifactGenerator.mockImplementation(nonPublishingGenerator);
     });
 

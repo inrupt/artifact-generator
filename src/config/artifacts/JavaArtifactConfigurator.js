@@ -17,8 +17,15 @@ const MAVEN_ARTIFACT_PROMPT = [
   {
     type: 'input',
     name: 'publishLocal',
-    message: 'Enter the command used to publish your artifacts',
+    message:
+      'Enter the command used to publish your artifacts locally (this can be used by the watcher on each modification of the vocabulary)',
     default: 'mvn install',
+  },
+  {
+    type: 'input',
+    name: 'publishLocal',
+    message: 'Enter the command used to deploy your artifacts to remote repositories',
+    default: 'mvn deploy',
   },
 ];
 

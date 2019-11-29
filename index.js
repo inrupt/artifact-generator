@@ -75,12 +75,13 @@ const yargsConfig = yargs
         )
         .default('publishLocal', false)
 
-        .boolean('runMavenInstall')
+        .alias('pr', 'publishRemote')
+        .boolean('publishRemote')
         .describe(
-          'runMavenInstall',
-          'If set, will attempt to install the generated artifact from within the output directory in the local Maven repository.'
+          'publishRemote',
+          'If set, will attempt to publish to the configured remote registries (NPM, Maven Central, etc).'
         )
-        .default('runMavenInstall', false)
+        .default('publishRemote', false)
 
         .alias('b', 'bumpVersion')
         .describe(

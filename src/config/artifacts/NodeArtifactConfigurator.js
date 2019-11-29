@@ -16,8 +16,15 @@ const NPM_MODULE_PROMPT = [
   {
     type: 'input',
     name: 'publishLocal',
-    message: 'Enter the command used to install your artifacts',
+    message:
+      'Enter the command used to publish your artifacts locally (this can be used by the watcher on each modification of the vocabulary)',
     default: 'npm publish --registry http://localhost:4873',
+  },
+  {
+    type: 'input',
+    name: 'publishRemote',
+    message: 'Enter the command used to publish your artifacts to a remote registry',
+    default: 'npm publish',
   },
 ];
 
