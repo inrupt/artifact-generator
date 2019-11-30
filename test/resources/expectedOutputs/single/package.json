@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Bundle of vocabularies that includes the following:\n\n  schema: ",
   "main": "index.js",
-  "author": "Vocabularies authored by: @lit/artifact-generator-js.",
+  "author": "Vocabularies authored by: .",
   "license": "MIT",
   "dependencies": {
     "@lit/vocab-term": "^1.0.10"

@@ -13,65 +13,6 @@ const defaultInputs = {
 };
 
 describe('Command Line unit tests', () => {
-  describe('Requesting input from the user', () => {
-    it('Should not ask for artifact information if explicitly told not to', async () => {
-      const result = await CommandLine.askForArtifactInfo({ ...defaultInputs, noprompt: true });
-
-      expect(result.artifactName).toBe('@lit/generator-vocab-schema-ext');
-      expect(result.authorSet.has('lit@inrupt.com'));
-    });
-
-    it('Should ask for artifact name', async () => {
-      inquirer.prompt.mockImplementation(
-        jest
-          .fn()
-          .mockReturnValue(
-            Promise.resolve({ artifactName: 'lit-gen-schema-ext', authorSet: new Set(['inrupt']) })
-          )
-      );
-
-      const result = await CommandLine.askForArtifactInfo({});
-
-      expect(result.artifactName).toBe('lit-gen-schema-ext');
-      expect(result.authorSet.has('inrupt'));
-    });
-
-    it('Should ask for artifact module name prefix, and override provided value', async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve({ artifactName: 'test-prefix-' }))
-      );
-
-      const result = await CommandLine.askForArtifactInfo({
-        moduleNamePrefix: 'override-this-prefix-',
-      });
-
-      expect(result.artifactName).toBe('test-prefix-');
-    });
-
-    it('Should ask for information other than LIT Vocab Term version, and not override provided value', async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve({ defaultInputs }))
-      );
-
-      const result = await CommandLine.askForArtifactInfo({
-        // ...defaultInputs,
-        litVocabTermVersion: '^1.2.3',
-      });
-
-      expect(result.litVocabTermVersion).toBe('^1.2.3');
-    });
-
-    it('Should ask for artifact authors information if none provided', async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve({ authorSet: new Set().add('test-inrupt') }))
-      );
-
-      const result = await CommandLine.askForArtifactInfo(delete defaultInputs.authorSet);
-
-      expect(result.authorSet.has('test-inrupt'));
-    });
-  });
-
   describe('NPM publishing...', () => {
     it('Should find the latest published artifact from registry', () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue('1.1.10'));

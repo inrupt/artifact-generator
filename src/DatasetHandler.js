@@ -13,7 +13,6 @@ const {
 
 const FileGenerator = require('./generator/FileGenerator');
 
-const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
 const KNOWN_DOMAINS = new Map([
   ['http://xmlns.com/foaf/0.1', 'foaf'],
@@ -451,10 +450,10 @@ module.exports = class DatasetHandler {
 
       return new Set(
         onologyAuthors.size === 0
-          ? [DEFAULT_AUTHOR]
+          ? []
           : onologyAuthors.toArray().map(authorQuad => authorQuad.object.value)
       );
-    }, new Set([DEFAULT_AUTHOR]));
+    }, new Set());
   }
 
   findOwlOntology(callback, defaultResult) {
@@ -488,5 +487,3 @@ module.exports = class DatasetHandler {
     return first ? first.object.value : defaultValue;
   }
 };
-
-module.exports.DEFAULT_AUTHOR = DEFAULT_AUTHOR;

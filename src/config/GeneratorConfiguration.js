@@ -204,12 +204,6 @@ class GeneratorConfiguration {
           yamlPath
         );
       }
-      if (yamlConfiguration.authorSet) {
-        // TODO: change authorSet to authors, and make it a list
-        const authors = yamlConfiguration.authorSet;
-        yamlConfiguration.authorSet = new Set();
-        yamlConfiguration.authorSet.add(authors);
-      }
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }
@@ -289,8 +283,8 @@ class GeneratorConfiguration {
    * additional information. These information may be completed when generating the vocabularies, and will not
    * necessarily be asked to the user.
    */
-  async askAdditionalQuestions() {
-    this.configuration = await CommandLine.askForArtifactInfo(this.configuration);
+  askAdditionalQuestions() {
+    this.configuration = CommandLine.findPublishedVersionOfModule(this.configuration);
   }
 
   /**
