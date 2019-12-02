@@ -41,7 +41,7 @@ function validateCommandLine(argv, options) {
 const yargsConfig = yargs
   .command(
     COMMAND_GENERATE,
-    'Generate code artifacts from RDF vocabularies',
+    'Generate code artifacts from RDF vocabularies.',
     yargs =>
       yargs
         .alias('i', 'inputResources')
@@ -150,7 +150,7 @@ const yargsConfig = yargs
   .command(
     COMMAND_INITIALIZE,
     'Initializes a configuration YAML file used for fine-grained ' +
-      'control of artifact generation',
+      'control of artifact generation.',
     yargs => yargs,
     argv => {
       runInitialization(argv);
@@ -158,7 +158,7 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_VALIDATE,
-    'validates a config file used for generation',
+    'Validates a configuration YAML file used for artifact generation.',
     yargs =>
       yargs
         .alias('l', 'vocabListFile')
@@ -175,7 +175,7 @@ const yargsConfig = yargs
     COMMAND_WATCH,
     'Starts a daemon process watching the configured vocabulary' +
       ' resources, and automatically re-generates artifacts whenever it detects' +
-      ' a change',
+      ' a vocabulary change.',
     yargs =>
       yargs
         .alias('l', 'vocabListFile')
