@@ -10,7 +10,7 @@ const VocabWatcher = require('./VocabWatcher');
 
 const WATCHED_VOCAB_PATH = './test/resources/watcher/schema-snippet.ttl';
 const VOCAB_LIST_PATH = './test/resources/watcher/vocab-list.yml';
-const OUTPUT_DIRECTORY = './test/generated/watcher/initial/';
+const OUTPUT_DIRECTORY = './test/Generated/watcher/initial/';
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
 const JAVA_PACKAGE_HIERARCHY = 'src/main/java/com/example/java/packagename';
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;

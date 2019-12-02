@@ -1,0 +1,10 @@
+{
+  "name": "LIT-Artifact-Generator-Demo",
+  "description": "Tiny demo application using generated Javascript artifact from a custom Pet Rock RDF vocabulary.",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "mock-local-storage": "^1.1.8",
+    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/Javascript"
+  }
+}

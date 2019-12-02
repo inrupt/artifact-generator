@@ -12,7 +12,7 @@ const { ConfigFileGenerator, validateLanguageCheckboxes } = require('./ConfigFil
 // it is unlikely https://en.wikipedia.org/wiki/Brainfuck#Derivatives).
 const UNSUPORTED_LANGUAGE = 'Ook';
 
-const TARGET_DIR = './test/generated/config/';
+const TARGET_DIR = './test/Generated/config/';
 const TARGET_FILE = 'lit-vocab.yml';
 const TARGET_PATH = TARGET_DIR + TARGET_FILE;
 const REFERENCE_PROMPTED_YAML = './test/resources/expectedOutputs/lit-vocab.yml';
@@ -30,7 +30,7 @@ const COMPLETE_JAVA_ARTIFACT = {
   languageKeywordsToUnderscore: ['class', 'abstract', 'default'],
   handlebarsTemplate: 'java-rdf4j.hbs',
   sourceFileExtension: 'java',
-  artifactFolderName: 'Java',
+  artifactDirectoryName: 'Java',
   programmingLanguage: 'Java',
   ...PROMPTED_JAVA_ARTIFACT,
 };

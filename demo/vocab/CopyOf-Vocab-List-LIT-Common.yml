@@ -29,14 +29,14 @@ artifactToGenerate:
   - programmingLanguage: Java
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
-    artifactFolderName: Java
+    artifactDirectoryName: Java
     handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
 
   - programmingLanguage: Javascript
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactFolderName: Javascript
+    artifactDirectoryName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
 

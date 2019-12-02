@@ -5,7 +5,7 @@ artifactToGenerate:
   - programmingLanguage: "Java"
     artifactVersion: "0.1.0"
     litVocabTermVersion: "0.1.0-SNAPSHOT"
-    artifactFolderName: "Java"
+    artifactDirectoryName: "Java"
     handlebarsTemplate: "java-rdf4j.hbs"
     sourceFileExtension: "java"
     languageKeywordsToUnderscore:

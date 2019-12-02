@@ -197,7 +197,7 @@ module.exports = class CommandLine {
     logger(
       `Ran 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
         data.artifactName
-      }] in directory [${data.outputDirectory}].`
+      }] in directory [${data.outputDirectoryForArtifact}].`
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return

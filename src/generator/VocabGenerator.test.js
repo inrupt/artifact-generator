@@ -724,12 +724,12 @@ describe('Managing remote vocabularies failures', () => {
       },
       {
         sourceFileExtension: 'js',
-        outputDirectoryForArtifact: 'test/generated/VocabGenerator/previouslyGenerated',
+        outputDirectoryForArtifact: 'test/Generated/VocabGenerator/previouslyGenerated',
       }
     );
     const targetDir = path.join(
       'test',
-      'generated',
+      'Generated',
       'VocabGenerator',
       'previouslyGenerated',
       'GeneratedVocab'
@@ -757,12 +757,12 @@ describe('Managing remote vocabularies failures', () => {
       },
       {
         sourceFileExtension: 'js',
-        outputDirectoryForArtifact: 'test/generated/VocabGenerator/notPreviouslyGenerated',
+        outputDirectoryForArtifact: 'test/Generated/VocabGenerator/notPreviouslyGenerated',
       }
     );
     const targetDir = path.join(
       'test',
-      'generated',
+      'Generated',
       'VocabGenerator',
       'notPreviouslyGenerated',
       'GeneratedVocab'

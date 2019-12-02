@@ -9,7 +9,7 @@ artifactToGenerate:
     artifactVersion: 3.2.1-SNAPSHOT
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
-    artifactFolderName: Java
+    artifactDirectoryName: Java
     handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
@@ -27,7 +27,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactFolderName: Javascript
+    artifactDirectoryName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 

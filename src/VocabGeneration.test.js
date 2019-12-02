@@ -130,7 +130,7 @@ async function generateVocabArtifact(argv) {
   )[0].outputDirectoryForArtifact;
 
   logger(
-    `Expecting 'package.json' in this folder: [${directoryForJavascriptArtifact}/package.json]...`
+    `Expecting 'package.json' in this directory: [${directoryForJavascriptArtifact}/package.json]...`
   );
   expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(true);
 
@@ -149,8 +149,8 @@ async function generateVocabArtifact(argv) {
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {
-  it('Generate ALL vocabs', async () => {
-  // it.skip('Generate ALL vocabs', async () => {
+  // it('Generate ALL vocabs', async () => {
+  it.skip('Generate ALL vocabs', async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
@@ -262,7 +262,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['http://www.w3.org/2011/http-headers#'],
       // nameAndPrefixOverride: 'http-headers',
 
-      outputDirectory: './test/generated',
+      outputDirectory: './test/Generated',
       artifactVersion: '1.0.0',
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
       moduleNamePrefix: '@lit/generated-vocab-',

@@ -45,7 +45,7 @@ const NPM_DEFAULT = {
 const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: 'Javascript',
-    artifactFolderName: 'Javascript',
+    artifactDirectoryName: 'Javascript',
     handlebarsTemplate: 'javascript-rdf-ext.hbs',
     sourceFileExtension: 'js',
     packaging: [NPM_DEFAULT],
@@ -236,13 +236,14 @@ class GeneratorConfiguration {
     if (args.npmRegistry) {
       packagingInfo.publishLocal = `npm publish --registry ${args.npmRegistry}`;
     }
-    // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since objects are copied by reference,
-    // and the tests are run in parallel, it creates thread-safety issues that should be adressed by creating
-    // a deep copy.
+    // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since
+    //  objects are copied by reference, and the tests are run in parallel, it
+    //  creates thread-safety issues that should be adressed by creating a
+    //  deep copy.
     cliConfig.artifactToGenerate = [
       {
         programmingLanguage: 'Javascript',
-        artifactFolderName: 'Javascript',
+        artifactDirectoryName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         packaging: [packagingInfo],
@@ -260,6 +261,7 @@ class GeneratorConfiguration {
     if (args.litVocabTermVersion) {
       cliConfig.artifactToGenerate[0].litVocabTermVersion = args.litVocabTermVersion;
     }
+
     return cliConfig;
   }
 
@@ -307,3 +309,4 @@ class GeneratorConfiguration {
 
 module.exports = GeneratorConfiguration;
 module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;
+module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;

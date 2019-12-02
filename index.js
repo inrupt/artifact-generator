@@ -7,10 +7,12 @@
 // they need a mocked local storage to work with.
 require('mock-local-storage');
 
+const path = require('path');
 const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
+const { ARTIFACT_DIRECTORY_ROOT } = require('./src/config/GeneratorConfiguration');
 const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
@@ -98,7 +100,7 @@ const yargsConfig = yargs
 
         .alias('mnp', 'moduleNamePrefix')
         .describe('moduleNamePrefix', 'A prefix for the name of the output module')
-        .default('moduleNamePrefix', '@lit/generated-vocab-')
+        .default('moduleNamePrefix', 'generated-vocab-')
 
         .alias('nr', 'npmRegistry')
         .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
@@ -202,8 +204,11 @@ const yargsConfig = yargs
   .default('noprompt', false)
 
   .alias('o', 'outputDirectory')
-  .describe('outputDirectory', 'The output directory for the generated artifacts.')
-  .default('outputDirectory', './generated')
+  .describe(
+    'outputDirectory',
+    'The output directory for the' + ' generated artifacts (defaults to the current directory).'
+  )
+  .default('outputDirectory', '.')
   .check(validateCommandLine)
   .help().argv;
 
@@ -230,7 +235,12 @@ function runGeneration(argv) {
   new App(argv)
     .run()
     .then(data => {
-      logger(`\nGeneration process successful to directory [${data.outputDirectory}]!`);
+      logger(
+        `\nGeneration process successful to directory [${path.join(
+          data.outputDirectory,
+          ARTIFACT_DIRECTORY_ROOT
+        )}]!`
+      );
       process.exit(0);
     })
     .catch(error => {

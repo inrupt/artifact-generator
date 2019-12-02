@@ -8,7 +8,7 @@ const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerato
 
 describe('Supported Data Type', () => {
   it('should test the special-case handling for the OWL vocabulary', async () => {
-    const outputDirectory = 'test/generated/SupportedDataType/owl-test';
+    const outputDirectory = 'test/Generated/SupportedDataType/owl-test';
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
@@ -25,7 +25,7 @@ describe('Supported Data Type', () => {
       },
       {
         programmingLanguage: 'Javascript',
-        artifactFolderName: 'Javascript',
+        artifactDirectoryName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
@@ -53,7 +53,7 @@ describe('Supported Data Type', () => {
   });
 
   it('should test the special-case handling for the HTTP vocabulary', async () => {
-    const outputDirectory = 'test/generated/SupportedDataType/http-test';
+    const outputDirectory = 'test/Generated/SupportedDataType/http-test';
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
@@ -70,7 +70,7 @@ describe('Supported Data Type', () => {
       },
       {
         programmingLanguage: 'Javascript',
-        artifactFolderName: 'Javascript',
+        artifactDirectoryName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
@@ -96,7 +96,7 @@ describe('Supported Data Type', () => {
   });
 
   it('should be able to generate vocabs for all the supported class data types', async () => {
-    const outputDirectory = 'test/generated/SupportedDataType/data-types';
+    const outputDirectory = 'test/Generated/SupportedDataType/data-types';
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
@@ -112,7 +112,7 @@ describe('Supported Data Type', () => {
       },
       {
         programmingLanguage: 'Javascript',
-        artifactFolderName: 'Javascript',
+        artifactDirectoryName: 'Javascript',
         handlebarsTemplate: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
