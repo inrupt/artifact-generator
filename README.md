@@ -7,6 +7,27 @@ These artifacts contain source files defining programming-language constants
 for the terms (e.g. the Classes and properties) found in RDF vocabularies (such
 as Schema.org, or FOAF, or our own custom vocabularies).
 
+
+# Prerequisites
+
+## npm
+
+To install the Artifact Generator you will need `npm`, if you don't already have
+it.
+
+We highly recommend the use of node version manager (nvm) to manage multiple
+versions of npm and also set to up your npm permissions properly. To install
+nvm, follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-node-js-and-npm).
+
+**Note on `npm` permissions:**
+
+If you do not use `nvm`, and you try to install the Artifact Generator globally,
+then you may receive **EACCES** permission errors, or other permission-related
+errors, when trying to run `npm install -g`.
+
+Please refer to this npm [document](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
+on how to set your permissions correctly.
+
 # Quick start
 
 ---
