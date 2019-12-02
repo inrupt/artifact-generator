@@ -1,8 +1,101 @@
 
-# Ontology Artifact Generator
+# Artifact Generator
 
-Builds deployable artifacts for various programming languages (e.g. NPM Node modules for Javascript, or JARs for Java, or assemblies for C#, etc.) that have source files defining programming-language-specific constants for RDF vocabulary terms. For example, our generator might produce the following Javascript constant to represent the Person class from Schema.org (i.e. `https://schema.org/Person`):
+This tool generates deployable artifacts for various programming languages
+(e.g. NPM Node modules for Javascript, JARs for Java, assemblies for C#, etc.).
+These artifacts contain source files defining programming-language constants
+for the terms (e.g. the Classes and properties) found in RDF vocabularies (such
+as Schema.org, or FOAF, or our own custom vocabularies).
+
+# Quick start
+
+---
+**__Temporarily__**, until we release the Artifact Generator to the public NPM 
+repository, we manually reference the inrupt Verdaccio registry.
+---
+
+Install globally (so you can run the Artifact Generator from any directory):
+```shell
+npm -g install @lit/artifact-generator --registry https://verdaccio.inrupt.com
 ```
+
+Ensure the installation completed successfully (and to see just how
+configurable the generator is :smiley: !): 
+```shell
+lit-artifact-generator --help
+```
+
+Run the generator using a public demo vocabulary, in this case a simple Pet
+Rock vocabulary, telling it not to prompt us for any input (i.e. `--noprompt`):
+
+```shell
+lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
+```
+
+This should generate a Javascript artifact inside the default `Generated`
+directory that provides constants for the things described within the Pet Rock
+vocabulary.
+
+We can now use this Javascript artifact directly in our applications, both
+NodeJS and browser. For example, for NodeJS create this simple `package.json`
+that references the local Pet Rock artifact we just generated:
+
+```javascript
+{
+  "name": "LIT-Artifact-Generator-Demo",
+  "description": "Tiny demo application using generated Javascript artifact from a custom Pet Rock RDF vocabulary.",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "mock-local-storage": "^1.1.8",
+    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/Javascript"
+  }
+}
+``` 
+
+...and create this trivial application as `index.js`:
+
+```javascript
+require('mock-local-storage');
+const { PET_ROCK } = require('@lit/generated-vocab-pet-rock');
+
+console.log(`What is Pet Rock 'shinyness'?\n`);
+
+console.log(`Our vocabulary describes it as:`);
+console.log(`"${PET_ROCK.shinyness.comment}"\n`);
+
+console.log(`Or in Spanish (our Pet Rock vocab has Spanish translations!):`);
+console.log(`"${PET_ROCK.shinyness.commentInLang('es')}"`);
+``` 
+
+Finally, simply `npm install`...
+```shell script
+npm install
+```
+
+...and run our NodeJS application:
+```shell script
+node index.js 
+```
+
+We should see this output:
+```
+[demo]$ node index.js 
+What is Pet Rock 'shinyness'?
+
+Our vocabulary describes it as:
+"How wonderfully shiny a rock is."
+
+Or in Spanish (our Pet Rock vocab has Spanish translations!):
+"Qué maravillosamente brillante es una roca."
+[demo]$ 
+```
+
+# The details
+
+For example, the generator might produce the following Javascript constant to
+represent the `Person` class from Schema.org (i.e. `https://schema.org/Person`):
+```javascript
     /**
      * A person (alive, dead, undead, or fictional).
      */
@@ -11,45 +104,95 @@ Builds deployable artifacts for various programming languages (e.g. NPM Node mod
       .addComment('en', `A person (alive, dead, undead, or fictional).`),
 ```
 
-The generator can create source-code for Classes and Properties found in existing online vocabularies today (e.g. Schema.org, FOAF, VCard, GConsent, etc.), or from local vocabularies (for example local Turtle files).
+NOTE: This example shows that we've generated a Javascript `Person` object that
+also provides access to the Label and Comment as defined by Schema.org. We've
+also used the Comment value as the JSDoc for this `Person` object, meaning
+users of this artifact will have helpful documentation available directly in
+their IDE.    
 
-It also allows aspects of vocabulary terms (e.g. a term's rdfs:label, or rdfs:comment) to be overridden with new values (e.g. if you don't like Schema.org's label for the property `givenName`, then you can define your own value of `Given name` to override it). Or you may wish to include new translations for existing term labels or comments (e.g. to provide a Spanish rdfs:comment for Schema.org's Person class, say 'Una persona (viva, muerta, no muerta o ficticia)').
+The generator can create source-code for Classes and Properties found in
+existing online vocabularies today (e.g. Schema.org, FOAF, VCard, GConsent,
+etc.), or from local vocabularies (for example local Turtle files).
 
-Another useful feature is the ability to select only specific terms from an existing vocabulary. For instance, Schema.org today defines almost 2,000 terms. But perhaps you only want to use 20 of those terms in your application. To do this, we can simply define our own local vocabulary that lists those 20 terms we want, and specify that when running our generator using the `--vocabTermsFrom` command-line argument (see examples below).
+It also allows aspects of vocabulary terms (e.g. a term's `rdfs:label`, or 
+`rdfs:comment`) to be overridden with new values (e.g. if you don't like
+Schema.org's label for the property `givenName`, then you can define your own
+value of `Given name` to override it). Or you may wish to include new
+translations for existing labels or comments (e.g. to provide a Spanish
+`rdfs:comment` for Schema.org's `Person` class, say **'Una persona (viva,
+muerta, no muerta o ficticia)'**).
 
-Putting this all together, we can very easily create our own vocabularies in any standard W3C serialization of RDF (e.g. Turtle, JSON-LD, N-Triples, etc.), and immediately allow our developers use the terms in those vocabularies directly in their development IDE's (with full code-completion and live JSDoc/JavaDoc). 
+Another useful feature is the ability to select only specific terms from an
+existing vocabulary. For instance, Schema.org today defines almost 2,000 terms.
+But perhaps you only want to use 20 of those terms in your application. To do
+this, we can simply define our own local vocabulary that lists those 20 terms
+we want, and specify that when running our generator using the
+`--termSelectionResource` command-line argument (see examples below).
 
-And we can easily reuse existing vocabularies, or just the parts of those vocabularies we wish to use, while also being able to easily extend them, for example to add our own translations, or override some, or all, of their existing `labels` or `comments`.
+Putting this all together, we can very easily create our own vocabularies in
+any standard W3C serialization of RDF (e.g. Turtle, JSON-LD, N-Triples, etc.),
+and immediately allow our developers use the terms in those vocabularies
+directly in their development IDE's (with full code-completion and live
+JSDoc/JavaDoc). 
 
-Ultimately, perhaps the biggest benefit of the artifact generator is that it allows us easily define our own vocabularies in interoperable RDF that can be easily used, shared and evolved by our existing development teams.
+And we can easily reuse existing vocabularies, or just the parts of those
+vocabularies we wish to use, while also being able to easily extend them, for
+example to add our own translations, or override some, or all, of their
+existing `labels` or `comments`.
+
+Ultimately, perhaps the biggest benefit of the artifact generator is that it
+allows us easily define our own vocabularies in interoperable RDF that can be
+easily used, shared and evolved by our existing development teams.
 
 # How to build
 
+Temporarily, until we release the `lit-vocab-term` library to the public NPM
+repository, we need our local NPM to point at the inrupt Verdaccio instance to
+find this dependency.
+
 ```shell
 npm set registry https://verdaccio.inrupt.com
+```
+
+```shell
 npm install
 ```
 
 Or to install globally (so you can run the generator from any directory):
 ```shell
-npm set registry https://verdaccio.inrupt.com
 npm -g install @lit/artifact-generator
-
-lit-artifact-generator --help
 ```
 
 
 # How to run
 
-## **generate** source code from a vocabulary:
+To ensure the installation was completed successfully: 
 ```shell
-node index.js generate --inputResources <ontology resources (e.g. local files, or remote IRI's)>
+lit-artifact-generator --help
 ```
 
-The output is a Node Module containing a Javascript file with constants defined for the RDF terms found in the vocabulary (or multiple vocabularies) specified by the 'inputResources' flag. This module is located inside the **./generated** folder by default. To generate artifacts in a different language, a YAML configuration file must be used (see below).
+## To generate source code from a vocabulary:
+```shell
+node index.js generate --inputResources <vocab resources (e.g. local
+ files, or remote IRI's)>
+```
+
+The output is a NodeJS Module containing a Javascript file with constants
+defined for the RDF terms found in the vocabulary (or multiple vocabularies)
+specified by the `--inputResources` flag. This module is located inside the
+**./generated** directory by default. To generate artifacts in a different
+programming language, a YAML configuration file must be used (see below).
+
+For example:
+```shell
+node index.js generate --inputResources ./demo/vocab/PetRocks.ttl
+```
+this will generate a Javascript artifact in
 
 
-## **initialize** a YAML file that should be edited manually
+
+
+## To initialize a YAML file that should be edited manually
 ```shell
 node index.js init
 ```
@@ -93,19 +236,19 @@ Will list all the available commands (e.g. `generate`, `init`, `validate`, or `w
 
 Here are some examples of running the tool using the Command Line Interface (CLI) options:
 
-Local ontology file
+Local vocabulary file
 
 ```shell
 node index.js generate --inputResources ./example/PetRocks.ttl
 ```
 
-Remote ontology file
+Remote vocabulary file
 
 ```shell
 node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl
 ```
 
-Multiple local ontology files:
+Multiple local vocabulary files:
 
 ```shell
 node index.js generate --inputResources ./example/Skydiving.ttl ./example/PetRocks.ttl
@@ -167,7 +310,7 @@ Each artifact to generate (e.g. Java JAR, NPM module, etc.) is configured indivi
     - `programmingLanguage`: Supported values `Java`, `Javascript`
     - `artifactVersion`: The version of the generated artifact. Be aware that versioning policies differ depending on the package manager (e.g. NPM does not allow re-publication of the same version, while maven does)
     - `litVocabTermVersion`: The version of the library LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for Javascript, https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies will depend
-    - `artifactFolderName`: Name of the folder in which the artifacts are stored, child of the output folder of the generation process
+    - `artifactDirectoryName`: Name of the directory in which the artifacts are stored, child of the output directory of the generation process
     - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data
     - `sourceFileExtension`: Extension added to the generated source files
   - Optional

@@ -1,7 +1,7 @@
 {
   "name": "@lit/artifact-generator",
   "version": "0.1.0",
-  "description": "A generator for building NPM modules (artifacts) from RDF vocabularies",
+  "description": "A generator for building artifacts (e.g. Java JARs, NPM modules, etc.) from RDF vocabularies.",
   "main": "index.js",
   "bin": {
     "lit-artifact-generator": "./index.js"
@@ -15,7 +15,8 @@
   "author": "inrupt, Inc.",
   "contributors": [
     "Jarlath Holleran (https://github.com/jholleran)",
-    "Pat McBennett (https://github.com/pmcb55)"
+    "Pat McBennett (https://github.com/pmcb55)",
+    "Nicolas Seydoux (https://github.com/NSeydoux)"
   ],
   "repository": {
     "type": "git",
@@ -59,7 +60,7 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/generated/",
-      "<rootDir>/test/generated/"
+      "<rootDir>/test/Generated/"
     ],
     "collectCoverage": true,
     "coverageReporters": [

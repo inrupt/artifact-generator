@@ -7,10 +7,12 @@
 // they need a mocked local storage to work with.
 require('mock-local-storage');
 
+const path = require('path');
 const logger = require('debug')('lit-artifact-generator:index');
 const debug = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
+const { ARTIFACT_DIRECTORY_ROOT } = require('./src/config/GeneratorConfiguration');
 const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
@@ -39,7 +41,7 @@ function validateCommandLine(argv, options) {
 const yargsConfig = yargs
   .command(
     COMMAND_GENERATE,
-    'generate code artifacts from RDF',
+    'Generate code artifacts from RDF vocabularies.',
     yargs =>
       yargs
         .alias('i', 'inputResources')
@@ -98,7 +100,7 @@ const yargsConfig = yargs
 
         .alias('mnp', 'moduleNamePrefix')
         .describe('moduleNamePrefix', 'A prefix for the name of the output module')
-        .default('moduleNamePrefix', '@lit/generated-vocab-')
+        .default('moduleNamePrefix', 'generated-vocab-')
 
         .alias('nr', 'npmRegistry')
         .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
@@ -147,7 +149,8 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_INITIALIZE,
-    'initializes a config file used for generation',
+    'Initializes a configuration YAML file used for fine-grained ' +
+      'control of artifact generation.',
     yargs => yargs,
     argv => {
       runInitialization(argv);
@@ -155,7 +158,7 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_VALIDATE,
-    'validates a config file used for generation',
+    'Validates a configuration YAML file used for artifact generation.',
     yargs =>
       yargs
         .alias('l', 'vocabListFile')
@@ -170,7 +173,9 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_WATCH,
-    'starts a daemon process watching vocabularies, and re-generating artifacts accordingly',
+    'Starts a daemon process watching the configured vocabulary' +
+      ' resources, and automatically re-generates artifacts whenever it detects' +
+      ' a vocabulary change.',
     yargs =>
       yargs
         .alias('l', 'vocabListFile')
@@ -202,8 +207,11 @@ const yargsConfig = yargs
   .default('noprompt', false)
 
   .alias('o', 'outputDirectory')
-  .describe('outputDirectory', 'The output directory for the generated artifacts.')
-  .default('outputDirectory', './generated')
+  .describe(
+    'outputDirectory',
+    'The output directory for the' + ' generated artifacts (defaults to the current directory).'
+  )
+  .default('outputDirectory', '.')
   .check(validateCommandLine)
   .help().argv;
 
@@ -230,7 +238,12 @@ function runGeneration(argv) {
   new App(argv)
     .run()
     .then(data => {
-      logger(`\nGeneration process successful to directory [${data.outputDirectory}]!`);
+      logger(
+        `\nGeneration process successful to directory [${path.join(
+          data.outputDirectory,
+          ARTIFACT_DIRECTORY_ROOT
+        )}]!`
+      );
       process.exit(0);
     })
     .catch(error => {

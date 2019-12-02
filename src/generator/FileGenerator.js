@@ -98,7 +98,8 @@ class FileGenerator {
     if (!SUPPORTED_LANGUAGES.includes(artifactInfo.programmingLanguage)) {
       throw new Error(`Unsupported programming language: [${artifactInfo.programmingLanguage}]`);
     }
-    // If no packaging is explicitely defined, packaging files are generated at the root artifact folder
+    // If no packaging is explicitly defined, packaging files are generated at
+    // the root artifact directory.
     if (packagingInfo.packagingFolder) {
       packagingFolder = path.join(
         artifactInfo.outputDirectoryForArtifact,

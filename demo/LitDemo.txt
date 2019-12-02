@@ -26,7 +26,7 @@ lit-artifact-generator
 
 4) Provide input, and it generates an NPM module...
 lit-artifact-generator -i https://schema.org/version/latest/schema.ttl
-  ...in the './generated' folder. 
+  ...in the './generated' directory.
 
 But that has ~2,000 terms - maybe we only want 5!
 

@@ -73,7 +73,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
 
     this.config.handlebarsTemplate = DEFAULT_TEMPLATE;
     this.config.sourceFileExtension = DEFAULT_EXTENSION;
-    this.config.artifactFolderName = LANGUAGE;
+    this.config.artifactDirectoryName = LANGUAGE;
     this.config.programmingLanguage = LANGUAGE;
   }
 

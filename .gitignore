@@ -3,7 +3,7 @@ node_modules/
 
 coverage/
 
-generated/
+Generated/
 
 .idea/
 *.iml

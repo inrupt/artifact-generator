@@ -1,11 +1,11 @@
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix owl: <http://www.w3.org/2002/07/owl#>
-prefix vann: <http://purl.org/vocab/vann/>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix lit_core: <https://w3id.org/lit/vocab/core#> .
 
-prefix pet_rock: <http://pats_apps.com/vocab/pet_rock#>
+@prefix pet_rock: <https://team.inrupt.net/public/vocab/PetRock.ttl#> .
 
 
 pet_rock:
@@ -14,9 +14,10 @@ pet_rock:
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
     dcterms:title "Pet Rock vocabulary" ;
-    dcterms:description "Vocabulary for Pet Rock collectors, including terms for their characteristics..." ;
+    dcterms:description """Vocabulary for Pet Rock collectors, including terms
+ for describing the characteristics of Pet Rocks...""" ;
     vann:preferredNamespacePrefix "pet_rock" ;
-    vann:preferredNamespaceUri "http://pats_apps.com/vocab/pet_rock#" ;
+    vann:preferredNamespaceUri "https://team.inrupt.net/public/vocab/PetRock.ttl#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 

@@ -24,7 +24,7 @@ artifactToGenerate:
     artifactVersion: 0.1.0-SNAPSHOT
     javaPackageName: com.pmcb55.lit.generated.vocab.common
     litVocabTermVersion: 0.1.0-SNAPSHOT
-    artifactFolderName: Java
+    artifactDirectoryName: Java
     handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
@@ -49,7 +49,7 @@ artifactToGenerate:
     gitRepository: git@github.com:inrupt/lit-generated-vocab-common-js.git
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^0.1.0"
-    artifactFolderName: Javascript
+    artifactDirectoryName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
     repository:
@@ -61,7 +61,7 @@ artifactToGenerate:
   #  This is a dummy artifact that cannot be packaged
   ##
   - programmingLanguage: Ook
-    artifactFolderName: Ook
+    artifactDirectoryName: Ook
     sourceFileExtension: ook
     handlebarsTemplate: javascript-rdf-ext.hbs
     artifactVersion: 0.1.0

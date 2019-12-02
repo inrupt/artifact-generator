@@ -12,7 +12,7 @@ artifactToGenerate:
   - programmingLanguage: "Java"
     artifactVersion: "0.1.0"
     litVocabTermVersion: "0.1.0-SNAPSHOT"
-    artifactFolderName: "Java"
+    artifactDirectoryName: "Java"
     handlebarsTemplate: "java-rdf4j.hbs"
     sourceFileExtension: "java"
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.

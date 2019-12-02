@@ -133,7 +133,7 @@ class ArtifactGenerator {
             artifactConfig.outputDirectoryForArtifact = path.join(
               this.artifactData.outputDirectory,
               ARTIFACT_DIRECTORY_SOURCE_CODE,
-              artifactDetails.artifactFolderName
+              artifactDetails.artifactDirectoryName
             );
             return new VocabGenerator(this.artifactData, artifactConfig).generate();
           });
