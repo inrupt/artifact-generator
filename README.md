@@ -40,8 +40,7 @@ Install globally (so you can run the Artifact Generator from any directory):
 npm -g install @lit/artifact-generator --registry https://verdaccio.inrupt.com
 ```
 
-Ensure the installation completed successfully (and to see just how
-configurable the generator is :smiley: !): 
+Ensure the installation completed successfully: 
 ```shell
 lit-artifact-generator --help
 ```
