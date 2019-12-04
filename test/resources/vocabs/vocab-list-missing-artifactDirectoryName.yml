@@ -1,0 +1,50 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactFolderName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class     # Defined in VCard.
+      - abstract  # Defined in DCTerms.
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt.test
+        packagingTemplates: 
+        - template: pom.hbs
+          fileName: pom.xml
+
+  - programmingLanguage: Javascript
+    artifactVersion: 10.11.12
+    npmModuleScope: "@lit/"
+    litVocabTermVersion: "^1.0.10"
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    packaging: 
+      - packagingTool: npm 
+        npmModuleScope: "@lit/"
+        packagingTemplates: 
+          - template: package.hbs
+            fileName: package.json
+          - template: index.hbs
+            fileName: index.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ./schema-snippet.ttl
+    termSelectionFile: schema-inrupt-ext.ttl
+
+  - description: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
+    inputResources:
+      - ./supported-data-types.ttl

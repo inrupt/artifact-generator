@@ -45,6 +45,13 @@ describe('Generator configuration', () => {
       }).toThrow('Failed to read configuration file');
     });
 
+    it('should fail with missing artifactDirectoryName in YAML vocab list file', async () => {
+      const notYamlFile = './test/resources/vocabs/vocab-list-missing-artifactDirectoryName.yml';
+      await expect(() => {
+        GeneratorConfiguration.fromYaml(notYamlFile);
+      }).toThrow('The target directory name ');
+    });
+
     it('should throw an error trying to parse an empty YAML file', async () => {
       const configFile = 'empty-config-file.yml';
       const configPath = `./test/resources/vocabs/${configFile}`;

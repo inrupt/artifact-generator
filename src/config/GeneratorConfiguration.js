@@ -133,6 +133,18 @@ class GeneratorConfiguration {
   }
 
   /**
+   * This function checks the validity of artifacts objects as found in the artifactToGenerate list
+   * @param {*} artifact the configuration object for an individual artifact
+   */
+  static validateArtifact(artifact) {
+    if (!artifact.artifactDirectoryName) {
+      throw new Error(
+        `The target directory name for the [${artifact.programmingLanguage}] artifact is missing. Please set a value for 'artifactDirectoryName'.`
+      );
+    }
+  }
+
+  /**
    * Validates if all the required values are present in the config file, and throws an error otherwise.
    * @param {Object} config the object loaded from the YAML config
    * @param {string} file the path to the YAML file, for error message purpose
@@ -144,6 +156,9 @@ class GeneratorConfiguration {
         'No artifacts found: nothing to generate. ' +
           `Please edit the YAML configuration file [${file}] to provide artifacts to be generated.`
       );
+    }
+    for (let i = 0; i < config.artifactToGenerate.length; i += 1) {
+      GeneratorConfiguration.validateArtifact(config.artifactToGenerate[i]);
     }
     // There must be at least one vocabulary defined
     if (!config.vocabList) {
