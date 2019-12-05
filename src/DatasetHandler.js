@@ -395,10 +395,10 @@ module.exports = class DatasetHandler {
     }
 
     if (!prefix) {
-      throw new Error(`No prefix defined for ${namespace}. There are three options to resolve this:
+      throw new Error(`No prefix defined for[ ${namespace}]. There are three options to resolve this:
       - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"]
       - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple
-      - If you use a configuration file, you can set the nameAndPrefixOverride option for the vocabulary`);
+      - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary`);
     }
     return prefix;
   }
