@@ -1,9 +1,21 @@
 const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const { LitUtils } = require('@lit/vocab-term');
+const logger = require('debug')('lit-artifact-generator:DatasetHandler');
 
 const FileGenerator = require('./generator/FileGenerator');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
+
+const KNOWN_DOMAINS = new Map([
+  ['http://xmlns.com/foaf/0.1', 'foaf'],
+  ['http://www.w3.org/1999/02/22-rdf-syntax-ns', 'rdf'],
+  ['http://www.w3.org/2000/01/rdf-schema', 'rdfs'],
+  ['http://www.w3.org/2006/vcard/ns', 'vcard'],
+  ['https://schema.org', 'schema'],
+  ['http://schema.org', 'schema'],
+  ['http://www.w3.org/2002/07/owl', 'owl'],
+  ['http://rdf-extension.com#', 'rdf-ext'],
+]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
@@ -348,7 +360,22 @@ module.exports = class DatasetHandler {
       .reduce((a, b) => (a.length > b.length ? a : b), '');
   }
 
+  /**
+   * Tries to return a prefix for selected namespaces.
+   * @param {*} namespace the IRI of the namespace
+   */
+  static getKnownPrefix(namespace) {
+    let prefix;
+    KNOWN_DOMAINS.forEach((value, key) => {
+      if (namespace.startsWith(key)) {
+        prefix = value;
+      }
+    });
+    return prefix;
+  }
+
   findPreferredNamespacePrefix() {
+    const namespace = this.vocabData.nameAndPrefixOverride || this.findNamespace();
     let prefix = this.findOwlOntology(owlOntologyTerms => {
       const ontologyPrefixes = this.fullDataset.match(
         owlOntologyTerms.subject,
@@ -360,10 +387,19 @@ module.exports = class DatasetHandler {
     });
 
     if (!prefix) {
-      const first = DatasetHandler.subjectsOnly(this.fullDataset)[0] || '';
-      prefix = first.substring(first.lastIndexOf('//') + 2, first.lastIndexOf('.'));
+      if (!namespace) {
+        logger(`Namespace for [${this.vocabData.inputResources[0]}] is empty`);
+        return '';
+      }
+      prefix = DatasetHandler.getKnownPrefix(namespace);
     }
 
+    if (!prefix) {
+      throw new Error(`No prefix defined for[ ${namespace}]. There are three options to resolve this:
+      - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"]
+      - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple
+      - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary`);
+    }
     return prefix;
   }
 

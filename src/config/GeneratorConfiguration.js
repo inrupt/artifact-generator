@@ -232,6 +232,7 @@ class GeneratorConfiguration {
     if (args.vocabTermsFrom) {
       vocab.termSelectionFile = args.vocabTermsFrom;
     }
+
     return vocab;
   }
 

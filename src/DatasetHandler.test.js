@@ -13,6 +13,7 @@ const vocabMetadata = rdf
   .addAll([
     rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
     rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, 'rdf-ext'),
   ]);
 
 describe('Dataset Handler', () => {
@@ -78,5 +79,39 @@ describe('Dataset Handler', () => {
     expect(result.properties[1].name).toEqual('testTermLiteral');
 
     expect(result.literals.length).toEqual(0);
+  });
+
+  it('should fail if no prefix is defined in the vocabulary', () => {
+    const NS = 'http://some.namespace.com#';
+    const NS_IRI = rdf.namedNode(NS);
+
+    const vocab = rdf
+      .dataset()
+      .addAll([
+        rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
+      ]);
+    const handler = new DatasetHandler(vocab, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
+    expect(() => {
+      handler.findPreferredNamespacePrefix();
+    }).toThrow('No prefix defined');
+  });
+
+  it('should not fail for known namespaces without prefix', () => {
+    const NS = 'http://xmlns.com/foaf/0.1/';
+    const NS_IRI = rdf.namedNode(NS);
+
+    const vocab = rdf
+      .dataset()
+      .addAll([
+        rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
+      ]);
+    const handler = new DatasetHandler(vocab, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
+    expect(handler.findPreferredNamespacePrefix()).toEqual('foaf');
   });
 });

@@ -3,6 +3,7 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 
 <http://www.w3.org/2011/http>
   a owl:Ontology ;
@@ -11,7 +12,8 @@
   owl:versionInfo "Working Draft 29 April 2011"@en ;
   rdfs:isDefinedBy <http://www.w3.org/TR/HTTP-in-RDF/> ;
   rdfs:seeAlso <http://www.w3.org/WAI/intro/earl>, <http://www.w3.org/TR/Content-in-RDF/> ;
-  owl:imports dc:, <http://www.w3.org/2011/content#> .
+  owl:imports dc:, <http://www.w3.org/2011/content#> ;
+  vann:preferredNamespacePrefix "http".
 
 <http://www.w3.org/2011/http#Connection>
   a rdfs:Class, owl:Class ;

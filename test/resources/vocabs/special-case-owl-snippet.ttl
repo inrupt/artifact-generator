@@ -5,6 +5,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 
 <http://www.w3.org/2002/07/owl> a owl:Ontology ;
      dc:title "The OWL 2 Schema vocabulary (OWL 2)" ;
@@ -35,7 +36,8 @@
      owl:imports <http://www.w3.org/2000/01/rdf-schema> ;
      owl:versionIRI <http://www.w3.org/2002/07/owl> ;
      owl:versionInfo "$Date: 2009/11/15 10:54:12 $" ;
-     grddl:namespaceTransformation <http://dev.w3.org/cvsweb/2009/owl-grddl/owx2rdf.xsl> .
+     grddl:namespaceTransformation <http://dev.w3.org/cvsweb/2009/owl-grddl/owx2rdf.xsl> ;
+     vann:preferredNamespacePrefix "owl".
 
 
 owl:AllDifferent a rdfs:Class ;
