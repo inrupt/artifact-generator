@@ -6,10 +6,16 @@ const FileGenerator = require('./generator/FileGenerator');
 
 const DEFAULT_AUTHOR = '@lit/artifact-generator-js';
 
-// We look for a pattern http://DOMAIN/PATH.
-// The end of the domain is detected with the first slash, and the PATH is optional
-const PREFIX_REGEX = /https?:\/\/(.+?)(\/(.*)|$)/;
-const KNOWN_DOMAINS = new Set(['www.w3.org', 'purl.org', 'w3id.org', 'xmlns.com']);
+const KNOWN_DOMAINS = new Map([
+  ['http://xmlns.com/foaf/0.1', 'foaf'],
+  ['http://www.w3.org/1999/02/22-rdf-syntax-ns', 'rdf'],
+  ['http://www.w3.org/2000/01/rdf-schema', 'rdfs'],
+  ['http://www.w3.org/2006/vcard/ns', 'vcard'],
+  ['https://schema.org', 'schema'],
+  ['http://schema.org', 'schema'],
+  ['http://www.w3.org/2002/07/owl', 'owl'],
+  ['http://rdf-extension.com#', 'rdf-ext'],
+]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
@@ -354,24 +360,22 @@ module.exports = class DatasetHandler {
       .reduce((a, b) => (a.length > b.length ? a : b), '');
   }
 
-  static formatForPrefix(iriExtract) {
-    // Replace / and . by _, and remove _ around the obtained prefix
-    return iriExtract.replace(/\.|\//g, '_').replace(/^_|_$/g, '');
-  }
-
-  static guessPrefixFromNamespace(termIri) {
-    const matchResult = PREFIX_REGEX.exec(termIri);
-    const iriDomain = matchResult[1];
-    const iriPath = matchResult[2];
-    if (KNOWN_DOMAINS.has(iriDomain)) {
-      return DatasetHandler.formatForPrefix(iriPath);
-    }
-    // Drop the .org, .com, or .uk from .co.uk before formatting
-    return DatasetHandler.formatForPrefix(iriDomain.substring(0, iriDomain.lastIndexOf('.')));
+  /**
+   * Tries to return a prefix for selected namespaces.
+   * @param {*} namespace the IRI of the namespace
+   */
+  static getKnownPrefix(namespace) {
+    let prefix;
+    KNOWN_DOMAINS.forEach((value, key) => {
+      if (namespace.startsWith(key)) {
+        prefix = value;
+      }
+    });
+    return prefix;
   }
 
   findPreferredNamespacePrefix() {
-    const namespace = this.vocabData.namespaceOverride || this.findNamespace();
+    const namespace = this.vocabData.nameAndPrefixOverride || this.findNamespace();
     let prefix = this.findOwlOntology(owlOntologyTerms => {
       const ontologyPrefixes = this.fullDataset.match(
         owlOntologyTerms.subject,
@@ -387,12 +391,14 @@ module.exports = class DatasetHandler {
         logger(`Namespace for [${this.vocabData.inputResources[0]}] is empty`);
         return '';
       }
-      logger(`WARNING: [${namespace}] does not specify a preferred prefix`);
-      prefix = DatasetHandler.guessPrefixFromNamespace(namespace);
-      logger(
-        `Guessed prefix: [${prefix}]. If this prefix is not satisfactory, consider adding a 
-        'nameAndPrefixOverride:' entry in the YAML config file for [${namespace}]`
-      );
+      prefix = DatasetHandler.getKnownPrefix(namespace);
+    }
+
+    if (!prefix) {
+      throw new Error(`No prefix defined for ${namespace}. There are three options to resolve this:
+      - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"]
+      - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple
+      - If you use a configuration file, you can set the nameAndPrefixOverride option for the vocabulary`);
     }
     return prefix;
   }
