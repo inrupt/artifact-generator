@@ -144,6 +144,7 @@ class ArtifactGenerator {
         })
       );
     }
+    logger(`Skipping generation: artifacts already exist in the target directory, and there have been no modification of the vocabulary since their generation. Use the '--force' command-line option to re-generate the artifacts regardless.`)
     // In this case, the generation is not necessary
     this.artifactData.generated = false;
     // If the generation is not necessary, we just return the initial configuration object
