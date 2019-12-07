@@ -1,6 +1,6 @@
 # Debugging
 
-The code uses the NPM `debug` package for reporting log information during operation. To turn on logging, simply set the `DEBUG` environment variable. For example, to see all logging for all artifact-generator operation, set:
+The code uses the NPM `debug` package for reporting log information during operation. To turn on logging, simply set the `DEBUG` environment variable. For example, to see all logging for all artifact-generator operations, set:
 
 `DEBUG=lit-artifact-generator*`
 

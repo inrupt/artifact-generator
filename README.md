@@ -31,7 +31,7 @@ on how to set your permissions correctly.
 
 If you want to bundle artifacts to make them usable into the browser, you will need to install Webpack: `npm install webpack webpack-cli --save-dev`
 
-# Table of content
+# Table of contents
 
 - [Introduction](./documentation/introduction.md)
 - [Quickstart](#quickstart)
@@ -56,6 +56,8 @@ Ensure the installation completed successfully:
 ```shell
 lit-artifact-generator --help
 ```
+
+If you cloned the repository, you can replace  `lit-artifact-generator` by `node index.js` in all the following examples.
 
 ## Create a NodeJS artifact
 
