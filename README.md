@@ -57,7 +57,7 @@ Ensure the installation completed successfully:
 lit-artifact-generator --help
 ```
 
-If you cloned the repository, you can replace  `lit-artifact-generator` by `node index.js` in all the following examples.
+If you cloned the repository, you can replace all the example references below to `lit-artifact-generator ...` with `node index.js ...`.
 
 ## Create a NodeJS artifact
 
@@ -105,17 +105,17 @@ console.log(`Or in Spanish (our Pet Rock vocab has Spanish translations!):`);
 console.log(`"${PET_ROCK.shinyness.commentInLang('es')}"`);
 ``` 
 
-Finally, simply `npm install`...
+Finally, simply run `npm install`...
 ```shell script
 npm install
 ```
 
-...and run our NodeJS application:
+...and run our simple NodeJS application...
 ```shell script
 node index.js 
 ```
 
-We should see this output:
+...we should see this output:
 ```
 [demo]$ node index.js 
 What is Pet Rock 'shinyness'?
@@ -128,41 +128,41 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 [demo]$ 
 ```
 
-## Create a frontend Javascript artifact
+## Create a front-end Javascript artifact
 
 Run the generator using a public demo vocabulary, in this case a simple Pet
-Rock vocabulary, telling it not to prompt us for any input (i.e. `--noprompt`),
-and asking for a bundled Javascript artifact:
+Rock vocabulary provided by inrupt, telling it not to prompt for any input
+(i.e. `--noprompt`), and asking for a bundled Javascript artifact (i.e.
+`supportBundling`):
 
 ```shell
 lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
 ```
 
-This generates an artifact, and runs Webpack to bundle its dependencies. 
+This generates an artifact, and runs Webpack to bundle all of it's dependencies. 
 Everything is generated into the default `Generated` directory, and bundled
 into the `Generated/SourceCodeArtifacts/Javascript/dist` directory.
 
-If you copy-paste the following piece of html into a new file next to the 
-`Generated` directory...
+If you copy-and-paste the following HTML into a new file in the directory from which you ran the Artifact Generator (i.e. te directory which should now have a `Generated` directory within it)...
 
 ```html
 <html>
 	<body>
-		<p>My pet rock shinyness "<span id="shinyness-comment"></span>" by <span id="petrock-iri"></span></p>
+		<p>My Pet Rock shinyness "<span id="shinyness-comment"></span>" by <span id="petrock-iri"></span></p>
+	
 	<script src="./Generated/SourceCodeArtifacts/Javascript/dist/index.js" type="text/javascript"/></script>
+	
 	<script type="text/javascript">
 		document.getElementById("shinyness-comment").innerHTML = `${PR.shinyness.comment}`;
 		document.getElementById("petrock-iri").innerHTML = `${PR.NAMESPACE}`;
 	</script>
+	
 	</body>
 </html>
 ```
 
-... and open it  with the web browser, you should see:
+...and open this HTML file with a web browser, you should see:
 
 ```
-My pet rock shinyness is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
+My Pet Rock shinyness is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
 ```
-
-
-
