@@ -60,6 +60,7 @@ class ArtifactGenerator {
         }
       })
       .then(() => this.generatePackaging())
+      .then(() => FileGenerator.createVersioningFiles(this.artifactData))
       .then(() => {
         // This file is generated after all the artifacts. This way, if a vocabulary resource
         // has been modified more recently than this file, we know that the artifacts are outdated

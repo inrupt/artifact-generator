@@ -12,6 +12,9 @@ const {
 } = require('../config/artifacts/NodeArtifactConfigurator');
 const { VocabularyConfigurator } = require('../config/VocabularyConfigurator');
 
+const GIT = 'git';
+const SVN = 'svn';
+
 const SUPPORTED_LANGUAGES = {};
 SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfigurator;
 SUPPORTED_LANGUAGES[JAVASCRIPT] = NodeArtifactConfigurator;
@@ -47,6 +50,36 @@ const LANGUAGES_CHECKBOXES = {
   validate: validateLanguageCheckboxes,
 };
 
+function validateRepositoryCheckboxes(answer) {
+  if (answer.length > 1) {
+    // This mismatch in return types is expected by inquirer
+    return 'You must choose at most one repository type.';
+  }
+  return true;
+}
+
+const REPOSITORY_CHECKBOX = {
+  type: 'checkbox',
+  message:
+    'Is the YAML file (and potentially some vocabularies) going to be versionned ? If not, validate to continue.',
+  name: 'repositoryType',
+  choices: [{ name: GIT }, { name: SVN }],
+  validate: validateRepositoryCheckboxes,
+};
+
+const REPOSITORY_URL = {
+  type: 'input',
+  message: 'What is the URL of the repository ?',
+  name: 'repositoryUrl',
+};
+
+const GITIGNORE_TEMPLATE = {
+  type: 'input',
+  message: "Please provide a '.gitignore' template",
+  name: 'gitignoreTemplate',
+  default: '.gitignore.hbs',
+};
+
 const ADD_VOCABULARY_CONFIRMATION = {
   type: 'confirm',
   name: 'addVocab',
@@ -76,6 +109,29 @@ class ConfigFileGenerator {
       return new SUPPORTED_LANGUAGES[language]();
     }
     throw new Error(`Unsported language: no config generator is registered for [${language}]`);
+  }
+
+  static async promptRepository() {
+    const repositoryConfig = {};
+    const repositoryType = await inquirer.prompt(REPOSITORY_CHECKBOX);
+    if (repositoryType.repositoryType.length > 0) {
+      // If the value is not null, only one can be retrieved
+      [repositoryConfig.type] = repositoryType.repositoryType;
+
+      repositoryConfig.url = (await inquirer.prompt(REPOSITORY_URL)).repositoryUrl;
+      // Each repository type may be associated to specific files (e.g. a .gitignore)
+      if (repositoryConfig.type === GIT) {
+        repositoryConfig.associatedFiles = [
+          {
+            template: (await inquirer.prompt(GITIGNORE_TEMPLATE)).gitignoreTemplate,
+            fileName: '.gitignore',
+          },
+        ];
+      }
+    }
+    // If the type is not set, return null to avoid adding an empty element to the target
+    // configuration object.
+    return repositoryConfig.type ? repositoryConfig : null;
   }
 
   /**
@@ -119,6 +175,10 @@ class ConfigFileGenerator {
   async collectConfigInfo() {
     // Get the info shared among artifacts
     this.config = { ...this.config, ...(await inquirer.prompt(GENERAL_QUESTIONS)) };
+    const repository = await ConfigFileGenerator.promptRepository();
+    if (repository) {
+      this.config.versioning = repository;
+    }
     // Get the artifact information
     // List the different artifacts to generate in a map containing only one key-value pair
     const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES);
@@ -163,3 +223,4 @@ class ConfigFileGenerator {
 
 module.exports.ConfigFileGenerator = ConfigFileGenerator;
 module.exports.validateLanguageCheckboxes = validateLanguageCheckboxes;
+module.exports.validateRepositoryCheckboxes = validateRepositoryCheckboxes;

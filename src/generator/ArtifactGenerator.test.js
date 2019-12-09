@@ -71,6 +71,22 @@ describe('Artifact Generator', () => {
       await artifactGenerator.generate();
       verifyVocabList(outputDirectory);
     });
+
+    it('should generate associated files from version control', async () => {
+      const outputDirectory = 'test/Generated/ArtifactGenerator/vocab-versioning';
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile: './test/resources/versioning/vocab-list.yml',
+        outputDirectory,
+        noprompt: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      await artifactGenerator.generate();
+      expect(fs.existsSync(path.join(outputDirectory, 'Generated', '.gitignore'))).toBe(true);
+    });
   });
 
   describe('Processing command line vocab.', () => {

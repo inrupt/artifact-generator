@@ -13,7 +13,6 @@ const {
 
 const FileGenerator = require('./generator/FileGenerator');
 
-
 const KNOWN_DOMAINS = new Map([
   ['http://xmlns.com/foaf/0.1', 'foaf'],
   ['http://www.w3.org/1999/02/22-rdf-syntax-ns', 'rdf'],

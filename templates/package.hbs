@@ -11,10 +11,10 @@
 {{/if}}
   "author": "{{authors}}",
   "license": "MIT",
-{{#if gitRepository}}
+{{#if versioning}}
   "repository": {
-    "type": "git",
-    "url": "{{gitRepository}}"
+    "type": {{versioning.type}},
+    "url": "{{versioning.url}}"
   },
 {{/if}}
 {{#if repository}}
