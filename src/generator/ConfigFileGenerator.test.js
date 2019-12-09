@@ -10,7 +10,7 @@ const { ConfigFileGenerator, validateLanguageCheckboxes } = require('./ConfigFil
 
 // This line will have to change if one day we decide to support Ook (spoiler alert:
 // it is unlikely https://en.wikipedia.org/wiki/Brainfuck#Derivatives).
-const UNSUPORTED_LANGUAGE = 'Ook';
+const UNSUPPORTED_LANGUAGE = 'Ook';
 
 const TARGET_DIR = './test/Generated/config/';
 const TARGET_FILE = 'lit-vocab.yml';
@@ -88,8 +88,8 @@ describe('ConfigFile Generator', () => {
 
   it('should fail when asking for a config generator of an unsupported language', () => {
     expect(() => {
-      ConfigFileGenerator.buildConfigGenerator(UNSUPORTED_LANGUAGE);
-    }).toThrow(UNSUPORTED_LANGUAGE, 'Unsported language');
+      ConfigFileGenerator.buildConfigGenerator(UNSUPPORTED_LANGUAGE);
+    }).toThrow(UNSUPPORTED_LANGUAGE, 'Unsported language');
   });
 
   it('should fail when less than one language is checked', () => {

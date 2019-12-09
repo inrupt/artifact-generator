@@ -1,7 +1,7 @@
 require('mock-local-storage');
 
 const rdf = require('rdf-ext');
-const { RDF, RDFS, OWL, VANN } = require('@lit/generated-vocab-common');
+const { RDF, RDFS, OWL, VANN } = require('./CommonTerms');
 
 const DatasetHandler = require('./DatasetHandler');
 

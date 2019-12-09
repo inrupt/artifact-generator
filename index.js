@@ -30,9 +30,7 @@ function validateCommandLine(argv, options) {
   }
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
-      `Unknown command: [${
-        argv._[0]
-      }] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
+      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
     );
   }
   return true;
