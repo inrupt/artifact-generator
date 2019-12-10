@@ -1,7 +1,7 @@
 const path = require('path');
 const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
-const logger = require('debug')('lit-artifact-generator:CommandLine');
+const debug = require('debug')('lit-artifact-generator:CommandLine');
 const { DEFAULT_AUTHOR } = require('./DatasetHandler');
 
 const {
@@ -61,11 +61,11 @@ module.exports = class CommandLine {
         cloneData.publishedVersion = publishedVersion;
         cloneData.version = publishedVersion;
 
-        logger(
+        debug(
           `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`
         );
       } catch (error) {
-        logger(
+        debug(
           `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}]: ${error}`
         );
         // Its ok to ignore this. It just means that the module hasn't been published before.
@@ -183,7 +183,7 @@ module.exports = class CommandLine {
   }
 
   static runNpmInstall(data) {
-    logger(
+    debug(
       `Running 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
         data.artifactName
       }] in directory [${data.outputDirectoryForArtifact}]...`
@@ -194,7 +194,7 @@ module.exports = class CommandLine {
     }`;
     ChildProcess.execSync(commandLine);
 
-    logger(
+    debug(
       `Ran 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
         data.artifactName
       }] in directory [${data.outputDirectoryForArtifact}].`
@@ -205,7 +205,7 @@ module.exports = class CommandLine {
 
   static runMavenInstall(data) {
     if (data.runMavenInstall) {
-      logger(
+      debug(
         `Running 'mvn install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java]...`
       );
       // Quick addition to also support Maven install for Java artifacts.
@@ -225,7 +225,7 @@ module.exports = class CommandLine {
   }
 
   static runNpmVersion(data) {
-    logger(
+    debug(
       `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
     );
 
@@ -233,7 +233,7 @@ module.exports = class CommandLine {
       `cd ${data.outputDirectoryForArtifact} && npm version ${data.bumpVersion}`
     );
 
-    logger(
+    debug(
       `Ran 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
     );
 
@@ -241,7 +241,7 @@ module.exports = class CommandLine {
   }
 
   static runNpmPublish(data) {
-    logger(
+    debug(
       `Running 'npm publish' for artifact [${data.artifactName}] to registry [${data.npmRegistry}]...`
     );
 
@@ -249,7 +249,7 @@ module.exports = class CommandLine {
       `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`
     );
 
-    logger(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
+    debug(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
@@ -265,7 +265,7 @@ module.exports = class CommandLine {
     const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
-    logger(
+    debug(
       `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
     );
 
@@ -273,7 +273,7 @@ module.exports = class CommandLine {
       `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
     );
 
-    logger(
+    debug(
       `Widoco documentation generated for [${
         data.artifactName
       }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`

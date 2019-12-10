@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
-const logger = require('debug')('lit-artifact-generator:FileGenerator');
+const debug = require('debug')('lit-artifact-generator:FileGenerator');
 
 // TODO: Is this redundant with the language-specific ArtifactConfigurator ?
 const SUPPORTED_LANGUAGES = ['Java', 'Javascript'];
@@ -16,7 +16,7 @@ class FileGenerator {
     const contents = template(templateData);
 
     fs.writeFileSync(outputFile, contents);
-    logger(`Created file: [${outputFile}]`);
+    debug(`Created file: [${outputFile}]`);
   }
 
   static createDirectory(directory) {

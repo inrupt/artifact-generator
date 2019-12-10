@@ -1,6 +1,5 @@
 const debug = require('debug')('lit-artifact-generator:DatasetHandler');
 
-const { LitUtils } = require('@lit/vocab-term');
 const {
   RDF_NAMESPACE,
   RDF,
@@ -332,7 +331,7 @@ module.exports = class DatasetHandler {
 
       // Store the ontology name if we got one.
       ontologyIri = owlOntologyTerms.subject.value;
-      return LitUtils.firstDatasetValue(ontologyNamespaces);
+      return DatasetHandler.firstDatasetValue(ontologyNamespaces);
     });
 
     // If no explicitly provided namespace IRI, try and determine the
@@ -396,7 +395,7 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return LitUtils.firstDatasetValue(ontologyPrefixes);
+      return DatasetHandler.firstDatasetValue(ontologyPrefixes);
     });
 
     if (!prefix) {
@@ -438,8 +437,7 @@ module.exports = class DatasetHandler {
         null
       );
 
-      // return FileGenerator.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
-      return LitUtils.firstDatasetValue(onologyComments, '');
+      return DatasetHandler.firstDatasetValue(onologyComments, '');
     });
   }
 
@@ -483,6 +481,11 @@ module.exports = class DatasetHandler {
     });
 
     return [...new Set(termSubjects)];
+  }
+
+  static firstDatasetValue(dataset, defaultValue) {
+    const first = dataset.toArray().shift();
+    return first ? first.object.value : defaultValue;
   }
 };
 

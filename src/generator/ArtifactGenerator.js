@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const logger = require('debug')('lit-artifact-generator:ArtifactGenerator');
+const debug = require('debug')('lit-artifact-generator:ArtifactGenerator');
 const ChildProcess = require('child_process');
 
 const FileGenerator = require('./FileGenerator');
@@ -170,7 +170,7 @@ class ArtifactGenerator {
     if (this.artifactData.generated) {
       this.artifactData.artifactToGenerate.forEach(artifactDetails => {
         if (artifactDetails.packaging) {
-          logger(`Generating [${artifactDetails.programmingLanguage}] packaging`);
+          debug(`Generating [${artifactDetails.programmingLanguage}] packaging`);
           // TODO: manage repositories properly
           this.artifactData.gitRepository = artifactDetails.gitRepository;
           this.artifactData.repository = artifactDetails.repository;
@@ -217,7 +217,7 @@ class ArtifactGenerator {
         ],
       });
     } else {
-      logger(
+      debug(
         `Cannot generate default packaging for unsupported language [${artifactDetails.programmingLanguage}]`
       );
     }
@@ -229,7 +229,7 @@ class ArtifactGenerator {
       for (let j = 0; j < artifact.packaging.length; j += 1) {
         if (artifact.packaging[j].publishLocal) {
           process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
-          logger(
+          debug(
             `Running command [${artifact.packaging[j].publishLocal}] to publish artifact locally...`
           );
           ChildProcess.execSync(artifact.packaging[j].publishLocal);

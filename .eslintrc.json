@@ -3,7 +3,6 @@
   "plugins": ["prettier"],
   "env": {
     "node": true,
-    "browser": true,
     "jest": true
   },
   "rules": {

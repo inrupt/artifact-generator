@@ -1,5 +1,5 @@
 const path = require('path');
-const logger = require('debug')('lit-artifact-generator:App');
+const debug = require('debug')('lit-artifact-generator:App');
 
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
@@ -69,7 +69,7 @@ module.exports = class App {
     } catch (error) {
       throw new Error(`Invalid configuration: [${error}]`);
     }
-    logger('The configuration options are valid. Validating the vocabularies...');
+    debug('The configuration options are valid. Validating the vocabularies...');
     const vocabsToValidate = [];
     const { vocabList } = configuration.configuration;
     for (let i = 0; i < vocabList.length; i += 1) {
