@@ -104,6 +104,16 @@ class ArtifactGenerator {
           return lastGenerationTime < lastModif || accumulator;
         }, artifactsOutdated);
       });
+      if (!artifactsOutdated) {
+        logger(
+          `Skipping generation: artifacts already exist in the target directory [${path.join(
+            this.artifactData.outputDirectory,
+            ARTIFACT_DIRECTORY_ROOT
+          )}], and there have been no modifications to the vocabularies since their generation on [${
+            fs.statSync(artifactInfoPath).mtime
+          }]. Use the '--force' command-line option to re-generate the artifacts regardless.`
+        );
+      }
     } else {
       // There are no artifacts in the target directory.
       artifactsOutdated = true;
@@ -144,6 +154,7 @@ class ArtifactGenerator {
         })
       );
     }
+
     // In this case, the generation is not necessary
     this.artifactData.generated = false;
     // If the generation is not necessary, we just return the initial configuration object
