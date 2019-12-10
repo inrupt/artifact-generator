@@ -1,7 +1,12 @@
 require('mock-local-storage');
 
+const rdfFetch = require('@rdfjs/fetch-lite');
+
+jest.mock('@rdfjs/fetch-lite');
+
 const fs = require('fs');
 const del = require('del');
+const { LitUtils } = require('@lit/vocab-term');
 
 const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
@@ -195,6 +200,15 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to fully extend an ontology with multiple input files and URL links', async () => {
+      const rdfFetchMock = {
+        dataset: () => {
+          return LitUtils.loadTurtleFileIntoDatasetPromise('./test/resources/vocabs/Person.ttl');
+        },
+      };
+      rdfFetch.mockImplementation(() => {
+        return Promise.resolve(rdfFetchMock);
+      });
+
       const outputDirectory = 'test/Generated/End-to-End/multiple-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
@@ -271,6 +285,17 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to extend an ontology but only create triples from extension URL links', async () => {
+      const rdfFetchMock = {
+        dataset: () => {
+          return LitUtils.loadTurtleFileIntoDatasetPromise(
+            './test/resources/vocabs/schema-inrupt-ext.ttl'
+          );
+        },
+      };
+      rdfFetch.mockImplementation(() => {
+        return Promise.resolve(rdfFetchMock);
+      });
+
       const outputDirectory = 'test/Generated/End-to-End/extension-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
@@ -290,7 +315,7 @@ describe('End-to-end tests', () => {
       await artifactGenerator.generate();
 
       const indexOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
         .toString();
 
       expect(indexOutput).toEqual(
