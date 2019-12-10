@@ -1,5 +1,5 @@
 const chokidar = require('chokidar');
-const logger = require('debug')('lit-artifact-generator:VocabWatcher');
+const debug = require('debug')('lit-artifact-generator:VocabWatcher');
 
 class VocabWatcher {
   constructor(generator) {
@@ -18,15 +18,15 @@ class VocabWatcher {
     // determine if an online vocabulary has changed.
     // TODO: Right now, online vocabs are checked only once.
     await this.generator.generate().catch(error => {
-      logger(error);
+      debug(error);
     });
 
     // Add event listeners.
     this.watcher.on('change', eventPath => {
       // Triggers the generation when the file changes
-      logger(`File ${eventPath} has been changed`);
+      debug(`File ${eventPath} has been changed`);
       this.generator.generate().catch(error => {
-        logger(error);
+        debug(error);
       });
     });
   }

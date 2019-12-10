@@ -1,5 +1,5 @@
 const rdf = require('rdf-ext');
-const logger = require('debug')('lit-artifact-generator:VocabGenerator');
+const debug = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const FileGenerator = require('./FileGenerator');
 const Resource = require('../Resource');
@@ -13,12 +13,12 @@ module.exports = class VocabGenerator {
   }
 
   async generateFiles(vocabGenerationData) {
-    logger(
+    debug(
       `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
         this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
       }...`
     );
-    logger(`Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`);
+    debug(`Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`);
     if (
       vocabGenerationData.classes.length === 0 &&
       vocabGenerationData.properties.length === 0 &&
@@ -29,7 +29,7 @@ module.exports = class VocabGenerator {
         if (
           FileGenerator.previouslyGeneratedFileExists(this.artifactDetails, vocabGenerationData)
         ) {
-          logger(
+          debug(
             `A source file is reused for unreachable resource ${this.vocabData.inputResources.toString()}`
           );
           resolve(vocabGenerationData);

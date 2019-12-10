@@ -1,7 +1,7 @@
 const yaml = require('js-yaml');
 const path = require('path');
 const moment = require('moment');
-const logger = require('debug')('lit-artifact-generator:GeneratorConfiguration');
+const debug = require('debug')('lit-artifact-generator:GeneratorConfiguration');
 const fs = require('fs');
 const packageDotJson = require('../../package.json');
 const CommandLine = require('../CommandLine');
@@ -191,7 +191,7 @@ class GeneratorConfiguration {
   static fromYaml(yamlPath) {
     let yamlConfiguration = {};
     try {
-      logger(`Processing YAML file...`);
+      debug(`Processing YAML file...`);
       yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
       if (!yamlConfiguration) {
         throw new Error('Empty YAML file');

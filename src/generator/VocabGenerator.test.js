@@ -1,10 +1,10 @@
 require('mock-local-storage');
 
 const rdf = require('rdf-ext');
-const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
 const fs = require('fs');
 const path = require('path');
 
+const { RDF, RDFS, SCHEMA_DOT_ORG, OWL, VANN, DCTERMS, SKOS } = require('../CommonTerms');
 const VocabGenerator = require('./VocabGenerator');
 
 const vocabGenerator = new VocabGenerator({
@@ -16,22 +16,22 @@ const vocabGenerator = new VocabGenerator({
 const dataset = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, RDF.type, RDFS.Class),
-    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person', 'en')),
-    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive', 'en')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.label, rdf.literal('Person', 'en')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.comment, rdf.literal('Person dead or alive', 'en')),
 
-    rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('givenName', '')),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDFS.label, rdf.literal('givenName', '')),
     rdf.quad(
-      SCHEMA.givenName,
+      SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
       rdf.literal('A given name is the first name of a person.', 'en')
     ),
 
-    rdf.quad(SCHEMA.familyName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('familyName', 'fr')),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDFS.label, rdf.literal('familyName', 'fr')),
     rdf.quad(
-      SCHEMA.familyName,
+      SCHEMA_DOT_ORG.familyName,
       RDFS.comment,
       rdf.literal('A family name is the last name of a person.', 'en')
     ),
@@ -40,20 +40,48 @@ const dataset = rdf
 const datasetExtension = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-fr', 'fr')),
-    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-de', 'de')),
-    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Person-es', 'es')),
-    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive fr', 'fr')),
-    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive de', 'de')),
-    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Person dead or alive es', 'es')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, SCHEMA_DOT_ORG.alternateName, rdf.literal('Person-fr', 'fr')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, SCHEMA_DOT_ORG.alternateName, rdf.literal('Person-de', 'de')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, SCHEMA_DOT_ORG.alternateName, rdf.literal('Person-es', 'es')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.comment, rdf.literal('Person dead or alive fr', 'fr')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.comment, rdf.literal('Person dead or alive de', 'de')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.comment, rdf.literal('Person dead or alive es', 'es')),
 
-    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name', 'en')),
-    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-fr', 'fr')),
-    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-de', 'de')),
-    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Given Name-es', 'es')),
-    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person fr', 'fr')),
-    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person de', 'de')),
-    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Given name of a person es', 'es')),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      SCHEMA_DOT_ORG.alternateName,
+      rdf.literal('Given Name', 'en')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      SCHEMA_DOT_ORG.alternateName,
+      rdf.literal('Given Name-fr', 'fr')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      SCHEMA_DOT_ORG.alternateName,
+      rdf.literal('Given Name-de', 'de')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      SCHEMA_DOT_ORG.alternateName,
+      rdf.literal('Given Name-es', 'es')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      RDFS.comment,
+      rdf.literal('Given name of a person fr', 'fr')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      RDFS.comment,
+      rdf.literal('Given name of a person de', 'de')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.givenName,
+      RDFS.comment,
+      rdf.literal('Given name of a person es', 'es')
+    ),
   ]);
 
 const extSubject = rdf.namedNode('http://rdf-extension.com');
@@ -77,46 +105,50 @@ const emptyDataSet = rdf.dataset();
 const dataSetA = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, RDF.type, RDFS.Class),
-    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Person')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.label, rdf.literal('Person')),
   ]);
 
 const dataSetB = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('Given Name')),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDFS.label, rdf.literal('Given Name')),
   ]);
 
 const dataSetC = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.familyName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Family Name'), 'en'),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDFS.label, rdf.literal('Family Name'), 'en'),
   ]);
 
 const dataSetD = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.familyName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA.familyName, SKOS.definition, rdf.literal('Family Name'), 'en'),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDF.type, RDF.Property),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, SKOS.definition, rdf.literal('Family Name'), 'en'),
   ]);
 
 const overrideLabelTerms = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, RDFS.label, rdf.literal('Override Person')),
-    rdf.quad(SCHEMA.givenName, RDFS.label, rdf.literal('Override Given Name')),
-    rdf.quad(SCHEMA.familyName, RDFS.label, rdf.literal('Override Family Name'), 'en'),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.label, rdf.literal('Override Person')),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDFS.label, rdf.literal('Override Given Name')),
+    rdf.quad(SCHEMA_DOT_ORG.familyName, RDFS.label, rdf.literal('Override Family Name'), 'en'),
   ]);
 
 const overrideCommentTerms = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, RDFS.comment, rdf.literal('Override comment for Person')),
-    rdf.quad(SCHEMA.givenName, RDFS.comment, rdf.literal('Override comment for Given Name')),
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.comment, rdf.literal('Override comment for Person')),
     rdf.quad(
-      SCHEMA.familyName,
+      SCHEMA_DOT_ORG.givenName,
+      RDFS.comment,
+      rdf.literal('Override comment for Given Name')
+    ),
+    rdf.quad(
+      SCHEMA_DOT_ORG.familyName,
       RDFS.comment,
       rdf.literal('Override comment for Family Name'),
       'en'
@@ -126,9 +158,14 @@ const overrideCommentTerms = rdf
 const overrideAtlNameTerms = rdf
   .dataset()
   .addAll([
-    rdf.quad(SCHEMA.Person, SCHEMA.alternateName, rdf.literal('Alt Person')),
-    rdf.quad(SCHEMA.givenName, SCHEMA.alternateName, rdf.literal('Alt Given Name')),
-    rdf.quad(SCHEMA.familyName, SCHEMA.alternateName, rdf.literal('Alt Family Name'), 'en'),
+    rdf.quad(SCHEMA_DOT_ORG.Person, SCHEMA_DOT_ORG.alternateName, rdf.literal('Alt Person')),
+    rdf.quad(SCHEMA_DOT_ORG.givenName, SCHEMA_DOT_ORG.alternateName, rdf.literal('Alt Given Name')),
+    rdf.quad(
+      SCHEMA_DOT_ORG.familyName,
+      SCHEMA_DOT_ORG.alternateName,
+      rdf.literal('Alt Family Name'),
+      'en'
+    ),
   ]);
 
 const message = rdf.namedNode('http://schema.org/hello');
@@ -335,9 +372,9 @@ describe('Artifact generator unit tests', () => {
       const dataSetFrenchOnlyComment = rdf
         .dataset()
         .addAll([
-          rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property),
+          rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
           rdf.quad(
-            SCHEMA.givenName,
+            SCHEMA_DOT_ORG.givenName,
             RDFS.comment,
             rdf.literal('Given Name comment in french', 'fr')
           ),
@@ -356,7 +393,7 @@ describe('Artifact generator unit tests', () => {
     it('Should return empty comment if nothing found at all', () => {
       const noDescriptivePredicates = rdf
         .dataset()
-        .add(rdf.quad(SCHEMA.givenName, RDF.type, RDF.Property));
+        .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
 
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataSetA, noDescriptivePredicates]),

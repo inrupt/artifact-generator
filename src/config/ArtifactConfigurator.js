@@ -1,4 +1,4 @@
-const logger = require('debug')('lit-artifact-generator:ArtifactConfigurator');
+const debug = require('debug')('lit-artifact-generator:ArtifactConfigurator');
 const inquirer = require('inquirer');
 
 const DEFAULT_ARTIFACT_VERSION = '0.1.0';
@@ -54,7 +54,7 @@ class ArtifactConfigurator {
       );
     }
     // The language-specific options have been set when constructing the extending class
-    logger(`[${this.language}] artifact generator`);
+    debug(`[${this.language}] artifact generator`);
     this.config = { ...this.config, ...(await inquirer.prompt(this.questions)) };
     if (this.config.packagingToInit) {
       this.config.packaging = await this.promptPackaging(this.config.packagingToInit);

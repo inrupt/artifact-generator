@@ -1,5 +1,7 @@
 const rdf = require('rdf-ext');
 const rdfFetch = require('@rdfjs/fetch-lite');
+const rdfFormats = require('@rdfjs/formats-common');
+const stringToStream = require('string-to-stream');
 const axios = require('axios');
 const fs = require('fs');
 
@@ -9,9 +11,7 @@ const ParserRdfXml = require('rdfxml-streaming-parser').RdfXmlParser;
 
 const SinkMap = require('@rdfjs/sink-map');
 
-const logger = require('debug')('lit-artifact-generator:Resources');
-
-const { LitUtils } = require('@lit/vocab-term');
+const debug = require('debug')('lit-artifact-generator:Resources');
 
 const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
@@ -51,7 +51,7 @@ module.exports = class Resource {
   }
 
   async processInputs(processInputsCallback) {
-    logger(`Processing datasetFiles: [${this.datasetFiles}]...`);
+    debug(`Processing datasetFiles: [${this.datasetFiles}]...`);
     const datasetsPromises = this.datasetFiles.map(e => Resource.readResource(e));
 
     const datasets = await Promise.all(datasetsPromises);
@@ -74,14 +74,14 @@ module.exports = class Resource {
    * @param {string} datasetFile path to the file, or IRI.
    */
   static readResource(datasetFile) {
-    logger(`Loading resource: [${datasetFile}]...`);
+    debug(`Loading resource: [${datasetFile}]...`);
     if (Resource.isOnline(datasetFile)) {
       return rdfFetch(datasetFile, { factory: rdf, formats })
         .then(resource => {
           return resource.dataset();
         })
         .catch(error => {
-          logger(
+          debug(
             `Encountered error [${error}] while fetching [${datasetFile}], attempting to use previously generated file`
           );
           return undefined;
@@ -89,8 +89,17 @@ module.exports = class Resource {
     }
 
     return new Promise(resolve => {
-      resolve(LitUtils.loadTurtleFileIntoDatasetPromise(`${datasetFile}`));
+      resolve(this.loadTurtleFileIntoDatasetPromise(`${datasetFile}`));
     });
+  }
+
+  static loadTurtleFileIntoDatasetPromise(filename) {
+    const mimeType = 'text/turtle';
+    const data = fs.readFileSync(filename, 'utf8');
+
+    const rdfParser = rdfFormats.parsers.get(mimeType);
+    const quadStream = rdfParser.import(stringToStream(data));
+    return rdf.dataset().import(quadStream);
   }
 
   static async getHttpResourceLastModificationTime(resource) {

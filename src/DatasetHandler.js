@@ -1,6 +1,15 @@
-const { RDF, RDFS, SCHEMA, OWL, VANN, DCTERMS, SKOS } = require('@lit/generated-vocab-common');
-const { LitUtils } = require('@lit/vocab-term');
-const logger = require('debug')('lit-artifact-generator:DatasetHandler');
+const debug = require('debug')('lit-artifact-generator:DatasetHandler');
+
+const {
+  RDF_NAMESPACE,
+  RDF,
+  RDFS,
+  SCHEMA_DOT_ORG,
+  OWL,
+  VANN,
+  DCTERMS,
+  SKOS,
+} = require('./CommonTerms');
 
 const FileGenerator = require('./generator/FileGenerator');
 
@@ -20,14 +29,13 @@ const KNOWN_DOMAINS = new Map([
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
 // 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
-const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA.PaymentStatusType];
+const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA_DOT_ORG.PaymentStatusType];
 
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
   RDFS.Datatype,
   OWL.ObjectProperty,
   OWL.NamedIndividual,
-  OWL.AnnotationProperty,
   OWL.AnnotationProperty,
   OWL.DatatypeProperty,
 ];
@@ -63,7 +71,7 @@ module.exports = class DatasetHandler {
     if (!fullName.startsWith(namespace)) {
       // ...but some vocabs reference terms from other vocabs (like ActivityStreams 2.0)!
       if (
-        fullName.startsWith(RDF.NAMESPACE) ||
+        fullName.startsWith(RDF_NAMESPACE) ||
         fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
       ) {
         return null;
@@ -96,9 +104,11 @@ module.exports = class DatasetHandler {
       .replace(/^abstract$/, 'abstract_')
       .replace(/^default$/, 'default_');
 
-    this.subjectsOnlyDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
-      DatasetHandler.add(labels, subQuad);
-    });
+    this.subjectsOnlyDataset
+      .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(labels, subQuad);
+      });
 
     this.subjectsOnlyDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
@@ -108,7 +118,7 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(labels, subQuad);
     });
 
-    this.fullDataset.match(quad.subject, SCHEMA.alternateName, null).forEach(subQuad => {
+    this.fullDataset.match(quad.subject, SCHEMA_DOT_ORG.alternateName, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
@@ -321,7 +331,7 @@ module.exports = class DatasetHandler {
 
       // Store the ontology name if we got one.
       ontologyIri = owlOntologyTerms.subject.value;
-      return LitUtils.firstDatasetValue(ontologyNamespaces);
+      return DatasetHandler.firstDatasetValue(ontologyNamespaces);
     });
 
     // If no explicitly provided namespace IRI, try and determine the
@@ -355,6 +365,8 @@ module.exports = class DatasetHandler {
   }
 
   static findLongestTermName(terms, ontologyIri) {
+    debug(`Searching for longest term: [${terms}]...`);
+
     return terms
       .filter(a => (ontologyIri ? a.startsWith(ontologyIri) : true))
       .reduce((a, b) => (a.length > b.length ? a : b), '');
@@ -383,12 +395,12 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return LitUtils.firstDatasetValue(ontologyPrefixes);
+      return DatasetHandler.firstDatasetValue(ontologyPrefixes);
     });
 
     if (!prefix) {
       if (!namespace) {
-        logger(`Namespace for [${this.vocabData.inputResources[0]}] is empty`);
+        debug(`Namespace for input resource [${this.vocabData.inputResources[0]}] is empty.`);
         return '';
       }
       prefix = DatasetHandler.getKnownPrefix(namespace);
@@ -396,9 +408,9 @@ module.exports = class DatasetHandler {
 
     if (!prefix) {
       throw new Error(`No prefix defined for[ ${namespace}]. There are three options to resolve this:
-      - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"]
-      - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple
-      - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary`);
+      - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"].
+      - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple.
+      - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary.`);
     }
     return prefix;
   }
@@ -425,8 +437,7 @@ module.exports = class DatasetHandler {
         null
       );
 
-      // return FileGenerator.escapeStringForJson(LitUtils.firstDatasetValue(onologyComments, ''));
-      return LitUtils.firstDatasetValue(onologyComments, '');
+      return DatasetHandler.firstDatasetValue(onologyComments, '');
     });
   }
 
@@ -470,6 +481,11 @@ module.exports = class DatasetHandler {
     });
 
     return [...new Set(termSubjects)];
+  }
+
+  static firstDatasetValue(dataset, defaultValue) {
+    const first = dataset.toArray().shift();
+    return first ? first.object.value : defaultValue;
   }
 };
 

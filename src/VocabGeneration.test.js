@@ -1,6 +1,7 @@
 require('mock-local-storage');
+
 const fs = require('fs');
-const logger = require('debug')('lit-artifact-generator:VocabGenerator');
+const debug = require('debug')('lit-artifact-generator:VocabGenerator');
 
 const App = require('./App');
 
@@ -129,7 +130,7 @@ async function generateVocabArtifact(argv) {
     artifact => artifact.programmingLanguage === 'Javascript'
   )[0].outputDirectoryForArtifact;
 
-  logger(
+  debug(
     `Expecting 'package.json' in this directory: [${directoryForJavascriptArtifact}/package.json]...`
   );
   expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(true);
@@ -145,7 +146,7 @@ async function generateVocabArtifact(argv) {
     expect(fs.existsSync(`${result.documentationDirectory}/index-en.html`)).toBe(true);
   }
 
-  logger(`Generation process successful!\n`);
+  debug(`Generation process successful!\n`);
 }
 
 describe('Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution', () => {

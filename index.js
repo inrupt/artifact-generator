@@ -8,8 +8,7 @@
 require('mock-local-storage');
 
 const path = require('path');
-const logger = require('debug')('lit-artifact-generator:index');
-const debug = require('debug');
+const debug = require('debug')('lit-artifact-generator:index');
 const yargs = require('yargs');
 const App = require('./src/App');
 const { ARTIFACT_DIRECTORY_ROOT } = require('./src/config/GeneratorConfiguration');
@@ -30,9 +29,7 @@ function validateCommandLine(argv, options) {
   }
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
-      `Unknown command: [${
-        argv._[0]
-      }] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
+      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
     );
   }
   return true;
@@ -138,7 +135,7 @@ const yargsConfig = yargs
     argv => {
       if (!argv.inputResources && !argv.vocabListFile) {
         // this.yargsConfig.showHelp();
-        logger(argv.help);
+        debug(argv.help);
         debug.enable('lit-artifact-generator:*');
         throw new Error(
           "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
@@ -238,7 +235,7 @@ function runGeneration(argv) {
   new App(argv)
     .run()
     .then(data => {
-      logger(
+      debug(
         `\nGeneration process successful to directory [${path.join(
           data.outputDirectory,
           ARTIFACT_DIRECTORY_ROOT
@@ -247,7 +244,7 @@ function runGeneration(argv) {
       process.exit(0);
     })
     .catch(error => {
-      logger(`Generation process failed: [${error}]`);
+      debug(`Generation process failed: [${error}]`);
       process.exit(-1);
     });
 }
@@ -257,11 +254,11 @@ function runInitialization(argv) {
   new App(argv)
     .init()
     .then(data => {
-      logger(`\nSuccessfully initialized config file [${data}]`);
+      debug(`\nSuccessfully initialized config file [${data}]`);
       process.exit(0);
     })
     .catch(error => {
-      logger(`Generation process failed: [${error}]`);
+      debug(`Generation process failed: [${error}]`);
       process.exit(-1);
     });
 }
@@ -271,11 +268,11 @@ function runValidation(argv) {
   new App(argv)
     .validate()
     .then(data => {
-      logger(`\nThe provided configuration is valid`);
+      debug(`\nThe provided configuration is valid`);
       process.exit(0);
     })
     .catch(error => {
-      logger(`Invalid configuration: [${error}]`);
+      debug(`Invalid configuration: [${error}]`);
       process.exit(-1);
     });
 }
@@ -284,7 +281,7 @@ function runWatcher(argv) {
   configureLog(argv);
   const app = new App(argv);
   app.watch();
-  logger(`\nSuccessfully initialized file watcher`);
+  debug(`\nSuccessfully initialized file watcher`);
   console.log('Press Enter to terminate');
   process.stdin.on('data', () => {
     // On user input, exit
