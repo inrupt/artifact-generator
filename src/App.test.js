@@ -19,7 +19,7 @@ const locallyPublishingGenerator = () => {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
-      return Promise.resolve({ stubbed: true, noprompt: true, publishLocal: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, publish: ['local'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
   };
@@ -30,7 +30,7 @@ const remotelyPublishingGenerator = () => {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
-      return Promise.resolve({ stubbed: true, noprompt: true, publishRemote: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, publish: ['remote'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
   };
@@ -44,8 +44,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
-        publishLocal: true,
-        publishRemote: true,
+        publish: ['local', 'remote'],
       });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
@@ -136,7 +135,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishLocal: true,
+        publish: ['local'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -154,7 +153,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishRemote: true,
+        publish: ['remote'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -173,8 +172,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishLocal: true,
-        publishRemote: true,
+        publish: ['local', 'remote'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();

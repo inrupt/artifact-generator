@@ -14,7 +14,8 @@ const DUMMY_JAVA_ARTIFACT = {
 
 const DUMMY_MAVEN_ARTIFACT = {
   groupId: 'org.some.groupId',
-  publishCommand: 'mvn install',
+  publishLocal: 'mvn install',
+  publishRemote: 'mvn deploy',
   template: 'pom.hbs',
 };
 
@@ -80,8 +81,8 @@ describe('Java ArtifactConfig Generator', () => {
     inquirer.prompt.mockImplementation(MAVEN_CONFIG_PROMPT_WITH_REPO);
     const artifact = await new JavaArtifactConfigurator().prompt();
     expect(artifact.packaging[0].repository.length).toEqual(2);
-    expect(artifact.packaging[0].repository[0]).toEqual({ enabled: true, ...DUMMY_RELEASE_REPO });
-    expect(artifact.packaging[0].repository[1]).toEqual({ enabled: true, ...DUMMY_SNAPSHOT_REPO });
+    expect(artifact.packaging[0].repository[0]).toEqual({ ...DUMMY_RELEASE_REPO });
+    expect(artifact.packaging[0].repository[1]).toEqual({ ...DUMMY_SNAPSHOT_REPO });
   });
 
   it('should throw when an unsupported packaging system is prompted', async () => {

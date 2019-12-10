@@ -23,7 +23,9 @@ artifactToGenerate:
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
-        publishLocal: "mvn install"
+        publish: 
+        - key: "local"
+          command: "mvn install"
         packagingTemplates: 
         - template: pom.hbs
           fileName: pom.xml
@@ -41,7 +43,9 @@ artifactToGenerate:
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@lit/"
-        publishLocal: "npm publish --registry http://localhost:4873/"
+        publish: 
+        - key: "local"
+          command: "npm publish --registry http://localhost:4873/"
         packagingTemplates: 
           - template: package.hbs
             fileName: package.json

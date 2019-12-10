@@ -165,7 +165,7 @@ describe('Generator configuration', () => {
       );
 
       expect(
-        generatorConfiguration.configuration.artifactToGenerate[0].packaging[0].publishLocal
+        generatorConfiguration.configuration.artifactToGenerate[0].packaging[0].publish[0].command
       ).toEqual(`npm publish --registry ${registry}`);
     });
   });
