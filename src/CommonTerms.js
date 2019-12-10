@@ -1,3 +1,8 @@
+// We could use our generated LIT Common vocabs here (and originally we
+// did!), but doing that creates a circular dependency since we need the
+// generator to generate that bundled vocab artifact in the first place!
+// So we just create the specific terms we need manually here instead
+// (which is fine, as these vocabs, and their terms, are all extremely stable!).
 const rdf = require('rdf-ext');
 
 const RDF_NAMESPACE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
