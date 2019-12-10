@@ -19,7 +19,7 @@ const locallyPublishingGenerator = () => {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
-      return Promise.resolve({ stubbed: true, noprompt: true, publishLocal: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, publish: ['local'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
   };
@@ -30,7 +30,7 @@ const remotelyPublishingGenerator = () => {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
       // but here it must be set explicitely
-      return Promise.resolve({ stubbed: true, noprompt: true, publishRemote: true });
+      return Promise.resolve({ stubbed: true, noprompt: true, publish: ['remote'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
   };
@@ -44,8 +44,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
-        publishLocal: true,
-        publishRemote: true,
+        publish: ['local', 'remote'],
       });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
@@ -125,13 +124,8 @@ describe('App tests', () => {
       expect(mockedResponse.stubbed).toBe(true);
     });
 
-<<<<<<< HEAD
     it('should publish artifacts if the option is set', async () => {
       debugInstance.disable('lit-artifact-generator:*');
-=======
-    it('should publish artifacts locally if the option is set', async () => {
-      debug.disable('lit-artifact-generator:*');
->>>>>>> Added a 'publishRemote' command, complementary to plublishLocal
 
       ArtifactGenerator.mockImplementation(locallyPublishingGenerator);
 
@@ -141,7 +135,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishLocal: true,
+        publish: ['local'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -150,7 +144,7 @@ describe('App tests', () => {
     });
 
     it('should publish artifacts remotely if the option is set', async () => {
-      debug.disable('lit-artifact-generator:*');
+      debugInstance.disable('lit-artifact-generator:*');
       ArtifactGenerator.mockImplementation(remotelyPublishingGenerator);
 
       const config = {
@@ -159,7 +153,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishRemote: true,
+        publish: ['remote'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -168,7 +162,7 @@ describe('App tests', () => {
     });
 
     it('should publish artifacts both locally and remotely if the options are set', async () => {
-      debug.disable('lit-artifact-generator:*');
+      debugInstance.disable('lit-artifact-generator:*');
 
       ArtifactGenerator.mockImplementation(locallyAndRemotelyPublishingGenerator);
 
@@ -178,8 +172,7 @@ describe('App tests', () => {
         litVocabTermVersion: '1.1.1',
         quiet: false,
         noprompt: true,
-        publishLocal: true,
-        publishRemote: true,
+        publish: ['local', 'remote'],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();

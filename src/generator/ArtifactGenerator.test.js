@@ -326,7 +326,7 @@ describe('Artifact Generator', () => {
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
-        artifactGenerator.runPublish(true);
+        artifactGenerator.runPublish('local');
       });
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
@@ -359,7 +359,7 @@ describe('Artifact Generator', () => {
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
-        artifactGenerator.runPublish(false);
+        artifactGenerator.runPublish('remote');
       });
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
 

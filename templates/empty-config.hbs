@@ -34,8 +34,12 @@ artifactToGenerate:
         {{#if npmModuleScope}}
         npmModuleScope: "{{npmModuleScope}}"
         {{/if}}
-        {{#if publishLocal}}
-        publishLocal: "{{publishLocal}}"
+        {{#if publish}}
+        publish:
+        {{#each publish}}
+        - key: "{{key}}"
+          command: "{{command}}"
+        {{/each}}
         {{/if}}
         packagingTemplates: 
         {{#each packagingTemplates}}

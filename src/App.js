@@ -39,11 +39,10 @@ module.exports = class App {
       .then(CommandLine.askForArtifactToBeNpmInstalled)
       .then(generationData => {
         const publicationData = generationData;
-        if (generationData.publishLocal) {
-          artifactGenerator.runPublish(true);
-        }
-        if (generationData.publishRemote) {
-          artifactGenerator.runPublish(false);
+        if (generationData.publish) {
+          generationData.publish.forEach(publicationConfigKey => {
+            artifactGenerator.runPublish(publicationConfigKey);
+          });
         }
         return publicationData;
       })

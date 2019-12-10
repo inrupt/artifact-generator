@@ -78,8 +78,13 @@ class NodeArtifactConfigurator extends ArtifactConfigurator {
     // Naming the packaging tool makes the finished config file easier to read
     const npmConfig = {
       packagingTool: 'NPM',
-      ...(await inquirer.prompt(NPM_MODULE_PROMPT)),
     };
+    const moduleAndPublish = await inquirer.prompt(NPM_MODULE_PROMPT);
+    npmConfig.npmModuleScope = moduleAndPublish.npmModuleScope;
+    npmConfig.publish = [
+      { key: 'local', command: moduleAndPublish.publishLocal },
+      { key: 'remote', command: moduleAndPublish.publishRemote },
+    ];
     const packagingTemplate = {
       ...(await inquirer.prompt(NPM_PACKAGING_TEMPLATES_PROMPT)),
     };

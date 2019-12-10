@@ -23,7 +23,7 @@ const MAVEN_ARTIFACT_PROMPT = [
   },
   {
     type: 'input',
-    name: 'publishLocal',
+    name: 'publishRemote',
     message: 'Enter the command used to deploy your artifacts to remote repositories',
     default: 'mvn deploy',
   },
@@ -102,8 +102,17 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
     // Naming the packaging tool makes the finished config file easier to read
     const mavenConfig = {
       packagingTool: 'maven',
-      ...(await inquirer.prompt(MAVEN_ARTIFACT_PROMPT)),
     };
+    const groupIdAndRepo = await inquirer.prompt(MAVEN_ARTIFACT_PROMPT);
+    mavenConfig.groupId = groupIdAndRepo.groupId;
+    mavenConfig.publish = [
+      {
+        key: 'local',
+        command: groupIdAndRepo.publishLocal,
+      },
+      { key: 'remote', command: groupIdAndRepo.publishRemote },
+    ];
+
     const packagingTemplate = {
       fileName: 'pom.xml',
       ...(await inquirer.prompt(MAVEN_PACKAGING_TEMPLATES_PROMPT)),
@@ -118,7 +127,6 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
       }
       // The repository is enabled by default
       mavenConfig.repository.push({
-        enabled: true,
         // eslint-disable-next-line no-await-in-loop
         ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT)),
       });

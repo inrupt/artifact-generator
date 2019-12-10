@@ -68,21 +68,12 @@ const yargsConfig = yargs
         )
         .default('runNpmInstall', false)
 
-        .alias('pl', 'publishLocal')
-        .boolean('publishLocal')
+        .alias('p', 'publish')
+        .array('publish')
         .describe(
-          'publishLocal',
-          'If set, will attempt to publish to the configured local registries (Verdaccio, Maven Local, etc).'
+          'publish',
+          'the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag.'
         )
-        .default('publishLocal', false)
-
-        .alias('pr', 'publishRemote')
-        .boolean('publishRemote')
-        .describe(
-          'publishRemote',
-          'If set, will attempt to publish to the configured remote registries (NPM, Maven Central, etc).'
-        )
-        .default('publishRemote', false)
 
         .alias('b', 'bumpVersion')
         .describe(

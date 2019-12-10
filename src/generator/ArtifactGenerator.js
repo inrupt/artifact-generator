@@ -6,6 +6,7 @@ const ChildProcess = require('child_process');
 const FileGenerator = require('./FileGenerator');
 const VocabGenerator = require('./VocabGenerator');
 const Resource = require('../Resource');
+const { DEFAULT_PUBLISH_KEY } = require('../config/GeneratorConfiguration');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
@@ -105,7 +106,7 @@ class ArtifactGenerator {
         }, artifactsOutdated);
       });
       if (!artifactsOutdated) {
-        logger(
+        debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
             ARTIFACT_DIRECTORY_ROOT
@@ -214,14 +215,14 @@ class ArtifactGenerator {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: 'maven',
         groupId: artifactDetails.javaPackageName,
-        publishLocal: 'mvn install',
+        publish: [{ key: 'local', command: 'mvn install' }],
         packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
       });
     } else if (artifactDetails.programmingLanguage === 'Javascript') {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: 'npm',
         npmModuleScope: '@lit/',
-        publishLocal: 'npm publish --registry http://localhost:4873/',
+        publish: [{ key: 'local', command: 'npm publish --registry http://localhost:4873/' }],
         packagingTemplates: [
           { template: 'package.hbs', fileName: 'package.json' },
           { template: 'index.hbs', fileName: 'index.js' },
@@ -237,24 +238,27 @@ class ArtifactGenerator {
   /**
    * Executes the publication commands associated to a specific artifact.
    * @param {*} artifact
-   * @param {boolean} local if true, the publication is local, and remote otherwise
+   * @param {string} key identifier for the publication configuration
    */
-  static publishArtifact(artifact, local) {
+  static publishArtifact(artifact, key) {
     const homeDir = process.cwd();
     if (artifact.packaging) {
-      for (let j = 0; j < artifact.packaging.length; j += 1) {
-        const publicationCommand = local
-          ? artifact.packaging[j].publishLocal
-          : artifact.packaging[j].publishRemote;
-        if (publicationCommand) {
-          process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
-          debug(
-            `Running command [${publicationCommand}] to publish artifact [${
-              local ? 'locally' : 'remotely'
-            }]`
-          );
-          ChildProcess.execSync(publicationCommand);
-          process.chdir(homeDir);
+      for (let i = 0; i < artifact.packaging.length; i += 1) {
+        // The artifact contains packaging configuration, each of which does not necessarily encompass publication options
+        const publishConfigs = artifact.packaging[i].publish;
+        if (publishConfigs) {
+          for (let j = 0; j < publishConfigs.length; j += 1) {
+            if (publishConfigs[j].key === key || publishConfigs[j].key === DEFAULT_PUBLISH_KEY) {
+              // A special case: when the user uses the --publish option via a CLI configuration, no key
+              // is associated to the publication config by the user, so the DEFAULT_PUBLISH_KEY is set.
+              process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
+              debug(
+                `Running command [${publishConfigs[j].command}] to publish artifact according to [${publishConfigs[j].key}] configuration `
+              );
+              ChildProcess.execSync(publishConfigs[j].command);
+              process.chdir(homeDir);
+            }
+          }
         }
       }
     }
@@ -262,16 +266,16 @@ class ArtifactGenerator {
 
   /**
    * Executes the publication commands associated to all the declared artifacts.
-   * @param {boolean} local if true, the publication targets local repositories, and remote repositories otherwise
+   * @param {string} key this key identifies the desired publication configuration
    */
-  runPublish(local) {
+  runPublish(key) {
     const generationData = this.configuration.configuration;
     // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
     // Ideally, new processes should be spawned, each running a packaging command, but the fork
     // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
     // so it is more work than expected. Running it sequentially is fine for now.
     for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i], local);
+      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i], key);
     }
     return generationData;
   }
