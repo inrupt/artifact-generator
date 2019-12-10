@@ -8,7 +8,7 @@
 require('mock-local-storage');
 
 const path = require('path');
-const debug = require('debug')('lit-artifact-generator:index');
+const debugInstance = require('debug');
 const yargs = require('yargs');
 const App = require('./src/App');
 const { ARTIFACT_DIRECTORY_ROOT } = require('./src/config/GeneratorConfiguration');
@@ -18,6 +18,8 @@ const {
   COMMAND_WATCH,
   COMMAND_VALIDATE,
 } = require('./src/App');
+
+const debug = debugInstance('lit-artifact-generator:index');
 
 const SUPPORTED_COMMANDS = [COMMAND_GENERATE, COMMAND_INITIALIZE, COMMAND_WATCH, COMMAND_VALIDATE];
 
@@ -135,8 +137,8 @@ const yargsConfig = yargs
     argv => {
       if (!argv.inputResources && !argv.vocabListFile) {
         // this.yargsConfig.showHelp();
-        debug(argv.help);
-        debug.enable('lit-artifact-generator:*');
+        debugInstance(argv.help);
+        debugInstance.enable('lit-artifact-generator:*');
         throw new Error(
           "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
         );
@@ -219,13 +221,13 @@ function configureLog(argv) {
   // haven't been, then turn them all on,
   if (!argv.quiet) {
     // Retrieve all currently enabled debug namespaces (and then restore them!).
-    const namespaces = debug.disable();
-    debug.enable(namespaces);
+    const namespaces = debugInstance.disable();
+    debugInstance.enable(namespaces);
 
     // Unless our generator's debug logging has been explicitly configured, turn
     // all debugging on.
     if (namespaces.indexOf('lit-artifact-generator') === -1) {
-      debug.enable('lit-artifact-generator:*');
+      debugInstance.enable('lit-artifact-generator:*');
     }
   }
 }
@@ -282,10 +284,13 @@ function runWatcher(argv) {
   const app = new App(argv);
   app.watch();
   debug(`\nSuccessfully initialized file watcher`);
+
+  // Use console to communicate with the user - we can't rely on 'debug' since
+  // it needs to be configured before it'll output anything.
   console.log('Press Enter to terminate');
   process.stdin.on('data', () => {
     // On user input, exit
-    console.log('Stopping watcher');
+    debug('Stopping watcher');
     app.unwatch();
     process.exit(0);
   });
