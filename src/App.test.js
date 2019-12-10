@@ -1,5 +1,5 @@
 require('mock-local-storage');
-const debug = require('debug');
+const debugInstance = require('debug');
 const fs = require('fs');
 const path = require('path');
 
@@ -68,7 +68,7 @@ describe('App tests', () => {
 
   describe('Testing mocked generator...', () => {
     it('should pass through in non-quiet mode (with DEBUG setting too)', async () => {
-      debug.enable('lit-artifact-generator:*');
+      debugInstance.enable('lit-artifact-generator:*');
 
       const config = {
         _: ['generate'],
@@ -84,7 +84,7 @@ describe('App tests', () => {
     });
 
     it('should pass through in non-quiet mode', async () => {
-      debug.disable('lit-artifact-generator:*');
+      debugInstance.disable('lit-artifact-generator:*');
 
       const config = {
         _: ['generate'],
@@ -100,7 +100,7 @@ describe('App tests', () => {
     });
 
     it('should publish artifacts if the option is set', async () => {
-      debug.disable('lit-artifact-generator:*');
+      debugInstance.disable('lit-artifact-generator:*');
 
       ArtifactGenerator.mockImplementation(publishingGenerator);
 
@@ -119,7 +119,7 @@ describe('App tests', () => {
     });
 
     it('should not publish artifacts if not asked to', async () => {
-      debug.disable('lit-artifact-generator:*');
+      debugInstance.disable('lit-artifact-generator:*');
 
       const config = {
         _: ['generate'],
