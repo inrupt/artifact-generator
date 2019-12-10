@@ -105,7 +105,7 @@ class ArtifactGenerator {
         }, artifactsOutdated);
       });
       if (!artifactsOutdated) {
-        logger(
+        debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
             ARTIFACT_DIRECTORY_ROOT

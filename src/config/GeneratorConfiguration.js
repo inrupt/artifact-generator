@@ -107,26 +107,7 @@ class GeneratorConfiguration {
         );
       }
     }
-    // The following branctermSelectionFilehes set the same property of the normalized configuration,
-    // namely `termSelectionResource`, potentially from two different options
-    // of the initial config (termSelectionResource or termSelectionFile)
-    if (vocabConfig.termSelectionFile) {
-      // Legacy option support
-      logger(
-        `WARNING: Deprecated [termSelectionFile] option specified for [${
-          vocabConfig.inputResources[0]
-        }], please update to [termSelectionResource]`
-      );
-      normalizedVocabConfig.termSelectionResource = path.join(
-        path.dirname(normalizedYamlPath),
-        GeneratorConfiguration.normalizeAbsolutePath(
-          vocabConfig.termSelectionFile,
-          path.dirname(normalizedYamlPath)
-        )
-      );
-      // The legacy term is removed from the configuration
-      delete normalizedVocabConfig.termSelectionFile;
-    } else if (vocabConfig.termSelectionResource) {
+    if (vocabConfig.termSelectionResource) {
       normalizedVocabConfig.termSelectionResource = path.join(
         path.dirname(normalizedYamlPath),
         GeneratorConfiguration.normalizeAbsolutePath(
