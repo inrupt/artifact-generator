@@ -16,8 +16,15 @@ const NPM_MODULE_PROMPT = [
   {
     type: 'input',
     name: 'publishLocal',
-    message: 'Enter the command used to install your artifacts',
+    message:
+      'Enter the command used to publish your artifacts locally (this can be used by the watcher on each modification of the vocabulary)',
     default: 'npm publish --registry http://localhost:4873',
+  },
+  {
+    type: 'input',
+    name: 'publishRemote',
+    message: 'Enter the command used to publish your artifacts to a remote registry',
+    default: 'npm publish',
   },
 ];
 
@@ -71,8 +78,13 @@ class NodeArtifactConfigurator extends ArtifactConfigurator {
     // Naming the packaging tool makes the finished config file easier to read
     const npmConfig = {
       packagingTool: 'NPM',
-      ...(await inquirer.prompt(NPM_MODULE_PROMPT)),
     };
+    const moduleAndPublish = await inquirer.prompt(NPM_MODULE_PROMPT);
+    npmConfig.npmModuleScope = moduleAndPublish.npmModuleScope;
+    npmConfig.publish = [
+      { key: 'local', command: moduleAndPublish.publishLocal },
+      { key: 'remote', command: moduleAndPublish.publishRemote },
+    ];
     const packagingTemplate = {
       ...(await inquirer.prompt(NPM_PACKAGING_TEMPLATES_PROMPT)),
     };

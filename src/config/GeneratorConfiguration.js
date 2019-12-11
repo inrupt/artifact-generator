@@ -10,6 +10,7 @@ const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require('../App');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const DEFAULT_PUBLISH_KEY = '_default';
 
 const WEBPACK_DEFAULT = {
   packagingTool: 'webpack',
@@ -29,7 +30,7 @@ const WEBPACK_DEFAULT = {
 const NPM_DEFAULT = {
   packagingTool: 'npm',
   npmModuleScope: '@lit/',
-  publishLocal: 'npm publish --registry https://localhost:4873',
+  publish: [{ key: 'local', command: 'npm publish --registry https://localhost:4873' }],
   packagingTemplates: [
     {
       template: 'package.hbs',
@@ -250,7 +251,9 @@ class GeneratorConfiguration {
     const packagingInfo = NPM_DEFAULT;
     // If the registry is set in the command line, override default
     if (args.npmRegistry) {
-      packagingInfo.publishLocal = `npm publish --registry ${args.npmRegistry}`;
+      packagingInfo.publish = [
+        { key: DEFAULT_PUBLISH_KEY, command: `npm publish --registry ${args.npmRegistry}` },
+      ];
     }
     // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since
     //  objects are copied by reference, and the tests are run in parallel, it
@@ -326,3 +329,4 @@ class GeneratorConfiguration {
 module.exports = GeneratorConfiguration;
 module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;
 module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
+module.exports.DEFAULT_PUBLISH_KEY = DEFAULT_PUBLISH_KEY;

@@ -68,20 +68,12 @@ const yargsConfig = yargs
         )
         .default('runNpmInstall', false)
 
-        .alias('pl', 'publishLocal')
-        .boolean('publishLocal')
+        .alias('p', 'publish')
+        .array('publish')
         .describe(
-          'publishLocal',
-          'If set, will attempt to publish to the configured local registries (Verdaccio, Maven Local, etc).'
+          'publish',
+          'the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag.'
         )
-        .default('publishLocal', false)
-
-        .boolean('runMavenInstall')
-        .describe(
-          'runMavenInstall',
-          'If set, will attempt to install the generated artifact from within the output directory in the local Maven repository.'
-        )
-        .default('runMavenInstall', false)
 
         .alias('b', 'bumpVersion')
         .describe(

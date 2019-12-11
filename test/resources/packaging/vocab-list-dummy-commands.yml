@@ -26,7 +26,11 @@ artifactToGenerate:
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publishLocal: "touch mvn-publish"
+        publish: 
+        - key: "local"
+          command: "touch mvn-publishLocal"
+        - key: "remote"
+          command: "touch mvn-publishRemote"
         packagingTemplates: 
         - template: pom.hbs
           fileName: pom.xml
@@ -47,7 +51,11 @@ artifactToGenerate:
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publishLocal: "touch npm-publish"
+        publish: 
+        - key: "local"
+          command: "touch npm-publishLocal"
+        - key: "remote"
+          command: "touch npm-publishRemote"
         packagingTemplates: 
           - template: package.hbs
             fileName: package.json

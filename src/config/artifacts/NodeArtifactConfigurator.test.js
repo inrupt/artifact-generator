@@ -13,7 +13,8 @@ const DUMMY_JS_ARTIFACT = {
 
 const DUMMY_NPM_MODULE = {
   npmModuleScope: '@test/scope',
-  publishCommand: 'npm install',
+  publishLocal: 'npm install',
+  publishRemote: 'npm install',
   packageTemplate: 'package.hbs',
   indexTemplate: 'index.hbs',
 };
