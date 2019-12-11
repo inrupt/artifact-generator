@@ -6,6 +6,18 @@
 
 # The name is shared among all the artifacts
 artifactName: {{artifactName}}
+{{#if versioning}}
+versioning:
+  type: {{versioning.type}}
+  url: {{versioning.url}}
+  {{#if versioning.associatedFiles}}
+  associatedFiles: 
+  {{#each versioning.associatedFiles}}
+    - template: "{{template}}"
+      fileName: "{{fileName}}"
+  {{/each}}
+  {{/if}}
+{{/if}}
 
 artifactToGenerate:
   {{#each artifactToGenerate}}

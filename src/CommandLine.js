@@ -3,7 +3,6 @@ const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const debug = require('debug')('lit-artifact-generator:CommandLine');
 
-
 const {
   ARTIFACT_DIRECTORY_ROOT,
   ARTIFACT_DIRECTORY_SOURCE_CODE,

@@ -3,6 +3,7 @@ const path = require('path');
 const Handlebars = require('handlebars');
 const debug = require('debug')('lit-artifact-generator:FileGenerator');
 
+const ARTIFACT_DIRECTORY_ROOT = './Generated';
 // TODO: Is this redundant with the language-specific ArtifactConfigurator ?
 const SUPPORTED_LANGUAGES = ['Java', 'Javascript'];
 
@@ -121,21 +122,27 @@ class FileGenerator {
       );
     });
 
-    FileGenerator.createSharedPackagedFiles(generalInfo, artifactInfo);
+    FileGenerator.createSharedPackagedFiles(generalInfo);
     return generalInfo;
+  }
+
+  static createVersioningFiles(generalInfo) {
+    if (generalInfo.versioning && generalInfo.versioning.associatedFiles) {
+      generalInfo.versioning.associatedFiles.forEach(associatedFile => {
+        FileGenerator.createFileFromTemplate(
+          path.join('..', '..', 'templates', associatedFile.template),
+          generalInfo,
+          path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, associatedFile.fileName)
+        );
+      });
+    }
   }
 
   /**
    * This function creates the files that are share in all the packaging (README, .gitignore...)
    * @param {*} argv the generation variables
    */
-  static createSharedPackagedFiles(generalInfo, artifactInfo) {
-    FileGenerator.createFileFromTemplate(
-      '../../templates/.gitignore.hbs',
-      generalInfo,
-      `${artifactInfo.outputDirectoryForArtifact}/.gitignore`
-    );
-
+  static createSharedPackagedFiles(generalInfo) {
     // For our README (which uses Markdown format), if our artifact was made up
     // of multiple vocabs, break up our description into a list representation.
     // TODO: if a vocab description contains a newline, this will split it out
@@ -147,7 +154,7 @@ class FileGenerator {
     FileGenerator.createFileFromTemplate(
       '../../templates/README.hbs',
       dataWithMarkdownDescription,
-      `${artifactInfo.outputDirectoryForArtifact}/README.MD`
+      path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, 'README.md')
     );
   }
 
