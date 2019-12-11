@@ -104,6 +104,36 @@ describe('Generator configuration', () => {
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_YAML);
     });
+
+    it('should normalize paths relative to the YAML file', async () => {
+      const yamlPath = './test/resources/normalization/';
+      const generatorConfiguration = new GeneratorConfiguration(
+        {
+          _: ['generate'],
+          vocabListFile: path.join(yamlPath, 'vocab-list.yml'),
+          noprompt: true,
+        },
+        undefined
+      );
+
+      const normalizedConfig = generatorConfiguration.configuration;
+
+      // Templates paths should be normalized wrt the module root
+      expect(normalizedConfig.artifactToGenerate[0].handlebarsTemplate).toEqual(
+        'templates/java-rdf4j.hbs'
+      );
+      expect(
+        normalizedConfig.artifactToGenerate[0].packaging[0].packagingTemplates[0].template
+      ).toEqual('templates/pom.hbs');
+      expect(
+        normalizedConfig.artifactToGenerate[0].packaging[0].packagingTemplates[1].template
+      ).toEqual(path.join(yamlPath, '../../readme.hbs'));
+      expect(normalizedConfig.artifactToGenerate[1].handlebarsTemplate).toEqual(
+        path.join(yamlPath, '../anotherTemplateDirectory/javascript.hbs')
+      );
+
+      expect(generatorConfiguration.configuration.noprompt).toBe(true);
+    });
   });
 
   describe('Processing command line.', () => {

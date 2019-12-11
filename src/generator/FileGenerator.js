@@ -8,10 +8,14 @@ const ARTIFACT_DIRECTORY_ROOT = './Generated';
 const SUPPORTED_LANGUAGES = ['Java', 'Javascript'];
 
 class FileGenerator {
+  /**
+   *
+   * @param {string} templateFile path to the template file
+   * @param {*} templateData
+   * @param {*} outputFile
+   */
   static createFileFromTemplate(templateFile, templateData, outputFile) {
-    // To support running from any arbitrary directory, reference our templates relative to this file, and not the
-    // current working directory.
-    const data = fs.readFileSync(`${__dirname}/${templateFile}`);
+    const data = fs.readFileSync(templateFile);
 
     const template = Handlebars.compile(data.toString());
     const contents = template(templateData);
@@ -80,7 +84,7 @@ class FileGenerator {
     const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
     FileGenerator.createDirectory(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
-      `../../templates/${artifactDetails.handlebarsTemplate}`,
+      `${artifactDetails.handlebarsTemplate}`,
       // Some artifact-specific info may be required in the template (e.g. the java package name)
       FileGenerator.formatTemplateData(
         { ...templateData, ...artifactDetails },
@@ -112,7 +116,7 @@ class FileGenerator {
     }
     packagingInfo.packagingTemplates.forEach(packagingFile => {
       FileGenerator.createFileFromTemplate(
-        `../../templates/${packagingFile.template}`,
+        `${packagingFile.template}`,
         FileGenerator.formatTemplateData(
           { ...generalInfo, ...artifactInfo, ...packagingInfo },
           // extname returns the extension prefixed with ., that we want to remove
@@ -152,7 +156,7 @@ class FileGenerator {
       : generalInfo;
 
     FileGenerator.createFileFromTemplate(
-      '../../templates/README.hbs',
+      `${__dirname}/../../templates/README.hbs`,
       dataWithMarkdownDescription,
       path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, 'README.md')
     );

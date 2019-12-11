@@ -9,7 +9,7 @@ const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
 const VocabWatcher = require('./VocabWatcher');
 
-const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
+const { DEFAULT_CONFIG_TEMPLATE_PATH } = require('./generator/ConfigFileGenerator');
 
 const UNCALLED_PUBLISH_FUNCTION = jest.fn();
 const CALLED_PUBLISH_FUNCTION = jest.fn();

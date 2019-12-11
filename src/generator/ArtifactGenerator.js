@@ -10,7 +10,7 @@ const { DEFAULT_PUBLISH_KEY } = require('../config/GeneratorConfiguration');
 
 const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
-const ARTIFACTS_INFO_TEMPLATE = '../../templates/artifacts-info.hbs';
+const ARTIFACTS_INFO_TEMPLATE = path.join(__dirname, '..', '..', 'templates', 'artifacts-info.hbs');
 const ARTIFACTS_INFO_FILENAME = '.artifacts-info.txt';
 
 class ArtifactGenerator {
@@ -217,7 +217,12 @@ class ArtifactGenerator {
         packagingTool: 'maven',
         groupId: artifactDetails.javaPackageName,
         publish: [{ key: 'local', command: 'mvn install' }],
-        packagingTemplates: [{ template: 'pom.hbs', fileName: 'pom.xml' }],
+        packagingTemplates: [
+          {
+            template: path.join(__dirname, '..', '..', 'templates', 'pom.hbs'),
+            fileName: 'pom.xml',
+          },
+        ],
       });
     } else if (artifactDetails.programmingLanguage === 'Javascript') {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
@@ -225,8 +230,14 @@ class ArtifactGenerator {
         npmModuleScope: '@lit/',
         publish: [{ key: 'local', command: 'npm publish --registry http://localhost:4873/' }],
         packagingTemplates: [
-          { template: 'package.hbs', fileName: 'package.json' },
-          { template: 'index.hbs', fileName: 'index.js' },
+          {
+            template: path.join(__dirname, '..', '..', 'templates', 'package.hbs'),
+            fileName: 'package.json',
+          },
+          {
+            template: path.join(__dirname, '..', '..', 'templates', 'index.hbs'),
+            fileName: 'index.js',
+          },
         ],
       });
     } else {
