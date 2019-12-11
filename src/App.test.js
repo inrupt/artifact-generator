@@ -18,7 +18,7 @@ const locallyPublishingGenerator = () => {
   return {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
-      // but here it must be set explicitely
+      // but here it must be set explicitly.
       return Promise.resolve({ stubbed: true, noprompt: true, publish: ['local'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
@@ -29,7 +29,7 @@ const remotelyPublishingGenerator = () => {
   return {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
-      // but here it must be set explicitely
+      // but here it must be set explicitly.
       return Promise.resolve({ stubbed: true, noprompt: true, publish: ['remote'] });
     },
     runPublish: CALLED_PUBLISH_FUNCTION,
@@ -40,7 +40,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
   return {
     generate: async () => {
       // In a non-mocked setting, the `publish` option passes through the `generate` function,
-      // but here it must be set explicitely
+      // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
