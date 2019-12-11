@@ -21,7 +21,6 @@ const CONFIG_TEMPLATE_PATH = '../../templates/empty-config.hbs';
 const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
 
 // Default values
-const DEFAULT_AUTHOR = 'Cleopatra (https://cleopatra.solid.community/profile/card#me)';
 const DEFAULT_ADD_VOCAB = false;
 
 const GENERAL_QUESTIONS = [
@@ -29,12 +28,6 @@ const GENERAL_QUESTIONS = [
     type: 'input',
     name: 'artifactName',
     message: 'Name of the artifacts:',
-  },
-  {
-    type: 'input',
-    name: 'authorSet',
-    message: 'Artifact authors:',
-    default: DEFAULT_AUTHOR,
   },
 ];
 

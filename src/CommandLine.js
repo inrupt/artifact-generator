@@ -2,7 +2,7 @@ const path = require('path');
 const inquirer = require('inquirer');
 const ChildProcess = require('child_process');
 const debug = require('debug')('lit-artifact-generator:CommandLine');
-const { DEFAULT_AUTHOR } = require('./DatasetHandler');
+
 
 const {
   ARTIFACT_DIRECTORY_ROOT,
@@ -20,35 +20,6 @@ module.exports = class CommandLine {
       name: 'litVocabTermVersion',
       message: 'Version string for LIT Vocab Term dependency ...',
     });
-  }
-
-  static async askForArtifactInfo(data) {
-    if (data.noprompt) {
-      return CommandLine.findPublishedVersionOfModule(data);
-    }
-
-    const mergedData = { ...data };
-
-    if (!data.artifactName) {
-      const promptedName = await inquirer.prompt({
-        type: 'input',
-        name: 'artifactName',
-        message: 'Artifact name ...',
-      });
-      mergedData.artifactName = promptedName.artifactName;
-    }
-
-    if (!data.authorSet || (data.authorSet.size === 1 && data.authorSet.has(DEFAULT_AUTHOR))) {
-      const authors = await inquirer.prompt({
-        type: 'input',
-        name: 'authorSet',
-        message: 'Artifact authors ...',
-        default: DEFAULT_AUTHOR,
-      });
-      mergedData.authorSet = new Set([authors.authorSet]);
-    }
-
-    return CommandLine.findPublishedVersionOfModule(mergedData);
   }
 
   static findPublishedVersionOfModule(data) {

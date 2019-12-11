@@ -20,7 +20,6 @@ const REFERENCE_DEFAULT_YAML = './test/resources/expectedOutputs/default-lit-voc
 
 // Config components
 const ARTIFACT_NAME = 'myNewArtifact';
-const AUTHOR_SET = 'Cleopatra (https://cleopatra.solid.community/profile/card#me)';
 const PROMPTED_JAVA_ARTIFACT = {
   artifactVersion: '0.1.0',
   litVocabTermVersion: '0.1.0-SNAPSHOT',
@@ -43,14 +42,12 @@ const COMPLETE_VOCAB = {
 
 const COMPLETE_CONFIG = {
   artifactName: ARTIFACT_NAME,
-  authorSet: AUTHOR_SET,
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
   vocabList: [COMPLETE_VOCAB],
 };
 
 const SAMPLE_CONFIG = {
   artifactName: ARTIFACT_NAME,
-  authorSet: AUTHOR_SET,
   artifactToGenerate: [],
   vocabList: [],
 };
@@ -60,7 +57,7 @@ const INVALID_CONFIG = {};
 const MOCK_CONFIG_PROMPT = jest
   .fn()
   // General prompt
-  .mockReturnValueOnce(Promise.resolve({ artifactName: ARTIFACT_NAME, authorSet: AUTHOR_SET }))
+  .mockReturnValueOnce(Promise.resolve({ artifactName: ARTIFACT_NAME }))
   .mockReturnValueOnce(Promise.resolve({ languages: ['Java'] }))
   .mockReturnValueOnce(Promise.resolve(PROMPTED_JAVA_ARTIFACT))
   .mockReturnValueOnce(Promise.resolve({ addVocab: true }))

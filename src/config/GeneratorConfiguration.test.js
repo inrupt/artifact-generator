@@ -26,7 +26,7 @@ const EXPECTED_VOCAB_LIST_FROM_CLI = [
   },
 ];
 
-const MOCKED_USER_INPUT = { authorSet: 'Cleopatra', artifactName: 'someName' };
+const MOCKED_USER_INPUT = { artifactName: 'someName' };
 
 describe('Generator configuration', () => {
   describe('Processing vocab list file.', () => {
@@ -127,14 +127,12 @@ describe('Generator configuration', () => {
           _: ['generate'],
           inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
           moduleNamePrefix: '@lit/generated-vocab-',
-          authorSet: new Set(['Cleopatra']),
           noprompt: true,
         },
         undefined
       );
 
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
-      expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_CLI);
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(DEFAULT_CLI_ARTIFACT);
     });
@@ -149,7 +147,6 @@ describe('Generator configuration', () => {
           _: ['generate'],
           inputResources: [absolutePath],
           moduleNamePrefix: '@lit/generated-vocab-',
-          authorSet: new Set(['Cleopatra']),
           noprompt: true,
         },
         undefined
@@ -164,7 +161,6 @@ describe('Generator configuration', () => {
           _: ['generate'],
           inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
           moduleNamePrefix: '@lit/generated-vocab-',
-          authorSet: new Set(['Cleopatra']),
           noprompt: true,
           npmRegistry: 'http://my.registry.ninja',
         },
@@ -178,18 +174,6 @@ describe('Generator configuration', () => {
   });
 
   describe('Additional questions.', () => {
-    it('should set missing information when prompting questions', async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
-
-      const generatorConfiguration = new GeneratorConfiguration({
-        vocabListFile: './test/resources/vocabs/vocab-list-missing-author.yml',
-      });
-      await generatorConfiguration.askAdditionalQuestions();
-      expect(generatorConfiguration.configuration.authorSet).toEqual(new Set(['Cleopatra']));
-    });
-
     it('should fail when not providing info and preventing prompt', async () => {
       inquirer.prompt.mockImplementation(
         jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
