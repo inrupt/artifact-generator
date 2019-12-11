@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const path = require('path');
 const FileGenerator = require('./FileGenerator');
 
 // Configuration generators.
@@ -21,9 +22,15 @@ const SUPPORTED_LANGUAGES = {};
 SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfigurator;
 SUPPORTED_LANGUAGES[JAVASCRIPT] = NodeArtifactConfigurator;
 
-// Templates.
-const CONFIG_TEMPLATE_PATH = '../../templates/empty-config.hbs';
-const DEFAULT_CONFIG_TEMPLATE_PATH = '../../templates/initial-config.hbs';
+// Templates
+const CONFIG_TEMPLATE_PATH = path.join(__dirname, '..', '..', 'templates', 'empty-config.hbs');
+const DEFAULT_CONFIG_TEMPLATE_PATH = path.join(
+  __dirname,
+  '..',
+  '..',
+  'templates',
+  'initial-config.hbs'
+);
 
 // Default values.
 const DEFAULT_ADD_VOCAB = false;
@@ -234,4 +241,8 @@ class ConfigFileGenerator {
 
 module.exports.ConfigFileGenerator = ConfigFileGenerator;
 module.exports.validateLanguageCheckboxes = validateLanguageCheckboxes;
+<<<<<<< HEAD
 module.exports.validateRepositoryCheckboxes = validateRepositoryCheckboxes;
+=======
+module.exports.DEFAULT_CONFIG_TEMPLATE_PATH = DEFAULT_CONFIG_TEMPLATE_PATH;
+>>>>>>> Made it possible to have custom templates relative to the yaml file

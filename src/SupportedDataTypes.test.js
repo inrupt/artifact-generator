@@ -2,6 +2,7 @@ require('mock-local-storage');
 
 const fs = require('fs');
 const del = require('del');
+const path = require('path');
 
 const VocabGenerator = require('./generator/VocabGenerator');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
@@ -26,7 +27,7 @@ describe('Supported Data Type', () => {
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        handlebarsTemplate: path.join(__dirname, '..', 'templates', 'javascript-rdf-ext.hbs'),
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript,
@@ -71,7 +72,7 @@ describe('Supported Data Type', () => {
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        handlebarsTemplate: path.join(__dirname, '..', 'templates', 'javascript-rdf-ext.hbs'),
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript,
@@ -113,7 +114,7 @@ describe('Supported Data Type', () => {
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        handlebarsTemplate: path.join(__dirname, '..', 'templates', 'javascript-rdf-ext.hbs'),
         sourceFileExtension: 'js',
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript,

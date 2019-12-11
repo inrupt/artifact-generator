@@ -1,6 +1,8 @@
 jest.mock('inquirer');
 const inquirer = require('inquirer');
 
+const path = require('path');
+
 require('mock-local-storage');
 const ArtifactConfigurator = require('./ArtifactConfigurator');
 const {
@@ -27,7 +29,7 @@ const DUMMY_MAVEN_ARTIFACT = {
   ...DUMMY_JAVA_ARTIFACT,
   groupId: 'org.some.groupId',
   publishCommand: 'mvn install',
-  template: 'pom.hbs',
+  template: path.join(__dirname, '..', 'templates', 'pom.hbs'),
 };
 
 const UNSUPPORTED_CONFIG_PROMPT = jest

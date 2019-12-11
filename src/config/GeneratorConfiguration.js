@@ -12,16 +12,19 @@ const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
 const DEFAULT_PUBLISH_KEY = '_default';
 
+// This is the path to the template directory
+const RELATIVE_TEMPLATE_DIRECTORY = path.join('..', '..', 'templates');
+
 const WEBPACK_DEFAULT = {
   packagingTool: 'webpack',
   packagingFolder: 'config',
   packagingTemplates: [
     {
-      template: 'webpack.dev.config.hbs',
+      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'webpack.dev.config.hbs'),
       fileName: 'webpack.dev.config.js',
     },
     {
-      template: 'webpack.prod.config.hbs',
+      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'webpack.prod.config.hbs'),
       fileName: 'webpack.prod.config.js',
     },
   ],
@@ -33,11 +36,11 @@ const NPM_DEFAULT = {
   publish: [{ key: 'local', command: 'npm publish --registry https://localhost:4873' }],
   packagingTemplates: [
     {
-      template: 'package.hbs',
+      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'package.hbs'),
       fileName: 'package.json',
     },
     {
-      template: 'index.hbs',
+      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'index.hbs'),
       fileName: 'index.js',
     },
   ],
@@ -47,7 +50,7 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: 'Javascript',
     artifactDirectoryName: 'Javascript',
-    handlebarsTemplate: 'javascript-rdf-ext.hbs',
+    handlebarsTemplate: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'javascript-rdf-ext.hbs'),
     sourceFileExtension: 'js',
     packaging: [NPM_DEFAULT],
   },
@@ -81,21 +84,10 @@ class GeneratorConfiguration {
     this.configuration.generatorVersion = packageDotJson.version;
   }
 
-  /**
-   *  This function makes the local vocabulary path relative to the root of the project,
-   *  rather that to the configuration file. It makes it consistent with vocabularies passed
-   *  on the command line.
-   * @param {*} vocabConfig the path of the vocabulary, relative to the YAML config
-   * @param {*} yamlPath the path of the YAML config, relative to the project root
-   */
-  static normalizePath(vocabConfig, yamlPath) {
+  static normalizeInputResources(vocabConfig, normalizedYamlPath) {
     const normalizedVocabConfig = vocabConfig;
-    const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
-      yamlPath,
-      process.cwd()
-    );
     for (let i = 0; i < vocabConfig.inputResources.length; i += 1) {
-      if (!vocabConfig.inputResources[i].startsWith('http')) {
+      if (!normalizedVocabConfig.inputResources[i].startsWith('http')) {
         // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
         normalizedVocabConfig.inputResources[i] = path.join(
@@ -108,6 +100,121 @@ class GeneratorConfiguration {
         );
       }
     }
+    return normalizedVocabConfig;
+  }
+
+  /**
+   * This function checks if the provided resourcePath is a single filename
+   * (e.g. example.hbs), or a path (e.g. ./templates/example.hbs).
+   * @param {string} resourcePath
+   * @returns a boolean
+   */
+  static isPlainFilename(resourcePath) {
+    // TODO: as of now, online templates are not supported.
+    // If the basename is identical to the full path, the provided argument
+    // is just a file name
+    return path.basename(resourcePath) === resourcePath;
+  }
+
+  static normalizeTemplatePath(templatePath, normalizedYamlPath) {
+    let normalizedTemplate = templatePath;
+    if (GeneratorConfiguration.isPlainFilename(templatePath)) {
+      // If the template is just a file name, it must be resolved to the default
+      // templates directory
+      normalizedTemplate = GeneratorConfiguration.normalizeAbsolutePath(
+        path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, templatePath),
+        process.cwd()
+      );
+    } else {
+      normalizedTemplate = path.join(
+        path.dirname(normalizedYamlPath),
+        // Templates are all made relative to the YAML file
+        GeneratorConfiguration.normalizeAbsolutePath(
+          normalizedTemplate,
+          path.dirname(normalizedYamlPath)
+        )
+      );
+    }
+    return normalizedTemplate;
+  }
+
+  /**
+   * Normalizes all paths in an artifact config (source file templates,
+   * packaging templates)
+   * @param {*} artifactConfig
+   * @param {string} normalizedYamlPath
+   */
+  static normalizeArtifactTemplates(artifactConfig, normalizedYamlPath) {
+    const normalizedArtifactConfig = artifactConfig;
+    normalizedArtifactConfig.handlebarsTemplate = GeneratorConfiguration.normalizeTemplatePath(
+      artifactConfig.handlebarsTemplate,
+      normalizedYamlPath
+    );
+    if (normalizedArtifactConfig.packaging) {
+      normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
+        packagingConfig => {
+          const normalizedPackagingConfig = packagingConfig;
+          if (packagingConfig.packagingTemplates) {
+            normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
+              packagingTemplate => {
+                const normalizedPackagingTemplate = packagingTemplate;
+                normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
+                  packagingTemplate.template,
+                  normalizedYamlPath
+                );
+                return normalizedPackagingTemplate;
+              }
+            );
+          }
+          return normalizedPackagingConfig;
+        }
+      );
+    }
+    return normalizedArtifactConfig;
+  }
+
+  static normalizeConfigTemplatePaths(vocabConfig, normalizedYamlPath) {
+    const vocabConfigNormalizedTemplates = vocabConfig;
+    vocabConfigNormalizedTemplates.artifactToGenerate = vocabConfig.artifactToGenerate.map(
+      artifactConfig => {
+        return this.normalizeArtifactTemplates(artifactConfig, normalizedYamlPath);
+      }
+    );
+    if (
+      vocabConfigNormalizedTemplates.versioning &&
+      vocabConfigNormalizedTemplates.versioning.associatedFiles
+    ) {
+      vocabConfigNormalizedTemplates.versioning.associatedFiles = vocabConfigNormalizedTemplates.versioning.associatedFiles.map(
+        versioningFile => {
+          const normalizedVersioningFile = versioningFile;
+          normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
+            versioningFile.template,
+            normalizedYamlPath
+          );
+          return normalizedVersioningFile;
+        }
+      );
+    }
+    return vocabConfigNormalizedTemplates;
+  }
+
+  /**
+   *  This function makes the local vocabulary path relative to the root of the project,
+   *  rather that to the configuration file. It makes it consistent with vocabularies passed
+   *  on the command line.
+   * @param {*} vocabConfig the path of the vocabulary, relative to the YAML config
+   * @param {*} yamlPath the path of the YAML config, relative to the project root
+   */
+  static normalizePath(vocabConfig, yamlPath) {
+    let normalizedVocabConfig = vocabConfig;
+    const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
+      yamlPath,
+      process.cwd()
+    );
+    normalizedVocabConfig = GeneratorConfiguration.normalizeInputResources(
+      normalizedVocabConfig,
+      normalizedYamlPath
+    );
     if (vocabConfig.termSelectionResource) {
       normalizedVocabConfig.termSelectionResource = path.join(
         path.dirname(normalizedYamlPath),
@@ -204,6 +311,7 @@ class GeneratorConfiguration {
           yamlPath
         );
       }
+      GeneratorConfiguration.normalizeConfigTemplatePaths(yamlConfiguration, yamlPath);
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }
@@ -257,7 +365,11 @@ class GeneratorConfiguration {
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplate: 'javascript-rdf-ext.hbs',
+        handlebarsTemplate: path.join(
+          __dirname,
+          RELATIVE_TEMPLATE_DIRECTORY,
+          'javascript-rdf-ext.hbs'
+        ),
         sourceFileExtension: 'js',
         packaging: [packagingInfo],
       },
