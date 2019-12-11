@@ -29,7 +29,7 @@ vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
-    termSelectionFile: schema-inrupt-ext.ttl
+    termSelectionResource: schema-inrupt-ext.ttl
 
   - description: Some dummy online vocabulary
     nameAndPrefixOverride: dummy

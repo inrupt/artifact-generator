@@ -90,8 +90,11 @@ const yargsConfig = yargs
         )
         .choices('bumpVersion', ['patch', 'minor', 'major'])
 
-        .alias('vtf', 'vocabTermsFrom')
-        .describe('vocabTermsFrom', 'Generates Vocab Terms from only the specified ontology file.')
+        .alias('tsr', 'termSelectionResource')
+        .describe(
+          'termSelectionResource',
+          'Generates Vocab Terms from only the specified ontology resource (file or IRI).'
+        )
 
         .alias('av', 'artifactVersion')
         .describe('artifactVersion', 'The version of the artifact(s) to be generated.')

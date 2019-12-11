@@ -48,7 +48,10 @@ module.exports = class VocabGenerator {
   }
 
   generate() {
-    this.resources = new Resource(this.vocabData.inputResources, this.vocabData.vocabTermsFrom);
+    this.resources = new Resource(
+      this.vocabData.inputResources,
+      this.vocabData.termSelectionResource
+    );
 
     return this.generateData()
       .then(vocabGenerationData => {
