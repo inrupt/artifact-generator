@@ -154,18 +154,16 @@ class GeneratorConfiguration {
       normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
         packagingConfig => {
           const normalizedPackagingConfig = packagingConfig;
-          if (packagingConfig.packagingTemplates) {
-            normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
-              packagingTemplate => {
-                const normalizedPackagingTemplate = packagingTemplate;
-                normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
-                  packagingTemplate.template,
-                  normalizedYamlPath
-                );
-                return normalizedPackagingTemplate;
-              }
-            );
-          }
+          normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
+            packagingTemplate => {
+              const normalizedPackagingTemplate = packagingTemplate;
+              normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
+                packagingTemplate.template,
+                normalizedYamlPath
+              );
+              return normalizedPackagingTemplate;
+            }
+          );
           return normalizedPackagingConfig;
         }
       );
@@ -249,6 +247,15 @@ class GeneratorConfiguration {
       throw new Error(
         `The target directory name for the [${artifact.programmingLanguage}] artifact is missing. Please set a value for 'artifactDirectoryName'.`
       );
+    }
+    if (artifact.packaging) {
+      artifact.packaging.forEach(packagingConfig => {
+        if (!packagingConfig.packagingTemplates) {
+          throw new Error(
+            `No templates associated to packaging tool [${packagingConfig.packagingTool}]`
+          );
+        }
+      });
     }
   }
 

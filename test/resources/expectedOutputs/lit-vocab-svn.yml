@@ -25,8 +25,7 @@ artifactToGenerate:
     javaPackageName: "com.example.java.packagename"
 #    gitRepository: git@github.com:some_user/some_project.git
 #    repository:
-#      - enabled: true
-#        type: repository
+#      - type: repository
 #        id: nexus-releases
 #        url: https://nexus.mycompany.com/repository/maven-releases/
 #        registry: http://localhost:4873/

@@ -90,6 +90,15 @@ describe('Generator configuration', () => {
       }).toThrow(/No artifacts found/, configFile);
     });
 
+    it('should fail if a packaging system does not provide any templates', async () => {
+      const configPath = `./test/resources/packaging/vocab-list-no-packaging-templates.yml`;
+
+      // Test that the error message contains the expected explanation and file name
+      await expect(() => {
+        GeneratorConfiguration.fromYaml(configPath);
+      }).toThrow('No templates associated to packaging tool');
+    });
+
     // SUCCESS CASE
     it('should generate collected configuration from vocab list file', async () => {
       const generatorConfiguration = new GeneratorConfiguration(

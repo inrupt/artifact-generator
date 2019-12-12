@@ -1,0 +1,24 @@
+artifactName: generated-vocab-common-TEST
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt.test
+        ##
+        #  These templates should be present
+        ##
+#       packagingTemplates: 
+#       - template: pom.hbs
+#         fileName: pom.xml
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl

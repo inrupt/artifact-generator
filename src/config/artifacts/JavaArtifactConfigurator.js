@@ -125,7 +125,6 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
       if (!mavenConfig.repository) {
         mavenConfig.repository = [];
       }
-      // The repository is enabled by default
       mavenConfig.repository.push({
         // eslint-disable-next-line no-await-in-loop
         ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT)),

@@ -134,7 +134,7 @@ class FileGenerator {
     if (generalInfo.versioning && generalInfo.versioning.associatedFiles) {
       generalInfo.versioning.associatedFiles.forEach(associatedFile => {
         FileGenerator.createFileFromTemplate(
-          path.join('..', '..', 'templates', associatedFile.template),
+          path.join(associatedFile.template),
           generalInfo,
           path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, associatedFile.fileName)
         );
