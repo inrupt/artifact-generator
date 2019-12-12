@@ -27,9 +27,7 @@ class ArtifactGenerator {
     this.artifactData.generatedVocabs = [];
 
     // This collection will be populated with the authors per generated vocab.
-    if (!this.artifactData.authorSet) {
-      this.artifactData.authorSet = new Set();
-    }
+    this.artifactData.authorSet = new Set();
 
     // TODO: Just hard-coding for the moment (still investigating Webpack...)
     this.artifactData.versionWebpack = '^4.39.1';

@@ -1,5 +1,12 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
 artifactName: generated-vocab-common-TEST
-generatorVersion: 0.1.0
+##
+# The generator version MUST be present
+##
+# generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: Java
@@ -9,17 +16,9 @@ artifactToGenerate:
     artifactDirectoryName: Java
     handlebarsTemplate: java-rdf4j.hbs
     sourceFileExtension: java
-    packaging:
-      - packagingTool: maven
-        groupId: com.inrupt.test
-        ##
-        #  These templates should be present
-        ##
-#       packagingTemplates: 
-#       - template: pom.hbs
-#         fileName: pom.xml
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../vocabs/schema-snippet.ttl
+      - ./schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext.ttl

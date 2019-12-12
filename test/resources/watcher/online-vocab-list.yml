@@ -1,5 +1,5 @@
 artifactName: testSchema
-authorSet: Cleopatra (https://cleopatra.solid.community/profile/card#me)
+generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: "Java"

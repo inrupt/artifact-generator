@@ -4,6 +4,7 @@
 #
 
 # NOTE: No artifact name is set, so additional information will be asked to the user
+generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: Java

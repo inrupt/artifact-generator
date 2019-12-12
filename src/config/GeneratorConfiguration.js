@@ -260,11 +260,22 @@ class GeneratorConfiguration {
   }
 
   /**
-   * Validates if all the required values are present in the config file, and throws an error otherwise.
+   * Validates if all the required values are present in the config file, and
+   * throws an error otherwise.
    * @param {Object} config the object loaded from the YAML config
    * @param {string} file the path to the YAML file, for error message purpose
    */
   static validateYamlConfig(config, file) {
+    // Check version mismatch
+    if (!config.generatorVersion) {
+      throw new Error(`Missing 'generatorVersion' field in ${file}.`);
+    }
+    if (config.generatorVersion !== packageDotJson.version) {
+      debug(
+        `You are running the version ${packageDotJson.version} of the generator, and reading a configuration file validated for version ${config.generatorVersion}. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
+      );
+    }
+
     // There must be at least one artifact defined
     if (!config.artifactToGenerate) {
       throw new Error(

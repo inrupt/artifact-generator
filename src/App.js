@@ -23,6 +23,7 @@ module.exports = class App {
     }
 
     this.argv = argv;
+
     this.watcher = undefined;
   }
 

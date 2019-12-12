@@ -1,4 +1,5 @@
 artifactName: generated-vocab-common-TEST
+generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: Java

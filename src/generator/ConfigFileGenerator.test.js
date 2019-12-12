@@ -51,6 +51,8 @@ const COMPLETE_VOCAB = {
 
 const COMPLETE_CONFIG = {
   artifactName: ARTIFACT_NAME,
+  generatorName: '@lit/artifact-generator',
+  generatorVersion: '0.1.0',
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
   vocabList: [COMPLETE_VOCAB],
 };
