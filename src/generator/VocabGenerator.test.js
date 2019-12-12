@@ -85,20 +85,20 @@ const datasetExtension = rdf
   ]);
 
 const extSubject = rdf.namedNode('http://rdf-extension.com');
-const owlOntologyDataset = rdf
-  .dataset()
-  .addAll([
-    rdf.quad(extSubject, RDF.type, OWL.Ontology),
-    rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-    rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
-    rdf.quad(
-      extSubject,
-      DCTERMS.description,
-      rdf.literal("Extension comment with special ' character!")
-    ),
-    rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
-    rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
-  ]);
+const owlOntologyDataset = rdf.dataset().addAll([
+  rdf.quad(extSubject, RDF.type, OWL.Ontology),
+  rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+  rdf.quad(extSubject, DCTERMS.creator, rdf.literal('Jarlath Holleran')),
+  rdf.quad(
+    extSubject,
+    DCTERMS.description,
+    rdf.literal("Extension comment with special ' character!")
+  ),
+  rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+  rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
+  // This triple prevents the dataset from not defining any terms
+  rdf.quad(rdf.namedNode('http://rdf-extension.com/dummyClass'), RDF.type, OWL.Class),
+]);
 
 const emptyDataSet = rdf.dataset();
 
@@ -702,14 +702,14 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should default description to empty string if rdfs:comment of an owl:Ontology term is not found', () => {
-      const owlOntologyDatasetWithNoComment = rdf
-        .dataset()
-        .addAll([
-          rdf.quad(extSubject, RDF.type, OWL.Ontology),
-          rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-          rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
-          rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
-        ]);
+      const owlOntologyDatasetWithNoComment = rdf.dataset().addAll([
+        rdf.quad(extSubject, RDF.type, OWL.Ontology),
+        rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+        rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+        rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
+        // This triple prevents the dataset from not defining any terms
+        rdf.quad(rdf.namedNode('http://rdf-extension.com/dummyClass'), RDF.type, OWL.Class),
+      ]);
 
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataset, owlOntologyDatasetWithNoComment]),
@@ -732,15 +732,15 @@ describe('Artifact generator unit tests', () => {
     });
 
     it('should default to lit-js@inrupt.com if authors in not contained in owl:Ontology terms', () => {
-      const owlOntologyDatasetWithNoAuthor = rdf
-        .dataset()
-        .addAll([
-          rdf.quad(extSubject, RDF.type, OWL.Ontology),
-          rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
-          rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
-          rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
-          rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
-        ]);
+      const owlOntologyDatasetWithNoAuthor = rdf.dataset().addAll([
+        rdf.quad(extSubject, RDF.type, OWL.Ontology),
+        rdf.quad(extSubject, RDFS.label, rdf.literal('Extension label')),
+        rdf.quad(extSubject, RDFS.comment, rdf.literal('Extension comment')),
+        rdf.quad(extSubject, VANN.preferredNamespacePrefix, rdf.literal('ext-prefix')),
+        rdf.quad(extSubject, VANN.preferredNamespaceUri, rdf.literal('http://rdf-extension.com')),
+        // This triple prevents the dataset from not defining any terms
+        rdf.quad(rdf.namedNode('http://rdf-extension.com/dummyClass'), RDF.type, OWL.Class),
+      ]);
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataset, owlOntologyDatasetWithNoAuthor]),
         VocabGenerator.merge([owlOntologyDatasetWithNoAuthor])

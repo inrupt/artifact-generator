@@ -204,11 +204,6 @@ module.exports = class DatasetHandler {
     result.versionBabelCore = this.vocabData.versionBabelCore;
     result.versionBabelLoader = this.vocabData.versionBabelLoader;
 
-    // These values come from the artifact-specific configuration.
-    result.javaPackageName = this.vocabData.javaPackageName;
-    result.npmModuleScope = this.vocabData.npmModuleScope;
-    result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
-
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
     result.generatorVersion = this.vocabData.generatorVersion;
@@ -248,6 +243,9 @@ module.exports = class DatasetHandler {
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
+    }
+    if (subjectSet.length === 1 && subjectSet[0] === result.namespace) {
+      throw new Error(`[${result.namespace}] does not contain any terms.`);
     }
 
     subjectSet.forEach(subject => {

@@ -114,4 +114,22 @@ describe('Dataset Handler', () => {
     });
     expect(handler.findPreferredNamespacePrefix()).toEqual('foaf');
   });
+
+  it('should throw an error if the vocabulary does not define any term', () => {
+    const NS = 'http://xmlns.com/foaf/0.1/';
+    const NS_IRI = rdf.namedNode(NS);
+
+    const vocab = rdf
+      .dataset()
+      .addAll([
+        rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
+      ]);
+    const handler = new DatasetHandler(vocab, rdf.dataset(), {
+      inputResources: ['does not matter'],
+    });
+    expect(() => {
+      handler.buildTemplateInput();
+    }).toThrow(`[${NS}] does not contain any terms.`);
+  });
 });
