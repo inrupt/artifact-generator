@@ -67,46 +67,134 @@ node index.js --help
 
 **Note**: By default this will *only* publish to the NPM registry at http://localhost:4873 (which is the default address for Verdaccio when running it on your local machine). You can configure the registry on the command line arguments `--npmRegistry`.
 
-**Note**: The public NPM registry prohibits re-publication of an artifact under a version number that has been released previously. Before publishing an artifact, make sure that you have incremented the version of the module so that there is no conflict. Please note that it is actually a feature of Verdaccio to support `npm --force unpublish`, which makes it possible to override a previously published artifct. 
+**Note**: The public NPM registry prohibits re-publication of an artifact under a version number that has been released previously. Before publishing an artifact, make sure that you have incremented the version of the module so that there is no conflict. Please note that it is actually a feature of Verdaccio to support `npm --force unpublish`, which makes it possible to override a previously published artifact. 
 
 ## <a id="yaml"/> Configuring options using the YAML file
 
-Creating a YAML configuration file (simply using `node index.js init`) provides you much greater control over the artifacts you'd like to generate, and the vocabularies you want to work with
+Creating a YAML configuration file (simply using `node index.js init`) provides you much greater control over the artifacts you'd like to generate, and the vocabularies you want to work with. The following example YAML file shows the available configuration options.
 
-### Artifacts information
+```yaml
+##
+# GENERAL INFORMATION
+##
+# Name of the generated artifact.
+artifactName: generated-vocab-test
+# MANDATORY. Version of the @lit/artifact-generator with which this YAML file is compatible
+generatorVersion: 0.2.0
 
-Each artifact to generate (e.g. Java JAR, NPM module, etc.) is configured individually as an entry in the `artifactToGenerate` list.
+##
+# VERSIONING INFORMATION
+##
+# This section is not mandatory
+versioning:
+  # Type of the versioning protocol. This is for documentation purpose.
+  type: git
+  # URL of the target repository. This is used in some packaging systems (e.g. NPM)
+  url: https://repository.git
+  # These files will be generated at the root of the target artifact
+  associatedFiles: 
+      # A template name. It can reference a handlebars template relative to the YAML file, 
+      # and also accepts '.gitignore.hbs'
+    - template: ".gitignore.hbs"
+      # The name of the file generated from the template
+      fileName: ".gitignore"
 
-- Options shared across **all programming languages**:
-  - Mandatory:
-    - `programmingLanguage`: Supported values `Java`, `Javascript`
-    - `artifactVersion`: The version of the generated artifact. Be aware that versioning policies differ depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
-    - `litVocabTermVersion`: The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for Javascript, https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies will depend
-    - `artifactDirectoryName`: Name of the directory in which the artifacts are stored. This will be a sub-directory of the generation output directory.
-    - `handlebarsTemplate`: Template used to generate the source files from the vocabulary data
-    - `sourceFileExtension`: Extension added to the generated source files
-  - Optional
-    - `languageKeywordsToUnderscore`: List of terms defined by the vocabulary that are keywords of the target language, and which will generate corresponding constant names prefixed with an underscore to prevent compiler errors.'
-    - `repository`: Artifact repository to which the artifacts may be published.
-    - `gitRepository`: Address of the Git repository.
-- **Language-specific** options
-  - Javascript
-    - `npmModuleScope`: useful for publication on NPM
-  - Java
-    - `javaPackageName`: Java package in which the classes for each generated vocabulary of the artifact are gathered
+##
+# TARGET ARTIFACT CONFIGURATION
+##
+# MANDATORY, and must contain at least one artifact
+artifactToGenerate:
+    # The generated programming language. This is for documentation purpose.
+  - programmingLanguage: Java
+    # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
+    # depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
+    artifactVersion: 3.2.1-SNAPSHOT
+    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for Javascript, 
+    # https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies 
+    # will depend. This is used for packaging.
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
+    artifactDirectoryName: Java
+    # MANDATORY The template instanciated by each vocabulary to generate the target source code.
+    # It can reference a handlebars template relative to the YAML file, and also
+    # accepts 'java-rdf4j.hbs' and 'javascript-rdf-ext.hbs'.
+    handlebarsTemplate: java-rdf4j.hbs
+    # MANDATORY The extension that is appended after the name of the generated source code files.
+    sourceFileExtension: java
+    # These terms will be prefixed by an underscore in the generated code. It allows to prevent conflit if a term from 
+    # a vocabulary is also a keyword in the target language.
+    languageKeywordsToUnderscore:
+      - class     
+      - abstract
+    # Package name. This is a Java-specific option. More generally, each 'artifactToGenerate' object is used to define
+    # environment variables that are used to instantiate the template. Without changing the core code, it is therefore
+    # possible to use language-specific options in the YAML file and to use them in the templates.
+    javaPackageName: com.inrupt.testing
+    ##
+    # PACKAGING CONFIGURATION
+    ##
+    # The packaging options are artifact-specific. They are not mandatory.
+    packaging:
+        # This is for documentation purpose
+      - packagingTool: maven
+        # As for the 'artifactToGenerate', the 'packaging' objects are passed to the appropriate template. Therefore, 
+        # the generator code is agnostic to the variables defined here. For instance, the groupId thereafter is used
+        # in the 'pom.hbs' template. 
+        groupId: com.inrupt.test
+        packagingTemplates: 
+          # MANDATORY The template(s) instanciated once to generate the target packaging code.
+          # It can reference a handlebars template relative to the YAML file, and also
+          # accepts 'jpom.hbs', 'package.hbs', 'index.hbs', 'webpack.dev.config.hbs'
+          # and 'webpack.dev.config.hbs'.
+        - template: pom.hbs
+          # The name of the generated packaging file
+          fileName: pom.xml
 
-### Vocabulary information
+  - programmingLanguage: Javascript
+    artifactVersion: 10.11.12
+    litVocabTermVersion: "^1.0.10"
+    artifactDirectoryName: Javascript
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    packaging: 
+      # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
+      # Gradle and Maven), and how each of these packaging tools may generate more than one file.
+      - packagingTool: npm 
+        # This is an NPM-specific option, used in the generated package.json
+        npmModuleScope: "@lit/"
+        packagingTemplates: 
+          - template: package.hbs
+            fileName: package.json
+          - template: index.hbs
+            fileName: index.js
+      - packagingTool: webpack
+        # If this is set (not mandatory), the packaging files are instanciated in this directory
+        packagingFolder: config
+        packagingTemplates:
+          - template: webpack.dev.config.hbs
+            fileName: webpack.dev.config.js
+          - template: webpack.prod.config.hbs
+            fileName: webpack.prod.config.js
 
-Configuration for each individual vocabulary is provided as an object in the list `vocabList`:
+##
+# INPUT VOCABULARIES
+##
+vocabList:
+    # Description of the vocabulary, that will be used as a comment describing the generated class
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex with selective terms having translations
+    # MANDATORY A list of resources, which can be any mixture of local RDF files (whose path may be absolute, 
+    # or relative to the YAML file itself) or remote IRI's, from which a single vocabulary source file will 
+    # be generated.
+    inputResources:
+      - https://schema.org/version/latest/schema.ttl
+    # The name of the generated vocabulary class. For instance, if set to `foo`, the corresponding Java class will
+    # be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the 
+    # `vann:preferredNamespacePrefix` property, and if it is not defined the generation will be interrupted.
+    nameAndPrefixOverride: schema-inrupt-ext
+    # When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be 
+    # generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding 
+    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/lit-artifact-generator-js/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
+    termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
+```
 
-- Mandatory:
-  - `inputResources`: A list of resources, which can be any mixture of local RDF files (whose path may be absolute, or relative to the YAML file itself) or remote IRI's, from which a single vocabulary source file will be generated.
-- Optional:
-  - `nameAndPrefixOverride`: The name of the generated vocabulary class. For instance, if set to `foo`, the corresponding Java class will be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the `vann:preferredNamespacePrefix` property, and if it is not defined the generation will be interrupted.
-  - `description`: A description of the vocabulary, that will be used as a comment describing the generated class
-  - `termSelectionFile`: When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For examples, see:
-    - [./vocabs/schema-inrupt-ext.tt](./vocabs/schema-inrupt-ext.ttl)
-    - [./vocabs/vcard-inrupt-ext.tt](./vocabs/vcard-inrupt-ext.ttl)
-    - [./vocabs/owl-inrupt-ext.tt](./vocabs/owl-inrupt-ext.ttl)
-
-    [Back to the homepage](../README.md)
+[Back to the homepage](../README.md)
