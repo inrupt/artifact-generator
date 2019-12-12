@@ -48,7 +48,7 @@ function validateLanguageCheckboxes(answer) {
     // This mismatch in return types is expected by inquirer.
     return 'You must choose at least one target language.';
   }
-  
+
   return true;
 }
 
@@ -65,7 +65,7 @@ function validateRepositoryCheckboxes(answer) {
     // This mismatch in return types is expected by inquirer
     return 'You must choose at most one repository type.';
   }
-  
+
   return true;
 }
 
@@ -119,7 +119,7 @@ class ConfigFileGenerator {
       // for language-specific config generator.
       return new SUPPORTED_LANGUAGES[language]();
     }
-    
+
     throw new Error(`Unsported language: no config generator is registered for [${language}]`);
   }
 
@@ -141,7 +141,7 @@ class ConfigFileGenerator {
         ];
       }
     }
-    
+
     // If the type is not set, return null to avoid adding an empty element to the target
     // configuration object.
     return repositoryConfig.type ? repositoryConfig : null;
@@ -160,7 +160,7 @@ class ConfigFileGenerator {
       // and therefore implement the 'prompt()' method.
       artifacts.push(await generator.prompt()); // eslint-disable-line no-await-in-loop
     }
-    
+
     return artifacts;
   }
 
@@ -180,7 +180,7 @@ class ConfigFileGenerator {
       vocabularies.push(await VocabularyConfigurator.prompt()); // eslint-disable-line no-await-in-loop
       addVocab = await inquirer.prompt(ADD_VOCABULARY_CONFIRMATION); // eslint-disable-line no-await-in-loop
     }
-    
+
     return vocabularies;
   }
 
@@ -198,7 +198,7 @@ class ConfigFileGenerator {
     // Collect the different artifacts to generate in a map containing only one key-value pair.
     const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES);
     this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(languages.languages);
-    
+
     // Get vocabulary information.
     this.config.vocabList = await ConfigFileGenerator.promptVocabularies();
   }
@@ -241,8 +241,5 @@ class ConfigFileGenerator {
 
 module.exports.ConfigFileGenerator = ConfigFileGenerator;
 module.exports.validateLanguageCheckboxes = validateLanguageCheckboxes;
-<<<<<<< HEAD
 module.exports.validateRepositoryCheckboxes = validateRepositoryCheckboxes;
-=======
 module.exports.DEFAULT_CONFIG_TEMPLATE_PATH = DEFAULT_CONFIG_TEMPLATE_PATH;
->>>>>>> Made it possible to have custom templates relative to the yaml file

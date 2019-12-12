@@ -17,15 +17,6 @@
     "url": "{{versioning.url}}"
   },
 {{/if}}
-{{#if repository}}
-  {{#each repository}}
-    {{#if enabled}}
-  "publishConfig": {
-    "registry": "{{registry}}"
-  },
-    {{/if}}
- {{/each}}
-{{/if}}
   "dependencies": {
     "@lit/vocab-term": "{{litVocabTermVersion}}"
   }{{#if supportBundling}},

@@ -35,12 +35,10 @@ artifactToGenerate:
       # No packaging options are explitely set, as the generator initially generated Maven artifacts only for Java code
       ##
     repository:
-      - enabled: true
-        type: repository
+      - type: repository
         id: nexus-releases
         url: https://nexus.inrupt.com/repository/maven-releases/
-      - enabled: true
-        type: snapshotRepository
+      - type: snapshotRepository
         id: nexus-snapshots
         url: https://nexus.inrupt.com/repository/maven-snapshots/
 
@@ -52,11 +50,6 @@ artifactToGenerate:
     artifactDirectoryName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
-    repository:
-      - enabled: true
-        registry: http://localhost:4873/
-      - enabled: false
-        registry: https://verdaccio.inrupt.com/
   ##
   #  This is a dummy artifact that cannot be packaged
   ##

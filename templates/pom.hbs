@@ -30,12 +30,10 @@
 {{#if repository}}
     <distributionManagement>
     {{#each repository}}
-        {{#if enabled}}
         <{{type}}>
             <id>{{id}}</id>
             <url>{{url}}</url>
         </{{type}}>
-        {{/if}}
     {{/each}}
     </distributionManagement>
 {{/if}}
