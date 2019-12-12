@@ -17,7 +17,7 @@ const RELATIVE_TEMPLATE_DIRECTORY = path.join('..', '..', 'templates');
 
 const WEBPACK_DEFAULT = {
   packagingTool: 'webpack',
-  packagingFolder: 'config',
+  packagingDirectory: 'config',
   packagingTemplates: [
     {
       template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'webpack.dev.config.hbs'),
