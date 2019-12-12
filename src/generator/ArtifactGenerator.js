@@ -54,9 +54,7 @@ class ArtifactGenerator {
           // If the generation was not sufficient to collect all the required information, the user is asked for it
           await this.configuration.askAdditionalQuestions();
           // TODO: move this formatting directly into the templates
-          this.artifactData.authors = `Vocabularies authored by: ${Array.from(
-            this.artifactData.authorSet
-          ).join(', ')}.`;
+          this.artifactData.contributors = Array.from(this.artifactData.authorSet);
         }
       })
       .then(() => this.generatePackaging())

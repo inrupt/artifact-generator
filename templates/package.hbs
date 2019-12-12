@@ -9,7 +9,17 @@
     "prod": "webpack --config ./config/webpack.prod.config.js"
   },
 {{/if}}
-  "author": "{{authors}}",
+  "author": {
+    "name": "{{generatorName}}",
+    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+  },
+{{#if contributors}}
+  "contributors": [
+    {{#each contributors}}
+    {"name": "{{this}}"}{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+{{/if}}
   "license": "MIT",
 {{#if versioning}}
   "repository": {
