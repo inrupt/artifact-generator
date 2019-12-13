@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const path = require('path');
 const FileGenerator = require('./FileGenerator');
+const packageDotJson = require('../../package.json');
 
 // Configuration generators.
 const {
@@ -100,7 +101,11 @@ const ADD_VOCABULARY_CONFIRMATION = {
 
 class ConfigFileGenerator {
   constructor(initialConfig) {
-    this.config = initialConfig;
+    this.config = {
+      ...initialConfig,
+      generatorName: packageDotJson.name,
+      generatorVersion: packageDotJson.version,
+    };
   }
 
   /**

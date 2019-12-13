@@ -18,6 +18,7 @@
 #
 #
 artifactName: generated-vocab-common
+generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: Java

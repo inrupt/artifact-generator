@@ -6,6 +6,7 @@
 
 # The name is shared among all the artifacts
 artifactName: testSchema
+generatorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: "Java"
