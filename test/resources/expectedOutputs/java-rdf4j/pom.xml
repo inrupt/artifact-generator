@@ -15,6 +15,24 @@
 
   override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.</description>
 
+    <developers>
+        <developer>
+            <name>@lit/artifact-generator</name>
+            <url>https://github.com/inrupt/lit-artifact-generator-js</url>
+        </developer>
+    </developers>
+
+    <contributors>
+        <!-- The contributors listed here are the authors of the vocabularies 
+        on which these artifacts are based -->
+        <contributor>
+            <name>Jarlath Holleran</name>
+        </contributor>
+        <contributor>
+            <name>Pat McBennett</name>
+        </contributor>
+    </contributors>
+
     <properties>
         <lit.vocab.term.version>0.1.0-SNAPSHOT</lit.vocab.term.version>
 

@@ -469,7 +469,7 @@ describe('End-to-end tests', () => {
       await artifactGenerator.generate();
 
       expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
-        expect.stringContaining('"author": "Vocabularies authored by: Jarlath Holleran.')
+        expect.stringContaining('{"name": "Jarlath Holleran"}')
       );
     });
   });

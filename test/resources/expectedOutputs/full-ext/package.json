@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Bundle of vocabularies that includes the following:\n\n  schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
   "main": "index.js",
-  "author": "Vocabularies authored by: Jarlath Holleran.",
+  "author": {
+    "name": "@lit/artifact-generator",
+    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+  },
+  "contributors": [
+    {"name": "Jarlath Holleran"}
+  ],
   "license": "MIT",
   "dependencies": {
     "@lit/vocab-term": "^1.0.10"
