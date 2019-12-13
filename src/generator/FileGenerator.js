@@ -99,20 +99,20 @@ class FileGenerator {
   }
 
   static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {
-    let packagingFolder;
+    let packagingDirectory;
     if (!SUPPORTED_LANGUAGES.includes(artifactInfo.programmingLanguage)) {
       throw new Error(`Unsupported programming language: [${artifactInfo.programmingLanguage}]`);
     }
     // If no packaging is explicitly defined, packaging files are generated at
     // the root artifact directory.
-    if (packagingInfo.packagingFolder) {
-      packagingFolder = path.join(
+    if (packagingInfo.packagingDirectory) {
+      packagingDirectory = path.join(
         artifactInfo.outputDirectoryForArtifact,
-        packagingInfo.packagingFolder
+        packagingInfo.packagingDirectory
       );
-      FileGenerator.createDirectory(packagingFolder);
+      FileGenerator.createDirectory(packagingDirectory);
     } else {
-      packagingFolder = artifactInfo.outputDirectoryForArtifact;
+      packagingDirectory = artifactInfo.outputDirectoryForArtifact;
     }
     packagingInfo.packagingTemplates.forEach(packagingFile => {
       FileGenerator.createFileFromTemplate(
@@ -122,7 +122,7 @@ class FileGenerator {
           // extname returns the extension prefixed with ., that we want to remove
           path.extname(packagingFile.fileName).substr(1)
         ),
-        path.join(packagingFolder, packagingFile.fileName)
+        path.join(packagingDirectory, packagingFile.fileName)
       );
     });
 
