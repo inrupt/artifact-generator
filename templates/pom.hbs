@@ -21,7 +21,7 @@
     {{#if contributors}}
     <contributors>
         <!-- The contributors listed here are the authors of the vocabularies 
-        on which these artifacts are based -->
+        on which these artifacts are based. -->
         {{#each contributors}}
         <contributor>
             <name>{{this}}</name>
@@ -35,7 +35,7 @@
 
         <slf4j.version>1.7.26</slf4j.version>
 
-        <!-- RDF4J defines a BOM that we can depend on below in our dependenciesManagement section, specifying the
+        <!-- RDF4J defines a BOM that we can depend on below in our 'dependenciesManagement' section, specifying the
     exact RDF4J version there. This means Maven child modules can pull in individual RDF4J jars without
         needing to also specify a version (see https://rdf4j.org/download section 'Using Maven Dependencies'). -->
         <rdf4j.version>2.5.3</rdf4j.version>
