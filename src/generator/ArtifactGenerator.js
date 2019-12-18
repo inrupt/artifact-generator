@@ -121,6 +121,19 @@ class ArtifactGenerator {
   }
 
   async generateVocabs() {
+    // The outputDirectoryForArtifact attribute is useful for publication,
+    // and should be set even if generation is not necessary.
+    this.artifactData.artifactToGenerate = this.artifactData.artifactToGenerate.map(
+      artifactDetails => {
+        const result = artifactDetails;
+        result.outputDirectoryForArtifact = path.join(
+          this.artifactData.outputDirectory,
+          ARTIFACT_DIRECTORY_SOURCE_CODE,
+          artifactDetails.artifactDirectoryName
+        );
+        return result;
+      }
+    );
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
     //  programming languages. But this code was extended to provide the
@@ -137,13 +150,7 @@ class ArtifactGenerator {
 
           // Generate this vocab for each artifact we are generating for.
           const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
-            const artifactConfig = artifactDetails;
-            artifactConfig.outputDirectoryForArtifact = path.join(
-              this.artifactData.outputDirectory,
-              ARTIFACT_DIRECTORY_SOURCE_CODE,
-              artifactDetails.artifactDirectoryName
-            );
-            return new VocabGenerator(this.artifactData, artifactConfig).generate();
+            return new VocabGenerator(this.artifactData, artifactDetails).generate();
           });
           // Wait for all our artifacts to be generated.
           await Promise.all(artifactPromises);
