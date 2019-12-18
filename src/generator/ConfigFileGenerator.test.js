@@ -6,6 +6,8 @@ const { LANGUAGE: JAVA } = require('../config/artifacts/JavaArtifactConfigurator
 
 jest.mock('inquirer');
 
+const packageDotJson = require('../../package.json');
+
 require('mock-local-storage');
 const {
   ConfigFileGenerator,
@@ -50,7 +52,7 @@ const COMPLETE_VOCAB = {
 const COMPLETE_CONFIG = {
   artifactName: ARTIFACT_NAME,
   generatorName: '@lit/artifact-generator',
-  artifactGeneratorVersion: '0.2.0',
+  artifactGeneratorVersion: packageDotJson.version,
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
   vocabList: [COMPLETE_VOCAB],
 };
@@ -211,7 +213,7 @@ describe('ConfigFile Generator', () => {
     }
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
-    expect(fs.readFileSync(targetPath).toString()).toBe(
+    expect(fs.readFileSync(targetPath).toString()).toContain(
       fs.readFileSync(REFERENCE_YAML_PROMPTED).toString()
     );
   });
@@ -225,7 +227,7 @@ describe('ConfigFile Generator', () => {
     }
     configGenerator.generateDefaultConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
-    expect(fs.readFileSync(targetPath).toString()).toBe(
+    expect(fs.readFileSync(targetPath).toString()).toContain(
       fs.readFileSync(REFERENCE_YAML_DEFAULT).toString()
     );
   });
@@ -244,7 +246,7 @@ describe('ConfigFile Generator', () => {
     }
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
-    expect(fs.readFileSync(targetPath).toString()).toBe(
+    expect(fs.readFileSync(targetPath).toString()).toContain(
       fs.readFileSync(REFERENCE_YAML_GIT).toString()
     );
   });
@@ -263,7 +265,7 @@ describe('ConfigFile Generator', () => {
     }
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
-    expect(fs.readFileSync(targetPath).toString()).toBe(
+    expect(fs.readFileSync(targetPath).toString()).toContain(
       fs.readFileSync(REFERENCE_YAML_SVN).toString()
     );
   });
