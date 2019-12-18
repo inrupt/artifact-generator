@@ -295,7 +295,7 @@ class GeneratorConfiguration {
   static validateYamlConfig(config, file) {
     // Check version mismatch
     if (!config.artifactGeneratorVersion) {
-      throw new Error(`Missing 'artifactGeneratorVersion' field in ${file}.`);
+      throw new Error(`Missing 'artifactGeneratorVersion' field in [${file}].`);
     }
 <<<<<<< HEAD
     
@@ -304,7 +304,7 @@ class GeneratorConfiguration {
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
 >>>>>>> Updated some field names in the YAML configuration
       debug(
-        `You are running the version ${packageDotJson.version} of the generator, and reading a configuration file validated for version ${config.artifactGeneratorVersion}. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
+        `You are running the version [${packageDotJson.version}] of the generator, and reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
       );
     }
 
