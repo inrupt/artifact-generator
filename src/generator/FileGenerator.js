@@ -131,8 +131,8 @@ class FileGenerator {
   }
 
   static createVersioningFiles(generalInfo) {
-    if (generalInfo.versioning && generalInfo.versioning.associatedFiles) {
-      generalInfo.versioning.associatedFiles.forEach(associatedFile => {
+    if (generalInfo.versioning && generalInfo.versioning.versioningTemplates) {
+      generalInfo.versioning.versioningTemplates.forEach(associatedFile => {
         FileGenerator.createFileFromTemplate(
           path.join(associatedFile.template),
           generalInfo,

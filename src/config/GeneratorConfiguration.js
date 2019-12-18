@@ -82,7 +82,7 @@ class GeneratorConfiguration {
     // Extend the received arguments with contextual data.
     this.configuration.generatedTimestamp = moment().format('LLLL');
     this.configuration.generatorName = packageDotJson.name;
-    this.configuration.generatorVersion = packageDotJson.version;
+    this.configuration.artifactGeneratorVersion = packageDotJson.version;
   }
 
   /**
@@ -201,9 +201,9 @@ class GeneratorConfiguration {
     
     if (
       vocabConfigNormalizedTemplates.versioning &&
-      vocabConfigNormalizedTemplates.versioning.associatedFiles
+      vocabConfigNormalizedTemplates.versioning.versioningTemplates
     ) {
-      vocabConfigNormalizedTemplates.versioning.associatedFiles = vocabConfigNormalizedTemplates.versioning.associatedFiles.map(
+      vocabConfigNormalizedTemplates.versioning.versioningTemplates = vocabConfigNormalizedTemplates.versioning.versioningTemplates.map(
         versioningFile => {
           const normalizedVersioningFile = versioningFile;
           normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
@@ -294,13 +294,17 @@ class GeneratorConfiguration {
    */
   static validateYamlConfig(config, file) {
     // Check version mismatch
-    if (!config.generatorVersion) {
-      throw new Error(`Missing 'generatorVersion' field in ${file}.`);
+    if (!config.artifactGeneratorVersion) {
+      throw new Error(`Missing 'artifactGeneratorVersion' field in ${file}.`);
     }
+<<<<<<< HEAD
     
     if (config.generatorVersion !== packageDotJson.version) {
+=======
+    if (config.artifactGeneratorVersion !== packageDotJson.version) {
+>>>>>>> Updated some field names in the YAML configuration
       debug(
-        `You are running the version ${packageDotJson.version} of the generator, and reading a configuration file validated for version ${config.generatorVersion}. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
+        `You are running the version ${packageDotJson.version} of the generator, and reading a configuration file validated for version ${config.artifactGeneratorVersion}. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
       );
     }
 

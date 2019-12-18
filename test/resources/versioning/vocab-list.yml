@@ -1,10 +1,10 @@
 # The name is shared among all the artifacts
 artifactName: myNewArtifact
-generatorVersion: 0.1.0
+artifactGeneratorVersion: 0.1.0
 versioning:
   type: git
   url: https://repository.git
-  associatedFiles: 
+  versioningTemplates: 
     - template: ".gitignore.hbs"
       fileName: ".gitignore"
 

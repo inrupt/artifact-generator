@@ -206,7 +206,7 @@ module.exports = class DatasetHandler {
 
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
-    result.generatorVersion = this.vocabData.generatorVersion;
+    result.artifactGeneratorVersion = this.vocabData.artifactGeneratorVersion;
     result.sourceRdfResources = this.vocabData.vocabListFile
       ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
       : `Vocabulary built from input${
