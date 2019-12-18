@@ -1,12 +1,8 @@
-#
-# This file contains a simple list of vocabularies that we bundle together to
-# form the collective set vocabularies within a single artifact.
-#
 artifactName: generated-vocab-common-TEST
 ##
-# The generator version MUST be present
+# This generator version will always mismatch the current artifact version.
 ##
-# artifactGeneratorVersion: 0.1.0
+artifactGeneratorVersion: 0.2.0
 
 artifactToGenerate:
   - programmingLanguage: Java

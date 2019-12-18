@@ -1,5 +1,5 @@
 artifactName: testSchema
-generatorVersion: 0.1.0
+artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: "Java"

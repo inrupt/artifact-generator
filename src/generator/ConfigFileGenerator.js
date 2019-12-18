@@ -104,7 +104,7 @@ class ConfigFileGenerator {
     this.config = {
       ...initialConfig,
       generatorName: packageDotJson.name,
-      generatorVersion: packageDotJson.version,
+      artifactGeneratorVersion: packageDotJson.version,
     };
   }
 
@@ -138,7 +138,7 @@ class ConfigFileGenerator {
       repositoryConfig.url = (await inquirer.prompt(REPOSITORY_URL)).repositoryUrl;
       // Each repository type may be associated to specific files (e.g. a .gitignore).
       if (repositoryConfig.type === GIT) {
-        repositoryConfig.associatedFiles = [
+        repositoryConfig.versioningTemplates = [
           {
             template: (await inquirer.prompt(GITIGNORE_TEMPLATE)).gitignoreTemplate,
             fileName: '.gitignore',

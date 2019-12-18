@@ -100,10 +100,10 @@ describe('Generator configuration', () => {
       }).toThrow('No templates associated to packaging tool');
     });
 
-    it('should fail if the YAML config does not provide a generatorVersion', () => {
+    it('should fail if the YAML config does not provide a artifactGeneratorVersion', () => {
       expect(() => {
         GeneratorConfiguration.fromYaml('./test/resources/yamlConfig/vocab-list-no-version.yml');
-      }).toThrow("Missing 'generatorVersion' field");
+      }).toThrow("Missing 'artifactGeneratorVersion' field");
     });
 
     // SUCCESS CASE
@@ -131,7 +131,20 @@ describe('Generator configuration', () => {
         undefined
       );
 
-      expect(generatorConfiguration.configuration.generatorVersion).toEqual('0.1.0');
+      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual('0.2.0');
+    });
+
+    it('should do nothing on version match', async () => {
+      const generatorConfiguration = new GeneratorConfiguration(
+        {
+          _: ['generate'],
+          vocabListFile: './test/resources/yamlConfig/vocab-list-version-match.yml',
+          noprompt: true,
+        },
+        undefined
+      );
+
+      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual('0.2.0');
     });
 
     it('should normalize paths relative to the YAML file', async () => {

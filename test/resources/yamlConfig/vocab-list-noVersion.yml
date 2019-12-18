@@ -6,7 +6,7 @@ artifactName: generated-vocab-common-TEST
 ##
 # The generator version MUST be present
 ##
-# generatorVersion: 0.1.0
+# artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
   - programmingLanguage: Java

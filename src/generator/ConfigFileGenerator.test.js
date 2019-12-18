@@ -18,8 +18,6 @@ const {
 const UNSUPPORTED_LANGUAGE = 'Ook';
 
 const TARGET_DIR = './test/Generated/ConfigFileGenerator/';
-const TARGET_FILE = 'lit-vocab.yml';
-const TARGET_PATH = path.join(TARGET_DIR, TARGET_FILE);
 const REFERENCE_YAML_PROMPTED = './test/resources/expectedOutputs/lit-vocab.yml';
 const REFERENCE_YAML_DEFAULT = './test/resources/expectedOutputs/default-lit-vocab.yml';
 const REFERENCE_YAML_GIT = './test/resources/expectedOutputs/lit-vocab-git.yml';
@@ -52,7 +50,7 @@ const COMPLETE_VOCAB = {
 const COMPLETE_CONFIG = {
   artifactName: ARTIFACT_NAME,
   generatorName: '@lit/artifact-generator',
-  generatorVersion: '0.1.0',
+  artifactGeneratorVersion: '0.2.0',
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
   vocabList: [COMPLETE_VOCAB],
 };
@@ -64,7 +62,7 @@ const GITIGNORE_TEMPLATE = '.gitignore.hbs';
 const REPOSITORY_GIT = {
   type: 'git',
   url: REPOSITORY_URL_GIT,
-  associatedFiles: [{ template: GITIGNORE_TEMPLATE, fileName: '.gitignore' }],
+  versioningTemplates: [{ template: GITIGNORE_TEMPLATE, fileName: '.gitignore' }],
 };
 
 const REPOSITORY_SVN = {
@@ -165,10 +163,11 @@ describe('ConfigFile Generator', () => {
   });
 
   it('should fail when using an invalid config at generation time', () => {
+    const targetPath = path.join(TARGET_DIR, 'vocab-list.yml');
     const configGenerator = new ConfigFileGenerator();
     configGenerator.config = INVALID_CONFIG;
     expect(() => {
-      configGenerator.generateConfigFile(TARGET_PATH);
+      configGenerator.generateConfigFile(targetPath);
     }).toThrow('Invalid configuration');
   });
 
@@ -203,66 +202,68 @@ describe('ConfigFile Generator', () => {
   });
 
   it('should generate a complete file when directly setting the config', () => {
+    const targetPath = path.join(TARGET_DIR, 'vocab-list-set.yml');
     const configGenerator = new ConfigFileGenerator();
     configGenerator.setConfig(COMPLETE_CONFIG);
     fs.mkdirSync(TARGET_DIR, { recursive: true });
-    if (fs.existsSync(TARGET_PATH)) {
-      fs.unlinkSync(TARGET_PATH);
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
     }
-    configGenerator.generateConfigFile(TARGET_PATH);
-    expect(fs.existsSync(TARGET_PATH)).toEqual(true);
-    expect(fs.readFileSync(TARGET_PATH).toString()).toBe(
+    configGenerator.generateConfigFile(targetPath);
+    expect(fs.existsSync(targetPath)).toEqual(true);
+    expect(fs.readFileSync(targetPath).toString()).toBe(
       fs.readFileSync(REFERENCE_YAML_PROMPTED).toString()
     );
   });
 
   it('should generate a default file even with an empty config', () => {
+    const targetPath = path.join(TARGET_DIR, 'vocab-list-empty.yml');
     const configGenerator = new ConfigFileGenerator({});
     fs.mkdirSync(TARGET_DIR, { recursive: true });
-    if (fs.existsSync(TARGET_PATH)) {
-      fs.unlinkSync(TARGET_PATH);
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
     }
-    configGenerator.generateDefaultConfigFile(TARGET_PATH);
-    expect(fs.existsSync(TARGET_PATH)).toEqual(true);
-    expect(fs.readFileSync(TARGET_PATH).toString()).toBe(
+    configGenerator.generateDefaultConfigFile(targetPath);
+    expect(fs.existsSync(targetPath)).toEqual(true);
+    expect(fs.readFileSync(targetPath).toString()).toBe(
       fs.readFileSync(REFERENCE_YAML_DEFAULT).toString()
     );
   });
 
   it('should collect information from the user prompt (including git repository)', async () => {
-    // The repository config from this test includes an 'associatedFiles' field
+    // The repository config from this test includes an 'versioningTemplates' field
+    const targetPath = path.join(TARGET_DIR, 'vocab-list-git.yml');
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_GIT);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_GIT);
 
     fs.mkdirSync(TARGET_DIR, { recursive: true });
-    if (fs.existsSync(TARGET_PATH)) {
-      fs.unlinkSync(TARGET_PATH);
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
     }
-    const generatedConfigPath = path.join(TARGET_DIR, 'lit-vocab-git.yml');
-    configGenerator.generateConfigFile(generatedConfigPath);
-    expect(fs.existsSync(generatedConfigPath)).toEqual(true);
-    expect(fs.readFileSync(generatedConfigPath).toString()).toBe(
+    configGenerator.generateConfigFile(targetPath);
+    expect(fs.existsSync(targetPath)).toEqual(true);
+    expect(fs.readFileSync(targetPath).toString()).toBe(
       fs.readFileSync(REFERENCE_YAML_GIT).toString()
     );
   });
 
   it('should collect information from the user prompt (including svn repository)', async () => {
-    // The repository config from this test does not include an 'associatedFiles' field
+    const targetPath = path.join(TARGET_DIR, 'vocab-list-svn.yml');
+    // The repository config from this test does not include an 'versioningTemplates' field
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_SVN);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_SVN);
 
     fs.mkdirSync(TARGET_DIR, { recursive: true });
-    if (fs.existsSync(TARGET_PATH)) {
-      fs.unlinkSync(TARGET_PATH);
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
     }
-    const generatedConfigPath = path.join(TARGET_DIR, 'lit-vocab-svn.yml');
-    configGenerator.generateConfigFile(generatedConfigPath);
-    expect(fs.existsSync(generatedConfigPath)).toEqual(true);
-    expect(fs.readFileSync(generatedConfigPath).toString()).toBe(
+    configGenerator.generateConfigFile(targetPath);
+    expect(fs.existsSync(targetPath)).toEqual(true);
+    expect(fs.readFileSync(targetPath).toString()).toBe(
       fs.readFileSync(REFERENCE_YAML_SVN).toString()
     );
   });

@@ -2,7 +2,7 @@ artifactName: generated-vocab-common-TEST
 ##
 # This generator version will always mismatch the current artifact version.
 ##
-generatorVersion: 0.0.1
+artifactGeneratorVersion: 0.0.1
 
 artifactToGenerate:
   - programmingLanguage: Java

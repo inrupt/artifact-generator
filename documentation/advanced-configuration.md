@@ -80,7 +80,7 @@ Creating a YAML configuration file (simply using `node index.js init`) provides 
 # Name of the generated artifact.
 artifactName: generated-vocab-test
 # MANDATORY. Version of the @lit/artifact-generator with which this YAML file is compatible
-generatorVersion: 0.2.0
+artifactGeneratorVersion: 0.2.0
 
 ##
 # VERSIONING INFORMATION
@@ -92,7 +92,7 @@ versioning:
   # URL of the target repository. This is used in some packaging systems (e.g. NPM)
   url: https://repository.git
   # These files will be generated at the root of the target artifact
-  associatedFiles: 
+  versioningTemplates: 
       # A template name. It can reference a handlebars template relative to the YAML file, 
       # and also accepts '.gitignore.hbs'
     - template: ".gitignore.hbs"
