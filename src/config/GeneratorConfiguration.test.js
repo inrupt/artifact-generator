@@ -3,6 +3,9 @@ require('mock-local-storage');
 jest.mock('inquirer');
 const inquirer = require('inquirer');
 const path = require('path');
+const fs = require('fs');
+
+const packageDotJson = require('../../package.json');
 
 const GeneratorConfiguration = require('./GeneratorConfiguration');
 const { DEFAULT_CLI_ARTIFACT } = require('./GeneratorConfiguration');
@@ -25,6 +28,30 @@ const EXPECTED_VOCAB_LIST_FROM_CLI = [
     inputResources: ['test/resources/vocabs/schema-snippet.ttl'],
   },
 ];
+
+// This YAML file will always match the latest version of the generator
+const VERSION_MATCHING_YAML = `
+artifactName: generated-vocab-common-TEST
+##
+# This generator version will always mismatch the current artifact version.
+##
+artifactGeneratorVersion: ${packageDotJson.version}
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: Java
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ./schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext.ttl
+`;
 
 const MOCKED_USER_INPUT = { artifactName: 'someName' };
 
@@ -131,20 +158,29 @@ describe('Generator configuration', () => {
         undefined
       );
 
-      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual('0.2.0');
+      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual(
+        packageDotJson.version
+      );
     });
 
     it('should do nothing on version match', async () => {
+      const yamlPath = './test/resources/yamlConfig/vocab-list-version-match.yml';
+
+      // The content of the YAML dynamically matches the current generator version
+      fs.writeFileSync(yamlPath, VERSION_MATCHING_YAML);
+
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
-          vocabListFile: './test/resources/yamlConfig/vocab-list-version-match.yml',
+          vocabListFile: yamlPath,
           noprompt: true,
         },
         undefined
       );
 
-      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual('0.2.0');
+      expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual(
+        packageDotJson.version
+      );
     });
 
     it('should normalize paths relative to the YAML file', async () => {
