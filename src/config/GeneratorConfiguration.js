@@ -69,12 +69,12 @@ class GeneratorConfiguration {
     if (initialConfig.vocabListFile) {
       // The command line contains a yaml file
       this.configuration = {
-        ...initialConfig,
+        ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
         ...GeneratorConfiguration.fromYaml(initialConfig.vocabListFile),
       };
     } else {
       this.configuration = {
-        ...initialConfig,
+        ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
         ...GeneratorConfiguration.fromCommandLine(initialConfig),
       };
     }
@@ -82,6 +82,22 @@ class GeneratorConfiguration {
     this.configuration.generatedTimestamp = moment().format('LLLL');
     this.configuration.generatorName = packageDotJson.name;
     this.configuration.generatorVersion = packageDotJson.version;
+  }
+
+  /**
+   * Normalizes paths that are found in any case on the command line (e.g.
+   * outputDirectory)
+   * @param {*} config
+   */
+  static normalizeCliOptions(cliConfig) {
+    const normalizedConfig = { ...cliConfig };
+    if (normalizedConfig.outputDirectory) {
+      normalizedConfig.outputDirectory = GeneratorConfiguration.normalizeAbsolutePath(
+        normalizedConfig.outputDirectory,
+        process.cwd()
+      );
+    }
+    return normalizedConfig;
   }
 
   static normalizeInputResources(vocabConfig, normalizedYamlPath) {
