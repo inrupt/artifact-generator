@@ -67,21 +67,38 @@ class GeneratorConfiguration {
    */
   constructor(initialConfig) {
     if (initialConfig.vocabListFile) {
-      // The command line contains a yaml file
+      // The command line contains a YAML file.
       this.configuration = {
-        ...initialConfig,
+        ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
         ...GeneratorConfiguration.fromYaml(initialConfig.vocabListFile),
       };
     } else {
       this.configuration = {
-        ...initialConfig,
+        ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
         ...GeneratorConfiguration.fromCommandLine(initialConfig),
       };
     }
-    // Extend the received arguments with contextual data
+    
+    // Extend the received arguments with contextual data.
     this.configuration.generatedTimestamp = moment().format('LLLL');
     this.configuration.generatorName = packageDotJson.name;
     this.configuration.generatorVersion = packageDotJson.version;
+  }
+
+  /**
+   * Normalizes paths that are found on the command line (e.g. outputDirectory).
+   * @param {*} config
+   */
+  static normalizeCliOptions(cliConfig) {
+    const normalizedConfig = { ...cliConfig };
+    if (normalizedConfig.outputDirectory) {
+      normalizedConfig.outputDirectory = GeneratorConfiguration.normalizeAbsolutePath(
+        normalizedConfig.outputDirectory,
+        process.cwd()
+      );
+    }
+    
+    return normalizedConfig;
   }
 
   static normalizeInputResources(vocabConfig, normalizedYamlPath) {
@@ -100,11 +117,12 @@ class GeneratorConfiguration {
         );
       }
     }
+    
     return normalizedVocabConfig;
   }
 
   /**
-   * This function checks if the provided resourcePath is a single filename
+   * This function checks if the provided resource path is a single filename
    * (e.g. example.hbs), or a path (e.g. ./templates/example.hbs).
    * @param {string} resourcePath
    * @returns a boolean
@@ -135,12 +153,13 @@ class GeneratorConfiguration {
         )
       );
     }
+    
     return normalizedTemplate;
   }
 
   /**
    * Normalizes all paths in an artifact config (source file templates,
-   * packaging templates)
+   * packaging templates).
    * @param {*} artifactConfig
    * @param {string} normalizedYamlPath
    */
@@ -168,6 +187,7 @@ class GeneratorConfiguration {
         }
       );
     }
+    
     return normalizedArtifactConfig;
   }
 
@@ -178,6 +198,7 @@ class GeneratorConfiguration {
         return this.normalizeArtifactTemplates(artifactConfig, normalizedYamlPath);
       }
     );
+    
     if (
       vocabConfigNormalizedTemplates.versioning &&
       vocabConfigNormalizedTemplates.versioning.associatedFiles
@@ -193,6 +214,7 @@ class GeneratorConfiguration {
         }
       );
     }
+    
     return vocabConfigNormalizedTemplates;
   }
 
@@ -209,10 +231,12 @@ class GeneratorConfiguration {
       yamlPath,
       process.cwd()
     );
+    
     normalizedVocabConfig = GeneratorConfiguration.normalizeInputResources(
       normalizedVocabConfig,
       normalizedYamlPath
     );
+    
     if (vocabConfig.termSelectionResource) {
       normalizedVocabConfig.termSelectionResource = path.join(
         path.dirname(normalizedYamlPath),
@@ -222,6 +246,7 @@ class GeneratorConfiguration {
         )
       );
     }
+    
     return normalizedVocabConfig;
   }
 
@@ -235,11 +260,12 @@ class GeneratorConfiguration {
     if (absolute.startsWith('/')) {
       return path.relative(base, absolute);
     }
+    
     return absolute;
   }
 
   /**
-   * This function checks the validity of artifacts objects as found in the artifactToGenerate list
+   * This function validitate artifacts found in the artifactToGenerate list.
    * @param {*} artifact the configuration object for an individual artifact
    */
   static validateArtifact(artifact) {
@@ -248,6 +274,7 @@ class GeneratorConfiguration {
         `The target directory name for the [${artifact.programmingLanguage}] artifact is missing. Please set a value for 'artifactDirectoryName'.`
       );
     }
+    
     if (artifact.packaging) {
       artifact.packaging.forEach(packagingConfig => {
         if (!packagingConfig.packagingTemplates) {
@@ -270,6 +297,7 @@ class GeneratorConfiguration {
     if (!config.generatorVersion) {
       throw new Error(`Missing 'generatorVersion' field in ${file}.`);
     }
+    
     if (config.generatorVersion !== packageDotJson.version) {
       debug(
         `You are running the version ${packageDotJson.version} of the generator, and reading a configuration file validated for version ${config.generatorVersion}. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
@@ -283,9 +311,11 @@ class GeneratorConfiguration {
           `Please edit the YAML configuration file [${file}] to provide artifacts to be generated.`
       );
     }
+    
     for (let i = 0; i < config.artifactToGenerate.length; i += 1) {
       GeneratorConfiguration.validateArtifact(config.artifactToGenerate[i]);
     }
+    
     // There must be at least one vocabulary defined
     if (!config.vocabList) {
       throw new Error(
@@ -301,6 +331,7 @@ class GeneratorConfiguration {
       // Only one command is passed to yargs, so this array always contains one element
       [mode] = args._;
     }
+    
     // If the options are provided by command line, at least one input resource must be specified (except for initialization)
     if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
       throw new Error(
@@ -322,6 +353,7 @@ class GeneratorConfiguration {
       if (!yamlConfiguration) {
         throw new Error('Empty YAML file');
       }
+      
       GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
       for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
         yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizePath(
@@ -329,10 +361,12 @@ class GeneratorConfiguration {
           yamlPath
         );
       }
+      
       GeneratorConfiguration.normalizeConfigTemplatePaths(yamlConfiguration, yamlPath);
     } catch (error) {
       throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
     }
+    
     return yamlConfiguration;
   }
 
@@ -350,6 +384,7 @@ class GeneratorConfiguration {
         process.cwd()
       );
     }
+    
     if (args.termSelectionResource) {
       vocab.termSelectionResource = args.termSelectionResource;
     }
@@ -375,6 +410,7 @@ class GeneratorConfiguration {
         { key: DEFAULT_PUBLISH_KEY, command: `npm publish --registry ${args.npmRegistry}` },
       ];
     }
+    
     // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since
     //  objects are copied by reference, and the tests are run in parallel, it
     //  creates thread-safety issues that should be adressed by creating a
@@ -433,6 +469,7 @@ class GeneratorConfiguration {
         );
       }
     }
+    
     return this;
   }
 
@@ -446,6 +483,7 @@ class GeneratorConfiguration {
         resources.push(this.configuration.vocabList[i].inputResources[j]);
       }
     }
+    
     return resources;
   }
 }
