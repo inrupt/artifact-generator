@@ -41,9 +41,6 @@ module.exports = class Resource {
    *
    * @param datasetFiles
    * @param termSelectionResource
-   * @param fileResourcesRelativeTo If we load resources locally from the file system, make them relative to this path
-   * (e.g. for reading resources from a vocab list file that can be anywhere, all local resources referenced in it
-   * should be relative to wherever that list file itself is!).
    */
   constructor(datasetFiles, termSelectionResource) {
     this.datasetFiles = datasetFiles;

@@ -66,6 +66,8 @@ module.exports = class DatasetHandler {
     // are only generating a single artifact representing this vocabulary, so
     // having terms from two (or more!) vocabularies means we won't know what
     // to name our artifact?
+
+    // The namespace can manually be overriden is some cases
     if (!fullName.startsWith(namespace)) {
       // ...but some vocabs reference terms from other vocabs (like ActivityStreams 2.0)!
       if (
@@ -87,6 +89,7 @@ module.exports = class DatasetHandler {
     // but also have access (in our templates) to the actual term for use in
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
+
     const name = fullName.split(namespace)[1];
     const nameEscapedForLanguage = name
       .replace(/-/g, '_')
@@ -220,6 +223,9 @@ module.exports = class DatasetHandler {
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.vocabData.namespaceOverride || this.findNamespace();
+    // Useful when overriding the local namespace, because this is the namespace
+    // that is actually used in the terms from the vocab
+    result.localNamespace = this.findNamespace();
     result.gitRepository = this.vocabData.gitRepository;
     result.repository = this.vocabData.repository;
 
@@ -261,7 +267,7 @@ module.exports = class DatasetHandler {
     SUPPORTED_CLASSES.forEach(classType => {
       this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
         if (this.isNewTerm(quad.subject.value)) {
-          result.classes.push(this.handleTerm(quad, result.namespace));
+          result.classes.push(this.handleTerm(quad, result.localNamespace));
         }
       });
     });
@@ -270,7 +276,7 @@ module.exports = class DatasetHandler {
   handleProperties(subject, result) {
     SUPPORTED_PROPERTIES.forEach(propertyType => {
       this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
-        const term = this.handleTerm(quad, result.namespace);
+        const term = this.handleTerm(quad, result.localNamespace);
         if (term) {
           if (this.isNewTerm(quad.subject.value)) {
             result.properties.push(term);
@@ -284,7 +290,7 @@ module.exports = class DatasetHandler {
     SUPPORTED_LITERALS.forEach(literalType => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
         if (this.isNewTerm(quad.subject.value)) {
-          result.literals.push(this.handleTerm(quad, result.namespace));
+          result.literals.push(this.handleTerm(quad, result.localNamespace));
         }
       });
     });
@@ -405,7 +411,7 @@ module.exports = class DatasetHandler {
     if (!prefix) {
       throw new Error(`No prefix defined for[ ${namespace}]. There are three options to resolve this:
       - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"].
-      - If you do not control the vocabulary, you can set create the 'termSelectionFile' option to point to an extension file including the same triple.
+      - If you do not control the vocabulary, you can set create the 'termSelectionResource' option to point to an extension file including the same triple.
       - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary.`);
     }
     return prefix;
