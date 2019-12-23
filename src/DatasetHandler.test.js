@@ -132,4 +132,20 @@ describe('Dataset Handler', () => {
       handler.buildTemplateInput();
     }).toThrow(`[${NS}] does not contain any terms.`);
   });
+
+  it('should override the namespace of the terms', () => {
+    const namespaceOverride = 'https://override.namespace.org';
+    const testTermClass = `${NAMESPACE}testTermClass`;
+    const dataset = rdf
+      .dataset()
+      .addAll(vocabMetadata)
+      .addAll([rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class)]);
+
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ['does not matter'],
+      namespaceOverride,
+    });
+    const result = handler.buildTemplateInput();
+    expect(result.namespace).toEqual(namespaceOverride);
+  });
 });
