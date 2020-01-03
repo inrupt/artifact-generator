@@ -18,6 +18,7 @@ class FileGenerator {
     const data = fs.readFileSync(templateFile);
 
     const template = Handlebars.compile(data.toString());
+
     const contents = template(templateData);
 
     fs.writeFileSync(outputFile, contents);
