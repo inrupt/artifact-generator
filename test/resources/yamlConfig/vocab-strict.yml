@@ -1,0 +1,34 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+
+  - programmingLanguage: Javascript
+    artifactVersion: 10.11.12
+    npmModuleScope: "@lit/"
+    litVocabTermVersion: "^1.0.10"
+    ##
+    # This flag is used by the template to configure the LitVocabTerm behaviour
+    ##
+    strict: true
+    artifactDirectoryName: Javascript
+    handlebarsTemplate: javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    packaging: 
+      - packagingTool: npm 
+        npmModuleScope: "@lit/"
+        packagingTemplates: 
+          - template: package.hbs
+            fileName: package.json
+          - template: index.hbs
+            fileName: index.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl

@@ -12,6 +12,8 @@ const ArtifactGenerator = require('./generator/ArtifactGenerator');
 const GeneratorConfiguration = require('./config/GeneratorConfiguration');
 const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
 
+const LIT_VOCAB_TERM_VERSION = '99.999.01';
+
 const doNothingPromise = data => {
   return new Promise(resolve => {
     resolve(data);
@@ -31,7 +33,7 @@ describe('End-to-end tests', () => {
           inputResources: [errorFilename],
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           noprompt: true,
         }),
         doNothingPromise
@@ -96,7 +98,7 @@ describe('End-to-end tests', () => {
             inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
             outputDirectory,
             artifactVersion: '1.0.0',
-            litVocabTermVersion: '^1.0.10',
+            litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
             moduleNamePrefix: 'lit-generated-vocab-',
             noprompt: true,
           },
@@ -138,7 +140,7 @@ describe('End-to-end tests', () => {
           inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
@@ -150,7 +152,9 @@ describe('End-to-end tests', () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`).toString()
       ).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person'), localStorage, true)")
+        expect.stringContaining(
+          "Person: new LitVocabTermRdfExt(_NS('Person'), localStorage, false)"
+        )
       );
 
       expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(true);
@@ -172,7 +176,7 @@ describe('End-to-end tests', () => {
           ],
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: 'lit-generated-vocab-',
           noprompt: true,
         })
@@ -221,7 +225,7 @@ describe('End-to-end tests', () => {
           ],
           outputDirectory,
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -236,15 +240,15 @@ describe('End-to-end tests', () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("address: new LitVocabTerm(_NS('address')")
+        expect.stringContaining("address: new LitVocabTermRdfExt(_NS('address')")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm(_NS('additionalName')")
+        expect.stringContaining("additionalName: new LitVocabTermRdfExt(_NS('additionalName')")
       );
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre adicional`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Nombre adicional`, 'es')"));
     });
 
     it('should be able to extend an ontology but only creates triples from extension file', async () => {
@@ -258,7 +262,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           termSelectionResource: './test/resources/vocabs/schema-inrupt-ext.ttl',
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -271,17 +275,19 @@ describe('End-to-end tests', () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
       );
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`La personne`, 'fr')"));
 
-      expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre de pila`)"));
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('it', `Nome di battesimo`)"));
+      expect(indexOutput).toEqual(
+        expect.stringContaining('additionalName: new LitVocabTermRdfExt')
+      );
+      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTermRdfExt'));
+      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTermRdfExt'));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Nombre de pila`, 'es')"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Nome di battesimo`, 'it')"));
 
-      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTermRdfExt'));
     });
 
     it('should be able to extend an ontology but only create triples from extension URL links', async () => {
@@ -306,7 +312,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           termSelectionResource: 'https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl',
           artifactVersion: '1.0.0',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -319,17 +325,19 @@ describe('End-to-end tests', () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
       );
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('fr', `La personne`)"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`La personne`, 'fr')"));
 
-      expect(indexOutput).toEqual(expect.stringContaining('additionalName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTerm'));
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('es', `Nombre de pila`)"));
-      expect(indexOutput).toEqual(expect.stringContaining(".addLabel('it', `Nome di battesimo`)"));
+      expect(indexOutput).toEqual(
+        expect.stringContaining('additionalName: new LitVocabTermRdfExt')
+      );
+      expect(indexOutput).toEqual(expect.stringContaining('familyName: new LitVocabTermRdfExt'));
+      expect(indexOutput).toEqual(expect.stringContaining('givenName: new LitVocabTermRdfExt'));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Nombre de pila`, 'es')"));
+      expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Nome di battesimo`, 'it')"));
 
-      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTerm'));
+      expect(indexOutput).toEqual(expect.not.stringContaining('address: new LitVocabTermRdfExt'));
     });
 
     it('should take in a version for the output module', async () => {
@@ -343,7 +351,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           termSelectionResource: './test/resources/vocabs/schema-inrupt-ext.ttl',
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -368,7 +376,7 @@ describe('End-to-end tests', () => {
           inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
           outputDirectory,
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
@@ -390,7 +398,7 @@ describe('End-to-end tests', () => {
           inputResources: ['./test/resources/vocabs/schema-snippet.ttl'],
           outputDirectory,
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
@@ -410,7 +418,7 @@ describe('End-to-end tests', () => {
           inputResources: ['./test/resources/vocabs/schema-inrupt-ext.ttl'],
           outputDirectory,
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: 'generated-vocab-',
           noprompt: true,
         })
@@ -434,7 +442,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           termSelectionResource: './test/resources/vocabs/schema-inrupt-ext.ttl',
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -460,7 +468,7 @@ describe('End-to-end tests', () => {
           outputDirectory,
           termSelectionResource: './test/resources/vocabs/schema-inrupt-ext.ttl',
           artifactVersion: '1.0.5',
-          litVocabTermVersion: '^1.0.10',
+          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: '@lit/generated-vocab-',
           noprompt: true,
         })
@@ -511,6 +519,35 @@ describe('End-to-end tests', () => {
         .toString();
       expect(output.substring(output.indexOf(' */'))).toBe(
         expected.substring(expected.indexOf(' */'))
+      );
+    });
+  });
+
+  describe('Specific YAML configurations', () => {
+    it('should pick up the strictness of the LitVocabTerm from the YAML', async () => {
+      const outputDirectory = 'test/Generated/End-to-End/generate-strict/';
+      const outputDirectoryJS = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            vocabListFile: './test/resources/yamlConfig/vocab-strict.yml',
+            // The output directory must be set, because a default value is set by yargs in a regular use case
+            outputDirectory,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      const output = fs
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
+        .toString();
+      expect(output).toEqual(
+        expect.stringContaining("new LitVocabTermRdfExt(_NS('Person'), localStorage, true)")
       );
     });
   });
