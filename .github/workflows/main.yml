@@ -16,7 +16,8 @@ jobs:
         node-version: '12.12.0'
         registry-url: https://npm.pkg.github.com/
         scope: '@inrupt'
-    - run: |
+    - name: NPM install, test and publish
+      run: |
         npm ci --registry https://npm.pkg.github.com/inrupt
         npm test
         npm publish --registry https://npm.pkg.github.com/inrupt

@@ -1,5 +1,5 @@
 {
-  "name": "@lit/artifact-generator",
+  "name": "@inrupt/lit-artifact-generator",
   "version": "0.3.1",
   "description": "A generator for building artifacts (e.g. Java JARs, NPM modules, etc.) from RDF vocabularies.",
   "main": "index.js",
