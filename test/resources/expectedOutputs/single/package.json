@@ -4,7 +4,7 @@
   "description": "Bundle of vocabularies that includes the following:\n\n  schema: ",
   "main": "index.js",
   "author": {
-    "name": "@lit/artifact-generator",
+    "name": "@inrupt/lit-artifact-generator",
     "url": "https://github.com/inrupt/lit-artifact-generator-js"
   },
   "license": "MIT",
