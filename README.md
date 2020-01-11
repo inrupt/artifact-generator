@@ -44,12 +44,13 @@ If you want to bundle artifacts to make them usable into the browser, you will n
 
 ---
 **__Temporarily__**, until we release the Artifact Generator to the public NPM 
-repository, we manually reference the github NPM registry. You will need to generate
-a Personal Access Token from you Github account developer's settings, and use it
-to authenticate with the command `npm login --registry https://npm.pkg.github.com` 
+repository, we manually reference the Github NPM registry. You will need to generate
+a Personal Access Token from your Github account (under the 'Developer settings' tab
+on your profile page), and use it to authenticate with the command
+`npm login --registry https://npm.pkg.github.com`.
 ---
 
-Install globally (so you can run the Artifact Generator from any directory):
+To install globally (so you can run the Artifact Generator from any directory):
 ```shell
 npm -g install @inrupt/lit-artifact-generator --registry https://npm.pkg.github.com/inrupt
 ```
@@ -59,12 +60,16 @@ Ensure the installation completed successfully:
 lit-artifact-generator --help
 ```
 
-If you cloned the repository, you can replace all the example references below to `lit-artifact-generator ...` with `node index.js ...`.
+If you wish to clone the repository instead of installing the Artifact Generator,
+you can run it from the cloned directory by simply replacing all the example 
+references below to `lit-artifact-generator ...` with `node index.js ...`.
 
 ## Create a NodeJS artifact
 
-Run the generator using a public demo vocabulary, in this case a simple Pet
-Rock vocabulary, telling it not to prompt us for any input (i.e. `--noprompt`):
+We can quickly demonstrate the generator using any publicly available RDF
+vocabulary. In this case we'll use a simple Pet Rock vocabulary that we provide,
+telling the generator not to prompt us for any manual input during the generation
+process (i.e. `--noprompt`):
 
 ```shell
 lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
