@@ -44,12 +44,14 @@ If you want to bundle artifacts to make them usable into the browser, you will n
 
 ---
 **__Temporarily__**, until we release the Artifact Generator to the public NPM 
-repository, we manually reference the inrupt Verdaccio registry.
+repository, we manually reference the github NPM registry. You will need to generate
+a Personal Access Token from you Github account developer's settings, and use it
+to authenticate with the command `npm login --registry https://npm.pkg.github.com` 
 ---
 
 Install globally (so you can run the Artifact Generator from any directory):
 ```shell
-npm -g install @lit/artifact-generator --registry https://verdaccio.inrupt.com
+npm -g install @inrupt/lit-artifact-generator --registry https://npm.pkg.github.com/inrupt
 ```
 
 Ensure the installation completed successfully: 
