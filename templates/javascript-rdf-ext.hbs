@@ -29,9 +29,21 @@ const {{vocabNameUpperCase}} = {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}}){{#each labels}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}}{{#each comments}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}},
+    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+    {{#each labels}}
+    {{#if language}}
+      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}}
+    {{#each comments}}
+    {{#if language}}
+      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}},
 {{/each}}
 {{/if}}
 
@@ -44,9 +56,21 @@ const {{vocabNameUpperCase}} = {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}}){{#each labels}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}}{{#each comments}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}},
+    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+    {{#each labels}}
+    {{#if language}}
+      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}}
+    {{#each comments}}
+    {{#if language}}
+      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}},
 {{/each}}
 {{/if}}
 
@@ -59,10 +83,28 @@ const {{vocabNameUpperCase}} = {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}}){{#each labels}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}}{{#each comments}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}}{{#each definitions}}
-      .addMessage(`{{{valueEscapedForJavascript}}}`, '{{language}}'){{/each}},
+    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+    {{#each labels}}
+    {{#if language}}
+      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}}
+    {{#each comments}}
+    {{#if language}}
+      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}
+    {{/each}}
+    {{#each definitions}}
+    {{#if language}}
+      .addMessage(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+    {{else}}
+      .addMessageNoLanguage(`{{{valueEscapedForJavascript}}}`)
+    {{/if}}  
+    {{/each}},
 {{/each}}
 {{/if}}
   //
