@@ -130,6 +130,42 @@ describe('End-to-end tests', () => {
       );
     });
 
+    it('should create from an ontology file using the rdflib', async () => {
+      const outputDirectory = 'test/Generated/End-to-End/dependency-rdflib/';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            vocabListFile: './test/resources/yamlConfig/vocab-rdflib.yml',
+            outputDirectory,
+            supportBundling: true,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      // The package.json should be generated from the proper template (with the rdflib dependency).
+      expect(fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()).toEqual(
+        expect.stringContaining('@pmcb55/lit-vocab-term-rdflib')
+      );
+
+      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
+        .toString();
+      expect(output).toEqual(
+        expect.stringContaining(
+          "const {LitVocabTermRdflib} = require('@pmcb55/lit-vocab-term-rdflib')"
+        )
+      );
+    });
+
     it('should create from an ontology link', async () => {
       const outputDirectory = 'test/Generated/End-to-End/create-ontology-link/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
