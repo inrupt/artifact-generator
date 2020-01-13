@@ -51,7 +51,7 @@ const COMPLETE_VOCAB = {
 
 const COMPLETE_CONFIG = {
   artifactName: ARTIFACT_NAME,
-  generatorName: '@lit/artifact-generator',
+  generatorName: '@inrupt/lit-artifact-generator',
   artifactGeneratorVersion: packageDotJson.version,
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
   vocabList: [COMPLETE_VOCAB],

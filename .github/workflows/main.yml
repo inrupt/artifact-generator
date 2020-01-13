@@ -1,0 +1,25 @@
+on: 
+  release: 
+    types: [published]
+jobs:
+  generate-and-publish-package:
+    runs-on: ubuntu-latest
+    name: Common vocab artifact generation and publication 
+    steps:
+     # Makes the current repository available to the workflow.
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      # Initializes NodeJS for the runner.
+    - name: Node setup
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.12.0'
+        registry-url: https://npm.pkg.github.com/
+        scope: '@inrupt'
+    - name: NPM install, test and publish
+      run: |
+        npm ci --registry https://npm.pkg.github.com/inrupt
+        npm test
+        npm publish --registry https://npm.pkg.github.com/inrupt
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
