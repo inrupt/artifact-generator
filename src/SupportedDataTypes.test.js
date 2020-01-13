@@ -50,7 +50,7 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`AllDifferent`, '')"));
+    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`AllDifferent`)'));
   });
 
   it('should test the special-case handling for the HTTP vocabulary', async () => {
@@ -132,23 +132,25 @@ describe('Supported Data Type', () => {
     expect(indexOutput).toEqual(
       expect.stringContaining("class1: new LitVocabTermRdfExt(_NS('class1'), localStorage, false)")
     );
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`A rdfs class`, '')"));
+    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdfs class`)'));
 
     expect(indexOutput).toEqual(
       expect.stringContaining("class2: new LitVocabTermRdfExt(_NS('class2'), localStorage, false)")
     );
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`An owl class`, '')"));
+    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`An owl class`)'));
 
     expect(indexOutput).toEqual(
       expect.stringContaining("class3: new LitVocabTermRdfExt(_NS('class3'), localStorage, false)")
     );
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`A skos concept class`, '')"));
+    expect(indexOutput).toEqual(
+      expect.stringContaining('.addLabelNoLanguage(`A skos concept class`)')
+    );
 
     expect(indexOutput).toEqual(
       expect.stringContaining("class4: new LitVocabTermRdfExt(_NS('class4'), localStorage, false)")
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`A schema payment status type class`, '')")
+      expect.stringContaining('.addLabelNoLanguage(`A schema payment status type class`)')
     );
 
     expect(indexOutput).toEqual(
@@ -157,7 +159,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(".addLabel(`Not supported class`, '')")
+      expect.not.stringContaining('.addLabelNoLanguage(`Not supported class`)')
     );
 
     expect(indexOutput).toEqual(
@@ -165,7 +167,7 @@ describe('Supported Data Type', () => {
         "property1: new LitVocabTermRdfExt(_NS('property1'), localStorage, false)"
       )
     );
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`A rdf property`, '')"));
+    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdf property`)'));
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -173,7 +175,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`A rdfs data type property`, '')")
+      expect.stringContaining('.addLabelNoLanguage(`A rdfs data type property`)')
     );
 
     expect(indexOutput).toEqual(
@@ -181,7 +183,9 @@ describe('Supported Data Type', () => {
         "property3: new LitVocabTermRdfExt(_NS('property3'), localStorage, false)"
       )
     );
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`An owl object property`, '')"));
+    expect(indexOutput).toEqual(
+      expect.stringContaining('.addLabelNoLanguage(`An owl object property`)')
+    );
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -189,7 +193,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`An owl named individual property`, '')")
+      expect.stringContaining('.addLabelNoLanguage(`An owl named individual property`)')
     );
 
     expect(indexOutput).toEqual(
@@ -198,7 +202,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`An owl annotation property`, '')")
+      expect.stringContaining('.addLabelNoLanguage(`An owl annotation property`)')
     );
 
     expect(indexOutput).toEqual(
@@ -208,7 +212,7 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`An owl datatype property`, '')")
+      expect.stringContaining('.addLabelNoLanguage(`An owl datatype property`)')
     );
 
     expect(indexOutput).toEqual(
@@ -218,7 +222,7 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(".addLabel(`Not supported property`, '')")
+      expect.not.stringContaining('.addLabelNoLanguage(`Not supported property`)')
     );
     // });
     //
@@ -231,7 +235,7 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`A rdfs literal`, '')"));
+    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdfs literal`)'));
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -250,7 +254,7 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(".addLabel(`Not supported literal`, '')")
+      expect.not.stringContaining('.addLabelNoLanguage(`Not supported literal`)')
     );
   });
 });
