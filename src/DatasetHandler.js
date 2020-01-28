@@ -65,11 +65,16 @@ module.exports = class DatasetHandler {
     // Ensure we only have terms from our vocabulary's namespace (because we
     // are only generating a single artifact representing this vocabulary, so
     // having terms from two (or more!) vocabularies means we won't know what
-    // to name our artifact?
+    // to name our artifact).
 
-    // The namespace can manually be overriden is some cases
+    // The namespace can manually be overridden is some cases.
     if (!fullName.startsWith(namespace) && !fullName.startsWith(this.vocabData.namespaceOverride)) {
-      // ...but some vocabs reference terms from other vocabs (like ActivityStreams 2.0)!
+      // ...but some vocabs reference terms from other very common 
+      // vocabs (like ActivityStreams 2.0 having the following two triples:
+      //   rdf:langString a rdfs:Datatype .
+      //   xsd:duration a rdfs:Datatype .
+      // ...that are referring to terms from the RDF and XML Schema 
+      // vocabularies)!
       if (
         fullName.startsWith(RDF_NAMESPACE) ||
         fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
