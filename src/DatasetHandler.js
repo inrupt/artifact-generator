@@ -65,11 +65,17 @@ module.exports = class DatasetHandler {
     // Ensure we only have terms from our vocabulary's namespace (because we
     // are only generating a single artifact representing this vocabulary, so
     // having terms from two (or more!) vocabularies means we won't know what
-    // to name our artifact?
+    // to name our artifact).
 
-    // The namespace can manually be overriden is some cases
-    if (!fullName.startsWith(namespace)) {
-      // ...but some vocabs reference terms from other vocabs (like ActivityStreams 2.0)!
+    // The namespace can manually be overridden in the configuration file.
+    if (!fullName.startsWith(namespace) && !fullName.startsWith(this.vocabData.namespaceOverride)) {
+      // ...but some vocabs reference terms from other very common 
+      // vocabs (like ActivityStreams 2.0 having the following two triples:
+      //   rdf:langString a rdfs:Datatype .
+      //   xsd:duration a rdfs:Datatype .
+      // ...that are referring to terms from the RDF and XML Schema 
+      // vocabularies)! For terms from these very common vocabs, simply
+      // ignore them...
       if (
         fullName.startsWith(RDF_NAMESPACE) ||
         fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
@@ -78,7 +84,7 @@ module.exports = class DatasetHandler {
       }
 
       throw new Error(
-        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] - currently this is disallowed (as it indicates a probable typo!)`
+        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - currently this is disallowed (as it indicates a probable typo!)`
       );
     }
 
@@ -90,7 +96,15 @@ module.exports = class DatasetHandler {
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
 
-    const name = fullName.split(namespace)[1];
+    let splitIri = fullName.split(namespace);
+    // If the split failed (i.e. the term IRI is not in our namespace), then
+    // try again with the overriding namespace (we already ensured that the
+    // IRI was in one of them!).
+    if (splitIri.length === 1) {
+      splitIri = fullName.split(this.vocabData.namespaceOverride);
+    }
+    const name = splitIri[1];
+    
     const nameEscapedForLanguage = name
       .replace(/-/g, '_')
       // TODO: Currently these alterations are required only for Java-specific
@@ -224,7 +238,8 @@ module.exports = class DatasetHandler {
     result.vocabListFile = this.vocabData.vocabListFile;
     result.namespace = this.vocabData.namespaceOverride || this.findNamespace();
     // Useful when overriding the local namespace, because this is the namespace
-    // that is actually used in the terms from the vocab
+    // that is actually used in the terms from the vocab, and that is used
+    // when splitting the IRI to get the local part for instance.
     result.localNamespace = this.findNamespace();
     result.gitRepository = this.vocabData.gitRepository;
     result.repository = this.vocabData.repository;
@@ -321,7 +336,7 @@ module.exports = class DatasetHandler {
   findNamespace() {
     // First see if we have an explicitly defined ontology (i.e. an entity
     // with RDF.type of 'owl:Ontology' or 'LIT:Ontology') that explicitly
-    // provides it's namespace IRI.
+    // provides its namespace IRI.
     let ontologyIri;
 
     let namespace = this.findOwlOntology(owlOntologyTerms => {
@@ -389,16 +404,18 @@ module.exports = class DatasetHandler {
   }
 
   findPreferredNamespacePrefix() {
-    const namespace = this.vocabData.nameAndPrefixOverride || this.findNamespace();
-    let prefix = this.findOwlOntology(owlOntologyTerms => {
-      const ontologyPrefixes = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        VANN.preferredNamespacePrefix,
-        null
-      );
+    const namespace = this.vocabData.namespaceOverride || this.findNamespace();
+    let prefix =
+      this.vocabData.nameAndPrefixOverride ||
+      this.findOwlOntology(owlOntologyTerms => {
+        const ontologyPrefixes = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          VANN.preferredNamespacePrefix,
+          null
+        );
 
-      return DatasetHandler.firstDatasetValue(ontologyPrefixes);
-    });
+        return DatasetHandler.firstDatasetValue(ontologyPrefixes);
+      });
 
     if (!prefix) {
       if (!namespace) {

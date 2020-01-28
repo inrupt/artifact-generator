@@ -144,6 +144,27 @@ describe('Dataset Handler', () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ['does not matter'],
       namespaceOverride,
+      nameAndPrefixOverride: 'does not matter',
+    });
+    const result = handler.buildTemplateInput();
+    expect(result.namespace).toEqual(namespaceOverride);
+  });
+
+  it('should override the namespace of the terms if the heuristic namespace determination fails.', () => {
+    const namespaceOverride = 'http://rdf-extension.com#';
+    const otherNamespace = 'https://another.long.namespace.org#';
+    const testTermClass = `${NAMESPACE}testTermClass`;
+    const longestTerm = `${otherNamespace}thisIsAVeryLongTermThatBreaksOurHeuristic`;
+    const dataset = rdf
+      .dataset()
+      // .addAll(vocabMetadata)
+      .addAll([rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class)])
+      .addAll([rdf.quad(rdf.namedNode(longestTerm), RDF.type, `${otherNamespace}someClass`)]);
+
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ['does not matter'],
+      namespaceOverride,
+      nameAndPrefixOverride: 'does not matter',
     });
     const result = handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
