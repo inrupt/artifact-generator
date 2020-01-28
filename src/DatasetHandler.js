@@ -97,11 +97,14 @@ module.exports = class DatasetHandler {
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
 
     let splitIri = fullName.split(namespace);
-    // If the split failed, then the overriding namespace should be used
+    // If the split failed (i.e. the term IRI is not in our namespace), then
+    // try again with the overriding namespace (we already ensured that the
+    // IRI was in one of them!).
     if (splitIri.length === 1) {
       splitIri = fullName.split(this.vocabData.namespaceOverride);
     }
     const name = splitIri[1];
+    
     const nameEscapedForLanguage = name
       .replace(/-/g, '_')
       // TODO: Currently these alterations are required only for Java-specific
