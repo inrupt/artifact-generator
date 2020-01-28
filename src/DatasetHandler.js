@@ -67,14 +67,15 @@ module.exports = class DatasetHandler {
     // having terms from two (or more!) vocabularies means we won't know what
     // to name our artifact).
 
-    // The namespace can manually be overridden is some cases.
+    // The namespace can manually be overridden in the configuration file.
     if (!fullName.startsWith(namespace) && !fullName.startsWith(this.vocabData.namespaceOverride)) {
       // ...but some vocabs reference terms from other very common 
       // vocabs (like ActivityStreams 2.0 having the following two triples:
       //   rdf:langString a rdfs:Datatype .
       //   xsd:duration a rdfs:Datatype .
       // ...that are referring to terms from the RDF and XML Schema 
-      // vocabularies)!
+      // vocabularies)! For terms from these very common vocabs, simply
+      // ignore them...
       if (
         fullName.startsWith(RDF_NAMESPACE) ||
         fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
