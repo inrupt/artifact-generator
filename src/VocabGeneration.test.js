@@ -11,13 +11,13 @@ const VERSION_LIT_VOCAB_TERM = '^0.1.0';
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = false;
-const RUN_PACKAGING = true;
+const RUN_PACKAGING = ['local'];
 
 const ConfigLitCommon = {
   _: 'generate',
   force: true,
   vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab-List-LIT-Common.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
   moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
   artifactName: 'common',
@@ -75,7 +75,7 @@ const ConfigLitCore = {
   _: 'generate',
   force: true,
   vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
+    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab-List-LIT-Core.yml',
   outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
   moduleNamePrefix: '@lit/generated-vocab-',
   artifactName: 'core',
@@ -171,14 +171,14 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('LIT vocabs', async () => {
   it.skip('LIT vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
   });
 
   // it('Solid vocabs', async () => {
   it.skip('Solid vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigSolidCommon);
     await generateVocabArtifact(ConfigSolidGeneratorUi);
     await generateVocabArtifact(ConfigSolidComponent);
@@ -192,7 +192,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('LIT Common vocabs', async () => {
   it.skip('LIT Common vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
   });
 
