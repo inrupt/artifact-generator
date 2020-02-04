@@ -340,33 +340,34 @@ class GeneratorConfiguration {
   }
 
   /**
-   * Parses the provided YAML file, and returns the read configuration it it is valid.
+   * Parses the provided configuration file, and returns the parsed
+   * configuration if it is valid.
    *
-   * @param {string} yamlPath path to the config file
+   * @param {string} configFile path to the config file
    */
-  static fromYaml(yamlPath) {
-    let yamlConfiguration = {};
+  static fromYaml(configFile) {
+    let configuration = {};
     try {
-      debug(`Processing YAML file...`);
-      yamlConfiguration = yaml.safeLoad(fs.readFileSync(yamlPath, 'utf8'));
-      if (!yamlConfiguration) {
-        throw new Error('Empty YAML file');
+      debug(`Processing configuration file [${configFile}]...`);
+      configuration = yaml.safeLoad(fs.readFileSync(configFile, 'utf8'));
+      if (!configuration) {
+        throw new Error(`Empty configuration file: [${configFile}]`);
       }
 
-      GeneratorConfiguration.validateYamlConfig(yamlConfiguration, yamlPath);
-      for (let i = 0; i < yamlConfiguration.vocabList.length; i += 1) {
-        yamlConfiguration.vocabList[i] = GeneratorConfiguration.normalizePath(
-          yamlConfiguration.vocabList[i],
-          yamlPath
+      GeneratorConfiguration.validateYamlConfig(configuration, configFile);
+      for (let i = 0; i < configuration.vocabList.length; i += 1) {
+        configuration.vocabList[i] = GeneratorConfiguration.normalizePath(
+          configuration.vocabList[i],
+          configFile
         );
       }
 
-      GeneratorConfiguration.normalizeConfigTemplatePaths(yamlConfiguration, yamlPath);
+      GeneratorConfiguration.normalizeConfigTemplatePaths(configuration, configFile);
     } catch (error) {
-      throw new Error(`Failed to read configuration file [${yamlPath}]: ${error}`);
+      throw new Error(`Failed to read configuration file [${configFile}]: ${error}`);
     }
 
-    return yamlConfiguration;
+    return configuration;
   }
 
   /**

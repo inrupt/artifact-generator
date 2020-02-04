@@ -69,11 +69,11 @@ module.exports = class DatasetHandler {
 
     // The namespace can manually be overridden in the configuration file.
     if (!fullName.startsWith(namespace) && !fullName.startsWith(this.vocabData.namespaceOverride)) {
-      // ...but some vocabs reference terms from other very common 
+      // ...but some vocabs reference terms from other very common
       // vocabs (like ActivityStreams 2.0 having the following two triples:
       //   rdf:langString a rdfs:Datatype .
       //   xsd:duration a rdfs:Datatype .
-      // ...that are referring to terms from the RDF and XML Schema 
+      // ...that are referring to terms from the RDF and XML Schema
       // vocabularies)! For terms from these very common vocabs, simply
       // ignore them...
       if (
@@ -104,7 +104,7 @@ module.exports = class DatasetHandler {
       splitIri = fullName.split(this.vocabData.namespaceOverride);
     }
     const name = splitIri[1];
-    
+
     const nameEscapedForLanguage = name
       .replace(/-/g, '_')
       // TODO: Currently these alterations are required only for Java-specific
