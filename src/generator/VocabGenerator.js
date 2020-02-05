@@ -30,7 +30,7 @@ module.exports = class VocabGenerator {
           FileGenerator.previouslyGeneratedFileExists(this.artifactDetails, vocabGenerationData)
         ) {
           debug(
-            `A source file is reused for unreachable resource ${this.vocabData.inputResources.toString()}`
+            `A source file is reused for unreachable resource [${this.vocabData.inputResources.toString()}]`
           );
           resolve(vocabGenerationData);
         }
