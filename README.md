@@ -184,24 +184,25 @@ My Pet Rock shinyness is defined as "How wonderfully shiny a rock is." by https:
 
 # The relationship between LIT-generated source code artifacts and RDF vocabularies
 
-Source code artifacts (e.g. Java JARs, Node modules, C# assemblies, etc.) can be
-generated from any RDF vocabularies, or collections of multiple vocabularies.
-For example, in the case of Java, a single generated Java JAR may contain
-multiple Java Classes, with each Class representing the 'terms' (i.e. the
-Classes, Properties or Literals) within a single RDF vocabulary. In other words,
-each Java Class within that JAR would define static constants for each of the
-defined terms within the corresponding RDF vocabulary.
+Source code artifacts (e.g. Java JARs, Node modules, C# assemblies, etc.) can
+be generated from individual RDF vocabularies, or from collections of multiple
+RDF vocabularies. For example, in the case of Java, a single generated Java JAR
+may contain multiple Java Classes, with each Class representing the 'terms'
+(i.e. the Classes, Properties and Literals) within a single RDF vocabulary. In
+other words, each Java Class within that JAR would define static constants for
+each of the defined terms within a corresponding RDF vocabulary.
 
-For example, perhaps the single most important and widely used vocabulary today
-is Schema.org, from Google, Mircosoft, Yaoo and Yandex. The official RDF for
+Perhaps the single most important, and widely used, vocabulary today is
+Schema.org, from Google, Mircosoft, Yaoo and Yandex. The official RDF for
 Schema.org is defined here: https://schema.org/version/latest/schema.ttl.
 
-But any individual or company is free to use the LIT Artifact Generator to
-generate their own source code artifacts to represent the terms defined in
-Schema.org. And of course, they are also free to use the LIT Artifact Generator
-to generate source code artifacts (e.g. a Java JAR containing Java classes)
-that represent any available RDF vocabularies, including their own, purely
-internal and properitary vocabularies.
+But any individual or company is completely free to use the LIT Artifact
+Generator (or any other generator!) to generate their own source code artifacts
+to represent the terms defined in Schema.org. And of course, they are also free
+to use the LIT Artifact Generator to generate source code artifacts (e.g. a
+Java JAR containing Java classes) that represent any available RDF
+vocabularies, including their own, purely internal and properitary
+vocabularies.
 
 So in summary, any individual or company is completely free to define their
 own RDF vocabularies. Likeswise, any individual or company is completely free
