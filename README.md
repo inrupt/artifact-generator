@@ -1,35 +1,36 @@
 
 # Artifact Generator
 
-This tool generates deployable artifacts for various programming languages
-(e.g. NPM Node modules for Javascript, JARs for Java, assemblies for C#, etc.).
-These artifacts contain source files defining programming-language constants
-for the terms (e.g. the Classes and properties) found in RDF vocabularies (such
-as Schema.org, or FOAF, or our own custom vocabularies).
+This tool automatically generates deployable artifacts for various programming
+languages (e.g. NPM Node modules for Javascript, JARs for Java, assemblies for
+C#, etc.) that contain source-code files defining programming-language
+constants for the terms (e.g. the Classes, Properties and Literals) found in
+RDF vocabularies (such as Schema.org, FOAF, Activity Streams, or your own
+custom vocabularies).
 
 # Prerequisites
 
 ## npm
 
-To install the Artifact Generator you will need `npm`, if you don't already have
-it.
+To install the Artifact Generator you will need `npm` (although it can also
+be run via `npx`).
 
-We highly recommend the use of node version manager (nvm) to manage multiple
-versions of npm and also set to up your npm permissions properly. To install
+We highly recommend the use of Node Version Manager (nvm) to manage multiple
+versions of `npm` and also to set up your npm permissions properly. To install
 nvm, follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-node-js-and-npm).
 
 **Note on `npm` permissions:**
 
 If you do not use `nvm`, and you try to install the Artifact Generator globally,
-then you may receive **EACCES** permission errors, or other permission-related
-errors, when trying to run `npm install -g`.
-
-Please refer to this npm [document](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
+you may encounter **EACCES** permission errors, or other permission-related
+errors, when trying to run `npm install -g`. If so, please refer to this npm
+[document](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
 on how to set your permissions correctly.
 
 ## Webpack
 
-If you want to bundle artifacts to make them usable into the browser, you will need to install Webpack: `npm install webpack webpack-cli --save-dev`
+If you wish to bundle generated artifacts for use in browsers, you will need to
+install Webpack, e.g. `npm install webpack webpack-cli --save-dev`
 
 # Table of contents
 
@@ -43,14 +44,15 @@ If you want to bundle artifacts to make them usable into the browser, you will n
 # Quick start
 
 ---
-**__Temporarily__**, until we release the Artifact Generator to the public NPM 
-repository, we manually reference the Github NPM registry. You will need to generate
-a Personal Access Token from your Github account (under the 'Developer settings' tab
-on your profile page), and use it to authenticate with the command
-`npm login --registry https://npm.pkg.github.com`.
+**__Temporarily__**, until we release the LIT Artifact Generator to the public NPM 
+repository, we need to manually reference a private Github NPM registry. You will
+need to generate a Personal Access Token (PAT) from your Github account (under the
+'Developer settings' tab on your profile page), and use it to authenticate with 
+the command `npm login --registry https://npm.pkg.github.com`.
 ---
 
-To install globally (so you can run the Artifact Generator from any directory):
+To install globally (so that you can run the LIT Artifact Generator from any
+directory):
 ```shell
 npm -g install @inrupt/lit-artifact-generator --registry https://npm.pkg.github.com/inrupt
 ```
@@ -60,9 +62,10 @@ Ensure the installation completed successfully:
 lit-artifact-generator --help
 ```
 
-If you wish to clone the repository instead of installing the Artifact Generator,
-you can run it from the cloned directory by simply replacing all the example 
-references below to `lit-artifact-generator ...` with `node index.js ...`.
+If you wish to clone the repository instead of installing the LIT Artifact
+Generator, you can run it from the cloned directory by simply replacing all the
+example references below to `lit-artifact-generator ...` with 
+`node index.js ...`.
 
 ## Create a NodeJS artifact
 
@@ -76,13 +79,15 @@ lit-artifact-generator generate --inputResources https://team.inrupt.net/public/
 ```
 
 This should generate a Javascript artifact inside the default `Generated`
-directory that provides constants for the things described within the Pet Rock
+directory. Specfically it should generate a Javascript file named PET_ROCK.js in
+the directory `Generated/SourceCodeArtifacts/Javascript/GeneratedVocab` that 
+provides constants for all the 'things' described within the Pet Rock RDF
 vocabulary.
 
 We can now use this Javascript artifact directly in our applications, both
-NodeJS and browser. For example, for NodeJS manually create a new `package.json` 
-file using the following content, that references the local Pet Rock artifact 
-we just generated:
+NodeJS and browser based. For example, for NodeJS manually create a new 
+`package.json` file using the following content that references the Pet Rock
+artifact we just generated:
 
 ```javascript
 {
@@ -112,17 +117,17 @@ console.log(`Or in Spanish (our Pet Rock vocab has Spanish translations!):`);
 console.log(`"${PET_ROCK.shinyness.commentInLang('es')}"`);
 ``` 
 
-Finally, simply run `npm install`...
+Now simply `npm install`...
 ```shell script
 npm install
 ```
 
-...and run our simple NodeJS application...
+...and execute this super-simple NodeJS application...
 ```shell script
 node index.js 
 ```
 
-...we should see this output:
+...we should see the following output:
 ```
 [demo]$ node index.js 
 What is Pet Rock 'shinyness'?
@@ -137,20 +142,23 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 
 ## Create a front-end Javascript artifact
 
-Run the generator using a public demo vocabulary, in this case a simple Pet
-Rock vocabulary provided by inrupt, telling it not to prompt for any input
-(i.e. `--noprompt`), and asking for a bundled Javascript artifact (i.e.
-`supportBundling`):
+Run the LIT Artifact Generator using a public demo vocabulary, in this case
+the simple Pet Rock vocabulary provided by inrupt, telling it not to prompt 
+for any input (i.e. `--noprompt`), and asking for a bundled (i.e. WebPack'ed)
+Javascript artifact (i.e. via the `--supportBundling` command-line flag):
 
 ```shell
 lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
 ```
 
-This generates an artifact, and runs Webpack to bundle all of it's dependencies. 
-Everything is generated into the default `Generated` directory, and bundled
-into the `Generated/SourceCodeArtifacts/Javascript/dist` directory.
+This generates an artifact, and runs Webpack to bundle all of it's
+dependencies. Everything is generated into the default `Generated` directory,
+and bundled into the `Generated/SourceCodeArtifacts/Javascript/dist`
+directory.
 
-If you copy-and-paste the following HTML into a new file in the directory from which you ran the Artifact Generator (i.e. te directory which should now have a `Generated` directory within it)...
+If you copy-and-paste the following HTML into a new file in the directory
+from which you ran the Artifact Generator (i.e. te directory which should now
+have a `Generated` directory within it)...
 
 ```html
 <html>
@@ -174,22 +182,64 @@ If you copy-and-paste the following HTML into a new file in the directory from w
 My Pet Rock shinyness is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
 ```
 
-# Artifact vs. vocabulary
+# The relationship between LIT-generated source code artifacts and RDF vocabularies
 
-The artifacts are code objects that are generated from the vocabularies, which 
-are for the most part resources freely available on the Web. Therefore, multiple
-artifacts may exist for each vocabulary, potentially generated by diverse entities, 
-since it is not necessary to control the vocabulary in order to generate artifacts
-from it. 
+Source code artifacts (e.g. Java JARs, Node modules, C# assemblies, etc.) can be
+generated from any RDF vocabularies, or collections of multiple vocabularies.
+For example, in the case of Java, a single generated Java JAR may contain
+multiple Java Classes, with each Class representing the 'terms' (i.e. the
+Classes, Properties or Literals) within a single RDF vocabulary. In other words,
+each Java Class within that JAR would define static constants for each of the
+defined terms within the corresponding RDF vocabulary.
 
-For instance, let's imagine a Javascript library having the following dependencies:
+For example, perhaps the single most important and widely used vocabulary today
+is Schema.org, from Google, Mircosoft, Yaoo and Yandex. The official RDF for
+Schema.org is defined here: https://schema.org/version/latest/schema.ttl.
+
+But any individual or company is free to use the LIT Artifact Generator to
+generate their own source code artifacts to represent the terms defined in
+Schema.org. And of course, they are also free to use the LIT Artifact Generator
+to generate source code artifacts (e.g. a Java JAR containing Java classes)
+that represent any available RDF vocabularies, including their own, purely
+internal and properitary vocabularies.
+
+So in summary, any individual or company is completely free to define their
+own RDF vocabularies. Likeswise, any individual or company is completely free
+to run the LIT Artifact Generator against any available RDF vocabulary, meaning
+it's perfectly fine to have a multitude of generated artifacts claiming to
+represent the terms in any RDF vocabulary.
+
+In other words, it important to remember that it is not necessary to control
+an RDF vocabulary in order to generate useful source code artifacts from it.
+
+For instance, IBM could choose to generate their own Javascript module from
+the Schema.org vocabulary, and publish their generated module for others to
+depend on as follows:
 ```json
 dependencies: {
-  "@companyA/rdf-common":"^1.5.3",
-  "@pmcb55/lit-generated-vocab-common":"^0.2.7"
+  "@ibm/generated-from-schema.org":"^1.5.3"
 }
 ```
 
-It's possible that these two artifacts have been generated from the same
-RDF vocabularies, but with different templates, leading to different features
-being exposed. 
+...whereas Accenture (a major competitor to IBM) are completely free to also
+publish their generated Javascript (or Java, or C#, or Scala, etc.) source
+code artifact representing exactly the same Schema.org vocabulary, e.g.:
+```json
+dependencies: {
+  "@accenture/generated-from-schema.org-but-different-than-IBM-version":"^0.0.9"
+}
+```
+
+The LIT Artifact Generator allows each of these entities to configure their
+generated artifacts as they see fit, e.g. perhaps IBM augments their
+version with translations for various languages (that Schema.org does not
+provide today), or Accenture augments their version with references to
+related resources (e.g. via `rdfs:seeAlso` references) to similar terms in
+existing Accenture gloassaries or data dictionaries.
+
+Of course, individuals or companies are always completely free to choose
+between reusing existing generated artifacts from entities that they trust,
+or generating their own internal-only artifacts (or they could choose to 
+create their own programming-language-specific Classes containing constants
+for the terms in existing common RDF vocabularies (but why would anyone
+choose to do that...?!)).
