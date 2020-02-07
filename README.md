@@ -44,7 +44,7 @@ install Webpack, e.g. `npm install webpack webpack-cli --save-dev`
 # Quick start
 
 ---
-**__Temporarily__**, until we release the LIT Artifact Generator to the public NPM 
+**__Temporarily__** until we release the LIT Artifact Generator to the public NPM 
 repository, we need to manually reference a private Github NPM registry. You will
 need to generate a Personal Access Token (PAT) from your Github account (under the
 'Developer settings' tab on your profile page), and use it to authenticate with 
@@ -201,16 +201,16 @@ Generator (or any other generator!) to generate their own source code artifacts
 to represent the terms defined in Schema.org. And of course, they are also free
 to use the LIT Artifact Generator to generate source code artifacts (e.g. a
 Java JAR containing Java classes) that represent any available RDF
-vocabularies, including their own, purely internal and properitary
+vocabularies, including their own, purely internal and proprietary
 vocabularies.
 
-So in summary, any individual or company is completely free to define their
-own RDF vocabularies. Likeswise, any individual or company is completely free
-to run the LIT Artifact Generator against any available RDF vocabulary, meaning
+So any individual or company is completely free to define their own RDF
+vocabularies. Likeswise, any individual or company is completely free to run
+the LIT Artifact Generator against any available RDF vocabulary, meaning
 it's perfectly fine to have a multitude of generated artifacts claiming to
 represent the terms in any RDF vocabulary.
 
-In other words, it important to remember that it is not necessary to control
+In other words, it's important to remember that it's not necessary to control
 an RDF vocabulary in order to generate useful source code artifacts from it.
 
 For instance, IBM could choose to generate their own Javascript module from
@@ -224,7 +224,7 @@ dependencies: {
 
 ...whereas Accenture (a major competitor to IBM) are completely free to also
 publish their generated Javascript (or Java, or C#, or Scala, etc.) source
-code artifact representing exactly the same Schema.org vocabulary, e.g.:
+code artifacts representing exactly the same Schema.org vocabulary, e.g.:
 ```json
 dependencies: {
   "@accenture/generated-from-schema.org-but-different-than-IBM-version":"^0.0.9"
@@ -243,4 +243,4 @@ between reusing existing generated artifacts from entities that they trust,
 or generating their own internal-only artifacts (or they could choose to 
 create their own programming-language-specific Classes containing constants
 for the terms in existing common RDF vocabularies (but why would anyone
-choose to do that...?!)).
+choose to do that... :) ?)).
