@@ -19,7 +19,7 @@ artifactToGenerate:
     artifactVersion: 0.1.0
 #    gitRepository: git@github.com:some_user/some_project.git
     npmModuleScope: "@exampleScope/"
-    litVocabTermVersion: "^0.1.0"
+    litVocabTermVersion: "^0.2.4"
     artifactDirectoryName: Javascript
     handlebarsTemplate: javascript-rdf-ext.hbs
     sourceFileExtension: js
