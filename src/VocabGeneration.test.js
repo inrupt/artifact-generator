@@ -7,19 +7,17 @@ const App = require('./App');
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
-const VERSION_LIT_VOCAB_TERM = '^0.1.0';
+const VERSION_LIT_VOCAB_TERM = '^0.2.4';
 const NPM_REGISTRY = 'http://localhost:4873';
 const RUN_NPM_INSTALL = false;
-const SUPPORT_BUNDLING = false;
-const RUN_PACKAGING = true;
+const SUPPORT_BUNDLING = true;
+const RUN_PACKAGING = ['localMaven', 'localNpmNode'];
 
 const ConfigLitCommon = {
   _: 'generate',
   force: true,
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common/Vocab/Vocab-List-LIT-Common.yml',
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Common',
-  moduleNamePrefix: '@lit/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
+  vocabListFile: '../../Vocab/lit-rdf-vocab/Common/Vocab-List-LIT-Common.yml',
+  outputDirectory: '../../Vocab/lit-rdf-vocab/Common',
   artifactName: 'common',
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
@@ -28,15 +26,12 @@ const ConfigLitCommon = {
   publish: RUN_PACKAGING,
 };
 
-const ConfigSolidCommon = {
+const ConfigLitCore = {
   _: 'generate',
   force: true,
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common/Vocab/Vocab-List-Solid-Common.yml',
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Common',
-  moduleNamePrefix: '@solid/generated-vocab-', // TODO: SHOULD BE IRRELEVANT NOW (FOR VOCAB LIST FILES)...!?
-  artifactName: 'common',
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  vocabListFile: '../../Vocab/lit-rdf-vocab/Core/Vocab-List-LIT-Core.yml',
+  outputDirectory: '../../Vocab/lit-rdf-vocab/Core',
+  artifactName: 'core',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -46,10 +41,8 @@ const ConfigSolidCommon = {
 const ConfigInruptCommon = {
   _: 'generate',
   force: true,
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common/Vocab/Vocab-List-Inrupt-Common.yml',
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Common',
-  moduleNamePrefix: '@inrupt/generated-vocab-',
+  vocabListFile: '../../Vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml',
+  outputDirectory: '../../Vocab/inrupt-rdf-vocab/Common',
   artifactName: 'common',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -60,10 +53,8 @@ const ConfigInruptCommon = {
 const ConfigInruptService = {
   _: 'generate',
   force: true,
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service/Vocab/Vocab-List-Inrupt-Service.yml',
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/inrupt-rdf-vocab/Service',
-  moduleNamePrefix: '@inrupt/generated-vocab-',
+  vocabListFile: '../../Vocab/inrupt-rdf-vocab/Service/Vocab-List-Inrupt-Service.yml',
+  outputDirectory: '../../Vocab/inrupt-rdf-vocab/Service',
   artifactName: 'service',
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -71,14 +62,13 @@ const ConfigInruptService = {
   publish: RUN_PACKAGING,
 };
 
-const ConfigLitCore = {
+const ConfigSolidCommon = {
   _: 'generate',
   force: true,
-  vocabListFile:
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core/Vocab/Vocab-List-LIT-Core.yml',
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/LIT/Core',
-  moduleNamePrefix: '@lit/generated-vocab-',
-  artifactName: 'core',
+  vocabListFile: '../../Vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml',
+  outputDirectory: '../../Vocab/solid-rdf-vocab/Common',
+  artifactName: 'common',
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -88,12 +78,10 @@ const ConfigLitCore = {
 const ConfigSolidComponent = {
   _: 'generate',
   force: true,
-  inputResources: [
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component/Vocab/SolidComponent.ttl',
-  ],
-  litVocabTermVersion: '^0.1.0',
+  inputResources: ['../../Vocab/solid-rdf-vocab/Component/SolidComponent.ttl'],
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
 
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/Component',
+  outputDirectory: '../../Vocab/solid-rdf-vocab/Component',
   artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
@@ -106,12 +94,10 @@ const ConfigSolidComponent = {
 const ConfigSolidGeneratorUi = {
   _: 'generate',
   force: true,
-  inputResources: [
-    '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi/Vocab/SolidGeneratorUi.ttl',
-  ],
-  litVocabTermVersion: '^0.1.0',
+  inputResources: ['../../Vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl'],
+  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
 
-  outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/solid-rdf-vocab/GeneratorUi',
+  outputDirectory: '../../Vocab/solid-rdf-vocab/GeneratorUi',
   artifactVersion: '0.1.0',
   moduleNamePrefix: '@solid/generated-vocab-',
   npmRegistry: NPM_REGISTRY,
@@ -158,12 +144,11 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
     await generateVocabArtifact(ConfigSolidCommon);
 
-    // Just note - these configurations generate from single RDF vocab files (i.e. not via YAML
-    // config files), so they'll only generate Javascript (i.e. the command-line default).
-    // TODO: commented out for now until the config's are updated to work with latest packaging
-    //  changes from Nic...
-    // await generateVocabArtifact(ConfigSolidComponent);
-    // await generateVocabArtifact(ConfigSolidGeneratorUi);
+    // Just note - these configurations generate from single RDF vocab files
+    // (i.e. not via YAML config files), so they'll only generate Javascript
+    // (i.e. the command-line default).
+    await generateVocabArtifact(ConfigSolidComponent);
+    await generateVocabArtifact(ConfigSolidGeneratorUi);
 
     await generateVocabArtifact(ConfigInruptCommon);
     await generateVocabArtifact(ConfigInruptService);
@@ -171,14 +156,14 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('LIT vocabs', async () => {
   it.skip('LIT vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
   });
 
   // it('Solid vocabs', async () => {
   it.skip('Solid vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigSolidCommon);
     await generateVocabArtifact(ConfigSolidGeneratorUi);
     await generateVocabArtifact(ConfigSolidComponent);
@@ -192,7 +177,7 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('LIT Common vocabs', async () => {
   it.skip('LIT Common vocabs', async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
   });
 
@@ -230,13 +215,6 @@ describe('Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip('Test Demo App', async () => {
     // it('Test Demo App', async () => {
     await generateVocabArtifact({
-      // inputResources: ['../../../../Solid/ReactSdk/testExport/public/vocab/TestExportVocab.ttl'],
-
-      // inputResources: ['../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock/Vocab/PetRock.ttl'],
-
-      // inputResources: ['./example/vocab/PetRock.ttl'],
-      // outputDirectory: '../../../../Solid/MonoRepo/testLit/packages/Vocab/PetRock',
-
       inputResources: [
         'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl',
       ],

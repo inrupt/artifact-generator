@@ -86,7 +86,7 @@ describe('Generator configuration', () => {
 
       await expect(() => {
         GeneratorConfiguration.fromYaml(configPath);
-      }).toThrow('Empty YAML file', configFile);
+      }).toThrow('Empty configuration file', configFile);
     });
 
     it('should throw an error trying to parse a syntactically incorrect YAML file', async () => {

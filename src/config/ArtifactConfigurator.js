@@ -40,7 +40,7 @@ class ArtifactConfigurator {
       type: 'input',
       name: 'litVocabTermVersion',
       message: 'Version string for LIT Vocab Term dependency:',
-      // This may be overriden in extending classes.
+      // This may be overridden in extending classes.
       default: this.litVocabTermVersion,
     });
     this.config.languageKeywordsToUnderscore = DEFAULT_KEYWORDS_TO_UNDERSCORE;

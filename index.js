@@ -58,7 +58,7 @@ const yargsConfig = yargs
 
         .alias('lv', 'litVocabTermVersion')
         .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
-        .default('litVocabTermVersion', '^0.1.0')
+        .default('litVocabTermVersion', '^0.2.4')
 
         .alias('in', 'runNpmInstall')
         .boolean('runNpmInstall')
