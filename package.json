@@ -1,6 +1,6 @@
 {
   "name": "@inrupt/lit-artifact-generator",
-  "version": "0.4.3",
+  "version": "0.4.2",
   "description": "A generator for building artifacts (e.g. Java JARs, NPM modules, etc.) from RDF vocabularies.",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,8 @@
     "test": "npm run format && npm run lint && jest",
     "start": "node index.js",
     "format": "prettier --single-quote --trailing-comma es5 --write \"index.js\" \"src/**/*.js\"",
-    "lint": "eslint src -c .eslintrc.json --ext js,jsx"
+    "lint": "eslint src -c .eslintrc.json --ext js,jsx",
+    "preversion": "npm test"
   },
   "author": "inrupt, Inc.",
   "contributors": [
