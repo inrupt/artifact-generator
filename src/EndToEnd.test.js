@@ -205,20 +205,6 @@ describe('End-to-end tests', () => {
       expect(output.substring(output.indexOf(' */'))).toBe(
         expected.substring(expected.indexOf(' */'))
       );
-      // // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
-      // const output = fs
-      //   .readFileSync(
-      //     `${outputDirectoryJava}/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java`
-      //   )
-      //   .toString();
-      // const expected = fs
-      //   .readFileSync(
-      //     'test/resources/expectedOutputs/java-rdf4j/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java'
-      //   )
-      //   .toString();
-      // expect(output.substring(output.indexOf(' */'))).toBe(
-      //   expected.substring(expected.indexOf(' */'))
-      // );
     });
 
     it('should create from an ontology file using native RdfExt (and not LIT Vocab Term)', async () => {
