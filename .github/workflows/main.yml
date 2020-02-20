@@ -4,7 +4,7 @@ on:
 jobs:
   generate-and-publish-package:
     runs-on: ubuntu-latest
-    name: Common vocab artifact generation and publication 
+    name: LIT Artifact Generator release
     steps:
      # Makes the current repository available to the workflow.
     - name: Checkout repo
@@ -18,7 +18,7 @@ jobs:
         scope: '@inrupt'
     - name: NPM install, test and publish
       run: |
-        npm ci --registry https://npm.pkg.github.com/inrupt
+        npm ci
         npm test
         npm publish --registry https://npm.pkg.github.com/inrupt
       env:
