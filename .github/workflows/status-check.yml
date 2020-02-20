@@ -5,7 +5,7 @@ on:
 jobs:
   run_npm_test:
     runs-on: ubuntu-latest
-    name: LIT check
+    name: Run 'npm test' on all PRs to the 'develop' branch
     steps:
         # Setup
       - name: Checkout repo
