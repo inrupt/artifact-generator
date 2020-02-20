@@ -150,7 +150,7 @@ describe('Generator configuration', () => {
       expect(generatorConfiguration.configuration.vocabList).toEqual(EXPECTED_VOCAB_LIST_FROM_YAML);
     });
 
-    it('should not throw on version mismatch, and override the config version with the actual', async () => {
+    it('should produce warning because our LIT Artifact Generator version mismatches the version in the specified config file', async () => {
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
@@ -160,21 +160,28 @@ describe('Generator configuration', () => {
         undefined
       );
 
+      // We expect the LIT Artifact Generator version number in the generated
+      // artifacts to be our actual version number, and not the version number
+      // that appears in the incoming config file.
       expect(generatorConfiguration.configuration.artifactGeneratorVersion).toEqual(
         packageDotJson.version
       );
     });
 
-    it('should do nothing on version match', async () => {
-      const yamlPath = './test/resources/yamlConfig/vocab-list-version-match.yml';
+    it('should be ok if our LIT Artifact Generator version matches the version number in the specified config file', async () => {
+      const configDirectory = './test/Generated/YamlConfig';
+      const configPath = `${configDirectory}/vocab-list-version-match.yml`;
 
-      // The content of the YAML dynamically matches the current generator version
-      fs.writeFileSync(yamlPath, VERSION_MATCHING_YAML);
+      // We need to create a local config file with the correct (i.e. our
+      // current LIT Artifact Generator version number (which we read from our
+      // own 'package.json' file!).
+      fs.mkdirSync(configDirectory, { recursive: true });
+      fs.writeFileSync(configPath, VERSION_MATCHING_YAML);
 
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
-          vocabListFile: yamlPath,
+          vocabListFile: configPath,
           noprompt: true,
         },
         undefined
