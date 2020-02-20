@@ -248,7 +248,7 @@ describe('Artifact Generator', () => {
 
   describe('Publishing artifacts.', () => {
     it('should publish artifacts locally if the publication option is specified', async () => {
-      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSetLocal';
+      const outputDirectory = 'test/Generated/ArtifactGenerator/publish/optionSetLocal';
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -281,7 +281,7 @@ describe('Artifact Generator', () => {
     });
 
     it('should publish artifacts remotely if the publication option is specified', async () => {
-      const outputDirectory = 'test/generated/ArtifactGenerator/publish/optionSetRemote';
+      const outputDirectory = 'test/Generated/ArtifactGenerator/publish/optionSetRemote';
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({

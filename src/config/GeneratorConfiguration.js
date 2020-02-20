@@ -58,8 +58,9 @@ const DEFAULT_CLI_ARTIFACT = [
 
 class GeneratorConfiguration {
   /**
-   * Constructor for the configuration object. It is passed info collected on the command line, potentially with sensible default values.
-   * The following are necessarily set:
+   * Constructor for the configuration object. It is passed info collected on
+   * the command-line, potentially with sensible default values. The following
+   * are necessarily set:
    * - outputDirectory
    * - noprompt
    * - quiet
@@ -67,10 +68,10 @@ class GeneratorConfiguration {
    */
   constructor(initialConfig) {
     if (initialConfig.vocabListFile) {
-      // The command line contains a YAML file.
+      // The command-line references a vocab list configuration file.
       this.configuration = {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
-        ...GeneratorConfiguration.fromYaml(initialConfig.vocabListFile),
+        ...GeneratorConfiguration.fromConfigFile(initialConfig.vocabListFile),
       };
     } else {
       this.configuration = {
@@ -191,11 +192,11 @@ class GeneratorConfiguration {
     return normalizedArtifactConfig;
   }
 
-  static normalizeConfigTemplatePaths(vocabConfig, normalizedYamlPath) {
+  static normalizeConfigTemplatePaths(vocabConfig, normalizedConfigPath) {
     const vocabConfigNormalizedTemplates = vocabConfig;
     vocabConfigNormalizedTemplates.artifactToGenerate = vocabConfig.artifactToGenerate.map(
       artifactConfig => {
-        return this.normalizeArtifactTemplates(artifactConfig, normalizedYamlPath);
+        return this.normalizeArtifactTemplates(artifactConfig, normalizedConfigPath);
       }
     );
 
@@ -208,8 +209,9 @@ class GeneratorConfiguration {
           const normalizedVersioningFile = versioningFile;
           normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
             versioningFile.template,
-            normalizedYamlPath
+            normalizedConfigPath
           );
+
           return normalizedVersioningFile;
         }
       );
@@ -222,27 +224,27 @@ class GeneratorConfiguration {
    *  This function makes the local vocabulary path relative to the root of the project,
    *  rather that to the configuration file. It makes it consistent with vocabularies passed
    *  on the command line.
-   * @param {*} vocabConfig the path of the vocabulary, relative to the YAML config
-   * @param {*} yamlPath the path of the YAML config, relative to the project root
+   * @param {*} vocabConfig the path of the vocabulary, relative to the configuration file
+   * @param {*} configPath the path to the configuration file, relative to the project root
    */
-  static normalizePath(vocabConfig, yamlPath) {
+  static normalizePath(vocabConfig, configPath) {
     let normalizedVocabConfig = vocabConfig;
-    const normalizedYamlPath = GeneratorConfiguration.normalizeAbsolutePath(
-      yamlPath,
+    const normalizedConfigPath = GeneratorConfiguration.normalizeAbsolutePath(
+      configPath,
       process.cwd()
     );
 
     normalizedVocabConfig = GeneratorConfiguration.normalizeInputResources(
       normalizedVocabConfig,
-      normalizedYamlPath
+      normalizedConfigPath
     );
 
     if (vocabConfig.termSelectionResource) {
       normalizedVocabConfig.termSelectionResource = path.join(
-        path.dirname(normalizedYamlPath),
+        path.dirname(normalizedConfigPath),
         GeneratorConfiguration.normalizeAbsolutePath(
           vocabConfig.termSelectionResource,
-          path.dirname(normalizedYamlPath)
+          path.dirname(normalizedConfigPath)
         )
       );
     }
@@ -265,7 +267,7 @@ class GeneratorConfiguration {
   }
 
   /**
-   * This function validitate artifacts found in the artifactToGenerate list.
+   * This function validiates artifacts found in the artifactToGenerate list.
    * @param {*} artifact the configuration object for an individual artifact
    */
   static validateArtifact(artifact) {
@@ -303,7 +305,7 @@ class GeneratorConfiguration {
       );
     }
 
-    // There must be at least one artifact defined
+    // There must be at least one artifact defined.
     if (!config.artifactToGenerate) {
       throw new Error(
         'No artifacts found: nothing to generate. ' +
@@ -315,7 +317,7 @@ class GeneratorConfiguration {
       GeneratorConfiguration.validateArtifact(config.artifactToGenerate[i]);
     }
 
-    // There must be at least one vocabulary defined
+    // There must be at least one vocabulary defined.
     if (!config.vocabList) {
       throw new Error(
         'No vocabularies found: nothing to generate. ' +
@@ -327,11 +329,13 @@ class GeneratorConfiguration {
   static validateCommandline(args) {
     let mode = COMMAND_GENERATE;
     if (args._) {
-      // Only one command is passed to yargs, so this array always contains one element
+      // Only one command is passed to yargs, so this array always contains one
+      // element.
       [mode] = args._;
     }
 
-    // If the options are provided by command line, at least one input resource must be specified (except for initialization)
+    // If the options are provided by command line, at least one input resource
+    // must be specified (except for initialization).
     if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
       throw new Error(
         'Missing input resource. Please provide either a YAML configuration file, or at least one input resource.'
@@ -345,7 +349,7 @@ class GeneratorConfiguration {
    *
    * @param {string} configFile path to the config file
    */
-  static fromYaml(configFile) {
+  static fromConfigFile(configFile) {
     let configuration = {};
     try {
       debug(`Processing configuration file [${configFile}]...`);
@@ -474,7 +478,8 @@ class GeneratorConfiguration {
   }
 
   /**
-   * This function returns all the resources (local files and online reposirtories) that are listed in the configuration object
+   * This function returns all the resources (local files and online
+   * repositories) that are listed in the configuration object.
    */
   getInputResources() {
     const resources = [];

@@ -31,8 +31,6 @@
     {{/if}}
 
     <properties>
-        <lit.vocab.term.version>{{litVocabTermVersion}}</lit.vocab.term.version>
-
         <slf4j.version>1.7.26</slf4j.version>
 
         <!-- RDF4J defines a BOM that we can depend on below in our 'dependenciesManagement' section, specifying the
@@ -59,9 +57,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.pmcb55.lit</groupId>
-            <artifactId>lit-vocab-term</artifactId>
-            <version>${lit.vocab.term.version}</version>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-model</artifactId>
+            <version>${rdf4j.version}</version>
         </dependency>
 
         <dependency>

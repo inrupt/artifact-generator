@@ -23,7 +23,7 @@ const doNothingPromise = data => {
 describe('End-to-end tests', () => {
   describe('Build node module artifacts', () => {
     it('should fail if no ontology file', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/no-ontology';
+      const outputDirectory = 'test/Generated/EndToEnd/no-ontology';
       del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/does.not.exist.ttl';
 
@@ -46,7 +46,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should fail if ontology file invalid', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/invalid-ontology';
+      const outputDirectory = 'test/Generated/EndToEnd/invalid-ontology';
       del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/invalid-turtle.ttl';
       const artifactGenerator = new ArtifactGenerator(
@@ -62,7 +62,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should fail if ontology file has term from different namespace', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/different-namespace';
+      const outputDirectory = 'test/Generated/EndToEnd/different-namespace';
       del.sync([`${outputDirectory}/*`]);
       const errorFilename = './test/resources/vocabs/mismatched-namespaces.ttl';
 
@@ -88,7 +88,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should create from an ontology file', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/create-ontology/';
+      const outputDirectory = 'test/Generated/EndToEnd/create-ontology/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -113,7 +113,7 @@ describe('End-to-end tests', () => {
         fs.readFileSync('test/resources/expectedOutputs/single/index.js').toString()
       );
 
-      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
         .toString();
@@ -131,7 +131,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should create from an ontology file using the rdflib', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/dependency-rdflib/';
+      const outputDirectory = 'test/Generated/EndToEnd/dependency-rdflib/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -155,7 +155,7 @@ describe('End-to-end tests', () => {
         expect.stringContaining('@pmcb55/lit-vocab-term-rdflib')
       );
 
-      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
         .toString();
@@ -166,8 +166,86 @@ describe('End-to-end tests', () => {
       );
     });
 
+    it('should create from an ontology file using the native RDF4J (and not LIT Vocab Term)', async () => {
+      const outputDirectory = 'test/Generated/EndToEnd/dependency-just-rdf4j/';
+      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            vocabListFile: './test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml',
+            outputDirectory,
+            supportBundling: true,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(fs.existsSync(`${outputDirectoryJava}/pom.xml`)).toBe(true);
+      expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
+        fs.readFileSync('test/resources/expectedOutputs/dependency-just-rdf4j/pom.xml').toString()
+      );
+
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(
+          `${outputDirectoryJava}/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java`
+        )
+        .toString();
+      const expected = fs
+        .readFileSync(
+          'test/resources/expectedOutputs/dependency-just-rdf4j/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java'
+        )
+        .toString();
+      expect(output.substring(output.indexOf(' */'))).toBe(
+        expected.substring(expected.indexOf(' */'))
+      );
+    });
+
+    it('should create from an ontology file using native RdfExt (and not LIT Vocab Term)', async () => {
+      const outputDirectory = 'test/Generated/EndToEnd/dependency-just-rdf-ext/';
+      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ['generate'],
+            vocabListFile: './test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-ext.yml',
+            outputDirectory,
+            supportBundling: true,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+
+      // The package.json should be generated from the proper template (with the rdflib dependency).
+      const packageDotJson = fs
+        .readFileSync(`${outputDirectoryJavascript}/package.json`)
+        .toString();
+
+      expect(packageDotJson).toEqual(expect.stringContaining('@rdfjs/namespace'));
+
+      expect(packageDotJson).toEqual(expect.stringContaining('^9.8.7'));
+
+      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      const output = fs
+        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`)
+        .toString();
+      expect(output).toEqual(expect.stringContaining("Person: RDFJS_NAMESPACE('Person'),"));
+    });
+
     it('should create from an ontology link', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/create-ontology-link/';
+      const outputDirectory = 'test/Generated/EndToEnd/create-ontology-link/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -200,7 +278,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to fully extend an ontology with multiple input files', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/multiple-inputs/';
+      const outputDirectory = 'test/Generated/EndToEnd/multiple-inputs/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -249,7 +327,7 @@ describe('End-to-end tests', () => {
         return Promise.resolve(rdfFetchMock);
       });
 
-      const outputDirectory = 'test/Generated/End-to-End/multiple-urls/';
+      const outputDirectory = 'test/Generated/EndToEnd/multiple-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -288,7 +366,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should be able to extend an ontology but only creates triples from extension file', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/extension-file/';
+      const outputDirectory = 'test/Generated/EndToEnd/extension-file/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -338,7 +416,7 @@ describe('End-to-end tests', () => {
         return Promise.resolve(rdfFetchMock);
       });
 
-      const outputDirectory = 'test/Generated/End-to-End/extension-urls/';
+      const outputDirectory = 'test/Generated/EndToEnd/extension-urls/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -377,7 +455,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should take in a version for the output module', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/module-version/';
+      const outputDirectory = 'test/Generated/EndToEnd/module-version/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -402,7 +480,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should handle creating generated directory if it does not exist already', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/dest-directory-not-exist/';
+      const outputDirectory = 'test/Generated/EndToEnd/dest-directory-not-exist/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
 
@@ -425,7 +503,7 @@ describe('End-to-end tests', () => {
     });
 
     it('module names should by default start with @lit/generated-vocab-*', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/module-default-name/';
+      const outputDirectory = 'test/Generated/EndToEnd/module-default-name/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator(
@@ -468,7 +546,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should add a description inside the package.json', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/package-description/';
+      const outputDirectory = 'test/Generated/EndToEnd/package-description/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -494,7 +572,7 @@ describe('End-to-end tests', () => {
     });
 
     it('should add authors inside the package.json', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/authors-in-package/';
+      const outputDirectory = 'test/Generated/EndToEnd/authors-in-package/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -520,7 +598,7 @@ describe('End-to-end tests', () => {
 
   describe('Build Java artifacts', () => {
     it('should create from an ontology file', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/generate-java/';
+      const outputDirectory = 'test/Generated/EndToEnd/generate-java';
       const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -538,11 +616,13 @@ describe('End-to-end tests', () => {
       await artifactGenerator.generate();
 
       expect(fs.existsSync(`${outputDirectoryJava}/pom.xml`)).toBe(true);
+
       expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
         fs.readFileSync('test/resources/expectedOutputs/java-rdf4j/pom.xml').toString()
       );
 
-      // Generated code contains timestamnp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJava}/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java`
@@ -561,7 +641,7 @@ describe('End-to-end tests', () => {
 
   describe('Specific YAML configurations', () => {
     it('should pick up the strictness of the LitVocabTerm from the YAML', async () => {
-      const outputDirectory = 'test/Generated/End-to-End/generate-strict/';
+      const outputDirectory = 'test/Generated/EndToEnd/generate-strict/';
       const outputDirectoryJS = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(

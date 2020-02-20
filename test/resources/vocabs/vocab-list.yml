@@ -20,6 +20,7 @@ artifactToGenerate:
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
+        rdf4jVersion: 2.5.3
         packagingTemplates: 
         - template: pom.hbs
           fileName: pom.xml

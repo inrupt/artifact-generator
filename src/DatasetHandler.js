@@ -216,10 +216,10 @@ module.exports = class DatasetHandler {
   buildTemplateInput() {
     const result = {};
 
-    result.versionWebpack = this.vocabData.versionWebpack;
-    result.versionWebpackCli = this.vocabData.versionWebpackCli;
-    result.versionBabelCore = this.vocabData.versionBabelCore;
-    result.versionBabelLoader = this.vocabData.versionBabelLoader;
+    result.webpackVersion = this.vocabData.webpackVersion;
+    result.webpackCliVersion = this.vocabData.webpackCliVersion;
+    result.babelCoreVersion = this.vocabData.babelCoreVersion;
+    result.babelLoaderVersion = this.vocabData.babelLoaderVersion;
 
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;

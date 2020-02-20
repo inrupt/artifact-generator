@@ -30,10 +30,10 @@ class ArtifactGenerator {
     this.artifactData.authorSet = new Set();
 
     // TODO: Just hard-coding for the moment (still investigating Webpack...)
-    this.artifactData.versionWebpack = '^4.39.1';
-    this.artifactData.versionWebpackCli = '^3.3.6';
-    this.artifactData.versionBabelCore = '^7.5.5';
-    this.artifactData.versionBabelLoader = '^8.0.6';
+    this.artifactData.webpackVersion = '^4.39.1';
+    this.artifactData.webpackCliVersion = '^3.3.6';
+    this.artifactData.babelCoreVersion = '^7.5.5';
+    this.artifactData.babelLoaderVersion = '^8.0.6';
   }
 
   async generate() {

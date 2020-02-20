@@ -61,14 +61,14 @@ describe('Generator configuration', () => {
     it('should fail with non-existent vocab list file', async () => {
       const nonExistFile = ' nonsense file name';
       await expect(() => {
-        GeneratorConfiguration.fromYaml(nonExistFile);
+        GeneratorConfiguration.fromConfigFile(nonExistFile);
       }).toThrow('Failed to read configuration file');
     });
 
     it('should fail with invalid YAML vocab list file', async () => {
       const notYamlFile = './test/resources/yamlConfig/vocab-list.txt';
       await expect(() => {
-        GeneratorConfiguration.fromYaml(notYamlFile);
+        GeneratorConfiguration.fromConfigFile(notYamlFile);
       }).toThrow('Failed to read configuration file');
     });
 
@@ -76,7 +76,7 @@ describe('Generator configuration', () => {
       const notYamlFile =
         './test/resources/yamlConfig/vocab-list-missing-artifactDirectoryName.yml';
       await expect(() => {
-        GeneratorConfiguration.fromYaml(notYamlFile);
+        GeneratorConfiguration.fromConfigFile(notYamlFile);
       }).toThrow('The target directory name ');
     });
 
@@ -85,7 +85,7 @@ describe('Generator configuration', () => {
       const configPath = `./test/resources/yamlConfig/${configFile}`;
 
       await expect(() => {
-        GeneratorConfiguration.fromYaml(configPath);
+        GeneratorConfiguration.fromConfigFile(configPath);
       }).toThrow('Empty configuration file', configFile);
     });
 
@@ -94,7 +94,7 @@ describe('Generator configuration', () => {
       const configPath = `./test/resources/yamlConfig/${configFile}`;
 
       await expect(() => {
-        GeneratorConfiguration.fromYaml(configPath);
+        GeneratorConfiguration.fromConfigFile(configPath);
       }).toThrow(/^Failed to read configuration file/, configFile);
     });
 
@@ -104,7 +104,7 @@ describe('Generator configuration', () => {
 
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
-        GeneratorConfiguration.fromYaml(configPath);
+        GeneratorConfiguration.fromConfigFile(configPath);
       }).toThrow(/No vocabularies found/, configFile);
     });
 
@@ -114,7 +114,7 @@ describe('Generator configuration', () => {
 
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
-        GeneratorConfiguration.fromYaml(configPath);
+        GeneratorConfiguration.fromConfigFile(configPath);
       }).toThrow(/No artifacts found/, configFile);
     });
 
@@ -123,13 +123,15 @@ describe('Generator configuration', () => {
 
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
-        GeneratorConfiguration.fromYaml(configPath);
+        GeneratorConfiguration.fromConfigFile(configPath);
       }).toThrow('No templates associated to packaging tool');
     });
 
     it('should fail if the YAML config does not provide a artifactGeneratorVersion', () => {
       expect(() => {
-        GeneratorConfiguration.fromYaml('./test/resources/yamlConfig/vocab-list-no-version.yml');
+        GeneratorConfiguration.fromConfigFile(
+          './test/resources/yamlConfig/vocab-list-no-version.yml'
+        );
       }).toThrow("Missing 'artifactGeneratorVersion' field");
     });
 
