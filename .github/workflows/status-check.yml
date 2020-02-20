@@ -1,0 +1,20 @@
+on:
+  pull_request:
+    branches:
+    - develop
+jobs:
+  run_npm_test:
+    runs-on: ubuntu-latest
+    name: Run tests on all PRs to 'develop'
+    steps:
+        # Setup
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Node setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.12.0'
+          registry-url: https://npm.pkg.github.com/
+          scope: '@inrupt'
+      - run: npm ci
+      - run: npm test
