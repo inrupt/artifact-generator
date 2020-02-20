@@ -20,6 +20,7 @@ artifactToGenerate:
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
+        rdf4jVersion: 2.5.3
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##

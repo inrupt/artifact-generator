@@ -18,7 +18,7 @@ artifactToGenerate:
     packaging:
       - packagingTool: npm
         npmModuleScope: "@lit/"
-        versionRdfjsNamespace: ^9.8.7
+        rdfjsNamespaceVersion: ^9.8.7
 
         # Because we want to refer to a template in a sub-directory, we need to
         # provide the full path to it relative to where we are!

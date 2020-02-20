@@ -22,6 +22,7 @@ artifactToGenerate:
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
+        rdf4jVersion: 2.5.3
         publish:
           - key: "localMaven"
             command: "mvn install"

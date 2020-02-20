@@ -141,6 +141,7 @@ artifactToGenerate:
         # the generator code is agnostic to the variables defined here. For instance, the groupId thereafter is used
         # in the 'pom.hbs' template. 
         groupId: com.inrupt.test
+        rdf4jVersion: 2.5.3
         packagingTemplates: 
           # MANDATORY The template(s) instanciated once to generate the target packaging code.
           # It can reference a handlebars template relative to the YAML file, and also
