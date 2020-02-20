@@ -6,7 +6,6 @@ artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
-
   - programmingLanguage: Javascript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"

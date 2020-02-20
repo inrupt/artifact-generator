@@ -1,0 +1,35 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-TEST
+artifactGeneratorVersion: 0.4.2
+
+artifactToGenerate:
+  - programmingLanguage: Javascript
+    artifactVersion: 10.11.12
+    npmModuleScope: "@lit/"
+    litVocabTermVersion: "^1.0.10"
+    artifactDirectoryName: Javascript
+    # Because we want to refer to a template in a sub-directory, we need to
+    # provide the full path to it relative to where we are!
+    handlebarsTemplate: ../../../templates/rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
+    sourceFileExtension: js
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@lit/"
+        versionRdfjsNamespace: ^9.8.7
+
+        # Because we want to refer to a template in a sub-directory, we need to
+        # provide the full path to it relative to where we are!
+        packagingTemplates:
+          - template: ../../../templates/rdfLibraryDependent/javascript/rdf-ext/package-rdf-ext.hbs
+            fileName: package.json
+          - template: index.hbs
+            fileName: index.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl
