@@ -192,12 +192,12 @@ describe('Generator configuration', () => {
       );
     });
 
-    it('should normalize paths relative to the YAML file', async () => {
-      const yamlPath = './test/resources/normalization/';
+    it('should normalize paths relative to the configuration file', async () => {
+      const configPath = './test/resources/normalization/';
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ['generate'],
-          vocabListFile: path.join(yamlPath, 'vocab-list.yml'),
+          vocabListFile: path.join(configPath, 'vocab-list.yml'),
           noprompt: true,
         },
         undefined
@@ -212,14 +212,72 @@ describe('Generator configuration', () => {
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0].packagingTemplates[0].template
       ).toEqual('templates/pom.hbs');
+
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0].packagingTemplates[1].template
-      ).toEqual(path.join(yamlPath, '../../readme.hbs'));
+      ).toEqual(path.join(configPath, '../../readme.hbs'));
+
       expect(normalizedConfig.artifactToGenerate[1].handlebarsTemplate).toEqual(
-        path.join(yamlPath, '../anotherTemplateDirectory/javascript.hbs')
+        path.join(configPath, '../anotherTemplateDirectory/javascript.hbs')
       );
 
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
+    });
+  });
+
+  describe('Missing template values.', () => {
+    it('should fail if missing programming language template', async () => {
+      const configPath = './test/resources/normalization/';
+
+      const programmingLanguage = path.join(
+        configPath,
+        'missing-programming-language-template.yml'
+      );
+      expect(
+        () =>
+          new GeneratorConfiguration(
+            {
+              _: ['generate'],
+              vocabListFile: programmingLanguage,
+              noprompt: true,
+            },
+            undefined
+          )
+      ).toThrow('but neither was provided', programmingLanguage);
+    });
+
+    it('should fail if missing packaging template', async () => {
+      const configPath = './test/resources/normalization/';
+
+      const packaging = path.join(configPath, 'missing-packaging-template.yml');
+      expect(
+        () =>
+          new GeneratorConfiguration(
+            {
+              _: ['generate'],
+              vocabListFile: packaging,
+              noprompt: true,
+            },
+            undefined
+          )
+      ).toThrow('but neither was provided', packaging);
+    });
+
+    it('should fail if missing versioning template', async () => {
+      const configPath = './test/resources/normalization/';
+
+      const versioning = path.join(configPath, 'missing-versioning-template.yml');
+      expect(
+        () =>
+          new GeneratorConfiguration(
+            {
+              _: ['generate'],
+              vocabListFile: versioning,
+              noprompt: true,
+            },
+            undefined
+          )
+      ).toThrow('but neither was provided', versioning);
     });
   });
 

@@ -56,8 +56,8 @@ class NodeArtifactConfigurator extends ArtifactConfigurator {
 
     this.config.handlebarsTemplate = DEFAULT_TEMPLATE;
     this.config.sourceFileExtension = DEFAULT_EXTENSION;
-    this.config.programmingLanguage = LANGUAGE;
     this.config.artifactDirectoryName = LANGUAGE;
+    this.config.programmingLanguage = LANGUAGE;
   }
 
   async promptPackaging(packagingTools) {

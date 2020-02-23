@@ -11,9 +11,11 @@ artifactToGenerate:
     javaPackageName: com.pmcb55.generated.vocab.lit.test
     litVocabTermVersion: 0.2.0
     artifactDirectoryName: Java
-    # Because we want to refer to a template in a sub-directory, we need to
-    # provide the full path to it relative to where we are!
-    handlebarsTemplate: ../../../templates/rdfLibraryDependent/java/rdf4j/java-rdf4j.hbs
+    # Here we're testing the 'Custom' template option (i.e. a local config
+    # file), but in fact we're accessing a template in our internal 'templates'
+    # directory, so we need to provide the full path to it relative to where we
+    # are!
+    handlebarsTemplateCustom: ../../../templates/rdfLibraryDependent/java/rdf4j/java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -31,9 +33,11 @@ artifactToGenerate:
           - key: "nexus"
             command: "mvn -s /home/runner/work/lit-rdf-vocab/lit-rdf-vocab/settings.xml deploy"
         packagingTemplates:
-          # Because we want to refer to a template in a sub-directory, we need to
-          # provide the full path to it relative to where we are!
-          - template: ../../../templates/rdfLibraryDependent/java/rdf4j/pom-rdf4j.hbs
+          # Here we're testing the 'Custom' template option (i.e. a local config
+          # file), but in fact we're accessing a template in our internal
+          # 'templates' directory, so we need to provide the full path to it
+          # relative to where we are!
+          - templateCustom: ../../../templates/rdfLibraryDependent/java/rdf4j/pom-rdf4j.hbs
             fileName: pom.xml
 
 vocabList:

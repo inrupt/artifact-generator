@@ -1,0 +1,29 @@
+artifactName: generated-vocab-common-TEST
+artifactGeneratorVersion: 0.1.0
+versioning:
+  type: git
+  url: https://repository.git
+
+  ##
+  # Here we have a template, but it's not what we expect.
+  ##
+  versioningTemplates:
+    - templateFieldWrongName: ".gitignore.hbs"
+      fileName: ".gitignore"
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    artifactDirectoryName: Java
+    ##
+    # Here the template is picked from among the internally provided templates.
+    ##
+    handlebarsTemplate: java-rdf4j.hbs
+    sourceFileExtension: java
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ./schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext.ttl

@@ -16,21 +16,10 @@ artifactToGenerate:
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates:
-        - template: pom.hbs
-          fileName: pom.xml
-        ##
-        # This is a dummy file path, just here to test normalization
-        ##
-        - templateCustom: ../../readme.hbs
-          fileName: pom.xml
-
-  - programmingLanguage: Javascript
-    artifactDirectoryName: Javascript
-    ##
-    # This is a dummy file path, just here to test normalization
-    ##
-    handlebarsTemplateCustom: ../anotherTemplateDirectory/javascript.hbs
-    sourceFileExtension: js
+          ##
+          # Here we have a template, but it's not what we expect.
+          ##
+          - templateFieldWrongName: pom.hbs
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex

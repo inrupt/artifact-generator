@@ -102,18 +102,18 @@ class GeneratorConfiguration {
     return normalizedConfig;
   }
 
-  static normalizeInputResources(vocabConfig, normalizedYamlPath) {
+  static normalizeInputResources(vocabConfig, normalizedConfigPath) {
     const normalizedVocabConfig = vocabConfig;
     for (let i = 0; i < vocabConfig.inputResources.length; i += 1) {
       if (!normalizedVocabConfig.inputResources[i].startsWith('http')) {
         // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
         normalizedVocabConfig.inputResources[i] = path.join(
-          path.dirname(normalizedYamlPath),
+          path.dirname(normalizedConfigPath),
           // Vocabularies are all made relative to the YAML file
           GeneratorConfiguration.normalizeAbsolutePath(
             vocabConfig.inputResources[i],
-            path.dirname(normalizedYamlPath)
+            path.dirname(normalizedConfigPath)
           )
         );
       }
@@ -122,36 +122,27 @@ class GeneratorConfiguration {
     return normalizedVocabConfig;
   }
 
-  /**
-   * This function checks if the provided resource path is a single filename
-   * (e.g. example.hbs), or a path (e.g. ./templates/example.hbs).
-   * @param {string} resourcePath
-   * @returns a boolean
-   */
-  static isPlainFilename(resourcePath) {
-    // TODO: as of now, online templates are not supported.
-    // If the basename is identical to the full path, the provided argument
-    // is just a file name
-    return path.basename(resourcePath) === resourcePath;
-  }
-
-  static normalizeTemplatePath(templatePath, normalizedYamlPath) {
-    let normalizedTemplate = templatePath;
-    if (GeneratorConfiguration.isPlainFilename(templatePath)) {
+  static normalizeTemplatePath(templatePathInternal, templatePathCustom, normalizedConfigPath) {
+    let normalizedTemplate;
+    if (templatePathInternal) {
       // If the template is just a file name, it must be resolved to the default
       // templates directory
       normalizedTemplate = GeneratorConfiguration.normalizeAbsolutePath(
-        path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, templatePath),
+        path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, templatePathInternal),
         process.cwd()
       );
-    } else {
+    } else if (templatePathCustom) {
       normalizedTemplate = path.join(
-        path.dirname(normalizedYamlPath),
+        path.dirname(normalizedConfigPath),
         // Templates are all made relative to the YAML file
         GeneratorConfiguration.normalizeAbsolutePath(
-          normalizedTemplate,
-          path.dirname(normalizedYamlPath)
+          templatePathCustom,
+          path.dirname(normalizedConfigPath)
         )
+      );
+    } else {
+      throw new Error(
+        `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${normalizedConfigPath}]).`
       );
     }
 
@@ -162,14 +153,16 @@ class GeneratorConfiguration {
    * Normalizes all paths in an artifact config (source file templates,
    * packaging templates).
    * @param {*} artifactConfig
-   * @param {string} normalizedYamlPath
+   * @param {string} normalizedConfigPath
    */
-  static normalizeArtifactTemplates(artifactConfig, normalizedYamlPath) {
+  static normalizeArtifactTemplates(artifactConfig, normalizedConfigPath) {
     const normalizedArtifactConfig = artifactConfig;
     normalizedArtifactConfig.handlebarsTemplate = GeneratorConfiguration.normalizeTemplatePath(
       artifactConfig.handlebarsTemplate,
-      normalizedYamlPath
+      artifactConfig.handlebarsTemplateCustom,
+      normalizedConfigPath
     );
+
     if (normalizedArtifactConfig.packaging) {
       normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
         packagingConfig => {
@@ -179,7 +172,8 @@ class GeneratorConfiguration {
               const normalizedPackagingTemplate = packagingTemplate;
               normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
                 packagingTemplate.template,
-                normalizedYamlPath
+                packagingTemplate.templateCustom,
+                normalizedConfigPath
               );
               return normalizedPackagingTemplate;
             }
@@ -209,6 +203,7 @@ class GeneratorConfiguration {
           const normalizedVersioningFile = versioningFile;
           normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
             versioningFile.template,
+            versioningFile.templateCustom,
             normalizedConfigPath
           );
 
