@@ -94,8 +94,8 @@ versioning:
   # These files will be generated at the root of the target artifact
   versioningTemplates: 
       # A template name. It can reference existing internal templates supplied
-      # within the LIT Artifact Generator, or custom templates relative to the
-      # this configuration file.
+      # within the LIT Artifact Generator, or custom templates relative to this
+      # configuration file.
     - templateInternal: ".gitignore.hbs"
       # The name of the file generated from the template
       fileName: ".gitignore"
