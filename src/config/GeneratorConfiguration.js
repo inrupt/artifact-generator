@@ -40,12 +40,12 @@ const NPM_DEFAULT = {
     {
       templateInternal: 'package.hbs',
       fileName: 'package.json',
-      template: 'templates/package.hbs',
+      template: path.join('templates', 'package.hbs'),
     },
     {
       templateInternal: 'index.hbs',
       fileName: 'index.js',
-      template: 'templates/index.hbs',
+      template: path.join('templates', 'index.hbs'),
     },
   ],
 };
@@ -57,7 +57,7 @@ const DEFAULT_CLI_ARTIFACT = [
     sourceCodeTemplateInternal: 'javascript-rdf-ext.hbs',
     sourceFileExtension: 'js',
     packaging: [NPM_DEFAULT],
-    sourceCodeTemplate: 'templates/javascript-rdf-ext.hbs',
+    sourceCodeTemplate: path.join('templates', 'javascript-rdf-ext.hbs'),
   },
 ];
 
