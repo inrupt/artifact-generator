@@ -16,15 +16,15 @@ artifactToGenerate:
     ##
     strict: true
     artifactDirectoryName: Javascript
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - template: package.hbs
+          - templateInternal: package.hbs
             fileName: package.json
-          - template: index.hbs
+          - templateInternal: index.hbs
             fileName: index.js
 
 vocabList:

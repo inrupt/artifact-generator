@@ -11,7 +11,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -30,7 +30,7 @@ artifactToGenerate:
         - key: "remote"
           command: "touch mvn-publishRemote"
         packagingTemplates: 
-        - template: pom.hbs
+        - templateInternal: pom.hbs
           fileName: pom.xml
 #      - packagingTool: gradle
 #        groupId: com.inrupt.test
@@ -41,7 +41,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
@@ -55,16 +55,16 @@ artifactToGenerate:
         - key: "remote"
           command: "touch npm-publishRemote"
         packagingTemplates: 
-          - template: package.hbs
+          - templateInternal: package.hbs
             fileName: package.json
-          - template: index.hbs
+          - templateInternal: index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config
         packagingTemplates:
-          - template: webpack.dev.config.hbs
+          - templateInternal: webpack.dev.config.hbs
             fileName: webpack.dev.config.js
-          - template: webpack.prod.config.hbs
+          - templateInternal: webpack.prod.config.hbs
             fileName: webpack.prod.config.js
 
 vocabList:

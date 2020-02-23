@@ -12,6 +12,8 @@ const ARTIFACT_DIRECTORY_ROOT = '/Generated';
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
 const DEFAULT_PUBLISH_KEY = '_default';
 
+const CONFIG_SOURCE_COMMAND_LINE = '<Command Line Config>';
+
 // This is the path to the template directory
 const RELATIVE_TEMPLATE_DIRECTORY = path.join('..', '..', 'templates');
 
@@ -20,11 +22,11 @@ const WEBPACK_DEFAULT = {
   packagingDirectory: 'config',
   packagingTemplates: [
     {
-      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'webpack.dev.config.hbs'),
+      templateInternal: 'webpack.dev.config.hbs',
       fileName: 'webpack.dev.config.js',
     },
     {
-      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'webpack.prod.config.hbs'),
+      templateInternal: 'webpack.prod.config.hbs',
       fileName: 'webpack.prod.config.js',
     },
   ],
@@ -36,12 +38,14 @@ const NPM_DEFAULT = {
   publish: [{ key: 'local', command: 'npm publish --registry https://localhost:4873' }],
   packagingTemplates: [
     {
-      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'package.hbs'),
+      templateInternal: 'package.hbs',
       fileName: 'package.json',
+      template: 'templates/package.hbs',
     },
     {
-      template: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'index.hbs'),
+      templateInternal: 'index.hbs',
       fileName: 'index.js',
+      template: 'templates/index.hbs',
     },
   ],
 };
@@ -50,20 +54,20 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: 'Javascript',
     artifactDirectoryName: 'Javascript',
-    handlebarsTemplate: path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, 'javascript-rdf-ext.hbs'),
+    handlebarsTemplateInternal: 'javascript-rdf-ext.hbs',
     sourceFileExtension: 'js',
     packaging: [NPM_DEFAULT],
+    handlebarsTemplate: 'templates/javascript-rdf-ext.hbs',
   },
 ];
 
 class GeneratorConfiguration {
   /**
-   * Constructor for the configuration object. It is passed info collected on
-   * the command-line, potentially with sensible default values. The following
-   * are necessarily set:
-   * - outputDirectory
-   * - noprompt
-   * - quiet
+   * Constructor for our configuration object. It is passed info collected
+   * initially (e.g. from the command-line), potentially with sensible default
+   * values and often referencing a configuration (like a YAML config file) with
+   * more details.
+   *
    * @param {Object} initialConfig the command line options
    */
   constructor(initialConfig) {
@@ -79,6 +83,11 @@ class GeneratorConfiguration {
         ...GeneratorConfiguration.fromCommandLine(initialConfig),
       };
     }
+
+    GeneratorConfiguration.normalizeConfigPaths(
+      this.configuration,
+      initialConfig.vocabListFile || CONFIG_SOURCE_COMMAND_LINE
+    );
 
     // Extend the received arguments with contextual data.
     this.configuration.generatedTimestamp = moment().format('LLLL');
@@ -122,62 +131,116 @@ class GeneratorConfiguration {
     return normalizedVocabConfig;
   }
 
-  static normalizeTemplatePath(templatePathInternal, templatePathCustom, normalizedConfigPath) {
+  /**
+   * Normalizise the specified template path, which can be provided as either an
+   * internal path (which means it will be resolved relative to our internal
+   * 'templates' directory), or a custom path (which means it will be resolved
+   * relative to the source of our configuration (which only really makes sense
+   * for configuration files (and not, for example, a command-line source).
+   *
+   * @param templatePathInternal undefined or a reference to an internal template
+   * @param templatePathCustom undefined or a reference relative to our config source
+   * @param configSource the source of our configuration (e.g. a local YAML file, or the command-line)
+   * @returns {*}
+   */
+  static normalizeTemplatePath(templatePathInternal, templatePathCustom, configSource) {
     let normalizedTemplate;
     if (templatePathInternal) {
-      // If the template is just a file name, it must be resolved to the default
-      // templates directory
+      // If the template is internal, it must be resolved relative to our
+      // internal templates directory.
       normalizedTemplate = GeneratorConfiguration.normalizeAbsolutePath(
         path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, templatePathInternal),
         process.cwd()
       );
     } else if (templatePathCustom) {
       normalizedTemplate = path.join(
-        path.dirname(normalizedConfigPath),
+        path.dirname(configSource),
         // Templates are all made relative to the YAML file
-        GeneratorConfiguration.normalizeAbsolutePath(
-          templatePathCustom,
-          path.dirname(normalizedConfigPath)
-        )
+        GeneratorConfiguration.normalizeAbsolutePath(templatePathCustom, path.dirname(configSource))
       );
     } else {
       throw new Error(
-        `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${normalizedConfigPath}]).`
+        `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${configSource}]).`
       );
     }
 
     return normalizedTemplate;
   }
 
+  static normalizeConfigPaths(config, configSource) {
+    const normalizedConfig = config;
+
+    // Normalize our overall config versioning section.
+    if (normalizedConfig.versioning && normalizedConfig.versioning.versioningTemplates) {
+      normalizedConfig.versioning.versioningTemplates = normalizedConfig.versioning.versioningTemplates.map(
+        versioningFile => {
+          const normalizedVersioningFile = versioningFile;
+          normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
+            versioningFile.templateInternal,
+            versioningFile.templateCustom,
+            configSource
+          );
+
+          return normalizedVersioningFile;
+        }
+      );
+    }
+
+    // Normalize each artifact to generate.
+    normalizedConfig.artifactToGenerate = config.artifactToGenerate.map(artifactConfig => {
+      return this.normalizePerArtifactTemplates(artifactConfig, configSource);
+    });
+
+    if (configSource !== CONFIG_SOURCE_COMMAND_LINE) {
+      // Normalize all the vocab files listed in the configuration.
+      for (let i = 0; i < normalizedConfig.vocabList.length; i += 1) {
+        normalizedConfig.vocabList[i] = GeneratorConfiguration.normalizePath(
+          normalizedConfig.vocabList[i],
+          configSource
+        );
+      }
+    }
+
+    return normalizedConfig;
+  }
+
   /**
-   * Normalizes all paths in an artifact config (source file templates,
-   * packaging templates).
+   * Normalizes all paths in per artifact configuration (e.g. source file
+   * templates, packaging templates).
+   *
    * @param {*} artifactConfig
-   * @param {string} normalizedConfigPath
+   * @param {string} configSource
    */
-  static normalizeArtifactTemplates(artifactConfig, normalizedConfigPath) {
+  static normalizePerArtifactTemplates(artifactConfig, configSource) {
     const normalizedArtifactConfig = artifactConfig;
     normalizedArtifactConfig.handlebarsTemplate = GeneratorConfiguration.normalizeTemplatePath(
-      artifactConfig.handlebarsTemplate,
+      artifactConfig.handlebarsTemplateInternal,
       artifactConfig.handlebarsTemplateCustom,
-      normalizedConfigPath
+      configSource
     );
 
     if (normalizedArtifactConfig.packaging) {
       normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
         packagingConfig => {
-          const normalizedPackagingConfig = packagingConfig;
+          const normalizedPackagingConfig = { ...packagingConfig };
           normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
             packagingTemplate => {
-              const normalizedPackagingTemplate = packagingTemplate;
+              // Make sure we clone the original structure (rather than just
+              // refer to it directly), as otherwise running tests in parallel
+              // will result in corrupted data (e.g. filenames like
+              // 'templates/templates/templates/templates/<FILENAME>')
+              const normalizedPackagingTemplate = { ...packagingTemplate };
+
               normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
-                packagingTemplate.template,
+                packagingTemplate.templateInternal,
                 packagingTemplate.templateCustom,
-                normalizedConfigPath
+                configSource
               );
+
               return normalizedPackagingTemplate;
             }
           );
+
           return normalizedPackagingConfig;
         }
       );
@@ -186,65 +249,36 @@ class GeneratorConfiguration {
     return normalizedArtifactConfig;
   }
 
-  static normalizeConfigTemplatePaths(vocabConfig, normalizedConfigPath) {
-    const vocabConfigNormalizedTemplates = vocabConfig;
-    vocabConfigNormalizedTemplates.artifactToGenerate = vocabConfig.artifactToGenerate.map(
-      artifactConfig => {
-        return this.normalizeArtifactTemplates(artifactConfig, normalizedConfigPath);
-      }
-    );
-
-    if (
-      vocabConfigNormalizedTemplates.versioning &&
-      vocabConfigNormalizedTemplates.versioning.versioningTemplates
-    ) {
-      vocabConfigNormalizedTemplates.versioning.versioningTemplates = vocabConfigNormalizedTemplates.versioning.versioningTemplates.map(
-        versioningFile => {
-          const normalizedVersioningFile = versioningFile;
-          normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
-            versioningFile.template,
-            versioningFile.templateCustom,
-            normalizedConfigPath
-          );
-
-          return normalizedVersioningFile;
-        }
-      );
-    }
-
-    return vocabConfigNormalizedTemplates;
-  }
-
   /**
    *  This function makes the local vocabulary path relative to the root of the project,
    *  rather that to the configuration file. It makes it consistent with vocabularies passed
    *  on the command line.
-   * @param {*} vocabConfig the path of the vocabulary, relative to the configuration file
-   * @param {*} configPath the path to the configuration file, relative to the project root
+   * @param {*} config the path of the vocabulary, relative to the configuration file
+   * @param {*} configSource the path to the configuration file, relative to the project root
    */
-  static normalizePath(vocabConfig, configPath) {
-    let normalizedVocabConfig = vocabConfig;
-    const normalizedConfigPath = GeneratorConfiguration.normalizeAbsolutePath(
-      configPath,
+  static normalizePath(config, configSource) {
+    let normalizedConfig = config;
+    const normalizedConfigSource = GeneratorConfiguration.normalizeAbsolutePath(
+      configSource,
       process.cwd()
     );
 
-    normalizedVocabConfig = GeneratorConfiguration.normalizeInputResources(
-      normalizedVocabConfig,
-      normalizedConfigPath
+    normalizedConfig = GeneratorConfiguration.normalizeInputResources(
+      normalizedConfig,
+      normalizedConfigSource
     );
 
-    if (vocabConfig.termSelectionResource) {
-      normalizedVocabConfig.termSelectionResource = path.join(
-        path.dirname(normalizedConfigPath),
+    if (config.termSelectionResource) {
+      normalizedConfig.termSelectionResource = path.join(
+        path.dirname(normalizedConfigSource),
         GeneratorConfiguration.normalizeAbsolutePath(
-          vocabConfig.termSelectionResource,
-          path.dirname(normalizedConfigPath)
+          config.termSelectionResource,
+          path.dirname(normalizedConfigSource)
         )
       );
     }
 
-    return normalizedVocabConfig;
+    return normalizedConfig;
   }
 
   /**
@@ -284,15 +318,15 @@ class GeneratorConfiguration {
   }
 
   /**
-   * Validates if all the required values are present in the config file, and
+   * Validates if all the required values are present in the configuration, and
    * throws an error otherwise.
-   * @param {Object} config the object loaded from the YAML config
-   * @param {string} file the path to the YAML file, for error message purpose
+   * @param {Object} configuration object loaded from some named source
+   * @param {string} configSource the source of our configuration (e.g. a file)
    */
-  static validateYamlConfig(config, file) {
-    // Check version mismatch
+  static validateConfiguration(config, configSource) {
+    // Check version mismatch.
     if (!config.artifactGeneratorVersion) {
-      throw new Error(`Missing 'artifactGeneratorVersion' field in [${file}].`);
+      throw new Error(`Missing 'artifactGeneratorVersion' field in [${configSource}].`);
     }
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
       debug(
@@ -304,7 +338,7 @@ class GeneratorConfiguration {
     if (!config.artifactToGenerate) {
       throw new Error(
         'No artifacts found: nothing to generate. ' +
-          `Please edit the YAML configuration file [${file}] to provide artifacts to be generated.`
+          `Please edit the YAML configuration file [${configSource}] to provide artifacts to be generated.`
       );
     }
 
@@ -316,7 +350,7 @@ class GeneratorConfiguration {
     if (!config.vocabList) {
       throw new Error(
         'No vocabularies found: nothing to generate. ' +
-          `Please edit the YAML configuration file [${file}] to provide vocabularies to generate from.`
+          `Please edit the YAML configuration file [${configSource}] to provide vocabularies to generate from.`
       );
     }
   }
@@ -353,15 +387,7 @@ class GeneratorConfiguration {
         throw new Error(`Empty configuration file: [${configFile}]`);
       }
 
-      GeneratorConfiguration.validateYamlConfig(configuration, configFile);
-      for (let i = 0; i < configuration.vocabList.length; i += 1) {
-        configuration.vocabList[i] = GeneratorConfiguration.normalizePath(
-          configuration.vocabList[i],
-          configFile
-        );
-      }
-
-      GeneratorConfiguration.normalizeConfigTemplatePaths(configuration, configFile);
+      GeneratorConfiguration.validateConfiguration(configuration, configFile);
     } catch (error) {
       throw new Error(`Failed to read configuration file [${configFile}]: ${error}`);
     }
@@ -412,17 +438,13 @@ class GeneratorConfiguration {
 
     // TODO: Here, the DEFAULT_CLI_ARTIFACT constant should be used, but since
     //  objects are copied by reference, and the tests are run in parallel, it
-    //  creates thread-safety issues that should be adressed by creating a
+    //  creates thread-safety issues that should be addressed by creating a
     //  deep copy.
     cliConfig.artifactToGenerate = [
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplate: path.join(
-          __dirname,
-          RELATIVE_TEMPLATE_DIRECTORY,
-          'javascript-rdf-ext.hbs'
-        ),
+        handlebarsTemplateInternal: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         packaging: [packagingInfo],
       },
@@ -492,3 +514,4 @@ module.exports = GeneratorConfiguration;
 module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;
 module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
 module.exports.DEFAULT_PUBLISH_KEY = DEFAULT_PUBLISH_KEY;
+module.exports.CONFIG_SOURCE_COMMAND_LINE = CONFIG_SOURCE_COMMAND_LINE;

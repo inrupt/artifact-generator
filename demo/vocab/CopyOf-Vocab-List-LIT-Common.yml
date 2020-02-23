@@ -30,14 +30,14 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
 
   - programmingLanguage: Javascript
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
 
 vocabList:

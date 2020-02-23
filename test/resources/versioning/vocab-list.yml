@@ -5,7 +5,7 @@ versioning:
   type: git
   url: https://repository.git
   versioningTemplates: 
-    - template: ".gitignore.hbs"
+    - templateInternal: ".gitignore.hbs"
       fileName: ".gitignore"
 
 artifactToGenerate:
@@ -13,7 +13,7 @@ artifactToGenerate:
     artifactVersion: "0.1.0"
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: "Java"
-    handlebarsTemplate: "java-rdf4j.hbs"
+    handlebarsTemplateInternal: "java-rdf4j.hbs"
     sourceFileExtension: "java"
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:

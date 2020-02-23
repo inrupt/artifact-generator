@@ -43,7 +43,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
 
 vocabList:

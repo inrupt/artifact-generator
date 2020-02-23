@@ -26,7 +26,7 @@ artifactToGenerate:
     javaPackageName: com.pmcb55.lit.generated.vocab.common
     litVocabTermVersion: 0.1.0-SNAPSHOT
     artifactDirectoryName: Java
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -49,7 +49,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^0.1.0"
     artifactDirectoryName: Javascript
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
   ##
   #  This is a dummy artifact that cannot be packaged
@@ -57,7 +57,7 @@ artifactToGenerate:
   - programmingLanguage: Ook
     artifactDirectoryName: Ook
     sourceFileExtension: ook
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     artifactVersion: 0.1.0
 
 vocabList:

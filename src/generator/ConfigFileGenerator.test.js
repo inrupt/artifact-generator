@@ -35,7 +35,7 @@ const PROMPTED_JAVA_ARTIFACT = {
 
 const COMPLETE_JAVA_ARTIFACT = {
   languageKeywordsToUnderscore: ['class', 'abstract', 'default'],
-  handlebarsTemplate: 'java-rdf4j.hbs',
+  handlebarsTemplateInternal: 'java-rdf4j.hbs',
   sourceFileExtension: 'java',
   artifactDirectoryName: 'Java',
   programmingLanguage: 'Java',
@@ -64,7 +64,13 @@ const GITIGNORE_TEMPLATE = '.gitignore.hbs';
 const REPOSITORY_GIT = {
   type: 'git',
   url: REPOSITORY_URL_GIT,
-  versioningTemplates: [{ template: GITIGNORE_TEMPLATE, fileName: '.gitignore' }],
+  versioningTemplates: [
+    {
+      templateInternal: GITIGNORE_TEMPLATE,
+      fileName: '.gitignore',
+      template: path.join('templates', GITIGNORE_TEMPLATE),
+    },
+  ],
 };
 
 const REPOSITORY_SVN = {

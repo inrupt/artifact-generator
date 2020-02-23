@@ -9,14 +9,14 @@ artifactToGenerate:
     ##
     # Here the template is picked from among the internally provided templates.
     ##
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates:
-        - template: pom.hbs
+        - templateInternal: pom.hbs
           fileName: pom.xml
         ##
         # This is a dummy file path, just here to test normalization

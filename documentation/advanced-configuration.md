@@ -93,9 +93,10 @@ versioning:
   url: https://repository.git
   # These files will be generated at the root of the target artifact
   versioningTemplates: 
-      # A template name. It can reference a handlebars template relative to the YAML file, 
-      # and also accepts '.gitignore.hbs'
-    - template: ".gitignore.hbs"
+      # A template name. It can reference existing internal templates supplied
+      # within the LIT Artifact Generator, or custom templates relative to the
+      # this configuration file.
+    - templateInternal: ".gitignore.hbs"
       # The name of the file generated from the template
       fileName: ".gitignore"
 
@@ -115,10 +116,13 @@ artifactToGenerate:
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
     artifactDirectoryName: Java
-    # MANDATORY The template instanciated by each vocabulary to generate the target source code.
-    # It can reference a handlebars template relative to the YAML file, and also
-    # accepts 'java-rdf4j.hbs' and 'javascript-rdf-ext.hbs'.
-    handlebarsTemplate: java-rdf4j.hbs
+    # MANDATORY - Must be one (and only one) of either:
+    #  - handlebarsTemplateInternal References a Handlebars template internally
+    #  provided by the Artifact Generator, and relative to it's internal
+    #  "templates" directory.
+    #  - handlebarsTemplateCustom References a Handlebars template relative to
+    #  the configuration file.
+    handlebarsTemplateInternal: java-rdf4j.hbs
     # MANDATORY The extension that is appended after the name of the generated source code files.
     sourceFileExtension: java
     # These terms will be prefixed by an underscore in the generated code. It allows to prevent conflit if a term from 
@@ -143,11 +147,11 @@ artifactToGenerate:
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates: 
-          # MANDATORY The template(s) instanciated once to generate the target packaging code.
+          # MANDATORY The template(s) instantiated once to generate the target packaging code.
           # It can reference a handlebars template relative to the YAML file, and also
           # accepts 'jpom.hbs', 'package.hbs', 'index.hbs', 'webpack.dev.config.hbs'
           # and 'webpack.dev.config.hbs'.
-        - template: pom.hbs
+        - templateInternal: pom.hbs
           # The name of the generated packaging file
           fileName: pom.xml
 
@@ -155,7 +159,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    handlebarsTemplate: javascript-rdf-ext.hbs
+    handlebarsTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
@@ -164,17 +168,17 @@ artifactToGenerate:
         # This is an NPM-specific option, used in the generated package.json
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - template: package.hbs
+          - templateInternal: package.hbs
             fileName: package.json
-          - template: index.hbs
+          - templateInternal: index.hbs
             fileName: index.js
       - packagingTool: webpack
         # If this is set (not mandatory), the packaging files are instanciated in this directory
         packagingFolder: config
         packagingTemplates:
-          - template: webpack.dev.config.hbs
+          - templateInteral: webpack.dev.config.hbs
             fileName: webpack.dev.config.js
-          - template: webpack.prod.config.hbs
+          - templateInteral: webpack.prod.config.hbs
             fileName: webpack.prod.config.js
 
 ##

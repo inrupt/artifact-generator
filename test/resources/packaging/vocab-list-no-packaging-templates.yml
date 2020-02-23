@@ -7,7 +7,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
@@ -17,7 +17,7 @@ artifactToGenerate:
         #  These templates should be present
         ##
 #       packagingTemplates: 
-#       - template: pom.hbs
+#       - templateInternal: pom.hbs
 #         fileName: pom.xml
 
 vocabList:

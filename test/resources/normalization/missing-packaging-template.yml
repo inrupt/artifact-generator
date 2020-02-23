@@ -9,7 +9,7 @@ artifactToGenerate:
     ##
     # Here the template is picked from among the internally provided templates.
     ##
-    handlebarsTemplate: java-rdf4j.hbs
+    handlebarsTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
