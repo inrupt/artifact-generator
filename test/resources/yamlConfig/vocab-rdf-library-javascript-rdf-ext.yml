@@ -11,11 +11,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    # Here we're testing the 'Custom' template option (i.e. a local config
-    # file), but in fact we're accessing a template in our internal 'templates'
-    # directory, so we need to provide the full path to it relative to where we
-    # are!
-    handlebarsTemplateCustom: ../../../templates/rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
+    sourceCodeTemplateInternal: rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging:
       - packagingTool: npm

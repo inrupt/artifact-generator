@@ -54,10 +54,10 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: 'Javascript',
     artifactDirectoryName: 'Javascript',
-    handlebarsTemplateInternal: 'javascript-rdf-ext.hbs',
+    sourceCodeTemplateInternal: 'javascript-rdf-ext.hbs',
     sourceFileExtension: 'js',
     packaging: [NPM_DEFAULT],
-    handlebarsTemplate: 'templates/javascript-rdf-ext.hbs',
+    sourceCodeTemplate: 'templates/javascript-rdf-ext.hbs',
   },
 ];
 
@@ -213,9 +213,9 @@ class GeneratorConfiguration {
    */
   static normalizePerArtifactTemplates(artifactConfig, configSource) {
     const normalizedArtifactConfig = artifactConfig;
-    normalizedArtifactConfig.handlebarsTemplate = GeneratorConfiguration.normalizeTemplatePath(
-      artifactConfig.handlebarsTemplateInternal,
-      artifactConfig.handlebarsTemplateCustom,
+    normalizedArtifactConfig.sourceCodeTemplate = GeneratorConfiguration.normalizeTemplatePath(
+      artifactConfig.sourceCodeTemplateInternal,
+      artifactConfig.sourceCodeTemplateCustom,
       configSource
     );
 
@@ -444,7 +444,7 @@ class GeneratorConfiguration {
       {
         programmingLanguage: 'Javascript',
         artifactDirectoryName: 'Javascript',
-        handlebarsTemplateInternal: 'javascript-rdf-ext.hbs',
+        sourceCodeTemplateInternal: 'javascript-rdf-ext.hbs',
         sourceFileExtension: 'js',
         packaging: [packagingInfo],
       },

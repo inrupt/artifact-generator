@@ -43,7 +43,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplateInternal: java-rdf4j.hbs
+    sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
 
 vocabList:
@@ -206,7 +206,7 @@ describe('Generator configuration', () => {
       const normalizedConfig = generatorConfiguration.configuration;
 
       // Templates paths should be normalized wrt the module root
-      expect(normalizedConfig.artifactToGenerate[0].handlebarsTemplate).toEqual(
+      expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
         'templates/java-rdf4j.hbs'
       );
       expect(
@@ -217,7 +217,7 @@ describe('Generator configuration', () => {
         normalizedConfig.artifactToGenerate[0].packaging[0].packagingTemplates[1].template
       ).toEqual(path.join(configPath, '../../readme.hbs'));
 
-      expect(normalizedConfig.artifactToGenerate[1].handlebarsTemplate).toEqual(
+      expect(normalizedConfig.artifactToGenerate[1].sourceCodeTemplate).toEqual(
         path.join(configPath, '../anotherTemplateDirectory/javascript.hbs')
       );
 

@@ -54,7 +54,7 @@ class NodeArtifactConfigurator extends ArtifactConfigurator {
       choices: [{ name: 'NPM' }],
     });
 
-    this.config.handlebarsTemplateInternal = DEFAULT_TEMPLATE;
+    this.config.sourceCodeTemplateInternal = DEFAULT_TEMPLATE;
     this.config.sourceFileExtension = DEFAULT_EXTENSION;
     this.config.artifactDirectoryName = LANGUAGE;
     this.config.programmingLanguage = LANGUAGE;

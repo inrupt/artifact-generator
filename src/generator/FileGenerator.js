@@ -85,7 +85,7 @@ class FileGenerator {
     const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
     FileGenerator.createDirectory(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
-      `${artifactDetails.handlebarsTemplate}`,
+      `${artifactDetails.sourceCodeTemplate}`,
       // Some artifact-specific info may be required in the template (e.g. the java package name)
       FileGenerator.formatTemplateData(
         { ...templateData, ...artifactDetails },

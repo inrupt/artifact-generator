@@ -9,7 +9,7 @@ artifactToGenerate:
     ##
     # Here the template is missing completely ('cos we commented it out!).
     ##
-    # handlebarsTemplateInternal: java-rdf4j.hbs
+    # sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
 
 vocabList:

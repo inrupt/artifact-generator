@@ -9,7 +9,7 @@ artifactToGenerate:
     ##
     # Here the template is picked from among the internally provided templates.
     ##
-    handlebarsTemplateInternal: java-rdf4j.hbs
+    sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
@@ -29,7 +29,7 @@ artifactToGenerate:
     ##
     # This is a dummy file path, just here to test normalization
     ##
-    handlebarsTemplateCustom: ../anotherTemplateDirectory/javascript.hbs
+    sourceCodeTemplateCustom: ../anotherTemplateDirectory/javascript.hbs
     sourceFileExtension: js
 
 vocabList:

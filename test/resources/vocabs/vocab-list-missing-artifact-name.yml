@@ -12,7 +12,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    handlebarsTemplateInternal: java-rdf4j.hbs
+    sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -31,7 +31,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    handlebarsTemplateInternal: javascript-rdf-ext.hbs
+    sourceCodeTemplateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
