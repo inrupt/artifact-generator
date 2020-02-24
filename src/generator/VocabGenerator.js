@@ -1,9 +1,9 @@
-const rdf = require('rdf-ext');
-const debug = require('debug')('lit-artifact-generator:VocabGenerator');
+const rdf = require("rdf-ext");
+const debug = require("debug")("lit-artifact-generator:VocabGenerator");
 
-const FileGenerator = require('./FileGenerator');
-const Resource = require('../Resource');
-const DatasetHandler = require('../DatasetHandler');
+const FileGenerator = require("./FileGenerator");
+const Resource = require("../Resource");
+const DatasetHandler = require("../DatasetHandler");
 
 module.exports = class VocabGenerator {
   constructor(artifactData, artifactDetails) {
@@ -14,11 +14,13 @@ module.exports = class VocabGenerator {
 
   async generateFiles(vocabGenerationData) {
     debug(
-      `Generating vocabulary source code file [${vocabGenerationData.vocabName}]${
-        this.vocabData.nameAndPrefixOverride ? ' (from override)' : ''
-      }...`
+      `Generating vocabulary source code file [${
+        vocabGenerationData.vocabName
+      }]${this.vocabData.nameAndPrefixOverride ? " (from override)" : ""}...`
     );
-    debug(`Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`);
+    debug(
+      `Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`
+    );
     if (
       vocabGenerationData.classes.length === 0 &&
       vocabGenerationData.properties.length === 0 &&
@@ -27,7 +29,10 @@ module.exports = class VocabGenerator {
       // In this case, the resource was unreachable, and the source file cannot be generated
       return new Promise((resolve, reject) => {
         if (
-          FileGenerator.previouslyGeneratedFileExists(this.artifactDetails, vocabGenerationData)
+          FileGenerator.previouslyGeneratedFileExists(
+            this.artifactDetails,
+            vocabGenerationData
+          )
         ) {
           debug(
             `A source file is reused for unreachable resource [${this.vocabData.inputResources.toString()}]`
@@ -42,7 +47,11 @@ module.exports = class VocabGenerator {
       });
     }
     return new Promise(resolve => {
-      FileGenerator.createSourceCodeFile(this.vocabData, this.artifactDetails, vocabGenerationData);
+      FileGenerator.createSourceCodeFile(
+        this.vocabData,
+        this.artifactDetails,
+        vocabGenerationData
+      );
       resolve(vocabGenerationData);
     });
   }
@@ -66,7 +75,10 @@ module.exports = class VocabGenerator {
     return new Promise(async (resolve, reject) => {
       this.resources
         .processInputs((fullDatasetsArray, vocabTermsOnlyDataset) => {
-          const parsed = this.parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset);
+          const parsed = this.parseDatasets(
+            fullDatasetsArray,
+            vocabTermsOnlyDataset
+          );
           resolve(parsed);
         })
         .catch(error => {
@@ -84,7 +96,11 @@ module.exports = class VocabGenerator {
   }
 
   buildTemplateInput(fullData, subjectsOnlyDataset) {
-    const datasetHandler = new DatasetHandler(fullData, subjectsOnlyDataset, this.vocabData);
+    const datasetHandler = new DatasetHandler(
+      fullData,
+      subjectsOnlyDataset,
+      this.vocabData
+    );
     return datasetHandler.buildTemplateInput();
   }
 

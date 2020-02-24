@@ -1,18 +1,20 @@
-require('mock-local-storage');
+require("mock-local-storage");
 
-const fs = require('fs');
-const del = require('del');
+const fs = require("fs");
+const del = require("del");
 
-const ArtifactGenerator = require('./generator/ArtifactGenerator');
-const GeneratorConfiguration = require('./config/GeneratorConfiguration');
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
-const VocabWatcher = require('./VocabWatcher');
+const ArtifactGenerator = require("./generator/ArtifactGenerator");
+const GeneratorConfiguration = require("./config/GeneratorConfiguration");
+const {
+  ARTIFACT_DIRECTORY_SOURCE_CODE
+} = require("./generator/ArtifactGenerator");
+const VocabWatcher = require("./VocabWatcher");
 
-const WATCHED_VOCAB_PATH = './test/resources/watcher/schema-snippet.ttl';
-const VOCAB_LIST_PATH = './test/resources/watcher/vocab-list.yml';
-const OUTPUT_DIRECTORY = './test/Generated/watcher/initial/';
+const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
+const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
+const OUTPUT_DIRECTORY = "./test/Generated/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
-const JAVA_PACKAGE_HIERARCHY = 'src/main/java/com/example/java/packagename';
+const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
 const SLEEP_TIME = 200;
 
@@ -55,8 +57,8 @@ async function changeAndRestoreVocab(vocabPath, before, after) {
   );
 }
 
-describe('Vocabulary watcher', () => {
-  it('should generate an initial artifact when the output directory is empty', async () => {
+describe("Vocabulary watcher", () => {
+  it("should generate an initial artifact when the output directory is empty", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -74,13 +76,13 @@ describe('Vocabulary watcher', () => {
     watcher.unwatch();
   });
 
-  it('should not generate an initial artifact without changes', async () => {
+  it("should not generate an initial artifact without changes", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
+            outputDirectory: OUTPUT_DIRECTORY
           },
           undefined
         )
@@ -95,10 +97,10 @@ describe('Vocabulary watcher', () => {
     watcher.unwatch();
   });
 
-  it('should trigger artifact generation on change', async () => {
+  it("should trigger artifact generation on change", async () => {
     const config = new GeneratorConfiguration({
       vocabListFile: VOCAB_LIST_PATH,
-      outputDirectory: OUTPUT_DIRECTORY,
+      outputDirectory: OUTPUT_DIRECTORY
     });
     await config.completeInitialConfiguration();
 
@@ -113,20 +115,21 @@ describe('Vocabulary watcher', () => {
 
     await changeAndRestoreVocab(
       WATCHED_VOCAB_PATH,
-      '(alive, dead, undead, or fictional)',
-      '(alive, dead, or fictional)'
+      "(alive, dead, undead, or fictional)",
+      "(alive, dead, or fictional)"
     );
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(initialModif);
     vocabWatcher.unwatch();
   });
 
-  it('should not throw when the vocabulary is initially malformed RDF', async () => {
+  it("should not throw when the vocabulary is initially malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
-            vocabListFile: './test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml',
-            outputDirectory: OUTPUT_DIRECTORY,
+            vocabListFile:
+              "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
+            outputDirectory: OUTPUT_DIRECTORY
           },
           undefined
         )
@@ -140,13 +143,13 @@ describe('Vocabulary watcher', () => {
     watcher.unwatch();
   });
 
-  it('should not throw when the vocabulary is changed to malformed RDF', async () => {
+  it("should not throw when the vocabulary is changed to malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
+            outputDirectory: OUTPUT_DIRECTORY
           },
           undefined
         )
@@ -158,20 +161,20 @@ describe('Vocabulary watcher', () => {
     // Makes the vocabulary syntactically wrong, and restores it
     await changeAndRestoreVocab(
       WATCHED_VOCAB_PATH,
-      'schema:Person a rdfs:Class ;',
-      'schema:Person a rdfs:Class'
+      "schema:Person a rdfs:Class ;",
+      "schema:Person a rdfs:Class"
     );
     // If the watcher process throws, this will fail
     watcher.unwatch();
   });
 
-  it('should not trigger artifact generation after the watcher stopped', async () => {
+  it("should not trigger artifact generation after the watcher stopped", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
+            outputDirectory: OUTPUT_DIRECTORY
           },
           undefined
         )
@@ -186,8 +189,8 @@ describe('Vocabulary watcher', () => {
 
     await changeAndRestoreVocab(
       WATCHED_VOCAB_PATH,
-      '(alive, dead, undead, or fictional)',
-      '(alive, dead, or fictional)'
+      "(alive, dead, undead, or fictional)",
+      "(alive, dead, or fictional)"
     );
     await sleep(SLEEP_TIME);
 
@@ -198,20 +201,20 @@ describe('Vocabulary watcher', () => {
 
     await changeAndRestoreVocab(
       WATCHED_VOCAB_PATH,
-      '(alive, dead, undead, or fictional)',
-      '(alive, dead, or fictional)'
+      "(alive, dead, undead, or fictional)",
+      "(alive, dead, or fictional)"
     );
 
     const newestModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newestModif).toEqual(newerModif);
   });
 
-  it('should not generate an artifact on startup when the output directory is up-to-date', async () => {
+  it("should not generate an artifact on startup when the output directory is up-to-date", async () => {
     const generator = new ArtifactGenerator(
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY,
+          outputDirectory: OUTPUT_DIRECTORY
         },
         undefined
       )
@@ -233,12 +236,12 @@ describe('Vocabulary watcher', () => {
     watcher.unwatch();
   });
 
-  it('should generate an artifact on startup when the output directory is outdated', async () => {
+  it("should generate an artifact on startup when the output directory is outdated", async () => {
     const generator = new ArtifactGenerator(
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY,
+          outputDirectory: OUTPUT_DIRECTORY
         },
         undefined
       )
@@ -251,8 +254,8 @@ describe('Vocabulary watcher', () => {
 
     await changeAndRestoreVocab(
       WATCHED_VOCAB_PATH,
-      '(alive, dead, undead, or fictional)',
-      '(alive, dead, or fictional)'
+      "(alive, dead, undead, or fictional)",
+      "(alive, dead, or fictional)"
     );
 
     const watcher = new VocabWatcher(generator);

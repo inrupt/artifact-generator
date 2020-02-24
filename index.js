@@ -5,29 +5,38 @@
 // localStorage for runtime context (e.g. the currently selected language).
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
-require('mock-local-storage');
+require("mock-local-storage");
 
-const path = require('path');
-const debugInstance = require('debug');
-const yargs = require('yargs');
-const App = require('./src/App');
-const { ARTIFACT_DIRECTORY_ROOT } = require('./src/config/GeneratorConfiguration');
+const path = require("path");
+const debugInstance = require("debug");
+const yargs = require("yargs");
+const App = require("./src/App");
+const {
+  ARTIFACT_DIRECTORY_ROOT
+} = require("./src/config/GeneratorConfiguration");
 const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
   COMMAND_WATCH,
-  COMMAND_VALIDATE,
-} = require('./src/App');
+  COMMAND_VALIDATE
+} = require("./src/App");
 
-const debug = debugInstance('lit-artifact-generator:index');
+const debug = debugInstance("lit-artifact-generator:index");
 
-const SUPPORTED_COMMANDS = [COMMAND_GENERATE, COMMAND_INITIALIZE, COMMAND_WATCH, COMMAND_VALIDATE];
+const SUPPORTED_COMMANDS = [
+  COMMAND_GENERATE,
+  COMMAND_INITIALIZE,
+  COMMAND_WATCH,
+  COMMAND_VALIDATE
+];
 
 function validateCommandLine(argv, options) {
   // argv._ contains the commands passed to the program
   if (argv._.length !== 1) {
     // Only one command is expected
-    throw new Error(`Exactly one command is expected, one of [${SUPPORTED_COMMANDS}].`);
+    throw new Error(
+      `Exactly one command is expected, one of [${SUPPORTED_COMMANDS}].`
+    );
   }
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
@@ -40,100 +49,112 @@ function validateCommandLine(argv, options) {
 const yargsConfig = yargs
   .command(
     COMMAND_GENERATE,
-    'Generate code artifacts from RDF vocabularies.',
+    "Generate code artifacts from RDF vocabularies.",
     yargs =>
       yargs
-        .alias('i', 'inputResources')
-        .array('inputResources')
+        .alias("i", "inputResources")
+        .array("inputResources")
         .describe(
-          'inputResources',
+          "inputResources",
           "One or more ontology resources (i.e. local RDF files, or HTTP URI's) used to generate source-code artifacts representing the contained vocabulary terms."
         )
 
-        .alias('l', 'vocabListFile')
+        .alias("l", "vocabListFile")
         .describe(
-          'vocabListFile',
-          'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
+          "vocabListFile",
+          "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
 
-        .alias('lv', 'litVocabTermVersion')
-        .describe('litVocabTermVersion', 'The version of the LIT Vocab Term to depend on.')
-        .default('litVocabTermVersion', '^0.2.4')
-
-        .alias('in', 'runNpmInstall')
-        .boolean('runNpmInstall')
+        .alias("lv", "litVocabTermVersion")
         .describe(
-          'runNpmInstall',
-          'If set will attempt to NPM install the generated artifact from within the output directory.'
+          "litVocabTermVersion",
+          "The version of the LIT Vocab Term to depend on."
         )
-        .default('runNpmInstall', false)
+        .default("litVocabTermVersion", "^0.2.4")
 
-        .alias('p', 'publish')
-        .array('publish')
+        .alias("in", "runNpmInstall")
+        .boolean("runNpmInstall")
         .describe(
-          'publish',
-          'the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag.'
+          "runNpmInstall",
+          "If set will attempt to NPM install the generated artifact from within the output directory."
         )
+        .default("runNpmInstall", false)
 
-        .alias('b', 'bumpVersion')
+        .alias("p", "publish")
+        .array("publish")
         .describe(
-          'bumpVersion',
-          'Bump up the semantic version of the artifact from the currently published version.'
-        )
-        .choices('bumpVersion', ['patch', 'minor', 'major'])
-
-        .alias('tsr', 'termSelectionResource')
-        .describe(
-          'termSelectionResource',
-          'Generates Vocab Terms from only the specified ontology resource (file or IRI).'
+          "publish",
+          "the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag."
         )
 
-        .alias('av', 'artifactVersion')
-        .describe('artifactVersion', 'The version of the artifact(s) to be generated.')
-        .default('artifactVersion', '0.0.1')
-
-        .alias('mnp', 'moduleNamePrefix')
-        .describe('moduleNamePrefix', 'A prefix for the name of the output module')
-        .default('moduleNamePrefix', 'generated-vocab-')
-
-        .alias('nr', 'npmRegistry')
-        .describe('npmRegistry', 'The NPM Registry where artifacts will be published')
-        .default('npmRegistry', 'https://verdaccio.inrupt.com')
-
-        .alias('w', 'runWidoco')
-        .boolean('runWidoco')
+        .alias("b", "bumpVersion")
         .describe(
-          'runWidoco',
-          'If set will run Widoco to generate documentation for this vocabulary.'
+          "bumpVersion",
+          "Bump up the semantic version of the artifact from the currently published version."
+        )
+        .choices("bumpVersion", ["patch", "minor", "major"])
+
+        .alias("tsr", "termSelectionResource")
+        .describe(
+          "termSelectionResource",
+          "Generates Vocab Terms from only the specified ontology resource (file or IRI)."
         )
 
-        .alias('s', 'supportBundling')
-        .boolean('supportBundling')
+        .alias("av", "artifactVersion")
         .describe(
-          'supportBundling',
-          'If set will use bundling support within generated artifact (currently supports Webpack only).'
+          "artifactVersion",
+          "The version of the artifact(s) to be generated."
         )
-        .default('supportBundling', true)
+        .default("artifactVersion", "0.0.1")
 
-        .boolean('force')
+        .alias("mnp", "moduleNamePrefix")
         .describe(
-          'force',
-          'Forces generation, even if the target artifacts are considered up-to-date'
+          "moduleNamePrefix",
+          "A prefix for the name of the output module"
         )
-        .alias('f', 'force')
-        .default('force', false)
+        .default("moduleNamePrefix", "generated-vocab-")
+
+        .alias("nr", "npmRegistry")
+        .describe(
+          "npmRegistry",
+          "The NPM Registry where artifacts will be published"
+        )
+        .default("npmRegistry", "https://verdaccio.inrupt.com")
+
+        .alias("w", "runWidoco")
+        .boolean("runWidoco")
+        .describe(
+          "runWidoco",
+          "If set will run Widoco to generate documentation for this vocabulary."
+        )
+
+        .alias("s", "supportBundling")
+        .boolean("supportBundling")
+        .describe(
+          "supportBundling",
+          "If set will use bundling support within generated artifact (currently supports Webpack only)."
+        )
+        .default("supportBundling", true)
+
+        .boolean("force")
+        .describe(
+          "force",
+          "Forces generation, even if the target artifacts are considered up-to-date"
+        )
+        .alias("f", "force")
+        .default("force", false)
         // Can't provide an explicit version, and then also request a version bump!
-        .conflicts('artifactVersion', 'bumpVersion')
+        .conflicts("artifactVersion", "bumpVersion")
 
         // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
         // least one of these two...?)
-        .conflicts('inputResources', 'vocabListFile')
+        .conflicts("inputResources", "vocabListFile")
         .strict(),
     argv => {
       if (!argv.inputResources && !argv.vocabListFile) {
         // this.yargsConfig.showHelp();
         debugInstance(argv.help);
-        debugInstance.enable('lit-artifact-generator:*');
+        debugInstance.enable("lit-artifact-generator:*");
         throw new Error(
           "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
         );
@@ -143,8 +164,8 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_INITIALIZE,
-    'Initializes a configuration YAML file used for fine-grained ' +
-      'control of artifact generation.',
+    "Initializes a configuration YAML file used for fine-grained " +
+      "control of artifact generation.",
     yargs => yargs,
     argv => {
       runInitialization(argv);
@@ -152,60 +173,61 @@ const yargsConfig = yargs
   )
   .command(
     COMMAND_VALIDATE,
-    'Validates a configuration YAML file used for artifact generation.',
+    "Validates a configuration YAML file used for artifact generation.",
     yargs =>
       yargs
-        .alias('l', 'vocabListFile')
+        .alias("l", "vocabListFile")
         .describe(
-          'vocabListFile',
-          'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
+          "vocabListFile",
+          "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
-        .demandOption(['vocabListFile']),
+        .demandOption(["vocabListFile"]),
     argv => {
       runValidation(argv);
     }
   )
   .command(
     COMMAND_WATCH,
-    'Starts a daemon process watching the configured vocabulary' +
-      ' resources, and automatically re-generates artifacts whenever it detects' +
-      ' a vocabulary change.',
+    "Starts a daemon process watching the configured vocabulary" +
+      " resources, and automatically re-generates artifacts whenever it detects" +
+      " a vocabulary change.",
     yargs =>
       yargs
-        .alias('l', 'vocabListFile')
+        .alias("l", "vocabListFile")
         .describe(
-          'vocabListFile',
-          'Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).'
+          "vocabListFile",
+          "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
-        .demandOption(['vocabListFile']),
+        .demandOption(["vocabListFile"]),
     argv => {
       runWatcher(argv);
     }
   )
 
   // The following options are shared between the different commands
-  .alias('q', 'quiet')
-  .boolean('quiet')
+  .alias("q", "quiet")
+  .boolean("quiet")
   .describe(
-    'quiet',
+    "quiet",
     `If set will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
   )
-  .default('quiet', false)
+  .default("quiet", false)
 
-  .alias('np', 'noprompt')
-  .boolean('noprompt')
+  .alias("np", "noprompt")
+  .boolean("noprompt")
   .describe(
-    'noprompt',
-    'If set will not ask any interactive questions and will attempt to perform artifact generation automatically.'
+    "noprompt",
+    "If set will not ask any interactive questions and will attempt to perform artifact generation automatically."
   )
-  .default('noprompt', false)
+  .default("noprompt", false)
 
-  .alias('o', 'outputDirectory')
+  .alias("o", "outputDirectory")
   .describe(
-    'outputDirectory',
-    'The output directory for the' + ' generated artifacts (defaults to the current directory).'
+    "outputDirectory",
+    "The output directory for the" +
+      " generated artifacts (defaults to the current directory)."
   )
-  .default('outputDirectory', '.')
+  .default("outputDirectory", ".")
   .check(validateCommandLine)
   .help().argv;
 
@@ -221,8 +243,8 @@ function configureLog(argv) {
 
     // Unless our generator's debug logging has been explicitly configured, turn
     // all debugging on.
-    if (namespaces.indexOf('lit-artifact-generator') === -1) {
-      debugInstance.enable('lit-artifact-generator:*');
+    if (namespaces.indexOf("lit-artifact-generator") === -1) {
+      debugInstance.enable("lit-artifact-generator:*");
     }
   }
 }
@@ -282,10 +304,10 @@ function runWatcher(argv) {
 
   // Use console to communicate with the user - we can't rely on 'debug' since
   // it needs to be configured before it'll output anything.
-  console.log('Press Enter to terminate');
-  process.stdin.on('data', () => {
+  console.log("Press Enter to terminate");
+  process.stdin.on("data", () => {
     // On user input, exit
-    debug('Stopping watcher');
+    debug("Stopping watcher");
     app.unwatch();
     process.exit(0);
   });

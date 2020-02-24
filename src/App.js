@@ -1,25 +1,27 @@
-const path = require('path');
-const debug = require('debug')('lit-artifact-generator:App');
+const path = require("path");
+const debug = require("debug")("lit-artifact-generator:App");
 
-const GeneratorConfiguration = require('./config/GeneratorConfiguration');
-const ArtifactGenerator = require('./generator/ArtifactGenerator');
-const { ConfigFileGenerator } = require('./generator/ConfigFileGenerator');
-const VocabWatcher = require('./VocabWatcher');
-const CommandLine = require('./CommandLine');
-const FileGenerator = require('./generator/FileGenerator');
-const Resource = require('./Resource');
+const GeneratorConfiguration = require("./config/GeneratorConfiguration");
+const ArtifactGenerator = require("./generator/ArtifactGenerator");
+const { ConfigFileGenerator } = require("./generator/ConfigFileGenerator");
+const VocabWatcher = require("./VocabWatcher");
+const CommandLine = require("./CommandLine");
+const FileGenerator = require("./generator/FileGenerator");
+const Resource = require("./Resource");
 
-const DEFAULT_CONFIG_NAME = 'lit-vocab.yml';
+const DEFAULT_CONFIG_NAME = "lit-vocab.yml";
 
-const COMMAND_GENERATE = 'generate';
-const COMMAND_INITIALIZE = 'init';
-const COMMAND_WATCH = 'watch';
-const COMMAND_VALIDATE = 'validate';
+const COMMAND_GENERATE = "generate";
+const COMMAND_INITIALIZE = "init";
+const COMMAND_WATCH = "watch";
+const COMMAND_VALIDATE = "validate";
 
 module.exports = class App {
   constructor(argv) {
     if (!argv) {
-      throw new Error('Application must be initialised with a configuration - none was provided.');
+      throw new Error(
+        "Application must be initialised with a configuration - none was provided."
+      );
     }
 
     this.argv = argv;
@@ -51,7 +53,10 @@ module.exports = class App {
   }
 
   async init() {
-    const targetPath = path.join(this.argv.outputDirectory, DEFAULT_CONFIG_NAME);
+    const targetPath = path.join(
+      this.argv.outputDirectory,
+      DEFAULT_CONFIG_NAME
+    );
     FileGenerator.createDirectory(this.argv.outputDirectory);
 
     const configGen = new ConfigFileGenerator(this.argv);
@@ -72,12 +77,16 @@ module.exports = class App {
     } catch (error) {
       throw new Error(`Invalid configuration: [${error}]`);
     }
-    debug('The configuration options are valid. Validating the vocabularies...');
+    debug(
+      "The configuration options are valid. Validating the vocabularies..."
+    );
     const vocabsToValidate = [];
     const { vocabList } = configuration.configuration;
     for (let i = 0; i < vocabList.length; i += 1) {
       for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
-        vocabsToValidate.push(Resource.readResource(vocabList[i].inputResources[j]));
+        vocabsToValidate.push(
+          Resource.readResource(vocabList[i].inputResources[j])
+        );
       }
     }
     return Promise.all(vocabsToValidate).catch(error => {
@@ -86,7 +95,9 @@ module.exports = class App {
   }
 
   async watch() {
-    this.watcher = new VocabWatcher(new ArtifactGenerator(await this.configure()));
+    this.watcher = new VocabWatcher(
+      new ArtifactGenerator(await this.configure())
+    );
     this.watcher.watch();
   }
 

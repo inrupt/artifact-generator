@@ -1,64 +1,66 @@
-const yaml = require('js-yaml');
-const path = require('path');
-const moment = require('moment');
-const debug = require('debug')('lit-artifact-generator:GeneratorConfiguration');
-const fs = require('fs');
-const packageDotJson = require('../../package.json');
-const CommandLine = require('../CommandLine');
+const yaml = require("js-yaml");
+const path = require("path");
+const moment = require("moment");
+const debug = require("debug")("lit-artifact-generator:GeneratorConfiguration");
+const fs = require("fs");
+const packageDotJson = require("../../package.json");
+const CommandLine = require("../CommandLine");
 
-const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require('../App');
+const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
 
-const ARTIFACT_DIRECTORY_ROOT = '/Generated';
+const ARTIFACT_DIRECTORY_ROOT = "/Generated";
 const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
-const DEFAULT_PUBLISH_KEY = '_default';
+const DEFAULT_PUBLISH_KEY = "_default";
 
-const CONFIG_SOURCE_COMMAND_LINE = '<Command Line Config>';
+const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
 
 // This is the path to the template directory
-const RELATIVE_TEMPLATE_DIRECTORY = path.join('..', '..', 'templates');
+const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "templates");
 
 const WEBPACK_DEFAULT = {
-  packagingTool: 'webpack',
-  packagingDirectory: 'config',
+  packagingTool: "webpack",
+  packagingDirectory: "config",
   packagingTemplates: [
     {
-      templateInternal: 'webpack.dev.config.hbs',
-      fileName: 'webpack.dev.config.js',
+      templateInternal: "webpack.dev.config.hbs",
+      fileName: "webpack.dev.config.js"
     },
     {
-      templateInternal: 'webpack.prod.config.hbs',
-      fileName: 'webpack.prod.config.js',
-    },
-  ],
+      templateInternal: "webpack.prod.config.hbs",
+      fileName: "webpack.prod.config.js"
+    }
+  ]
 };
 
 const NPM_DEFAULT = {
-  packagingTool: 'npm',
-  npmModuleScope: '@lit/',
-  publish: [{ key: 'local', command: 'npm publish --registry https://localhost:4873' }],
+  packagingTool: "npm",
+  npmModuleScope: "@lit/",
+  publish: [
+    { key: "local", command: "npm publish --registry https://localhost:4873" }
+  ],
   packagingTemplates: [
     {
-      templateInternal: 'package.hbs',
-      fileName: 'package.json',
-      template: path.join('templates', 'package.hbs'),
+      templateInternal: "package.hbs",
+      fileName: "package.json",
+      template: path.join("templates", "package.hbs")
     },
     {
-      templateInternal: 'index.hbs',
-      fileName: 'index.js',
-      template: path.join('templates', 'index.hbs'),
-    },
-  ],
+      templateInternal: "index.hbs",
+      fileName: "index.js",
+      template: path.join("templates", "index.hbs")
+    }
+  ]
 };
 
 const DEFAULT_CLI_ARTIFACT = [
   {
-    programmingLanguage: 'Javascript',
-    artifactDirectoryName: 'Javascript',
-    sourceCodeTemplateInternal: 'javascript-rdf-ext.hbs',
-    sourceFileExtension: 'js',
+    programmingLanguage: "Javascript",
+    artifactDirectoryName: "Javascript",
+    sourceCodeTemplateInternal: "javascript-rdf-ext.hbs",
+    sourceFileExtension: "js",
     packaging: [NPM_DEFAULT],
-    sourceCodeTemplate: path.join('templates', 'javascript-rdf-ext.hbs'),
-  },
+    sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs")
+  }
 ];
 
 class GeneratorConfiguration {
@@ -75,12 +77,12 @@ class GeneratorConfiguration {
       // The command-line references a vocab list configuration file.
       this.configuration = {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
-        ...GeneratorConfiguration.fromConfigFile(initialConfig.vocabListFile),
+        ...GeneratorConfiguration.fromConfigFile(initialConfig.vocabListFile)
       };
     } else {
       this.configuration = {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
-        ...GeneratorConfiguration.fromCommandLine(initialConfig),
+        ...GeneratorConfiguration.fromCommandLine(initialConfig)
       };
     }
 
@@ -90,7 +92,7 @@ class GeneratorConfiguration {
     );
 
     // Extend the received arguments with contextual data.
-    this.configuration.generatedTimestamp = moment().format('LLLL');
+    this.configuration.generatedTimestamp = moment().format("LLLL");
     this.configuration.generatorName = packageDotJson.name;
     this.configuration.artifactGeneratorVersion = packageDotJson.version;
   }
@@ -114,7 +116,7 @@ class GeneratorConfiguration {
   static normalizeInputResources(vocabConfig, normalizedConfigPath) {
     const normalizedVocabConfig = vocabConfig;
     for (let i = 0; i < vocabConfig.inputResources.length; i += 1) {
-      if (!normalizedVocabConfig.inputResources[i].startsWith('http')) {
+      if (!normalizedVocabConfig.inputResources[i].startsWith("http")) {
         // The vocab path is normalized by appending the normalized path of the YAML file to
         // the vocab path.
         normalizedVocabConfig.inputResources[i] = path.join(
@@ -143,7 +145,11 @@ class GeneratorConfiguration {
    * @param configSource the source of our configuration (e.g. a local YAML file, or the command-line)
    * @returns {*}
    */
-  static normalizeTemplatePath(templatePathInternal, templatePathCustom, configSource) {
+  static normalizeTemplatePath(
+    templatePathInternal,
+    templatePathCustom,
+    configSource
+  ) {
     let normalizedTemplate;
     if (templatePathInternal) {
       // If the template is internal, it must be resolved relative to our
@@ -156,7 +162,10 @@ class GeneratorConfiguration {
       normalizedTemplate = path.join(
         path.dirname(configSource),
         // Templates are all made relative to the YAML file
-        GeneratorConfiguration.normalizeAbsolutePath(templatePathCustom, path.dirname(configSource))
+        GeneratorConfiguration.normalizeAbsolutePath(
+          templatePathCustom,
+          path.dirname(configSource)
+        )
       );
     } else {
       throw new Error(
@@ -171,7 +180,10 @@ class GeneratorConfiguration {
     const normalizedConfig = config;
 
     // Normalize our overall config versioning section.
-    if (normalizedConfig.versioning && normalizedConfig.versioning.versioningTemplates) {
+    if (
+      normalizedConfig.versioning &&
+      normalizedConfig.versioning.versioningTemplates
+    ) {
       normalizedConfig.versioning.versioningTemplates = normalizedConfig.versioning.versioningTemplates.map(
         versioningFile => {
           const normalizedVersioningFile = versioningFile;
@@ -187,9 +199,11 @@ class GeneratorConfiguration {
     }
 
     // Normalize each artifact to generate.
-    normalizedConfig.artifactToGenerate = config.artifactToGenerate.map(artifactConfig => {
-      return this.normalizePerArtifactTemplates(artifactConfig, configSource);
-    });
+    normalizedConfig.artifactToGenerate = config.artifactToGenerate.map(
+      artifactConfig => {
+        return this.normalizePerArtifactTemplates(artifactConfig, configSource);
+      }
+    );
 
     if (configSource !== CONFIG_SOURCE_COMMAND_LINE) {
       // Normalize all the vocab files listed in the configuration.
@@ -288,7 +302,7 @@ class GeneratorConfiguration {
    * @param {*} base the path we want the vocabulary to be relative to (typically the project root)
    */
   static normalizeAbsolutePath(absolute, base) {
-    if (absolute.startsWith('/')) {
+    if (absolute.startsWith("/")) {
       return path.relative(base, absolute);
     }
 
@@ -326,7 +340,9 @@ class GeneratorConfiguration {
   static validateConfiguration(config, configSource) {
     // Check version mismatch.
     if (!config.artifactGeneratorVersion) {
-      throw new Error(`Missing 'artifactGeneratorVersion' field in [${configSource}].`);
+      throw new Error(
+        `Missing 'artifactGeneratorVersion' field in [${configSource}].`
+      );
     }
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
       debug(
@@ -337,7 +353,7 @@ class GeneratorConfiguration {
     // There must be at least one artifact defined.
     if (!config.artifactToGenerate) {
       throw new Error(
-        'No artifacts found: nothing to generate. ' +
+        "No artifacts found: nothing to generate. " +
           `Please edit the YAML configuration file [${configSource}] to provide artifacts to be generated.`
       );
     }
@@ -349,7 +365,7 @@ class GeneratorConfiguration {
     // There must be at least one vocabulary defined.
     if (!config.vocabList) {
       throw new Error(
-        'No vocabularies found: nothing to generate. ' +
+        "No vocabularies found: nothing to generate. " +
           `Please edit the YAML configuration file [${configSource}] to provide vocabularies to generate from.`
       );
     }
@@ -367,7 +383,7 @@ class GeneratorConfiguration {
     // must be specified (except for initialization).
     if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
       throw new Error(
-        'Missing input resource. Please provide either a YAML configuration file, or at least one input resource.'
+        "Missing input resource. Please provide either a YAML configuration file, or at least one input resource."
       );
     }
   }
@@ -382,14 +398,16 @@ class GeneratorConfiguration {
     let configuration = {};
     try {
       debug(`Processing configuration file [${configFile}]...`);
-      configuration = yaml.safeLoad(fs.readFileSync(configFile, 'utf8'));
+      configuration = yaml.safeLoad(fs.readFileSync(configFile, "utf8"));
       if (!configuration) {
         throw new Error(`Empty configuration file: [${configFile}]`);
       }
 
       GeneratorConfiguration.validateConfiguration(configuration, configFile);
     } catch (error) {
-      throw new Error(`Failed to read configuration file [${configFile}]: ${error}`);
+      throw new Error(
+        `Failed to read configuration file [${configFile}]: ${error}`
+      );
     }
 
     return configuration;
@@ -432,7 +450,10 @@ class GeneratorConfiguration {
     // If the registry is set in the command line, override default
     if (args.npmRegistry) {
       packagingInfo.publish = [
-        { key: DEFAULT_PUBLISH_KEY, command: `npm publish --registry ${args.npmRegistry}` },
+        {
+          key: DEFAULT_PUBLISH_KEY,
+          command: `npm publish --registry ${args.npmRegistry}`
+        }
       ];
     }
 
@@ -442,12 +463,12 @@ class GeneratorConfiguration {
     //  deep copy.
     cliConfig.artifactToGenerate = [
       {
-        programmingLanguage: 'Javascript',
-        artifactDirectoryName: 'Javascript',
-        sourceCodeTemplateInternal: 'javascript-rdf-ext.hbs',
-        sourceFileExtension: 'js',
-        packaging: [packagingInfo],
-      },
+        programmingLanguage: "Javascript",
+        artifactDirectoryName: "Javascript",
+        sourceCodeTemplateInternal: "javascript-rdf-ext.hbs",
+        sourceFileExtension: "js",
+        packaging: [packagingInfo]
+      }
     ];
 
     if (args.supportBundling) {
@@ -459,7 +480,8 @@ class GeneratorConfiguration {
     }
 
     if (args.litVocabTermVersion) {
-      cliConfig.artifactToGenerate[0].litVocabTermVersion = args.litVocabTermVersion;
+      cliConfig.artifactToGenerate[0].litVocabTermVersion =
+        args.litVocabTermVersion;
     }
 
     return cliConfig;
@@ -471,7 +493,9 @@ class GeneratorConfiguration {
    * necessarily be asked to the user.
    */
   askAdditionalQuestions() {
-    this.configuration = CommandLine.findPublishedVersionOfModule(this.configuration);
+    this.configuration = CommandLine.findPublishedVersionOfModule(
+      this.configuration
+    );
   }
 
   /**
@@ -483,10 +507,11 @@ class GeneratorConfiguration {
     if (!this.configuration.artifactToGenerate[0].litVocabTermVersion) {
       if (!this.configuration.noprompt) {
         const input = await CommandLine.askForLitVocabTermVersion();
-        this.configuration.artifactToGenerate[0].litVocabTermVersion = input.litVocabTermVersion;
+        this.configuration.artifactToGenerate[0].litVocabTermVersion =
+          input.litVocabTermVersion;
       } else {
         throw new Error(
-          'Missing LIT VocabTerm version: The LIT VocabTerm version was not provided as a CLI option, and user prompt is deactivated.'
+          "Missing LIT VocabTerm version: The LIT VocabTerm version was not provided as a CLI option, and user prompt is deactivated."
         );
       }
     }
@@ -501,7 +526,11 @@ class GeneratorConfiguration {
   getInputResources() {
     const resources = [];
     for (let i = 0; i < this.configuration.vocabList.length; i += 1) {
-      for (let j = 0; j < this.configuration.vocabList[i].inputResources.length; j += 1) {
+      for (
+        let j = 0;
+        j < this.configuration.vocabList[i].inputResources.length;
+        j += 1
+      ) {
         resources.push(this.configuration.vocabList[i].inputResources[j]);
       }
     }

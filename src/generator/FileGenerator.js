@@ -1,11 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const Handlebars = require('handlebars');
-const debug = require('debug')('lit-artifact-generator:FileGenerator');
+const fs = require("fs");
+const path = require("path");
+const Handlebars = require("handlebars");
+const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
-const ARTIFACT_DIRECTORY_ROOT = './Generated';
+const ARTIFACT_DIRECTORY_ROOT = "./Generated";
 // TODO: Is this redundant with the language-specific ArtifactConfigurator ?
-const SUPPORTED_LANGUAGES = ['Java', 'Javascript'];
+const SUPPORTED_LANGUAGES = ["Java", "Javascript"];
 
 class FileGenerator {
   /**
@@ -37,19 +37,20 @@ class FileGenerator {
    */
   static formatTemplateData(templateData, fileExtension) {
     const descriptionToUse =
-      fileExtension.toLowerCase() === 'json'
+      fileExtension.toLowerCase() === "json"
         ? FileGenerator.escapeStringForJson(templateData.description)
         : templateData.description;
 
     return {
       ...templateData,
       description: descriptionToUse,
-      vocabPrefix: templateData.nameAndPrefixOverride || templateData.vocabName,
+      vocabPrefix: templateData.nameAndPrefixOverride || templateData.vocabName
     };
   }
 
   static buildTargetSourceCodeFolder(artifactDetails) {
-    const outputDirectoryForSourceCode = artifactDetails.outputDirectoryForArtifact;
+    const outputDirectoryForSourceCode =
+      artifactDetails.outputDirectoryForArtifact;
     // For source files that might be packaged (i.e. Java), convert all '.'
     // (dots) in the package name to directory slashes and add to our
     // directory and source file name.
@@ -57,17 +58,20 @@ class FileGenerator {
     // code in the directory 'src/main/java' (meaning a simple 'mvn install'
     // will find them automatically).
     const packagingDirectory = artifactDetails.javaPackageName
-      ? `/src/main/java/${artifactDetails.javaPackageName.replace(/\./g, '/')}`
-      : 'GeneratedVocab';
+      ? `/src/main/java/${artifactDetails.javaPackageName.replace(/\./g, "/")}`
+      : "GeneratedVocab";
     return `${outputDirectoryForSourceCode}/${packagingDirectory}`;
   }
 
-  static buildTargetSourceCodeFilePath(targetFolder, artifactDetails, templateData) {
+  static buildTargetSourceCodeFilePath(
+    targetFolder,
+    artifactDetails,
+    templateData
+  ) {
     return path.join(
       targetFolder,
-      `${templateData.nameAndPrefixOverride || templateData.vocabNameUpperCase}.${
-        artifactDetails.sourceFileExtension
-      }`
+      `${templateData.nameAndPrefixOverride ||
+        templateData.vocabNameUpperCase}.${artifactDetails.sourceFileExtension}`
     );
   }
 
@@ -82,7 +86,9 @@ class FileGenerator {
   }
 
   static createSourceCodeFile(argv, artifactDetails, templateData) {
-    const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
+    const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(
+      artifactDetails
+    );
     FileGenerator.createDirectory(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
       `${artifactDetails.sourceCodeTemplate}`,
@@ -102,7 +108,9 @@ class FileGenerator {
   static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {
     let packagingDirectory;
     if (!SUPPORTED_LANGUAGES.includes(artifactInfo.programmingLanguage)) {
-      throw new Error(`Unsupported programming language: [${artifactInfo.programmingLanguage}]`);
+      throw new Error(
+        `Unsupported programming language: [${artifactInfo.programmingLanguage}]`
+      );
     }
 
     // If no packaging is explicitly defined, packaging files are generated at
@@ -140,7 +148,11 @@ class FileGenerator {
         FileGenerator.createFileFromTemplate(
           path.join(associatedFile.template),
           generalInfo,
-          path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, associatedFile.fileName)
+          path.join(
+            generalInfo.outputDirectory,
+            ARTIFACT_DIRECTORY_ROOT,
+            associatedFile.fileName
+          )
         );
       });
     }
@@ -156,13 +168,20 @@ class FileGenerator {
     // TODO: if a vocab description contains a newline, this will split it out
     //  into another list item!
     const dataWithMarkdownDescription = generalInfo.vocabListFile
-      ? { ...generalInfo, description: generalInfo.description.replace(/\\n/g, '\n\n  *') }
+      ? {
+          ...generalInfo,
+          description: generalInfo.description.replace(/\\n/g, "\n\n  *")
+        }
       : generalInfo;
 
     FileGenerator.createFileFromTemplate(
       `${__dirname}/../../templates/README.hbs`,
       dataWithMarkdownDescription,
-      path.join(generalInfo.outputDirectory, ARTIFACT_DIRECTORY_ROOT, 'README.md')
+      path.join(
+        generalInfo.outputDirectory,
+        ARTIFACT_DIRECTORY_ROOT,
+        "README.md"
+      )
     );
   }
 
@@ -181,7 +200,7 @@ class FileGenerator {
   }
 
   static escapeStringForJavascript(value) {
-    return value.replace(/`/g, '\\`');
+    return value.replace(/`/g, "\\`");
   }
 
   static escapeStringForJava(value) {

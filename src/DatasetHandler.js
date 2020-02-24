@@ -1,4 +1,4 @@
-const debug = require('debug')('lit-artifact-generator:DatasetHandler');
+const debug = require("debug")("lit-artifact-generator:DatasetHandler");
 
 const {
   RDF_NAMESPACE,
@@ -8,26 +8,31 @@ const {
   OWL,
   VANN,
   DCTERMS,
-  SKOS,
-} = require('./CommonTerms');
+  SKOS
+} = require("./CommonTerms");
 
-const FileGenerator = require('./generator/FileGenerator');
+const FileGenerator = require("./generator/FileGenerator");
 
 const KNOWN_DOMAINS = new Map([
-  ['http://xmlns.com/foaf/0.1', 'foaf'],
-  ['http://www.w3.org/1999/02/22-rdf-syntax-ns', 'rdf'],
-  ['http://www.w3.org/2000/01/rdf-schema', 'rdfs'],
-  ['http://www.w3.org/2006/vcard/ns', 'vcard'],
-  ['https://schema.org', 'schema'],
-  ['http://schema.org', 'schema'],
-  ['http://www.w3.org/2002/07/owl', 'owl'],
-  ['http://rdf-extension.com#', 'rdf-ext'],
+  ["http://xmlns.com/foaf/0.1", "foaf"],
+  ["http://www.w3.org/1999/02/22-rdf-syntax-ns", "rdf"],
+  ["http://www.w3.org/2000/01/rdf-schema", "rdfs"],
+  ["http://www.w3.org/2006/vcard/ns", "vcard"],
+  ["https://schema.org", "schema"],
+  ["http://schema.org", "schema"],
+  ["http://www.w3.org/2002/07/owl", "owl"],
+  ["http://rdf-extension.com#", "rdf-ext"]
 ]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
 // think is to allow use of inference, which would find automatically that
 // 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
-const SUPPORTED_CLASSES = [RDFS.Class, OWL.Class, SKOS.Concept, SCHEMA_DOT_ORG.PaymentStatusType];
+const SUPPORTED_CLASSES = [
+  RDFS.Class,
+  OWL.Class,
+  SKOS.Concept,
+  SCHEMA_DOT_ORG.PaymentStatusType
+];
 
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
@@ -35,7 +40,7 @@ const SUPPORTED_PROPERTIES = [
   OWL.ObjectProperty,
   OWL.NamedIndividual,
   OWL.AnnotationProperty,
-  OWL.DatatypeProperty,
+  OWL.DatatypeProperty
 ];
 
 const SUPPORTED_LITERALS = [RDFS.Literal];
@@ -68,7 +73,10 @@ module.exports = class DatasetHandler {
     // to name our artifact).
 
     // The namespace can manually be overridden in the configuration file.
-    if (!fullName.startsWith(namespace) && !fullName.startsWith(this.vocabData.namespaceOverride)) {
+    if (
+      !fullName.startsWith(namespace) &&
+      !fullName.startsWith(this.vocabData.namespaceOverride)
+    ) {
       // ...but some vocabs reference terms from other very common
       // vocabs (like ActivityStreams 2.0 having the following two triples:
       //   rdf:langString a rdfs:Datatype .
@@ -78,7 +86,7 @@ module.exports = class DatasetHandler {
       // ignore them...
       if (
         fullName.startsWith(RDF_NAMESPACE) ||
-        fullName.startsWith('http://www.w3.org/2001/XMLSchema#')
+        fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
         return null;
       }
@@ -106,7 +114,7 @@ module.exports = class DatasetHandler {
     const name = splitIri[1];
 
     const nameEscapedForLanguage = name
-      .replace(/-/g, '_')
+      .replace(/-/g, "_")
       // TODO: Currently these alterations are required only for Java-specific
       //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
       //  term 'abstract'). But these should only be applied for Java-generated
@@ -115,9 +123,9 @@ module.exports = class DatasetHandler {
       //  refactor to clean things up. In the meantime, I've added the concept
       //  of 'list of keywords to append an underscore for in this programming
       //  language' to the current YAML files.
-      .replace(/^class$/, 'class_')
-      .replace(/^abstract$/, 'abstract_')
-      .replace(/^default$/, 'default_');
+      .replace(/^class$/, "class_")
+      .replace(/^abstract$/, "abstract_")
+      .replace(/^default$/, "default_");
 
     this.subjectsOnlyDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
@@ -125,56 +133,86 @@ module.exports = class DatasetHandler {
         DatasetHandler.add(labels, subQuad);
       });
 
-    this.subjectsOnlyDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
-      DatasetHandler.add(labels, subQuad);
-    });
+    this.subjectsOnlyDataset
+      .match(quad.subject, RDFS.label, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(labels, subQuad);
+      });
 
     this.fullDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
       DatasetHandler.add(labels, subQuad);
     });
 
-    this.fullDataset.match(quad.subject, SCHEMA_DOT_ORG.alternateName, null).forEach(subQuad => {
-      DatasetHandler.add(labels, subQuad);
-    });
+    this.fullDataset
+      .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(labels, subQuad);
+      });
 
     const comments = [];
 
-    this.subjectsOnlyDataset.match(quad.subject, RDFS.comment, null).forEach(subQuad => {
-      DatasetHandler.add(comments, subQuad);
-    });
+    this.subjectsOnlyDataset
+      .match(quad.subject, RDFS.comment, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(comments, subQuad);
+      });
 
-    this.fullDataset.match(quad.subject, RDFS.comment, null).forEach(subQuad => {
-      DatasetHandler.add(comments, subQuad);
-    });
+    this.fullDataset
+      .match(quad.subject, RDFS.comment, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(comments, subQuad);
+      });
 
     const definitions = [];
 
-    this.subjectsOnlyDataset.match(quad.subject, SKOS.definition, null).forEach(subQuad => {
-      DatasetHandler.add(definitions, subQuad);
-    });
+    this.subjectsOnlyDataset
+      .match(quad.subject, SKOS.definition, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(definitions, subQuad);
+      });
 
-    this.fullDataset.match(quad.subject, SKOS.definition, null).forEach(subQuad => {
-      DatasetHandler.add(definitions, subQuad);
-    });
+    this.fullDataset
+      .match(quad.subject, SKOS.definition, null)
+      .forEach(subQuad => {
+        DatasetHandler.add(definitions, subQuad);
+      });
 
-    const comment = DatasetHandler.getTermDescription(comments, definitions, labels);
+    const comment = DatasetHandler.getTermDescription(
+      comments,
+      definitions,
+      labels
+    );
 
-    return { name, nameEscapedForLanguage, comment, labels, comments, definitions };
+    return {
+      name,
+      nameEscapedForLanguage,
+      comment,
+      labels,
+      comments,
+      definitions
+    };
   }
 
   static add(array, quad) {
     if (DatasetHandler.doesNotContainValueForLanguageAlready(array, quad)) {
       array.push({
         value: quad.object.value,
-        valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(quad.object.value),
-        valueEscapedForJava: FileGenerator.escapeStringForJava(quad.object.value),
-        language: quad.object.language,
+        valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(
+          quad.object.value
+        ),
+        valueEscapedForJava: FileGenerator.escapeStringForJava(
+          quad.object.value
+        ),
+        language: quad.object.language
       });
     }
   }
 
   static doesNotContainValueForLanguageAlready(array, quad) {
-    return array.length === 0 || !array.some(e => e.language === quad.object.language);
+    return (
+      array.length === 0 ||
+      !array.some(e => e.language === quad.object.language)
+    );
   }
 
   /**
@@ -196,7 +234,7 @@ module.exports = class DatasetHandler {
       }
 
       if (result === undefined) {
-        result = comments[0] ? comments[0] : { value: '' };
+        result = comments[0] ? comments[0] : { value: "" };
       }
     }
 
@@ -204,10 +242,10 @@ module.exports = class DatasetHandler {
   }
 
   static lookupEnglishOrNoLanguage(collection) {
-    let result = collection.find(e => e.language === 'en');
+    let result = collection.find(e => e.language === "en");
 
     if (result === undefined) {
-      result = collection.find(e => e.language === '');
+      result = collection.find(e => e.language === "");
     }
 
     return result;
@@ -227,8 +265,8 @@ module.exports = class DatasetHandler {
     result.sourceRdfResources = this.vocabData.vocabListFile
       ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
       : `Vocabulary built from input${
-          this.vocabData.inputResources.length === 1 ? '' : 's'
-        }: [${this.vocabData.inputResources.join(', ')}].`;
+          this.vocabData.inputResources.length === 1 ? "" : "s"
+        }: [${this.vocabData.inputResources.join(", ")}].`;
 
     result.classes = [];
     result.properties = [];
@@ -245,8 +283,12 @@ module.exports = class DatasetHandler {
     result.repository = this.vocabData.repository;
 
     result.artifactName = this.artifactName();
-    result.vocabName = this.vocabData.nameAndPrefixOverride || this.findPreferredNamespacePrefix();
-    result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(result.vocabName);
+    result.vocabName =
+      this.vocabData.nameAndPrefixOverride ||
+      this.findPreferredNamespacePrefix();
+    result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
+      result.vocabName
+    );
     result.description = this.findDescription();
     result.artifactVersion = this.vocabData.artifactVersion;
     result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
@@ -374,7 +416,10 @@ module.exports = class DatasetHandler {
       // The namespace is simply the IRI up to the last hash or slash.
       namespace = longestTermName.substring(
         0,
-        Math.max(longestTermName.lastIndexOf('/'), longestTermName.lastIndexOf('#')) + 1
+        Math.max(
+          longestTermName.lastIndexOf("/"),
+          longestTermName.lastIndexOf("#")
+        ) + 1
       );
     }
 
@@ -386,7 +431,7 @@ module.exports = class DatasetHandler {
 
     return terms
       .filter(a => (ontologyIri ? a.startsWith(ontologyIri) : true))
-      .reduce((a, b) => (a.length > b.length ? a : b), '');
+      .reduce((a, b) => (a.length > b.length ? a : b), "");
   }
 
   /**
@@ -419,8 +464,10 @@ module.exports = class DatasetHandler {
 
     if (!prefix) {
       if (!namespace) {
-        debug(`Namespace for input resource [${this.vocabData.inputResources[0]}] is empty.`);
-        return '';
+        debug(
+          `Namespace for input resource [${this.vocabData.inputResources[0]}] is empty.`
+        );
+        return "";
       }
       prefix = DatasetHandler.getKnownPrefix(namespace);
     }
@@ -440,12 +487,12 @@ module.exports = class DatasetHandler {
       this.vocabData.moduleNamePrefix +
         this.findPreferredNamespacePrefix()
           .toLowerCase()
-          .replace(/_/g, '-')
+          .replace(/_/g, "-")
     );
   }
 
   static vocabNameUpperCase(name) {
-    return name.toUpperCase().replace(/-/g, '_');
+    return name.toUpperCase().replace(/-/g, "_");
   }
 
   findDescription() {
@@ -456,7 +503,7 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return DatasetHandler.firstDatasetValue(onologyComments, '');
+      return DatasetHandler.firstDatasetValue(onologyComments, "");
     });
   }
 
@@ -486,7 +533,7 @@ module.exports = class DatasetHandler {
       return callback(owlOntologyTerms);
     }
 
-    return defaultResult || ''; // Default to return empty string
+    return defaultResult || ""; // Default to return empty string
   }
 
   static subjectsOnly(dataset) {

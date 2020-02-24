@@ -1,7 +1,7 @@
 # How to build
 
 Temporarily, until we release the `lit-vocab-term` library to the public NPM
-repository, we need our local NPM to point at the inrupt Verdaccio instance to
+repository, we need our local NPM to point at the Inrupt Verdaccio instance to
 find this dependency.
 
 ```shell

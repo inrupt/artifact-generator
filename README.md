@@ -143,7 +143,7 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 ## Create a front-end Javascript artifact
 
 Run the LIT Artifact Generator using a public demo vocabulary, in this case
-the simple Pet Rock vocabulary provided by inrupt, telling it not to prompt 
+the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
 for any input (i.e. `--noprompt`), and asking for a bundled (i.e. WebPack'ed)
 Javascript artifact (i.e. via the `--supportBundling` command-line flag):
 
