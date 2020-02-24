@@ -1,14 +1,14 @@
-const debug = require('debug')('lit-artifact-generator:ArtifactConfigurator');
-const inquirer = require('inquirer');
+const debug = require("debug")("lit-artifact-generator:ArtifactConfigurator");
+const inquirer = require("inquirer");
 
-const DEFAULT_ARTIFACT_VERSION = '0.1.0';
-const DEFAULT_KEYWORDS_TO_UNDERSCORE = ['class', 'abstract', 'default'];
+const DEFAULT_ARTIFACT_VERSION = "0.1.0";
+const DEFAULT_KEYWORDS_TO_UNDERSCORE = ["class", "abstract", "default"];
 
 const ADD_REPOSITORY_CONFIRMATION = {
-  type: 'confirm',
-  name: 'addRepository',
-  message: 'Do you want to add a repository to the list ?',
-  default: false,
+  type: "confirm",
+  name: "addRepository",
+  message: "Do you want to add a repository to the list ?",
+  default: false
 };
 
 /**
@@ -30,18 +30,18 @@ class ArtifactConfigurator {
 
     // The following questions are asked for each artifact, regardless of the target language
     this.questions.push({
-      type: 'input',
-      name: 'artifactVersion',
-      message: 'Version of the artifact:',
-      default: DEFAULT_ARTIFACT_VERSION,
+      type: "input",
+      name: "artifactVersion",
+      message: "Version of the artifact:",
+      default: DEFAULT_ARTIFACT_VERSION
     });
 
     this.questions.push({
-      type: 'input',
-      name: 'litVocabTermVersion',
-      message: 'Version string for LIT Vocab Term dependency:',
+      type: "input",
+      name: "litVocabTermVersion",
+      message: "Version string for LIT Vocab Term dependency:",
       // This may be overridden in extending classes.
-      default: this.litVocabTermVersion,
+      default: this.litVocabTermVersion
     });
     this.config.languageKeywordsToUnderscore = DEFAULT_KEYWORDS_TO_UNDERSCORE;
   }
@@ -50,14 +50,19 @@ class ArtifactConfigurator {
     if (this.language === undefined) {
       // This method should only be called from an extending class
       throw new Error(
-        'Unspecified artifact generator. This should be called from a class extending ArtifactConfigurator'
+        "Unspecified artifact generator. This should be called from a class extending ArtifactConfigurator"
       );
     }
     // The language-specific options have been set when constructing the extending class
     debug(`[${this.language}] artifact generator`);
-    this.config = { ...this.config, ...(await inquirer.prompt(this.questions)) };
+    this.config = {
+      ...this.config,
+      ...(await inquirer.prompt(this.questions))
+    };
     if (this.config.packagingToInit) {
-      this.config.packaging = await this.promptPackaging(this.config.packagingToInit);
+      this.config.packaging = await this.promptPackaging(
+        this.config.packagingToInit
+      );
     }
     return this.config;
   }

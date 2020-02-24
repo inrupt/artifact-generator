@@ -1,5 +1,5 @@
-const chokidar = require('chokidar');
-const debug = require('debug')('lit-artifact-generator:VocabWatcher');
+const chokidar = require("chokidar");
+const debug = require("debug")("lit-artifact-generator:VocabWatcher");
 
 class VocabWatcher {
   constructor(generator) {
@@ -7,9 +7,12 @@ class VocabWatcher {
     // The watcher overrides the configuration to be no prompt by default
     this.generator.configuration.configuration.noprompt = true;
 
-    this.watcher = chokidar.watch([this.generator.configuration.getInputResources()], {
-      persistent: true,
-    });
+    this.watcher = chokidar.watch(
+      [this.generator.configuration.getInputResources()],
+      {
+        persistent: true
+      }
+    );
   }
 
   async watch() {
@@ -22,7 +25,7 @@ class VocabWatcher {
     });
 
     // Add event listeners.
-    this.watcher.on('change', eventPath => {
+    this.watcher.on("change", eventPath => {
       // Triggers the generation when the file changes
       debug(`File ${eventPath} has been changed`);
       this.generator.generate().catch(error => {

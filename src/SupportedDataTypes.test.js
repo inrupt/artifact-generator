@@ -1,37 +1,41 @@
-require('mock-local-storage');
+require("mock-local-storage");
 
-const fs = require('fs');
-const del = require('del');
-const path = require('path');
+const fs = require("fs");
+const del = require("del");
+const path = require("path");
 
-const VocabGenerator = require('./generator/VocabGenerator');
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require('./generator/ArtifactGenerator');
+const VocabGenerator = require("./generator/VocabGenerator");
+const {
+  ARTIFACT_DIRECTORY_SOURCE_CODE
+} = require("./generator/ArtifactGenerator");
 
-describe('Supported Data Type', () => {
-  it('should test the special-case handling for the OWL vocabulary', async () => {
-    const outputDirectory = 'test/Generated/SupportedDataType/owl-test';
+describe("Supported Data Type", () => {
+  it("should test the special-case handling for the OWL vocabulary", async () => {
+    const outputDirectory = "test/Generated/SupportedDataType/owl-test";
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
       {
-        inputResources: ['./test/resources/vocabs/special-case-owl-snippet.ttl'],
+        inputResources: [
+          "./test/resources/vocabs/special-case-owl-snippet.ttl"
+        ],
         outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
-        nameAndPrefixOverride: 'owl',
+        artifactVersion: "1.0.0",
+        moduleNamePrefix: "lit-generated-vocab-",
+        nameAndPrefixOverride: "owl",
 
         generatedVocabs: [],
-        authorSet: new Set(),
+        authorSet: new Set()
       },
       {
-        programmingLanguage: 'Javascript',
-        artifactDirectoryName: 'Javascript',
+        programmingLanguage: "Javascript",
+        artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join('templates', 'javascript-rdf-ext.hbs'),
-        sourceFileExtension: 'js',
+        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
+        outputDirectoryForArtifact: outputDirectoryJavascript
       }
     );
 
@@ -51,33 +55,37 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`AllDifferent`)'));
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`AllDifferent`)")
+    );
   });
 
-  it('should test the special-case handling for the HTTP vocabulary', async () => {
-    const outputDirectory = 'test/Generated/SupportedDataType/http-test';
+  it("should test the special-case handling for the HTTP vocabulary", async () => {
+    const outputDirectory = "test/Generated/SupportedDataType/http-test";
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
       {
-        inputResources: ['./test/resources/vocabs/special-case-http-snippet.ttl'],
+        inputResources: [
+          "./test/resources/vocabs/special-case-http-snippet.ttl"
+        ],
         outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
-        nameAndPrefixOverride: 'http',
+        artifactVersion: "1.0.0",
+        moduleNamePrefix: "lit-generated-vocab-",
+        nameAndPrefixOverride: "http",
 
         generatedVocabs: [],
-        authorSet: new Set(),
+        authorSet: new Set()
       },
       {
-        programmingLanguage: 'Javascript',
-        artifactDirectoryName: 'Javascript',
+        programmingLanguage: "Javascript",
+        artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join('templates', 'javascript-rdf-ext.hbs'),
-        sourceFileExtension: 'js',
+        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
+        outputDirectoryForArtifact: outputDirectoryJavascript
       }
     );
 
@@ -97,32 +105,34 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining(".addLabel(`Connection`, 'en')"));
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabel(`Connection`, 'en')")
+    );
   });
 
-  it('should be able to generate vocabs for all the supported class data types', async () => {
-    const outputDirectory = 'test/Generated/SupportedDataType/data-types';
+  it("should be able to generate vocabs for all the supported class data types", async () => {
+    const outputDirectory = "test/Generated/SupportedDataType/data-types";
     const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
       {
-        inputResources: ['./test/resources/vocabs/supported-data-types.ttl'],
+        inputResources: ["./test/resources/vocabs/supported-data-types.ttl"],
         outputDirectory,
-        artifactVersion: '1.0.0',
-        moduleNamePrefix: 'lit-generated-vocab-',
+        artifactVersion: "1.0.0",
+        moduleNamePrefix: "lit-generated-vocab-",
 
         generatedVocabs: [],
-        authorSet: new Set(),
+        authorSet: new Set()
       },
       {
-        programmingLanguage: 'Javascript',
-        artifactDirectoryName: 'Javascript',
+        programmingLanguage: "Javascript",
+        artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join('templates', 'javascript-rdf-ext.hbs'),
-        sourceFileExtension: 'js',
+        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript,
+        outputDirectoryForArtifact: outputDirectoryJavascript
       }
     );
 
@@ -133,27 +143,41 @@ describe('Supported Data Type', () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class1: new LitVocabTermRdfExt(_NS('class1'), localStorage, false)")
-    );
-    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdfs class`)'));
-
-    expect(indexOutput).toEqual(
-      expect.stringContaining("class2: new LitVocabTermRdfExt(_NS('class2'), localStorage, false)")
-    );
-    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`An owl class`)'));
-
-    expect(indexOutput).toEqual(
-      expect.stringContaining("class3: new LitVocabTermRdfExt(_NS('class3'), localStorage, false)")
+      expect.stringContaining(
+        "class1: new LitVocabTermRdfExt(_NS('class1'), localStorage, false)"
+      )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`A skos concept class`)')
+      expect.stringContaining(".addLabelNoLanguage(`A rdfs class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class4: new LitVocabTermRdfExt(_NS('class4'), localStorage, false)")
+      expect.stringContaining(
+        "class2: new LitVocabTermRdfExt(_NS('class2'), localStorage, false)"
+      )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`A schema payment status type class`)')
+      expect.stringContaining(".addLabelNoLanguage(`An owl class`)")
+    );
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining(
+        "class3: new LitVocabTermRdfExt(_NS('class3'), localStorage, false)"
+      )
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`A skos concept class`)")
+    );
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining(
+        "class4: new LitVocabTermRdfExt(_NS('class4'), localStorage, false)"
+      )
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(
+        ".addLabelNoLanguage(`A schema payment status type class`)"
+      )
     );
 
     expect(indexOutput).toEqual(
@@ -162,7 +186,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.not.stringContaining('.addLabelNoLanguage(`Not supported class`)')
+      expect.not.stringContaining(".addLabelNoLanguage(`Not supported class`)")
     );
 
     expect(indexOutput).toEqual(
@@ -170,7 +194,9 @@ describe('Supported Data Type', () => {
         "property1: new LitVocabTermRdfExt(_NS('property1'), localStorage, false)"
       )
     );
-    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdf property`)'));
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`A rdf property`)")
+    );
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -178,7 +204,9 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`A rdfs data type property`)')
+      expect.stringContaining(
+        ".addLabelNoLanguage(`A rdfs data type property`)"
+      )
     );
 
     expect(indexOutput).toEqual(
@@ -187,7 +215,7 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`An owl object property`)')
+      expect.stringContaining(".addLabelNoLanguage(`An owl object property`)")
     );
 
     expect(indexOutput).toEqual(
@@ -196,7 +224,9 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`An owl named individual property`)')
+      expect.stringContaining(
+        ".addLabelNoLanguage(`An owl named individual property`)"
+      )
     );
 
     expect(indexOutput).toEqual(
@@ -205,7 +235,9 @@ describe('Supported Data Type', () => {
       )
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`An owl annotation property`)')
+      expect.stringContaining(
+        ".addLabelNoLanguage(`An owl annotation property`)"
+      )
     );
 
     expect(indexOutput).toEqual(
@@ -215,7 +247,7 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabelNoLanguage(`An owl datatype property`)')
+      expect.stringContaining(".addLabelNoLanguage(`An owl datatype property`)")
     );
 
     expect(indexOutput).toEqual(
@@ -225,7 +257,9 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining('.addLabelNoLanguage(`Not supported property`)')
+      expect.not.stringContaining(
+        ".addLabelNoLanguage(`Not supported property`)"
+      )
     );
     // });
     //
@@ -238,7 +272,9 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining('.addLabelNoLanguage(`A rdfs literal`)'));
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`A rdfs literal`)")
+    );
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -246,9 +282,15 @@ describe('Supported Data Type', () => {
       )
     );
 
-    expect(indexOutput).toEqual(expect.stringContaining(".addMessage(`Welcome`, 'en')"));
-    expect(indexOutput).toEqual(expect.stringContaining(".addMessage(`Bienvenido`, 'es')"));
-    expect(indexOutput).toEqual(expect.stringContaining(".addMessage(`Bienvenue`, 'fr')"));
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addMessage(`Welcome`, 'en')")
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addMessage(`Bienvenido`, 'es')")
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addMessage(`Bienvenue`, 'fr')")
+    );
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
@@ -257,7 +299,9 @@ describe('Supported Data Type', () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining('.addLabelNoLanguage(`Not supported literal`)')
+      expect.not.stringContaining(
+        ".addLabelNoLanguage(`Not supported literal`)"
+      )
     );
   });
 });

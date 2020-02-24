@@ -1,36 +1,42 @@
-const inquirer = require('inquirer');
-const path = require('path');
-const FileGenerator = require('./FileGenerator');
-const packageDotJson = require('../../package.json');
+const inquirer = require("inquirer");
+const path = require("path");
+const FileGenerator = require("./FileGenerator");
+const packageDotJson = require("../../package.json");
 
 // Configuration generators.
 const {
   JavaArtifactConfigurator,
-  LANGUAGE: JAVA,
-} = require('../config/artifacts/JavaArtifactConfigurator');
+  LANGUAGE: JAVA
+} = require("../config/artifacts/JavaArtifactConfigurator");
 
 const {
   NodeArtifactConfigurator,
-  LANGUAGE: JAVASCRIPT,
-} = require('../config/artifacts/NodeArtifactConfigurator');
+  LANGUAGE: JAVASCRIPT
+} = require("../config/artifacts/NodeArtifactConfigurator");
 
-const { VocabularyConfigurator } = require('../config/VocabularyConfigurator');
+const { VocabularyConfigurator } = require("../config/VocabularyConfigurator");
 
-const GIT = 'git';
-const SVN = 'svn';
+const GIT = "git";
+const SVN = "svn";
 
 const SUPPORTED_LANGUAGES = {};
 SUPPORTED_LANGUAGES[JAVA] = JavaArtifactConfigurator;
 SUPPORTED_LANGUAGES[JAVASCRIPT] = NodeArtifactConfigurator;
 
 // Templates
-const CONFIG_TEMPLATE_PATH = path.join(__dirname, '..', '..', 'templates', 'empty-config.hbs');
+const CONFIG_TEMPLATE_PATH = path.join(
+  __dirname,
+  "..",
+  "..",
+  "templates",
+  "empty-config.hbs"
+);
 const DEFAULT_CONFIG_TEMPLATE_PATH = path.join(
   __dirname,
-  '..',
-  '..',
-  'templates',
-  'initial-config.hbs'
+  "..",
+  "..",
+  "templates",
+  "initial-config.hbs"
 );
 
 // Default values.
@@ -38,65 +44,65 @@ const DEFAULT_ADD_VOCAB = false;
 
 const GENERAL_QUESTIONS = [
   {
-    type: 'input',
-    name: 'artifactName',
-    message: 'Name of the artifacts:',
-  },
+    type: "input",
+    name: "artifactName",
+    message: "Name of the artifacts:"
+  }
 ];
 
 function validateLanguageCheckboxes(answer) {
   if (answer.length < 1) {
     // This mismatch in return types is expected by inquirer.
-    return 'You must choose at least one target language.';
+    return "You must choose at least one target language.";
   }
 
   return true;
 }
 
 const LANGUAGES_CHECKBOXES = {
-  type: 'checkbox',
-  message: 'Select target languages',
-  name: 'languages',
+  type: "checkbox",
+  message: "Select target languages",
+  name: "languages",
   choices: [{ name: JAVA }, { name: JAVASCRIPT }],
-  validate: validateLanguageCheckboxes,
+  validate: validateLanguageCheckboxes
 };
 
 function validateRepositoryCheckboxes(answer) {
   if (answer.length > 1) {
     // This mismatch in return types is expected by inquirer
-    return 'You must choose at most one repository type.';
+    return "You must choose at most one repository type.";
   }
 
   return true;
 }
 
 const REPOSITORY_CHECKBOX = {
-  type: 'checkbox',
+  type: "checkbox",
   message:
-    'Is the YAML file (and potentially some vocabularies) going to be versioned? If not, validate to continue.',
-  name: 'repositoryType',
+    "Is the YAML file (and potentially some vocabularies) going to be versioned? If not, validate to continue.",
+  name: "repositoryType",
   choices: [{ name: GIT }, { name: SVN }],
-  validate: validateRepositoryCheckboxes,
+  validate: validateRepositoryCheckboxes
 };
 
 const REPOSITORY_URL = {
-  type: 'input',
-  message: 'What is the URL of the repository ?',
-  name: 'repositoryUrl',
+  type: "input",
+  message: "What is the URL of the repository ?",
+  name: "repositoryUrl"
 };
 
 const GITIGNORE_TEMPLATE = {
-  type: 'input',
+  type: "input",
   message: "Please provide a '.gitignore' template",
-  name: 'gitignoreTemplate',
-  default: '.gitignore.hbs',
+  name: "gitignoreTemplate",
+  default: ".gitignore.hbs"
 };
 
 const ADD_VOCABULARY_CONFIRMATION = {
-  type: 'confirm',
-  name: 'addVocab',
-  message: 'Do you want to add a vocabulary to the list ?',
-  default: DEFAULT_ADD_VOCAB,
+  type: "confirm",
+  name: "addVocab",
+  message: "Do you want to add a vocabulary to the list ?",
+  default: DEFAULT_ADD_VOCAB
 };
 
 class ConfigFileGenerator {
@@ -104,7 +110,7 @@ class ConfigFileGenerator {
     this.config = {
       ...initialConfig,
       generatorName: packageDotJson.name,
-      artifactGeneratorVersion: packageDotJson.version,
+      artifactGeneratorVersion: packageDotJson.version
     };
   }
 
@@ -125,7 +131,9 @@ class ConfigFileGenerator {
       return new SUPPORTED_LANGUAGES[language]();
     }
 
-    throw new Error(`Unsported language: no config generator is registered for [${language}]`);
+    throw new Error(
+      `Unsported language: no config generator is registered for [${language}]`
+    );
   }
 
   static async promptRepository() {
@@ -135,16 +143,19 @@ class ConfigFileGenerator {
       // If the value is not null, only one can be retrieved.
       [repositoryConfig.type] = repositoryType.repositoryType;
 
-      repositoryConfig.url = (await inquirer.prompt(REPOSITORY_URL)).repositoryUrl;
+      repositoryConfig.url = (
+        await inquirer.prompt(REPOSITORY_URL)
+      ).repositoryUrl;
       // Each repository type may be associated to specific files (e.g. a .gitignore).
       if (repositoryConfig.type === GIT) {
-        const template = (await inquirer.prompt(GITIGNORE_TEMPLATE)).gitignoreTemplate;
+        const template = (await inquirer.prompt(GITIGNORE_TEMPLATE))
+          .gitignoreTemplate;
         repositoryConfig.versioningTemplates = [
           {
             templateInternal: template,
-            fileName: '.gitignore',
-            template: path.join('templates', template),
-          },
+            fileName: ".gitignore",
+            template: path.join("templates", template)
+          }
         ];
       }
     }
@@ -196,7 +207,10 @@ class ConfigFileGenerator {
    */
   async collectConfigInfo() {
     // Get the info shared across all artifacts.
-    this.config = { ...this.config, ...(await inquirer.prompt(GENERAL_QUESTIONS)) };
+    this.config = {
+      ...this.config,
+      ...(await inquirer.prompt(GENERAL_QUESTIONS))
+    };
     const repository = await ConfigFileGenerator.promptRepository();
     if (repository) {
       this.config.versioning = repository;
@@ -204,7 +218,9 @@ class ConfigFileGenerator {
     // Get artifact information.
     // Collect the different artifacts to generate in a map containing only one key-value pair.
     const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES);
-    this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(languages.languages);
+    this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(
+      languages.languages
+    );
 
     // Get vocabulary information.
     this.config.vocabList = await ConfigFileGenerator.promptVocabularies();
@@ -231,7 +247,11 @@ class ConfigFileGenerator {
    */
   generateConfigFile(targetPath) {
     ConfigFileGenerator.validateConfig(this.config);
-    FileGenerator.createFileFromTemplate(CONFIG_TEMPLATE_PATH, this.config, targetPath);
+    FileGenerator.createFileFromTemplate(
+      CONFIG_TEMPLATE_PATH,
+      this.config,
+      targetPath
+    );
   }
 
   /**
@@ -242,7 +262,11 @@ class ConfigFileGenerator {
   generateDefaultConfigFile(targetPath) {
     // 'this.config' is required here because it contains contextual information
     // provided by the global app context, such as time of generation or app version.
-    FileGenerator.createFileFromTemplate(DEFAULT_CONFIG_TEMPLATE_PATH, this.config, targetPath);
+    FileGenerator.createFileFromTemplate(
+      DEFAULT_CONFIG_TEMPLATE_PATH,
+      this.config,
+      targetPath
+    );
   }
 }
 

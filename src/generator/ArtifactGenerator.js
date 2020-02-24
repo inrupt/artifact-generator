@@ -1,17 +1,26 @@
-const path = require('path');
-const fs = require('fs');
-const debug = require('debug')('lit-artifact-generator:ArtifactGenerator');
-const ChildProcess = require('child_process');
+const path = require("path");
+const fs = require("fs");
+const debug = require("debug")("lit-artifact-generator:ArtifactGenerator");
+const ChildProcess = require("child_process");
 
-const FileGenerator = require('./FileGenerator');
-const VocabGenerator = require('./VocabGenerator');
-const Resource = require('../Resource');
-const { DEFAULT_PUBLISH_KEY } = require('../config/GeneratorConfiguration');
+const FileGenerator = require("./FileGenerator");
+const VocabGenerator = require("./VocabGenerator");
+const Resource = require("../Resource");
+const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
-const ARTIFACT_DIRECTORY_ROOT = '/Generated';
-const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(ARTIFACT_DIRECTORY_ROOT, 'SourceCodeArtifacts');
-const ARTIFACTS_INFO_TEMPLATE = path.join(__dirname, '..', '..', 'templates', 'artifacts-info.hbs');
-const ARTIFACTS_INFO_FILENAME = '.artifacts-info.txt';
+const ARTIFACT_DIRECTORY_ROOT = "/Generated";
+const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(
+  ARTIFACT_DIRECTORY_ROOT,
+  "SourceCodeArtifacts"
+);
+const ARTIFACTS_INFO_TEMPLATE = path.join(
+  __dirname,
+  "..",
+  "..",
+  "templates",
+  "artifacts-info.hbs"
+);
+const ARTIFACTS_INFO_FILENAME = ".artifacts-info.txt";
 
 class ArtifactGenerator {
   /**
@@ -30,10 +39,10 @@ class ArtifactGenerator {
     this.artifactData.authorSet = new Set();
 
     // TODO: Just hard-coding for the moment (still investigating Webpack...)
-    this.artifactData.webpackVersion = '^4.39.1';
-    this.artifactData.webpackCliVersion = '^3.3.6';
-    this.artifactData.babelCoreVersion = '^7.5.5';
-    this.artifactData.babelLoaderVersion = '^8.0.6';
+    this.artifactData.webpackVersion = "^4.39.1";
+    this.artifactData.webpackCliVersion = "^3.3.6";
+    this.artifactData.babelCoreVersion = "^7.5.5";
+    this.artifactData.babelLoaderVersion = "^8.0.6";
   }
 
   async generate() {
@@ -52,7 +61,9 @@ class ArtifactGenerator {
           // If the generation was not sufficient to collect all the required information, the user is asked for it
           await this.configuration.askAdditionalQuestions();
           // TODO: move this formatting directly into the templates
-          this.artifactData.contributors = Array.from(this.artifactData.authorSet);
+          this.artifactData.contributors = Array.from(
+            this.artifactData.authorSet
+          );
         }
       })
       .then(() => this.generatePackaging())
@@ -94,7 +105,9 @@ class ArtifactGenerator {
       const vocabsLastModificationTime = [];
       const resources = this.configuration.getInputResources();
       for (let i = 0; i < resources.length; i += 1) {
-        vocabsLastModificationTime.push(Resource.getResourceLastModificationTime(resources[i]));
+        vocabsLastModificationTime.push(
+          Resource.getResourceLastModificationTime(resources[i])
+        );
       }
       await Promise.all(vocabsLastModificationTime).then(values => {
         // The artifact is outdated if one vocabulary is more recent than the artifact
@@ -144,14 +157,21 @@ class ArtifactGenerator {
         this.artifactData.vocabList.map(async vocabDetails => {
           // Override our vocab inputs using this vocab list entry.
           this.artifactData.inputResources = vocabDetails.inputResources;
-          this.artifactData.termSelectionResource = vocabDetails.termSelectionResource;
-          this.artifactData.nameAndPrefixOverride = vocabDetails.nameAndPrefixOverride;
+          this.artifactData.termSelectionResource =
+            vocabDetails.termSelectionResource;
+          this.artifactData.nameAndPrefixOverride =
+            vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
           // Generate this vocab for each artifact we are generating for.
-          const artifactPromises = this.artifactData.artifactToGenerate.map(artifactDetails => {
-            return new VocabGenerator(this.artifactData, artifactDetails).generate();
-          });
+          const artifactPromises = this.artifactData.artifactToGenerate.map(
+            artifactDetails => {
+              return new VocabGenerator(
+                this.artifactData,
+                artifactDetails
+              ).generate();
+            }
+          );
           // Wait for all our artifacts to be generated.
           await Promise.all(artifactPromises);
           // Only return the first one, as we don't want duplicate info.
@@ -173,9 +193,11 @@ class ArtifactGenerator {
         this.artifactData.description += `\n\n  ${vocabData.vocabName}: ${vocabData.description}`;
         this.artifactData.generatedVocabs.push({
           vocabName: vocabData.vocabName,
-          vocabNameUpperCase: vocabData.vocabNameUpperCase,
+          vocabNameUpperCase: vocabData.vocabNameUpperCase
         });
-        vocabData.authorSet.forEach(author => this.artifactData.authorSet.add(author));
+        vocabData.authorSet.forEach(author =>
+          this.artifactData.authorSet.add(author)
+        );
       })
     );
     return vocabDatasets;
@@ -186,7 +208,9 @@ class ArtifactGenerator {
     if (this.artifactData.generated) {
       this.artifactData.artifactToGenerate.forEach(artifactDetails => {
         if (artifactDetails.packaging) {
-          debug(`Generating [${artifactDetails.programmingLanguage}] packaging`);
+          debug(
+            `Generating [${artifactDetails.programmingLanguage}] packaging`
+          );
           // TODO: manage repositories properly
           this.artifactData.gitRepository = artifactDetails.gitRepository;
           this.artifactData.repository = artifactDetails.repository;
@@ -215,33 +239,50 @@ class ArtifactGenerator {
     // TODO: manage repositories properly
     this.artifactData.gitRepository = artifactDetails.gitRepository;
     this.artifactData.repository = artifactDetails.repository;
-    if (artifactDetails.programmingLanguage === 'Java') {
+    if (artifactDetails.programmingLanguage === "Java") {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-        packagingTool: 'maven',
+        packagingTool: "maven",
         groupId: artifactDetails.javaPackageName,
-        publish: [{ key: 'local', command: 'mvn install' }],
+        publish: [{ key: "local", command: "mvn install" }],
         packagingTemplates: [
           {
-            template: path.join(__dirname, '..', '..', 'templates', 'pom.hbs'),
-            fileName: 'pom.xml',
-          },
-        ],
+            template: path.join(__dirname, "..", "..", "templates", "pom.hbs"),
+            fileName: "pom.xml"
+          }
+        ]
       });
-    } else if (artifactDetails.programmingLanguage === 'Javascript') {
+    } else if (artifactDetails.programmingLanguage === "Javascript") {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-        packagingTool: 'npm',
-        npmModuleScope: '@lit/',
-        publish: [{ key: 'local', command: 'npm publish --registry http://localhost:4873/' }],
+        packagingTool: "npm",
+        npmModuleScope: "@lit/",
+        publish: [
+          {
+            key: "local",
+            command: "npm publish --registry http://localhost:4873/"
+          }
+        ],
         packagingTemplates: [
           {
-            template: path.join(__dirname, '..', '..', 'templates', 'package.hbs'),
-            fileName: 'package.json',
+            template: path.join(
+              __dirname,
+              "..",
+              "..",
+              "templates",
+              "package.hbs"
+            ),
+            fileName: "package.json"
           },
           {
-            template: path.join(__dirname, '..', '..', 'templates', 'index.hbs'),
-            fileName: 'index.js',
-          },
-        ],
+            template: path.join(
+              __dirname,
+              "..",
+              "..",
+              "templates",
+              "index.hbs"
+            ),
+            fileName: "index.js"
+          }
+        ]
       });
     } else {
       debug(
@@ -263,10 +304,15 @@ class ArtifactGenerator {
         const publishConfigs = artifact.packaging[i].publish;
         if (publishConfigs) {
           for (let j = 0; j < publishConfigs.length; j += 1) {
-            if (publishConfigs[j].key === key || publishConfigs[j].key === DEFAULT_PUBLISH_KEY) {
+            if (
+              publishConfigs[j].key === key ||
+              publishConfigs[j].key === DEFAULT_PUBLISH_KEY
+            ) {
               // A special case: when the user uses the --publish option via a CLI configuration, no key
               // is associated to the publication config by the user, so the DEFAULT_PUBLISH_KEY is set.
-              process.chdir(path.join(homeDir, artifact.outputDirectoryForArtifact));
+              process.chdir(
+                path.join(homeDir, artifact.outputDirectoryForArtifact)
+              );
               debug(
                 `Running command [${publishConfigs[j].command}] to publish artifact according to [${publishConfigs[j].key}] configuration `
               );
@@ -290,7 +336,10 @@ class ArtifactGenerator {
     // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
     // so it is more work than expected. Running it sequentially is fine for now.
     for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifact(generationData.artifactToGenerate[i], key);
+      ArtifactGenerator.publishArtifact(
+        generationData.artifactToGenerate[i],
+        key
+      );
     }
     return generationData;
   }

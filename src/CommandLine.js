@@ -1,12 +1,12 @@
-const path = require('path');
-const inquirer = require('inquirer');
-const ChildProcess = require('child_process');
-const debug = require('debug')('lit-artifact-generator:CommandLine');
+const path = require("path");
+const inquirer = require("inquirer");
+const ChildProcess = require("child_process");
+const debug = require("debug")("lit-artifact-generator:CommandLine");
 
 const {
   ARTIFACT_DIRECTORY_ROOT,
-  ARTIFACT_DIRECTORY_SOURCE_CODE,
-} = require('./generator/ArtifactGenerator');
+  ARTIFACT_DIRECTORY_SOURCE_CODE
+} = require("./generator/ArtifactGenerator");
 
 module.exports = class CommandLine {
   static getParentFolder(directory) {
@@ -15,9 +15,9 @@ module.exports = class CommandLine {
 
   static async askForLitVocabTermVersion() {
     return inquirer.prompt({
-      type: 'input',
-      name: 'litVocabTermVersion',
-      message: 'Version string for LIT Vocab Term dependency ...',
+      type: "input",
+      name: "litVocabTermVersion",
+      message: "Version string for LIT Vocab Term dependency ..."
     });
   }
 
@@ -25,7 +25,9 @@ module.exports = class CommandLine {
     const cloneData = { ...data };
     if (data.runNpmPublish) {
       try {
-        const publishedVersion = ChildProcess.execSync(`npm view ${data.artifactName} version`)
+        const publishedVersion = ChildProcess.execSync(
+          `npm view ${data.artifactName} version`
+        )
           .toString()
           .trim();
         cloneData.publishedVersion = publishedVersion;
@@ -54,17 +56,17 @@ module.exports = class CommandLine {
     if (!data.noprompt && data.publishedVersion) {
       const bumpQuestion = [
         {
-          type: 'list',
-          name: 'bumpVersion',
+          type: "list",
+          name: "bumpVersion",
           message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
-          choices: ['patch', 'minor', 'major', 'no'],
-          default: data.bumpVersion,
-        },
+          choices: ["patch", "minor", "major", "no"],
+          default: data.bumpVersion
+        }
       ];
 
       answer = await inquirer.prompt(bumpQuestion);
 
-      if (answer.bumpVersion && answer.bumpVersion !== 'no') {
+      if (answer.bumpVersion && answer.bumpVersion !== "no") {
         answer = { ...answer, ...CommandLine.runNpmVersion(data) };
       }
 
@@ -83,11 +85,11 @@ module.exports = class CommandLine {
     if (!data.noprompt) {
       const npmInstallQuestion = [
         {
-          type: 'confirm',
-          name: 'runNpmInstall',
+          type: "confirm",
+          name: "runNpmInstall",
           message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
-          default: false,
-        },
+          default: false
+        }
       ];
 
       answer = await inquirer.prompt(npmInstallQuestion);
@@ -109,11 +111,11 @@ module.exports = class CommandLine {
     if (!data.noprompt && data.npmRegistry) {
       const npmPublishQuestion = [
         {
-          type: 'confirm',
-          name: 'runNpmPublish',
+          type: "confirm",
+          name: "runNpmPublish",
           message: `Do you want to run NPM publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-          default: false,
-        },
+          default: false
+        }
       ];
 
       answer = await inquirer.prompt(npmPublishQuestion);
@@ -135,11 +137,11 @@ module.exports = class CommandLine {
     if (!data.noprompt) {
       const runWidocoQuestion = [
         {
-          type: 'confirm',
-          name: 'runWidoco',
+          type: "confirm",
+          name: "runWidoco",
           message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
-          default: false,
-        },
+          default: false
+        }
       ];
 
       answer = await inquirer.prompt(runWidocoQuestion);
@@ -154,20 +156,24 @@ module.exports = class CommandLine {
 
   static runNpmInstall(data) {
     debug(
-      `Running 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
-        data.artifactName
-      }] in directory [${data.outputDirectoryForArtifact}]...`
+      `Running 'npm install' ${
+        data.supportBundling ? "(and bundling) " : ""
+      }for artifact [${data.artifactName}] in directory [${
+        data.outputDirectoryForArtifact
+      }]...`
     );
 
     const commandLine = `cd ${data.outputDirectoryForArtifact} && npm install${
-      data.supportBundling ? ' && npm run dev' : ''
+      data.supportBundling ? " && npm run dev" : ""
     }`;
     ChildProcess.execSync(commandLine);
 
     debug(
-      `Ran 'npm install' ${data.supportBundling ? '(and bundling) ' : ''}for artifact [${
-        data.artifactName
-      }] in directory [${data.outputDirectoryForArtifact}].`
+      `Ran 'npm install' ${
+        data.supportBundling ? "(and bundling) " : ""
+      }for artifact [${data.artifactName}] in directory [${
+        data.outputDirectoryForArtifact
+      }].`
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
@@ -182,7 +188,7 @@ module.exports = class CommandLine {
       const javaDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
       if (data.artifactToGenerate) {
         data.artifactToGenerate.forEach(artifact => {
-          if (artifact.programmingLanguage.toLowerCase() === 'java') {
+          if (artifact.programmingLanguage.toLowerCase() === "java") {
             const commandLineMaven = `cd ${javaDirectory} && mvn install`;
             ChildProcess.execSync(commandLineMaven);
           }
@@ -219,7 +225,9 @@ module.exports = class CommandLine {
       `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`
     );
 
-    debug(`Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`);
+    debug(
+      `Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`
+    );
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
@@ -228,10 +236,11 @@ module.exports = class CommandLine {
     // Run Widoco using environment variable (since putting the JAR in a local
     // 'lib' directory doesn't work with NPM publish, as it's too big at
     // 46MB!)...
-    const widocoJar = '$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar';
+    const widocoJar =
+      "$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar";
 
     const inputResource = data.inputResources[0];
-    const inputSwitch = inputResource.startsWith('http') ? 'ontURI' : 'ontFile';
+    const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
     const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
@@ -246,9 +255,14 @@ module.exports = class CommandLine {
     debug(
       `Widoco documentation generated for [${
         data.artifactName
-      }] in directory [${CommandLine.getParentFolder(data.outputDirectory)}/Widoco].`
+      }] in directory [${CommandLine.getParentFolder(
+        data.outputDirectory
+      )}/Widoco].`
     );
 
-    return { ...data, ...{ ranWidoco: true, documentationDirectory: destDirectory } }; // Merge the answers in with the data and return
+    return {
+      ...data,
+      ...{ ranWidoco: true, documentationDirectory: destDirectory }
+    }; // Merge the answers in with the data and return
   }
 };

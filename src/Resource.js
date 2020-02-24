@@ -1,17 +1,17 @@
-const rdf = require('rdf-ext');
-const rdfFetch = require('@rdfjs/fetch-lite');
-const rdfFormats = require('@rdfjs/formats-common');
-const stringToStream = require('string-to-stream');
-const axios = require('axios');
-const fs = require('fs');
+const rdf = require("rdf-ext");
+const rdfFetch = require("@rdfjs/fetch-lite");
+const rdfFormats = require("@rdfjs/formats-common");
+const stringToStream = require("string-to-stream");
+const axios = require("axios");
+const fs = require("fs");
 
-const ParserN3 = require('@rdfjs/parser-n3');
-const ParserJsonld = require('@rdfjs/parser-jsonld');
-const ParserRdfXml = require('rdfxml-streaming-parser').RdfXmlParser;
+const ParserN3 = require("@rdfjs/parser-n3");
+const ParserJsonld = require("@rdfjs/parser-jsonld");
+const ParserRdfXml = require("rdfxml-streaming-parser").RdfXmlParser;
 
-const SinkMap = require('@rdfjs/sink-map');
+const SinkMap = require("@rdfjs/sink-map");
 
-const debug = require('debug')('lit-artifact-generator:Resources');
+const debug = require("debug")("lit-artifact-generator:Resources");
 
 const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
@@ -23,17 +23,17 @@ const DEFAULT_MODIFICATION_DATE = 662688059000;
 
 const formats = {
   parsers: new SinkMap([
-    ['text/turtle', parserN3],
-    ['text/n3', parserN3], // The OLO vocab returns this content type.
-    ['application/x-turtle', parserN3], // This is needed as schema.org returns this as the content type.
-    ['application/ld+json', parserJsonld], // Activity streams only supports JSON-LD and HTML.
-    ['application/rdf+xml', parserRdfXml],
+    ["text/turtle", parserN3],
+    ["text/n3", parserN3], // The OLO vocab returns this content type.
+    ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
+    ["application/ld+json", parserJsonld], // Activity streams only supports JSON-LD and HTML.
+    ["application/rdf+xml", parserRdfXml],
 
     // The vocab
     // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
     // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
-    ['text/plain', parserN3],
-  ]),
+    ["text/plain", parserN3]
+  ])
 };
 
 module.exports = class Resource {
@@ -49,13 +49,17 @@ module.exports = class Resource {
 
   async processInputs(processInputsCallback) {
     debug(`Processing datasetFiles: [${this.datasetFiles}]...`);
-    const datasetsPromises = this.datasetFiles.map(e => Resource.readResource(e));
+    const datasetsPromises = this.datasetFiles.map(e =>
+      Resource.readResource(e)
+    );
 
     const datasets = await Promise.all(datasetsPromises);
 
     let termsSelectionDataset;
     if (this.termSelectionResource) {
-      termsSelectionDataset = await Resource.readResource(this.termSelectionResource);
+      termsSelectionDataset = await Resource.readResource(
+        this.termSelectionResource
+      );
 
       // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
       // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
@@ -91,8 +95,8 @@ module.exports = class Resource {
   }
 
   static loadTurtleFileIntoDatasetPromise(filename) {
-    const mimeType = 'text/turtle';
-    const data = fs.readFileSync(filename, 'utf8');
+    const mimeType = "text/turtle";
+    const data = fs.readFileSync(filename, "utf8");
 
     const rdfParser = rdfFormats.parsers.get(mimeType);
     const quadStream = rdfParser.import(stringToStream(data));
@@ -101,11 +105,13 @@ module.exports = class Resource {
 
   static async getHttpResourceLastModificationTime(resource) {
     return axios({
-      method: 'head',
-      url: resource,
+      method: "head",
+      url: resource
     }).then(response => {
-      const lastModifiedDate = Date.parse(response.headers['last-modified']);
-      return Number.isNaN(lastModifiedDate) ? DEFAULT_MODIFICATION_DATE : lastModifiedDate;
+      const lastModifiedDate = Date.parse(response.headers["last-modified"]);
+      return Number.isNaN(lastModifiedDate)
+        ? DEFAULT_MODIFICATION_DATE
+        : lastModifiedDate;
     });
   }
 
@@ -114,13 +120,13 @@ module.exports = class Resource {
    * @param {*} resource
    */
   static async getResourceLastModificationTime(resource) {
-    return resource.startsWith('http')
+    return resource.startsWith("http")
       ? Resource.getHttpResourceLastModificationTime(resource)
       : fs.statSync(resource).mtimeMs;
   }
 
   static isOnline(resource) {
-    return resource.startsWith('http');
+    return resource.startsWith("http");
   }
 };
 

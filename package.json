@@ -9,8 +9,8 @@
   "scripts": {
     "test": "npm run format && npm run lint && jest",
     "start": "node index.js",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"index.js\" \"src/**/*.js\"",
-    "lint": "eslint src -c .eslintrc.json --ext js,jsx",
+    "format": "prettier --write \"index.js\" \"src/**/*.js\"",
+    "lint": "eslint src --ext js,jsx",
     "preversion": "npm test"
   },
   "author": "inrupt, Inc.",
