@@ -13,7 +13,7 @@
     "lint": "eslint src --ext js,jsx",
     "preversion": "npm test"
   },
-  "author": "inrupt, Inc.",
+  "author": "Inrupt, Inc.",
   "contributors": [
     "Jarlath Holleran (https://github.com/jholleran)",
     "Pat McBennett (https://github.com/pmcb55)",
