@@ -78,7 +78,6 @@ describe('End-to-end tests', () => {
         )
       );
 
-      // TODO: Not sure the correct syntax to get this working - but should be something like this!
       await expect(artifactGenerator.generate()).rejects.toThrow(
         'sampleTerm',
         'https://inrupt.net/vocab/different-IRI#',
@@ -575,6 +574,7 @@ describe('End-to-end tests', () => {
       const outputDirectory = 'test/Generated/EndToEnd/authors-in-package/';
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
+
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ['generate'],

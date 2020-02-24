@@ -1,26 +1,29 @@
 artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
+versioning:
+  type: git
+  url: https://repository.git
+
+  ##
+  # Here we have a template, but it's not what we expect.
+  ##
+  versioningTemplates:
+    - templateFieldWrongName: ".gitignore.hbs"
+      fileName: ".gitignore"
 
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 3.2.1-SNAPSHOT
     javaPackageName: com.inrupt.testing
-    litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
+    ##
+    # Here the template is picked from among the internally provided templates.
+    ##
     sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
-    packaging:
-      - packagingTool: maven
-        groupId: com.inrupt.test
-        rdf4jVersion: 2.5.3
-        ##
-        #  These templates should be present
-        ##
-#       packagingTemplates: 
-#       - templateInternal: pom.hbs
-#         fileName: pom.xml
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../vocabs/schema-snippet.ttl
+      - ./schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext.ttl

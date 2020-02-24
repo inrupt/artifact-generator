@@ -7,21 +7,21 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     artifactDirectoryName: Java
     ##
-    # Here the template is picked among the default options
+    # Here the template is picked from among the internally provided templates.
     ##
-    handlebarsTemplate: java-rdf4j.hbs
+    sourceCodeTemplateInternal: java-rdf4j.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates:
-        - template: pom.hbs
+        - templateInternal: pom.hbs
           fileName: pom.xml
         ##
         # This is a dummy file path, just here to test normalization
         ##
-        - template: ../../readme.hbs
+        - templateCustom: ../../readme.hbs
           fileName: pom.xml
 
   - programmingLanguage: Javascript
@@ -29,7 +29,7 @@ artifactToGenerate:
     ##
     # This is a dummy file path, just here to test normalization
     ##
-    handlebarsTemplate: ../anotherTemplateDirectory/javascript.hbs
+    sourceCodeTemplateCustom: ../anotherTemplateDirectory/javascript.hbs
     sourceFileExtension: js
 
 vocabList:

@@ -14,15 +14,15 @@ artifactToGenerate:
     ##
     # The template imports LitVocabTermRdflib instead of LitVocabTermRdfExt
     ##
-    handlebarsTemplate: javascript-rdflib.hbs
+    sourceCodeTemplateInternal: javascript-rdflib.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - template: package-rdflib.hbs
+          - templateInternal: package-rdflib.hbs
             fileName: package.json
-          - template: index.hbs
+          - templateInternal: index.hbs
             fileName: index.js
 
 vocabList:
