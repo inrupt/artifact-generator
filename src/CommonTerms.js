@@ -19,7 +19,9 @@ module.exports.RDFS = {
   comment: rdf.namedNode(`${RDFS_NAMESPACE}comment`),
   Class: rdf.namedNode(`${RDFS_NAMESPACE}Class`),
   Datatype: rdf.namedNode(`${RDFS_NAMESPACE}Datatype`),
-  Literal: rdf.namedNode(`${RDFS_NAMESPACE}Literal`)
+  Literal: rdf.namedNode(`${RDFS_NAMESPACE}Literal`),
+  subClassOf: rdf.namedNode(`${RDFS_NAMESPACE}subClassOf`),
+  subPropertyOf: rdf.namedNode(`${RDFS_NAMESPACE}subPropertyOf`)
 };
 
 const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";

@@ -11,6 +11,7 @@ const VERSION_LIT_VOCAB_TERM = "^0.2.4";
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
+// const RUN_PACKAGING = [];
 const RUN_PACKAGING = ["localMaven", "localNpmNode"];
 
 const ConfigLitCommon = {
@@ -19,7 +20,6 @@ const ConfigLitCommon = {
   vocabListFile: "../../Vocab/lit-rdf-vocab/Common/Vocab-List-LIT-Common.yml",
   outputDirectory: "../../Vocab/lit-rdf-vocab/Common",
   artifactName: "common",
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -71,7 +71,6 @@ const ConfigSolidCommon = {
     "../../Vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
   outputDirectory: "../../Vocab/solid-rdf-vocab/Common",
   artifactName: "common",
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -165,7 +164,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it('LIT vocabs', async () => {
+  // it("LIT vocabs", async () => {
   it.skip("LIT vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
@@ -186,7 +185,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it('LIT Common vocabs', async () => {
+  // it("LIT Common vocabs", async () => {
   it.skip("LIT Common vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);

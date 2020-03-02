@@ -45,9 +45,11 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+        .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
+        .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}};
 {{/each}}
 {{/if}}
 
@@ -60,9 +62,11 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+        .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
+        .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}};
 {{/each}}
 {{/if}}
 
@@ -75,10 +79,13 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}
-      .addLabel("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each comments}}
-      .addComment("{{language}}", "{{{valueEscapedForJava}}}"){{/each}}{{#each definitions}}
-      .addMessage("{{language}}", "{{{valueEscapedForJava}}}"){{/each}};
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+        .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
+        .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each messages}}{{#if language}}
+        .addMessage("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
+        .addMessageNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}};
 {{/each}}
 {{/if}}
 }
