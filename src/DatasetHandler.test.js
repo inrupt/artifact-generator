@@ -1,7 +1,7 @@
 require("mock-local-storage");
 
 const rdf = require("rdf-ext");
-const { RDF, RDFS, OWL, VANN } = require("./CommonTerms");
+const { RDF, RDFS, OWL, SKOS, VANN } = require("./CommonTerms");
 
 const DatasetHandler = require("./DatasetHandler");
 
@@ -17,6 +17,45 @@ const vocabMetadata = rdf
   ]);
 
 describe("Dataset Handler", () => {
+  describe("Handle sub-classes or sub-properties", () => {
+    it("should handle sub-classes", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"]
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      expect(result.classes[0].name).toEqual("Ontology");
+    });
+
+    it("should handle sub-properties", () => {
+      const dataset = rdf
+        .dataset()
+        .add(
+          rdf.quad(
+            rdf.namedNode("http://www.w3.org/2001/XMLSchema#float"),
+            RDFS.subPropertyOf,
+            rdf.literal(
+              "Also need to make sure we ignore terms from XSD namespace..."
+            )
+          )
+        )
+        .add(rdf.quad(RDFS.label, RDFS.subPropertyOf, SKOS.definition));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"]
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.properties.length).toEqual(1);
+      expect(result.properties[0].name).toEqual("label");
+    });
+  });
+
   it("should makes exceptions for vocab terms found in common vocabs - RDF:langString", () => {
     const dataset = rdf
       .dataset()
@@ -45,6 +84,7 @@ describe("Dataset Handler", () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"]
     });
+
     const result = handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
   });
@@ -70,6 +110,7 @@ describe("Dataset Handler", () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"]
     });
+
     const result = handler.buildTemplateInput();
     expect(result.classes.length).toEqual(1);
     expect(result.classes[0].name).toEqual("testTermClass");
@@ -91,9 +132,11 @@ describe("Dataset Handler", () => {
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
         rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
       ]);
+
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
       inputResources: ["does not matter"]
     });
+
     expect(() => {
       handler.findPreferredNamespacePrefix();
     }).toThrow("No prefix defined");
@@ -109,9 +152,11 @@ describe("Dataset Handler", () => {
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
         rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
       ]);
+
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
       inputResources: ["does not matter"]
     });
+
     expect(handler.findPreferredNamespacePrefix()).toEqual("foaf");
   });
 
@@ -125,9 +170,11 @@ describe("Dataset Handler", () => {
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
         rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
       ]);
+
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
       inputResources: ["does not matter"]
     });
+
     expect(() => {
       handler.buildTemplateInput();
     }).toThrow(`[${NS}] does not contain any terms.`);
@@ -146,6 +193,7 @@ describe("Dataset Handler", () => {
       namespaceOverride,
       nameAndPrefixOverride: "does not matter"
     });
+
     const result = handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
   });
@@ -172,6 +220,7 @@ describe("Dataset Handler", () => {
       namespaceOverride,
       nameAndPrefixOverride: "does not matter"
     });
+
     const result = handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
   });

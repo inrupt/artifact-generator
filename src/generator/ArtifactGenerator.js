@@ -300,7 +300,8 @@ class ArtifactGenerator {
     const homeDir = process.cwd();
     if (artifact.packaging) {
       for (let i = 0; i < artifact.packaging.length; i += 1) {
-        // The artifact contains packaging configuration, each of which does not necessarily encompass publication options
+        // The artifact contains packaging configuration, each of which does not
+        // necessarily encompass publication options
         const publishConfigs = artifact.packaging[i].publish;
         if (publishConfigs) {
           for (let j = 0; j < publishConfigs.length; j += 1) {
@@ -308,13 +309,18 @@ class ArtifactGenerator {
               publishConfigs[j].key === key ||
               publishConfigs[j].key === DEFAULT_PUBLISH_KEY
             ) {
-              // A special case: when the user uses the --publish option via a CLI configuration, no key
-              // is associated to the publication config by the user, so the DEFAULT_PUBLISH_KEY is set.
-              process.chdir(
-                path.join(homeDir, artifact.outputDirectoryForArtifact)
+              // A special case: when the user uses the --publish option via a
+              // CLI configuration, no key is associated to the publication
+              // config by the user, so the DEFAULT_PUBLISH_KEY is set.
+              const runFrom = path.join(
+                homeDir,
+                artifact.outputDirectoryForArtifact
               );
+              debug(`Changing to directory [${runFrom}].`);
+              process.chdir(runFrom);
+
               debug(
-                `Running command [${publishConfigs[j].command}] to publish artifact according to [${publishConfigs[j].key}] configuration `
+                `Running command [${publishConfigs[j].command}] to publish artifact according to [${publishConfigs[j].key}] configuration.`
               );
               ChildProcess.execSync(publishConfigs[j].command);
               process.chdir(homeDir);

@@ -16,7 +16,7 @@ artifactToGenerate:
     ##
     strict: true
     artifactDirectoryName: Javascript
-    sourceCodeTemplateInternal: javascript-rdf-ext.hbs
+    templateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 

@@ -125,6 +125,7 @@ module.exports = class DatasetHandler {
       //  language' to the current YAML files.
       .replace(/^class$/, "class_")
       .replace(/^abstract$/, "abstract_")
+      .replace(/^for$/, "for_")
       .replace(/^default$/, "default_");
 
     this.subjectsOnlyDataset
@@ -328,6 +329,14 @@ module.exports = class DatasetHandler {
         }
       });
     });
+
+    // We can automatically treat anything marked as a 'sub-class of' as a
+    // class too, regardless of what it's sub-class of!
+    this.fullDataset.match(subject, RDFS.subClassOf, null).forEach(quad => {
+      if (this.isNewTerm(quad.subject.value)) {
+        result.classes.push(this.handleTerm(quad, result.localNamespace));
+      }
+    });
   }
 
   handleProperties(subject, result) {
@@ -340,6 +349,17 @@ module.exports = class DatasetHandler {
           }
         }
       });
+    });
+
+    // We can automatically treat anything marked as a 'sub-property of' as a
+    // property too, regardless of what it's sub-property of!
+    this.fullDataset.match(subject, RDFS.subPropertyOf, null).forEach(quad => {
+      const term = this.handleTerm(quad, result.localNamespace);
+      if (term) {
+        if (this.isNewTerm(quad.subject.value)) {
+          result.properties.push(term);
+        }
+      }
     });
   }
 
@@ -473,7 +493,7 @@ module.exports = class DatasetHandler {
     }
 
     if (!prefix) {
-      throw new Error(`No prefix defined for[ ${namespace}]. There are three options to resolve this:
+      throw new Error(`No prefix defined for [${namespace}]. There are three options to resolve this:
       - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"].
       - If you do not control the vocabulary, you can set create the 'termSelectionResource' option to point to an extension file including the same triple.
       - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary.`);
