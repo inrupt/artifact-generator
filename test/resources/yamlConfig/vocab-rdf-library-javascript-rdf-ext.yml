@@ -11,7 +11,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    sourceCodeTemplateInternal: rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
+    templateInternal: rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging:
       - packagingTool: npm

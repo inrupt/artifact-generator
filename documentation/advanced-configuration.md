@@ -117,12 +117,12 @@ artifactToGenerate:
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
     artifactDirectoryName: Java
     # MANDATORY - Must be one (and only one) of either:
-    #  - sourceCodeTemplateInternal References a Handlebars template internally
+    #  - templateInternal References a Handlebars template internally
     #  provided by the Artifact Generator, and relative to it's internal
     #  "templates" directory.
-    #  - sourceCodeTemplateCustom References a Handlebars template relative to
+    #  - templateCustom References a Handlebars template relative to
     #  the configuration file.
-    sourceCodeTemplateInternal: java-rdf4j.hbs
+    templateInternal: java-rdf4j.hbs
     # MANDATORY The extension that is appended after the name of the generated source code files.
     sourceFileExtension: java
     # These terms will be prefixed by an underscore in the generated code. It allows to prevent conflit if a term from 
@@ -159,7 +159,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    sourceCodeTemplateInternal: javascript-rdf-ext.hbs
+    templateInternal: javascript-rdf-ext.hbs
     sourceFileExtension: js
     packaging: 
       # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 

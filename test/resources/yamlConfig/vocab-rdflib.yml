@@ -14,7 +14,7 @@ artifactToGenerate:
     ##
     # The template imports LitVocabTermRdflib instead of LitVocabTermRdfExt
     ##
-    sourceCodeTemplateInternal: javascript-rdflib.hbs
+    templateInternal: javascript-rdflib.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
