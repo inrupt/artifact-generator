@@ -83,7 +83,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
         .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
-        .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each messages}}{{#if language}}
+        .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each definitions}}{{#if language}}
         .addMessage("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addMessageNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}};
 {{/each}}
