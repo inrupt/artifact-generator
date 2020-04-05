@@ -166,7 +166,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it("LIT vocabs", async () => {
   it.skip("LIT vocabs", async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
   });
