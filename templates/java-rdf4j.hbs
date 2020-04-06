@@ -28,6 +28,11 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     public static final Namespace NS = new SimpleNamespace(PREFIX, NAMESPACE);
 
     @Override
+    public final String getNamespacePrefix() {
+        return PREFIX;
+    }
+
+    @Override
     public final IRI getNamespaceIri() {
         return NAMESPACE_IRI;
     }

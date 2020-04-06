@@ -26,6 +26,11 @@ public class SCHEMA_INRUPT_EXT implements LitVocab {
     public static final Namespace NS = new SimpleNamespace(PREFIX, NAMESPACE);
 
     @Override
+    public final String getNamespacePrefix() {
+        return PREFIX;
+    }
+
+    @Override
     public final IRI getNamespaceIri() {
         return NAMESPACE_IRI;
     }

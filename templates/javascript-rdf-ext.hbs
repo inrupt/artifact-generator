@@ -12,99 +12,92 @@ const {LitVocabTermRdfExt} = require('@pmcb55/lit-vocab-term-rdf-ext')
 {{/if}}
  */
 
-const _NAMESPACE = "{{namespace}}";
-function _NS (localName) { return (_NAMESPACE + localName) }
+function _NS(localName) { return (_NAMESPACE + localName) }
 
 const {{vocabNameUpperCase}} = {
   PREFIX: '{{vocabPrefix}}',
-  NAMESPACE: _NAMESPACE,
+  NAMESPACE: '{{namespace}}',
   NS: _NS,
 
 {{#if classes}}
-    // *****************
-    // All the Classes.
-    // *****************
-    {{#each classes}}
+  // *****************
+  // All the Classes.
+  // *****************
+  {{#each classes}}
 
-    /**
-     *{{#if comment}} {{{comment}}}{{/if}}
-     */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
-    {{#each labels}}
-    {{#if language}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}}
-    {{#each comments}}
-    {{#if language}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}},
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+  {{#each labels}}
+  {{#if language}}
+    .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+  {{/if}}
+  {{/each}}
+  {{#each comments}}
+  {{#if language}}
+    .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
 
 {{#if properties}}
-    // *******************
-    // All the Properties.
-    // *******************
-    {{#each properties}}
+  // *******************
+  // All the Properties.
+  // *******************
+  {{#each properties}}
 
-    /**
-     *{{#if comment}} {{{comment}}}{{/if}}
-     */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
-    {{#each labels}}
-    {{#if language}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}}
-    {{#each comments}}
-    {{#if language}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}},
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+  {{#each labels}}
+  {{#if language}}
+    .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+  {{/if}}
+  {{/each}}
+  {{#each comments}}
+  {{#if language}}
+    .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
 
 {{#if literals}}
-    // *******************
-    // All the Literals.
-    // *******************
-    {{#each literals}}
+  // *******************
+  // All the Literals.
+  // *******************
+  {{#each literals}}
 
-    /**
-     *{{#if comment}} {{{comment}}}{{/if}}
-     */
-    {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
-    {{#each labels}}
-    {{#if language}}
-      .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}}
-    {{#each comments}}
-    {{#if language}}
-      .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}
-    {{/each}}
-    {{#each definitions}}
-    {{#if language}}
-      .addMessage(`{{{valueEscapedForJavascript}}}`, '{{language}}')
-    {{else}}
-      .addMessageNoLanguage(`{{{valueEscapedForJavascript}}}`)
-    {{/if}}  
-    {{/each}},
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: new LitVocabTermRdfExt(_NS('{{{name}}}'), localStorage, {{#if ../strict}}true{{else}}false{{/if}})
+  {{#each labels}}
+  {{#if language}}
+    .addLabel(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavascript}}}`)
+  {{/if}}
+  {{/each}}
+  {{#each comments}}
+  {{#if language}}
+    .addComment(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addCommentNoLanguage(`{{{valueEscapedForJavascript}}}`)
+  {{/if}}
+  {{/each}}
+  {{#each definitions}}
+  {{#if language}}
+    .addMessage(`{{{valueEscapedForJavascript}}}`, '{{language}}')
+  {{else}}
+    .addMessageNoLanguage(`{{{valueEscapedForJavascript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
   //

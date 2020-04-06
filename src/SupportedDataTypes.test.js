@@ -46,7 +46,7 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('NAMESPACE = "http://www.w3.org/2002/07/owl#')
+      expect.stringContaining("NAMESPACE: 'http://www.w3.org/2002/07/owl#'")
     );
 
     expect(indexOutput).toEqual(
@@ -96,7 +96,7 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('NAMESPACE = "http://www.w3.org/2011/http#')
+      expect.stringContaining("NAMESPACE: 'http://www.w3.org/2011/http#'")
     );
 
     expect(indexOutput).toEqual(
