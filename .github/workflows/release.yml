@@ -8,10 +8,10 @@ jobs:
     steps:
      # Makes the current repository available to the workflow.
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.1.0
       # Initializes NodeJS for the runner.
     - name: Node setup
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v1.4.1
       with:
         node-version: '12.12.0'
         registry-url: https://npm.pkg.github.com/
