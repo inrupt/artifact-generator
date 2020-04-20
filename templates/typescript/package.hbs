@@ -1,0 +1,41 @@
+{
+  "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
+  "version": "{{artifactVersion}}",
+  "description": "{{description}}",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+{{#if supportBundling}}
+  "scripts": {
+    "build": "tsc && webpack --config webpack.config.js"
+  },
+{{/if}}
+  "author": {
+    "name": "{{generatorName}}",
+    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+  },
+{{#if contributors}}
+  "contributors": [
+    {{#each contributors}}
+    {"name": "{{this}}"}{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+{{/if}}
+  "license": "MIT",
+{{#if versioning}}
+  "repository": {
+    "type": "{{versioning.type}}",
+    "url": "{{versioning.url}}"
+  },
+{{/if}}
+  "dependencies": {
+    "@pmcb55/lit-vocab-term-base": "{{litVocabTermVersion}}",
+    "@rdfjs/data-model": "^1.1.2"
+  }{{#if supportBundling}},
+  "devDependencies": {
+    "webpack": "{{webpackVersion}}",
+    "webpack-cli": "{{webpackCliVersion}}",
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3"
+  }{{/if}}
+}
