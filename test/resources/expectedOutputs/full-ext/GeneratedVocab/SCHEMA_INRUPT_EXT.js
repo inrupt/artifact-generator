@@ -10,11 +10,12 @@ const {LitVocabTermRdfExt} = require('@pmcb55/lit-vocab-term-rdf-ext')
   Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
  */
 
+const _NAMESPACE = "http://schema.org/"
 function _NS(localName) { return (_NAMESPACE + localName) }
 
 const SCHEMA_INRUPT_EXT = {
   PREFIX: 'schema-inrupt-ext',
-  NAMESPACE: 'http://schema.org/',
+  NAMESPACE: _NAMESPACE,
   NS: _NS,
 
   // *****************

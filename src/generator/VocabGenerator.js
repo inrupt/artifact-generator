@@ -35,13 +35,13 @@ module.exports = class VocabGenerator {
           )
         ) {
           debug(
-            `A source file is reused for unreachable resource [${this.vocabData.inputResources.toString()}]`
+            `A source file is reused for unreachable (or empty of recognisable terms) resource [${this.vocabData.inputResources.toString()}]`
           );
           resolve(vocabGenerationData);
         }
         reject(
           new Error(
-            `${this.vocabData.inputResources.toString()} is unreachable, and no previously generated file is available.`
+            `[${this.vocabData.inputResources.toString()}] is unreachable (or empty of recognisable terms), and no previously generated file is available.`
           )
         );
       });

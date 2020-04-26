@@ -447,8 +447,6 @@ module.exports = class DatasetHandler {
   }
 
   static findLongestTermName(terms, ontologyIri) {
-    debug(`Searching for longest term: [${terms}]...`);
-
     return terms
       .filter(a => (ontologyIri ? a.startsWith(ontologyIri) : true))
       .reduce((a, b) => (a.length > b.length ? a : b), "");

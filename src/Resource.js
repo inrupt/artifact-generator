@@ -90,7 +90,7 @@ module.exports = class Resource {
     }
 
     return new Promise(resolve => {
-      resolve(this.loadTurtleFileIntoDatasetPromise(`${datasetFile}`));
+      resolve(this.loadTurtleFileIntoDatasetPromise(datasetFile));
     });
   }
 
