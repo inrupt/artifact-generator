@@ -8,11 +8,12 @@ const {LitVocabTermRdfExt} = require('@pmcb55/lit-vocab-term-rdf-ext')
   Vocabulary built from input: [./test/resources/vocabs/schema-snippet.ttl].
  */
 
+const _NAMESPACE = "http://schema.org/"
 function _NS(localName) { return (_NAMESPACE + localName) }
 
 const SCHEMA = {
   PREFIX: 'schema',
-  NAMESPACE: 'http://schema.org/',
+  NAMESPACE: _NAMESPACE,
   NS: _NS,
 
   // *****************

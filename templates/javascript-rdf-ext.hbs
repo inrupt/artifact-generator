@@ -12,11 +12,12 @@ const {LitVocabTermRdfExt} = require('@pmcb55/lit-vocab-term-rdf-ext')
 {{/if}}
  */
 
+const _NAMESPACE = "{{namespace}}"
 function _NS(localName) { return (_NAMESPACE + localName) }
 
 const {{vocabNameUpperCase}} = {
   PREFIX: '{{vocabPrefix}}',
-  NAMESPACE: '{{namespace}}',
+  NAMESPACE: _NAMESPACE,
   NS: _NS,
 
 {{#if classes}}
