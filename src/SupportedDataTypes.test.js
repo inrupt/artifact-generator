@@ -32,7 +32,12 @@ describe("Supported Data Type", () => {
         programmingLanguage: "Javascript",
         artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceCodeTemplate: path.join(
+          "templates",
+          "javascript",
+          "rdfext",
+          "vocab.hbs"
+        ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript
@@ -82,7 +87,12 @@ describe("Supported Data Type", () => {
         programmingLanguage: "Javascript",
         artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceCodeTemplate: path.join(
+          "templates",
+          "javascript",
+          "rdfext",
+          "vocab.hbs"
+        ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript
@@ -129,7 +139,12 @@ describe("Supported Data Type", () => {
         programmingLanguage: "Javascript",
         artifactDirectoryName: "Javascript",
         // We assume normalization has resolved this template location.
-        sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs"),
+        sourceCodeTemplate: path.join(
+          "templates",
+          "javascript",
+          "rdfext",
+          "vocab.hbs"
+        ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavascript

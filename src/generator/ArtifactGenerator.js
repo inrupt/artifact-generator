@@ -246,7 +246,15 @@ class ArtifactGenerator {
         publish: [{ key: "local", command: "mvn install" }],
         packagingTemplates: [
           {
-            template: path.join(__dirname, "..", "..", "templates", "pom.hbs"),
+            template: path.join(
+              __dirname,
+              "..",
+              "..",
+              "templates",
+              "java",
+              "rdf4j",
+              "pom.hbs"
+            ),
             fileName: "pom.xml"
           }
         ]
@@ -268,6 +276,8 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
+              "javascript",
+              "rdfext",
               "package.hbs"
             ),
             fileName: "package.json"
@@ -278,6 +288,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
+              "javascript",
               "index.hbs"
             ),
             fileName: "index.js"

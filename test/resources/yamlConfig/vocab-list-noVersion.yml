@@ -14,7 +14,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: java-rdf4j.hbs
+    templateInternal: java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:

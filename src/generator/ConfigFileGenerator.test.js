@@ -39,7 +39,7 @@ const PROMPTED_JAVA_ARTIFACT = {
 
 const COMPLETE_JAVA_ARTIFACT = {
   languageKeywordsToUnderscore: ["class", "abstract", "default"],
-  templateInternal: "java-rdf4j.hbs",
+  templateInternal: path.join("java", "rdf4j", "vocab.hbs"),
   sourceFileExtension: "java",
   artifactDirectoryName: "Java",
   programmingLanguage: "Java",

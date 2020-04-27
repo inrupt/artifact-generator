@@ -40,14 +40,14 @@ const NPM_DEFAULT = {
   ],
   packagingTemplates: [
     {
-      templateInternal: "package.hbs",
+      templateInternal: path.join("javascript", "rdfext", "package.hbs"),
       fileName: "package.json",
-      template: path.join("templates", "package.hbs")
+      template: path.join("templates", "javascript", "rdfext", "package.hbs")
     },
     {
-      templateInternal: "index.hbs",
+      templateInternal: path.join("javascript", "index.hbs"),
       fileName: "index.js",
-      template: path.join("templates", "index.hbs")
+      template: path.join("templates", "javascript", "index.hbs")
     }
   ]
 };
@@ -56,10 +56,15 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: "Javascript",
     artifactDirectoryName: "Javascript",
-    templateInternal: "javascript-rdf-ext.hbs",
+    templateInternal: path.join("javascript", "rdfext", "vocab.hbs"),
     sourceFileExtension: "js",
     packaging: [NPM_DEFAULT],
-    sourceCodeTemplate: path.join("templates", "javascript-rdf-ext.hbs")
+    sourceCodeTemplate: path.join(
+      "templates",
+      "javascript",
+      "rdfext",
+      "vocab.hbs"
+    )
   }
 ];
 
@@ -465,7 +470,7 @@ class GeneratorConfiguration {
       {
         programmingLanguage: "Javascript",
         artifactDirectoryName: "Javascript",
-        templateInternal: "javascript-rdf-ext.hbs",
+        templateInternal: path.join("javascript", "rdfext", "vocab.hbs"),
         sourceFileExtension: "js",
         packaging: [packagingInfo]
       }

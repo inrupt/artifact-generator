@@ -8,7 +8,7 @@ artifactGeneratorVersion: 0.4.2
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.5-SNAPSHOT
-    javaPackageName: com.pmcb55.generated.vocab.lit.test
+    javaPackageName: com.inrupt.generated.vocab.lit.test
     litVocabTermVersion: 0.2.0
     artifactDirectoryName: Java
     # Here we're testing the 'Custom' template option (i.e. a local config

@@ -12,8 +12,8 @@ import org.eclipse.rdf4j.model.Namespace;
 import org.eclipse.rdf4j.model.impl.SimpleNamespace;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
-import com.pmcb55.lit.vocab.LitVocab;
-import com.pmcb55.lit.vocab.LitVocabTerm;
+import com.inrupt.lit.vocab.LitVocab;
+import com.inrupt.lit.vocab.LitVocabTerm;
 
 /**
  * Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)

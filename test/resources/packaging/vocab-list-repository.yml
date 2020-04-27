@@ -11,7 +11,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: java-rdf4j.hbs
+    templateInternal: java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -25,7 +25,7 @@ artifactToGenerate:
         - key: "local"
           command:  "mvn install"
         packagingTemplates: 
-        - templateInternal: pom.hbs
+        - templateInternal: java/rdf4j/pom.hbs
           fileName: pom.xml
         repository:
         - type: repository
@@ -43,7 +43,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    templateInternal: javascript-rdf-ext.hbs
+    templateInternal: javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
@@ -52,9 +52,9 @@ artifactToGenerate:
           - key: "local"
             command: "npm publish --registry http://localhost:4873/"
         packagingTemplates: 
-          - templateInternal: package.hbs
+          - templateInternal: javascript/rdfext/package.hbs
             fileName: package.json
-          - templateInternal: index.hbs
+          - templateInternal: javascript/index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config
