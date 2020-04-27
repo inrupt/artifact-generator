@@ -4,7 +4,9 @@
   "description": "{{description}}",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
+  "browser": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
 {{#if supportBundling}}
   "scripts": {
     "build": "tsc && webpack --config webpack.config.js"
