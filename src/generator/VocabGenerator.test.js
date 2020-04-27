@@ -952,7 +952,7 @@ describe("Managing remote vocabularies failures", () => {
       vocabNameUpperCase: "TEST"
     };
     expect(generator.generateFiles(vocabGenerationData)).rejects.toThrow(
-      "unreachable, and no previously generated file is available"
+      "unreachable (or empty of recognisable terms), and no previously generated file is available"
     );
   });
 });
