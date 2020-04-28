@@ -44,7 +44,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: java/rdf4j/vocab.hbs
+    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:
@@ -212,12 +212,26 @@ describe("Generator configuration", () => {
 
       // Templates paths should be normalized wrt the module root
       expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
-        path.join("templates", "java", "rdf4j", "vocab.hbs")
+        path.join(
+          "templates",
+          "litVocabTermDependent",
+          "java",
+          "rdf4j",
+          "vocab.hbs"
+        )
       );
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0]
           .packagingTemplates[0].template
-      ).toEqual(path.join("templates", "java", "rdf4j", "pom.hbs"));
+      ).toEqual(
+        path.join(
+          "templates",
+          "litVocabTermDependent",
+          "java",
+          "rdf4j",
+          "pom.hbs"
+        )
+      );
 
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0]

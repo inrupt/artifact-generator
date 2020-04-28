@@ -17,7 +17,7 @@ const DUMMY_MAVEN_ARTIFACT = {
   groupId: "org.some.groupId",
   publishLocal: "mvn install",
   publishRemote: "mvn deploy",
-  template: path.join("java", "rdf4j", "pom.hbs")
+  template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs")
 };
 
 const DUMMY_RELEASE_REPO = {
@@ -41,7 +41,9 @@ const MAVEN_CONFIG_PROMPT_NO_REPO = jest
   // Answering the questions on the Maven packaging
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
   .mockReturnValueOnce(
-    Promise.resolve({ template: path.join("java", "rdf4j", "pom.hbs") })
+    Promise.resolve({
+      template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs")
+    })
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: false }));
 
@@ -54,7 +56,9 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
   // Answering the questions on the Maven packaging
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
   .mockReturnValueOnce(
-    Promise.resolve({ template: path.join("java", "rdf4j", "pom.hbs") })
+    Promise.resolve({
+      template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs")
+    })
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: true }))
   .mockReturnValueOnce(Promise.resolve(DUMMY_RELEASE_REPO))

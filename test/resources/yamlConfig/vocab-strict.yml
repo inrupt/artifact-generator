@@ -16,15 +16,15 @@ artifactToGenerate:
     ##
     strict: true
     artifactDirectoryName: Javascript
-    templateInternal: javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - templateInternal: javascript/rdfext/package.hbs
+          - templateInternal: litVocabTermDependent/javascript/rdfext/package.hbs
             fileName: package.json
-          - templateInternal: javascript/index.hbs
+          - templateInternal: litVocabTermDependent/javascript/index.hbs
             fileName: index.js
 
 vocabList:

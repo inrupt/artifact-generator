@@ -40,14 +40,34 @@ const NPM_DEFAULT = {
   ],
   packagingTemplates: [
     {
-      templateInternal: path.join("javascript", "rdfext", "package.hbs"),
+      templateInternal: path.join(
+        "litVocabTermDependent",
+        "javascript",
+        "rdfext",
+        "package.hbs"
+      ),
       fileName: "package.json",
-      template: path.join("templates", "javascript", "rdfext", "package.hbs")
+      template: path.join(
+        "templates",
+        "litVocabTermDependent",
+        "javascript",
+        "rdfext",
+        "package.hbs"
+      )
     },
     {
-      templateInternal: path.join("javascript", "index.hbs"),
+      templateInternal: path.join(
+        "litVocabTermDependent",
+        "javascript",
+        "index.hbs"
+      ),
       fileName: "index.js",
-      template: path.join("templates", "javascript", "index.hbs")
+      template: path.join(
+        "templates",
+        "litVocabTermDependent",
+        "javascript",
+        "index.hbs"
+      )
     }
   ]
 };
@@ -56,11 +76,17 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: "Javascript",
     artifactDirectoryName: "Javascript",
-    templateInternal: path.join("javascript", "rdfext", "vocab.hbs"),
+    templateInternal: path.join(
+      "litVocabTermDependent",
+      "javascript",
+      "rdfext",
+      "vocab.hbs"
+    ),
     sourceFileExtension: "js",
     packaging: [NPM_DEFAULT],
     sourceCodeTemplate: path.join(
       "templates",
+      "litVocabTermDependent",
       "javascript",
       "rdfext",
       "vocab.hbs"
@@ -470,7 +496,12 @@ class GeneratorConfiguration {
       {
         programmingLanguage: "Javascript",
         artifactDirectoryName: "Javascript",
-        templateInternal: path.join("javascript", "rdfext", "vocab.hbs"),
+        templateInternal: path.join(
+          "litVocabTermDependent",
+          "javascript",
+          "rdfext",
+          "vocab.hbs"
+        ),
         sourceFileExtension: "js",
         packaging: [packagingInfo]
       }

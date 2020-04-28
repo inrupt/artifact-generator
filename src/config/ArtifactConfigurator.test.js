@@ -29,7 +29,15 @@ const DUMMY_MAVEN_ARTIFACT = {
   ...DUMMY_JAVA_ARTIFACT,
   groupId: "org.some.groupId",
   publishCommand: "mvn install",
-  template: path.join(__dirname, "..", "templates", "java", "rdf4j", "pom.hbs")
+  template: path.join(
+    __dirname,
+    "..",
+    "templates",
+    "litVocabTermDependent",
+    "java",
+    "rdf4j",
+    "pom.hbs"
+  )
 };
 
 const UNSUPPORTED_CONFIG_PROMPT = jest.fn().mockReturnValue(

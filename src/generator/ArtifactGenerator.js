@@ -251,6 +251,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
+              "litVocabTermDependent",
               "java",
               "rdf4j",
               "pom.hbs"
@@ -276,6 +277,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
+              "litVocabTermDependent",
               "javascript",
               "rdfext",
               "package.hbs"
@@ -288,6 +290,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
+              "litVocabTermDependent",
               "javascript",
               "index.hbs"
             ),

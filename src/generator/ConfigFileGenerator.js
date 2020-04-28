@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const path = require("path");
+const moment = require("moment");
 const FileGenerator = require("./FileGenerator");
 const packageDotJson = require("../../package.json");
 
@@ -108,6 +109,7 @@ const ADD_VOCABULARY_CONFIRMATION = {
 class ConfigFileGenerator {
   constructor(initialConfig) {
     this.config = {
+      generatedTimestamp: moment().format("LLLL"),
       ...initialConfig,
       generatorName: packageDotJson.name,
       artifactGeneratorVersion: packageDotJson.version
