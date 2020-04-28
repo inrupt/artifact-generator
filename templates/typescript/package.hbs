@@ -4,12 +4,16 @@
   "description": "{{description}}",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
-  "browser": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
 {{#if supportBundling}}
+  "browser": "./dist/bundle.js",
   "scripts": {
     "build": "tsc && webpack --config webpack.config.js"
+  },
+{{else}}
+  "scripts": {
+    "build": "tsc"
   },
 {{/if}}
   "author": {
