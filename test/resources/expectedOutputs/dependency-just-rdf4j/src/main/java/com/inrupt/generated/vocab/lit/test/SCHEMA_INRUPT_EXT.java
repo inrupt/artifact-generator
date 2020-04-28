@@ -5,7 +5,7 @@
  *
  * Vocabulary built from vocab list file: [./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml].
  */
-package com.pmcb55.generated.vocab.lit.test;
+package com.inrupt.generated.vocab.lit.test;
 
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Namespace;

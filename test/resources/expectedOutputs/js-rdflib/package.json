@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@pmcb55/lit-vocab-term-rdflib": "^1.0.10"
+    "@inrupt/lit-vocab-term-rdflib": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

@@ -1,8 +1,9 @@
 const inquirer = require("inquirer");
+const path = require("path");
 const ArtifactConfigurator = require("../ArtifactConfigurator");
 const { ADD_REPOSITORY_CONFIRMATION } = require("../ArtifactConfigurator");
 
-const DEFAULT_TEMPLATE = "java-rdf4j.hbs";
+const DEFAULT_TEMPLATE = path.join("java", "rdf4j", "vocab.hbs");
 const DEFAULT_EXTENSION = "java";
 const LANGUAGE = "Java";
 const DEFAULT_LIT_VOCAB_TERM_VERSION = "0.1.0-SNAPSHOT";
@@ -35,7 +36,7 @@ const MAVEN_PACKAGING_TEMPLATES_PROMPT = [
     type: "input",
     name: "template",
     message: "What POM file template do you want to use ?",
-    default: "pom.hbs"
+    default: path.join("java", "rdf4j", "pom.hbs")
   }
 ];
 

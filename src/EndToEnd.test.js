@@ -170,7 +170,7 @@ describe("End-to-end tests", () => {
       // The package.json should be generated from the proper template (with the rdflib dependency).
       expect(
         fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
-      ).toEqual(expect.stringContaining("@pmcb55/lit-vocab-term-rdflib"));
+      ).toEqual(expect.stringContaining("@inrupt/lit-vocab-term-rdflib"));
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
@@ -180,7 +180,7 @@ describe("End-to-end tests", () => {
         .toString();
       expect(output).toEqual(
         expect.stringContaining(
-          "const {LitVocabTermRdflib} = require('@pmcb55/lit-vocab-term-rdflib')"
+          "const {LitVocabTermRdflib} = require('@inrupt/lit-vocab-term-rdflib')"
         )
       );
     });
@@ -218,12 +218,12 @@ describe("End-to-end tests", () => {
       // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
-          `${outputDirectoryJava}/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java`
+          `${outputDirectoryJava}/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java`
         )
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/dependency-just-rdf4j/src/main/java/com/pmcb55/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
+          "test/resources/expectedOutputs/dependency-just-rdf4j/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(

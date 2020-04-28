@@ -9,6 +9,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@pmcb55/lit-vocab-term-rdf-ext": "99.999.01"
+    "@inrupt/lit-vocab-term-rdf-ext": "99.999.01"
   }
 }

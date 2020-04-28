@@ -1,5 +1,6 @@
 jest.mock("inquirer");
 const inquirer = require("inquirer");
+const path = require("path");
 
 require("mock-local-storage");
 
@@ -15,8 +16,8 @@ const DUMMY_NPM_MODULE = {
   npmModuleScope: "@test/scope",
   publishLocal: "npm install",
   publishRemote: "npm install",
-  packageTemplate: "package.hbs",
-  indexTemplate: "index.hbs"
+  packageTemplate: path.join("javascript", "rdfext", "package.hbs"),
+  indexTemplate: path.join("javascript", "index.hbs")
 };
 
 const NPM_MODULE_CONFIG = jest
