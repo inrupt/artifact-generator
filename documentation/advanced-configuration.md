@@ -122,7 +122,7 @@ artifactToGenerate:
     #  "templates" directory.
     #  - templateCustom References a Handlebars template relative to
     #  the configuration file.
-    templateInternal: java/rdf4j/vocab.hbs
+    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
     # MANDATORY The extension that is appended after the name of the generated source code files.
     sourceFileExtension: java
     # These terms will be prefixed by an underscore in the generated code. It allows to prevent conflit if a term from 
@@ -151,7 +151,7 @@ artifactToGenerate:
           # It can reference a handlebars template relative to the YAML file, and also
           # accepts 'jpom.hbs', 'package.hbs', 'index.hbs', 'webpack.dev.config.hbs'
           # and 'webpack.dev.config.hbs'.
-        - templateInternal: java/rdf4j/pom.hbs
+        - templateInternal: litVocabTermDependent/java/rdf4j/pom.hbs
           # The name of the generated packaging file
           fileName: pom.xml
 
@@ -159,7 +159,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    templateInternal: javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 
       # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
@@ -168,9 +168,9 @@ artifactToGenerate:
         # This is an NPM-specific option, used in the generated package.json
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - templateInternal: javascript/rdfext/package.hbs
+          - templateInternal: litVocabTermDependent/javascript/rdfext/package.hbs
             fileName: package.json
-          - templateInternal: javascript/index.hbs
+          - templateInternal: litVocabTermDependent/javascript/index.hbs
             fileName: javascript/index.js
       - packagingTool: webpack
         # If this is set (not mandatory), the packaging files are instanciated in this directory

@@ -232,8 +232,7 @@ describe("End-to-end tests", () => {
     });
 
     it("should create from an ontology file using native RdfExt (and not LIT Vocab Term)", async () => {
-      const outputDirectory =
-        "test/Generated/EndToEnd/dependency-just-rdf-ext/";
+      const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdfext/";
       const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -241,7 +240,7 @@ describe("End-to-end tests", () => {
           {
             _: ["generate"],
             vocabListFile:
-              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-ext.yml",
+              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfext.yml",
             outputDirectory,
             supportBundling: true,
             noprompt: true

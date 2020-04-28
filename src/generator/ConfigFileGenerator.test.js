@@ -39,7 +39,12 @@ const PROMPTED_JAVA_ARTIFACT = {
 
 const COMPLETE_JAVA_ARTIFACT = {
   languageKeywordsToUnderscore: ["class", "abstract", "default"],
-  templateInternal: path.join("java", "rdf4j", "vocab.hbs"),
+  templateInternal: path.join(
+    "litVocabTermDependent",
+    "java",
+    "rdf4j",
+    "vocab.hbs"
+  ),
   sourceFileExtension: "java",
   artifactDirectoryName: "Java",
   programmingLanguage: "Java",
@@ -216,6 +221,11 @@ describe("ConfigFile Generator", () => {
     inquirer.prompt.mockImplementation(MOCK_CONFIG_PROMPT);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
+
+    // Due to the dynamic nature of timestamps, we just need to force this one.
+    COMPLETE_CONFIG.generatedTimestamp =
+      configGenerator.config.generatedTimestamp;
+
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG);
   });
 
@@ -254,6 +264,10 @@ describe("ConfigFile Generator", () => {
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_GIT);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
+
+    // Due to the dynamic nature of timestamps, we just need to force this one.
+    COMPLETE_CONFIG_GIT.generatedTimestamp =
+      configGenerator.config.generatedTimestamp;
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_GIT);
 
     fs.mkdirSync(TARGET_DIR, { recursive: true });
@@ -273,6 +287,10 @@ describe("ConfigFile Generator", () => {
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_SVN);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
+
+    // Due to the dynamic nature of timestamps, we just need to force this one.
+    COMPLETE_CONFIG_SVN.generatedTimestamp =
+      configGenerator.config.generatedTimestamp;
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_SVN);
 
     fs.mkdirSync(TARGET_DIR, { recursive: true });

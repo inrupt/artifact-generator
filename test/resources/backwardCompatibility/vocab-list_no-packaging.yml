@@ -26,7 +26,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.lit.generated.vocab.common
     litVocabTermVersion: 0.1.0-SNAPSHOT
     artifactDirectoryName: Java
-    templateInternal: java/rdf4j/vocab.hbs
+    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -49,7 +49,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^0.1.0"
     artifactDirectoryName: Javascript
-    templateInternal: javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
   ##
   #  This is a dummy artifact that cannot be packaged
@@ -57,7 +57,7 @@ artifactToGenerate:
   - programmingLanguage: Ook
     artifactDirectoryName: Ook
     sourceFileExtension: ook
-    templateInternal: javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     artifactVersion: 0.1.0
 
 vocabList:

@@ -111,40 +111,6 @@ const ConfigSolidGeneratorUi = {
   publish: RUN_PACKAGING
 };
 
-async function generateVocabArtifact(argv) {
-  const app = new App({ ...argv, noprompt: true });
-  await app.configure();
-  const result = await app.run();
-
-  const directoryForJavascriptArtifact = result.artifactToGenerate.filter(
-    artifact => artifact.programmingLanguage === "Javascript"
-  )[0].outputDirectoryForArtifact;
-
-  debug(
-    `Expecting 'package.json' in this directory: [${directoryForJavascriptArtifact}/package.json]...`
-  );
-  expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(
-    true
-  );
-
-  if (result.runNpmInstall) {
-    expect(
-      fs.existsSync(`${directoryForJavascriptArtifact}/package-lock.json`)
-    ).toBe(true);
-  }
-
-  if (result.runWidoco) {
-    // Check if our documentation is in the root output directory (not the
-    // artifact directory!).
-    expect(result.documentationDirectory).toMatch(/Widoco/);
-    expect(
-      fs.existsSync(`${result.documentationDirectory}/index-en.html`)
-    ).toBe(true);
-  }
-
-  debug(`Generation process successful!\n`);
-}
-
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
   // it('Generate ALL vocabs', async () => {
   it.skip("Generate ALL vocabs", async () => {
@@ -263,3 +229,37 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   });
 });
+
+async function generateVocabArtifact(argv) {
+  const app = new App({ ...argv, noprompt: true });
+  await app.configure();
+  const result = await app.run();
+
+  const directoryForJavascriptArtifact = result.artifactToGenerate.filter(
+    artifact => artifact.programmingLanguage === "Javascript"
+  )[0].outputDirectoryForArtifact;
+
+  debug(
+    `Expecting 'package.json' in this directory: [${directoryForJavascriptArtifact}/package.json]...`
+  );
+  expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(
+    true
+  );
+
+  if (result.runNpmInstall) {
+    expect(
+      fs.existsSync(`${directoryForJavascriptArtifact}/package-lock.json`)
+    ).toBe(true);
+  }
+
+  if (result.runWidoco) {
+    // Check if our documentation is in the root output directory (not the
+    // artifact directory!).
+    expect(result.documentationDirectory).toMatch(/Widoco/);
+    expect(
+      fs.existsSync(`${result.documentationDirectory}/index-en.html`)
+    ).toBe(true);
+  }
+
+  debug(`Generation process successful!\n`);
+}

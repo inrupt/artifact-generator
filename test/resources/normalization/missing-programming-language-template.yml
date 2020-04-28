@@ -9,7 +9,7 @@ artifactToGenerate:
     ##
     # Here the template is missing completely ('cos we commented it out!).
     ##
-    # templateInternal: java/rdf4j/vocab.hbs
+    # templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:

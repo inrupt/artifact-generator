@@ -11,7 +11,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: Javascript
-    templateInternal: rdfLibraryDependent/javascript/rdf-ext/javascript-rdf-ext.hbs
+    templateInternal: rdfLibraryDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging:
       - packagingTool: npm
@@ -23,9 +23,9 @@ artifactToGenerate:
         # 'templates' directory, so we need to provide the full path to it
         # relative to where we are!
         packagingTemplates:
-          - templateCustom: ../../../templates/rdfLibraryDependent/javascript/rdf-ext/package-rdf-ext.hbs
+          - templateCustom: ../../../templates/rdfLibraryDependent/javascript/rdfext/package.hbs
             fileName: package.json
-          - templateInternal: javascript/index.hbs
+          - templateInternal: litVocabTermDependent/javascript/index.hbs
             fileName: index.js
 
 vocabList:

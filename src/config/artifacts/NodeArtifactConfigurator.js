@@ -3,7 +3,12 @@ const path = require("path");
 
 const ArtifactConfigurator = require("../ArtifactConfigurator");
 
-const DEFAULT_TEMPLATE = path.join("javascript", "rdfext", "vocab.hbs");
+const DEFAULT_TEMPLATE = path.join(
+  "litVocabTermDependent",
+  "javascript",
+  "rdfext",
+  "vocab.hbs"
+);
 const DEFAULT_EXTENSION = "js";
 const LANGUAGE = "Javascript";
 
@@ -35,13 +40,18 @@ const NPM_PACKAGING_TEMPLATES_PROMPT = [
     type: "input",
     name: "packageTemplate",
     message: "What 'package.json' file template do you want to use ?",
-    default: path.join("javascript", "rdfext", "package.hbs")
+    default: path.join(
+      "litVocabTermDependent",
+      "javascript",
+      "rdfext",
+      "package.hbs"
+    )
   },
   {
     type: "input",
     name: "indexTemplate",
     message: "What 'index.js' file template do you want to use ?",
-    default: path.join("javascript", "index.hbs")
+    default: path.join("litVocabTermDependent", "javascript", "index.hbs")
   }
 ];
 

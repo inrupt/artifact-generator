@@ -34,6 +34,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
+          "litVocabTermDependent",
           "javascript",
           "rdfext",
           "vocab.hbs"
@@ -89,6 +90,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
+          "litVocabTermDependent",
           "javascript",
           "rdfext",
           "vocab.hbs"
@@ -141,6 +143,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
+          "litVocabTermDependent",
           "javascript",
           "rdfext",
           "vocab.hbs"

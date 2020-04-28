@@ -3,7 +3,12 @@ const path = require("path");
 const ArtifactConfigurator = require("../ArtifactConfigurator");
 const { ADD_REPOSITORY_CONFIRMATION } = require("../ArtifactConfigurator");
 
-const DEFAULT_TEMPLATE = path.join("java", "rdf4j", "vocab.hbs");
+const DEFAULT_TEMPLATE = path.join(
+  "litVocabTermDependent",
+  "java",
+  "rdf4j",
+  "vocab.hbs"
+);
 const DEFAULT_EXTENSION = "java";
 const LANGUAGE = "Java";
 const DEFAULT_LIT_VOCAB_TERM_VERSION = "0.1.0-SNAPSHOT";
