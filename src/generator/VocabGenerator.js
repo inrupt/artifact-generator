@@ -72,6 +72,8 @@ module.exports = class VocabGenerator {
   }
 
   generateData() {
+    const inputResources = this.vocabData.inputResources;
+
     return new Promise(async (resolve, reject) => {
       this.resources
         .processInputs((fullDatasetsArray, vocabTermsOnlyDataset) => {
@@ -82,7 +84,7 @@ module.exports = class VocabGenerator {
           resolve(parsed);
         })
         .catch(error => {
-          const result = `Failed to generate: [${error.toString()}]. Stack: ${error.stack.toString()}`;
+          const result = `Failed to generate from input [${inputResources}]: [${error.toString()}]. Stack: ${error.stack.toString()}`;
           reject(new Error(result));
         });
     });
