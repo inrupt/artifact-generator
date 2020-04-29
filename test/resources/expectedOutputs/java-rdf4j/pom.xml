@@ -52,8 +52,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.inrupt.lit</groupId>
-            <artifactId>lit-vocab-term</artifactId>
+            <groupId>com.inrupt</groupId>
+            <artifactId>inrupt-lit-vocab-term</artifactId>
             <version>${lit.vocab.term.version}</version>
         </dependency>
 
