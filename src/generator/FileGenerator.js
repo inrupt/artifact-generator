@@ -5,7 +5,7 @@ const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
 const ARTIFACT_DIRECTORY_ROOT = "./Generated";
 // TODO: Is this redundant with the language-specific ArtifactConfigurator ?
-const SUPPORTED_LANGUAGES = ["Java", "Javascript"];
+const SUPPORTED_LANGUAGES = ["Java", "Javascript", "Typescript"];
 
 class FileGenerator {
   /**
