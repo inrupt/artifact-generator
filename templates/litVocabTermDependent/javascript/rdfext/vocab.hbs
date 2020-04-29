@@ -18,6 +18,7 @@ function _NS(localName) { return (_NAMESPACE + localName) }
 const {{vocabNameUpperCase}} = {
   PREFIX: '{{vocabPrefix}}',
   NAMESPACE: _NAMESPACE,
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
   NS: _NS,
 
 {{#if classes}}

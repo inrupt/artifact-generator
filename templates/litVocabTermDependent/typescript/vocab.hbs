@@ -21,7 +21,9 @@ function _NS(localName: string) {
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: "{{namespace}}",
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
   NS: _NS,
+
 
 {{#if classes}}
   // *****************
