@@ -94,7 +94,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file", async () => {
       const outputDirectory = "test/Generated/EndToEnd/create-ontology/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -113,9 +113,9 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/index.js`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/index.js`).toString()
       ).toBe(
         fs
           .readFileSync("test/resources/expectedOutputs/single/index.js")
@@ -124,7 +124,7 @@ describe("End-to-end tests", () => {
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
       const expected = fs
         .readFileSync(
@@ -135,11 +135,11 @@ describe("End-to-end tests", () => {
         expected.substring(expected.indexOf(" */"))
       );
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
           .readFileSync("test/resources/expectedOutputs/single/package.json")
@@ -149,7 +149,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file using the rdflib", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-rdflib/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -166,16 +166,16 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
       // The package.json should be generated from the proper template (with the rdflib dependency).
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(expect.stringContaining("@inrupt/lit-vocab-term-rdflib"));
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
       expect(output).toEqual(
@@ -233,7 +233,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file using native RdfExt (and not LIT Vocab Term)", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdfext/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -251,11 +251,11 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
 
       // The package.json should be generated from the proper template (with the rdflib dependency).
       const packageDotJson = fs
-        .readFileSync(`${outputDirectoryJavascript}/package.json`)
+        .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
 
       expect(packageDotJson).toEqual(
@@ -267,7 +267,7 @@ describe("End-to-end tests", () => {
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
       expect(output).toEqual(
@@ -277,7 +277,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology link", async () => {
       const outputDirectory = "test/Generated/EndToEnd/create-ontology-link/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -294,11 +294,11 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.existsSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
+        fs.existsSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
       ).toBe(true);
       expect(
         fs
-          .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/SCHEMA.js`)
+          .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
           .toString()
       ).toEqual(
         expect.stringContaining(
@@ -306,11 +306,11 @@ describe("End-to-end tests", () => {
         )
       );
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining('"name": "@lit/generated-vocab-schema"')
       );
@@ -318,7 +318,7 @@ describe("End-to-end tests", () => {
 
     it("should be able to fully extend an ontology with multiple input files", async () => {
       const outputDirectory = "test/Generated/EndToEnd/multiple-inputs/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -340,7 +340,7 @@ describe("End-to-end tests", () => {
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
@@ -354,11 +354,11 @@ describe("End-to-end tests", () => {
         expected.substring(expected.indexOf(" */"))
       );
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
           .readFileSync("test/resources/expectedOutputs/full-ext/package.json")
@@ -379,7 +379,7 @@ describe("End-to-end tests", () => {
       });
 
       const outputDirectory = "test/Generated/EndToEnd/multiple-urls/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -398,11 +398,11 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
 
       const indexOutput = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
@@ -426,7 +426,7 @@ describe("End-to-end tests", () => {
 
     it("should be able to extend an ontology but only creates triples from extension file", async () => {
       const outputDirectory = "test/Generated/EndToEnd/extension-file/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -446,7 +446,7 @@ describe("End-to-end tests", () => {
 
       const indexOutput = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
@@ -491,7 +491,7 @@ describe("End-to-end tests", () => {
       });
 
       const outputDirectory = "test/Generated/EndToEnd/extension-urls/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -511,7 +511,7 @@ describe("End-to-end tests", () => {
 
       const indexOutput = fs
         .readFileSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
@@ -545,7 +545,7 @@ describe("End-to-end tests", () => {
 
     it("should take in a version for the output module", async () => {
       const outputDirectory = "test/Generated/EndToEnd/module-version/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -563,18 +563,18 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(expect.stringContaining('"version": "1.0.5"'));
     });
 
     it("should handle creating generated directory if it does not exist already", async () => {
       const outputDirectory =
         "test/Generated/EndToEnd/dest-directory-not-exist/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator(
@@ -591,15 +591,15 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
     });
 
     it("module names should by default start with @lit/generated-vocab-*", async () => {
       const outputDirectory = "test/Generated/EndToEnd/module-default-name/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -616,7 +616,7 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining('"name": "@lit/generated-vocab-schema",')
       );
@@ -638,7 +638,7 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
           '"name": "@lit/generated-vocab-schema-inrupt-ext",'
@@ -648,7 +648,7 @@ describe("End-to-end tests", () => {
 
     it("should add a description inside the package.json", async () => {
       const outputDirectory = "test/Generated/EndToEnd/package-description/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -667,7 +667,7 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
           '"description": "Bundle of vocabularies that includes the following:\\n\\n  schema-inrupt-ext: Extension to Schema.org terms'
@@ -677,7 +677,7 @@ describe("End-to-end tests", () => {
 
     it("should add authors inside the package.json", async () => {
       const outputDirectory = "test/Generated/EndToEnd/authors-in-package/";
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator(
@@ -697,7 +697,7 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.readFileSync(`${outputDirectoryJavascript}/package.json`).toString()
+        fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(expect.stringContaining('{"name": "Jarlath Holleran"}'));
     });
   });
@@ -750,7 +750,7 @@ describe("End-to-end tests", () => {
   describe("Specific YAML configurations", () => {
     it("should pick up the strictness of the LitVocabTerm from the YAML", async () => {
       const outputDirectory = "test/Generated/EndToEnd/generate-strict/";
-      const outputDirectoryJS = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJS = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(

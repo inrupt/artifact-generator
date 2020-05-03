@@ -24,8 +24,8 @@ artifactToGenerate:
         - templateCustom: ../../readme.hbs
           fileName: pom.xml
 
-  - programmingLanguage: Javascript
-    artifactDirectoryName: Javascript
+  - programmingLanguage: JavaScript
+    artifactDirectoryName: JavaScript
     ##
     # This is a dummy file path, just here to test normalization
     ##

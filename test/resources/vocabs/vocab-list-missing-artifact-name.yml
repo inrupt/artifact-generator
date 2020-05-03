@@ -26,11 +26,11 @@ artifactToGenerate:
         - templateInternal: litVocabTermDependent/java/rdf4j/pom.hbs
           fileName: pom.xml
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 

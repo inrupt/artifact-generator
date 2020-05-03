@@ -239,7 +239,7 @@ class ArtifactGenerator {
     // TODO: manage repositories properly
     this.artifactData.gitRepository = artifactDetails.gitRepository;
     this.artifactData.repository = artifactDetails.repository;
-    if (artifactDetails.programmingLanguage === "Java") {
+    if (artifactDetails.programmingLanguage.toLowerCase() === "java") {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: "maven",
         groupId: artifactDetails.javaPackageName,
@@ -260,7 +260,9 @@ class ArtifactGenerator {
           }
         ]
       });
-    } else if (artifactDetails.programmingLanguage === "Javascript") {
+    } else if (
+      artifactDetails.programmingLanguage.toLowerCase() === "javascript"
+    ) {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: "npm",
         npmModuleScope: "@lit/",

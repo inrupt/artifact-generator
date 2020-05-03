@@ -295,7 +295,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Person",
-            valueEscapedForJavascript: "Person",
+            valueEscapedForJavaScript: "Person",
             valueEscapedForJava: "Person",
             language: "en"
           }
@@ -306,7 +306,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Person-fr",
-            valueEscapedForJavascript: "Person-fr",
+            valueEscapedForJavaScript: "Person-fr",
             valueEscapedForJava: "Person-fr",
             language: "fr"
           }
@@ -316,7 +316,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Person-de",
-            valueEscapedForJavascript: "Person-de",
+            valueEscapedForJavaScript: "Person-de",
             valueEscapedForJava: "Person-de",
             language: "de"
           }
@@ -326,7 +326,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Person-es",
-            valueEscapedForJavascript: "Person-es",
+            valueEscapedForJavaScript: "Person-es",
             valueEscapedForJava: "Person-es",
             language: "es"
           }
@@ -343,7 +343,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Given Name",
-            valueEscapedForJavascript: "Given Name",
+            valueEscapedForJavaScript: "Given Name",
             valueEscapedForJava: "Given Name",
             language: "en"
           }
@@ -353,7 +353,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Given Name-fr",
-            valueEscapedForJavascript: "Given Name-fr",
+            valueEscapedForJavaScript: "Given Name-fr",
             valueEscapedForJava: "Given Name-fr",
             language: "fr"
           }
@@ -363,7 +363,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Given Name-de",
-            valueEscapedForJavascript: "Given Name-de",
+            valueEscapedForJavaScript: "Given Name-de",
             valueEscapedForJava: "Given Name-de",
             language: "de"
           }
@@ -373,7 +373,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Given Name-es",
-            valueEscapedForJavascript: "Given Name-es",
+            valueEscapedForJavaScript: "Given Name-es",
             valueEscapedForJava: "Given Name-es",
             language: "es"
           }
@@ -527,7 +527,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Hello",
-            valueEscapedForJavascript: "Hello",
+            valueEscapedForJavaScript: "Hello",
             valueEscapedForJava: "Hello",
             language: "en"
           }
@@ -538,7 +538,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Hola",
-            valueEscapedForJavascript: "Hola",
+            valueEscapedForJavaScript: "Hola",
             valueEscapedForJava: "Hola",
             language: "es"
           }
@@ -549,7 +549,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bonjour",
-            valueEscapedForJavascript: "Bonjour",
+            valueEscapedForJavaScript: "Bonjour",
             valueEscapedForJava: "Bonjour",
             language: "fr"
           }
@@ -575,7 +575,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Hello there",
-            valueEscapedForJavascript: "Hello there",
+            valueEscapedForJavaScript: "Hello there",
             valueEscapedForJava: "Hello there",
             language: "en"
           }
@@ -586,7 +586,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Hola",
-            valueEscapedForJavascript: "Hola",
+            valueEscapedForJavaScript: "Hola",
             valueEscapedForJava: "Hola",
             language: "es"
           }
@@ -597,7 +597,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bonjour",
-            valueEscapedForJavascript: "Bonjour",
+            valueEscapedForJavaScript: "Bonjour",
             valueEscapedForJava: "Bonjour",
             language: "fr"
           }
@@ -623,7 +623,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Welcome",
-            valueEscapedForJavascript: "Welcome",
+            valueEscapedForJavaScript: "Welcome",
             valueEscapedForJava: "Welcome",
             language: "en"
           }
@@ -634,7 +634,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bienvenido",
-            valueEscapedForJavascript: "Bienvenido",
+            valueEscapedForJavaScript: "Bienvenido",
             valueEscapedForJava: "Bienvenido",
             language: "es"
           }
@@ -645,7 +645,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bienvenue",
-            valueEscapedForJavascript: "Bienvenue",
+            valueEscapedForJavaScript: "Bienvenue",
             valueEscapedForJava: "Bienvenue",
             language: "fr"
           }
@@ -767,7 +767,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Welcome",
-            valueEscapedForJavascript: "Welcome",
+            valueEscapedForJavaScript: "Welcome",
             valueEscapedForJava: "Welcome",
             language: "en"
           }
@@ -778,7 +778,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bienvenido",
-            valueEscapedForJavascript: "Bienvenido",
+            valueEscapedForJavaScript: "Bienvenido",
             valueEscapedForJava: "Bienvenido",
             language: "es"
           }
@@ -789,7 +789,7 @@ describe("Artifact generator unit tests", () => {
         expect.arrayContaining([
           {
             value: "Bienvenue",
-            valueEscapedForJavascript: "Bienvenue",
+            valueEscapedForJavaScript: "Bienvenue",
             valueEscapedForJava: "Bienvenue",
             language: "fr"
           }

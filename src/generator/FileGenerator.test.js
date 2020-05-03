@@ -7,15 +7,15 @@ describe("File Generator", () => {
     expect(() =>
       FileGenerator.createPackagingFiles(
         { outputDirectory: "Generated" },
-        { programminglanguage: "C#" },
+        { programmingLanguage: "C#" },
         null
       )
     ).toThrow("Unsupported programming language", "[C#]");
   });
 
-  it("should escape all characters in Javascript", () => {
+  it("should escape all characters in JavaScript", () => {
     expect(
-      FileGenerator.escapeStringForJavascript(
+      FileGenerator.escapeStringForJavaScript(
         "There are ` lots ` of backticks in ` here!"
       )
     ).toEqual("There are \\` lots \\` of backticks in \\` here!");

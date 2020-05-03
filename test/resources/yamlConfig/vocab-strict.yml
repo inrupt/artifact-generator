@@ -7,7 +7,7 @@ artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
@@ -15,7 +15,7 @@ artifactToGenerate:
     # This flag is used by the template to configure the LitVocabTerm behaviour
     ##
     strict: true
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 

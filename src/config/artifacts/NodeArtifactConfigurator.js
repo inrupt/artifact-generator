@@ -10,7 +10,7 @@ const DEFAULT_TEMPLATE = path.join(
   "vocab.hbs"
 );
 const DEFAULT_EXTENSION = "js";
-const LANGUAGE = "Javascript";
+const LANGUAGE = "JavaScript";
 
 const NPM_MODULE_PROMPT = [
   {

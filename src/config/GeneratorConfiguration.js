@@ -74,8 +74,8 @@ const NPM_DEFAULT = {
 
 const DEFAULT_CLI_ARTIFACT = [
   {
-    programmingLanguage: "Javascript",
-    artifactDirectoryName: "Javascript",
+    programmingLanguage: "JavaScript",
+    artifactDirectoryName: "JavaScript",
     templateInternal: path.join(
       "litVocabTermDependent",
       "javascript",
@@ -474,7 +474,7 @@ class GeneratorConfiguration {
     // The most common case for using the command line is providing a single vocab anyways.
     cliConfig.vocabList = [GeneratorConfiguration.collectVocabFromCLI(args)];
 
-    cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+    cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;
@@ -494,8 +494,8 @@ class GeneratorConfiguration {
     //  deep copy.
     cliConfig.artifactToGenerate = [
       {
-        programmingLanguage: "Javascript",
-        artifactDirectoryName: "Javascript",
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
         templateInternal: path.join(
           "litVocabTermDependent",
           "javascript",

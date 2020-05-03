@@ -6,11 +6,11 @@ artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     ##
     # The template imports LitVocabTermRdflib instead of LitVocabTermRdfExt
     ##
