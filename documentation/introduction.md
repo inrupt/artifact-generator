@@ -1,4 +1,4 @@
-For example, the generator might produce the following Javascript constant to
+For example, the generator might produce the following JavaScript constant to
 represent the `Person` class from Schema.org (i.e. `https://schema.org/Person`):
 ```javascript
     /**
@@ -9,7 +9,7 @@ represent the `Person` class from Schema.org (i.e. `https://schema.org/Person`):
       .addComment('en', `A person (alive, dead, undead, or fictional).`),
 ```
 
-NOTE: This example shows that we've generated a Javascript `Person` object that
+NOTE: This example shows that we've generated a JavaScript `Person` object that
 also provides access to the Label and Comment as defined by Schema.org. We've
 also used the Comment value as the JSDoc for this `Person` object, meaning
 users of this artifact will have helpful documentation available directly in

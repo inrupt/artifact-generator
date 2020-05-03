@@ -28,26 +28,26 @@ beforeEach(() => {
 describe("Artifact Generator", () => {
   describe("Processing vocab list file.", () => {
     function verifyVocabList(outputDirectory) {
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/index.js`)).toBe(true);
-      expect(fs.existsSync(`${outputDirectoryJavascript}/package.json`)).toBe(
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
         true
       );
 
       expect(
         fs.existsSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/OVERRIDE_NAME.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/OVERRIDE_NAME.js`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectoryJavascript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
       ).toBe(true);
 
       const indexOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/index.js`)
+        .readFileSync(`${outputDirectoryJavaScript}/index.js`)
         .toString();
       expect(indexOutput).toEqual(
         expect.stringContaining(
@@ -56,7 +56,7 @@ describe("Artifact Generator", () => {
       );
 
       const packageOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/package.json`)
+        .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
       expect(packageOutput).toEqual(
         expect.stringContaining('"name": "@lit/generated-vocab-common-TEST",')
@@ -130,11 +130,11 @@ describe("Artifact Generator", () => {
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(false);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
       const packageOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/package.json`)
+        .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
@@ -203,11 +203,11 @@ describe("Artifact Generator", () => {
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
 
-      expect(fs.existsSync(`${outputDirectoryJavascript}/config`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
       const packageOutput = fs
-        .readFileSync(`${outputDirectoryJavascript}/package.json`)
+        .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
@@ -217,7 +217,7 @@ describe("Artifact Generator", () => {
       const generatedFile = path.join(
         outputDirectory,
         ARTIFACT_DIRECTORY_SOURCE_CODE,
-        "Javascript",
+        "JavaScript",
         "package.json"
       );
       del.sync([`${outputDirectory}/*`]);
@@ -248,7 +248,7 @@ describe("Artifact Generator", () => {
       const generatedFile = path.join(
         outputDirectory,
         ARTIFACT_DIRECTORY_SOURCE_CODE,
-        "Javascript",
+        "JavaScript",
         "package.json"
       );
       del.sync([`${outputDirectory}/*`]);
@@ -308,12 +308,12 @@ describe("Artifact Generator", () => {
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishLocal`
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishLocal`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishRemote`
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishRemote`
         )
       ).toBe(false);
     });
@@ -348,12 +348,12 @@ describe("Artifact Generator", () => {
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishLocal`
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishLocal`
         )
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/npm-publishRemote`
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishRemote`
         )
       ).toBe(true);
     });
@@ -384,7 +384,7 @@ describe("Artifact Generator", () => {
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript/package.json`
+          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/package.json`
         )
       ).toBe(true);
     });

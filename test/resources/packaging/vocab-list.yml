@@ -32,10 +32,10 @@ artifactToGenerate:
 #        packagingFileName: build.gradle
 #        packagingTemplate: gradle.hbs
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 

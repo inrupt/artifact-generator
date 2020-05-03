@@ -18,11 +18,11 @@ artifactToGenerate:
       - class     # Defined in VCard.
       - abstract  # Defined in DCTerms.
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
 

@@ -9,7 +9,7 @@
 # vocabularies.
 #
 # For example, for Java developers we can generate a single JAR, or for
-# Javascript we can generate a single NPM module, that developers can depend
+# JavaScript we can generate a single NPM module, that developers can depend
 # on directly and easily get immediate access to source-code constants for all
 # the terms in all of these vocabularies.
 #
@@ -33,10 +33,10 @@ artifactToGenerate:
     templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
 

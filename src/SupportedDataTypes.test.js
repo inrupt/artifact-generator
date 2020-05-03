@@ -12,7 +12,7 @@ const {
 describe("Supported Data Type", () => {
   it("should test the special-case handling for the OWL vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/owl-test";
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -29,8 +29,8 @@ describe("Supported Data Type", () => {
         authorSet: new Set()
       },
       {
-        programmingLanguage: "Javascript",
-        artifactDirectoryName: "Javascript",
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
@@ -41,14 +41,14 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript
+        outputDirectoryForArtifact: outputDirectoryJavaScript
       }
     );
 
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/OWL.js`)
+      .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/OWL.js`)
       .toString();
 
     expect(indexOutput).toEqual(
@@ -68,7 +68,7 @@ describe("Supported Data Type", () => {
 
   it("should test the special-case handling for the HTTP vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/http-test";
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -85,8 +85,8 @@ describe("Supported Data Type", () => {
         authorSet: new Set()
       },
       {
-        programmingLanguage: "Javascript",
-        artifactDirectoryName: "Javascript",
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
@@ -97,14 +97,14 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript
+        outputDirectoryForArtifact: outputDirectoryJavaScript
       }
     );
 
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/HTTP.js`)
+      .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/HTTP.js`)
       .toString();
 
     expect(indexOutput).toEqual(
@@ -124,7 +124,7 @@ describe("Supported Data Type", () => {
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/data-types";
-    const outputDirectoryJavascript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Javascript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -138,8 +138,8 @@ describe("Supported Data Type", () => {
         authorSet: new Set()
       },
       {
-        programmingLanguage: "Javascript",
-        artifactDirectoryName: "Javascript",
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
@@ -150,14 +150,14 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavascript
+        outputDirectoryForArtifact: outputDirectoryJavaScript
       }
     );
 
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavascript}/GeneratedVocab/LIT_GEN.js`)
+      .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/LIT_GEN.js`)
       .toString();
 
     expect(indexOutput).toEqual(

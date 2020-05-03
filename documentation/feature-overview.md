@@ -30,7 +30,7 @@ node index.js generate --inputResources <vocab resources (e.g. local
  files, or remote IRI's)>
 ```
 
-The output is a NodeJS Module containing a Javascript file with constants
+The output is a NodeJS Module containing a JavaScript file with constants
 defined for the RDF terms found in the vocabulary (or multiple vocabularies)
 specified by the `--inputResources` flag. This module is located inside the
 **./FGenerated** directory by default. To generate artifacts in a different
@@ -40,14 +40,16 @@ For example:
 ```shell
 node index.js generate --inputResources ./demo/vocab/PetRock.ttl --noprompt
 ```
-this will generate a Javascript artifact in the default `./Generated` directory.
+this will generate a JavaScript artifact in the default `./Generated` directory.
 
 ## To initialize a YAML file that should be edited manually
 ```shell
 node index.js init
 ```
 
-The output is a YAML file (by default `./lit-vocab.yml`), within which options can be specified to generate artifacts in different languages (e.g. Java, Javascript, Typescript, etc.) from a list of vocabularies. 
+The output is a YAML file (by default `./lit-vocab.yml`), within which options
+can be specified to generate artifacts in different languages (e.g. Java,
+JavaScript, TypeScript, etc.) from a list of vocabularies. 
 
 ## To **validate** a YAML file after it has been manually edited:
 ```shell

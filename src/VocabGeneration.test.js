@@ -121,7 +121,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolidCommon);
 
     // Just note - these configurations generate from single RDF vocab files
-    // (i.e. not via YAML config files), so they'll only generate Javascript
+    // (i.e. not via YAML config files), so they'll only generate JavaScript
     // (i.e. the command-line default).
     await generateVocabArtifact(ConfigSolidComponent);
     await generateVocabArtifact(ConfigSolidGeneratorUi);
@@ -235,20 +235,23 @@ async function generateVocabArtifact(argv) {
   await app.configure();
   const result = await app.run();
 
-  const directoryForJavascriptArtifact = result.artifactToGenerate.filter(
-    artifact => artifact.programmingLanguage === "Javascript"
+  const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(
+    artifact => {
+      const language = artifact.programmingLanguage.toLowerCase();
+      return language === "typescript" || language === "javascript";
+    }
   )[0].outputDirectoryForArtifact;
 
   debug(
-    `Expecting 'package.json' in this directory: [${directoryForJavascriptArtifact}/package.json]...`
+    `Expecting 'package.json' in this directory: [${directoryForJavaScriptArtifact}/package.json]...`
   );
-  expect(fs.existsSync(`${directoryForJavascriptArtifact}/package.json`)).toBe(
+  expect(fs.existsSync(`${directoryForJavaScriptArtifact}/package.json`)).toBe(
     true
   );
 
   if (result.runNpmInstall) {
     expect(
-      fs.existsSync(`${directoryForJavascriptArtifact}/package-lock.json`)
+      fs.existsSync(`${directoryForJavaScriptArtifact}/package-lock.json`)
     ).toBe(true);
   }
 

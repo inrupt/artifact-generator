@@ -2,7 +2,7 @@
 # Artifact Generator
 
 This tool automatically generates deployable artifacts for various programming
-languages (e.g. NPM Node modules for Javascript, JARs for Java, assemblies for
+languages (e.g. NPM Node modules for JavaScript, JARs for Java, assemblies for
 C#, etc.) that contain source-code files defining programming-language
 constants for the terms (e.g. the Classes, Properties and Literals) found in
 RDF vocabularies (such as Schema.org, FOAF, Activity Streams, or your own
@@ -80,13 +80,13 @@ process (i.e. `--noprompt`):
 lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
 ```
 
-This should generate a Javascript artifact inside the default `Generated`
-directory. Specfically it should generate a Javascript file named PET_ROCK.js in
-the directory `Generated/SourceCodeArtifacts/Javascript/GeneratedVocab` that 
+This should generate a JavaScript artifact inside the default `Generated`
+directory. Specfically it should generate a JavaScript file named PET_ROCK.js in
+the directory `Generated/SourceCodeArtifacts/JavaScript/GeneratedVocab` that 
 provides constants for all the 'things' described within the Pet Rock RDF
 vocabulary.
 
-We can now use this Javascript artifact directly in our applications, both
+We can now use this JavaScript artifact directly in our applications, both
 NodeJS and browser based. For example, for NodeJS manually create a new 
 `package.json` file using the following content that references the Pet Rock
 artifact we just generated:
@@ -94,12 +94,12 @@ artifact we just generated:
 ```javascript
 {
   "name": "LIT-Artifact-Generator-Demo",
-  "description": "Tiny demo application using generated Javascript artifact from a custom Pet Rock RDF vocabulary.",
+  "description": "Tiny demo application using generated JavaScript artifact from a custom Pet Rock RDF vocabulary.",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "mock-local-storage": "^1.1.8",
-    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/Javascript"
+    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
   }
 }
 ``` 
@@ -142,12 +142,12 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 [demo]$ 
 ```
 
-## Create a front-end Javascript artifact
+## Create a front-end JavaScript artifact
 
 Run the LIT Artifact Generator using a public demo vocabulary, in this case
 the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
 for any input (i.e. `--noprompt`), and asking for a bundled (i.e. WebPack'ed)
-Javascript artifact (i.e. via the `--supportBundling` command-line flag):
+JavaScript artifact (i.e. via the `--supportBundling` command-line flag):
 
 ```shell
 lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
@@ -155,7 +155,7 @@ lit-artifact-generator generate --inputResources https://team.inrupt.net/public/
 
 This generates an artifact, and runs Webpack to bundle all of it's
 dependencies. Everything is generated into the default `Generated` directory,
-and bundled into the `Generated/SourceCodeArtifacts/Javascript/dist`
+and bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
 directory.
 
 If you copy-and-paste the following HTML into a new file in the directory
@@ -167,7 +167,7 @@ have a `Generated` directory within it)...
 	<body>
 		<p>My Pet Rock shinyness "<span id="shinyness-comment"></span>" by <span id="petrock-iri"></span></p>
 	
-	<script src="./Generated/SourceCodeArtifacts/Javascript/dist/index.js" type="text/javascript"/></script>
+	<script src="./Generated/SourceCodeArtifacts/JavaScript/dist/index.js" type="text/javascript"/></script>
 	
 	<script type="text/javascript">
 		document.getElementById("shinyness-comment").innerHTML = `${PR.shinyness.comment}`;
@@ -215,7 +215,7 @@ represent the terms in any RDF vocabulary.
 In other words, it's important to remember that it's not necessary to control
 an RDF vocabulary in order to generate useful source code artifacts from it.
 
-For instance, IBM could choose to generate their own Javascript module from
+For instance, IBM could choose to generate their own JavaScript module from
 the Schema.org vocabulary, and publish their generated module for others to
 depend on as follows:
 ```json
@@ -225,7 +225,7 @@ dependencies: {
 ```
 
 ...whereas Accenture (a major competitor to IBM) are completely free to also
-publish their generated Javascript (or Java, or C#, or Scala, etc.) source
+publish their generated JavaScript (or Java, or C#, or Scala, etc.) source
 code artifacts representing exactly the same Schema.org vocabulary, e.g.:
 ```json
 dependencies: {

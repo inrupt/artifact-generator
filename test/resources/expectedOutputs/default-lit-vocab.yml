@@ -15,12 +15,12 @@ artifactToGenerate:
 #        id: nexus-releases
 #        url: https://nexus.mycompany.com/repository/maven-releases/
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 0.1.0
 #    gitRepository: git@github.com:some_user/some_project.git
     npmModuleScope: "@exampleScope/"
     litVocabTermVersion: "^0.2.4"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
 

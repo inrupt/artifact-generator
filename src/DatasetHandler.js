@@ -198,7 +198,7 @@ module.exports = class DatasetHandler {
     if (DatasetHandler.doesNotContainValueForLanguageAlready(array, quad)) {
       array.push({
         value: quad.object.value,
-        valueEscapedForJavascript: FileGenerator.escapeStringForJavascript(
+        valueEscapedForJavaScript: FileGenerator.escapeStringForJavaScript(
           quad.object.value
         ),
         valueEscapedForJava: FileGenerator.escapeStringForJava(

@@ -9,7 +9,7 @@
 # vocabularies.
 #
 # For example, for Java developers we can generate a single JAR, or for
-# Javascript we can generate a single NPM module, that developers can depend
+# JavaScript we can generate a single NPM module, that developers can depend
 # on directly and easily get immediate access to source-code constants for all
 # the terms in all of these vocabularies.
 #
@@ -43,12 +43,12 @@ artifactToGenerate:
         id: nexus-snapshots
         url: https://nexus.inrupt.com/repository/maven-snapshots/
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 0.1.0
     gitRepository: git@github.com:inrupt/lit-generated-vocab-common-js.git
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^0.1.0"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
   ##

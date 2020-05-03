@@ -110,7 +110,7 @@ artifactToGenerate:
     # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
     # depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
     artifactVersion: 3.2.1-SNAPSHOT
-    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for Javascript, 
+    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for JavaScript, 
     # https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
     litVocabTermVersion: "0.1.0-SNAPSHOT"
@@ -155,10 +155,10 @@ artifactToGenerate:
           # The name of the generated packaging file
           fileName: pom.xml
 
-  - programmingLanguage: Javascript
+  - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
-    artifactDirectoryName: Javascript
+    artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
     sourceFileExtension: js
     packaging: 
