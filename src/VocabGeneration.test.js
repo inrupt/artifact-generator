@@ -236,7 +236,10 @@ async function generateVocabArtifact(argv) {
   const result = await app.run();
 
   const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(
-    artifact => artifact.programmingLanguage.toLowerCase() === "typescript"
+    artifact => {
+      const language = artifact.programmingLanguage.toLowerCase();
+      return language === "typescript" || language === "javascript";
+    }
   )[0].outputDirectoryForArtifact;
 
   debug(
