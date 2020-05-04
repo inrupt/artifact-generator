@@ -302,7 +302,7 @@ describe("End-to-end tests", () => {
           .toString()
       ).toEqual(
         expect.stringContaining(
-          "Person: new LitVocabTermRdfExt(_NS('Person'), localStorage, false)"
+          "Person: new LitVocabTerm(_NS('Person'), localStorage, false)"
         )
       );
 
@@ -407,16 +407,14 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+      );
+      expect(indexOutput).toEqual(
+        expect.stringContaining("address: new LitVocabTerm(_NS('address')")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          "address: new LitVocabTermRdfExt(_NS('address')"
-        )
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining(
-          "additionalName: new LitVocabTermRdfExt(_NS('additionalName')"
+          "additionalName: new LitVocabTerm(_NS('additionalName')"
         )
       );
       expect(indexOutput).toEqual(
@@ -451,20 +449,20 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(".addLabel(`La personne`, 'fr')")
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTermRdfExt")
+        expect.stringContaining("additionalName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTermRdfExt")
+        expect.stringContaining("familyName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTermRdfExt")
+        expect.stringContaining("givenName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(".addLabel(`Nombre de pila`, 'es')")
@@ -474,7 +472,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTermRdfExt")
+        expect.not.stringContaining("address: new LitVocabTerm")
       );
     });
 
@@ -516,20 +514,20 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTermRdfExt(_NS('Person')")
+        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(".addLabel(`La personne`, 'fr')")
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTermRdfExt")
+        expect.stringContaining("additionalName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTermRdfExt")
+        expect.stringContaining("familyName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTermRdfExt")
+        expect.stringContaining("givenName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(".addLabel(`Nombre de pila`, 'es')")
@@ -539,7 +537,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTermRdfExt")
+        expect.not.stringContaining("address: new LitVocabTerm")
       );
     });
 
@@ -774,7 +772,7 @@ describe("End-to-end tests", () => {
         .toString();
       expect(output).toEqual(
         expect.stringContaining(
-          "new LitVocabTermRdfExt(_NS('Person'), localStorage, true)"
+          "new LitVocabTerm(_NS('Person'), localStorage, true)"
         )
       );
     });

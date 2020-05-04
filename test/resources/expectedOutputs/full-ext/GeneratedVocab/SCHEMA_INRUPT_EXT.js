@@ -26,7 +26,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * A person (alive, dead, undead, or fictional).
    */
-  Person: new LitVocabTermRdfExt(_NS('Person'), localStorage, false)
+  Person: new LitVocabTerm(_NS('Person'), localStorage, false)
     .addLabelNoLanguage(`Person`)
     .addLabel(`La personne`, 'fr')
     .addLabel(`Person`, 'de')
@@ -45,7 +45,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
    */
-  givenName: new LitVocabTermRdfExt(_NS('givenName'), localStorage, false)
+  givenName: new LitVocabTerm(_NS('givenName'), localStorage, false)
     .addLabelNoLanguage(`givenName`)
     .addLabel(`Given Name`, 'en')
     .addLabel(`Prénom`, 'fr')
@@ -61,7 +61,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
    */
-  familyName: new LitVocabTermRdfExt(_NS('familyName'), localStorage, false)
+  familyName: new LitVocabTerm(_NS('familyName'), localStorage, false)
     .addLabelNoLanguage(`familyName`)
     .addLabel(`Nom de famille`, 'fr')
     .addLabel(`Nachname`, 'de')
@@ -76,14 +76,14 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.
    */
-  addressCountry: new LitVocabTermRdfExt(_NS('addressCountry'), localStorage, false)
+  addressCountry: new LitVocabTerm(_NS('addressCountry'), localStorage, false)
     .addLabelNoLanguage(`addressCountry`)
     .addCommentNoLanguage(`The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.`),
 
   /**
    * Additional Name
    */
-  additionalName: new LitVocabTermRdfExt(_NS('additionalName'), localStorage, false)
+  additionalName: new LitVocabTerm(_NS('additionalName'), localStorage, false)
     .addLabel(`Additional Name`, 'en')
     .addLabel(`Nom additionnel`, 'fr')
     .addLabel(`Zusätzlicher Name`, 'de')
@@ -98,7 +98,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * Must have comment too!
    */
-  newTerm: new LitVocabTermRdfExt(_NS('newTerm'), localStorage, false)
+  newTerm: new LitVocabTerm(_NS('newTerm'), localStorage, false)
     .addLabelNoLanguage(`newTerm`)
     .addComment(`Must have comment too!`, 'en')
 ,

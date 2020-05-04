@@ -23,7 +23,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
 
 vocabList:

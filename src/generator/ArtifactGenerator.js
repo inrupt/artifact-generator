@@ -297,7 +297,6 @@ class ArtifactGenerator {
               "templates",
               "litVocabTermDependent",
               "javascript",
-              "rdfext",
               "package.hbs"
             ),
             fileName: "package.json"

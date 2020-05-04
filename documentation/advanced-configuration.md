@@ -159,7 +159,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
@@ -168,7 +168,7 @@ artifactToGenerate:
         # This is an NPM-specific option, used in the generated package.json
         npmModuleScope: "@lit/"
         packagingTemplates: 
-          - templateInternal: litVocabTermDependent/javascript/rdfext/package.hbs
+          - templateInternal: litVocabTermDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: litVocabTermDependent/javascript/index.hbs
             fileName: javascript/index.js

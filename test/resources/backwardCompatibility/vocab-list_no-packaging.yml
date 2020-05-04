@@ -49,7 +49,7 @@ artifactToGenerate:
     npmModuleScope: "@lit/"
     litVocabTermVersion: "^0.1.0"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
   ##
   #  This is a dummy artifact that cannot be packaged
@@ -57,7 +57,7 @@ artifactToGenerate:
   - programmingLanguage: Ook
     artifactDirectoryName: Ook
     sourceFileExtension: ook
-    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
     artifactVersion: 0.1.0
 
 vocabList:
