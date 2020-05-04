@@ -1,0 +1,37 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-TEST
+artifactGeneratorVersion: 0.4.2
+
+license: 
+  path: "../licenses/license"
+  fileName: "LICENSE"
+
+artifactToGenerate:
+  - programmingLanguage: TypeScript
+    artifactVersion: 99.99.99
+    npmModuleScope: "@lit/"
+    litVocabTermVersion: "^99.0.99"
+    artifactDirectoryName: TypeScript
+    templateInternal: litVocabTermDependent/typescript/vocab.hbs
+    sourceFileExtension: ts
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@inrupt/"
+        packagingTemplates:
+          - templateInternal: litVocabTermDependent/typescript/package.hbs
+            fileName: package.json
+          - templateInternal: litVocabTermDependent/typescript/index.hbs
+            fileName: index.ts
+          - templateInternal: litVocabTermDependent/typescript/tsconfig.hbs
+            fileName: tsconfig.json
+          - templateInternal: litVocabTermDependent/typescript/webpack.config.hbs
+            fileName: webpack.config.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl

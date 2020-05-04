@@ -94,7 +94,7 @@ class FileGenerator {
       `${artifactDetails.sourceCodeTemplate}`,
       // Some artifact-specific info may be required in the template (e.g. the java package name)
       FileGenerator.formatTemplateData(
-        { ...templateData, ...artifactDetails },
+        { ...argv, ...templateData, ...artifactDetails },
         artifactDetails.sourceFileExtension
       ),
       FileGenerator.buildTargetSourceCodeFilePath(

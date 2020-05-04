@@ -359,7 +359,7 @@ describe("Artifact Generator", () => {
     });
   });
 
-  describe("Testing for backward compatibility features.", () => {
+  describe("Backward compatibility features.", () => {
     it("should generate default packaging options if none are specified in the YAML file", async () => {
       const outputDirectory =
         "test/Generated/ArtifactGenerator/backwardCompatibility/";
@@ -387,6 +387,27 @@ describe("Artifact Generator", () => {
           `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/package.json`
         )
       ).toBe(true);
+    });
+  });
+
+  describe("License file generation", () => {
+    it("should generate a license file", async () => {
+      const outputDirectory =
+        "test/Generated/ArtifactGenerator/vocab-list-file";
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
+        outputDirectory,
+        noprompt: true
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      await artifactGenerator.generate();
+      expect(
+        fs.existsSync(path.join(outputDirectory, "TypeScript", "LICENSE"))
+      );
     });
   });
 });

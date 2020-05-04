@@ -394,4 +394,25 @@ describe("Generator configuration", () => {
       ).rejects.toThrow("Missing LIT VocabTerm version");
     });
   });
+
+  describe("License", () => {
+    it("should collect the license text from header if provided", () => {
+      const generatorConfiguration = GeneratorConfiguration.fromConfigFile(
+        "test/resources/yamlConfig/vocab-license-header.yml"
+      );
+      expect(generatorConfiguration.license.header).toEqual(
+        "// This is a mock license header."
+      );
+    });
+
+    it("should collect and normalize license path and target file name", () => {
+      const generatorConfiguration = GeneratorConfiguration.fromConfigFile(
+        "test/resources/yamlConfig/vocab-license.yml"
+      );
+      expect(generatorConfiguration.license.path).toEqual(
+        "test/resources/licenses/license"
+      );
+      expect(generatorConfiguration.license.fileName).toEqual("LICENSE");
+    });
+  });
 });
