@@ -27,7 +27,9 @@
     {{/each}}
   ],
 {{/if}}
-  "license": "MIT",
+{{#if license}}
+  "license": "{{license/name}}",
+{{/if}}
 {{#if versioning}}
   "repository": {
     "type": "{{versioning.type}}",

@@ -8,6 +8,7 @@ artifactGeneratorVersion: 0.4.2
 license: 
   path: "../licenses/license"
   fileName: "LICENSE"
+  name: "mockPL"
 
 artifactToGenerate:
   - programmingLanguage: TypeScript

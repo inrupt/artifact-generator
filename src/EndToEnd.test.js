@@ -103,6 +103,7 @@ describe("End-to-end tests", () => {
             inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
             outputDirectory,
             artifactVersion: "1.0.0",
+            license: { name: "MIT" },
             litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
             moduleNamePrefix: "lit-generated-vocab-",
             noprompt: true
@@ -328,6 +329,7 @@ describe("End-to-end tests", () => {
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "lit-generated-vocab-",
           noprompt: true
@@ -390,6 +392,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          license: { name: "MIT" },
           moduleNamePrefix: "@lit/generated-vocab-",
           noprompt: true
         })
@@ -433,6 +436,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
           noprompt: true
@@ -552,6 +556,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
           noprompt: true
@@ -581,6 +586,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.5",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          license: { name: "MIT" },
           moduleNamePrefix: "generated-vocab-",
           noprompt: true
         })
@@ -604,6 +610,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true
@@ -626,6 +633,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true
@@ -655,6 +663,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
+          license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
           noprompt: true
