@@ -19,7 +19,6 @@ const DUMMY_NPM_MODULE = {
   packageTemplate: path.join(
     "litVocabTermDependent",
     "javascript",
-    "rdfext",
     "package.hbs"
   ),
   indexTemplate: path.join("litVocabTermDependent", "javascript", "index.hbs")

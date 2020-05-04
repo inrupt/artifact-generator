@@ -19,7 +19,7 @@ const namedNode = dataFactory.namedNode;
  */
 
 function _NS(localName: string) { 
-  return (namedNode('{{namespace}}' + localName))
+  return (namedNode("{{namespace}}" + localName));
 }
 
 const {{vocabNameUpperCase}} = {
@@ -27,7 +27,6 @@ const {{vocabNameUpperCase}} = {
   NAMESPACE: "{{namespace}}",
   PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
   NS: _NS,
-
 
 {{#if classes}}
   // *****************

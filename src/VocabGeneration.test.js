@@ -11,7 +11,6 @@ const VERSION_LIT_VOCAB_TERM = "^0.2.4";
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
-// const RUN_PACKAGING = [];
 const RUN_PACKAGING = ["localMaven", "localNpmNode"];
 
 const ConfigLitCommon = {
@@ -112,9 +111,9 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it('Generate ALL vocabs', async () => {
   it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(60000);
+    //it("Generate ALL vocabs", async () => {
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
 
@@ -145,8 +144,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolidComponent);
   });
 
-  // it('Inrupt vocab', async () => {
+  // it("Inrupt vocab", async () => {
   it.skip("Inrupt vocab", async () => {
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigInruptCommon);
     await generateVocabArtifact(ConfigInruptService);
   });

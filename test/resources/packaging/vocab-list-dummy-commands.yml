@@ -41,7 +41,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/rdfext/vocab.hbs
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
@@ -55,7 +55,7 @@ artifactToGenerate:
         - key: "remote"
           command: "touch npm-publishRemote"
         packagingTemplates: 
-          - templateInternal: litVocabTermDependent/javascript/rdfext/package.hbs
+          - templateInternal: litVocabTermDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: litVocabTermDependent/javascript/index.hbs
             fileName: index.js

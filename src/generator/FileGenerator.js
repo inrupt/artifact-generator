@@ -4,8 +4,6 @@ const Handlebars = require("handlebars");
 const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
 const ARTIFACT_DIRECTORY_ROOT = "./Generated";
-// TODO: Is this redundant with the language-specific ArtifactConfigurator ?
-const SUPPORTED_LANGUAGES = ["java", "javascript", "typescript"];
 
 class FileGenerator {
   /**
@@ -107,15 +105,6 @@ class FileGenerator {
 
   static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {
     let packagingDirectory;
-    if (
-      !SUPPORTED_LANGUAGES.includes(
-        artifactInfo.programmingLanguage.toLowerCase()
-      )
-    ) {
-      throw new Error(
-        `Unsupported programming language: [${artifactInfo.programmingLanguage}]`
-      );
-    }
 
     // If no packaging is explicitly defined, packaging files are generated at
     // the root artifact directory.

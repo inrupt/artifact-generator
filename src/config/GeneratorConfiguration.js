@@ -43,7 +43,6 @@ const NPM_DEFAULT = {
       templateInternal: path.join(
         "litVocabTermDependent",
         "javascript",
-        "rdfext",
         "package.hbs"
       ),
       fileName: "package.json",
@@ -51,7 +50,6 @@ const NPM_DEFAULT = {
         "templates",
         "litVocabTermDependent",
         "javascript",
-        "rdfext",
         "package.hbs"
       )
     },
@@ -79,7 +77,6 @@ const DEFAULT_CLI_ARTIFACT = [
     templateInternal: path.join(
       "litVocabTermDependent",
       "javascript",
-      "rdfext",
       "vocab.hbs"
     ),
     sourceFileExtension: "js",
@@ -88,7 +85,6 @@ const DEFAULT_CLI_ARTIFACT = [
       "templates",
       "litVocabTermDependent",
       "javascript",
-      "rdfext",
       "vocab.hbs"
     )
   }
@@ -529,7 +525,6 @@ class GeneratorConfiguration {
         templateInternal: path.join(
           "litVocabTermDependent",
           "javascript",
-          "rdfext",
           "vocab.hbs"
         ),
         sourceFileExtension: "js",

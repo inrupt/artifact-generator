@@ -3,16 +3,6 @@ require("mock-local-storage");
 const FileGenerator = require("./FileGenerator");
 
 describe("File Generator", () => {
-  it("should throw if packaging unsupported language", () => {
-    expect(() =>
-      FileGenerator.createPackagingFiles(
-        { outputDirectory: "Generated" },
-        { programmingLanguage: "C#" },
-        null
-      )
-    ).toThrow("Unsupported programming language", "[C#]");
-  });
-
   it("should escape all characters in JavaScript", () => {
     expect(
       FileGenerator.escapeStringForJavaScript(
