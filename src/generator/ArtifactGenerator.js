@@ -232,7 +232,7 @@ class ArtifactGenerator {
   }
 
   generateLicense() {
-    if (this.artifactData.license) {
+    if (this.artifactData.license && this.artifactData.license.path) {
       this.artifactData.artifactToGenerate.forEach(artifactDetails => {
         const licenseText = fs.readFileSync(this.artifactData.license.path);
         fs.writeFileSync(
