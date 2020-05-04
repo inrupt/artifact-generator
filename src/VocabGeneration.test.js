@@ -112,8 +112,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it('Generate ALL vocabs', async () => {
-  it.skip("Generate ALL vocabs", async () => {
+  it("Generate ALL vocabs", async () => {
+  // it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
     await generateVocabArtifact(ConfigLitCore);
@@ -152,8 +152,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  it("LIT Common vocabs", async () => {
-    // it.skip("LIT Common vocabs", async () => {
+  // it("LIT Common vocabs", async () => {
+  it.skip("LIT Common vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
   });

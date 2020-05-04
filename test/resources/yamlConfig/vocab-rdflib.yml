@@ -9,7 +9,7 @@ artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@lit/"
-    litVocabTermVersion: "^1.0.10"
+    rdflibVersion: "^99.999.9999"
     artifactDirectoryName: JavaScript
     ##
     # The template imports LitVocabTermRdflib instead of LitVocabTermRdfExt

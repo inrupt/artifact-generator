@@ -167,10 +167,11 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
+
       // The package.json should be generated from the proper template (with the rdflib dependency).
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
-      ).toEqual(expect.stringContaining("@inrupt/lit-vocab-term-rdflib"));
+      ).toEqual(expect.stringContaining("99.999.9999"));
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
@@ -179,9 +180,7 @@ describe("End-to-end tests", () => {
         )
         .toString();
       expect(output).toEqual(
-        expect.stringContaining(
-          "const {LitVocabTermRdflib} = require('@inrupt/lit-vocab-term-rdflib')"
-        )
+        expect.stringContaining('const $rdf = require("rdflib")')
       );
     });
 
@@ -271,7 +270,7 @@ describe("End-to-end tests", () => {
         )
         .toString();
       expect(output).toEqual(
-        expect.stringContaining("Person: RDFJS_NAMESPACE('Person'),")
+        expect.stringContaining('Person: RDFJS_NAMESPACE("Person"),')
       );
     });
 
@@ -302,7 +301,7 @@ describe("End-to-end tests", () => {
           .toString()
       ).toEqual(
         expect.stringContaining(
-          "Person: new LitVocabTerm(_NS('Person'), localStorage, false)"
+          'Person: new LitVocabTerm(_NS("Person"), localStorage, false)'
         )
       );
 
@@ -407,18 +406,18 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("address: new LitVocabTerm(_NS('address')")
+        expect.stringContaining('address: new LitVocabTerm(_NS("address")')
       );
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          "additionalName: new LitVocabTerm(_NS('additionalName')"
+          'additionalName: new LitVocabTerm(_NS("additionalName")'
         )
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`Nombre adicional`, 'es')")
+        expect.stringContaining('.addLabel(`Nombre adicional`, "es")')
       );
     });
 
@@ -449,10 +448,10 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`La personne`, 'fr')")
+        expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
@@ -465,10 +464,10 @@ describe("End-to-end tests", () => {
         expect.stringContaining("givenName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`Nombre de pila`, 'es')")
+        expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`Nome di battesimo`, 'it')")
+        expect.stringContaining('.addLabel(`Nome di battesimo`, "it")')
       );
 
       expect(indexOutput).toEqual(
@@ -514,10 +513,10 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(_NS('Person')")
+        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`La personne`, 'fr')")
+        expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
@@ -530,10 +529,10 @@ describe("End-to-end tests", () => {
         expect.stringContaining("givenName: new LitVocabTerm")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`Nombre de pila`, 'es')")
+        expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(".addLabel(`Nome di battesimo`, 'it')")
+        expect.stringContaining('.addLabel(`Nome di battesimo`, "it")')
       );
 
       expect(indexOutput).toEqual(
@@ -770,9 +769,10 @@ describe("End-to-end tests", () => {
           `${outputDirectoryJS}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
+
       expect(output).toEqual(
         expect.stringContaining(
-          "new LitVocabTerm(_NS('Person'), localStorage, true)"
+          'new LitVocabTerm(_NS("Person"), localStorage, true)'
         )
       );
     });

@@ -56,7 +56,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "AllDifferent: new LitVocabTerm(_NS('AllDifferent'), localStorage, false)"
+        'AllDifferent: new LitVocabTerm(_NS("AllDifferent"), localStorage, false)'
       )
     );
 
@@ -111,12 +111,12 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "Connection: new LitVocabTerm(_NS('Connection'), localStorage, false)"
+        'Connection: new LitVocabTerm(_NS("Connection"), localStorage, false)'
       )
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabel(`Connection`, 'en')")
+      expect.stringContaining('.addLabel(`Connection`, "en")')
     );
   });
 
@@ -159,7 +159,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "class1: new LitVocabTerm(_NS('class1'), localStorage, false)"
+        'class1: new LitVocabTerm(_NS("class1"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -168,7 +168,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "class2: new LitVocabTerm(_NS('class2'), localStorage, false)"
+        'class2: new LitVocabTerm(_NS("class2"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -177,7 +177,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "class3: new LitVocabTerm(_NS('class3'), localStorage, false)"
+        'class3: new LitVocabTerm(_NS("class3"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -186,7 +186,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "class4: new LitVocabTerm(_NS('class4'), localStorage, false)"
+        'class4: new LitVocabTerm(_NS("class4"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -197,7 +197,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
-        "class5: new LitVocabTerm(_NS('class5'), localStorage, false)"
+        'class5: new LitVocabTerm(_NS("class5"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -206,7 +206,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property1: new LitVocabTerm(_NS('property1'), localStorage, false)"
+        'property1: new LitVocabTerm(_NS("property1"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -215,7 +215,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property2: new LitVocabTerm(_NS('property2'), localStorage, false)"
+        'property2: new LitVocabTerm(_NS("property2"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -226,7 +226,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property3: new LitVocabTerm(_NS('property3'), localStorage, false)"
+        'property3: new LitVocabTerm(_NS("property3"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -235,7 +235,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property4: new LitVocabTerm(_NS('property4'), localStorage, false)"
+        'property4: new LitVocabTerm(_NS("property4"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -246,7 +246,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property5: new LitVocabTerm(_NS('property5'), localStorage, false)"
+        'property5: new LitVocabTerm(_NS("property5"), localStorage, false)'
       )
     );
     expect(indexOutput).toEqual(
@@ -257,7 +257,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "property6: new LitVocabTerm(_NS('property6'), localStorage, false)"
+        'property6: new LitVocabTerm(_NS("property6"), localStorage, false)'
       )
     );
 
@@ -267,7 +267,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
-        "property7: new LitVocabTerm(_NS('property7'), localStorage, false)"
+        'property7: new LitVocabTerm(_NS("property7"), localStorage, false)'
       )
     );
 
@@ -283,7 +283,7 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "literal1: new LitVocabTerm(_NS('literal1'), localStorage, false)"
+        'literal1: new LitVocabTerm(_NS("literal1"), localStorage, false)'
       )
     );
 
@@ -293,23 +293,23 @@ describe("Supported Data Type", () => {
 
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        "literal2: new LitVocabTerm(_NS('literal2'), localStorage, false)"
+        'literal2: new LitVocabTerm(_NS("literal2"), localStorage, false)'
       )
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addMessage(`Welcome`, 'en')")
+      expect.stringContaining('.addMessage(`Welcome`, "en")')
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addMessage(`Bienvenido`, 'es')")
+      expect.stringContaining('.addMessage(`Bienvenido`, "es")')
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addMessage(`Bienvenue`, 'fr')")
+      expect.stringContaining('.addMessage(`Bienvenue`, "fr")')
     );
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
-        "literal3: new LitVocabTerm(_NS('literal3'), localStorage, false)"
+        'literal3: new LitVocabTerm(_NS("literal3"), localStorage, false)'
       )
     );
 
