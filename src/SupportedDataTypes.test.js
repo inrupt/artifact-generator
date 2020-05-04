@@ -51,13 +51,11 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('_NAMESPACE = "http://www.w3.org/2002/07/owl#"')
+      expect.stringContaining('NAMESPACE: "http://www.w3.org/2002/07/owl#"')
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'AllDifferent: new LitVocabTerm(_NS("AllDifferent"), localStorage, false)'
-      )
+      expect.stringContaining("AllDifferent: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -106,13 +104,11 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('_NAMESPACE = "http://www.w3.org/2011/http#"')
+      expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"')
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'Connection: new LitVocabTerm(_NS("Connection"), localStorage, false)'
-      )
+      expect.stringContaining("Connection: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -158,36 +154,28 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'class1: new LitVocabTerm(_NS("class1"), localStorage, false)'
-      )
+      expect.stringContaining("class1: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A rdfs class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'class2: new LitVocabTerm(_NS("class2"), localStorage, false)'
-      )
+      expect.stringContaining("class2: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`An owl class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'class3: new LitVocabTerm(_NS("class3"), localStorage, false)'
-      )
+      expect.stringContaining("class3: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A skos concept class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'class4: new LitVocabTerm(_NS("class4"), localStorage, false)'
-      )
+      expect.stringContaining("class4: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -196,27 +184,21 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(
-        'class5: new LitVocabTerm(_NS("class5"), localStorage, false)'
-      )
+      expect.not.stringContaining("class5: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.not.stringContaining(".addLabelNoLanguage(`Not supported class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property1: new LitVocabTerm(_NS("property1"), localStorage, false)'
-      )
+      expect.stringContaining("property1: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A rdf property`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property2: new LitVocabTerm(_NS("property2"), localStorage, false)'
-      )
+      expect.stringContaining("property2: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -225,18 +207,14 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property3: new LitVocabTerm(_NS("property3"), localStorage, false)'
-      )
+      expect.stringContaining("property3: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`An owl object property`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property4: new LitVocabTerm(_NS("property4"), localStorage, false)'
-      )
+      expect.stringContaining("property4: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -245,9 +223,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property5: new LitVocabTerm(_NS("property5"), localStorage, false)'
-      )
+      expect.stringContaining("property5: new LitVocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -256,9 +232,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'property6: new LitVocabTerm(_NS("property6"), localStorage, false)'
-      )
+      expect.stringContaining("property6: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -266,9 +240,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(
-        'property7: new LitVocabTerm(_NS("property7"), localStorage, false)'
-      )
+      expect.not.stringContaining("property7: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -282,9 +254,7 @@ describe("Supported Data Type", () => {
     //   var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'literal1: new LitVocabTerm(_NS("literal1"), localStorage, false)'
-      )
+      expect.stringContaining("literal1: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -292,9 +262,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(
-        'literal2: new LitVocabTerm(_NS("literal2"), localStorage, false)'
-      )
+      expect.stringContaining("literal2: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -308,9 +276,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(
-        'literal3: new LitVocabTerm(_NS("literal3"), localStorage, false)'
-      )
+      expect.not.stringContaining("literal3: new LitVocabTerm(")
     );
 
     expect(indexOutput).toEqual(
