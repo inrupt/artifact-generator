@@ -1,3 +1,7 @@
+{{#if license/header}}
+    {{license/header}}
+
+{{/if}}
 import { LitVocabTerm, getLocalStore } from "@inrupt/lit-vocab-term";
 import dataFactory from "@rdfjs/data-model";
 const namedNode = dataFactory.namedNode;

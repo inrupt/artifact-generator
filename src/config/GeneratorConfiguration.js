@@ -165,6 +165,24 @@ class GeneratorConfiguration {
   }
 
   /**
+   * Normalizes a path relative to the config file. If the path is absolute,
+   * it is returned as is, and if it was relative to the config file, an equivalent
+   * absolute path is returned, resolved to the running environment.
+   * @param {*} relativePath The pat to normalize
+   * @param {*} configSource The path to the configuration file
+   */
+  static normalizeRelativePath(relativePath, configSource) {
+    return path.join(
+      path.dirname(configSource),
+      // Templates are all made relative to the YAML file
+      GeneratorConfiguration.normalizeAbsolutePath(
+        relativePath,
+        path.dirname(configSource)
+      )
+    );
+  }
+
+  /**
    * Normalizise the specified template path, which can be provided as either an
    * internal path (which means it will be resolved relative to our internal
    * 'templates' directory), or a custom path (which means it will be resolved
@@ -190,20 +208,15 @@ class GeneratorConfiguration {
         process.cwd()
       );
     } else if (templatePathCustom) {
-      normalizedTemplate = path.join(
-        path.dirname(configSource),
-        // Templates are all made relative to the YAML file
-        GeneratorConfiguration.normalizeAbsolutePath(
-          templatePathCustom,
-          path.dirname(configSource)
-        )
+      normalizedTemplate = GeneratorConfiguration.normalizeRelativePath(
+        templatePathCustom,
+        configSource
       );
     } else {
       throw new Error(
         `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${configSource}]).`
       );
     }
-
     return normalizedTemplate;
   }
 
@@ -434,6 +447,23 @@ class GeneratorConfiguration {
         throw new Error(`Empty configuration file: [${configFile}]`);
       }
 
+      if (configuration.license) {
+        configuration.license.path = this.normalizeRelativePath(
+          configuration.license.path,
+          configFile
+        );
+        if (configuration.license.header) {
+          // The configuration file contains the license path,
+          // and what we need in the templates is the license text.
+          configuration.license.header = fs.readFileSync(
+            this.normalizeRelativePath(
+              configuration.license.header,
+              configFile
+            ),
+            "utf8"
+          );
+        }
+      }
       GeneratorConfiguration.validateConfiguration(configuration, configFile);
     } catch (error) {
       throw new Error(

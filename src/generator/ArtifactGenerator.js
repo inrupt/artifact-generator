@@ -68,6 +68,7 @@ class ArtifactGenerator {
       })
       .then(() => this.generatePackaging())
       .then(() => FileGenerator.createVersioningFiles(this.artifactData))
+      .then(() => this.generateLicense())
       .then(() => {
         // This file is generated after all the artifacts. This way, if a vocabulary resource
         // has been modified more recently than this file, we know that the artifacts are outdated
@@ -226,6 +227,21 @@ class ArtifactGenerator {
           // older YAML files
           this.generateDefaultPackaging(artifactDetails);
         }
+      });
+    }
+  }
+
+  generateLicense() {
+    if (this.artifactData.license) {
+      this.artifactData.artifactToGenerate.forEach(artifactDetails => {
+        const licenseText = fs.readFileSync(this.artifactData.license.path);
+        fs.writeFileSync(
+          path.join(
+            artifactDetails.outputDirectoryForArtifact,
+            this.artifactData.license.fileName
+          ),
+          licenseText
+        );
       });
     }
   }
