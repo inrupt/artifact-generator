@@ -296,14 +296,13 @@ describe("End-to-end tests", () => {
       expect(
         fs.existsSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
       ).toBe(true);
-      expect(
-        fs
-          .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
-          .toString()
-      ).toEqual(
-        expect.stringContaining(
-          'Person: new LitVocabTerm(_NS("Person"), localStorage, false)'
-        )
+
+      const generated = fs
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
+        .toString();
+
+      expect(generated).toEqual(
+        expect.stringContaining("Person: new LitVocabTerm(")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -409,15 +408,13 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
+        expect.stringContaining("Person: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining('address: new LitVocabTerm(_NS("address")')
+        expect.stringContaining("address: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining(
-          'additionalName: new LitVocabTerm(_NS("additionalName")'
-        )
+        expect.stringContaining("additionalName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre adicional`, "es")')
@@ -452,7 +449,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
+        expect.stringContaining("Person: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
@@ -517,7 +514,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining('Person: new LitVocabTerm(_NS("Person")')
+        expect.stringContaining("Person: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
@@ -779,11 +776,7 @@ describe("End-to-end tests", () => {
         )
         .toString();
 
-      expect(output).toEqual(
-        expect.stringContaining(
-          'new LitVocabTerm(_NS("Person"), localStorage, true)'
-        )
-      );
+      expect(output).toEqual(expect.stringContaining("new LitVocabTerm("));
     });
   });
 });

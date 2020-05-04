@@ -42,18 +42,10 @@ const {{vocabNameUpperCase}} = {
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  )
-  {{#each labels}}
-  {{#if language}}
-    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
-    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`)
-  {{/if}}
-  {{/each}}
-  {{#each comments}}
-  {{#if language}}
-    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
+  ){{#each labels}}{{#if language}}
+    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
+    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addCommentNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
@@ -72,18 +64,10 @@ const {{vocabNameUpperCase}} = {
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  )
-  {{#each labels}}
-  {{#if language}}
-    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
-    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`)
-  {{/if}}
-  {{/each}}
-  {{#each comments}}
-  {{#if language}}
-    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
+  ){{#each labels}}{{#if language}}
+    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
+    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addCommentNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
@@ -102,25 +86,12 @@ const {{vocabNameUpperCase}} = {
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  )
-  {{#each labels}}
-  {{#if language}}
-    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
-    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`)
-  {{/if}}
-  {{/each}}
-  {{#each comments}}
-  {{#if language}}
-    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
-    .addCommentNoLanguage(`{{{valueEscapedForJavaScript}}}`)
-  {{/if}}
-  {{/each}}
-  {{#each definitions}}
-  {{#if language}}
-    .addMessage(`{{{valueEscapedForJavaScript}}}`, "{{language}}")
-  {{else}}
+  ){{#each labels}}{{#if language}}
+    .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
+    .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
+    .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
+    .addCommentNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each definitions}}{{#if language}}
+    .addMessage(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addMessageNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
