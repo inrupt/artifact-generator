@@ -3,13 +3,12 @@
   "version": "{{artifactVersion}}",
   "description": "{{description}}",
   "main": "./dist/index.js",
-  "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
 {{#if supportBundling}}
-  "browser": "./dist/bundle.js",
+  "module": "./dist/index.es.js",
   "scripts": {
-    "build": "tsc && webpack --config webpack.config.js"
+    "build": "rollup --config rollup.config.js"
   },
 {{else}}
   "scripts": {
@@ -38,12 +37,15 @@
 {{/if}}
   "dependencies": {
     "@inrupt/lit-vocab-term": "{{litVocabTermVersion}}",
-    "@rdfjs/data-model": "^1.1.2"
-  }{{#if supportBundling}},
+    "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}"
+  },
   "devDependencies": {
-    "webpack": "{{webpackVersion}}",
-    "webpack-cli": "{{webpackCliVersion}}",
-    "ts-loader": "^7.0.0",
-    "typescript": "^3.8.3"
-  }{{/if}}
+    "typescript": "{{typescriptVersion}}"
+  {{#if supportBundling}},
+    "rollup": "{{rollupVersion}}",
+    "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
+    "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
+  {{/if}}
+  }
 }
