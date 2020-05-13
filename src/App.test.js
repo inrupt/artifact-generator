@@ -346,4 +346,41 @@ describe("App tests", () => {
       expect(new App(argv).validate()).rejects.toThrow();
     });
   });
+
+  describe("Testing glob for vocab file list", () => {
+    it("should generate multiple YAMLs to given output dir", async () => {
+      const filePath = path.join("test", "resources", "glob", "**", "*.yml");
+      const outputDirectory = path.join("test", "Generated", "Glob");
+      const config = {
+        _: ["generate"],
+        vocabListFile: filePath,
+        outputDirectory: outputDirectory
+      };
+
+      const mockedResponse = await new App(config).run();
+      expect(mockedResponse.stubbed).toBe(true);
+    });
+
+    it("should generate from multiple YAMLs to relative output dir", async () => {
+      const filePath = path.join("test", "resources", "glob", "**", "*.yml");
+      const config = {
+        _: ["generate"],
+        vocabListFile: filePath
+      };
+
+      const mockedResponse = await new App(config).run();
+      expect(mockedResponse.stubbed).toBe(true);
+    });
+
+    it("should work if glob matches only one YAML", async () => {
+      const filePath = path.join("test", "resources", "glob", "first", "*.yml");
+      const config = {
+        _: ["generate"],
+        vocabListFile: filePath
+      };
+
+      const mockedResponse = await new App(config).run();
+      expect(mockedResponse.stubbed).toBe(true);
+    });
+  });
 });
