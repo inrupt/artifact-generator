@@ -13,6 +13,17 @@ const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
 const RUN_PACKAGING = ["localMaven", "localNpmNode"];
 
+const ConfigAll = {
+  _: "generate",
+  force: true,
+  vocabListFile: "../../Vocab/**/*.yml",
+  // outputDirectory: "../../Vocab/lit-rdf-vocab/Common",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING
+};
+
 const ConfigLitCommon = {
   _: "generate",
   force: true,
@@ -44,6 +55,19 @@ const ConfigInruptCommon = {
     "../../Vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml",
   outputDirectory: "../../Vocab/inrupt-rdf-vocab/Common",
   artifactName: "common",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING
+};
+
+const ConfigInruptUiCommon = {
+  _: "generate",
+  force: true,
+  vocabListFile:
+    "../../Vocab/inrupt-rdf-vocab/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
+  outputDirectory: "../../Vocab/inrupt-rdf-vocab/UiComponent",
+  artifactName: "ui-common",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -111,6 +135,12 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
+  // it("Generate ALL vocabs recursively", async () => {
+  it.skip("Generate ALL vocabs recursively ", async () => {
+    jest.setTimeout(120000);
+    await generateVocabArtifact(ConfigAll);
+  });
+
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(120000);
@@ -126,6 +156,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolidGeneratorUi);
 
     await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptUiCommon);
     await generateVocabArtifact(ConfigInruptService);
   });
 
@@ -148,6 +179,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("Inrupt vocab", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptUiCommon);
     await generateVocabArtifact(ConfigInruptService);
   });
 
@@ -234,7 +266,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
 async function generateVocabArtifact(argv) {
   const app = new App({ ...argv, noprompt: true });
-  await app.configure();
   const result = await app.run();
 
   const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(

@@ -46,7 +46,7 @@ function validateCommandLine(argv, options) {
   return true;
 }
 
-const yargsConfig = yargs
+yargs
   .command(
     COMMAND_GENERATE,
     "Generate code artifacts from RDF vocabularies.",
@@ -152,7 +152,6 @@ const yargsConfig = yargs
         .strict(),
     argv => {
       if (!argv.inputResources && !argv.vocabListFile) {
-        // this.yargsConfig.showHelp();
         debugInstance(argv.help);
         debugInstance.enable("lit-artifact-generator:*");
         throw new Error(

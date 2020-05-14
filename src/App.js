@@ -1,5 +1,6 @@
 const path = require("path");
 const debug = require("debug")("lit-artifact-generator:App");
+const glob = require("glob");
 
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
@@ -9,7 +10,9 @@ const CommandLine = require("./CommandLine");
 const FileGenerator = require("./generator/FileGenerator");
 const Resource = require("./Resource");
 
-const DEFAULT_CONFIG_NAME = "lit-vocab.yml";
+// Just a sample configuration file name to use when initialising a YAML file
+// for a users who wants a boilerplate YAML generated for them.
+const SAMPLE_CONFIG_NAME = "lit-vocab.yml";
 
 const COMMAND_GENERATE = "generate";
 const COMMAND_INITIALIZE = "init";
@@ -35,7 +38,74 @@ module.exports = class App {
   }
 
   async run() {
-    const artifactGenerator = new ArtifactGenerator(await this.configure());
+    if (this.argv.vocabListFile) {
+      // Check if the vocab list file is actually a glob (e.g. yamls/**/*.yml).
+      // Filter out any instances in 'Generated' directories (as we can have
+      // '.yml' files in the 'node_modules' hierarchies of generated projects.
+      const matchingConfigFile = glob
+        .sync(this.argv.vocabListFile)
+        .filter(config => !config.includes("/Generated/"));
+
+      // If only one match, then it may (or may not) have been a glob that
+      // simply matched one config file, so overwrite our input with the actual
+      // match.
+      if (matchingConfigFile.length === 1) {
+        this.argv.vocabListFile = matchingConfigFile[0];
+      }
+
+      if (matchingConfigFile.length > 1) {
+        // If we were given an explicit output directory, we'll generate our
+        // output within that directory, but in sub-directories based from the
+        // root of the specific glob. So if our specified output directory was
+        // 'a/b/c', and our glob was 'resources/yamls/**/*.yml', and we found
+        // YAMLs in 'resources/yamls/x/y/first.yml' and
+        // 'resources/yamls/z/second.yml', then we'll generate artifacts in
+        // 'a/b/c/x/y/Generated' and 'a/b/c/z/Generated'.
+        // If no output directory was provided, we'll just generate relative to
+        // the found YAMLs themselves, i.e. in 'resources/yamls/x/y/Generated'
+        // and 'resources/yamls/z/Generated'.
+        const origOutputDirectory = this.argv.outputDirectory;
+        const rootOfGlob = this.argv.vocabListFile.substring(
+          0,
+          this.argv.vocabListFile.indexOf("*")
+        );
+
+        // TODO: When generating artifacts from multiple config files, we
+        //  should collect all results and return them all, and our calling code
+        //  will need to be updated to always handle potentially multiple
+        //  generation results...
+        let result = undefined;
+        // The following loop enforces sequential execution on purpose, because
+        // there are possibilities that the generator requires user interaction,
+        // in which cases parallel execution is not acceptable.
+        for (let configFile of matchingConfigFile) {
+          const configDirectory = path.dirname(configFile);
+
+          this.argv = {
+            ...this.argv,
+            vocabListFile: configFile,
+            outputDirectory: origOutputDirectory
+              ? path.join(
+                  origOutputDirectory,
+                  configDirectory.substring(rootOfGlob.length)
+                )
+              : configDirectory
+          };
+
+          const config = await this.configure();
+          result = await this.runWithConfig(config);
+        }
+
+        return result;
+      }
+    }
+
+    const config = await this.configure();
+    return this.runWithConfig(config);
+  }
+
+  async runWithConfig(config) {
+    const artifactGenerator = new ArtifactGenerator(config);
     return artifactGenerator
       .generate()
       .then(CommandLine.askForArtifactToBeNpmVersionBumped)
@@ -53,11 +123,9 @@ module.exports = class App {
   }
 
   async init() {
-    const targetPath = path.join(
-      this.argv.outputDirectory,
-      DEFAULT_CONFIG_NAME
-    );
     FileGenerator.createDirectory(this.argv.outputDirectory);
+
+    const targetPath = path.join(this.argv.outputDirectory, SAMPLE_CONFIG_NAME);
 
     const configGen = new ConfigFileGenerator(this.argv);
     if (this.argv.noprompt) {
@@ -80,6 +148,7 @@ module.exports = class App {
     debug(
       "The configuration options are valid. Validating the vocabularies..."
     );
+
     const vocabsToValidate = [];
     const { vocabList } = configuration.configuration;
     for (let i = 0; i < vocabList.length; i += 1) {
@@ -89,6 +158,7 @@ module.exports = class App {
         );
       }
     }
+
     return Promise.all(vocabsToValidate).catch(error => {
       throw new Error(`Invalid vocabulary: [${error}]`);
     });
