@@ -81,7 +81,10 @@ module.exports = class App {
         //  will need to be updated to always handle potentially multiple
         //  generation results...
         let result = undefined;
-        await this.asyncForEach(matchingConfigFile, async configFile => {
+        // The following loop enforces sequential execution on purpose, because
+        // there are possibilities that the generator requires user interaction,
+        // in which cases parallel execution is not acceptable.
+        for (let configFile of matchingConfigFile) {
           const configDirectory = path.dirname(configFile);
 
           this.argv = {
@@ -97,7 +100,7 @@ module.exports = class App {
 
           const config = await this.configure();
           result = await this.runWithConfig(config);
-        });
+        }
 
         return result;
       }
