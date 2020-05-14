@@ -37,12 +37,6 @@ module.exports = class App {
     return configuration.completeInitialConfiguration();
   }
 
-  async asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array);
-    }
-  }
-
   async run() {
     if (this.argv.vocabListFile) {
       // Check if the vocab list file is actually a glob (e.g. yamls/**/*.yml).
