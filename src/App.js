@@ -43,7 +43,12 @@ module.exports = class App {
       // Filter out any instances in 'Generated' directories (as we can have
       // '.yml' files in the 'node_modules' hierarchies of generated projects.
       const matchingConfigFile = glob
-        .sync(this.argv.vocabListFile)
+        .sync(
+          this.argv.vocabListFile,
+          this.argv.vocabListFileIgnore
+            ? { ignore: this.argv.vocabListFileIgnore.split(",") }
+            : {}
+        )
         .filter(config => !config.includes("/Generated/"));
 
       // If only one match, then it may (or may not) have been a glob that
