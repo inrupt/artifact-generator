@@ -27,8 +27,8 @@ const ConfigAll = {
 const ConfigLitCommon = {
   _: "generate",
   force: true,
-  vocabListFile: "../../Vocab/lit-rdf-vocab/Common/Vocab-List-LIT-Common.yml",
-  outputDirectory: "../../Vocab/lit-rdf-vocab/Common",
+  vocabListFile: "../lit-vocab/lit-rdf-vocab/Common/Vocab-List-LIT-Common.yml",
+  outputDirectory: "../lit-vocab/lit-rdf-vocab/Common",
   artifactName: "common",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -39,8 +39,8 @@ const ConfigLitCommon = {
 const ConfigLitCore = {
   _: "generate",
   force: true,
-  vocabListFile: "../../Vocab/lit-rdf-vocab/Core/Vocab-List-LIT-Core.yml",
-  outputDirectory: "../../Vocab/lit-rdf-vocab/Core",
+  vocabListFile: "../lit-vocab/lit-rdf-vocab/Core/Vocab-List-LIT-Core.yml",
+  outputDirectory: "../lit-vocab/lit-rdf-vocab/Core",
   artifactName: "core",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -52,8 +52,8 @@ const ConfigInruptCommon = {
   _: "generate",
   force: true,
   vocabListFile:
-    "../../Vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml",
-  outputDirectory: "../../Vocab/inrupt-rdf-vocab/Common",
+    "../lit-vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml",
+  outputDirectory: "../lit-vocab/inrupt-rdf-vocab/Common",
   artifactName: "common",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -65,8 +65,8 @@ const ConfigInruptUiCommon = {
   _: "generate",
   force: true,
   vocabListFile:
-    "../../Vocab/inrupt-rdf-vocab/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
-  outputDirectory: "../../Vocab/inrupt-rdf-vocab/UiComponent",
+    "../lit-vocab/inrupt-rdf-vocab/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
+  outputDirectory: "../lit-vocab/inrupt-rdf-vocab/UiComponent",
   artifactName: "ui-common",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -78,8 +78,8 @@ const ConfigInruptService = {
   _: "generate",
   force: true,
   vocabListFile:
-    "../../Vocab/inrupt-rdf-vocab/Service/Vocab-List-Inrupt-Service.yml",
-  outputDirectory: "../../Vocab/inrupt-rdf-vocab/Service",
+    "../lit-vocab/inrupt-rdf-vocab/Service/Vocab-List-Inrupt-Service.yml",
+  outputDirectory: "../lit-vocab/inrupt-rdf-vocab/Service",
   artifactName: "service",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -91,8 +91,8 @@ const ConfigSolidCommon = {
   _: "generate",
   force: true,
   vocabListFile:
-    "../../Vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
-  outputDirectory: "../../Vocab/solid-rdf-vocab/Common",
+    "../lit-vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
+  outputDirectory: "../lit-vocab/solid-rdf-vocab/Common",
   artifactName: "common",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -103,10 +103,10 @@ const ConfigSolidCommon = {
 const ConfigSolidComponent = {
   _: "generate",
   force: true,
-  inputResources: ["../../Vocab/solid-rdf-vocab/Component/SolidComponent.ttl"],
+  inputResources: ["../lit-vocab/solid-rdf-vocab/Component/SolidComponent.ttl"],
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
 
-  outputDirectory: "../../Vocab/solid-rdf-vocab/Component",
+  outputDirectory: "../lit-vocab/solid-rdf-vocab/Component",
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
   npmRegistry: NPM_REGISTRY,
@@ -120,11 +120,11 @@ const ConfigSolidGeneratorUi = {
   _: "generate",
   force: true,
   inputResources: [
-    "../../Vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl"
+    "../lit-vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl"
   ],
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
 
-  outputDirectory: "../../Vocab/solid-rdf-vocab/GeneratorUi",
+  outputDirectory: "../lit-vocab/solid-rdf-vocab/GeneratorUi",
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
   npmRegistry: NPM_REGISTRY,
