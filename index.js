@@ -68,7 +68,7 @@ yargs
         .alias("li", "vocabListFileIgnore")
         .describe(
           "vocabListFileIgnore",
-          "Globbing pattern for files ro directories to ignore when searching for vocabulary list files."
+          "Globbing pattern for files or directories to ignore when searching for vocabulary list files."
         )
 
         .alias("lv", "litVocabTermVersion")
