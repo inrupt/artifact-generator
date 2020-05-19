@@ -1,5 +1,5 @@
-require('mock-local-storage');
-const { PET_ROCK } = require('@lit/generated-vocab-pet-rock');
+require("mock-local-storage");
+const { PET_ROCK } = require("@lit/generated-vocab-pet-rock");
 
 console.log(`What is Pet Rock 'shinyness'?\n`);
 

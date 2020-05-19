@@ -21,7 +21,7 @@ import { NamedNode } from "rdf-js";
  */
 
 function _NS(localName: string): NamedNode { 
-  return (namedNode(`{{namespace}}${localName}`));
+  return namedNode(`{{namespace}}${localName}`);
 }
 
 const {{vocabNameUpperCase}} = {

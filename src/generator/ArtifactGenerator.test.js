@@ -51,7 +51,7 @@ describe("Artifact Generator", () => {
         .toString();
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          "module.exports.SCHEMA_INRUPT_EXT = require('./GeneratedVocab/SCHEMA_INRUPT_EXT')"
+          `module.exports.SCHEMA_INRUPT_EXT = require("./GeneratedVocab/SCHEMA_INRUPT_EXT")`
         )
       );
 
