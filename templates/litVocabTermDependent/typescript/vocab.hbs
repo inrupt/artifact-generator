@@ -4,7 +4,8 @@
 {{/if}}
 import { LitVocabTerm, getLocalStore } from "@inrupt/lit-vocab-term";
 import dataFactory from "@rdfjs/data-model";
-const namedNode = dataFactory.namedNode;
+
+const { namedNode } = dataFactory;
 import { NamedNode } from "rdf-js";
 
 /**
@@ -20,7 +21,7 @@ import { NamedNode } from "rdf-js";
  */
 
 function _NS(localName: string): NamedNode { 
-  return (namedNode("{{namespace}}" + localName));
+  return (namedNode(`{{namespace}}${localName}`));
 }
 
 const {{vocabNameUpperCase}} = {

@@ -275,6 +275,7 @@ module.exports = class DatasetHandler {
 
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
+    result.vocabListFileIgnore = this.vocabData.vocabListFileIgnore;
     result.namespace = this.vocabData.namespaceOverride || this.findNamespace();
     // Useful when overriding the local namespace, because this is the namespace
     // that is actually used in the terms from the vocab, and that is used

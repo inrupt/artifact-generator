@@ -65,6 +65,12 @@ yargs
           "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
 
+        .alias("li", "vocabListFileIgnore")
+        .describe(
+          "vocabListFileIgnore",
+          "Globbing pattern for files or directories to ignore when searching for vocabulary list files."
+        )
+
         .alias("lv", "litVocabTermVersion")
         .describe(
           "litVocabTermVersion",

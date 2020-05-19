@@ -382,5 +382,20 @@ describe("App tests", () => {
       const mockedResponse = await new App(config).run();
       expect(mockedResponse.stubbed).toBe(true);
     });
+
+    it("should ignore glob patterns if specified", async () => {
+      const filePath = path.join("test", "resources", "glob", "**", "*.yml");
+      const config = {
+        _: ["generate"],
+        vocabListFile: filePath,
+        vocabListFileIgnore: "second/"
+      };
+
+      const mockedResponse = await new App(config).run();
+      // TODO: Add proper assertions here (need to talk with Nic about the
+      //  mocking being used in this test file!).
+
+      expect(mockedResponse.stubbed).toBe(true);
+    });
   });
 });
