@@ -1,24 +1,24 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  mode: 'development',
-  entry: './index.js',
+  mode: "development",
+  entry: "./index.js",
   output: {
-    path: path.resolve('dist'),
-    filename: 'index.js',
-    libraryTarget: 'umd',
+    path: path.resolve("dist"),
+    filename: "index.js",
+    libraryTarget: "umd",
   },
   module: {
     rules: [
       {
         test: /\.js?$/,
         exclude: /(node_modules)/,
-        use: 'babel-loader',
+        use: "babel-loader",
       },
     ],
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: [".js"],
   },
   node: {
     fs: "empty"

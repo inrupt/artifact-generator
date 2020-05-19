@@ -14,7 +14,7 @@ const { namedNode } = dataFactory;
  */
 
 function _NS(localName) {
-  return (namedNode(`http://schema.org/${localName}`));
+  return namedNode(`http://schema.org/${localName}`);
 }
 
 const SCHEMA_INRUPT_EXT = {
