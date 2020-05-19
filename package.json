@@ -38,7 +38,7 @@
     "del": "^4.1.1",
     "glob": "^7.1.6",
     "handlebars": "^4.7.6",
-    "inquirer": "^6.4.1",
+    "inquirer": "^7.1.0",
     "js-yaml": "^3.13.1",
     "mock-local-storage": "^1.1.12",
     "moment": "^2.24.0",
