@@ -16,7 +16,7 @@ const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
   COMMAND_WATCH,
-  COMMAND_VALIDATE
+  COMMAND_VALIDATE,
 } = require("./src/App");
 
 const debug = debugInstance("lit-artifact-generator:index");
@@ -25,7 +25,7 @@ const SUPPORTED_COMMANDS = [
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
   COMMAND_WATCH,
-  COMMAND_VALIDATE
+  COMMAND_VALIDATE,
 ];
 
 function validateCommandLine(argv, options) {
@@ -48,7 +48,7 @@ yargs
   .command(
     COMMAND_GENERATE,
     "Generate code artifacts from RDF vocabularies.",
-    yargs =>
+    (yargs) =>
       yargs
         .alias("i", "inputResources")
         .array("inputResources")
@@ -154,7 +154,7 @@ yargs
         // least one of these two...?)
         .conflicts("inputResources", "vocabListFile")
         .strict(),
-    argv => {
+    (argv) => {
       if (!argv.inputResources && !argv.vocabListFile) {
         debugInstance(argv.help);
         debugInstance.enable("lit-artifact-generator:*");
@@ -169,15 +169,15 @@ yargs
     COMMAND_INITIALIZE,
     "Initializes a configuration YAML file used for fine-grained " +
       "control of artifact generation.",
-    yargs => yargs,
-    argv => {
+    (yargs) => yargs,
+    (argv) => {
       runInitialization(argv);
     }
   )
   .command(
     COMMAND_VALIDATE,
     "Validates a configuration YAML file used for artifact generation.",
-    yargs =>
+    (yargs) =>
       yargs
         .alias("l", "vocabListFile")
         .describe(
@@ -185,7 +185,7 @@ yargs
           "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
         .demandOption(["vocabListFile"]),
-    argv => {
+    (argv) => {
       runValidation(argv);
     }
   )
@@ -194,7 +194,7 @@ yargs
     "Starts a daemon process watching the configured vocabulary" +
       " resources, and automatically re-generates artifacts whenever it detects" +
       " a vocabulary change.",
-    yargs =>
+    (yargs) =>
       yargs
         .alias("l", "vocabListFile")
         .describe(
@@ -202,7 +202,7 @@ yargs
           "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
         )
         .demandOption(["vocabListFile"]),
-    argv => {
+    (argv) => {
       runWatcher(argv);
     }
   )
@@ -256,7 +256,7 @@ function runGeneration(argv) {
   configureLog(argv);
   new App(argv)
     .run()
-    .then(data => {
+    .then((data) => {
       debug(
         `\nGeneration process successful to directory [${path.join(
           data.outputDirectory,
@@ -265,7 +265,7 @@ function runGeneration(argv) {
       );
       process.exit(0);
     })
-    .catch(error => {
+    .catch((error) => {
       debug(`Generation process failed: [${error}]`);
       process.exit(-1);
     });
@@ -275,11 +275,11 @@ function runInitialization(argv) {
   configureLog(argv);
   new App(argv)
     .init()
-    .then(data => {
+    .then((data) => {
       debug(`\nSuccessfully initialized config file [${data}]`);
       process.exit(0);
     })
-    .catch(error => {
+    .catch((error) => {
       debug(`Generation process failed: [${error}]`);
       process.exit(-1);
     });
@@ -289,11 +289,11 @@ function runValidation(argv) {
   configureLog(argv);
   new App(argv)
     .validate()
-    .then(data => {
+    .then((data) => {
       debug(`\nThe provided configuration is valid`);
       process.exit(0);
     })
-    .catch(error => {
+    .catch((error) => {
       debug(`Invalid configuration: [${error}]`);
       process.exit(-1);
     });

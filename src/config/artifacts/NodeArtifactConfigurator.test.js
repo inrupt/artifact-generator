@@ -9,7 +9,7 @@ const { UNSUPPORTED_CONFIG_PROMPT } = require("../ArtifactConfigurator.test");
 
 const DUMMY_JS_ARTIFACT = {
   artifactVersion: "0.0.1",
-  litVocabTermVersion: "^0.1.0"
+  litVocabTermVersion: "^0.1.0",
 };
 
 const DUMMY_NPM_MODULE = {
@@ -21,7 +21,7 @@ const DUMMY_NPM_MODULE = {
     "javascript",
     "package.hbs"
   ),
-  indexTemplate: path.join("litVocabTermDependent", "javascript", "index.hbs")
+  indexTemplate: path.join("litVocabTermDependent", "javascript", "index.hbs"),
 };
 
 const NPM_MODULE_CONFIG = jest

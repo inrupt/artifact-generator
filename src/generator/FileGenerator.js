@@ -42,7 +42,7 @@ class FileGenerator {
     return {
       ...templateData,
       description: descriptionToUse,
-      vocabPrefix: templateData.nameAndPrefixOverride || templateData.vocabName
+      vocabPrefix: templateData.nameAndPrefixOverride || templateData.vocabName,
     };
   }
 
@@ -68,8 +68,9 @@ class FileGenerator {
   ) {
     return path.join(
       targetFolder,
-      `${templateData.nameAndPrefixOverride ||
-        templateData.vocabNameUpperCase}.${artifactDetails.sourceFileExtension}`
+      `${
+        templateData.nameAndPrefixOverride || templateData.vocabNameUpperCase
+      }.${artifactDetails.sourceFileExtension}`
     );
   }
 
@@ -119,7 +120,7 @@ class FileGenerator {
       packagingDirectory = artifactInfo.outputDirectoryForArtifact;
     }
 
-    packagingInfo.packagingTemplates.forEach(packagingFile => {
+    packagingInfo.packagingTemplates.forEach((packagingFile) => {
       FileGenerator.createFileFromTemplate(
         `${packagingFile.template}`,
         FileGenerator.formatTemplateData(
@@ -141,7 +142,7 @@ class FileGenerator {
       generalInfo.versioning &&
       generalInfo.versioning.versioningTemplates
     ) {
-      generalInfo.versioning.versioningTemplates.forEach(associatedFile => {
+      generalInfo.versioning.versioningTemplates.forEach((associatedFile) => {
         FileGenerator.createFileFromTemplate(
           path.join(associatedFile.template),
           generalInfo,
@@ -167,7 +168,7 @@ class FileGenerator {
     const dataWithMarkdownDescription = generalInfo.vocabListFile
       ? {
           ...generalInfo,
-          description: generalInfo.description.replace(/\\n/g, "\n\n  *")
+          description: generalInfo.description.replace(/\\n/g, "\n\n  *"),
         }
       : generalInfo;
 

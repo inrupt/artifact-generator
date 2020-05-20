@@ -46,7 +46,7 @@ module.exports = class VocabGenerator {
         );
       });
     }
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       FileGenerator.createSourceCodeFile(
         this.vocabData,
         this.artifactDetails,
@@ -63,10 +63,10 @@ module.exports = class VocabGenerator {
     );
 
     return this.generateData()
-      .then(vocabGenerationData => {
+      .then((vocabGenerationData) => {
         return this.generateFiles(vocabGenerationData);
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(`Data generation for vocabs failed: ${error}`);
       });
   }
@@ -83,7 +83,7 @@ module.exports = class VocabGenerator {
           );
           resolve(parsed);
         })
-        .catch(error => {
+        .catch((error) => {
           const result = `Failed to generate from input [${inputResources}]: [${error.toString()}]. Stack: ${error.stack.toString()}`;
           reject(new Error(result));
         });
@@ -108,7 +108,7 @@ module.exports = class VocabGenerator {
 
   static merge(dataSets) {
     let fullData = rdf.dataset();
-    dataSets.forEach(dataset => {
+    dataSets.forEach((dataset) => {
       if (dataset) {
         fullData = fullData.merge(dataset);
       }

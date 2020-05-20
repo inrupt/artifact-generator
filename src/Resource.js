@@ -106,7 +106,7 @@ module.exports = class Resource {
   static async getHttpResourceLastModificationTime(resource) {
     return axios({
       method: "head",
-      url: "resource",
+      url: resource,
     })
       .then((response) => {
         const lastModifiedDate = Date.parse(response.headers["last-modified"]);

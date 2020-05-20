@@ -11,23 +11,23 @@ const VOCAB_QUESTIONS = [
     type: "input",
     name: "inputResources",
     message: "Resources used for the artifact (path or IRI, comma-separated):",
-    filter: splitInputResources
+    filter: splitInputResources,
   },
   {
     type: "input",
     name: "nameAndPrefixOverride",
-    message: "Vocabulary prefix:"
+    message: "Vocabulary prefix:",
   },
   {
     type: "input",
     name: "description",
-    message: "Short description of the vocabulary:"
+    message: "Short description of the vocabulary:",
   },
   {
     type: "input",
     name: "termSelectionFile",
-    message: "File defining scope and extensions of the terms from the source:"
-  }
+    message: "File defining scope and extensions of the terms from the source:",
+  },
 ];
 
 class VocabularyConfigurator {

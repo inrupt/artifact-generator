@@ -7,22 +7,22 @@ require("mock-local-storage");
 const ArtifactConfigurator = require("./ArtifactConfigurator");
 const {
   JavaArtifactConfigurator,
-  LANGUAGE: JAVA
+  LANGUAGE: JAVA,
 } = require("./artifacts/JavaArtifactConfigurator");
 const {
   NodeArtifactConfigurator,
-  LANGUAGE: JAVASCRIPT
+  LANGUAGE: JAVASCRIPT,
 } = require("./artifacts/NodeArtifactConfigurator");
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: "0.0.1",
   litVocabTermVersion: "0.1.0-SNAPSHOT",
-  javaPackageName: "com.example.dummy.packagename"
+  javaPackageName: "com.example.dummy.packagename",
 };
 
 const DUMMY_JS_ARTIFACT = {
   artifactVersion: "1.0.1",
-  npmModuleScope: "@example"
+  npmModuleScope: "@example",
 };
 
 const DUMMY_MAVEN_ARTIFACT = {
@@ -37,13 +37,13 @@ const DUMMY_MAVEN_ARTIFACT = {
     "java",
     "rdf4j",
     "pom.hbs"
-  )
+  ),
 };
 
 const UNSUPPORTED_CONFIG_PROMPT = jest.fn().mockReturnValue(
   Promise.resolve({
     ...DUMMY_MAVEN_ARTIFACT,
-    packagingToInit: ["someSystem"]
+    packagingToInit: ["someSystem"],
   })
 );
 

@@ -14,8 +14,8 @@ const { artifactDirectorySourceCode } = require("./Util");
 
 const LIT_VOCAB_TERM_VERSION = "99.999.01";
 
-const doNothingPromise = data => {
-  return new Promise(resolve => {
+const doNothingPromise = (data) => {
+  return new Promise((resolve) => {
     resolve(data);
   });
 };
@@ -34,7 +34,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
-          noprompt: true
+          noprompt: true,
         }),
         doNothingPromise
       );
@@ -54,7 +54,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [errorFilename],
           outputDirectory,
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -76,7 +76,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             inputResources: [errorFilename],
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -104,7 +104,7 @@ describe("End-to-end tests", () => {
             license: { name: "MIT" },
             litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
             moduleNamePrefix: "lit-generated-vocab-",
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -157,7 +157,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-rdflib.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -195,7 +195,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -241,7 +241,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfext.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -285,7 +285,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -322,14 +322,14 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [
             "./test/resources/vocabs/schema-snippet.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocabs/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "lit-generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -370,7 +370,7 @@ describe("End-to-end tests", () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
             "./test/resources/vocabs/Person.ttl"
           );
-        }
+        },
       };
       rdfFetch.mockImplementation(() => {
         return Promise.resolve(rdfFetchMock);
@@ -384,14 +384,14 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [
             "https://schema.org/Person.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocabs/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -434,7 +434,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -480,7 +480,7 @@ describe("End-to-end tests", () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
             "./test/resources/vocabs/schema-inrupt-ext.ttl"
           );
-        }
+        },
       };
       rdfFetch.mockImplementation(() => {
         return Promise.resolve(rdfFetchMock);
@@ -499,7 +499,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -554,7 +554,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -583,7 +583,7 @@ describe("End-to-end tests", () => {
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -608,7 +608,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -631,7 +631,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -661,7 +661,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -691,7 +691,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -714,7 +714,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             vocabListFile: "./test/resources/vocabs/vocab-list.yml",
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -760,7 +760,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
             // The output directory must be set, because a default value is set by yargs in a regular use case
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )

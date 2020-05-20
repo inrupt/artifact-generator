@@ -5,7 +5,7 @@ const debug = require("debug")("lit-artifact-generator:CommandLine");
 
 const {
   artifactDirectoryRoot,
-  artifactDirectorySourceCode
+  artifactDirectorySourceCode,
 } = require("./Util");
 
 module.exports = class CommandLine {
@@ -17,7 +17,7 @@ module.exports = class CommandLine {
     return inquirer.prompt({
       type: "input",
       name: "litVocabTermVersion",
-      message: "Version string for LIT Vocab Term dependency ..."
+      message: "Version string for LIT Vocab Term dependency ...",
     });
   }
 
@@ -60,8 +60,8 @@ module.exports = class CommandLine {
           name: "bumpVersion",
           message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
           choices: ["patch", "minor", "major", "no"],
-          default: data.bumpVersion
-        }
+          default: data.bumpVersion,
+        },
       ];
 
       answer = await inquirer.prompt(bumpQuestion);
@@ -88,8 +88,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runNpmInstall",
           message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(npmInstallQuestion);
@@ -114,8 +114,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runNpmPublish",
           message: `Do you want to run NPM publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(npmPublishQuestion);
@@ -140,8 +140,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runWidoco",
           message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(runWidocoQuestion);
@@ -193,7 +193,7 @@ module.exports = class CommandLine {
         data.outputDirectory
       }${artifactDirectorySourceCode(data)}/Java`;
       if (data.artifactToGenerate) {
-        data.artifactToGenerate.forEach(artifact => {
+        data.artifactToGenerate.forEach((artifact) => {
           if (artifact.programmingLanguage.toLowerCase() === "java") {
             const commandLineMaven = `cd ${javaDirectory} && mvn install`;
             ChildProcess.execSync(commandLineMaven);
@@ -270,7 +270,7 @@ module.exports = class CommandLine {
 
     return {
       ...data,
-      ...{ ranWidoco: true, documentationDirectory: destDirectory }
+      ...{ ranWidoco: true, documentationDirectory: destDirectory },
     }; // Merge the answers in with the data and return
   }
 };

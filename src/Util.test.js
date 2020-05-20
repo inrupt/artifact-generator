@@ -3,7 +3,7 @@ const {
   DEFAULT_DIRECTORY_ROOT,
   DEFAULT_DIRECTORY_SOURCE_CODE,
   artifactDirectoryRoot,
-  artifactDirectorySourceCode
+  artifactDirectorySourceCode,
 } = require("./Util");
 
 describe("Test override root", () => {
@@ -40,7 +40,7 @@ describe("Test override source code", () => {
     const override = "Whatever_Dir";
     expect(
       artifactDirectorySourceCode({
-        artifactDirectoryRootOverride: override
+        artifactDirectoryRootOverride: override,
       })
     ).toEqual(path.join(override, DEFAULT_DIRECTORY_SOURCE_CODE));
   });

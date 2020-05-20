@@ -16,7 +16,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/special-case-owl-snippet.ttl"
+          "./test/resources/vocabs/special-case-owl-snippet.ttl",
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
@@ -24,7 +24,7 @@ describe("Supported Data Type", () => {
         nameAndPrefixOverride: "owl",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -38,7 +38,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 
@@ -69,7 +69,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/special-case-http-snippet.ttl"
+          "./test/resources/vocabs/special-case-http-snippet.ttl",
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
@@ -77,7 +77,7 @@ describe("Supported Data Type", () => {
         nameAndPrefixOverride: "http",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -91,7 +91,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 
@@ -127,7 +127,7 @@ describe("Supported Data Type", () => {
         moduleNamePrefix: "lit-generated-vocab-",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -141,7 +141,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 

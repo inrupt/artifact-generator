@@ -9,7 +9,7 @@ const CommandLine = require("./CommandLine");
 const defaultInputs = {
   artifactName: "@lit/generator-vocab-schema-ext",
   authorSet: new Set(["lit@inrupt.com"]),
-  npmRegistry: "http://localhost:4873/"
+  npmRegistry: "http://localhost:4873/",
 };
 
 describe("Command Line unit tests", () => {
@@ -21,7 +21,7 @@ describe("Command Line unit tests", () => {
 
       const result = CommandLine.findPublishedVersionOfModule({
         ...defaultInputs,
-        runNpmPublish: true
+        runNpmPublish: true,
       });
 
       expect(result.publishedVersion).toBe("1.1.10");
@@ -35,7 +35,7 @@ describe("Command Line unit tests", () => {
 
       const result = CommandLine.findPublishedVersionOfModule({
         ...defaultInputs,
-        runNpmPublish: true
+        runNpmPublish: true,
       });
 
       expect(result.publishedVersion).toBeUndefined();
@@ -62,7 +62,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
-        runNpmPublish: true
+        runNpmPublish: true,
       });
 
       expect(result.runNpmPublish).toBe(true);
@@ -85,7 +85,7 @@ describe("Command Line unit tests", () => {
     it("Should not publish artifact if user did not specify publish, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
-        noprompt: true
+        noprompt: true,
       });
 
       expect(result.ranNpmPublish).toBeUndefined();
@@ -109,7 +109,7 @@ describe("Command Line unit tests", () => {
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
         publishedVersion: "1.1.10",
-        bumpVersion: "minor"
+        bumpVersion: "minor",
       });
 
       expect(result.publishedVersion).toBe("1.1.10");
@@ -127,7 +127,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
-        publishedVersion: "1.1.10"
+        publishedVersion: "1.1.10",
       });
 
       expect(result.bumpVersion).toBe("patch");
@@ -141,7 +141,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeNpmVersionBumped({
         ...defaultInputs,
-        publishedVersion: "1.1.10"
+        publishedVersion: "1.1.10",
       });
 
       expect(result.bumpVersion).toBe("no");
@@ -172,7 +172,7 @@ describe("Command Line unit tests", () => {
 
       const result = CommandLine.runNpmInstall({
         ...defaultInputs,
-        supportBundling: true
+        supportBundling: true,
       });
 
       expect(result.ranNpmInstall).toBe(true);
@@ -183,7 +183,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
-        runNpmInstall: true
+        runNpmInstall: true,
       });
 
       expect(result.ranNpmInstall).toBe(true);
@@ -218,7 +218,7 @@ describe("Command Line unit tests", () => {
     it("Should not install artifact if user did not specify install, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
-        noprompt: true
+        noprompt: true,
       });
 
       expect(result.ranNpmInstall).toBeUndefined();
@@ -234,12 +234,12 @@ describe("Command Line unit tests", () => {
         runMavenInstall: true,
         artifactToGenerate: [
           {
-            programmingLanguage: "Java"
+            programmingLanguage: "Java",
           },
           {
-            programmingLanguage: "C#"
-          }
-        ]
+            programmingLanguage: "C#",
+          },
+        ],
       });
 
       expect(result.ranMavenInstall).toBe(true);
@@ -248,7 +248,7 @@ describe("Command Line unit tests", () => {
     it("Should ignore Maven install if no explicit flag set", async () => {
       const result = await CommandLine.runMavenInstall({
         ...defaultInputs,
-        runMavenInstall: false
+        runMavenInstall: false,
       });
 
       expect(result.ranMavenInstall).toBe(undefined);
@@ -257,7 +257,7 @@ describe("Command Line unit tests", () => {
     it("Should ignore Maven install if no generation details", async () => {
       const result = await CommandLine.runMavenInstall({
         ...defaultInputs,
-        runMavenInstall: true
+        runMavenInstall: true,
       });
 
       expect(result.ranMavenInstall).toBe(true);
@@ -271,7 +271,7 @@ describe("Command Line unit tests", () => {
       const result = CommandLine.runWidoco({
         ...defaultInputs,
         inputResources: ["Dummy_vocab_file"],
-        outputDirectory: "needs/a/parent/directory"
+        outputDirectory: "needs/a/parent/directory",
       });
 
       expect(result.ranWidoco).toBe(true);
@@ -284,7 +284,7 @@ describe("Command Line unit tests", () => {
         ...defaultInputs,
         inputResources: ["Dummy_vocab_file"],
         outputDirectory: "needs/a/parent/directory",
-        runWidoco: true
+        runWidoco: true,
       });
 
       expect(result.ranWidoco).toBe(true);
@@ -297,7 +297,7 @@ describe("Command Line unit tests", () => {
         ...defaultInputs,
         inputResources: ["http://Dummy_vocab_file"],
         outputDirectory: "needs/a/parent/directory",
-        runWidoco: true
+        runWidoco: true,
       });
 
       expect(result.ranWidoco).toBe(true);
@@ -313,7 +313,7 @@ describe("Command Line unit tests", () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
         inputResources: ["Dummy_vocab_file"],
-        outputDirectory: "needs/a/parent/directory"
+        outputDirectory: "needs/a/parent/directory",
       });
 
       expect(result.ranWidoco).toBe(true);
@@ -327,7 +327,7 @@ describe("Command Line unit tests", () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
         inputResources: ["Dummy_vocab_file"],
-        outputDirectory: "needs/a/parent/directory"
+        outputDirectory: "needs/a/parent/directory",
       });
 
       expect(result.ranWidoco).toBeUndefined();
@@ -336,7 +336,7 @@ describe("Command Line unit tests", () => {
     it("Should not generate documentation if user did not specify, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        noprompt: true
+        noprompt: true,
       });
 
       expect(result.ranWidoco).toBeUndefined();

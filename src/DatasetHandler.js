@@ -8,7 +8,7 @@ const {
   OWL,
   VANN,
   DCTERMS,
-  SKOS
+  SKOS,
 } = require("./CommonTerms");
 
 const FileGenerator = require("./generator/FileGenerator");
@@ -21,7 +21,7 @@ const KNOWN_DOMAINS = new Map([
   ["https://schema.org", "schema"],
   ["http://schema.org", "schema"],
   ["http://www.w3.org/2002/07/owl", "owl"],
-  ["http://rdf-extension.com#", "rdf-ext"]
+  ["http://rdf-extension.com#", "rdf-ext"],
 ]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
@@ -31,7 +31,7 @@ const SUPPORTED_CLASSES = [
   RDFS.Class,
   OWL.Class,
   SKOS.Concept,
-  SCHEMA_DOT_ORG.PaymentStatusType
+  SCHEMA_DOT_ORG.PaymentStatusType,
 ];
 
 const SUPPORTED_PROPERTIES = [
@@ -40,7 +40,7 @@ const SUPPORTED_PROPERTIES = [
   OWL.ObjectProperty,
   OWL.NamedIndividual,
   OWL.AnnotationProperty,
-  OWL.DatatypeProperty
+  OWL.DatatypeProperty,
 ];
 
 const SUPPORTED_LITERALS = [RDFS.Literal];
@@ -137,23 +137,25 @@ module.exports = class DatasetHandler {
 
     this.subjectsOnlyDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
     this.subjectsOnlyDataset
       .match(quad.subject, RDFS.label, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
-    this.fullDataset.match(quad.subject, RDFS.label, null).forEach(subQuad => {
-      DatasetHandler.add(labels, subQuad);
-    });
+    this.fullDataset
+      .match(quad.subject, RDFS.label, null)
+      .forEach((subQuad) => {
+        DatasetHandler.add(labels, subQuad);
+      });
 
     this.fullDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
@@ -161,13 +163,13 @@ module.exports = class DatasetHandler {
 
     this.subjectsOnlyDataset
       .match(quad.subject, RDFS.comment, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(comments, subQuad);
       });
 
     this.fullDataset
       .match(quad.subject, RDFS.comment, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(comments, subQuad);
       });
 
@@ -175,13 +177,13 @@ module.exports = class DatasetHandler {
 
     this.subjectsOnlyDataset
       .match(quad.subject, SKOS.definition, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(definitions, subQuad);
       });
 
     this.fullDataset
       .match(quad.subject, SKOS.definition, null)
-      .forEach(subQuad => {
+      .forEach((subQuad) => {
         DatasetHandler.add(definitions, subQuad);
       });
 
@@ -197,7 +199,7 @@ module.exports = class DatasetHandler {
       comment,
       labels,
       comments,
-      definitions
+      definitions,
     };
   }
 
@@ -211,7 +213,7 @@ module.exports = class DatasetHandler {
         valueEscapedForJava: FileGenerator.escapeStringForJava(
           quad.object.value
         ),
-        language: quad.object.language
+        language: quad.object.language,
       });
     }
   }
@@ -219,7 +221,7 @@ module.exports = class DatasetHandler {
   static doesNotContainValueForLanguageAlready(array, quad) {
     return (
       array.length === 0 ||
-      !array.some(e => e.language === quad.object.language)
+      !array.some((e) => e.language === quad.object.language)
     );
   }
 
@@ -250,10 +252,10 @@ module.exports = class DatasetHandler {
   }
 
   static lookupEnglishOrNoLanguage(collection) {
-    let result = collection.find(e => e.language === "en");
+    let result = collection.find((e) => e.language === "en");
 
     if (result === undefined) {
-      result = collection.find(e => e.language === "");
+      result = collection.find((e) => e.language === "");
     }
 
     return result;
@@ -320,7 +322,7 @@ module.exports = class DatasetHandler {
       throw new Error(`[${result.namespace}] does not contain any terms.`);
     }
 
-    subjectSet.forEach(subject => {
+    subjectSet.forEach((subject) => {
       this.handleClasses(subject, result);
       this.handleProperties(subject, result);
       this.handleLiterals(subject, result);
@@ -330,8 +332,8 @@ module.exports = class DatasetHandler {
   }
 
   handleClasses(subject, result) {
-    SUPPORTED_CLASSES.forEach(classType => {
-      this.fullDataset.match(subject, RDF.type, classType).forEach(quad => {
+    SUPPORTED_CLASSES.forEach((classType) => {
+      this.fullDataset.match(subject, RDF.type, classType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.classes.push(this.handleTerm(quad, result.localNamespace));
         }
@@ -340,7 +342,7 @@ module.exports = class DatasetHandler {
 
     // We can automatically treat anything marked as a 'sub-class of' as a
     // class too, regardless of what it's sub-class of!
-    this.fullDataset.match(subject, RDFS.subClassOf, null).forEach(quad => {
+    this.fullDataset.match(subject, RDFS.subClassOf, null).forEach((quad) => {
       if (this.isNewTerm(quad.subject.value)) {
         result.classes.push(this.handleTerm(quad, result.localNamespace));
       }
@@ -348,8 +350,24 @@ module.exports = class DatasetHandler {
   }
 
   handleProperties(subject, result) {
-    SUPPORTED_PROPERTIES.forEach(propertyType => {
-      this.fullDataset.match(subject, RDF.type, propertyType).forEach(quad => {
+    SUPPORTED_PROPERTIES.forEach((propertyType) => {
+      this.fullDataset
+        .match(subject, RDF.type, propertyType)
+        .forEach((quad) => {
+          const term = this.handleTerm(quad, result.localNamespace);
+          if (term) {
+            if (this.isNewTerm(quad.subject.value)) {
+              result.properties.push(term);
+            }
+          }
+        });
+    });
+
+    // We can automatically treat anything marked as a 'sub-property of' as a
+    // property too, regardless of what it's sub-property of!
+    this.fullDataset
+      .match(subject, RDFS.subPropertyOf, null)
+      .forEach((quad) => {
         const term = this.handleTerm(quad, result.localNamespace);
         if (term) {
           if (this.isNewTerm(quad.subject.value)) {
@@ -357,23 +375,11 @@ module.exports = class DatasetHandler {
           }
         }
       });
-    });
-
-    // We can automatically treat anything marked as a 'sub-property of' as a
-    // property too, regardless of what it's sub-property of!
-    this.fullDataset.match(subject, RDFS.subPropertyOf, null).forEach(quad => {
-      const term = this.handleTerm(quad, result.localNamespace);
-      if (term) {
-        if (this.isNewTerm(quad.subject.value)) {
-          result.properties.push(term);
-        }
-      }
-    });
   }
 
   handleLiterals(subject, result) {
-    SUPPORTED_LITERALS.forEach(literalType => {
-      this.fullDataset.match(subject, RDF.type, literalType).forEach(quad => {
+    SUPPORTED_LITERALS.forEach((literalType) => {
+      this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.literals.push(this.handleTerm(quad, result.localNamespace));
         }
@@ -409,7 +415,7 @@ module.exports = class DatasetHandler {
     // provides its namespace IRI.
     let ontologyIri;
 
-    let namespace = this.findOwlOntology(owlOntologyTerms => {
+    let namespace = this.findOwlOntology((owlOntologyTerms) => {
       const ontologyNamespaces = this.fullDataset.match(
         owlOntologyTerms.subject,
         VANN.preferredNamespaceUri,
@@ -456,7 +462,7 @@ module.exports = class DatasetHandler {
 
   static findLongestTermName(terms, ontologyIri) {
     return terms
-      .filter(a => (ontologyIri ? a.startsWith(ontologyIri) : true))
+      .filter((a) => (ontologyIri ? a.startsWith(ontologyIri) : true))
       .reduce((a, b) => (a.length > b.length ? a : b), "");
   }
 
@@ -478,7 +484,7 @@ module.exports = class DatasetHandler {
     const namespace = this.vocabData.namespaceOverride || this.findNamespace();
     let prefix =
       this.vocabData.nameAndPrefixOverride ||
-      this.findOwlOntology(owlOntologyTerms => {
+      this.findOwlOntology((owlOntologyTerms) => {
         const ontologyPrefixes = this.fullDataset.match(
           owlOntologyTerms.subject,
           VANN.preferredNamespacePrefix,
@@ -511,9 +517,7 @@ module.exports = class DatasetHandler {
     return (
       this.vocabData.artifactName ||
       this.vocabData.moduleNamePrefix +
-        this.findPreferredNamespacePrefix()
-          .toLowerCase()
-          .replace(/_/g, "-")
+        this.findPreferredNamespacePrefix().toLowerCase().replace(/_/g, "-")
     );
   }
 
@@ -522,7 +526,7 @@ module.exports = class DatasetHandler {
   }
 
   findDescription() {
-    return this.findOwlOntology(owlOntologyTerms => {
+    return this.findOwlOntology((owlOntologyTerms) => {
       const onologyComments = this.fullDataset.match(
         owlOntologyTerms.subject,
         DCTERMS.description,
@@ -534,7 +538,7 @@ module.exports = class DatasetHandler {
   }
 
   findAuthors() {
-    return this.findOwlOntology(owlOntologyTerms => {
+    return this.findOwlOntology((owlOntologyTerms) => {
       const onologyAuthors = this.fullDataset.match(
         owlOntologyTerms.subject,
         DCTERMS.creator,
@@ -544,7 +548,9 @@ module.exports = class DatasetHandler {
       return new Set(
         onologyAuthors.size === 0
           ? []
-          : onologyAuthors.toArray().map(authorQuad => authorQuad.object.value)
+          : onologyAuthors
+              .toArray()
+              .map((authorQuad) => authorQuad.object.value)
       );
     }, new Set());
   }
@@ -563,12 +569,12 @@ module.exports = class DatasetHandler {
   }
 
   static subjectsOnly(dataset) {
-    const terms = dataset.filter(quad => {
+    const terms = dataset.filter((quad) => {
       return quad.subject.value !== OWL.Ontology;
     });
 
     const termSubjects = [];
-    terms.forEach(quad => {
+    terms.forEach((quad) => {
       termSubjects.push(quad.subject.value);
     });
 

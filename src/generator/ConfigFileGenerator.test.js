@@ -3,7 +3,7 @@ const path = require("path");
 
 const inquirer = require("inquirer");
 const {
-  LANGUAGE: JAVA
+  LANGUAGE: JAVA,
 } = require("../config/artifacts/JavaArtifactConfigurator");
 
 jest.mock("inquirer");
@@ -14,7 +14,7 @@ require("mock-local-storage");
 const {
   ConfigFileGenerator,
   validateLanguageCheckboxes,
-  validateRepositoryCheckboxes
+  validateRepositoryCheckboxes,
 } = require("./ConfigFileGenerator");
 
 // This line will have to change if one day we decide to support Ook (spoiler alert:
@@ -34,7 +34,7 @@ const ARTIFACT_NAME = "myNewArtifact";
 const PROMPTED_JAVA_ARTIFACT = {
   artifactVersion: "0.1.0",
   litVocabTermVersion: "0.1.0-SNAPSHOT",
-  javaPackageName: "com.example.java.packagename"
+  javaPackageName: "com.example.java.packagename",
 };
 
 const COMPLETE_JAVA_ARTIFACT = {
@@ -48,14 +48,14 @@ const COMPLETE_JAVA_ARTIFACT = {
   sourceFileExtension: "java",
   artifactDirectoryName: "Java",
   programmingLanguage: "Java",
-  ...PROMPTED_JAVA_ARTIFACT
+  ...PROMPTED_JAVA_ARTIFACT,
 };
 
 const COMPLETE_VOCAB = {
   inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
   nameAndPrefixOverride: "schema",
   description: "An example vocabulary",
-  termSelectionFile: ""
+  termSelectionFile: "",
 };
 
 const COMPLETE_CONFIG = {
@@ -63,7 +63,7 @@ const COMPLETE_CONFIG = {
   generatorName: "@inrupt/lit-artifact-generator",
   artifactGeneratorVersion: packageDotJson.version,
   artifactToGenerate: [COMPLETE_JAVA_ARTIFACT],
-  vocabList: [COMPLETE_VOCAB]
+  vocabList: [COMPLETE_VOCAB],
 };
 
 const REPOSITORY_URL_GIT = "https://repository.git";
@@ -77,31 +77,31 @@ const REPOSITORY_GIT = {
     {
       templateInternal: GITIGNORE_TEMPLATE,
       fileName: ".gitignore",
-      template: path.join("templates", GITIGNORE_TEMPLATE)
-    }
-  ]
+      template: path.join("templates", GITIGNORE_TEMPLATE),
+    },
+  ],
 };
 
 const REPOSITORY_SVN = {
   type: "svn",
-  url: REPOSITORY_URL_SVN
+  url: REPOSITORY_URL_SVN,
   // By default, no files are associated to the SVN configuration
 };
 
 const COMPLETE_CONFIG_GIT = {
   ...COMPLETE_CONFIG,
-  versioning: REPOSITORY_GIT
+  versioning: REPOSITORY_GIT,
 };
 
 const COMPLETE_CONFIG_SVN = {
   ...COMPLETE_CONFIG,
-  versioning: REPOSITORY_SVN
+  versioning: REPOSITORY_SVN,
 };
 
 const SAMPLE_CONFIG = {
   artifactName: ARTIFACT_NAME,
   artifactToGenerate: [],
-  vocabList: []
+  vocabList: [],
 };
 
 const INVALID_CONFIG = {};
@@ -213,7 +213,7 @@ describe("ConfigFile Generator", () => {
     inquirer.prompt.mockImplementation(MOCK_VOCAB_PROMPT);
     expect(ConfigFileGenerator.promptVocabularies()).resolves.toEqual([
       COMPLETE_VOCAB,
-      COMPLETE_VOCAB
+      COMPLETE_VOCAB,
     ]);
   });
 

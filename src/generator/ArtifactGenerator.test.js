@@ -11,7 +11,7 @@ const ArtifactGenerator = require("./ArtifactGenerator");
 const GeneratorConfiguration = require("../config/GeneratorConfiguration");
 const {
   artifactDirectoryRoot,
-  artifactDirectorySourceCode
+  artifactDirectorySourceCode,
 } = require("../Util");
 const Resource = require("../Resource");
 
@@ -20,7 +20,7 @@ const MOCKED_LIT_VOCAB_TERM_VERSION = "0.0.1";
 
 const MOCKED_USER_INPUT = {
   artifactName: MOCKED_ARTIFACT_NAME,
-  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION
+  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
 };
 
 beforeEach(() => {
@@ -86,7 +86,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/vocabs/vocab-list.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -103,7 +103,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/versioning/vocab-list.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -127,7 +127,7 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^1.0.10",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        supportBundling: false
+        supportBundling: false,
       });
       config.completeInitialConfiguration();
 
@@ -151,7 +151,7 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
-        litVocabTermVersion: "^1.0.10"
+        litVocabTermVersion: "^1.0.10",
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -178,7 +178,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
-        force: true
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -201,7 +201,7 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        supportBundling: true
+        supportBundling: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -232,7 +232,7 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -264,7 +264,7 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        force: true
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -293,7 +293,7 @@ describe("Artifact Generator", () => {
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
         noprompt: true,
-        force: true // We need to FORCE generation to ensure publication.
+        force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
 
@@ -333,7 +333,7 @@ describe("Artifact Generator", () => {
       // the default generated directory, since we .gitignore that normally to
       // specifically prevent checking that in.
       const generateOverride = {
-        artifactDirectoryRootOverride: "/GenerateOverride"
+        artifactDirectoryRootOverride: "/GenerateOverride",
       };
 
       // Get the current timestamp before we run our test...
@@ -344,7 +344,7 @@ describe("Artifact Generator", () => {
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
         noprompt: true,
-        ...generateOverride
+        ...generateOverride,
       });
 
       config.completeInitialConfiguration();
@@ -379,7 +379,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/backwardCompatibility/vocab-list_no-packaging.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -409,7 +409,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);

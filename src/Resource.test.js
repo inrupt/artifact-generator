@@ -1,11 +1,9 @@
 require("mock-local-storage");
 
 const axios = require("axios");
-
 jest.mock("axios");
 
 const rdfFetch = require("@rdfjs/fetch-lite");
-
 jest.mock("@rdfjs/fetch-lite");
 
 const Resource = require("./Resource");
@@ -16,14 +14,14 @@ const VALID_LAST_MODIF_HTTP_RESOURCE = {
   headers: {
     // This date should alway be more recent than the considered artifacts (unless you are running this test
     // 2000 years in the future and are trying to figure out what stopped working)
-    "last-modified": "Mon, 01 Jan 4000 00:00:59 GMT"
-  }
+    "last-modified": "Mon, 01 Jan 4000 00:00:59 GMT",
+  },
 };
 
 const INVALID_LAST_MODIF_HTTP_RESOURCE = {
   headers: {
-    "last-modified": "This is not a date"
-  }
+    "last-modified": "This is not a date",
+  },
 };
 
 describe("Resources last modification", () => {
@@ -38,7 +36,7 @@ describe("Resources last modification", () => {
     expect(lastmodif).toEqual(MOCKED_LAST_MODIFIED);
   });
 
-  it("should return a default value for unreachable online resources", async () => {
+  it("should return default time for unreachable online resources", async () => {
     axios.mockImplementation(
       jest
         .fn()

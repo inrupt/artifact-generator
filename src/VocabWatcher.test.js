@@ -20,7 +20,7 @@ const SLEEP_TIME = 200;
 // const MOCKED_ONLINE_RESOURCE_BODY = fs.readFileSync(MOCKED_ONLINE_RESOURCE_PATH).toString();
 
 function sleep(ms) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
@@ -38,20 +38,14 @@ beforeEach(() => {
 async function changeAndRestoreVocab(vocabPath, before, after) {
   fs.writeFileSync(
     vocabPath,
-    fs
-      .readFileSync(vocabPath)
-      .toString()
-      .replace(before, after)
+    fs.readFileSync(vocabPath).toString().replace(before, after)
   );
   await sleep(SLEEP_TIME);
 
   // The following changes the vocabulary back
   fs.writeFileSync(
     vocabPath,
-    fs
-      .readFileSync(vocabPath)
-      .toString()
-      .replace(after, before)
+    fs.readFileSync(vocabPath).toString().replace(after, before)
   );
 }
 
@@ -80,7 +74,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -98,7 +92,7 @@ describe("Vocabulary watcher", () => {
   it("should trigger artifact generation on change", async () => {
     const config = new GeneratorConfiguration({
       vocabListFile: VOCAB_LIST_PATH,
-      outputDirectory: OUTPUT_DIRECTORY
+      outputDirectory: OUTPUT_DIRECTORY,
     });
     await config.completeInitialConfiguration();
 
@@ -127,7 +121,7 @@ describe("Vocabulary watcher", () => {
           {
             vocabListFile:
               "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -147,7 +141,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -172,7 +166,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -212,7 +206,7 @@ describe("Vocabulary watcher", () => {
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY
+          outputDirectory: OUTPUT_DIRECTORY,
         },
         undefined
       )
@@ -239,7 +233,7 @@ describe("Vocabulary watcher", () => {
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY
+          outputDirectory: OUTPUT_DIRECTORY,
         },
         undefined
       )

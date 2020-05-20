@@ -8,7 +8,7 @@ const ADD_REPOSITORY_CONFIRMATION = {
   type: "confirm",
   name: "addRepository",
   message: "Do you want to add a repository to the list ?",
-  default: false
+  default: false,
 };
 
 /**
@@ -33,7 +33,7 @@ class ArtifactConfigurator {
       type: "input",
       name: "artifactVersion",
       message: "Version of the artifact:",
-      default: DEFAULT_ARTIFACT_VERSION
+      default: DEFAULT_ARTIFACT_VERSION,
     });
 
     this.questions.push({
@@ -41,7 +41,7 @@ class ArtifactConfigurator {
       name: "litVocabTermVersion",
       message: "Version string for LIT Vocab Term dependency:",
       // This may be overridden in extending classes.
-      default: this.litVocabTermVersion
+      default: this.litVocabTermVersion,
     });
     this.config.languageKeywordsToUnderscore = DEFAULT_KEYWORDS_TO_UNDERSCORE;
   }
@@ -57,7 +57,7 @@ class ArtifactConfigurator {
     debug(`[${this.language}] artifact generator`);
     this.config = {
       ...this.config,
-      ...(await inquirer.prompt(this.questions))
+      ...(await inquirer.prompt(this.questions)),
     };
     if (this.config.packagingToInit) {
       this.config.packaging = await this.promptPackaging(
