@@ -15,7 +15,7 @@ const RUN_PACKAGING = ["localMaven", "localNpmNode"];
 
 const ConfigAll = {
   _: "generate",
-  force: true,
+  // force: true,
   vocabListFile: "../lit-vocab/**/*.yml",
   vocabListFileIgnore: "../lit-vocab/lit-artifact-generator-js/**",
   npmRegistry: NPM_REGISTRY,
@@ -89,7 +89,7 @@ const ConfigInruptService = {
 
 const ConfigSolidCommon = {
   _: "generate",
-  // force: true,
+  force: true,
   vocabListFile:
     "../lit-vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
   outputDirectory: "../lit-vocab/solid-rdf-vocab/Common",
@@ -135,8 +135,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively ", async () => {
+  it("Generate ALL vocabs recursively", async () => {
+  // it.skip("Generate ALL vocabs recursively ", async () => {
     jest.setTimeout(120000);
     await generateVocabArtifact(ConfigAll);
   });

@@ -104,15 +104,23 @@ module.exports = class Resource {
   }
 
   static async getHttpResourceLastModificationTime(resource) {
+    debug(`Checking timestamp on resource [${resource}]...`);
     return axios({
       method: "head",
       url: resource
-    }).then(response => {
-      const lastModifiedDate = Date.parse(response.headers["last-modified"]);
-      return Number.isNaN(lastModifiedDate)
-        ? DEFAULT_MODIFICATION_DATE
-        : lastModifiedDate;
-    });
+    })
+      .then(response => {
+        const lastModifiedDate = Date.parse(response.headers["last-modified"]);
+        debug(`Checking timestamp on resource [${resource}], last modified is [${lastModifiedDate}]...`);
+        return Number.isNaN(lastModifiedDate)
+          ? DEFAULT_MODIFICATION_DATE
+          : lastModifiedDate;
+      })
+      .catch(error => {
+        throw new Error(
+          `Failed to lookup Last Modification Time for resource [${resource}]. Error: ${error}`
+        );
+      });
   }
 
   /**

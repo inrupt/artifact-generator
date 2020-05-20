@@ -108,7 +108,9 @@ class ArtifactGenerator {
       ARTIFACTS_INFO_FILENAME
     );
 
+    debug(`Check if artifact exists: [${artifactInfoPath}]...`);
     if (fs.existsSync(artifactInfoPath)) {
+      debug(`YES, it does: [${artifactInfoPath}]...`);
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
@@ -116,7 +118,7 @@ class ArtifactGenerator {
       const resources = this.configuration.getInputResources();
       for (let i = 0; i < resources.length; i += 1) {
         vocabsLastModificationTime.push(
-          Resource.getResourceLastModificationTime(resources[i])
+          await Resource.getResourceLastModificationTime(resources[i])
         );
       }
 
