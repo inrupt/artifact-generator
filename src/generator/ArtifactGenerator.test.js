@@ -336,8 +336,16 @@ describe("Artifact Generator", () => {
         artifactDirectoryRootOverride: "/GenerateOverride",
       };
 
-      // Get the current timestamp before we run our test...
-      const beforeTestTimestamp = new Date().getTime();
+      const generatedFile = path.join(
+        `${outputDirectory}`,
+        `${getArtifactDirectoryRoot(generateOverride)}`,
+        ArtifactGenerator.ARTIFACTS_INFO_FILENAME
+      );
+
+      // Get the file timestamp before we run our test...
+      const beforeTestTimestamp = await Resource.getResourceLastModificationTime(
+        generatedFile
+      );
 
       const config = new GeneratorConfiguration({
         vocabListFile:
@@ -353,19 +361,13 @@ describe("Artifact Generator", () => {
         artifactGenerator.runPublish("remote");
       });
 
-      const generatedFile = path.join(
-        `${outputDirectory}`,
-        `${getArtifactDirectoryRoot(generateOverride)}`,
-        ArtifactGenerator.ARTIFACTS_INFO_FILENAME
-      );
-
       expect(fs.existsSync(generatedFile)).toBe(true);
 
       // Check that the generated file was not modified.
       const lastModifiedTime = await Resource.getResourceLastModificationTime(
         generatedFile
       );
-      expect(lastModifiedTime).toBeLessThan(beforeTestTimestamp);
+      expect(lastModifiedTime).toEqual(beforeTestTimestamp);
     });
   });
 
