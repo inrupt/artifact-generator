@@ -9,8 +9,8 @@ const Resource = require("../Resource");
 const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
 const {
-  ARTIFACT_DIRECTORY_ROOT,
-  ARTIFACT_DIRECTORY_SOURCE_CODE
+  artifactDirectoryRoot,
+  artifactDirectorySourceCode
 } = require("../Util");
 
 const ARTIFACTS_INFO_TEMPLATE = path.join(
@@ -80,7 +80,7 @@ class ArtifactGenerator {
             this.artifactData,
             path.join(
               this.artifactData.outputDirectory,
-              ARTIFACT_DIRECTORY_ROOT(this.artifactData),
+              artifactDirectoryRoot(this.artifactData),
               ARTIFACTS_INFO_FILENAME
             )
           );
@@ -104,7 +104,7 @@ class ArtifactGenerator {
     let artifactsOutdated = false;
     const artifactInfoPath = path.join(
       this.artifactData.outputDirectory,
-      ARTIFACT_DIRECTORY_ROOT(this.artifactData),
+      artifactDirectoryRoot(this.artifactData),
       ARTIFACTS_INFO_FILENAME
     );
 
@@ -131,7 +131,7 @@ class ArtifactGenerator {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
-            ARTIFACT_DIRECTORY_ROOT(this.artifactData)
+            artifactDirectoryRoot(this.artifactData)
           )}], and there have been no modifications to the vocabularies since their generation on [${
             fs.statSync(artifactInfoPath).mtime
           }]. Use the '--force' command-line option to re-generate the artifacts regardless.`
@@ -153,7 +153,7 @@ class ArtifactGenerator {
         const result = artifactDetails;
         result.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
-          ARTIFACT_DIRECTORY_SOURCE_CODE(this.artifactData),
+          artifactDirectorySourceCode(this.artifactData),
           artifactDetails.artifactDirectoryName
         );
         return result;

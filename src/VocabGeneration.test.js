@@ -89,7 +89,7 @@ const ConfigInruptService = {
 
 const ConfigSolidCommon = {
   _: "generate",
-  force: true,
+  // force: true,
   vocabListFile:
     "../lit-vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
   outputDirectory: "../lit-vocab/solid-rdf-vocab/Common",

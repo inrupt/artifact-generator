@@ -5,15 +5,13 @@ const del = require("del");
 
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require("./Util");
+const { artifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
 const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
 const OUTPUT_DIRECTORY = "./test/Generated/watcher/initial/";
-const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CODE(
-  {}
-)}/Java`;
+const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${artifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
 const SLEEP_TIME = 200;

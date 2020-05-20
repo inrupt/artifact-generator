@@ -3,7 +3,7 @@ const path = require("path");
 const Handlebars = require("handlebars");
 const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
-const { ARTIFACT_DIRECTORY_ROOT } = require("../Util");
+const { artifactDirectoryRoot } = require("../Util");
 
 class FileGenerator {
   /**
@@ -136,14 +136,18 @@ class FileGenerator {
   }
 
   static createVersioningFiles(generalInfo) {
-    if (generalInfo.versioning && generalInfo.versioning.versioningTemplates) {
+    if (
+      generalInfo.generated &&
+      generalInfo.versioning &&
+      generalInfo.versioning.versioningTemplates
+    ) {
       generalInfo.versioning.versioningTemplates.forEach(associatedFile => {
         FileGenerator.createFileFromTemplate(
           path.join(associatedFile.template),
           generalInfo,
           path.join(
             generalInfo.outputDirectory,
-            ARTIFACT_DIRECTORY_ROOT(generalInfo),
+            artifactDirectoryRoot(generalInfo),
             associatedFile.fileName
           )
         );
@@ -172,7 +176,7 @@ class FileGenerator {
       dataWithMarkdownDescription,
       path.join(
         generalInfo.outputDirectory,
-        ARTIFACT_DIRECTORY_ROOT(generalInfo),
+        artifactDirectoryRoot(generalInfo),
         "README.md"
       )
     );

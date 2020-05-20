@@ -3,20 +3,20 @@ const path = require("path");
 const DEFAULT_DIRECTORY_ROOT = "/Generated";
 const DEFAULT_DIRECTORY_SOURCE_CODE = "SourceCodeArtifacts";
 
-function ARTIFACT_DIRECTORY_ROOT(options) {
+function artifactDirectoryRoot(options) {
   return options && options.artifactDirectoryRootOverride
     ? options.artifactDirectoryRootOverride
     : DEFAULT_DIRECTORY_ROOT;
 }
 
-function ARTIFACT_DIRECTORY_SOURCE_CODE(options) {
+function artifactDirectorySourceCode(options) {
   return path.join(
-    ARTIFACT_DIRECTORY_ROOT(options),
+    artifactDirectoryRoot(options),
     DEFAULT_DIRECTORY_SOURCE_CODE
   );
 }
 
 module.exports.DEFAULT_DIRECTORY_ROOT = DEFAULT_DIRECTORY_ROOT;
 module.exports.DEFAULT_DIRECTORY_SOURCE_CODE = DEFAULT_DIRECTORY_SOURCE_CODE;
-module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
-module.exports.ARTIFACT_DIRECTORY_SOURCE_CODE = ARTIFACT_DIRECTORY_SOURCE_CODE;
+module.exports.artifactDirectoryRoot = artifactDirectoryRoot;
+module.exports.artifactDirectorySourceCode = artifactDirectorySourceCode;

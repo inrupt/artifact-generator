@@ -2,36 +2,36 @@ const path = require("path");
 const {
   DEFAULT_DIRECTORY_ROOT,
   DEFAULT_DIRECTORY_SOURCE_CODE,
-  ARTIFACT_DIRECTORY_ROOT,
-  ARTIFACT_DIRECTORY_SOURCE_CODE
+  artifactDirectoryRoot,
+  artifactDirectorySourceCode
 } = require("./Util");
 
 describe("Test override root", () => {
   it("should return default if no input data", async () => {
-    expect(ARTIFACT_DIRECTORY_ROOT()).toEqual(DEFAULT_DIRECTORY_ROOT);
+    expect(artifactDirectoryRoot()).toEqual(DEFAULT_DIRECTORY_ROOT);
   });
 
   it("should return default if override no in input data", async () => {
-    expect(ARTIFACT_DIRECTORY_ROOT({})).toEqual(DEFAULT_DIRECTORY_ROOT);
+    expect(artifactDirectoryRoot({})).toEqual(DEFAULT_DIRECTORY_ROOT);
   });
 
   it("should override default", async () => {
     const override = "Whatever_Dir";
     expect(
-      ARTIFACT_DIRECTORY_ROOT({ artifactDirectoryRootOverride: override })
+      artifactDirectoryRoot({ artifactDirectoryRootOverride: override })
     ).toEqual(override);
   });
 });
 
 describe("Test override source code", () => {
   it("should return default if no input data", async () => {
-    expect(ARTIFACT_DIRECTORY_SOURCE_CODE()).toEqual(
+    expect(artifactDirectorySourceCode()).toEqual(
       path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE)
     );
   });
 
   it("should return default if override no in input data", async () => {
-    expect(ARTIFACT_DIRECTORY_SOURCE_CODE({})).toEqual(
+    expect(artifactDirectorySourceCode({})).toEqual(
       path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE)
     );
   });
@@ -39,7 +39,7 @@ describe("Test override source code", () => {
   it("should override default", async () => {
     const override = "Whatever_Dir";
     expect(
-      ARTIFACT_DIRECTORY_SOURCE_CODE({
+      artifactDirectorySourceCode({
         artifactDirectoryRootOverride: override
       })
     ).toEqual(path.join(override, DEFAULT_DIRECTORY_SOURCE_CODE));
