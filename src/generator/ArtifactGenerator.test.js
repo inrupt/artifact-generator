@@ -10,8 +10,8 @@ const inquirer = require("inquirer");
 const ArtifactGenerator = require("./ArtifactGenerator");
 const GeneratorConfiguration = require("../config/GeneratorConfiguration");
 const {
-  artifactDirectoryRoot,
-  artifactDirectorySourceCode,
+  getArtifactDirectoryRoot,
+  getArtifactDirectorySourceCode,
 } = require("../Util");
 const Resource = require("../Resource");
 
@@ -32,7 +32,7 @@ beforeEach(() => {
 describe("Artifact Generator", () => {
   describe("Processing vocab list file.", () => {
     function verifyVocabList(outputDirectory) {
-      const outputDirectoryJavaScript = `${outputDirectory}${artifactDirectorySourceCode()}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -69,7 +69,7 @@ describe("Artifact Generator", () => {
         expect.stringContaining('"version": "10.11.12"')
       );
 
-      const outputDirectoryJava = `${outputDirectory}${artifactDirectorySourceCode()}/Java`;
+      const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       const pomOutput = fs
         .readFileSync(`${outputDirectoryJava}/pom.xml`)
         .toString();
@@ -134,7 +134,7 @@ describe("Artifact Generator", () => {
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavaScript = `${outputDirectory}${artifactDirectorySourceCode()}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
       const packageOutput = fs
@@ -207,7 +207,7 @@ describe("Artifact Generator", () => {
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavaScript = `${outputDirectory}${artifactDirectorySourceCode()}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
       const packageOutput = fs
@@ -220,7 +220,7 @@ describe("Artifact Generator", () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
-        artifactDirectorySourceCode(),
+        getArtifactDirectorySourceCode(),
         "JavaScript",
         "package.json"
       );
@@ -251,7 +251,7 @@ describe("Artifact Generator", () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
-        artifactDirectorySourceCode(),
+        getArtifactDirectorySourceCode(),
         "JavaScript",
         "package.json"
       );
@@ -305,22 +305,22 @@ describe("Artifact Generator", () => {
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(
-          `${outputDirectory}${artifactDirectorySourceCode()}/Java/mvn-publishLocal`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishLocal`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}${artifactDirectorySourceCode()}/Java/mvn-publishRemote`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishRemote`
         )
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${artifactDirectorySourceCode()}/JavaScript/npm-publishLocal`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishLocal`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${artifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
         )
       ).toBe(false);
     });
@@ -355,7 +355,7 @@ describe("Artifact Generator", () => {
 
       const generatedFile = path.join(
         `${outputDirectory}`,
-        `${artifactDirectoryRoot(generateOverride)}`,
+        `${getArtifactDirectoryRoot(generateOverride)}`,
         ArtifactGenerator.ARTIFACTS_INFO_FILENAME
       );
 
@@ -389,12 +389,12 @@ describe("Artifact Generator", () => {
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(
-          `${outputDirectory}${artifactDirectorySourceCode()}/Java/pom.xml`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/pom.xml`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${artifactDirectorySourceCode()}/JavaScript/package.json`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/package.json`
         )
       ).toBe(true);
     });

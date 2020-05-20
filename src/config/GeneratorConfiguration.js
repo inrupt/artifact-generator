@@ -8,7 +8,7 @@ const CommandLine = require("../CommandLine");
 
 const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
 
-const { artifactDirectorySourceCode } = require("../Util");
+const { getArtifactDirectorySourceCode } = require("../Util");
 
 const DEFAULT_PUBLISH_KEY = "_default";
 
@@ -502,7 +502,7 @@ class GeneratorConfiguration {
 
     cliConfig.outputDirectoryForArtifact = `${
       args.outputDirectory
-    }${artifactDirectorySourceCode(args)}/JavaScript`;
+    }${getArtifactDirectorySourceCode(args)}/JavaScript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;

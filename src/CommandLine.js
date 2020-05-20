@@ -4,8 +4,8 @@ const ChildProcess = require("child_process");
 const debug = require("debug")("lit-artifact-generator:CommandLine");
 
 const {
-  artifactDirectoryRoot,
-  artifactDirectorySourceCode,
+  getArtifactDirectoryRoot,
+  getArtifactDirectorySourceCode,
 } = require("./Util");
 
 module.exports = class CommandLine {
@@ -184,14 +184,14 @@ module.exports = class CommandLine {
       debug(
         `Running 'mvn install' for artifact [${
           data.artifactName
-        }] in directory [${data.outputDirectory}${artifactDirectorySourceCode(
-          data
-        )}/Java]...`
+        }] in directory [${
+          data.outputDirectory
+        }${getArtifactDirectorySourceCode(data)}/Java]...`
       );
       // Quick addition to also support Maven install for Java artifacts.
       const javaDirectory = `${
         data.outputDirectory
-      }${artifactDirectorySourceCode(data)}/Java`;
+      }${getArtifactDirectorySourceCode(data)}/Java`;
       if (data.artifactToGenerate) {
         data.artifactToGenerate.forEach((artifact) => {
           if (artifact.programmingLanguage.toLowerCase() === "java") {
@@ -247,7 +247,7 @@ module.exports = class CommandLine {
 
     const inputResource = data.inputResources[0];
     const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
-    const destDirectory = `${data.outputDirectory}${artifactDirectoryRoot(
+    const destDirectory = `${data.outputDirectory}${getArtifactDirectoryRoot(
       data
     )}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;

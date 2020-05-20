@@ -260,7 +260,7 @@ function runGeneration(argv) {
       debug(
         `\nGeneration process successful to directory [${path.join(
           data.outputDirectory,
-          artifactDirectoryRoot(data)
+          getArtifactDirectoryRoot(data)
         )}]!`
       );
       process.exit(0);
