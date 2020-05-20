@@ -3,7 +3,7 @@ const path = require("path");
 const Handlebars = require("handlebars");
 const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
-const ARTIFACT_DIRECTORY_ROOT = "./Generated";
+const { ARTIFACT_DIRECTORY_ROOT } = require("../Util");
 
 class FileGenerator {
   /**
@@ -143,7 +143,7 @@ class FileGenerator {
           generalInfo,
           path.join(
             generalInfo.outputDirectory,
-            ARTIFACT_DIRECTORY_ROOT,
+            ARTIFACT_DIRECTORY_ROOT(generalInfo),
             associatedFile.fileName
           )
         );
@@ -172,7 +172,7 @@ class FileGenerator {
       dataWithMarkdownDescription,
       path.join(
         generalInfo.outputDirectory,
-        ARTIFACT_DIRECTORY_ROOT,
+        ARTIFACT_DIRECTORY_ROOT(generalInfo),
         "README.md"
       )
     );

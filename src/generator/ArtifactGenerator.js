@@ -8,11 +8,11 @@ const VocabGenerator = require("./VocabGenerator");
 const Resource = require("../Resource");
 const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
-const ARTIFACT_DIRECTORY_ROOT = "/Generated";
-const ARTIFACT_DIRECTORY_SOURCE_CODE = path.join(
+const {
   ARTIFACT_DIRECTORY_ROOT,
-  "SourceCodeArtifacts"
-);
+  ARTIFACT_DIRECTORY_SOURCE_CODE
+} = require("../Util");
+
 const ARTIFACTS_INFO_TEMPLATE = path.join(
   __dirname,
   "..",
@@ -70,17 +70,21 @@ class ArtifactGenerator {
       .then(() => FileGenerator.createVersioningFiles(this.artifactData))
       .then(() => this.generateLicense())
       .then(() => {
-        // This file is generated after all the artifacts. This way, if a vocabulary resource
-        // has been modified more recently than this file, we know that the artifacts are outdated
-        FileGenerator.createFileFromTemplate(
-          ARTIFACTS_INFO_TEMPLATE,
-          this.artifactData,
-          path.join(
-            this.artifactData.outputDirectory,
-            ARTIFACT_DIRECTORY_ROOT,
-            ARTIFACTS_INFO_FILENAME
-          )
-        );
+        // This file is generated after all the artifacts (if we didn't skip the
+        // generation). This way, if a vocabulary resource has been modified
+        // more recently than this file, we know that the artifacts are
+        // outdated.
+        if (this.artifactData.generated) {
+          FileGenerator.createFileFromTemplate(
+            ARTIFACTS_INFO_TEMPLATE,
+            this.artifactData,
+            path.join(
+              this.artifactData.outputDirectory,
+              ARTIFACT_DIRECTORY_ROOT(this.artifactData),
+              ARTIFACTS_INFO_FILENAME
+            )
+          );
+        }
       })
       .then(() => this.artifactData)
       .catch(error => {
@@ -90,15 +94,20 @@ class ArtifactGenerator {
 
   async isGenerationNecessary() {
     // The --force option overrides the logic of this function
-    if (this.artifactData.force) {
-      return true;
-    }
+    this.artifactData.artifactsOutdated =
+      this.artifactData.force || (await this.checkIfGenerationNecessary());
+
+    return this.artifactData.artifactsOutdated;
+  }
+
+  async checkIfGenerationNecessary() {
     let artifactsOutdated = false;
     const artifactInfoPath = path.join(
       this.artifactData.outputDirectory,
-      ARTIFACT_DIRECTORY_ROOT,
+      ARTIFACT_DIRECTORY_ROOT(this.artifactData),
       ARTIFACTS_INFO_FILENAME
     );
+
     if (fs.existsSync(artifactInfoPath)) {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
@@ -110,17 +119,19 @@ class ArtifactGenerator {
           Resource.getResourceLastModificationTime(resources[i])
         );
       }
+
       await Promise.all(vocabsLastModificationTime).then(values => {
         // The artifact is outdated if one vocabulary is more recent than the artifact
         artifactsOutdated = values.reduce((accumulator, lastModif) => {
           return lastGenerationTime < lastModif || accumulator;
         }, artifactsOutdated);
       });
+
       if (!artifactsOutdated) {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
-            ARTIFACT_DIRECTORY_ROOT
+            ARTIFACT_DIRECTORY_ROOT(this.artifactData)
           )}], and there have been no modifications to the vocabularies since their generation on [${
             fs.statSync(artifactInfoPath).mtime
           }]. Use the '--force' command-line option to re-generate the artifacts regardless.`
@@ -142,7 +153,7 @@ class ArtifactGenerator {
         const result = artifactDetails;
         result.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
-          ARTIFACT_DIRECTORY_SOURCE_CODE,
+          ARTIFACT_DIRECTORY_SOURCE_CODE(this.artifactData),
           artifactDetails.artifactDirectoryName
         );
         return result;
@@ -368,21 +379,23 @@ class ArtifactGenerator {
    */
   runPublish(key) {
     const generationData = this.configuration.configuration;
-    // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
-    // Ideally, new processes should be spawned, each running a packaging command, but the fork
-    // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
-    // so it is more work than expected. Running it sequentially is fine for now.
-    for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
-      ArtifactGenerator.publishArtifact(
-        generationData.artifactToGenerate[i],
-        key
-      );
+
+    if (generationData.artifactsOutdated) {
+      // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
+      // Ideally, new processes should be spawned, each running a packaging command, but the fork
+      // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
+      // so it is more work than expected. Running it sequentially is fine for now.
+      for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
+        ArtifactGenerator.publishArtifact(
+          generationData.artifactToGenerate[i],
+          key
+        );
+      }
     }
+
     return generationData;
   }
 }
 
 module.exports = ArtifactGenerator;
-module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
-module.exports.ARTIFACT_DIRECTORY_SOURCE_CODE = ARTIFACT_DIRECTORY_SOURCE_CODE;
 module.exports.ARTIFACTS_INFO_FILENAME = ARTIFACTS_INFO_FILENAME;

@@ -5,14 +5,12 @@ const del = require("del");
 const path = require("path");
 
 const VocabGenerator = require("./generator/VocabGenerator");
-const {
-  ARTIFACT_DIRECTORY_SOURCE_CODE
-} = require("./generator/ArtifactGenerator");
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require("./Util");
 
 describe("Supported Data Type", () => {
   it("should test the special-case handling for the OWL vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/owl-test";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -65,7 +63,7 @@ describe("Supported Data Type", () => {
 
   it("should test the special-case handling for the HTTP vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/http-test";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -118,7 +116,7 @@ describe("Supported Data Type", () => {
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/data-types";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(

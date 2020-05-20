@@ -8,8 +8,8 @@ const CommandLine = require("../CommandLine");
 
 const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
 
-const ARTIFACT_DIRECTORY_ROOT = "/Generated";
-const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require("../Util");
+
 const DEFAULT_PUBLISH_KEY = "_default";
 
 const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
@@ -500,7 +500,9 @@ class GeneratorConfiguration {
     // The most common case for using the command line is providing a single vocab anyways.
     cliConfig.vocabList = [GeneratorConfiguration.collectVocabFromCLI(args)];
 
-    cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    cliConfig.outputDirectoryForArtifact = `${
+      args.outputDirectory
+    }${ARTIFACT_DIRECTORY_SOURCE_CODE(args)}/JavaScript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;
@@ -602,6 +604,5 @@ class GeneratorConfiguration {
 
 module.exports = GeneratorConfiguration;
 module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;
-module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
 module.exports.DEFAULT_PUBLISH_KEY = DEFAULT_PUBLISH_KEY;
 module.exports.CONFIG_SOURCE_COMMAND_LINE = CONFIG_SOURCE_COMMAND_LINE;
