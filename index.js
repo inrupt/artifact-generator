@@ -11,9 +11,7 @@ const path = require("path");
 const debugInstance = require("debug");
 const yargs = require("yargs");
 const App = require("./src/App");
-const {
-  ARTIFACT_DIRECTORY_ROOT
-} = require("./src/config/GeneratorConfiguration");
+const { artifactDirectoryRoot } = require("./src/Util");
 const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
@@ -262,7 +260,7 @@ function runGeneration(argv) {
       debug(
         `\nGeneration process successful to directory [${path.join(
           data.outputDirectory,
-          ARTIFACT_DIRECTORY_ROOT
+          artifactDirectoryRoot(data)
         )}]!`
       );
       process.exit(0);

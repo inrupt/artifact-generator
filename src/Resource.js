@@ -104,7 +104,6 @@ module.exports = class Resource {
   }
 
   static async getHttpResourceLastModificationTime(resource) {
-    debug(`Checking timestamp on resource [${resource}]...`);
     return axios({
       method: "head",
       url: resource
