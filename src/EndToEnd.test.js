@@ -10,14 +10,12 @@ const Resource = require("./Resource");
 
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
-const {
-  ARTIFACT_DIRECTORY_SOURCE_CODE
-} = require("./generator/ArtifactGenerator");
+const { getArtifactDirectorySourceCode } = require("./Util");
 
 const LIT_VOCAB_TERM_VERSION = "99.999.01";
 
-const doNothingPromise = data => {
-  return new Promise(resolve => {
+const doNothingPromise = (data) => {
+  return new Promise((resolve) => {
     resolve(data);
   });
 };
@@ -36,7 +34,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
-          noprompt: true
+          noprompt: true,
         }),
         doNothingPromise
       );
@@ -56,7 +54,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [errorFilename],
           outputDirectory,
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -78,7 +76,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             inputResources: [errorFilename],
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -94,7 +92,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file", async () => {
       const outputDirectory = "test/Generated/EndToEnd/create-ontology/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -106,7 +104,7 @@ describe("End-to-end tests", () => {
             license: { name: "MIT" },
             litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
             moduleNamePrefix: "lit-generated-vocab-",
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -150,7 +148,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file using the rdflib", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-rdflib/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -159,7 +157,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-rdflib.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -187,7 +185,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file using the native RDF4J (and not LIT Vocab Term)", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdf4j/";
-      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -197,7 +195,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -233,7 +231,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology file using native RdfExt (and not LIT Vocab Term)", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdfext/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -243,7 +241,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfext.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -277,7 +275,7 @@ describe("End-to-end tests", () => {
 
     it("should create from an ontology link", async () => {
       const outputDirectory = "test/Generated/EndToEnd/create-ontology-link/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -287,7 +285,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -317,21 +315,21 @@ describe("End-to-end tests", () => {
 
     it("should be able to fully extend an ontology with multiple input files", async () => {
       const outputDirectory = "test/Generated/EndToEnd/multiple-inputs/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
           inputResources: [
             "./test/resources/vocabs/schema-snippet.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocabs/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "lit-generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -372,28 +370,28 @@ describe("End-to-end tests", () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
             "./test/resources/vocabs/Person.ttl"
           );
-        }
+        },
       };
       rdfFetch.mockImplementation(() => {
         return Promise.resolve(rdfFetchMock);
       });
 
       const outputDirectory = "test/Generated/EndToEnd/multiple-urls/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
           inputResources: [
             "https://schema.org/Person.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocabs/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -423,7 +421,7 @@ describe("End-to-end tests", () => {
 
     it("should be able to extend an ontology but only creates triples from extension file", async () => {
       const outputDirectory = "test/Generated/EndToEnd/extension-file/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -436,7 +434,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -482,14 +480,14 @@ describe("End-to-end tests", () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
             "./test/resources/vocabs/schema-inrupt-ext.ttl"
           );
-        }
+        },
       };
       rdfFetch.mockImplementation(() => {
         return Promise.resolve(rdfFetchMock);
       });
 
       const outputDirectory = "test/Generated/EndToEnd/extension-urls/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -501,7 +499,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -543,7 +541,7 @@ describe("End-to-end tests", () => {
 
     it("should take in a version for the output module", async () => {
       const outputDirectory = "test/Generated/EndToEnd/module-version/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -556,7 +554,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -573,7 +571,7 @@ describe("End-to-end tests", () => {
     it("should handle creating generated directory if it does not exist already", async () => {
       const outputDirectory =
         "test/Generated/EndToEnd/dest-directory-not-exist/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator(
@@ -585,7 +583,7 @@ describe("End-to-end tests", () => {
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -599,7 +597,7 @@ describe("End-to-end tests", () => {
 
     it("module names should by default start with @lit/generated-vocab-*", async () => {
       const outputDirectory = "test/Generated/EndToEnd/module-default-name/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       let artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -610,7 +608,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -633,7 +631,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -650,7 +648,7 @@ describe("End-to-end tests", () => {
 
     it("should add a description inside the package.json", async () => {
       const outputDirectory = "test/Generated/EndToEnd/package-description/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -663,7 +661,7 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -680,7 +678,7 @@ describe("End-to-end tests", () => {
 
     it("should add authors inside the package.json", async () => {
       const outputDirectory = "test/Generated/EndToEnd/authors-in-package/";
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
 
       const artifactGenerator = new ArtifactGenerator(
@@ -693,7 +691,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         })
       );
 
@@ -708,7 +706,7 @@ describe("End-to-end tests", () => {
   describe("Build Java artifacts", () => {
     it("should create from an ontology file", async () => {
       const outputDirectory = "test/Generated/EndToEnd/generate-java";
-      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -716,7 +714,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             vocabListFile: "./test/resources/vocabs/vocab-list.yml",
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )
@@ -753,7 +751,7 @@ describe("End-to-end tests", () => {
   describe("Specific YAML configurations", () => {
     it("should pick up the strictness of the LitVocabTerm from the YAML", async () => {
       const outputDirectory = "test/Generated/EndToEnd/generate-strict/";
-      const outputDirectoryJS = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -762,7 +760,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
             // The output directory must be set, because a default value is set by yargs in a regular use case
             outputDirectory,
-            noprompt: true
+            noprompt: true,
           },
           doNothingPromise
         )

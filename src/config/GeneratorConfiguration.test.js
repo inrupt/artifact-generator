@@ -15,19 +15,19 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
     description:
       "Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex",
     inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-    termSelectionResource: "test/resources/vocabs/schema-inrupt-ext.ttl"
+    termSelectionResource: "test/resources/vocabs/schema-inrupt-ext.ttl",
   },
   {
     description: "Some dummy online vocabulary",
     nameAndPrefixOverride: "dummy",
-    inputResources: ["http://some.vocabulary.online/dummy"]
-  }
+    inputResources: ["http://some.vocabulary.online/dummy"],
+  },
 ];
 
 const EXPECTED_VOCAB_LIST_FROM_CLI = [
   {
-    inputResources: ["test/resources/vocabs/schema-snippet.ttl"]
-  }
+    inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+  },
 ];
 
 // This YAML file will always match the latest version of the generator
@@ -143,7 +143,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           vocabListFile:
             "./test/resources/vocabs/vocab-list-including-online.yml",
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -160,7 +160,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           vocabListFile:
             "./test/resources/yamlConfig/vocab-list-version-mismatch.yml",
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -187,7 +187,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           vocabListFile: configPath,
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -203,7 +203,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           vocabListFile: path.join(configPath, "vocab-list.yml"),
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -260,7 +260,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: programmingLanguage,
-              noprompt: true
+              noprompt: true,
             },
             undefined
           )
@@ -277,7 +277,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: packaging,
-              noprompt: true
+              noprompt: true,
             },
             undefined
           )
@@ -297,7 +297,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: versioning,
-              noprompt: true
+              noprompt: true,
             },
             undefined
           )
@@ -326,7 +326,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -350,7 +350,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           inputResources: [absolutePath],
           moduleNamePrefix: "@lit/generated-vocab-",
-          noprompt: true
+          noprompt: true,
         },
         undefined
       );
@@ -367,7 +367,7 @@ describe("Generator configuration", () => {
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           moduleNamePrefix: "@lit/generated-vocab-",
           noprompt: true,
-          npmRegistry: "http://my.registry.ninja"
+          npmRegistry: "http://my.registry.ninja",
         },
         undefined
       );
@@ -387,7 +387,7 @@ describe("Generator configuration", () => {
 
       const generatorConfiguration = new GeneratorConfiguration({
         inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-        noprompt: true
+        noprompt: true,
       });
       expect(
         generatorConfiguration.completeInitialConfiguration()

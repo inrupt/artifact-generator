@@ -13,7 +13,7 @@ const vocabMetadata = rdf
   .addAll([
     rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
     rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
-    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, "rdf-ext")
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, "rdf-ext"),
   ]);
 
 describe("Dataset Handler", () => {
@@ -24,7 +24,7 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
-        inputResources: ["does not matter"]
+        inputResources: ["does not matter"],
       });
 
       const result = handler.buildTemplateInput();
@@ -47,7 +47,7 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(RDFS.label, RDFS.subPropertyOf, SKOS.definition));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
-        inputResources: ["does not matter"]
+        inputResources: ["does not matter"],
       });
 
       const result = handler.buildTemplateInput();
@@ -63,7 +63,7 @@ describe("Dataset Handler", () => {
       .add(rdf.quad(RDF.langString, RDF.type, RDFS.Datatype));
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
     const result = handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
@@ -82,7 +82,7 @@ describe("Dataset Handler", () => {
       );
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
 
     const result = handler.buildTemplateInput();
@@ -104,11 +104,11 @@ describe("Dataset Handler", () => {
         rdf.quad(rdf.namedNode(testTermProperty), RDF.type, RDFS.Datatype),
 
         rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDF.Property),
-        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDFS.Literal)
+        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDFS.Literal),
       ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
 
     const result = handler.buildTemplateInput();
@@ -130,11 +130,11 @@ describe("Dataset Handler", () => {
       .dataset()
       .addAll([
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
-        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
       ]);
 
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
 
     expect(() => {
@@ -150,11 +150,11 @@ describe("Dataset Handler", () => {
       .dataset()
       .addAll([
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
-        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
       ]);
 
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
 
     expect(handler.findPreferredNamespacePrefix()).toEqual("foaf");
@@ -168,11 +168,11 @@ describe("Dataset Handler", () => {
       .dataset()
       .addAll([
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
-        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)
+        rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
       ]);
 
     const handler = new DatasetHandler(vocab, rdf.dataset(), {
-      inputResources: ["does not matter"]
+      inputResources: ["does not matter"],
     });
 
     expect(() => {
@@ -191,7 +191,7 @@ describe("Dataset Handler", () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"],
       namespaceOverride,
-      nameAndPrefixOverride: "does not matter"
+      nameAndPrefixOverride: "does not matter",
     });
 
     const result = handler.buildTemplateInput();
@@ -212,13 +212,13 @@ describe("Dataset Handler", () => {
           rdf.namedNode(longestTerm),
           RDF.type,
           `${otherNamespace}someClass`
-        )
+        ),
       ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"],
       namespaceOverride,
-      nameAndPrefixOverride: "does not matter"
+      nameAndPrefixOverride: "does not matter",
     });
 
     const result = handler.buildTemplateInput();

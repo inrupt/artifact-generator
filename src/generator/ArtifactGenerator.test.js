@@ -9,14 +9,18 @@ const inquirer = require("inquirer");
 
 const ArtifactGenerator = require("./ArtifactGenerator");
 const GeneratorConfiguration = require("../config/GeneratorConfiguration");
-const { ARTIFACT_DIRECTORY_SOURCE_CODE } = require("./ArtifactGenerator");
+const {
+  getArtifactDirectoryRoot,
+  getArtifactDirectorySourceCode,
+} = require("../Util");
+const Resource = require("../Resource");
 
 const MOCKED_ARTIFACT_NAME = "testArtifact";
 const MOCKED_LIT_VOCAB_TERM_VERSION = "0.0.1";
 
 const MOCKED_USER_INPUT = {
   artifactName: MOCKED_ARTIFACT_NAME,
-  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION
+  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
 };
 
 beforeEach(() => {
@@ -28,7 +32,7 @@ beforeEach(() => {
 describe("Artifact Generator", () => {
   describe("Processing vocab list file.", () => {
     function verifyVocabList(outputDirectory) {
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -65,7 +69,7 @@ describe("Artifact Generator", () => {
         expect.stringContaining('"version": "10.11.12"')
       );
 
-      const outputDirectoryJava = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       const pomOutput = fs
         .readFileSync(`${outputDirectoryJava}/pom.xml`)
         .toString();
@@ -82,7 +86,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/vocabs/vocab-list.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -99,7 +103,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/versioning/vocab-list.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -123,14 +127,14 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^1.0.10",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        supportBundling: false
+        supportBundling: false,
       });
       config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
       const packageOutput = fs
@@ -147,7 +151,7 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
-        litVocabTermVersion: "^1.0.10"
+        litVocabTermVersion: "^1.0.10",
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -174,7 +178,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
-        force: true
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -197,13 +201,13 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        supportBundling: true
+        supportBundling: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
       const packageOutput = fs
@@ -216,7 +220,7 @@ describe("Artifact Generator", () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
-        ARTIFACT_DIRECTORY_SOURCE_CODE,
+        getArtifactDirectorySourceCode(),
         "JavaScript",
         "package.json"
       );
@@ -228,7 +232,7 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -247,7 +251,7 @@ describe("Artifact Generator", () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
-        ARTIFACT_DIRECTORY_SOURCE_CODE,
+        getArtifactDirectorySourceCode(),
         "JavaScript",
         "package.json"
       );
@@ -260,7 +264,7 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        force: true
+        force: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -279,7 +283,7 @@ describe("Artifact Generator", () => {
   });
 
   describe("Publishing artifacts.", () => {
-    it("should publish artifacts locally if the publication option is specified", async () => {
+    it("should publish artifacts locally if the publication option is specified, and we regenerated", async () => {
       const outputDirectory =
         "test/Generated/ArtifactGenerator/publish/optionSetLocal";
       del.sync([`${outputDirectory}/*`]);
@@ -288,74 +292,80 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
+        force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
+
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
         artifactGenerator.runPublish("local");
       });
+
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(
-          `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishLocal`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishLocal`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishRemote`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishRemote`
         )
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishLocal`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishLocal`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishRemote`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
         )
       ).toBe(false);
     });
 
-    it("should publish artifacts remotely if the publication option is specified", async () => {
-      const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/optionSetRemote";
-      del.sync([`${outputDirectory}/*`]);
+    it("should not publish artifacts if generation was skipped", async () => {
+      const outputDirectory = "test/resources/expectedOutputs/skipGeneration";
+
+      // To test that generation is being skipped we need a generated output to
+      // already exist in our source repository. Therefore we have to override
+      // the default generated directory, since we .gitignore that normally to
+      // specifically prevent checking that in.
+      const generateOverride = {
+        artifactDirectoryRootOverride: "/GenerateOverride",
+      };
+
+      // Get the current timestamp before we run our test...
+      const beforeTestTimestamp = new Date().getTime();
 
       const config = new GeneratorConfiguration({
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
+        ...generateOverride,
       });
+
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
         artifactGenerator.runPublish("remote");
       });
-      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
 
-      expect(
-        fs.existsSync(
-          `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishRemote`
-        )
-      ).toBe(true);
-      expect(
-        fs.existsSync(
-          `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/mvn-publishLocal`
-        )
-      ).toBe(false);
-      expect(
-        fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishLocal`
-        )
-      ).toBe(false);
-      expect(
-        fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/npm-publishRemote`
-        )
-      ).toBe(true);
+      const generatedFile = path.join(
+        `${outputDirectory}`,
+        `${getArtifactDirectoryRoot(generateOverride)}`,
+        ArtifactGenerator.ARTIFACTS_INFO_FILENAME
+      );
+
+      expect(fs.existsSync(generatedFile)).toBe(true);
+
+      // Check that the generated file was not modified.
+      const lastModifiedTime = await Resource.getResourceLastModificationTime(
+        generatedFile
+      );
+      expect(lastModifiedTime).toBeLessThan(beforeTestTimestamp);
     });
   });
 
@@ -369,7 +379,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/backwardCompatibility/vocab-list_no-packaging.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -379,12 +389,12 @@ describe("Artifact Generator", () => {
       // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
       expect(
         fs.existsSync(
-          `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java/pom.xml`
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/pom.xml`
         )
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript/package.json`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/package.json`
         )
       ).toBe(true);
     });
@@ -399,7 +409,7 @@ describe("Artifact Generator", () => {
       const config = new GeneratorConfiguration({
         vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
         outputDirectory,
-        noprompt: true
+        noprompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);

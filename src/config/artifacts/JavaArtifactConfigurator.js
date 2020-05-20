@@ -18,22 +18,22 @@ const MAVEN_ARTIFACT_PROMPT = [
     type: "input",
     name: "groupId",
     message: "Enter Maven groupId",
-    default: "com.example.groupId"
+    default: "com.example.groupId",
   },
   {
     type: "input",
     name: "publishLocal",
     message:
       "Enter the command used to publish your artifacts locally (this can be used by the watcher on each modification of the vocabulary)",
-    default: "mvn install"
+    default: "mvn install",
   },
   {
     type: "input",
     name: "publishRemote",
     message:
       "Enter the command used to deploy your artifacts to remote repositories",
-    default: "mvn deploy"
-  }
+    default: "mvn deploy",
+  },
 ];
 
 const MAVEN_PACKAGING_TEMPLATES_PROMPT = [
@@ -41,28 +41,28 @@ const MAVEN_PACKAGING_TEMPLATES_PROMPT = [
     type: "input",
     name: "template",
     message: "What POM file template do you want to use ?",
-    default: path.join("java", "rdf4j", "pom.hbs")
-  }
+    default: path.join("java", "rdf4j", "pom.hbs"),
+  },
 ];
 
 const MAVEN_REPOSITORY_PROMPT = [
   {
     type: "input",
     name: "id",
-    message: "What is the repository id?"
+    message: "What is the repository id?",
   },
   {
     type: "list",
     name: "type",
     message: "What type of repository is it?",
     choices: ["repository", "snapshotRepository"],
-    default: "repository"
+    default: "repository",
   },
   {
     type: "input",
     name: "url",
-    message: "What is the repository url?"
-  }
+    message: "What is the repository url?",
+  },
 ];
 
 class JavaArtifactConfigurator extends ArtifactConfigurator {
@@ -75,13 +75,13 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
         type: "input",
         name: "javaPackageName",
         message: "Enter Java package name",
-        default: "com.example.java.packagename"
+        default: "com.example.java.packagename",
       },
       {
         type: "checkbox",
         message: "Select packaging tools",
         name: "packagingToInit",
-        choices: [{ name: "maven" }]
+        choices: [{ name: "maven" }],
       }
     );
 
@@ -108,21 +108,21 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
   static async promptMaven() {
     // Naming the packaging tool makes the finished config file easier to read
     const mavenConfig = {
-      packagingTool: "maven"
+      packagingTool: "maven",
     };
     const groupIdAndRepo = await inquirer.prompt(MAVEN_ARTIFACT_PROMPT);
     mavenConfig.groupId = groupIdAndRepo.groupId;
     mavenConfig.publish = [
       {
         key: "local",
-        command: groupIdAndRepo.publishLocal
+        command: groupIdAndRepo.publishLocal,
       },
-      { key: "remote", command: groupIdAndRepo.publishRemote }
+      { key: "remote", command: groupIdAndRepo.publishRemote },
     ];
 
     const packagingTemplate = {
       fileName: "pom.xml",
-      ...(await inquirer.prompt(MAVEN_PACKAGING_TEMPLATES_PROMPT))
+      ...(await inquirer.prompt(MAVEN_PACKAGING_TEMPLATES_PROMPT)),
     };
     mavenConfig.packagingTemplates = [packagingTemplate];
     // The following lines require an await in loop to enable user input
@@ -134,7 +134,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
       }
       mavenConfig.repository.push({
         // eslint-disable-next-line no-await-in-loop
-        ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT))
+        ...(await inquirer.prompt(MAVEN_REPOSITORY_PROMPT)),
       });
     }
     return mavenConfig;

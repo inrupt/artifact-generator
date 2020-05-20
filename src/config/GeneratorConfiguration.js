@@ -8,8 +8,8 @@ const CommandLine = require("../CommandLine");
 
 const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
 
-const ARTIFACT_DIRECTORY_ROOT = "/Generated";
-const ARTIFACT_DIRECTORY_SOURCE_CODE = `${ARTIFACT_DIRECTORY_ROOT}/SourceCodeArtifacts`;
+const { getArtifactDirectorySourceCode } = require("../Util");
+
 const DEFAULT_PUBLISH_KEY = "_default";
 
 const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
@@ -23,20 +23,20 @@ const WEBPACK_DEFAULT = {
   packagingTemplates: [
     {
       templateInternal: "webpack.dev.config.hbs",
-      fileName: "webpack.dev.config.js"
+      fileName: "webpack.dev.config.js",
     },
     {
       templateInternal: "webpack.prod.config.hbs",
-      fileName: "webpack.prod.config.js"
-    }
-  ]
+      fileName: "webpack.prod.config.js",
+    },
+  ],
 };
 
 const NPM_DEFAULT = {
   packagingTool: "npm",
   npmModuleScope: "@lit/",
   publish: [
-    { key: "local", command: "npm publish --registry https://localhost:4873" }
+    { key: "local", command: "npm publish --registry https://localhost:4873" },
   ],
   packagingTemplates: [
     {
@@ -51,7 +51,7 @@ const NPM_DEFAULT = {
         "litVocabTermDependent",
         "javascript",
         "package.hbs"
-      )
+      ),
     },
     {
       templateInternal: path.join(
@@ -65,9 +65,9 @@ const NPM_DEFAULT = {
         "litVocabTermDependent",
         "javascript",
         "index.hbs"
-      )
-    }
-  ]
+      ),
+    },
+  ],
 };
 
 const DEFAULT_CLI_ARTIFACT = [
@@ -86,8 +86,8 @@ const DEFAULT_CLI_ARTIFACT = [
       "litVocabTermDependent",
       "javascript",
       "vocab.hbs"
-    )
-  }
+    ),
+  },
 ];
 
 class GeneratorConfiguration {
@@ -104,12 +104,12 @@ class GeneratorConfiguration {
       // The command-line references a vocab list configuration file.
       this.configuration = {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
-        ...GeneratorConfiguration.fromConfigFile(initialConfig.vocabListFile)
+        ...GeneratorConfiguration.fromConfigFile(initialConfig.vocabListFile),
       };
     } else {
       this.configuration = {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
-        ...GeneratorConfiguration.fromCommandLine(initialConfig)
+        ...GeneratorConfiguration.fromCommandLine(initialConfig),
       };
     }
 
@@ -225,7 +225,7 @@ class GeneratorConfiguration {
       normalizedConfig.versioning.versioningTemplates
     ) {
       normalizedConfig.versioning.versioningTemplates = normalizedConfig.versioning.versioningTemplates.map(
-        versioningFile => {
+        (versioningFile) => {
           const normalizedVersioningFile = versioningFile;
           normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
             versioningFile.templateInternal,
@@ -240,7 +240,7 @@ class GeneratorConfiguration {
 
     // Normalize each artifact to generate.
     normalizedConfig.artifactToGenerate = config.artifactToGenerate.map(
-      artifactConfig => {
+      (artifactConfig) => {
         return this.normalizePerArtifactTemplates(artifactConfig, configSource);
       }
     );
@@ -275,10 +275,10 @@ class GeneratorConfiguration {
 
     if (normalizedArtifactConfig.packaging) {
       normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
-        packagingConfig => {
+        (packagingConfig) => {
           const normalizedPackagingConfig = { ...packagingConfig };
           normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
-            packagingTemplate => {
+            (packagingTemplate) => {
               // Make sure we clone the original structure (rather than just
               // refer to it directly), as otherwise running tests in parallel
               // will result in corrupted data (e.g. filenames like
@@ -361,7 +361,7 @@ class GeneratorConfiguration {
     }
 
     if (artifact.packaging) {
-      artifact.packaging.forEach(packagingConfig => {
+      artifact.packaging.forEach((packagingConfig) => {
         if (!packagingConfig.packagingTemplates) {
           throw new Error(
             `No templates associated to packaging tool [${packagingConfig.packagingTool}]`
@@ -500,7 +500,9 @@ class GeneratorConfiguration {
     // The most common case for using the command line is providing a single vocab anyways.
     cliConfig.vocabList = [GeneratorConfiguration.collectVocabFromCLI(args)];
 
-    cliConfig.outputDirectoryForArtifact = `${args.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    cliConfig.outputDirectoryForArtifact = `${
+      args.outputDirectory
+    }${getArtifactDirectorySourceCode(args)}/JavaScript`;
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;
@@ -509,8 +511,8 @@ class GeneratorConfiguration {
       packagingInfo.publish = [
         {
           key: DEFAULT_PUBLISH_KEY,
-          command: `npm publish --registry ${args.npmRegistry}`
-        }
+          command: `npm publish --registry ${args.npmRegistry}`,
+        },
       ];
     }
 
@@ -528,8 +530,8 @@ class GeneratorConfiguration {
           "vocab.hbs"
         ),
         sourceFileExtension: "js",
-        packaging: [packagingInfo]
-      }
+        packaging: [packagingInfo],
+      },
     ];
 
     if (args.supportBundling) {
@@ -602,6 +604,5 @@ class GeneratorConfiguration {
 
 module.exports = GeneratorConfiguration;
 module.exports.DEFAULT_CLI_ARTIFACT = DEFAULT_CLI_ARTIFACT;
-module.exports.ARTIFACT_DIRECTORY_ROOT = ARTIFACT_DIRECTORY_ROOT;
 module.exports.DEFAULT_PUBLISH_KEY = DEFAULT_PUBLISH_KEY;
 module.exports.CONFIG_SOURCE_COMMAND_LINE = CONFIG_SOURCE_COMMAND_LINE;

@@ -49,7 +49,7 @@ module.exports = class App {
             ? { ignore: this.argv.vocabListFileIgnore.split(",") }
             : {}
         )
-        .filter(config => !config.includes("/Generated/"));
+        .filter((config) => !config.includes("/Generated/"));
 
       // If only one match, then it may (or may not) have been a glob that
       // simply matched one config file, so overwrite our input with the actual
@@ -94,7 +94,7 @@ module.exports = class App {
                   origOutputDirectory,
                   configDirectory.substring(rootOfGlob.length)
                 )
-              : configDirectory
+              : configDirectory,
           };
 
           const config = await this.configure();
@@ -115,10 +115,10 @@ module.exports = class App {
       .generate()
       .then(CommandLine.askForArtifactToBeNpmVersionBumped)
       .then(CommandLine.askForArtifactToBeNpmInstalled)
-      .then(generationData => {
+      .then((generationData) => {
         const publicationData = generationData;
         if (generationData.publish) {
-          generationData.publish.forEach(publicationConfigKey => {
+          generationData.publish.forEach((publicationConfigKey) => {
             artifactGenerator.runPublish(publicationConfigKey);
           });
         }
@@ -164,7 +164,7 @@ module.exports = class App {
       }
     }
 
-    return Promise.all(vocabsToValidate).catch(error => {
+    return Promise.all(vocabsToValidate).catch((error) => {
       throw new Error(`Invalid vocabulary: [${error}]`);
     });
   }

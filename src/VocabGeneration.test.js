@@ -21,7 +21,7 @@ const ConfigAll = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigLitCommon = {
@@ -33,7 +33,7 @@ const ConfigLitCommon = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigLitCore = {
@@ -45,7 +45,7 @@ const ConfigLitCore = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigInruptCommon = {
@@ -58,7 +58,7 @@ const ConfigInruptCommon = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigInruptUiCommon = {
@@ -71,7 +71,7 @@ const ConfigInruptUiCommon = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigInruptService = {
@@ -84,7 +84,7 @@ const ConfigInruptService = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidCommon = {
@@ -97,7 +97,7 @@ const ConfigSolidCommon = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidComponent = {
@@ -113,14 +113,14 @@ const ConfigSolidComponent = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 const ConfigSolidGeneratorUi = {
   _: "generate",
   force: true,
   inputResources: [
-    "../lit-vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl"
+    "../lit-vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl",
   ],
   litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
 
@@ -131,7 +131,7 @@ const ConfigSolidGeneratorUi = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
-  publish: RUN_PACKAGING
+  publish: RUN_PACKAGING,
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
@@ -259,7 +259,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       runNpmInstall: false, //RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,
       runWidoco: false,
-      publish: "" //RUN_PACKAGING
+      publish: "", //RUN_PACKAGING
     });
   });
 });
@@ -269,7 +269,7 @@ async function generateVocabArtifact(argv) {
   const result = await app.run();
 
   const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(
-    artifact => {
+    (artifact) => {
       const language = artifact.programmingLanguage.toLowerCase();
       return language === "typescript" || language === "javascript";
     }

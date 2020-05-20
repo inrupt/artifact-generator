@@ -5,15 +5,13 @@ const del = require("del");
 
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
-const {
-  ARTIFACT_DIRECTORY_SOURCE_CODE
-} = require("./generator/ArtifactGenerator");
+const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
 const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
 const OUTPUT_DIRECTORY = "./test/Generated/watcher/initial/";
-const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
 const SLEEP_TIME = 200;
@@ -22,7 +20,7 @@ const SLEEP_TIME = 200;
 // const MOCKED_ONLINE_RESOURCE_BODY = fs.readFileSync(MOCKED_ONLINE_RESOURCE_PATH).toString();
 
 function sleep(ms) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
@@ -40,20 +38,14 @@ beforeEach(() => {
 async function changeAndRestoreVocab(vocabPath, before, after) {
   fs.writeFileSync(
     vocabPath,
-    fs
-      .readFileSync(vocabPath)
-      .toString()
-      .replace(before, after)
+    fs.readFileSync(vocabPath).toString().replace(before, after)
   );
   await sleep(SLEEP_TIME);
 
   // The following changes the vocabulary back
   fs.writeFileSync(
     vocabPath,
-    fs
-      .readFileSync(vocabPath)
-      .toString()
-      .replace(after, before)
+    fs.readFileSync(vocabPath).toString().replace(after, before)
   );
 }
 
@@ -82,7 +74,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -100,7 +92,7 @@ describe("Vocabulary watcher", () => {
   it("should trigger artifact generation on change", async () => {
     const config = new GeneratorConfiguration({
       vocabListFile: VOCAB_LIST_PATH,
-      outputDirectory: OUTPUT_DIRECTORY
+      outputDirectory: OUTPUT_DIRECTORY,
     });
     await config.completeInitialConfiguration();
 
@@ -129,7 +121,7 @@ describe("Vocabulary watcher", () => {
           {
             vocabListFile:
               "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -149,7 +141,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -174,7 +166,7 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration(
           {
             vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY
+            outputDirectory: OUTPUT_DIRECTORY,
           },
           undefined
         )
@@ -214,7 +206,7 @@ describe("Vocabulary watcher", () => {
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY
+          outputDirectory: OUTPUT_DIRECTORY,
         },
         undefined
       )
@@ -241,13 +233,14 @@ describe("Vocabulary watcher", () => {
       new GeneratorConfiguration(
         {
           vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY
+          outputDirectory: OUTPUT_DIRECTORY,
         },
         undefined
       )
     );
 
     // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
+    generator.artifactData.force = true;
     await generator.generate();
 
     const firstModif = fs.statSync(GENERATED_FILEPATH).mtimeMs;

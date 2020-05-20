@@ -10,7 +10,7 @@ class VocabWatcher {
     this.watcher = chokidar.watch(
       [this.generator.configuration.getInputResources()],
       {
-        persistent: true
+        persistent: true,
       }
     );
   }
@@ -20,15 +20,15 @@ class VocabWatcher {
     // Therefore we need to poll online resources periodically, checking their last-modified response header to
     // determine if an online vocabulary has changed.
     // TODO: Right now, online vocabs are checked only once.
-    await this.generator.generate().catch(error => {
+    await this.generator.generate().catch((error) => {
       debug(error);
     });
 
     // Add event listeners.
-    this.watcher.on("change", eventPath => {
+    this.watcher.on("change", (eventPath) => {
       // Triggers the generation when the file changes
       debug(`File ${eventPath} has been changed`);
-      this.generator.generate().catch(error => {
+      this.generator.generate().catch((error) => {
         debug(error);
       });
     });

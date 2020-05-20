@@ -4,11 +4,11 @@ const inquirer = require("inquirer");
 require("mock-local-storage");
 const {
   VocabularyConfigurator,
-  splitInputResources
+  splitInputResources,
 } = require("./VocabularyConfigurator");
 
 const DUMMY_VOCAB = {
-  inputResources: ["test", "anotherTest"]
+  inputResources: ["test", "anotherTest"],
 };
 
 describe("VocabuaryConfig Generator", () => {

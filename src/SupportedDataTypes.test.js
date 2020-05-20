@@ -5,20 +5,18 @@ const del = require("del");
 const path = require("path");
 
 const VocabGenerator = require("./generator/VocabGenerator");
-const {
-  ARTIFACT_DIRECTORY_SOURCE_CODE
-} = require("./generator/ArtifactGenerator");
+const { getArtifactDirectorySourceCode } = require("./Util");
 
 describe("Supported Data Type", () => {
   it("should test the special-case handling for the OWL vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/owl-test";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/special-case-owl-snippet.ttl"
+          "./test/resources/vocabs/special-case-owl-snippet.ttl",
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
@@ -26,7 +24,7 @@ describe("Supported Data Type", () => {
         nameAndPrefixOverride: "owl",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -40,7 +38,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 
@@ -65,13 +63,13 @@ describe("Supported Data Type", () => {
 
   it("should test the special-case handling for the HTTP vocabulary", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/http-test";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/special-case-http-snippet.ttl"
+          "./test/resources/vocabs/special-case-http-snippet.ttl",
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
@@ -79,7 +77,7 @@ describe("Supported Data Type", () => {
         nameAndPrefixOverride: "http",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -93,7 +91,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 
@@ -118,7 +116,7 @@ describe("Supported Data Type", () => {
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/data-types";
-    const outputDirectoryJavaScript = `${outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/JavaScript`;
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
     const generator = new VocabGenerator(
@@ -129,7 +127,7 @@ describe("Supported Data Type", () => {
         moduleNamePrefix: "lit-generated-vocab-",
 
         generatedVocabs: [],
-        authorSet: new Set()
+        authorSet: new Set(),
       },
       {
         programmingLanguage: "JavaScript",
@@ -143,7 +141,7 @@ describe("Supported Data Type", () => {
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
-        outputDirectoryForArtifact: outputDirectoryJavaScript
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
       }
     );
 

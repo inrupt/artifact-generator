@@ -10,7 +10,7 @@ const { ConfigFileGenerator } = require("./generator/ConfigFileGenerator");
 const VocabWatcher = require("./VocabWatcher");
 
 const {
-  DEFAULT_CONFIG_TEMPLATE_PATH
+  DEFAULT_CONFIG_TEMPLATE_PATH,
 } = require("./generator/ConfigFileGenerator");
 
 const UNCALLED_PUBLISH_FUNCTION = jest.fn();
@@ -24,10 +24,10 @@ const locallyPublishingGenerator = () => {
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
-        publish: ["local"]
+        publish: ["local"],
       });
     },
-    runPublish: CALLED_PUBLISH_FUNCTION
+    runPublish: CALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -39,10 +39,10 @@ const remotelyPublishingGenerator = () => {
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
-        publish: ["remote"]
+        publish: ["remote"],
       });
     },
-    runPublish: CALLED_PUBLISH_FUNCTION
+    runPublish: CALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -54,10 +54,10 @@ const locallyAndRemotelyPublishingGenerator = () => {
       return Promise.resolve({
         stubbed: true,
         noprompt: true,
-        publish: ["local", "remote"]
+        publish: ["local", "remote"],
       });
     },
-    runPublish: CALLED_PUBLISH_FUNCTION
+    runPublish: CALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -66,7 +66,7 @@ const nonPublishingGenerator = () => {
     generate: async () => {
       return Promise.resolve({ stubbed: true, noprompt: true });
     },
-    runPublish: UNCALLED_PUBLISH_FUNCTION
+    runPublish: UNCALLED_PUBLISH_FUNCTION,
   };
 };
 
@@ -76,8 +76,8 @@ ArtifactGenerator.mockImplementation(nonPublishingGenerator);
 jest.mock("./VocabWatcher");
 VocabWatcher.mockImplementation(() => {
   return {
-    watch: jest.fn(x => x),
-    unwatch: jest.fn(x => x)
+    watch: jest.fn((x) => x),
+    unwatch: jest.fn((x) => x),
   };
 });
 
@@ -87,20 +87,20 @@ ConfigFileGenerator.mockImplementation(() => {
     collectConfigInfo: async () => {
       return Promise.resolve({});
     },
-    generateDefaultConfigFile: targetPath => {
+    generateDefaultConfigFile: (targetPath) => {
       FileGenerator.createFileFromTemplate(
         DEFAULT_CONFIG_TEMPLATE_PATH,
         {},
         targetPath
       );
     },
-    generateConfigFile: targetPath => {
+    generateConfigFile: (targetPath) => {
       FileGenerator.createFileFromTemplate(
         DEFAULT_CONFIG_TEMPLATE_PATH,
         {},
         targetPath
       );
-    }
+    },
   };
 });
 
@@ -118,7 +118,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         litVocabTermVersion: "1.1.1",
         quiet: false,
-        noprompt: true
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -134,7 +134,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         litVocabTermVersion: "1.1.1",
         quiet: false,
-        noprompt: true
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -153,7 +153,7 @@ describe("App tests", () => {
         litVocabTermVersion: "1.1.1",
         quiet: false,
         noprompt: true,
-        publish: ["local"]
+        publish: ["local"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -171,7 +171,7 @@ describe("App tests", () => {
         litVocabTermVersion: "1.1.1",
         quiet: false,
         noprompt: true,
-        publish: ["remote"]
+        publish: ["remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -192,7 +192,7 @@ describe("App tests", () => {
         litVocabTermVersion: "1.1.1",
         quiet: false,
         noprompt: true,
-        publish: ["local", "remote"]
+        publish: ["local", "remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
       await new App(config).run();
@@ -208,7 +208,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         litVocabTermVersion: "1.1.1",
         quiet: false,
-        noprompt: true
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -221,7 +221,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         litVocabTermVersion: "1.1.1",
         quiet: true,
-        noprompt: true
+        noprompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -236,7 +236,7 @@ describe("App tests", () => {
         _: ["init"],
         outputDirectory: directoryPath,
         quiet: false,
-        noprompt: true
+        noprompt: true,
       };
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);
@@ -260,7 +260,7 @@ describe("App tests", () => {
     it("should be possible to watch and unwatch vocabularies", async () => {
       const argv = {
         _: ["watch"],
-        vocabListFile: "./test/resources/watcher/vocab-list.yml"
+        vocabListFile: "./test/resources/watcher/vocab-list.yml",
       };
       // init will call the prompt, which is mocked here
       const app = new App(argv);
@@ -281,7 +281,7 @@ describe("App tests", () => {
       );
       const argv = {
         _: ["validate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
       let valid = false;
       await new App(argv).validate().then(() => {
@@ -299,7 +299,7 @@ describe("App tests", () => {
       );
       const argv = {
         _: ["validate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
       expect(new App(argv).validate()).rejects.toThrow("Invalid configuration");
     });
@@ -313,7 +313,7 @@ describe("App tests", () => {
       );
       const argv = {
         _: ["validate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
       expect(new App(argv).validate()).rejects.toThrow();
     });
@@ -327,7 +327,7 @@ describe("App tests", () => {
       );
       const argv = {
         _: ["validate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
       expect(new App(argv).validate()).rejects.toThrow();
     });
@@ -341,7 +341,7 @@ describe("App tests", () => {
       );
       const argv = {
         _: ["validate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
       expect(new App(argv).validate()).rejects.toThrow();
     });
@@ -354,7 +354,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         vocabListFile: filePath,
-        outputDirectory: outputDirectory
+        outputDirectory: outputDirectory,
       };
 
       const mockedResponse = await new App(config).run();
@@ -365,7 +365,7 @@ describe("App tests", () => {
       const filePath = path.join("test", "resources", "glob", "**", "*.yml");
       const config = {
         _: ["generate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
 
       const mockedResponse = await new App(config).run();
@@ -376,7 +376,7 @@ describe("App tests", () => {
       const filePath = path.join("test", "resources", "glob", "first", "*.yml");
       const config = {
         _: ["generate"],
-        vocabListFile: filePath
+        vocabListFile: filePath,
       };
 
       const mockedResponse = await new App(config).run();
@@ -388,7 +388,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         vocabListFile: filePath,
-        vocabListFileIgnore: "second/"
+        vocabListFileIgnore: "second/",
       };
 
       const mockedResponse = await new App(config).run();

@@ -11,14 +11,14 @@ const {
   OWL,
   VANN,
   DCTERMS,
-  SKOS
+  SKOS,
 } = require("../CommonTerms");
 const VocabGenerator = require("./VocabGenerator");
 
 const vocabGenerator = new VocabGenerator({
   inputResources: [],
   artifactVersion: "1.0.0",
-  moduleNamePrefix: "lit-generated-vocab-"
+  moduleNamePrefix: "lit-generated-vocab-",
 });
 
 const dataset = rdf
@@ -54,7 +54,7 @@ const dataset = rdf
       SCHEMA_DOT_ORG.familyName,
       RDFS.comment,
       rdf.literal("A family name is the last name of a person.", "en")
-    )
+    ),
   ]);
 
 const datasetExtension = rdf
@@ -125,7 +125,7 @@ const datasetExtension = rdf
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
       rdf.literal("Given name of a person es", "es")
-    )
+    ),
   ]);
 
 const extSubject = rdf.namedNode("http://rdf-extension.com");
@@ -153,7 +153,7 @@ const owlOntologyDataset = rdf.dataset().addAll([
     rdf.namedNode("http://rdf-extension.com/dummyClass"),
     RDF.type,
     OWL.Class
-  )
+  ),
 ]);
 
 const emptyDataSet = rdf.dataset();
@@ -162,14 +162,14 @@ const dataSetA = rdf
   .dataset()
   .addAll([
     rdf.quad(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class),
-    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.label, rdf.literal("Person"))
+    rdf.quad(SCHEMA_DOT_ORG.Person, RDFS.label, rdf.literal("Person")),
   ]);
 
 const dataSetB = rdf
   .dataset()
   .addAll([
     rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
-    rdf.quad(SCHEMA_DOT_ORG.givenName, RDFS.label, rdf.literal("Given Name"))
+    rdf.quad(SCHEMA_DOT_ORG.givenName, RDFS.label, rdf.literal("Given Name")),
   ]);
 
 const dataSetC = rdf
@@ -181,7 +181,7 @@ const dataSetC = rdf
       RDFS.label,
       rdf.literal("Family Name"),
       "en"
-    )
+    ),
   ]);
 
 const dataSetD = rdf
@@ -193,7 +193,7 @@ const dataSetD = rdf
       SKOS.definition,
       rdf.literal("Family Name"),
       "en"
-    )
+    ),
   ]);
 
 const overrideLabelTerms = rdf
@@ -210,7 +210,7 @@ const overrideLabelTerms = rdf
       RDFS.label,
       rdf.literal("Override Family Name"),
       "en"
-    )
+    ),
   ]);
 
 const overrideCommentTerms = rdf
@@ -231,7 +231,7 @@ const overrideCommentTerms = rdf
       RDFS.comment,
       rdf.literal("Override comment for Family Name"),
       "en"
-    )
+    ),
   ]);
 
 const overrideAtlNameTerms = rdf
@@ -252,7 +252,7 @@ const overrideAtlNameTerms = rdf
       SCHEMA_DOT_ORG.alternateName,
       rdf.literal("Alt Family Name"),
       "en"
-    )
+    ),
   ]);
 
 const message = rdf.namedNode("http://schema.org/hello");
@@ -269,7 +269,7 @@ const literalDataset = rdf
     rdf.quad(message, RDFS.comment, rdf.literal("Bonjour", "fr")),
     rdf.quad(message, SKOS.definition, rdf.literal("Welcome", "en")),
     rdf.quad(message, SKOS.definition, rdf.literal("Bienvenido", "es")),
-    rdf.quad(message, SKOS.definition, rdf.literal("Bienvenue", "fr"))
+    rdf.quad(message, SKOS.definition, rdf.literal("Bienvenue", "fr")),
   ]);
 
 describe("Artifact generator unit tests", () => {
@@ -297,8 +297,8 @@ describe("Artifact generator unit tests", () => {
             value: "Person",
             valueEscapedForJavaScript: "Person",
             valueEscapedForJava: "Person",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
 
@@ -308,8 +308,8 @@ describe("Artifact generator unit tests", () => {
             value: "Person-fr",
             valueEscapedForJavaScript: "Person-fr",
             valueEscapedForJava: "Person-fr",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
       expect(personLabels).toEqual(
@@ -318,8 +318,8 @@ describe("Artifact generator unit tests", () => {
             value: "Person-de",
             valueEscapedForJavaScript: "Person-de",
             valueEscapedForJava: "Person-de",
-            language: "de"
-          }
+            language: "de",
+          },
         ])
       );
       expect(personLabels).toEqual(
@@ -328,8 +328,8 @@ describe("Artifact generator unit tests", () => {
             value: "Person-es",
             valueEscapedForJavaScript: "Person-es",
             valueEscapedForJava: "Person-es",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
 
@@ -345,8 +345,8 @@ describe("Artifact generator unit tests", () => {
             value: "Given Name",
             valueEscapedForJavaScript: "Given Name",
             valueEscapedForJava: "Given Name",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
       expect(givenNameLabels).toEqual(
@@ -355,8 +355,8 @@ describe("Artifact generator unit tests", () => {
             value: "Given Name-fr",
             valueEscapedForJavaScript: "Given Name-fr",
             valueEscapedForJava: "Given Name-fr",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
       expect(givenNameLabels).toEqual(
@@ -365,8 +365,8 @@ describe("Artifact generator unit tests", () => {
             value: "Given Name-de",
             valueEscapedForJavaScript: "Given Name-de",
             valueEscapedForJava: "Given Name-de",
-            language: "de"
-          }
+            language: "de",
+          },
         ])
       );
       expect(givenNameLabels).toEqual(
@@ -375,8 +375,8 @@ describe("Artifact generator unit tests", () => {
             value: "Given Name-es",
             valueEscapedForJavaScript: "Given Name-es",
             valueEscapedForJava: "Given Name-es",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
     });
@@ -466,7 +466,7 @@ describe("Artifact generator unit tests", () => {
             SCHEMA_DOT_ORG.givenName,
             RDFS.comment,
             rdf.literal("Given Name comment in french", "fr")
-          )
+          ),
         ]);
 
       const result = vocabGenerator.buildTemplateInput(
@@ -498,7 +498,7 @@ describe("Artifact generator unit tests", () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       });
 
       const result = generator.buildTemplateInput(
@@ -513,7 +513,7 @@ describe("Artifact generator unit tests", () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       });
 
       const result = generator.buildTemplateInput(
@@ -529,8 +529,8 @@ describe("Artifact generator unit tests", () => {
             value: "Hello",
             valueEscapedForJavaScript: "Hello",
             valueEscapedForJava: "Hello",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
 
@@ -540,8 +540,8 @@ describe("Artifact generator unit tests", () => {
             value: "Hola",
             valueEscapedForJavaScript: "Hola",
             valueEscapedForJava: "Hola",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
 
@@ -551,8 +551,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bonjour",
             valueEscapedForJavaScript: "Bonjour",
             valueEscapedForJava: "Bonjour",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
     });
@@ -561,7 +561,7 @@ describe("Artifact generator unit tests", () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       });
 
       const result = generator.buildTemplateInput(
@@ -577,8 +577,8 @@ describe("Artifact generator unit tests", () => {
             value: "Hello there",
             valueEscapedForJavaScript: "Hello there",
             valueEscapedForJava: "Hello there",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
 
@@ -588,8 +588,8 @@ describe("Artifact generator unit tests", () => {
             value: "Hola",
             valueEscapedForJavaScript: "Hola",
             valueEscapedForJava: "Hola",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
 
@@ -599,8 +599,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bonjour",
             valueEscapedForJavaScript: "Bonjour",
             valueEscapedForJava: "Bonjour",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
     });
@@ -609,7 +609,7 @@ describe("Artifact generator unit tests", () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       });
 
       const result = generator.buildTemplateInput(
@@ -625,8 +625,8 @@ describe("Artifact generator unit tests", () => {
             value: "Welcome",
             valueEscapedForJavaScript: "Welcome",
             valueEscapedForJava: "Welcome",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
 
@@ -636,8 +636,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bienvenido",
             valueEscapedForJavaScript: "Bienvenido",
             valueEscapedForJava: "Bienvenido",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
 
@@ -647,8 +647,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bienvenue",
             valueEscapedForJavaScript: "Bienvenue",
             valueEscapedForJava: "Bienvenue",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
     });
@@ -661,7 +661,7 @@ describe("Artifact generator unit tests", () => {
           dataSetA,
           dataSetB,
           dataSetC,
-          overrideLabelTerms
+          overrideLabelTerms,
         ]),
         VocabGenerator.merge([overrideLabelTerms])
       );
@@ -691,7 +691,7 @@ describe("Artifact generator unit tests", () => {
           dataSetA,
           dataSetB,
           dataSetC,
-          overrideCommentTerms
+          overrideCommentTerms,
         ]),
         VocabGenerator.merge([overrideCommentTerms])
       );
@@ -725,7 +725,7 @@ describe("Artifact generator unit tests", () => {
           dataSetA,
           dataSetB,
           dataSetC,
-          overrideAtlNameTerms
+          overrideAtlNameTerms,
         ]),
         VocabGenerator.merge([overrideAtlNameTerms])
       );
@@ -753,7 +753,7 @@ describe("Artifact generator unit tests", () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       });
 
       const result = generator.buildTemplateInput(
@@ -769,8 +769,8 @@ describe("Artifact generator unit tests", () => {
             value: "Welcome",
             valueEscapedForJavaScript: "Welcome",
             valueEscapedForJava: "Welcome",
-            language: "en"
-          }
+            language: "en",
+          },
         ])
       );
 
@@ -780,8 +780,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bienvenido",
             valueEscapedForJavaScript: "Bienvenido",
             valueEscapedForJava: "Bienvenido",
-            language: "es"
-          }
+            language: "es",
+          },
         ])
       );
 
@@ -791,8 +791,8 @@ describe("Artifact generator unit tests", () => {
             value: "Bienvenue",
             valueEscapedForJavaScript: "Bienvenue",
             valueEscapedForJava: "Bienvenue",
-            language: "fr"
-          }
+            language: "fr",
+          },
         ])
       );
     });
@@ -830,7 +830,7 @@ describe("Artifact generator unit tests", () => {
           rdf.namedNode("http://rdf-extension.com/dummyClass"),
           RDF.type,
           OWL.Class
-        )
+        ),
       ]);
 
       const result = vocabGenerator.buildTemplateInput(
@@ -873,7 +873,7 @@ describe("Artifact generator unit tests", () => {
           rdf.namedNode("http://rdf-extension.com/dummyClass"),
           RDF.type,
           OWL.Class
-        )
+        ),
       ]);
       const result = vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([dataset, owlOntologyDatasetWithNoAuthor]),
@@ -891,12 +891,12 @@ describe("Managing remote vocabularies failures", () => {
       {
         inputResources: ["http://some.online.resource"],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       },
       {
         sourceFileExtension: "js",
         outputDirectoryForArtifact:
-          "test/Generated/VocabGenerator/previouslyGenerated"
+          "test/Generated/VocabGenerator/previouslyGenerated",
       }
     );
     const targetDir = path.join(
@@ -914,7 +914,7 @@ describe("Managing remote vocabularies failures", () => {
       classes: [],
       properties: [],
       literals: [],
-      vocabNameUpperCase: "TEST"
+      vocabNameUpperCase: "TEST",
     };
     await generator.generateFiles(vocabGenerationData);
     expect(fs.readFileSync(targetFile).toString()).toEqual(
@@ -927,12 +927,12 @@ describe("Managing remote vocabularies failures", () => {
       {
         inputResources: ["http://some.online.resource"],
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "my-company-prefix-"
+        moduleNamePrefix: "my-company-prefix-",
       },
       {
         sourceFileExtension: "js",
         outputDirectoryForArtifact:
-          "test/Generated/VocabGenerator/notPreviouslyGenerated"
+          "test/Generated/VocabGenerator/notPreviouslyGenerated",
       }
     );
     const targetDir = path.join(
@@ -949,7 +949,7 @@ describe("Managing remote vocabularies failures", () => {
       classes: [],
       properties: [],
       literals: [],
-      vocabNameUpperCase: "TEST"
+      vocabNameUpperCase: "TEST",
     };
     expect(generator.generateFiles(vocabGenerationData)).rejects.toThrow(
       "unreachable (or empty of recognisable terms), and no previously generated file is available"

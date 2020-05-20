@@ -32,8 +32,8 @@ const formats = {
     // The vocab
     // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
     // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
-    ["text/plain", parserN3]
-  ])
+    ["text/plain", parserN3],
+  ]),
 };
 
 module.exports = class Resource {
@@ -49,7 +49,7 @@ module.exports = class Resource {
 
   async processInputs(processInputsCallback) {
     debug(`Processing datasetFiles: [${this.datasetFiles}]...`);
-    const datasetsPromises = this.datasetFiles.map(e =>
+    const datasetsPromises = this.datasetFiles.map((e) =>
       Resource.readResource(e)
     );
 
@@ -78,10 +78,10 @@ module.exports = class Resource {
     debug(`Loading resource: [${datasetFile}]...`);
     if (Resource.isOnline(datasetFile)) {
       return rdfFetch(datasetFile, { factory: rdf, formats })
-        .then(resource => {
+        .then((resource) => {
           return resource.dataset();
         })
-        .catch(error => {
+        .catch((error) => {
           debug(
             `Encountered error [${error}] while fetching [${datasetFile}], attempting to use previously generated file`
           );
@@ -89,7 +89,7 @@ module.exports = class Resource {
         });
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       resolve(this.loadTurtleFileIntoDatasetPromise(datasetFile));
     });
   }
@@ -106,13 +106,20 @@ module.exports = class Resource {
   static async getHttpResourceLastModificationTime(resource) {
     return axios({
       method: "head",
-      url: resource
-    }).then(response => {
-      const lastModifiedDate = Date.parse(response.headers["last-modified"]);
-      return Number.isNaN(lastModifiedDate)
-        ? DEFAULT_MODIFICATION_DATE
-        : lastModifiedDate;
-    });
+      url: resource,
+    })
+      .then((response) => {
+        const lastModifiedDate = Date.parse(response.headers["last-modified"]);
+        return Number.isNaN(lastModifiedDate)
+          ? DEFAULT_MODIFICATION_DATE
+          : lastModifiedDate;
+      })
+      .catch((error) => {
+        debug(
+          `Failed to lookup Last Modification Time for resource [${resource}]. Error: ${error}`
+        );
+        return new Date();
+      });
   }
 
   /**
@@ -120,7 +127,7 @@ module.exports = class Resource {
    * @param {*} resource
    */
   static async getResourceLastModificationTime(resource) {
-    return resource.startsWith("http")
+    return this.isOnline(resource)
       ? Resource.getHttpResourceLastModificationTime(resource)
       : fs.statSync(resource).mtimeMs;
   }

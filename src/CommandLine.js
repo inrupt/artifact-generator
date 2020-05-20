@@ -4,9 +4,9 @@ const ChildProcess = require("child_process");
 const debug = require("debug")("lit-artifact-generator:CommandLine");
 
 const {
-  ARTIFACT_DIRECTORY_ROOT,
-  ARTIFACT_DIRECTORY_SOURCE_CODE
-} = require("./generator/ArtifactGenerator");
+  getArtifactDirectoryRoot,
+  getArtifactDirectorySourceCode,
+} = require("./Util");
 
 module.exports = class CommandLine {
   static getParentFolder(directory) {
@@ -17,7 +17,7 @@ module.exports = class CommandLine {
     return inquirer.prompt({
       type: "input",
       name: "litVocabTermVersion",
-      message: "Version string for LIT Vocab Term dependency ..."
+      message: "Version string for LIT Vocab Term dependency ...",
     });
   }
 
@@ -60,8 +60,8 @@ module.exports = class CommandLine {
           name: "bumpVersion",
           message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
           choices: ["patch", "minor", "major", "no"],
-          default: data.bumpVersion
-        }
+          default: data.bumpVersion,
+        },
       ];
 
       answer = await inquirer.prompt(bumpQuestion);
@@ -88,8 +88,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runNpmInstall",
           message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(npmInstallQuestion);
@@ -114,8 +114,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runNpmPublish",
           message: `Do you want to run NPM publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(npmPublishQuestion);
@@ -140,8 +140,8 @@ module.exports = class CommandLine {
           type: "confirm",
           name: "runWidoco",
           message: `Do you want to run Widoco documentation generation on [${data.artifactName}]?`,
-          default: false
-        }
+          default: false,
+        },
       ];
 
       answer = await inquirer.prompt(runWidocoQuestion);
@@ -182,12 +182,18 @@ module.exports = class CommandLine {
   static runMavenInstall(data) {
     if (data.runMavenInstall) {
       debug(
-        `Running 'mvn install' for artifact [${data.artifactName}] in directory [${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java]...`
+        `Running 'mvn install' for artifact [${
+          data.artifactName
+        }] in directory [${
+          data.outputDirectory
+        }${getArtifactDirectorySourceCode(data)}/Java]...`
       );
       // Quick addition to also support Maven install for Java artifacts.
-      const javaDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_SOURCE_CODE}/Java`;
+      const javaDirectory = `${
+        data.outputDirectory
+      }${getArtifactDirectorySourceCode(data)}/Java`;
       if (data.artifactToGenerate) {
-        data.artifactToGenerate.forEach(artifact => {
+        data.artifactToGenerate.forEach((artifact) => {
           if (artifact.programmingLanguage.toLowerCase() === "java") {
             const commandLineMaven = `cd ${javaDirectory} && mvn install`;
             ChildProcess.execSync(commandLineMaven);
@@ -241,7 +247,9 @@ module.exports = class CommandLine {
 
     const inputResource = data.inputResources[0];
     const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
-    const destDirectory = `${data.outputDirectory}${ARTIFACT_DIRECTORY_ROOT}/Widoco`;
+    const destDirectory = `${data.outputDirectory}${getArtifactDirectoryRoot(
+      data
+    )}/Widoco`;
     const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
     debug(
@@ -262,7 +270,7 @@ module.exports = class CommandLine {
 
     return {
       ...data,
-      ...{ ranWidoco: true, documentationDirectory: destDirectory }
+      ...{ ranWidoco: true, documentationDirectory: destDirectory },
     }; // Merge the answers in with the data and return
   }
 };

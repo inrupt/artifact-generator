@@ -7,12 +7,12 @@ const packageDotJson = require("../../package.json");
 // Configuration generators.
 const {
   JavaArtifactConfigurator,
-  LANGUAGE: JAVA
+  LANGUAGE: JAVA,
 } = require("../config/artifacts/JavaArtifactConfigurator");
 
 const {
   NodeArtifactConfigurator,
-  LANGUAGE: JAVASCRIPT
+  LANGUAGE: JAVASCRIPT,
 } = require("../config/artifacts/NodeArtifactConfigurator");
 
 const { VocabularyConfigurator } = require("../config/VocabularyConfigurator");
@@ -47,8 +47,8 @@ const GENERAL_QUESTIONS = [
   {
     type: "input",
     name: "artifactName",
-    message: "Name of the artifacts:"
-  }
+    message: "Name of the artifacts:",
+  },
 ];
 
 function validateLanguageCheckboxes(answer) {
@@ -65,7 +65,7 @@ const LANGUAGES_CHECKBOXES = {
   message: "Select target languages",
   name: "languages",
   choices: [{ name: JAVA }, { name: JAVASCRIPT }],
-  validate: validateLanguageCheckboxes
+  validate: validateLanguageCheckboxes,
 };
 
 function validateRepositoryCheckboxes(answer) {
@@ -83,27 +83,27 @@ const REPOSITORY_CHECKBOX = {
     "Is the YAML file (and potentially some vocabularies) going to be versioned? If not, validate to continue.",
   name: "repositoryType",
   choices: [{ name: GIT }, { name: SVN }],
-  validate: validateRepositoryCheckboxes
+  validate: validateRepositoryCheckboxes,
 };
 
 const REPOSITORY_URL = {
   type: "input",
   message: "What is the URL of the repository ?",
-  name: "repositoryUrl"
+  name: "repositoryUrl",
 };
 
 const GITIGNORE_TEMPLATE = {
   type: "input",
   message: "Please provide a '.gitignore' template",
   name: "gitignoreTemplate",
-  default: ".gitignore.hbs"
+  default: ".gitignore.hbs",
 };
 
 const ADD_VOCABULARY_CONFIRMATION = {
   type: "confirm",
   name: "addVocab",
   message: "Do you want to add a vocabulary to the list ?",
-  default: DEFAULT_ADD_VOCAB
+  default: DEFAULT_ADD_VOCAB,
 };
 
 class ConfigFileGenerator {
@@ -112,7 +112,7 @@ class ConfigFileGenerator {
       generatedTimestamp: moment().format("LLLL"),
       ...initialConfig,
       generatorName: packageDotJson.name,
-      artifactGeneratorVersion: packageDotJson.version
+      artifactGeneratorVersion: packageDotJson.version,
     };
   }
 
@@ -156,8 +156,8 @@ class ConfigFileGenerator {
           {
             templateInternal: template,
             fileName: ".gitignore",
-            template: path.join("templates", template)
-          }
+            template: path.join("templates", template),
+          },
         ];
       }
     }
@@ -211,7 +211,7 @@ class ConfigFileGenerator {
     // Get the info shared across all artifacts.
     this.config = {
       ...this.config,
-      ...(await inquirer.prompt(GENERAL_QUESTIONS))
+      ...(await inquirer.prompt(GENERAL_QUESTIONS)),
     };
     const repository = await ConfigFileGenerator.promptRepository();
     if (repository) {
