@@ -10,7 +10,7 @@ const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
 const {
   artifactDirectoryRoot,
-  artifactDirectorySourceCode
+  artifactDirectorySourceCode,
 } = require("../Util");
 
 const ARTIFACTS_INFO_TEMPLATE = path.join(
@@ -47,13 +47,13 @@ class ArtifactGenerator {
 
   async generate() {
     return this.generateVocabs()
-      .then(vocabDatasets => {
+      .then((vocabDatasets) => {
         if (this.artifactData.generated) {
           return this.collectGeneratedVocabDetails(vocabDatasets);
         }
         return vocabDatasets;
       })
-      .then(async vocabDatasets => {
+      .then(async (vocabDatasets) => {
         if (this.artifactData.generated) {
           if (!this.artifactData.artifactName) {
             this.artifactData.artifactName = vocabDatasets[0].artifactName;
@@ -87,17 +87,14 @@ class ArtifactGenerator {
         }
       })
       .then(() => this.artifactData)
-      .catch(error => {
+      .catch((error) => {
         throw error;
       });
   }
 
   async isGenerationNecessary() {
     // The --force option overrides the logic of this function
-    this.artifactData.artifactsOutdated =
-      this.artifactData.force || (await this.checkIfGenerationNecessary());
-
-    return this.artifactData.artifactsOutdated;
+    return this.artifactData.force || (await this.checkIfGenerationNecessary());
   }
 
   async checkIfGenerationNecessary() {
@@ -108,9 +105,7 @@ class ArtifactGenerator {
       ARTIFACTS_INFO_FILENAME
     );
 
-    debug(`Check if artifact exists: [${artifactInfoPath}]...`);
     if (fs.existsSync(artifactInfoPath)) {
-      debug(`YES, it does: [${artifactInfoPath}]...`);
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
@@ -122,7 +117,7 @@ class ArtifactGenerator {
         );
       }
 
-      await Promise.all(vocabsLastModificationTime).then(values => {
+      await Promise.all(vocabsLastModificationTime).then((values) => {
         // The artifact is outdated if one vocabulary is more recent than the artifact
         artifactsOutdated = values.reduce((accumulator, lastModif) => {
           return lastGenerationTime < lastModif || accumulator;
@@ -151,7 +146,7 @@ class ArtifactGenerator {
     // The outputDirectoryForArtifact attribute is useful for publication,
     // and should be set even if generation is not necessary.
     this.artifactData.artifactToGenerate = this.artifactData.artifactToGenerate.map(
-      artifactDetails => {
+      (artifactDetails) => {
         const result = artifactDetails;
         result.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
@@ -168,7 +163,7 @@ class ArtifactGenerator {
     if (await this.isGenerationNecessary()) {
       this.artifactData.generated = true;
       return Promise.all(
-        this.artifactData.vocabList.map(async vocabDetails => {
+        this.artifactData.vocabList.map(async (vocabDetails) => {
           // Override our vocab inputs using this vocab list entry.
           this.artifactData.inputResources = vocabDetails.inputResources;
           this.artifactData.termSelectionResource =
@@ -179,7 +174,7 @@ class ArtifactGenerator {
 
           // Generate this vocab for each artifact we are generating for.
           const artifactPromises = this.artifactData.artifactToGenerate.map(
-            artifactDetails => {
+            (artifactDetails) => {
               return new VocabGenerator(
                 this.artifactData,
                 artifactDetails
@@ -203,13 +198,13 @@ class ArtifactGenerator {
   async collectGeneratedVocabDetails(vocabDatasets) {
     this.artifactData.description = `Bundle of vocabularies that includes the following:`;
     await Promise.all(
-      vocabDatasets.map(async vocabData => {
+      vocabDatasets.map(async (vocabData) => {
         this.artifactData.description += `\n\n  ${vocabData.vocabName}: ${vocabData.description}`;
         this.artifactData.generatedVocabs.push({
           vocabName: vocabData.vocabName,
-          vocabNameUpperCase: vocabData.vocabNameUpperCase
+          vocabNameUpperCase: vocabData.vocabNameUpperCase,
         });
-        vocabData.authorSet.forEach(author =>
+        vocabData.authorSet.forEach((author) =>
           this.artifactData.authorSet.add(author)
         );
       })
@@ -220,7 +215,7 @@ class ArtifactGenerator {
   async generatePackaging() {
     // If the artifacts have not been generated, it's not necessary to re-package them
     if (this.artifactData.generated) {
-      this.artifactData.artifactToGenerate.forEach(artifactDetails => {
+      this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
         if (artifactDetails.packaging) {
           debug(
             `Generating [${artifactDetails.programmingLanguage}] packaging`
@@ -228,7 +223,7 @@ class ArtifactGenerator {
           // TODO: manage repositories properly
           this.artifactData.gitRepository = artifactDetails.gitRepository;
           this.artifactData.repository = artifactDetails.repository;
-          artifactDetails.packaging.forEach(packagingDetails => {
+          artifactDetails.packaging.forEach((packagingDetails) => {
             FileGenerator.createPackagingFiles(
               this.artifactData,
               artifactDetails,
@@ -246,7 +241,7 @@ class ArtifactGenerator {
 
   generateLicense() {
     if (this.artifactData.license && this.artifactData.license.path) {
-      this.artifactData.artifactToGenerate.forEach(artifactDetails => {
+      this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
         const licenseText = fs.readFileSync(this.artifactData.license.path);
         fs.writeFileSync(
           path.join(
@@ -285,9 +280,9 @@ class ArtifactGenerator {
               "rdf4j",
               "pom.hbs"
             ),
-            fileName: "pom.xml"
-          }
-        ]
+            fileName: "pom.xml",
+          },
+        ],
       });
     } else if (
       artifactDetails.programmingLanguage.toLowerCase() === "javascript"
@@ -298,8 +293,8 @@ class ArtifactGenerator {
         publish: [
           {
             key: "local",
-            command: "npm publish --registry http://localhost:4873/"
-          }
+            command: "npm publish --registry http://localhost:4873/",
+          },
         ],
         packagingTemplates: [
           {
@@ -312,7 +307,7 @@ class ArtifactGenerator {
               "javascript",
               "package.hbs"
             ),
-            fileName: "package.json"
+            fileName: "package.json",
           },
           {
             template: path.join(
@@ -324,9 +319,9 @@ class ArtifactGenerator {
               "javascript",
               "index.hbs"
             ),
-            fileName: "index.js"
-          }
-        ]
+            fileName: "index.js",
+          },
+        ],
       });
     } else {
       debug(
@@ -364,7 +359,7 @@ class ArtifactGenerator {
               process.chdir(runFrom);
 
               debug(
-                `Running command [${publishConfigs[j].command}] to publish artifact according to [${publishConfigs[j].key}] configuration.`
+                `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
               );
               ChildProcess.execSync(publishConfigs[j].command);
               process.chdir(homeDir);
@@ -382,7 +377,7 @@ class ArtifactGenerator {
   runPublish(key) {
     const generationData = this.configuration.configuration;
 
-    if (generationData.artifactsOutdated) {
+    if (generationData.generated) {
       // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
       // Ideally, new processes should be spawned, each running a packaging command, but the fork
       // command does not work in Node as it does in Unix (i.e. it does not clone the current process)

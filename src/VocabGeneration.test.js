@@ -15,7 +15,7 @@ const RUN_PACKAGING = ["localMaven", "localNpmNode"];
 
 const ConfigAll = {
   _: "generate",
-  // force: true,
+  force: true,
   vocabListFile: "../lit-vocab/**/*.yml",
   vocabListFileIgnore: "../lit-vocab/lit-artifact-generator-js/**",
   npmRegistry: NPM_REGISTRY,

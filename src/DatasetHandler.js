@@ -123,6 +123,13 @@ module.exports = class DatasetHandler {
       //  refactor to clean things up. In the meantime, I've added the concept
       //  of 'list of keywords to append an underscore for in this programming
       //  language' to the current YAML files.
+      .replace(/^boolean$/, "boolean_")
+      .replace(/^float$/, "float_")
+      .replace(/^double$/, "double_")
+      .replace(/^byte$/, "byte_")
+      .replace(/^int$/, "int_")
+      .replace(/^long$/, "long_")
+      .replace(/^short$/, "short_")
       .replace(/^class$/, "class_")
       .replace(/^abstract$/, "abstract_")
       .replace(/^for$/, "for_")
