@@ -1,11 +1,11 @@
 on:
   pull_request:
     branches:
-    - develop
+    - master
 jobs:
   run_npm_test:
     runs-on: ubuntu-latest
-    name: Run tests on all PRs to 'develop'
+    name: Run tests on all PRs to 'master'
     steps:
         # Setup
       - name: Checkout repo
