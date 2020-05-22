@@ -11,7 +11,7 @@ const path = require("path");
 const debugInstance = require("debug");
 const yargs = require("yargs");
 const App = require("./src/App");
-const { artifactDirectoryRoot } = require("./src/Util");
+const { getArtifactDirectoryRoot } = require("./src/Util");
 const {
   COMMAND_GENERATE,
   COMMAND_INITIALIZE,
