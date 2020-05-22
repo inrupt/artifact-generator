@@ -333,7 +333,7 @@ describe("Artifact Generator", () => {
       // the default generated directory, since we .gitignore that normally to
       // specifically prevent checking that in.
       const generateOverride = {
-        artifactDirectoryRootOverride: "/GenerateOverride",
+        artifactDirectoryRootOverride: "GenerateOverride",
       };
 
       const generatedFile = path.join(
@@ -348,8 +348,13 @@ describe("Artifact Generator", () => {
       );
 
       const config = new GeneratorConfiguration({
-        vocabListFile:
-          "./test/resources/packaging/vocab-list-dummy-commands.yml",
+        vocabListFile: path.join(
+          ".",
+          "test",
+          "resources",
+          "packaging",
+          "vocab-list-dummy-commands.yml"
+        ),
         outputDirectory,
         noprompt: true,
         ...generateOverride,
@@ -357,9 +362,11 @@ describe("Artifact Generator", () => {
 
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
-      await artifactGenerator.generate().then(() => {
-        artifactGenerator.runPublish("remote");
+      const result = await artifactGenerator.generate().then(() => {
+        return artifactGenerator.runPublish("remote");
       });
+
+      expect(result.ranPublish).toBeUndefined();
 
       expect(fs.existsSync(generatedFile)).toBe(true);
 
