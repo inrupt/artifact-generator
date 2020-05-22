@@ -27,9 +27,21 @@ module.exports = class App {
       );
     }
 
+    // Normalize our inputs to remove single or double dots in file paths.
+    argv.outputDirectory = App.normalizePath(argv.outputDirectory);
+    argv.vocabListFile = App.normalizePath(argv.vocabListFile);
+    argv.vocabListFileIgnore = App.normalizePath(argv.vocabListFileIgnore);
     this.argv = argv;
 
     this.watcher = undefined;
+  }
+
+  // We don't assume input will always be a file location, so we explicitly try
+  // to ignore HTTP URLs.
+  static normalizePath(resource) {
+    return resource && !resource.startsWith("http")
+      ? path.normalize(resource)
+      : resource;
   }
 
   async configure() {
