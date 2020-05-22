@@ -24,6 +24,19 @@ const ConfigAll = {
   publish: RUN_PACKAGING,
 };
 
+// Intended for one-off testing, e.g. to try to reproduce problems seen
+// elsewhere.
+const ConfigTest = {
+  _: "generate",
+  force: true,
+  vocabListFile:
+    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/**/*.yml",
+  vocabListFileIgnore:
+    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/lit-artifact-generator/**",
+  outputDirectory:
+    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/GENERATED",
+};
+
 const ConfigLitCommon = {
   _: "generate",
   force: true,
@@ -136,9 +149,14 @@ const ConfigSolidGeneratorUi = {
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
   // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively ", async () => {
+  it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(120000);
     await generateVocabArtifact(ConfigAll);
+  });
+
+  // it("Generate test vocabs recursively", async () => {
+  it.skip("Generate test vocabs", async () => {
+    await generateVocabArtifact(ConfigTest);
   });
 
   // it("Generate ALL vocabs", async () => {
