@@ -388,6 +388,8 @@ class ArtifactGenerator {
           key
         );
       }
+
+      generationData.ranPublish = true;
     }
 
     return generationData;

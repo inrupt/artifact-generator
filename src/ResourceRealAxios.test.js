@@ -12,6 +12,9 @@ describe("Resources last modification", () => {
       resource
     );
 
-    expect(modified.getTime()).toBeGreaterThan(new Date().getTime() - 2);
+    // We expect modified time to be effectively 'now', so to leave a bit of
+    // leeway for the function to return(!), we just assert on our version of
+    // 'now' minus 100 milliseconds.
+    expect(modified.getTime()).toBeGreaterThan(new Date().getTime() - 100);
   });
 });
