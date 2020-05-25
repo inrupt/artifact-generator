@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
-    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+    "url": "https://github.com/inrupt/lit-artifact-generator"
   },
   "license": "MIT",
   "dependencies": {

@@ -33,7 +33,7 @@ module.exports = class App {
     argv.vocabListFileIgnore = App.normalizePath(argv.vocabListFileIgnore);
     this.argv = argv;
 
-    this.watcher = undefined;
+    this.watcherList = [];
   }
 
   // We don't assume input will always be a file location, so we explicitly try
@@ -50,75 +50,12 @@ module.exports = class App {
   }
 
   async run() {
-    if (this.argv.vocabListFile) {
-      // Check if the vocab list file is actually a glob (e.g. yamls/**/*.yml).
-      // Filter out any instances in 'Generated' directories (as we can have
-      // '.yml' files in the 'node_modules' hierarchies of generated projects.
-      const matchingConfigFile = glob
-        .sync(
-          this.argv.vocabListFile,
-          this.argv.vocabListFileIgnore
-            ? { ignore: this.argv.vocabListFileIgnore.split(",") }
-            : {}
-        )
-        .filter((config) => !config.includes("/Generated/"));
-
-      // If only one match, then it may (or may not) have been a glob that
-      // simply matched one config file, so overwrite our input with the actual
-      // match.
-      if (matchingConfigFile.length === 1) {
-        this.argv.vocabListFile = matchingConfigFile[0];
-      }
-
-      if (matchingConfigFile.length > 1) {
-        // If we were given an explicit output directory, we'll generate our
-        // output within that directory, but in sub-directories based from the
-        // root of the specific glob. So if our specified output directory was
-        // 'a/b/c', and our glob was 'resources/yamls/**/*.yml', and we found
-        // YAMLs in 'resources/yamls/x/y/first.yml' and
-        // 'resources/yamls/z/second.yml', then we'll generate artifacts in
-        // 'a/b/c/x/y/Generated' and 'a/b/c/z/Generated'.
-        // If no output directory was provided, we'll just generate relative to
-        // the found YAMLs themselves, i.e. in 'resources/yamls/x/y/Generated'
-        // and 'resources/yamls/z/Generated'.
-        const origOutputDirectory = this.argv.outputDirectory;
-        const rootOfGlob = this.argv.vocabListFile.substring(
-          0,
-          this.argv.vocabListFile.indexOf("*")
-        );
-
-        // TODO: When generating artifacts from multiple config files, we
-        //  should collect all results and return them all, and our calling code
-        //  will need to be updated to always handle potentially multiple
-        //  generation results...
-        let result = undefined;
-        // The following loop enforces sequential execution on purpose, because
-        // there are possibilities that the generator requires user interaction,
-        // in which cases parallel execution is not acceptable.
-        for (let configFile of matchingConfigFile) {
-          const configDirectory = path.dirname(configFile);
-
-          this.argv = {
-            ...this.argv,
-            vocabListFile: configFile,
-            outputDirectory: origOutputDirectory
-              ? path.join(
-                  origOutputDirectory,
-                  configDirectory.substring(rootOfGlob.length)
-                )
-              : configDirectory,
-          };
-
-          const config = await this.configure();
-          result = await this.runWithConfig(config);
-        }
-
-        return result;
-      }
-    }
-
-    const config = await this.configure();
-    return this.runWithConfig(config);
+    return await this.performFunctionPerGlobMatch(this, async function (
+      app,
+      config
+    ) {
+      return await app.runWithConfig(config);
+    });
   }
 
   async runWithConfig(config) {
@@ -182,14 +119,98 @@ module.exports = class App {
   }
 
   async watch() {
-    this.watcher = new VocabWatcher(
-      new ArtifactGenerator(await this.configure())
-    );
-    this.watcher.watch();
+    return await this.performFunctionPerGlobMatch(this, async function (
+      app,
+      config
+    ) {
+      const watcher = new VocabWatcher(new ArtifactGenerator(config));
+      await watcher.watch();
+
+      app.watcherList.push(watcher);
+    });
+  }
+
+  async performFunctionPerGlobMatch(app, funcToCall) {
+    if (this.argv.vocabListFile) {
+      // Check if the vocab list file is actually a glob (e.g. yamls/**/*.yml).
+      // Filter out any instances in 'Generated' directories (as we can have
+      // '.yml' files in the 'node_modules' hierarchies of generated projects.
+      const matchingConfigFile = glob
+        .sync(
+          this.argv.vocabListFile,
+          this.argv.vocabListFileIgnore
+            ? { ignore: this.argv.vocabListFileIgnore.split(",") }
+            : {}
+        )
+        .filter((match) => !match.includes("/Generated/"));
+
+      this.argv.globMatchPosition = 0;
+      this.argv.globMatchTotal = matchingConfigFile.length;
+
+      // If only one match, then it may (or may not) have been a glob that
+      // simply matched one config file, so overwrite our input with the actual
+      // match.
+      if (matchingConfigFile.length === 1) {
+        this.argv.vocabListFile = matchingConfigFile[0];
+      }
+
+      if (matchingConfigFile.length > 1) {
+        // If we were given an explicit output directory, we'll generate our
+        // output within that directory, but in sub-directories based from the
+        // root of the specific glob. So if our specified output directory was
+        // 'a/b/c', and our glob was 'resources/yamls/**/*.yml', and we found
+        // YAMLs in 'resources/yamls/x/y/first.yml' and
+        // 'resources/yamls/z/second.yml', then we'll generate artifacts in
+        // 'a/b/c/x/y/Generated' and 'a/b/c/z/Generated'.
+        // If no output directory was provided, we'll just generate relative to
+        // the found YAMLs themselves, i.e. in 'resources/yamls/x/y/Generated'
+        // and 'resources/yamls/z/Generated'.
+        const origOutputDirectory = this.argv.outputDirectory;
+        const rootOfGlob = this.argv.vocabListFile.substring(
+          0,
+          this.argv.vocabListFile.indexOf("*")
+        );
+
+        // TODO: When generating artifacts from multiple config files, we
+        //  should collect all results and return them all, and our calling code
+        //  will need to be updated to always handle potentially multiple
+        //  generation results...
+        let result = undefined;
+        // The following loop enforces sequential execution on purpose, because
+        // there are possibilities that the generator requires user interaction,
+        // in which cases parallel execution is not acceptable.
+        for (let configFile of matchingConfigFile) {
+          const configDirectory = path.dirname(configFile);
+
+          this.argv.globMatchPosition++;
+          this.argv = {
+            ...this.argv,
+            vocabListFile: configFile,
+            outputDirectory: origOutputDirectory
+              ? path.join(
+                  origOutputDirectory,
+                  configDirectory.substring(rootOfGlob.length)
+                )
+              : configDirectory,
+          };
+
+          const config = await this.configure();
+          result = funcToCall(this, config);
+        }
+
+        return result;
+      }
+    }
+
+    this.argv.globMatchTotal = this.argv.globMatchPosition = 1;
+    return await funcToCall(this, await this.configure());
   }
 
   unwatch() {
-    this.watcher.unwatch();
+    const watcherCount = this.watcherList.length;
+    debug(`Stopping all [${watcherCount}] watchers...`);
+    this.watcherList.forEach(async (watcher) => await watcher.unwatch());
+    this.watcherList = [];
   }
 };
 

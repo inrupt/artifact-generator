@@ -18,7 +18,7 @@
     <developers>
         <developer>
             <name>@inrupt/lit-artifact-generator</name>
-            <url>https://github.com/inrupt/lit-artifact-generator-js</url>
+            <url>https://github.com/inrupt/lit-artifact-generator</url>
         </developer>
     </developers>
 

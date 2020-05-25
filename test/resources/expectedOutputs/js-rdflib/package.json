@@ -9,7 +9,7 @@
   },
   "author": {
     "name": "@inrupt/lit-artifact-generator",
-    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+    "url": "https://github.com/inrupt/lit-artifact-generator"
   },
   "contributors": [
     {"name": "Jarlath Holleran"}

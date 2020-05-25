@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:inrupt/lit-artifact-generator-js.git"
+    "url": "git@github.com:inrupt/lit-artifact-generator.git"
   },
   "license": "MIT",
   "preferGlobal": true,

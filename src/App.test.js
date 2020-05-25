@@ -262,12 +262,13 @@ describe("App tests", () => {
         _: ["watch"],
         vocabListFile: "./test/resources/watcher/vocab-list.yml",
       };
+
       // init will call the prompt, which is mocked here
       const app = new App(argv);
       await app.watch();
-      app.unwatch();
-      expect(app.watcher.watch.mock.calls.length).toBe(1);
-      expect(app.watcher.unwatch.mock.calls.length).toBe(1);
+      expect(app.watcherList.length).toBe(1);
+      await app.unwatch();
+      expect(app.watcherList.length).toBe(0);
     });
   });
 
@@ -357,8 +358,9 @@ describe("App tests", () => {
         outputDirectory: outputDirectory,
       };
 
-      const mockedResponse = await new App(config).run();
-      expect(mockedResponse.stubbed).toBe(true);
+      const app = new App(config);
+      await app.run();
+      expect(app.argv.globMatchTotal).toBe(2);
     });
 
     it("should generate from multiple YAMLs to relative output dir", async () => {
@@ -368,8 +370,9 @@ describe("App tests", () => {
         vocabListFile: filePath,
       };
 
-      const mockedResponse = await new App(config).run();
-      expect(mockedResponse.stubbed).toBe(true);
+      const app = new App(config);
+      await app.run();
+      expect(app.argv.globMatchTotal).toBe(2);
     });
 
     it("should work if glob matches only one YAML", async () => {
@@ -379,8 +382,9 @@ describe("App tests", () => {
         vocabListFile: filePath,
       };
 
-      const mockedResponse = await new App(config).run();
-      expect(mockedResponse.stubbed).toBe(true);
+      const app = new App(config);
+      await app.run();
+      expect(app.argv.globMatchTotal).toBe(1);
     });
 
     it("should ignore glob patterns if specified", async () => {
@@ -396,6 +400,22 @@ describe("App tests", () => {
       //  mocking being used in this test file!).
 
       expect(mockedResponse.stubbed).toBe(true);
+    });
+  });
+
+  describe("Testing watcher globbing", () => {
+    it("should generate multiple YAMLs to given output dir", async () => {
+      const filePath = path.join("test", "resources", "glob", "**", "*.yml");
+      const outputDirectory = path.join("test", "Generated", "Glob");
+      const config = {
+        _: ["watch"],
+        vocabListFile: filePath,
+        outputDirectory: outputDirectory,
+      };
+
+      const app = new App(config);
+      await app.watch();
+      expect(app.argv.globMatchTotal).toBe(2);
     });
   });
 });

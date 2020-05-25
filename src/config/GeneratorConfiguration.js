@@ -386,7 +386,7 @@ class GeneratorConfiguration {
     }
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
       debug(
-        `You are running the version [${packageDotJson.version}] of the generator, and reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/lit-artifact-generator-js/releases to verify compatibility.`
+        `You are running the version [${packageDotJson.version}] of the generator, and reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/lit-artifact-generator/releases to verify compatibility.`
       );
     }
 
