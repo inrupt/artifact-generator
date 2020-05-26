@@ -1,7 +1,7 @@
 {
   "name": "@lit/generated-vocab-static-TEST",
   "version": "10.11.12",
-  "description": "Bundle of vocabularies that includes the following:\n\n  test_vocab_1: Testing static file won&#x27;t cause re-generation.\n\n  test_vocab_2: Testing static file won&#x27;t cause re-generation.",
+  "description": "Bundle of vocabularies that includes the following:\n\n  test_vocab_1: Testing static file won&#x27;t cause re-generation.",
   "main": "index.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
