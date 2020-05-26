@@ -498,62 +498,40 @@ describe("Artifact Generator", () => {
     });
 
     it("should not publish artifacts if generation was skipped", async () => {
-      // To test that generation is being skipped we need a generated output to
-      // already exist in our source repository. Therefore we have to override
-      // the default generated directory, since we .gitignore that normally to
-      // specifically prevent checking generated code in.
-      const existingOutputDirectory = path.join(
-        ".",
-        "test",
-        "resources",
-        "expectedOutputs",
-        "skipGeneration"
-      );
-      const generateOverride = {
-        artifactDirectoryRootOverride: "GenerateOverride",
-      };
-
-      const generatedFile = path.join(
-        `${existingOutputDirectory}`,
-        `${getArtifactDirectoryRoot(generateOverride)}`,
-        ArtifactGenerator.ARTIFACTS_INFO_FILENAME
-      );
-
-      // Get the file timestamp before we run our test...
-      const beforeTestTimestamp = await Resource.getResourceLastModificationTime(
-        generatedFile
-      );
+      const outputDirectory =
+        "test/Generated/ArtifactGenerator/publish/regenerate";
+      del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        vocabListFile: path.join(
-          ".",
-          "test",
-          "resources",
-          "expectedOutputs",
-          "skipGeneration",
-          "vocab-list-no-publish.yml"
-        ),
-        outputDirectory: existingOutputDirectory,
+        vocabListFile:
+          "./test/resources/packaging/vocab-list-dummy-commands.yml",
+        outputDirectory,
         noprompt: true,
-        ...generateOverride,
       });
-
       config.completeInitialConfiguration();
+
       const artifactGenerator = new ArtifactGenerator(config);
       const result = await artifactGenerator.generate().then(() => {
-        return artifactGenerator.runPublish("remote");
+        return artifactGenerator.runPublish("local");
       });
+      expect(result.ranPublish).toEqual(true);
 
-      expect(result.ranPublish).toBeUndefined();
+      // Now re-run the test, but expect publish to *not* be executed.
+      const rerunConfig = new GeneratorConfiguration({
+        _: "generate",
+        vocabListFile:
+          "./test/resources/packaging/vocab-list-dummy-commands.yml",
+        outputDirectory,
+        noprompt: true,
+      });
+      rerunConfig.completeInitialConfiguration();
 
-      expect(fs.existsSync(generatedFile)).toBe(true);
-
-      // Check that the generated file was not modified.
-      const lastModifiedTime = await Resource.getResourceLastModificationTime(
-        generatedFile
-      );
-      expect(lastModifiedTime).toEqual(beforeTestTimestamp);
+      const rerunArtifactGenerator = new ArtifactGenerator(rerunConfig);
+      const rerunResult = await rerunArtifactGenerator.generate().then(() => {
+        return rerunArtifactGenerator.runPublish("local");
+      });
+      expect(rerunResult.ranPublish).toBeUndefined();
     });
   });
 
