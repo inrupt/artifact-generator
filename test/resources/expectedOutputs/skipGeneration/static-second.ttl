@@ -5,10 +5,10 @@
 @prefix vann: <http://purl.org/vocab/vann/> .
 
 @prefix lit_core: <https://w3id.org/lit/vocab/core#> .
-prefix test_vocab: <https://inrupt.com/vocab/static-test#>
+prefix test_vocab_2: <https://inrupt.com/vocab/static-test-2#>
 
 
-test_vocab:
+test_vocab_2:
 	a owl:Ontology, lit_core:Ontology ;
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
@@ -16,8 +16,8 @@ test_vocab:
  	dcterms:title "LIT Demo Vocab" ;
 	dcterms:description "Testing static file won't cause re-generation." ;
 	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
-	vann:preferredNamespacePrefix "test_vocab" ;
-	vann:preferredNamespaceUri "https://inrupt.com/vocab/static-test#" .
+	vann:preferredNamespacePrefix "test_vocab_2" ;
+	vann:preferredNamespaceUri "https://inrupt.com/vocab/static-test-2#" .
 
-test_vocab:sampleTerm a rdfs:Class ;
+test_vocab_2:sampleTerm a rdfs:Class ;
   rdfs:label "We have a label, but no comment!" .

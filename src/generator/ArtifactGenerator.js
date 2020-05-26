@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const moment = require("moment");
 const debug = require("debug")("lit-artifact-generator:ArtifactGenerator");
 const ChildProcess = require("child_process");
 
@@ -78,7 +79,10 @@ class ArtifactGenerator {
         // generation). This way, if a vocabulary resource has been modified
         // more recently than this file, we know that the artifacts are
         // outdated.
-        if (this.resourceGeneration()) {
+        // NOTE: We only check the overall 'generated' flag here, since we need
+        // this file created/updated regardless of whether we're generating or
+        // watching.
+        if (this.artifactData.generated) {
           FileGenerator.createFileFromTemplate(
             ARTIFACTS_INFO_TEMPLATE,
             this.artifactData,
@@ -126,7 +130,13 @@ class ArtifactGenerator {
           this.configuration.modifiedResourceList.push(resources[i]);
           artifactsOutdated = true;
           debug(
-            `Resource [${resources[i]}] modified since previous generation.`
+            `Resource [${resources[i]}] modified at [${moment(
+              modifiedTime
+            ).format(
+              "LLLL"
+            )}], which is prior to previous generation at [${moment(
+              lastGenerationTime
+            ).format("LLLL")}].`
           );
         }
       }
@@ -144,6 +154,7 @@ class ArtifactGenerator {
     } else {
       // There are no artifacts in the target directory.
       artifactsOutdated = true;
+      this.configuration.modifiedResourceList = this.configuration.getInputResources();
     }
 
     return artifactsOutdated;
@@ -163,14 +174,27 @@ class ArtifactGenerator {
         return result;
       }
     );
+
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
     //  programming languages. But this code was extended to provide the
     //  language-specific details within this original vocab-iterating loop.
     if (await this.isGenerationNecessary()) {
       this.artifactData.generated = true;
+
+      // Determine just the changed vocabs (if 'force' is set, then consider
+      // all vocabs as 'changed'), else only consider vocabs that appear to have
+      // been modified.
+      const changedVocabList = this.artifactData.force
+        ? this.artifactData.vocabList
+        : this.artifactData.vocabList.filter((vocabDetails) => {
+            return vocabDetails.inputResources.some((r) =>
+              this.configuration.modifiedResourceList.includes(r)
+            );
+          });
+
       return Promise.all(
-        this.artifactData.vocabList.map(async (vocabDetails) => {
+        changedVocabList.map(async (vocabDetails) => {
           // Override our vocab inputs using this vocab list entry.
           this.artifactData.inputResources = vocabDetails.inputResources;
           this.artifactData.termSelectionResource =
@@ -188,6 +212,7 @@ class ArtifactGenerator {
               ).generate();
             }
           );
+
           // Wait for all our artifacts to be generated.
           await Promise.all(artifactPromises);
           // Only return the first one, as we don't want duplicate info.
