@@ -198,7 +198,7 @@ vocabList:
     nameAndPrefixOverride: schema-inrupt-ext
     # When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be 
     # generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding 
-    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/lit-artifact-generator-js/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
+    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/lit-artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
     termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
 ```
 

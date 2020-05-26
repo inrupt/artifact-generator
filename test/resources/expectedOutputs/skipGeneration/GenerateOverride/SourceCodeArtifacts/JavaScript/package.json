@@ -1,14 +1,14 @@
 {
-  "name": "@lit/generated-vocab-common-TEST",
+  "name": "@lit/generated-vocab-static-TEST",
   "version": "10.11.12",
-  "description": "Bundle of vocabularies that includes the following:\n\n  schema: \n\n  override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.",
+  "description": "Bundle of vocabularies that includes the following:\n\n  test_vocab: Testing static file won&#x27;t cause re-generation.",
   "main": "index.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
-    "url": "https://github.com/inrupt/lit-artifact-generator-js"
+    "url": "https://github.com/inrupt/lit-artifact-generator"
   },
   "contributors": [
-    {"name": "Pat McBennett"}
+    {"name": "PatMcB"}
   ],
   "dependencies": {
     "@inrupt/lit-vocab-term": "^1.0.10",

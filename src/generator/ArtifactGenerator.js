@@ -48,13 +48,13 @@ class ArtifactGenerator {
   async generate() {
     return this.generateVocabs()
       .then((vocabDatasets) => {
-        if (this.artifactData.generated) {
+        if (this.resourceGeneration()) {
           return this.collectGeneratedVocabDetails(vocabDatasets);
         }
         return vocabDatasets;
       })
       .then(async (vocabDatasets) => {
-        if (this.artifactData.generated) {
+        if (this.resourceGeneration()) {
           if (!this.artifactData.artifactName) {
             this.artifactData.artifactName = vocabDatasets[0].artifactName;
           }
@@ -67,14 +67,18 @@ class ArtifactGenerator {
         }
       })
       .then(() => this.generatePackaging())
-      .then(() => FileGenerator.createVersioningFiles(this.artifactData))
+      .then(() => {
+        if (this.resourceGeneration()) {
+          FileGenerator.createVersioningFiles(this.artifactData);
+        }
+      })
       .then(() => this.generateLicense())
       .then(() => {
         // This file is generated after all the artifacts (if we didn't skip the
         // generation). This way, if a vocabulary resource has been modified
         // more recently than this file, we know that the artifacts are
         // outdated.
-        if (this.artifactData.generated) {
+        if (this.resourceGeneration()) {
           FileGenerator.createFileFromTemplate(
             ARTIFACTS_INFO_TEMPLATE,
             this.artifactData,
@@ -93,7 +97,7 @@ class ArtifactGenerator {
   }
 
   async isGenerationNecessary() {
-    // The --force option overrides the logic of this function
+    // The --force option overrides the logic of this function.
     return this.artifactData.force || (await this.checkIfGenerationNecessary());
   }
 
@@ -105,6 +109,8 @@ class ArtifactGenerator {
       ARTIFACTS_INFO_FILENAME
     );
 
+    this.configuration.modifiedResourceList = [];
+
     if (fs.existsSync(artifactInfoPath)) {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
@@ -112,24 +118,25 @@ class ArtifactGenerator {
       const vocabsLastModificationTime = [];
       const resources = this.configuration.getInputResources();
       for (let i = 0; i < resources.length; i += 1) {
-        vocabsLastModificationTime.push(
-          await Resource.getResourceLastModificationTime(resources[i])
+        const modifiedTime = await Resource.getResourceLastModificationTime(
+          resources[i]
         );
-      }
 
-      await Promise.all(vocabsLastModificationTime).then((values) => {
-        // The artifact is outdated if one vocabulary is more recent than the artifact
-        artifactsOutdated = values.reduce((accumulator, lastModif) => {
-          return lastGenerationTime < lastModif || accumulator;
-        }, artifactsOutdated);
-      });
+        if (lastGenerationTime < modifiedTime) {
+          this.configuration.modifiedResourceList.push(resources[i]);
+          artifactsOutdated = true;
+          debug(
+            `Resource [${resources[i]}] modified since previous generation.`
+          );
+        }
+      }
 
       if (!artifactsOutdated) {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
             getArtifactDirectoryRoot(this.artifactData)
-          )}], and there have been no modifications to the vocabularies since their generation on [${
+          )}], and there have been no modifications to the vocabularies or configuration files since their generation on [${
             fs.statSync(artifactInfoPath).mtime
           }]. Use the '--force' command-line option to re-generate the artifacts regardless.`
         );
@@ -212,14 +219,29 @@ class ArtifactGenerator {
     return vocabDatasets;
   }
 
+  /**
+   * Checks if we are configured to generate resources (as opposed to watching
+   * resourcs, or initializing, etc.).
+   * @returns {*}
+   */
+  resourceGeneration() {
+    return (
+      this.artifactData.generated &&
+      this.artifactData["_"] &&
+      this.artifactData["_"].includes("generate")
+    );
+  }
+
   async generatePackaging() {
-    // If the artifacts have not been generated, it's not necessary to re-package them
-    if (this.artifactData.generated) {
+    // If the artifacts have not been generated, it's not necessary to
+    // re-package them, but also only generate if we are configured to generate.
+    if (this.resourceGeneration()) {
       this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
         if (artifactDetails.packaging) {
           debug(
             `Generating [${artifactDetails.programmingLanguage}] packaging`
           );
+
           // TODO: manage repositories properly
           this.artifactData.gitRepository = artifactDetails.gitRepository;
           this.artifactData.repository = artifactDetails.repository;
@@ -240,7 +262,11 @@ class ArtifactGenerator {
   }
 
   generateLicense() {
-    if (this.artifactData.license && this.artifactData.license.path) {
+    if (
+      this.resourceGeneration() &&
+      this.artifactData.license &&
+      this.artifactData.license.path
+    ) {
       this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
         const licenseText = fs.readFileSync(this.artifactData.license.path);
         fs.writeFileSync(
