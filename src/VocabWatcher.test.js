@@ -275,6 +275,7 @@ describe("Vocabulary watcher", () => {
     const generator = new ArtifactGenerator(
       new GeneratorConfiguration(
         {
+          _: "generate",
           vocabListFile: VOCAB_LIST_PATH,
           outputDirectory: OUTPUT_DIRECTORY,
         },

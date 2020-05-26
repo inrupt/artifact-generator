@@ -84,6 +84,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
+        _: "generate",
         vocabListFile: "./test/resources/vocabs/vocab-list.yml",
         outputDirectory,
         noprompt: true,
@@ -101,6 +102,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
+        _: "generate",
         vocabListFile: "./test/resources/versioning/vocab-list.yml",
         outputDirectory,
         noprompt: true,
@@ -143,7 +145,7 @@ describe("Artifact Generator", () => {
       expect(packageOutput.indexOf('"devDependencies",')).toEqual(-1);
     });
 
-    it("should not ask for user input when no information is missing", async () => {
+    it("should not ask for user input if no information is missing", async () => {
       const outputDirectory = "test/Generated/ArtifactGenerator/no-bundling";
 
       const config = new GeneratorConfiguration({
@@ -154,8 +156,8 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^1.0.10",
       });
       config.completeInitialConfiguration();
-      const artifactGenerator = new ArtifactGenerator(config);
 
+      const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
 
       expect(artifactGenerator.artifactData.artifactName).toEqual("someName");
@@ -216,7 +218,7 @@ describe("Artifact Generator", () => {
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
 
-    it("Should not generate artifacts if they target directory is up-to-date", async () => {
+    it("Should not generate artifacts if the target directory is up-to-date", async () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
@@ -237,14 +239,74 @@ describe("Artifact Generator", () => {
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
-      // Initially, the directory is empty, so this generation should create target source files
+      // Initially, the directory is empty, so this generation should create
+      // target source files.
       await artifactGenerator.generate();
       expect(fs.existsSync(generatedFile)).toBe(true);
       const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
 
-      // The artifacts are up-to-date, so the generation should be prevented
+      // The artifacts are up-to-date, so the generation should be prevented.
       await artifactGenerator.generate();
       expect(fs.statSync(generatedFile).mtimeMs).toEqual(initialGenerationTime);
+    });
+
+    it("Should regenerate if input modified", async () => {
+      const outputDirectory = path.join(
+        ".",
+        "test",
+        "Generated",
+        "ArtifactGenerator",
+        "modify-input"
+      );
+      const generatedFile = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "package.json"
+      );
+      del.sync([`${outputDirectory}/*`]);
+      fs.mkdirSync(outputDirectory, { recursive: true });
+
+      // Copy our input to a generated location (so that we can update them
+      // without source control system thinking an actual change occurred).
+      const sourceDataDirectory = path.join(
+        ".",
+        "test",
+        "resources",
+        "expectedOutputs",
+        "skipGeneration"
+      );
+      const testFile = path.join(outputDirectory, "static.ttl");
+
+      fs.copyFileSync(path.join(sourceDataDirectory, "static.ttl"), testFile);
+
+      const config = new GeneratorConfiguration({
+        _: "generate",
+        inputResources: [testFile],
+        outputDirectory,
+        artifactVersion: "1.0.0",
+        litVocabTermVersion: "^0.1.0",
+        moduleNamePrefix: "@lit/generated-vocab-",
+        noprompt: true,
+      });
+
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create
+      // target source files.
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFile)).toBe(true);
+      const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
+
+      // Modify our input file.
+      Resource.touchFile(testFile);
+
+      // The input was updated, so output should have been re-generated.
+      await artifactGenerator.generate();
+      expect(fs.statSync(generatedFile).mtimeMs).toBeGreaterThan(
+        initialGenerationTime
+      );
     });
 
     it("Should generate when forced, even if the target directory is up-to-date", async () => {
@@ -326,7 +388,13 @@ describe("Artifact Generator", () => {
     });
 
     it("should not publish artifacts if generation was skipped", async () => {
-      const outputDirectory = "test/resources/expectedOutputs/skipGeneration";
+      const outputDirectory = path.join(
+        ".",
+        "test",
+        "resources",
+        "expectedOutputs",
+        "skipGeneration"
+      );
 
       // To test that generation is being skipped we need a generated output to
       // already exist in our source repository. Therefore we have to override
@@ -348,12 +416,14 @@ describe("Artifact Generator", () => {
       );
 
       const config = new GeneratorConfiguration({
+        _: "generate",
         vocabListFile: path.join(
           ".",
           "test",
           "resources",
-          "packaging",
-          "vocab-list-dummy-commands.yml"
+          "expectedOutputs",
+          "skipGeneration",
+          "vocab-list-static.yml"
         ),
         outputDirectory,
         noprompt: true,
@@ -385,17 +455,21 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
+        _: "generate",
         vocabListFile:
           "./test/resources/backwardCompatibility/vocab-list_no-packaging.yml",
         outputDirectory,
         noprompt: true,
       });
+
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
         artifactGenerator.runPublish(true);
       });
-      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+
+      // In the config file, the publication command has been replaced by a
+      // command creating a file in the artifact root folder.
       expect(
         fs.existsSync(
           `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/pom.xml`
@@ -416,6 +490,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
+        _: "generate",
         vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
         outputDirectory,
         noprompt: true,

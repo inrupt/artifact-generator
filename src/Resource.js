@@ -48,7 +48,7 @@ module.exports = class Resource {
   }
 
   async processInputs(processInputsCallback) {
-    debug(`Processing datasetFiles: [${this.datasetFiles}]...`);
+    debug(`Processing input resources: [${this.datasetFiles}]...`);
     const datasetsPromises = this.datasetFiles.map((e) =>
       Resource.readResource(e)
     );
@@ -134,6 +134,22 @@ module.exports = class Resource {
 
   static isOnline(resource) {
     return resource.startsWith("http");
+  }
+
+  /**
+   * Touches (i.e. updates the last modified time) on the specified file.
+   * NOTE: For testing we allow passing in an instance of 'fs'.
+   * @param filename the file to touch.
+   * @param fs the file system to use (allows for testing).
+   */
+  static touchFile(filename, fileSystem) {
+    const now = new Date();
+
+    try {
+      (fileSystem || fs).utimesSync(filename, now, now);
+    } catch (err) {
+      fs.closeSync(fs.openSync(filename, "w"));
+    }
   }
 };
 
