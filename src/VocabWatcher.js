@@ -57,8 +57,8 @@ class VocabWatcher {
       const now = moment();
       debug(`*****************************************************`);
       debug(
-        `File [${eventPath}] has changed at [${now.format(
-          "YYYY-MM-DD HH:mm:ss"
+        `File [${eventPath}] has changed at [${moment().format(
+          "LLLL"
         )}], regenerating...`
       );
 
@@ -77,8 +77,8 @@ class VocabWatcher {
         .generate()
         .then((result) => {
           debug(
-            `...completed regeneration after file [${eventPath}] changed at [${now.format(
-              "YYYY-MM-DD HH:mm:ss"
+            `...completed regeneration after file [${eventPath}] changed at [${moment().format(
+              "LLLL"
             )}].`
           );
         })

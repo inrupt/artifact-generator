@@ -276,9 +276,12 @@ describe("Artifact Generator", () => {
         "expectedOutputs",
         "skipGeneration"
       );
-      const testFile = path.join(outputDirectory, "static.ttl");
+      const testFile = path.join(outputDirectory, "static-first.ttl");
 
-      fs.copyFileSync(path.join(sourceDataDirectory, "static.ttl"), testFile);
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-first.ttl"),
+        testFile
+      );
 
       const config = new GeneratorConfiguration({
         _: "generate",
@@ -306,6 +309,114 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       expect(fs.statSync(generatedFile).mtimeMs).toBeGreaterThan(
         initialGenerationTime
+      );
+    });
+
+    it("Should regenerate *only* based on modified input, not all input", async () => {
+      const outputDirectory = path.join(
+        ".",
+        "test",
+        "Generated",
+
+        "ArtifactGenerator",
+        "modify-one-of-multiple-inputs"
+      );
+      const generatedFileFirst = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "GeneratedVocab",
+        "TEST_VOCAB_1.js"
+      );
+      const generatedFileSecond = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "GeneratedVocab",
+        "TEST_VOCAB_2.js"
+      );
+      del.sync([`${outputDirectory}/*`]);
+      fs.mkdirSync(outputDirectory, { recursive: true });
+
+      // Copy our input to a generated location (so that we can update them
+      // without source control system thinking an actual change occurred).
+      const sourceDataDirectory = path.join(
+        ".",
+        "test",
+        "resources",
+        "expectedOutputs",
+        "skipGeneration"
+      );
+      const testConfigFile = path.join(
+        outputDirectory,
+        "vocab-list-static.yml"
+      );
+      const testInputFirst = path.join(outputDirectory, "static-first.ttl");
+      const testInputSecond = path.join(outputDirectory, "static-second.ttl");
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "vocab-list-static.yml"),
+        testConfigFile
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-first.ttl"),
+        testInputFirst
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-second.ttl"),
+        testInputSecond
+      );
+
+      const config = new GeneratorConfiguration({
+        _: "generate",
+        vocabListFile: testConfigFile,
+        outputDirectory,
+        artifactVersion: "1.0.0",
+        litVocabTermVersion: "^0.1.0",
+        moduleNamePrefix: "@lit/generated-vocab-",
+        noprompt: true,
+      });
+
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create
+      // target source files.
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFileFirst)).toBe(true);
+      expect(fs.existsSync(generatedFileSecond)).toBe(true);
+      const initialGenerationTimeFirst = fs.statSync(generatedFileFirst)
+        .mtimeMs;
+      const initialGenerationTimeSecond = fs.statSync(generatedFileSecond)
+        .mtimeMs;
+
+      // Modify just one of our input files.
+      Resource.touchFile(testInputSecond);
+
+      await artifactGenerator.generate();
+
+      // Only one input was updated, so only the corresponding output should
+      // have been re-generated.
+      expect(fs.statSync(generatedFileSecond).mtimeMs).toBeGreaterThan(
+        initialGenerationTimeSecond
+      );
+      expect(fs.statSync(generatedFileFirst).mtimeMs).toEqual(
+        initialGenerationTimeFirst
+      );
+
+      // Modify the other input file.
+      Resource.touchFile(testInputFirst);
+      // Record the current time for the non-touched input file.
+      const newGenerationTimeSecond = fs.statSync(generatedFileSecond).mtimeMs;
+
+      await artifactGenerator.generate();
+
+      // Only one input was updated, so only the corresponding output should
+      // have been re-generated.
+      expect(fs.statSync(generatedFileSecond).mtimeMs).toEqual(
+        newGenerationTimeSecond
+      );
+      expect(fs.statSync(generatedFileFirst).mtimeMs).toBeGreaterThan(
+        initialGenerationTimeFirst
       );
     });
 
@@ -388,24 +499,23 @@ describe("Artifact Generator", () => {
     });
 
     it("should not publish artifacts if generation was skipped", async () => {
-      const outputDirectory = path.join(
+      // To test that generation is being skipped we need a generated output to
+      // already exist in our source repository. Therefore we have to override
+      // the default generated directory, since we .gitignore that normally to
+      // specifically prevent checking generated code in.
+      const existingOutputDirectory = path.join(
         ".",
         "test",
         "resources",
         "expectedOutputs",
         "skipGeneration"
       );
-
-      // To test that generation is being skipped we need a generated output to
-      // already exist in our source repository. Therefore we have to override
-      // the default generated directory, since we .gitignore that normally to
-      // specifically prevent checking that in.
       const generateOverride = {
         artifactDirectoryRootOverride: "GenerateOverride",
       };
 
       const generatedFile = path.join(
-        `${outputDirectory}`,
+        `${existingOutputDirectory}`,
         `${getArtifactDirectoryRoot(generateOverride)}`,
         ArtifactGenerator.ARTIFACTS_INFO_FILENAME
       );
@@ -423,9 +533,9 @@ describe("Artifact Generator", () => {
           "resources",
           "expectedOutputs",
           "skipGeneration",
-          "vocab-list-static.yml"
+          "vocab-list-no-publish.yml"
         ),
-        outputDirectory,
+        outputDirectory: existingOutputDirectory,
         noprompt: true,
         ...generateOverride,
       });

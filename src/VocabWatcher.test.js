@@ -146,8 +146,8 @@ describe("Vocabulary watcher", () => {
   });
 
   it("should trigger artifact generation on config file change", async () => {
-    runWithConfigFile(VOCAB_LIST_PATH);
-    runWithConfigFile(VOCAB_LIST_PATH_ALTERNATE);
+    await runWithConfigFile(VOCAB_LIST_PATH);
+    await runWithConfigFile(VOCAB_LIST_PATH_ALTERNATE);
   });
 
   async function runWithConfigFile(configFile) {
@@ -219,12 +219,14 @@ describe("Vocabulary watcher", () => {
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
-    // Makes the vocabulary syntactically wrong, and restores it
+
+    // Makes the vocabulary syntactically wrong, and restores it.
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "schema:Person a rdfs:Class ;",
       "schema:Person a rdfs:Class"
     );
+
     // If the watcher process throws, this will fail
     watcher.unwatch();
   });
