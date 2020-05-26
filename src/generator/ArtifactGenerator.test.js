@@ -317,7 +317,6 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "Generated",
-
         "ArtifactGenerator",
         "modify-one-of-multiple-inputs"
       );
