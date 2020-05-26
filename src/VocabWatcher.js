@@ -43,7 +43,6 @@ class VocabWatcher {
     await this.generator
       .generate()
       .then((result) => {
-        // debug(`DEBUG: [${JSON.stringify(this.generator.configuration, null, 2)}]`);
         debug(
           `Successfully watching into directory: [${result.outputDirectory}] - [${result.globMatchPosition} of ${result.globMatchTotal} matched config files].`
         );
