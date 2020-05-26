@@ -21,6 +21,7 @@ module.exports = class VocabGenerator {
     debug(
       `Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`
     );
+
     if (
       vocabGenerationData.classes.length === 0 &&
       vocabGenerationData.properties.length === 0 &&
@@ -46,6 +47,7 @@ module.exports = class VocabGenerator {
         );
       });
     }
+
     return new Promise((resolve) => {
       FileGenerator.createSourceCodeFile(
         this.vocabData,
@@ -103,6 +105,7 @@ module.exports = class VocabGenerator {
       subjectsOnlyDataset,
       this.vocabData
     );
+
     return datasetHandler.buildTemplateInput();
   }
 

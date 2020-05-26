@@ -1,0 +1,42 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-static-TEST
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+  - programmingLanguage: JavaScript
+    artifactVersion: 10.11.12
+    litVocabTermVersion: "^1.0.10"
+    artifactDirectoryName: JavaScript
+    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    sourceFileExtension: js
+    packaging: 
+      - packagingTool: npm 
+        npmModuleScope: "@lit/"
+        ##
+        # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
+        ##
+        publish: 
+        - key: "local"
+          command: "touch npm-publishLocal"
+        - key: "remote"
+          command: "touch npm-publishRemote"
+        packagingTemplates: 
+          - templateInternal: litVocabTermDependent/javascript/package.hbs
+            fileName: package.json
+          - templateInternal: litVocabTermDependent/javascript/index.hbs
+            fileName: index.js
+      - packagingTool: webpack
+        packagingFolder: config
+        packagingTemplates:
+          - templateInternal: webpack.dev.config.hbs
+            fileName: webpack.dev.config.js
+          - templateInternal: webpack.prod.config.hbs
+            fileName: webpack.prod.config.js
+
+vocabList:
+  - description: Testing static file won't cause re-generation.
+    inputResources:
+      - ./static.ttl

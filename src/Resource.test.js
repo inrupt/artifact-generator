@@ -1,4 +1,6 @@
 require("mock-local-storage");
+const path = require("path");
+const fs = require("fs");
 
 const axios = require("axios");
 jest.mock("axios");
@@ -56,5 +58,33 @@ describe("Fetching remote resource", () => {
     );
     const resource = Resource.readResource("http://example.org/ns");
     expect(await resource).toEqual(undefined);
+  });
+});
+
+describe("Touching a file", () => {
+  it("should update the last modified time of file", async () => {
+    const file = path.join(
+      "test",
+      "resources",
+      "expectedOutputs",
+      "lit-vocab.yml"
+    );
+    const origModifiedTime = fs.statSync(file).mtimeMs;
+    Resource.touchFile(file);
+    const newModifiedTime = fs.statSync(file).mtimeMs;
+    expect(newModifiedTime).toBeGreaterThan(origModifiedTime);
+  });
+
+  it("should handle file exception", async () => {
+    const file = path.join(
+      "test",
+      "resources",
+      "expectedOutputs",
+      "lit-vocab-git.yml"
+    );
+    const origModifiedTime = fs.statSync(file).mtimeMs;
+    Resource.touchFile(file, {});
+    const newModifiedTime = fs.statSync(file).mtimeMs;
+    expect(newModifiedTime).toBeGreaterThan(origModifiedTime);
   });
 });
