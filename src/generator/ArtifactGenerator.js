@@ -129,7 +129,7 @@ class ArtifactGenerator {
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
             getArtifactDirectoryRoot(this.artifactData)
-          )}], and there have been no modifications to the vocabularies since their generation on [${
+          )}], and there have been no modifications to the vocabularies or configuration files since their generation on [${
             fs.statSync(artifactInfoPath).mtime
           }]. Use the '--force' command-line option to re-generate the artifacts regardless.`
         );

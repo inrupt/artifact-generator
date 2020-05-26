@@ -17,7 +17,7 @@ const ConfigAll = {
   _: "generate",
   force: true,
   vocabListFile: "../lit-vocab/**/*.yml",
-  vocabListFileIgnore: "../lit-vocab/lit-artifact-generator-js/**",
+  vocabListFileIgnore: "../lit-vocab/lit-artifact-generator/**",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,

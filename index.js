@@ -301,16 +301,16 @@ function runValidation(argv) {
 
 function runWatcher(argv) {
   configureLog(argv);
+
   const app = new App(argv);
-  app.watch();
-  debug(`\nSuccessfully initialized file watcher`);
+  const watcherCount = app.watch();
+  debug(`\nSuccessfully initialized file watchers...`);
 
   // Use console to communicate with the user - we can't rely on 'debug' since
   // it needs to be configured before it'll output anything.
   console.log("Press Enter to terminate");
   process.stdin.on("data", () => {
     // On user input, exit
-    debug("Stopping watcher");
     app.unwatch();
     process.exit(0);
   });
