@@ -40,6 +40,8 @@ artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
+    npmModuleScope: "@inrupt-test/"
+    artifactPrefix: test-prefix-
     artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
@@ -54,7 +56,12 @@ artifactToGenerate:
           command: "touch npm-publishLocal"
         - key: "remote"
           command: "touch npm-publishRemote"
-        packagingTemplates: 
+        # This is just an idea (not implemented yet) - might be nice to allow
+        # the command to be run to be templated, allowing us to be very specific
+        # and dynamic about the commands we run.
+        - key: "templatedCommand"
+          command: "touch templated-${npmModuleScope}-${artifactPrefix}-${artifactName}@${artifactVersion}-file"
+        packagingTemplates:
           - templateInternal: litVocabTermDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: litVocabTermDependent/javascript/index.hbs

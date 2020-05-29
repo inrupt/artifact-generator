@@ -9,6 +9,10 @@ const VocabGenerator = require("./VocabGenerator");
 const Resource = require("../Resource");
 const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
+// We allow no output directory (in which case generation might be relative to
+// configuration file location).
+const DEFAULT_OUTPUT_DIRECTORY = ".";
+
 const {
   getArtifactDirectoryRoot,
   getArtifactDirectorySourceCode,
@@ -44,6 +48,10 @@ class ArtifactGenerator {
     this.artifactData.webpackCliVersion = "^3.3.6";
     this.artifactData.babelCoreVersion = "^7.5.5";
     this.artifactData.babelLoaderVersion = "^8.0.6";
+
+    // Make sure we have something for the output directory.
+    this.artifactData.outputDirectory =
+      this.artifactData.outputDirectory || ".";
   }
 
   async generate() {
@@ -412,6 +420,7 @@ class ArtifactGenerator {
               debug(
                 `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
               );
+
               ChildProcess.execSync(publishConfigs[j].command);
               process.chdir(homeDir);
             }
@@ -448,4 +457,5 @@ class ArtifactGenerator {
 }
 
 module.exports = ArtifactGenerator;
+module.exports.DEFAULT_OUTPUT_DIRECTORY = DEFAULT_OUTPUT_DIRECTORY;
 module.exports.ARTIFACTS_INFO_FILENAME = ARTIFACTS_INFO_FILENAME;

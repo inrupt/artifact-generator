@@ -30,6 +30,11 @@ beforeEach(() => {
 });
 
 describe("Artifact Generator", () => {
+  it("should provide a default output directory", () => {
+    const generator = new ArtifactGenerator({ configuration: {} });
+    expect(generator.artifactData.outputDirectory).toEqual(".");
+  });
+
   describe("Processing vocab list file.", () => {
     function verifyVocabList(outputDirectory) {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
@@ -455,6 +460,36 @@ describe("Artifact Generator", () => {
   });
 
   describe("Publishing artifacts.", () => {
+    it("should publish artifacts locally using templated command", async () => {
+      const outputDirectory =
+        "test/Generated/ArtifactGenerator/publish/templatedCommand";
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile:
+          "./test/resources/packaging/vocab-list-dummy-commands.yml",
+        outputDirectory,
+        noprompt: true,
+        force: true, // We need to FORCE generation to ensure publication.
+      });
+      config.completeInitialConfiguration();
+
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator.generate().then(() => {
+        artifactGenerator.runPublish("templatedCommand");
+      });
+
+      // This is just an idea (not implemented yet) - might be nice to allow
+      // the command to be run to be templated, allowing us to be very specific
+      // and dynamic about the commands we run.
+      expect(
+        fs.existsSync(
+          // `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/templated-@inrupt-test/test-prefix-generated-vocab-common-TEST@10.11.12`
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/templated---@-file`
+        )
+      ).toBe(true);
+    });
+
     it("should publish artifacts locally if the publication option is specified, and we regenerated", async () => {
       const outputDirectory =
         "test/Generated/ArtifactGenerator/publish/optionSetLocal";
