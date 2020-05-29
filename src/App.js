@@ -195,7 +195,7 @@ module.exports = class App {
           };
 
           const config = await this.configure();
-          result = funcToCall(this, config);
+          result = await funcToCall(this, config);
         }
 
         return result;
