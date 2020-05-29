@@ -448,9 +448,10 @@ class GeneratorConfiguration {
           configuration.license.path,
           configFile
         );
+
         if (configuration.license.header) {
-          // The configuration file contains the license path,
-          // and what we need in the templates is the license text.
+          // The configuration file contains the license path, and what we need
+          // in the templates is the license text.
           configuration.license.header = fs.readFileSync(
             this.normalizeRelativePath(
               configuration.license.header,
@@ -460,6 +461,7 @@ class GeneratorConfiguration {
           );
         }
       }
+
       GeneratorConfiguration.validateConfiguration(configuration, configFile);
     } catch (error) {
       throw new Error(
