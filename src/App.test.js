@@ -349,7 +349,7 @@ describe("App tests", () => {
   });
 
   describe("Testing glob for vocab file list", () => {
-    it("should generate multiple YAMLs to given output dir", async () => {
+    it("should generate from multiple YAMLs to the given output dir", async () => {
       const filePath = path.join("test", "resources", "glob", "**", "*.yml");
       const outputDirectory = path.join("test", "Generated", "Glob");
       const config = {
@@ -363,6 +363,20 @@ describe("App tests", () => {
       expect(app.argv.globMatchTotal).toBe(2);
     });
 
+    it("should work if glob matches only one YAML", async () => {
+      const filePath = path.join("test", "resources", "glob", "first", "*.yml");
+      const outputDirectory = path.join("test", "Generated", "Glob");
+      const config = {
+        _: ["generate"],
+        vocabListFile: filePath,
+        outputDirectory: outputDirectory,
+      };
+
+      const app = new App(config);
+      await app.run();
+      expect(app.argv.globMatchTotal).toBe(1);
+    });
+
     it("should generate from multiple YAMLs to relative output dir", async () => {
       const filePath = path.join("test", "resources", "glob", "**", "*.yml");
       const config = {
@@ -373,18 +387,6 @@ describe("App tests", () => {
       const app = new App(config);
       await app.run();
       expect(app.argv.globMatchTotal).toBe(2);
-    });
-
-    it("should work if glob matches only one YAML", async () => {
-      const filePath = path.join("test", "resources", "glob", "first", "*.yml");
-      const config = {
-        _: ["generate"],
-        vocabListFile: filePath,
-      };
-
-      const app = new App(config);
-      await app.run();
-      expect(app.argv.globMatchTotal).toBe(1);
     });
 
     it("should ignore glob patterns if specified", async () => {
