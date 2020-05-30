@@ -127,6 +127,7 @@ module.exports = class App {
       await watcher.watch();
 
       app.watcherList.push(watcher);
+      return app.watcherList.length;
     });
   }
 
@@ -194,8 +195,7 @@ module.exports = class App {
               : configDirectory,
           };
 
-          const config = await this.configure();
-          result = await funcToCall(this, config);
+          result = await funcToCall(this, await this.configure());
         }
 
         return result;

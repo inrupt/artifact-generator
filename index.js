@@ -299,12 +299,14 @@ function runValidation(argv) {
     });
 }
 
-function runWatcher(argv) {
+async function runWatcher(argv) {
   configureLog(argv);
 
   const app = new App(argv);
-  const watcherCount = app.watch();
-  debug(`\nSuccessfully initialized file watchers...`);
+  const watcherCount = await app.watch();
+  debug(
+    `\nSuccessfully initialized file watchers on [${watcherCount}] vocabulary bundle config files...`
+  );
 
   // Use console to communicate with the user - we can't rely on 'debug' since
   // it needs to be configured before it'll output anything.

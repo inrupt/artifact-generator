@@ -8,14 +8,14 @@ class VocabWatcher {
     // The watcher overrides the configuration to be no prompt by default
     this.generator.configuration.configuration.noprompt = true;
 
-    const configFile = this.generator.configuration.configuration.vocabListFile;
-    debug(`Watching local resources from [${configFile}]:`);
+    this.configFile = this.generator.configuration.configuration.vocabListFile;
+    debug(`Watching local resources from [${this.configFile}]:`);
 
     // Filter out the HTTP resource (since Chokidar only watches files), and
     // ensure we add the configuration file itself to the list of watched
     // resources.
     let count = 0;
-    const watchedResourceList = [configFile];
+    const watchedResourceList = [this.configFile];
     this.generator.configuration
       .getInputResources()
       .forEach(function (element, index) {
@@ -40,11 +40,14 @@ class VocabWatcher {
     // Therefore we need to poll online resources periodically, checking their last-modified response header to
     // determine if an online vocabulary has changed.
     // TODO: Right now, online vocabs are checked only once.
+    debug(
+      `Generating (if any changes, or --force option specified) from config file [${this.configFile}] into watched directory: [${this.generator.configuration.configuration.outputDirectory}]...`
+    );
     await this.generator
       .generate()
       .then((result) => {
         debug(
-          `Successfully watching into directory: [${result.outputDirectory}] - [${result.globMatchPosition} of ${result.globMatchTotal} matched config files].`
+          `Successfully watching [${this.watchedResourceList.length}] resources from directory: [${result.outputDirectory}] - [${result.globMatchPosition} of ${result.globMatchTotal} matched config files].`
         );
       })
       .catch((error) => {
