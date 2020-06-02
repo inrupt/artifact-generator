@@ -131,11 +131,11 @@ class ArtifactGenerator {
       ? fs.statSync(this.configuration.configuration.vocabListFile).mtimeMs
       : 0;
 
-    // If we had a generation before, and if we have a configuration file then
-    // it hasn't chnged since then, then check if any of the vocabs themselves
-    // have changed sice that previous generation.
+    // If we had a generation before, and if we have a configuration file that
+    // hasn't changed since then, then check if any of the vocabs themselves
+    // have changed since that previous generation.
     // If we didn't have a generation, or our configuration file has changed
-    // since the previous generation, then re-generate everything.
+    // since a previous generation, then re-generate everything.
     if (lastGenerationTime && configFileModificationTime < lastGenerationTime) {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
@@ -167,7 +167,11 @@ class ArtifactGenerator {
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
             getArtifactDirectoryRoot(this.artifactData)
-          )}], and there have been no modifications to the vocabularies or configuration files since their generation on [${lastGenerationTime}]. Use the '--force' command-line option to re-generate the artifacts regardless.`
+          )}], and there have been no modifications to the vocabularies or configuration files since their generation on [${moment(
+            lastGenerationTime
+          ).format(
+            "LLLL"
+          )}]. Use the '--force' command-line option to re-generate the artifacts regardless.`
         );
       }
     } else {

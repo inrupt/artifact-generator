@@ -317,6 +317,85 @@ describe("Artifact Generator", () => {
       );
     });
 
+    it("Should regenerate if extension input modified", async () => {
+      const outputDirectory = path.join(
+        ".",
+        "test",
+        "Generated",
+        "ArtifactGenerator",
+        "modify-extension-input"
+      );
+      const generatedFile = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "package.json"
+      );
+      del.sync([`${outputDirectory}/*`]);
+      fs.mkdirSync(outputDirectory, { recursive: true });
+
+      // Copy our input to a generated location (so that we can update them
+      // without source control system thinking an actual change occurred).
+      const sourceDataDirectory = path.join(
+        ".",
+        "test",
+        "resources",
+        "expectedOutputs",
+        "skipGeneration"
+      );
+
+      const testConfigFile = path.join(
+        outputDirectory,
+        "vocab-list-static-with-extension.yml"
+      );
+      const testFile = path.join(outputDirectory, "static-first.ttl");
+      const testFileExtension = path.join(
+        outputDirectory,
+        "static-first-extension.ttl"
+      );
+
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "vocab-list-static-with-extension.yml"),
+        testConfigFile
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-first.ttl"),
+        testFile
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-first-extension.ttl"),
+        testFileExtension
+      );
+
+      const config = new GeneratorConfiguration({
+        _: "generate",
+        vocabListFile: testConfigFile,
+        outputDirectory,
+        artifactVersion: "1.0.0",
+        litVocabTermVersion: "^0.1.0",
+        moduleNamePrefix: "@lit/generated-vocab-",
+        noprompt: true,
+      });
+
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create
+      // target source files.
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFile)).toBe(true);
+      const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
+
+      // Modify our extension file.
+      Resource.touchFile(testFileExtension);
+
+      // The input was updated, so output should have been re-generated.
+      await artifactGenerator.generate();
+      expect(fs.statSync(generatedFile).mtimeMs).toBeGreaterThan(
+        initialGenerationTime
+      );
+    });
+
     it("Should regenerate *only* based on modified input, not all input", async () => {
       const outputDirectory = path.join(
         ".",
