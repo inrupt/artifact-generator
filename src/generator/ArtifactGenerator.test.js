@@ -424,6 +424,97 @@ describe("Artifact Generator", () => {
       );
     });
 
+    it("Should regenerate all when config file modified", async () => {
+      const outputDirectory = path.join(
+        ".",
+        "test",
+        "Generated",
+        "ArtifactGenerator",
+        "modify-config-file"
+      );
+      const generatedFileFirst = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "GeneratedVocab",
+        "TEST_VOCAB_1.js"
+      );
+      const generatedFileSecond = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "GeneratedVocab",
+        "TEST_VOCAB_2.js"
+      );
+      del.sync([`${outputDirectory}/*`]);
+      fs.mkdirSync(outputDirectory, { recursive: true });
+
+      // Copy our input to a generated location (so that we can update them
+      // without source control system thinking an actual change occurred).
+      const sourceDataDirectory = path.join(
+        ".",
+        "test",
+        "resources",
+        "expectedOutputs",
+        "skipGeneration"
+      );
+      const testConfigFile = path.join(
+        outputDirectory,
+        "vocab-list-static.yml"
+      );
+      const testInputFirst = path.join(outputDirectory, "static-first.ttl");
+      const testInputSecond = path.join(outputDirectory, "static-second.ttl");
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "vocab-list-static.yml"),
+        testConfigFile
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-first.ttl"),
+        testInputFirst
+      );
+      fs.copyFileSync(
+        path.join(sourceDataDirectory, "static-second.ttl"),
+        testInputSecond
+      );
+
+      const config = new GeneratorConfiguration({
+        _: "generate",
+        vocabListFile: testConfigFile,
+        outputDirectory,
+        artifactVersion: "1.0.0",
+        litVocabTermVersion: "^0.1.0",
+        moduleNamePrefix: "@lit/generated-vocab-",
+        noprompt: true,
+      });
+
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      // Initially, the directory is empty, so this generation should create
+      // target source files.
+      await artifactGenerator.generate();
+      expect(fs.existsSync(generatedFileFirst)).toBe(true);
+      expect(fs.existsSync(generatedFileSecond)).toBe(true);
+      const initialGenerationTimeFirst = fs.statSync(generatedFileFirst)
+        .mtimeMs;
+      const initialGenerationTimeSecond = fs.statSync(generatedFileSecond)
+        .mtimeMs;
+
+      // Modify just our configuration file.
+      Resource.touchFile(testConfigFile);
+
+      await artifactGenerator.generate();
+
+      // Both vocabs should have been re-generated, even though neither changed
+      // (only the config file changed).
+      expect(fs.statSync(generatedFileFirst).mtimeMs).toBeGreaterThan(
+        initialGenerationTimeFirst
+      );
+      expect(fs.statSync(generatedFileSecond).mtimeMs).toBeGreaterThan(
+        initialGenerationTimeSecond
+      );
+    });
+
     it("Should generate when forced, even if the target directory is up-to-date", async () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
