@@ -587,6 +587,7 @@ class GeneratorConfiguration {
   /**
    * This function returns all the resources (local files and online
    * repositories) that are listed in the configuration object.
+   * NOTE: This also includes any term-selection resources.
    */
   getInputResources() {
     const resources = [];
@@ -597,6 +598,10 @@ class GeneratorConfiguration {
         j += 1
       ) {
         resources.push(this.configuration.vocabList[i].inputResources[j]);
+      }
+
+      if (this.configuration.vocabList[i].termSelectionResource) {
+        resources.push(this.configuration.vocabList[i].termSelectionResource);
       }
     }
 
