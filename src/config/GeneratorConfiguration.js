@@ -5,6 +5,7 @@ const debug = require("debug")("lit-artifact-generator:GeneratorConfiguration");
 const fs = require("fs");
 const packageDotJson = require("../../package.json");
 const CommandLine = require("../CommandLine");
+const Resource = require("../Resource");
 
 const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
 
@@ -587,6 +588,7 @@ class GeneratorConfiguration {
   /**
    * This function returns all the resources (local files and online
    * repositories) that are listed in the configuration object.
+   *
    * NOTE: This also includes any term-selection resources.
    */
   getInputResources() {
@@ -602,6 +604,57 @@ class GeneratorConfiguration {
 
       if (this.configuration.vocabList[i].termSelectionResource) {
         resources.push(this.configuration.vocabList[i].termSelectionResource);
+      }
+    }
+
+    return resources;
+  }
+
+  /**
+   * This function returns all the resources (local files and online
+   * repositories) that are listed in the configuration object that have changed
+   * since the specified timestamp.
+   *
+   * NOTE: Special consideration is given any term-selection resources. If this
+   * file changes, then all associated vocab files are also considered to have
+   * changed, since the terms being selected could be from any of those vocabs.
+   */
+  async getInputResourcesChangedSince(timestamp) {
+    const resources = [];
+    for (let i = 0; i < this.configuration.vocabList.length; i += 1) {
+      let addAllVocabs = false;
+
+      const termSelectionResource = this.configuration.vocabList[i]
+        .termSelectionResource;
+      if (termSelectionResource) {
+        const modifiedTime = await Resource.getResourceLastModificationTime(
+          termSelectionResource
+        );
+
+        if (timestamp < modifiedTime) {
+          resources.push(termSelectionResource);
+          addAllVocabs = true;
+        }
+      }
+
+      for (
+        let j = 0;
+        j < this.configuration.vocabList[i].inputResources.length;
+        j += 1
+      ) {
+        const vocabResource = this.configuration.vocabList[i].inputResources[j];
+
+        if (addAllVocabs) {
+          resources.push(vocabResource);
+        } else {
+          const modifiedTime = await Resource.getResourceLastModificationTime(
+            vocabResource
+          );
+
+          if (timestamp < modifiedTime) {
+            resources.push(vocabResource);
+          }
+        }
       }
     }
 

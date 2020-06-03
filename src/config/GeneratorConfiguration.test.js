@@ -415,4 +415,39 @@ describe("Generator configuration", () => {
       expect(generatorConfiguration.license.fileName).toEqual("LICENSE");
     });
   });
+
+  // TODO: Should include more specific tests here (e.g. for files being
+  //  modified), but currently more complex and higher-level generation tests
+  //  cover all code branches (whereas really the tests here should fully cover
+  //  the class under test).
+  describe("Detecting changed resources", () => {
+    it("should return term selection file only if changed before timestamp", async () => {
+      const generatorConfiguration = new GeneratorConfiguration({
+        vocabListFile: path.join(
+          "test",
+          "resources",
+          "yamlConfig",
+          "vocab-rdf-library-java-rdf4j.yml"
+        ),
+      });
+      const termSelectionResource = path.join(
+        "test",
+        "resources",
+        "vocabs",
+        "schema-inrupt-ext.ttl"
+      );
+
+      const timeTermSelectionChanged = fs.statSync(termSelectionResource)
+        .mtimeMs;
+      const changedBefore = await generatorConfiguration.getInputResourcesChangedSince(
+        timeTermSelectionChanged - 10
+      );
+      expect(changedBefore).toContain(termSelectionResource);
+
+      const changedAfter = await generatorConfiguration.getInputResourcesChangedSince(
+        timeTermSelectionChanged + 10
+      );
+      expect(changedAfter).not.toContain(termSelectionResource);
+    });
+  });
 });
