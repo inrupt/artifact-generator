@@ -325,12 +325,20 @@ describe("Artifact Generator", () => {
         "ArtifactGenerator",
         "modify-extension-input"
       );
-      const generatedFile = path.join(
+      const generatedFilePackage = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "package.json"
       );
+      const generatedFileVocab = path.join(
+        outputDirectory,
+        getArtifactDirectorySourceCode(),
+        "JavaScript",
+        "GeneratedVocab",
+        "TEST_VOCAB_1.js"
+      );
+
       del.sync([`${outputDirectory}/*`]);
       fs.mkdirSync(outputDirectory, { recursive: true });
 
@@ -383,16 +391,23 @@ describe("Artifact Generator", () => {
       // Initially, the directory is empty, so this generation should create
       // target source files.
       await artifactGenerator.generate();
-      expect(fs.existsSync(generatedFile)).toBe(true);
-      const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
+      expect(fs.existsSync(generatedFilePackage)).toBe(true);
+      const initialGenerationTimePackage = fs.statSync(generatedFilePackage)
+        .mtimeMs;
+      expect(fs.existsSync(generatedFileVocab)).toBe(true);
+      const initialGenerationTimeVocab = fs.statSync(generatedFileVocab)
+        .mtimeMs;
 
       // Modify our extension file.
       Resource.touchFile(testFileExtension);
 
       // The input was updated, so output should have been re-generated.
       await artifactGenerator.generate();
-      expect(fs.statSync(generatedFile).mtimeMs).toBeGreaterThan(
-        initialGenerationTime
+      expect(fs.statSync(generatedFilePackage).mtimeMs).toBeGreaterThan(
+        initialGenerationTimePackage
+      );
+      expect(fs.statSync(generatedFileVocab).mtimeMs).toBeGreaterThan(
+        initialGenerationTimeVocab
       );
     });
 
