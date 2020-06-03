@@ -121,7 +121,7 @@ class ArtifactGenerator {
       ARTIFACTS_INFO_FILENAME
     );
 
-    this.configuration.modifiedResourceList = [];
+    let modifiedResourceList = [];
 
     const lastGenerationTime = fs.existsSync(artifactInfoPath)
       ? fs.statSync(artifactInfoPath).mtimeMs
@@ -140,29 +140,11 @@ class ArtifactGenerator {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
-      const vocabsLastModificationTime = [];
-      const resources = this.configuration.getInputResources();
-      for (let i = 0; i < resources.length; i += 1) {
-        const modifiedTime = await Resource.getResourceLastModificationTime(
-          resources[i]
-        );
+      modifiedResourceList = await this.configuration.getInputResourcesChangedSince(
+        lastGenerationTime
+      );
 
-        if (lastGenerationTime < modifiedTime) {
-          this.configuration.modifiedResourceList.push(resources[i]);
-          artifactsOutdated = true;
-          debug(
-            `Resource [${resources[i]}] modified at [${moment(
-              modifiedTime
-            ).format(
-              "LLLL"
-            )}], which is prior to previous generation at [${moment(
-              lastGenerationTime
-            ).format("LLLL")}].`
-          );
-        }
-      }
-
-      if (!artifactsOutdated) {
+      if (modifiedResourceList.length > 0) {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
@@ -175,12 +157,14 @@ class ArtifactGenerator {
         );
       }
     } else {
-      // There are no artifacts in the target directory.
-      artifactsOutdated = true;
-      this.configuration.modifiedResourceList = this.configuration.getInputResources();
+      // There are no artifacts in the target directory, so consider everything
+      // as modified.
+      modifiedResourceList = this.configuration.getInputResources();
     }
 
-    return artifactsOutdated;
+    this.configuration.modifiedResourceList = modifiedResourceList;
+
+    return modifiedResourceList.length > 0;
   }
 
   async generateVocabs() {
