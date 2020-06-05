@@ -144,7 +144,7 @@ class ArtifactGenerator {
         lastGenerationTime
       );
 
-      if (modifiedResourceList.length > 0) {
+      if (modifiedResourceList.length === 0) {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
