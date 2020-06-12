@@ -37,14 +37,18 @@ const {{vocabNameUpperCase}} = {
   {{#each classes}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new LitVocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each labels}}{{#if language}}
+  ){{#if isDefinedBy}}
+    .addIsDefinedBy(namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -59,14 +63,18 @@ const {{vocabNameUpperCase}} = {
   {{#each properties}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new LitVocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each labels}}{{#if language}}
+  ){{#if isDefinedBy}}
+    .addIsDefinedBy(namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -81,14 +89,18 @@ const {{vocabNameUpperCase}} = {
   {{#each literals}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new LitVocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each labels}}{{#if language}}
+  ){{#if isDefinedBy}}
+    .addIsDefinedBy(namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}

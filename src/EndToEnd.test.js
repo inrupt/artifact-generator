@@ -5,8 +5,15 @@ const rdfFetch = require("@rdfjs/fetch-lite");
 jest.mock("@rdfjs/fetch-lite");
 
 const fs = require("fs");
+const path = require("path");
 const del = require("del");
 const Resource = require("./Resource");
+
+const {
+  RDF_NAMESPACE,
+  RDFS_NAMESPACE,
+  OWL_NAMESPACE,
+} = require("./CommonTerms");
 
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
@@ -32,8 +39,6 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [errorFilename],
           outputDirectory,
-          artifactVersion: "1.0.0",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
           noprompt: true,
         }),
         doNothingPromise
@@ -775,6 +780,68 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(output).toEqual(expect.stringContaining("new LitVocabTerm("));
+    });
+  });
+
+  describe("Term metadata", () => {
+    it("should provide mutliple 'seeAlso' values", async () => {
+      const outputDirectory = "test/Generated/EndToEnd/seeAlso/";
+      const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ["generate"],
+            inputResources: [
+              path.join(".", "test", "resources", "vocabs", "seeAlso.ttl"),
+            ],
+            // The output directory must be set, because a default value is set by yargs in a regular use case
+            outputDirectory,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      const output = fs
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SCHEMA.js`)
+        .toString();
+
+      expect(output).toEqual(expect.stringContaining(".addSeeAlso("));
+      expect(output).toEqual(expect.stringContaining(RDF_NAMESPACE));
+      expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
+    });
+
+    it("should provide only the last 'isDefinedBy' value", async () => {
+      const outputDirectory = "test/Generated/EndToEnd/isDefinedBy/";
+      const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+      del.sync([`${outputDirectory}/*`]);
+      const artifactGenerator = new ArtifactGenerator(
+        new GeneratorConfiguration(
+          {
+            _: ["generate"],
+            inputResources: [
+              path.join(".", "test", "resources", "vocabs", "isDefinedBy.ttl"),
+            ],
+            // The output directory must be set, because a default value is set by yargs in a regular use case
+            outputDirectory,
+            noprompt: true,
+          },
+          doNothingPromise
+        )
+      );
+
+      await artifactGenerator.generate();
+
+      const output = fs
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SCHEMA.js`)
+        .toString();
+
+      expect(output).toEqual(expect.stringContaining(".addIsDefinedBy("));
+      expect(output).not.toEqual(expect.stringContaining(OWL_NAMESPACE));
+      expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
     });
   });
 });
