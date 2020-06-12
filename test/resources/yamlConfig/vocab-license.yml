@@ -20,7 +20,7 @@ artifactToGenerate:
     sourceFileExtension: ts
     packaging:
       - packagingTool: npm
-        npmModuleScope: "@inrupt/"
+        npmModuleScope: "@solid/"
         packagingTemplates:
           - templateInternal: litVocabTermDependent/typescript/package.hbs
             fileName: package.json
