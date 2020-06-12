@@ -10,6 +10,7 @@ module.exports.RDF_NAMESPACE = RDF_NAMESPACE;
 module.exports.RDF = {
   type: rdf.namedNode(`${RDF_NAMESPACE}type`),
   Property: rdf.namedNode(`${RDF_NAMESPACE}Property`),
+  List: rdf.namedNode(`${RDF_NAMESPACE}List`),
   langString: rdf.namedNode(`${RDF_NAMESPACE}langString`),
 };
 

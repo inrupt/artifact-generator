@@ -36,6 +36,7 @@ const SUPPORTED_CLASSES = [
 
 const SUPPORTED_PROPERTIES = [
   RDF.Property,
+  RDF.List,
   RDFS.Datatype,
   OWL.ObjectProperty,
   OWL.NamedIndividual,
