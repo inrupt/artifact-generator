@@ -52,9 +52,13 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     {{#each classes}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+        .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
         .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -69,9 +73,13 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     {{#each properties}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+        .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
         .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -86,9 +94,13 @@ public class {{vocabNameUpperCase}} implements LitVocab {
     {{#each literals}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#each labels}}{{#if language}}
+    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+        .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
         .addComment("{{{valueEscapedForJava}}}", "{{language}}"){{else}}

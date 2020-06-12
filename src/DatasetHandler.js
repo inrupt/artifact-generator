@@ -187,6 +187,28 @@ module.exports = class DatasetHandler {
         DatasetHandler.add(definitions, subQuad);
       });
 
+    const seeAlsos = new Set();
+
+    this.subjectsOnlyDataset
+      .match(quad.subject, RDFS.seeAlso, null)
+      .forEach((subQuad) => {
+        seeAlsos.add({ seeAlso: subQuad.object.value });
+      });
+
+    this.fullDataset
+      .match(quad.subject, RDFS.seeAlso, null)
+      .forEach((subQuad) => {
+        seeAlsos.add({ seeAlso: subQuad.object.value });
+      });
+
+    let isDefinedBy = undefined;
+    this.fullDataset
+      .match(quad.subject, RDFS.isDefinedBy, null)
+      .forEach((subQuad) => {
+        // Even if we have multiple values, just keep overwriting.
+        isDefinedBy = subQuad.object.value;
+      });
+
     const comment = DatasetHandler.getTermDescription(
       comments,
       definitions,
@@ -200,6 +222,8 @@ module.exports = class DatasetHandler {
       labels,
       comments,
       definitions,
+      seeAlsos,
+      isDefinedBy,
     };
   }
 
@@ -341,7 +365,7 @@ module.exports = class DatasetHandler {
     });
 
     // We can automatically treat anything marked as a 'sub-class of' as a
-    // class too, regardless of what it's sub-class of!
+    // class too, regardless of what it's a sub-class of!
     this.fullDataset.match(subject, RDFS.subClassOf, null).forEach((quad) => {
       if (this.isNewTerm(quad.subject.value)) {
         result.classes.push(this.handleTerm(quad, result.localNamespace));

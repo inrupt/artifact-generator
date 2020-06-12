@@ -14,6 +14,7 @@ module.exports.RDF = {
 };
 
 const RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
+module.exports.RDFS_NAMESPACE = RDFS_NAMESPACE;
 module.exports.RDFS = {
   label: rdf.namedNode(`${RDFS_NAMESPACE}label`),
   comment: rdf.namedNode(`${RDFS_NAMESPACE}comment`),
@@ -22,6 +23,8 @@ module.exports.RDFS = {
   Literal: rdf.namedNode(`${RDFS_NAMESPACE}Literal`),
   subClassOf: rdf.namedNode(`${RDFS_NAMESPACE}subClassOf`),
   subPropertyOf: rdf.namedNode(`${RDFS_NAMESPACE}subPropertyOf`),
+  seeAlso: rdf.namedNode(`${RDFS_NAMESPACE}seeAlso`),
+  isDefinedBy: rdf.namedNode(`${RDFS_NAMESPACE}isDefinedBy`),
 };
 
 const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";
@@ -37,6 +40,7 @@ module.exports.SKOS = {
 };
 
 const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
+module.exports.OWL_NAMESPACE = OWL_NAMESPACE;
 module.exports.OWL = {
   Ontology: rdf.namedNode(`${OWL_NAMESPACE}Ontology`),
   Class: rdf.namedNode(`${OWL_NAMESPACE}Class`),

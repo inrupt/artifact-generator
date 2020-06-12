@@ -9,6 +9,7 @@ const {
   RDFS,
   SCHEMA_DOT_ORG,
   OWL,
+  OWL_NAMESPACE,
   VANN,
   DCTERMS,
   SKOS,
@@ -270,6 +271,8 @@ const literalDataset = rdf
     rdf.quad(message, SKOS.definition, rdf.literal("Welcome", "en")),
     rdf.quad(message, SKOS.definition, rdf.literal("Bienvenido", "es")),
     rdf.quad(message, SKOS.definition, rdf.literal("Bienvenue", "fr")),
+    rdf.quad(message, RDFS.seeAlso, rdf.namedNode(OWL_NAMESPACE)),
+    rdf.quad(message, SKOS.isDefinedBy, rdf.namedNode(OWL_NAMESPACE)),
   ]);
 
 describe("Artifact generator unit tests", () => {
