@@ -1,4 +1,4 @@
-const { LitVocabTerm, getLocalStore } = require("@inrupt/lit-vocab-term");
+const { LitVocabTerm, getLocalStore } = require("@solid/lit-vocab-term");
 const dataFactory = require("@rdfjs/data-model");
 
 const { namedNode } = dataFactory;

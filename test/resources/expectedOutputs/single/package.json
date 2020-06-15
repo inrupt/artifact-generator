@@ -4,12 +4,12 @@
   "description": "Bundle of vocabularies that includes the following:\n\n  schema: ",
   "main": "index.js",
   "author": {
-    "name": "@inrupt/lit-artifact-generator",
+    "name": "@solid/lit-artifact-generator",
     "url": "https://github.com/inrupt/lit-artifact-generator"
   },
   "license": "MIT",
   "dependencies": {
-    "@inrupt/lit-vocab-term": "99.999.01",
+    "@solid/lit-vocab-term": "99.999.01",
     "@rdfjs/data-model": ""
   }
 }

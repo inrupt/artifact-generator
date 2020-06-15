@@ -8,7 +8,7 @@
     "prod": "webpack --config ./config/webpack.prod.config.js"
   },
   "author": {
-    "name": "@inrupt/lit-artifact-generator",
+    "name": "@solid/lit-artifact-generator",
     "url": "https://github.com/inrupt/lit-artifact-generator"
   },
   "contributors": [
@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@inrupt/lit-vocab-term-rdflib": "^1.0.10"
+    "@solid/lit-vocab-solid-common-rdflib": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

@@ -56,10 +56,10 @@ too.
 To install globally (so that you can run the LIT Artifact Generator from any
 directory):
 ```shell
-npm -g install @inrupt/lit-artifact-generator --registry https://npm.pkg.github.com/inrupt
+npm -g install @solid/lit-artifact-generator
 ```
 
-Ensure the installation completed successfully: 
+Ensure the installation completed successfully:
 ```shell
 lit-artifact-generator --help
 ```
