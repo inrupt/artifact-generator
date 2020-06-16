@@ -17,7 +17,7 @@
 
     <developers>
         <developer>
-            <name>@solid/lit-artifact-generator</name>
+            <name>@inrupt/lit-artifact-generator</name>
             <url>https://github.com/inrupt/lit-artifact-generator</url>
         </developer>
     </developers>
@@ -53,7 +53,7 @@
     <dependencies>
         <dependency>
             <groupId>com.inrupt</groupId>
-            <artifactId>inrupt-lit-vocab-term</artifactId>
+            <artifactId>inrupt-lit-term</artifactId>
             <version>${lit.vocab.term.version}</version>
         </dependency>
 
