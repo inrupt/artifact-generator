@@ -55,7 +55,7 @@ node index.js generate --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inr
 
 Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
-*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-vocab-term` to pick up that local copy.
+*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-term` to pick up that local copy.
 ```shell
 node index.js generate --i ./vocabs/schema-snippet.ttl --litVocabTermVersion ^1.0.10
 ```
@@ -110,8 +110,8 @@ artifactToGenerate:
     # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
     # depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
     artifactVersion: 3.2.1-SNAPSHOT
-    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-vocab-term-js for JavaScript, 
-    # https://github.com/pmcb55/lit-java/tree/master/lit-vocab-term for Java) upon which the generated vocabularies 
+    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-term-js for JavaScript, 
+    # https://github.com/pmcb55/lit-java/tree/master/lit-term for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.

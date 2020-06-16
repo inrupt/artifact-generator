@@ -56,7 +56,7 @@ too.
 To install globally (so that you can run the LIT Artifact Generator from any
 directory):
 ```shell
-npm -g install @solid/lit-artifact-generator
+npm -g install @inrupt/lit-artifact-generator
 ```
 
 Ensure the installation completed successfully:
