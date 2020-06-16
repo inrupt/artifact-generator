@@ -52,7 +52,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.inrupt.lit</groupId>
+            <groupId>org.solid</groupId>
             <artifactId>lit-term</artifactId>
             <version>${lit.vocab.term.version}</version>
         </dependency>
