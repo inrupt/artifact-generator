@@ -19,5 +19,3 @@ Author(s): Vocabularies authored by: Jarlath Holleran, Pat McBennett.
 ---
 
 License: MIT
-
-Depends on @lit/vocab-term, version: []
