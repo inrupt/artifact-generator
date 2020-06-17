@@ -1,6 +1,15 @@
 # Advanced configuration
 
-## CLI Examples
+## CLI options
+
+- `--clear`, or `-c`: clears the output directory before generating.
+- `--force`, or `-f`: forces the generation even if the output directory contains artifacts that seem up-to-date.
+Note that this will only overwrite existing artifacts: any additional file not re-generated from templates (e.g.
+a `package-lock.json`) will not be affected by this option.
+
+## Generation configuration
+
+### CLI Examples
 
 Here are some examples of running the tool using the Command Line Interface (CLI) options:
 
@@ -69,7 +78,7 @@ node index.js --help
 
 **Note**: The public NPM registry prohibits re-publication of an artifact under a version number that has been released previously. Before publishing an artifact, make sure that you have incremented the version of the module so that there is no conflict. Please note that it is actually a feature of Verdaccio to support `npm --force unpublish`, which makes it possible to override a previously published artifact. 
 
-## <a id="yaml"/> Configuring options using the YAML file
+### <a id="yaml"/> Configuring options using the YAML file
 
 Creating a YAML configuration file (simply using `node index.js init`) provides you much greater control over the artifacts you'd like to generate, and the vocabularies you want to work with. The following example YAML file shows the available configuration options.
 

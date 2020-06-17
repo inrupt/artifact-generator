@@ -642,6 +642,31 @@ describe("Artifact Generator", () => {
         initialGenerationTime
       );
     });
+
+    it("Should clear the target directory if the option is set", async () => {
+      const outputDirectory = "./test/Generated/ArtifactGenerator/clear";
+      del.sync([`${outputDirectory}/*`]);
+      const canaryPath = path.join(outputDirectory, "canary.txt");
+      if (!fs.existsSync(outputDirectory)) {
+        fs.mkdirSync(outputDirectory);
+      }
+      fs.writeFileSync(canaryPath, "A canary file");
+      const config = new GeneratorConfiguration({
+        _: "generate",
+        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        outputDirectory,
+        artifactVersion: "1.0.0",
+        litVocabTermVersion: "^0.1.0",
+        moduleNamePrefix: "@lit/generated-vocab-",
+        noprompt: true,
+        clear: true,
+      });
+      config.completeInitialConfiguration();
+      const artifactGenerator = new ArtifactGenerator(config);
+
+      await artifactGenerator.generate();
+      expect(fs.existsSync(canaryPath)).toEqual(false);
+    });
   });
 
   describe("Publishing artifacts.", () => {
