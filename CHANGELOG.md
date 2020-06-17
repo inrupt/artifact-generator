@@ -6,4 +6,4 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### New features
 
-- Support for a new CLI option: `--clear`
+- Support for a new CLI option: `--clearOutputDirectory`
