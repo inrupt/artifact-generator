@@ -2,16 +2,16 @@
 
 ## CLI options
 
-- `--clear`, or `-c`: clears the output directory before generating.
+- `--clearOutputDirectory`, or `-c`: clears the output directory before generating.
 - `--force`, or `-f`: forces the generation even if the output directory contains artifacts that seem up-to-date.
-Note that this will only overwrite existing artifacts: any additional file not re-generated from templates (e.g.
+Note that this will only overwrite existing artifacts - any additional files not re-generated from templates (e.g.
 a `package-lock.json`) will not be affected by this option.
 
 ## Generation configuration
 
 ### CLI Examples
 
-Here are some examples of running the tool using the Command Line Interface (CLI) options:
+Here are some examples of running the tool using Command Line Interface (CLI) options:
 
 Local vocabulary file
 
