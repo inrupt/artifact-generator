@@ -659,7 +659,7 @@ describe("Artifact Generator", () => {
         litVocabTermVersion: "^0.1.0",
         moduleNamePrefix: "@lit/generated-vocab-",
         noprompt: true,
-        clear: true,
+        clearOutputDirectory: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);

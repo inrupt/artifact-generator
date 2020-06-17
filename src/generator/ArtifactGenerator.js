@@ -168,7 +168,7 @@ class ArtifactGenerator {
   }
 
   async generateVocabs() {
-    if (this.artifactData.clear) {
+    if (this.artifactData.clearOutputDirectory) {
       fs.rmdirSync(this.artifactData.outputDirectory, {
         recursive: true,
       });
@@ -186,14 +186,6 @@ class ArtifactGenerator {
         return result;
       }
     );
-
-    if (this.artifactData.clear) {
-      this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
-        fs.rmdirSync(artifactDetails.outputDirectoryForArtifact, {
-          recursive: true,
-        });
-      });
-    }
 
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
