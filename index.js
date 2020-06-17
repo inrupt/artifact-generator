@@ -147,6 +147,14 @@ yargs
         )
         .alias("f", "force")
         .default("force", false)
+
+        .boolean("clearOutputDirectory")
+        .describe(
+          "clearOutputDirectory",
+          "Forces generation, even if the target artifacts are considered up-to-date"
+        )
+        .alias("c", "clearOutputDirectory")
+        .default("clearOutputDirectory", false)
         // Can't provide an explicit version, and then also request a version bump!
         .conflicts("artifactVersion", "bumpVersion")
 
