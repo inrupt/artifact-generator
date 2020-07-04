@@ -11,7 +11,7 @@ const VERSION_LIT_VOCAB_TERM = "^0.2.4";
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
-const RUN_PACKAGING = ["localMaven", "localNpmNode"];
+const RUN_PACKAGING = ["mavenLocal", "npmLocal"];
 
 const ConfigAll = {
   _: "generate",
