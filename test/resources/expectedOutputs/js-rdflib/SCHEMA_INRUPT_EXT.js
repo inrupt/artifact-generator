@@ -102,7 +102,7 @@ const SCHEMA_INRUPT_EXT = {
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
   //
-  END_OF_VOCAB: 'End of vocab.'
+  END_OF_VOCAB: "End of vocab."
 }
 
 module.exports = SCHEMA_INRUPT_EXT;

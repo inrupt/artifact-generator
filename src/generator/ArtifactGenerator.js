@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const rimraf = require("rimraf");
 const moment = require("moment");
 const debug = require("debug")("lit-artifact-generator:ArtifactGenerator");
 const ChildProcess = require("child_process");
@@ -169,10 +170,9 @@ class ArtifactGenerator {
 
   async generateVocabs() {
     if (this.artifactData.clearOutputDirectory) {
-      fs.rmdirSync(this.artifactData.outputDirectory, {
-        recursive: true,
-      });
+      rimraf.sync(this.artifactData.outputDirectory);
     }
+
     // The outputDirectoryForArtifact attribute is useful for publication,
     // and should be set even if generation is not necessary.
     this.artifactData.artifactToGenerate = this.artifactData.artifactToGenerate.map(
