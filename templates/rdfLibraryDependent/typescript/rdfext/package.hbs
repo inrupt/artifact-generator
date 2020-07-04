@@ -1,0 +1,51 @@
+{
+  "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
+  "version": "{{artifactVersion}}",
+  "description": "{{description}}",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+{{#if supportBundling}}
+  "module": "./dist/index.es.js",
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+{{else}}
+  "scripts": {
+    "build": "tsc"
+  },
+{{/if}}
+  "author": {
+    "name": "{{generatorName}}",
+    "url": "https://github.com/inrupt/lit-artifact-generator"
+  },
+{{#if contributors}}
+  "contributors": [
+    {{#each contributors}}
+    {"name": "{{this}}"}{{#unless @last}},{{/unless}}
+    {{/each}}
+  ],
+{{/if}}
+{{#if license}}
+  "license": "{{license/name}}",
+{{/if}}
+{{#if versioning}}
+  "repository": {
+    "type": "{{versioning.type}}",
+    "url": "{{versioning.url}}"
+  },
+{{/if}}
+  "dependencies": {
+    "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}",
+    "@types/rdf-js": "{{rdfjsTypesVersion}}"
+  },
+  "devDependencies": {
+    "typescript": "{{typescriptVersion}}"
+  {{#if supportBundling}},
+    "rollup": "{{rollupVersion}}",
+    "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
+    "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
+  {{/if}}
+  }
+}
