@@ -2,6 +2,7 @@ prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix schema: <http://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix lit_core: <https://w3id.org/lit/vocab/core#>
@@ -68,3 +69,13 @@ schema:additionalName a rdf:Property ;
 schema:newTerm a rdf:Property ;
     rdfs:label "newTerm" ;
     rdfs:comment "Must have comment too!"@en .
+
+schema:testConstantString a lit_core:ConstantString ;
+    rdfs:label "Test constant string"@en ;
+    rdfs:comment "Just a test constant string."@en ;
+    skos:definition "String constant string value - just for illustration..." .
+
+schema:testConstantIri a lit_core:ConstantIri ;
+    rdfs:label "Test constant IRI"@en ;
+    rdfs:comment "Just a test constant IRI."@en ;
+    skos:definition "https://test-iri.com/just-for-illustration#test" .

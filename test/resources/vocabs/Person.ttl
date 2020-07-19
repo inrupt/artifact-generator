@@ -17,8 +17,6 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix xsd1: <hhttp://www.w3.org/2001/XMLSchema#> .
-
 schema:Person a rdfs:Class ;
     rdfs:label "Person" ;
     dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_rNews> ;

@@ -922,6 +922,8 @@ describe("Managing remote vocabularies failures", () => {
       classes: [],
       properties: [],
       literals: [],
+      constantStrings: [],
+      constantIris: [],
       vocabNameUpperCase: "TEST",
     };
     await generator.generateFiles(vocabGenerationData);
@@ -962,6 +964,8 @@ describe("Managing remote vocabularies failures", () => {
       classes: [],
       properties: [],
       literals: [],
+      constantStrings: [],
+      constantIris: [],
       vocabNameUpperCase: "TEST",
     };
     expect(generator.generateFiles(vocabGenerationData)).rejects.toThrow(

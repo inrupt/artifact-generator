@@ -36,12 +36,14 @@
   },
 {{/if}}
   "dependencies": {
-    "@rdfjs/namespace": "{{rdfjsNamespaceVersion}}",
-    "@types/rdfjs__namespace": "{{rdfjsNamespaceTypesVersion}}"
+    "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}",
+    "@rdfjs/dataset": "{{rdfjsDatasetVersion}}",
+    "@rdfjs/namespace": "{{rdfjsNamespaceVersion}}"
   },
   "devDependencies": {
-    "typescript": "{{typescriptVersion}}"
-  {{#if supportBundling}},
+    "typescript": "{{typescriptVersion}}",
+    "@types/rdfjs__namespace": "{{rdfjsNamespaceTypesVersion}}",
+    "@types/rdfjs__dataset": "{{rdfjsDatasetTypesVersion}}"{{#if supportBundling}},
     "rollup": "{{rollupVersion}}",
     "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",

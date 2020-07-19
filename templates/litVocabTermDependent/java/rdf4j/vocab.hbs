@@ -56,7 +56,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -77,7 +77,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -98,7 +98,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForLanguage}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -107,6 +107,36 @@ public class {{vocabNameUpperCase}} implements LitVocab {
         .addCommentNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each definitions}}{{#if language}}
         .addMessage("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addMessageNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}};
+{{/each}}
+{{/if}}
+
+{{#if constantStrings}}
+    // **************************
+    // All the constant strings.
+    // **************************
+    {{#each constantStrings}}
+
+    /**
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     */
+    public static final String {{nameEscapedForJava}} = "{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}";
+{{/each}}
+{{/if}}
+
+{{#if constantIris}}
+    // ***********************
+    // All the constant IRIs.
+    // ***********************
+    {{#each constantIris}}
+
+    /**
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     */
+    public static final IRI {{nameEscapedForJava}} = SimpleValueFactory.getInstance().createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
 {{/each}}
 {{/if}}
 }

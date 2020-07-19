@@ -1,7 +1,7 @@
 require("mock-local-storage");
 
 const rdf = require("rdf-ext");
-const { RDF, RDFS, OWL, SKOS, VANN } = require("./CommonTerms");
+const { RDF, RDFS, OWL, SKOS, VANN, LIT_CORE } = require("./CommonTerms");
 
 const DatasetHandler = require("./DatasetHandler");
 
@@ -89,22 +89,42 @@ describe("Dataset Handler", () => {
     expect(result.properties.length).toEqual(0);
   });
 
-  it("should de-duplicate terms defined with multiple predicates we looks for", () => {
-    const testTermClass = `${NAMESPACE}testTermClass`;
-    const testTermProperty = `${NAMESPACE}testTermProperty`;
-    const testTermLiteral = `${NAMESPACE}testTermLiteral`;
+  it("should de-duplicate terms defined with multiple predicates we look for", () => {
+    // NOTE: This test relies on the order different predicates are processing
+    // in the implementation - i.e. if a subject matches multiple RDF types,
+    // then only the first one will be used.
+    const testTermClass = rdf.namedNode(`${NAMESPACE}testTermClass`);
+    const testTermProperty = rdf.namedNode(`${NAMESPACE}testTermProperty`);
+    const testTermLiteral = rdf.namedNode(`${NAMESPACE}testTermLiteral`);
+    const testTermConstantIri = rdf.namedNode(
+      `${NAMESPACE}testTermConstantIri`
+    );
+    const testTermConstantString = rdf.namedNode(
+      `${NAMESPACE}testTermConstantString`
+    );
+
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
       .addAll([
-        rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class),
-        rdf.quad(rdf.namedNode(testTermClass), RDF.type, OWL.Class),
+        rdf.quad(testTermClass, RDF.type, RDFS.Class),
+        rdf.quad(testTermClass, RDF.type, OWL.Class),
 
-        rdf.quad(rdf.namedNode(testTermProperty), RDF.type, RDF.Property),
-        rdf.quad(rdf.namedNode(testTermProperty), RDF.type, RDFS.Datatype),
+        rdf.quad(testTermProperty, RDF.type, RDF.Property),
+        rdf.quad(testTermProperty, RDF.type, RDFS.Datatype),
 
-        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDF.Property),
-        rdf.quad(rdf.namedNode(testTermLiteral), RDF.type, RDFS.Literal),
+        rdf.quad(testTermLiteral, RDF.type, RDF.Property),
+        rdf.quad(testTermLiteral, RDF.type, RDFS.Literal),
+
+        // Define this subject as a Literal first, meaning it'll be ignored as
+        // as a constant IRI.
+        rdf.quad(testTermConstantIri, RDF.type, RDFS.Literal),
+        rdf.quad(testTermConstantIri, RDF.type, LIT_CORE.ConstantIri),
+
+        // Define this subject as a Literal first, meaning it'll be ignored as
+        // as a constant string.
+        rdf.quad(testTermConstantString, RDF.type, RDFS.Literal),
+        rdf.quad(testTermConstantString, RDF.type, LIT_CORE.ConstantString),
       ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -119,7 +139,12 @@ describe("Dataset Handler", () => {
     expect(result.properties[0].name).toEqual("testTermProperty");
     expect(result.properties[1].name).toEqual("testTermLiteral");
 
-    expect(result.literals.length).toEqual(0);
+    expect(result.literals.length).toEqual(2);
+
+    // There guys get ignored because we process them as Literals first (in the
+    // processing order in the implementation!)
+    expect(result.constantIris.length).toEqual(0);
+    expect(result.constantStrings.length).toEqual(0);
   });
 
   it("should fail if no prefix is defined in the vocabulary", () => {

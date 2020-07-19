@@ -71,3 +71,9 @@ module.exports.SCHEMA_DOT_ORG = {
     `${SCHEMA_DOT_ORG_NAMESPACE}PaymentStatusType`
   ),
 };
+
+const LIT_CORE_NAMESPACE = "https://w3id.org/lit/vocab/core#";
+module.exports.LIT_CORE = {
+  ConstantString: rdf.namedNode(`${LIT_CORE_NAMESPACE}ConstantString`),
+  ConstantIri: rdf.namedNode(`${LIT_CORE_NAMESPACE}ConstantIri`),
+};
