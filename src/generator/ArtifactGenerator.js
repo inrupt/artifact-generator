@@ -424,8 +424,21 @@ class ArtifactGenerator {
               debug(
                 `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
               );
+              publishConfigs[j].command
+                .split("&&")
+                .map((str) => str.trim())
+                .map((command) => {
+                  debug(`Running sub-command [${command}]...`);
+                  // try {
+                  ChildProcess.execSync(command);
+                  // } catch (e) {
+                  //   if (command.startsWith("npm unpublish")) {
+                  //     debug(`Re-running sub-command [${command}]...`);
+                  //     ChildProcess.execSync(command);
+                  //   }
+                  // }
+                });
 
-              ChildProcess.execSync(publishConfigs[j].command);
               process.chdir(homeDir);
             }
           }

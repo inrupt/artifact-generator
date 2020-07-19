@@ -3,5 +3,5 @@
 
 {{/if}}
 {{#each generatedVocabs}}
-export { {{vocabNameUpperCase}} } from "./GeneratedVocab/{{vocabNameUpperCase}}";
+export { default as {{vocabNameUpperCase}} } from "./GeneratedVocab/{{vocabNameUpperCase}}";
 {{/each}}

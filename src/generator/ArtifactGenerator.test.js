@@ -3,6 +3,7 @@ require("mock-local-storage");
 const fs = require("fs");
 const path = require("path");
 const del = require("del");
+const childProcess = require("child_process");
 
 jest.mock("inquirer");
 const inquirer = require("inquirer");
@@ -669,7 +670,7 @@ describe("Artifact Generator", () => {
     });
   });
 
-  describe("Publishing artifacts.", () => {
+  describe("Publishing artifacts", () => {
     it("should publish artifacts locally using templated command", async () => {
       const outputDirectory =
         "test/Generated/ArtifactGenerator/publish/templatedCommand";
