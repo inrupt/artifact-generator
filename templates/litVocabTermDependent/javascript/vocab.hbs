@@ -106,6 +106,34 @@ const {{vocabNameUpperCase}} = {
     .addMessageNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
+
+{{#if constantStrings}}
+  // **************************
+  // All the constant strings.
+  // **************************
+  {{#each constantStrings}}
+
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: {{#each definitions}}"{{{valueEscapedForJavaScript}}}"{{/each}},
+{{/each}}{{/if}}
+
+{{#if constantIris}}
+  // ***********************
+  // All the constant IRIs.
+  // ***********************
+  {{#each constantIris}}
+
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: {{#each definitions}}namedNode("{{{valueEscapedForJavaScript}}}"){{/each}},
+{{/each}}{{/if}}
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
   //

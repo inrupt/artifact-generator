@@ -50,6 +50,7 @@ const ConfigLitCommon = {
 const ConfigLitCore = {
   _: "generate",
   force: true,
+  clearOutputDirectory: true,
   vocabListFile: "../lit-vocab/lit-rdf-vocab/Core/Vocab-List-LIT-Core.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
@@ -60,6 +61,7 @@ const ConfigLitCore = {
 const ConfigInruptCommon = {
   _: "generate",
   force: true,
+  clearOutputDirectory: true,
   vocabListFile:
     "../lit-vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml",
   npmRegistry: NPM_REGISTRY,
@@ -71,6 +73,7 @@ const ConfigInruptCommon = {
 const ConfigInruptUiCommon = {
   _: "generate",
   force: true,
+  clearOutputDirectory: true,
   vocabListFile:
     "../lit-vocab/inrupt-rdf-vocab/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
   npmRegistry: NPM_REGISTRY,
@@ -189,7 +192,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it("LIT Common vocabs", async () => {
   it.skip("LIT Common vocabs", async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(60000);
     await generateVocabArtifact(ConfigLitCommon);
   });
 
@@ -214,7 +217,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolidComponent);
   });
 
-  // it('Inrupt Commmon vocab', async () => {
+  // it("Inrupt Commmon vocab", async () => {
   it.skip("Inrupt Commmon vocab", async () => {
     await generateVocabArtifact(ConfigInruptCommon);
   });

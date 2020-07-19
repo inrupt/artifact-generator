@@ -77,4 +77,34 @@ public class {{vocabNameUpperCase}} {
     public static final IRI {{nameEscapedForLanguage}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
 {{/if}}
+
+{{#if constantStrings}}
+    // **************************
+    // All the constant strings.
+    // **************************
+    {{#each constantStrings}}
+
+    /**
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     */
+    public static final String {{nameEscapedForJava}} = "{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}";
+{{/each}}
+{{/if}}
+
+{{#if constantIris}}
+    // ***********************
+    // All the constant IRIs.
+    // ***********************
+    {{#each constantIris}}
+
+    /**
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     */
+    public static final IRI {{nameEscapedForJava}} = SimpleValueFactory.getInstance().createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
+{{/each}}
+{{/if}}
 }

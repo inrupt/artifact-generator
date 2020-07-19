@@ -25,7 +25,9 @@ module.exports = class VocabGenerator {
     if (
       vocabGenerationData.classes.length === 0 &&
       vocabGenerationData.properties.length === 0 &&
-      vocabGenerationData.literals.length === 0
+      vocabGenerationData.literals.length === 0 &&
+      vocabGenerationData.constantIris.length === 0 &&
+      vocabGenerationData.constantStrings.length === 0
     ) {
       // In this case, the resource was unreachable, and the source file cannot be generated
       return new Promise((resolve, reject) => {

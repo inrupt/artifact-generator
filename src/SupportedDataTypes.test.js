@@ -114,6 +114,107 @@ describe("Supported Data Type", () => {
     );
   });
 
+  it("should fail with invalid IRI", async () => {
+    const outputDirectory = "test/Generated/SupportedDataType/invalid-iri";
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator(
+      {
+        inputResources: [
+          "./test/resources/vocabs/supported-data-types-invalid-constant-iri.ttl",
+        ],
+        outputDirectory,
+      },
+      {
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
+        // We assume normalization has resolved this template location.
+        sourceCodeTemplate: path.join(
+          "templates",
+          "litVocabTermDependent",
+          "javascript",
+          "vocab.hbs"
+        ),
+        sourceFileExtension: "js",
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
+      }
+    );
+
+    expect(async () => {
+      await generator.generate();
+    }).rejects.toThrow("not a valid IRI!");
+  });
+
+  it("should fail with too many constant IRI values", async () => {
+    const outputDirectory =
+      "test/Generated/SupportedDataType/too-many-constant-iri-values";
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator(
+      {
+        inputResources: [
+          "./test/resources/vocabs/supported-data-types-too-many-constant-iri-values.ttl",
+        ],
+        outputDirectory,
+      },
+      {
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
+        // We assume normalization has resolved this template location.
+        sourceCodeTemplate: path.join(
+          "templates",
+          "litVocabTermDependent",
+          "javascript",
+          "vocab.hbs"
+        ),
+        sourceFileExtension: "js",
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
+      }
+    );
+
+    expect(async () => {
+      await generator.generate();
+    }).rejects.toThrow("constantIriTooMany", "3");
+  });
+
+  it("should fail with too many constant string values", async () => {
+    const outputDirectory =
+      "test/Generated/SupportedDataType/too-many-constant-string-values";
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator(
+      {
+        inputResources: [
+          "./test/resources/vocabs/supported-data-types-too-many-constant-string-values.ttl",
+        ],
+        outputDirectory,
+      },
+      {
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
+        // We assume normalization has resolved this template location.
+        sourceCodeTemplate: path.join(
+          "templates",
+          "litVocabTermDependent",
+          "javascript",
+          "vocab.hbs"
+        ),
+        sourceFileExtension: "js",
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
+      }
+    );
+
+    expect(async () => {
+      await generator.generate();
+    }).rejects.toThrow("constantStringTooMany", "2");
+  });
+
   it("should be able to generate vocabs for all the supported class data types", async () => {
     const outputDirectory = "test/Generated/SupportedDataType/data-types";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;

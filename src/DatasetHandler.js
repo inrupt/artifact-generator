@@ -9,6 +9,7 @@ const {
   VANN,
   DCTERMS,
   SKOS,
+  LIT_CORE,
 } = require("./CommonTerms");
 
 const FileGenerator = require("./generator/FileGenerator");
@@ -25,8 +26,8 @@ const KNOWN_DOMAINS = new Map([
 ]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
-// think is to allow use of inference, which would find automatically that
-// 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
+//  think is to allow use of inference, which would find automatically that
+//  'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
 const SUPPORTED_CLASSES = [
   RDFS.Class,
   OWL.Class,
@@ -44,7 +45,26 @@ const SUPPORTED_PROPERTIES = [
   OWL.DatatypeProperty,
 ];
 
+// The original intent of using this Class was for constants, but in fact in
+// pure RDF it refers to an RDF Literal (i.e. an object with an optional
+// language tag or datatype). This is extremely useful for defining application
+// message strings, such as error messages, or informational text in multiple
+// languages.
 const SUPPORTED_LITERALS = [RDFS.Literal];
+
+// Useful for defining constant strings. We specifically prevent having multiple
+// values for these constants, since the whole point is that the value is a
+// 'constant'.
+const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
+
+// Useful for defining constant IRIs that are not intended to be related to the
+// vocabulary itself - for example, the Inrupt test vocabulary defines a number
+// of constant IRIs to represent a test Pod, and test Containers within that Pod
+// and test Resources within Containers within that Pod. None of those IRIs are
+// related to the IRI of the test vocabulary itself. We specifically prevent
+// having multiple values for these constants, since the whole point is that the
+// value is a 'constant'.
+const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
   constructor(fullDataset, subjectsOnlyDataset, vocabData) {
@@ -62,9 +82,9 @@ module.exports = class DatasetHandler {
    *
    * @param quad
    * @param namespace
-   * @returns {{comments: *, nameEscapedForLanguage: *, name: *, comment: *, definitions: *, labels: *}}
+   * @returns {{comments: [], isDefinedBy, seeAlsos: Set<any>, nameEscapedForJava: string, nameEscapedForLanguage: *, name: string, comment: string, definitions: [], labels: []}|null}
    */
-  handleTerm(quad, namespace) {
+  handleTerm(quad, namespace, rdfType) {
     const labels = [];
 
     const fullName = quad.subject.value;
@@ -114,16 +134,17 @@ module.exports = class DatasetHandler {
     }
     const name = splitIri[1];
 
-    const nameEscapedForLanguage = name
-      .replace(/-/g, "_")
-      // TODO: Currently these alterations are required only for Java-specific
-      //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
-      //  term 'abstract'). But these should only be applied for Java-generated
-      //  code, but right now it's awkward to determine the current artifact
-      //  we're generating for right here, so leaving that until the big
-      //  refactor to clean things up. In the meantime, I've added the concept
-      //  of 'list of keywords to append an underscore for in this programming
-      //  language' to the current YAML files.
+    const nameEscapedForLanguage = name.replace(/-/g, "_");
+
+    // TODO: Currently these alterations are required only for Java-specific
+    //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
+    //  term 'abstract'). But these should only be applied for Java-generated
+    //  code, but right now it's awkward to determine the current artifact
+    //  we're generating for right here, so leaving that until the big
+    //  refactor to clean things up. In the meantime, I've added the concept
+    //  of 'list of keywords to append an underscore for in this programming
+    //  language' to the current YAML files.
+    const nameEscapedForJava = nameEscapedForLanguage
       .replace(/^boolean$/, "boolean_")
       .replace(/^float$/, "float_")
       .replace(/^double$/, "double_")
@@ -182,11 +203,36 @@ module.exports = class DatasetHandler {
         DatasetHandler.add(definitions, subQuad);
       });
 
-    this.fullDataset
-      .match(quad.subject, SKOS.definition, null)
-      .forEach((subQuad) => {
-        DatasetHandler.add(definitions, subQuad);
-      });
+    const skosMatches = this.fullDataset.match(
+      quad.subject,
+      SKOS.definition,
+      null
+    );
+
+    if (
+      rdfType.equals(LIT_CORE.ConstantIri) ||
+      rdfType.equals(LIT_CORE.ConstantString)
+    ) {
+      if (skosMatches.length > 1) {
+        throw new Error(
+          `Vocabulary term [${fullName}] in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - found [${skosMatches.length}] values for constant of type [${rdfType.value}] when one, and only one, value is required`
+        );
+      }
+
+      if (rdfType.equals(LIT_CORE.ConstantIri)) {
+        skosMatches.forEach((quad) => {
+          if (!this.isValidIri(quad.object.value)) {
+            throw new Error(
+              `Vocabulary term [${fullName}] in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - constant IRI value [${quad.object.value}] does not appear to be a valid IRI`
+            );
+          }
+        });
+      }
+    }
+
+    skosMatches.forEach((subQuad) => {
+      DatasetHandler.add(definitions, subQuad);
+    });
 
     const seeAlsos = new Set();
 
@@ -219,6 +265,7 @@ module.exports = class DatasetHandler {
     return {
       name,
       nameEscapedForLanguage,
+      nameEscapedForJava,
       comment,
       labels,
       comments,
@@ -226,6 +273,15 @@ module.exports = class DatasetHandler {
       seeAlsos,
       isDefinedBy,
     };
+  }
+
+  isValidIri(str) {
+    try {
+      new URL(str);
+    } catch (err) {
+      return false;
+    }
+    return true;
   }
 
   static add(array, quad) {
@@ -306,6 +362,8 @@ module.exports = class DatasetHandler {
     result.classes = [];
     result.properties = [];
     result.literals = [];
+    result.constantIris = [];
+    result.constantStrings = [];
 
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
@@ -348,19 +406,23 @@ module.exports = class DatasetHandler {
     }
 
     subjectSet.forEach((subject) => {
-      this.handleClasses(subject, result);
-      this.handleProperties(subject, result);
-      this.handleLiterals(subject, result);
+      this.handleClass(subject, result);
+      this.handleProperty(subject, result);
+      this.handleLiteral(subject, result);
+      this.handleConstantIri(subject, result);
+      this.handleConstantString(subject, result);
     });
 
     return result;
   }
 
-  handleClasses(subject, result) {
+  handleClass(subject, result) {
     SUPPORTED_CLASSES.forEach((classType) => {
       this.fullDataset.match(subject, RDF.type, classType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
-          result.classes.push(this.handleTerm(quad, result.localNamespace));
+          result.classes.push(
+            this.handleTerm(quad, result.localNamespace, classType)
+          );
         }
       });
     });
@@ -369,17 +431,23 @@ module.exports = class DatasetHandler {
     // class too, regardless of what it's a sub-class of!
     this.fullDataset.match(subject, RDFS.subClassOf, null).forEach((quad) => {
       if (this.isNewTerm(quad.subject.value)) {
-        result.classes.push(this.handleTerm(quad, result.localNamespace));
+        result.classes.push(
+          this.handleTerm(quad, result.localNamespace, quad.object)
+        );
       }
     });
   }
 
-  handleProperties(subject, result) {
+  handleProperty(subject, result) {
     SUPPORTED_PROPERTIES.forEach((propertyType) => {
       this.fullDataset
         .match(subject, RDF.type, propertyType)
         .forEach((quad) => {
-          const term = this.handleTerm(quad, result.localNamespace);
+          const term = this.handleTerm(
+            quad,
+            result.localNamespace,
+            propertyType
+          );
           if (term) {
             if (this.isNewTerm(quad.subject.value)) {
               result.properties.push(term);
@@ -393,7 +461,7 @@ module.exports = class DatasetHandler {
     this.fullDataset
       .match(subject, RDFS.subPropertyOf, null)
       .forEach((quad) => {
-        const term = this.handleTerm(quad, result.localNamespace);
+        const term = this.handleTerm(quad, result.localNamespace, quad.object);
         if (term) {
           if (this.isNewTerm(quad.subject.value)) {
             result.properties.push(term);
@@ -402,11 +470,37 @@ module.exports = class DatasetHandler {
       });
   }
 
-  handleLiterals(subject, result) {
+  handleLiteral(subject, result) {
     SUPPORTED_LITERALS.forEach((literalType) => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
-          result.literals.push(this.handleTerm(quad, result.localNamespace));
+          result.literals.push(
+            this.handleTerm(quad, result.localNamespace, literalType)
+          );
+        }
+      });
+    });
+  }
+
+  handleConstantString(subject, result) {
+    SUPPORTED_CONSTANT_STRINGS.forEach((literalType) => {
+      this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
+        if (this.isNewTerm(quad.subject.value)) {
+          result.constantStrings.push(
+            this.handleTerm(quad, result.localNamespace, literalType)
+          );
+        }
+      });
+    });
+  }
+
+  handleConstantIri(subject, result) {
+    SUPPORTED_CONSTANT_IRIS.forEach((literalType) => {
+      this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
+        if (this.isNewTerm(quad.subject.value)) {
+          result.constantIris.push(
+            this.handleTerm(quad, result.localNamespace, literalType)
+          );
         }
       });
     });

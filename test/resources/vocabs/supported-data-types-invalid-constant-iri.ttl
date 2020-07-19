@@ -1,0 +1,28 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix schema: <http://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix lit_core: <https://w3id.org/lit/vocab/core#>
+prefix lit_gen: <https://w3id.org/lit/vocab/code-generation#>
+prefix schema-inrupt-ext: <http://inrupt.com/>
+
+
+lit_gen:
+    a owl:Ontology, lit_core:Ontology ;
+    owl:versionInfo "1" ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/06/18" ;
+    dcterms:title "LIT Code Generator vocabulary" ;
+    dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
+    vann:preferredNamespacePrefix "lit_gen" ;
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/code-generation#" ;
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+
+
+lit_gen:constantIriInvalid a lit_core:ConstantIri ;
+    rdfs:label "A constant IRI"@en ;
+    rdfs:comment "This is an invalid constant IRI value."@en ;
+    skos:definition "not a valid IRI!" .
