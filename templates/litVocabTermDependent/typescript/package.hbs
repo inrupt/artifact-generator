@@ -38,15 +38,15 @@
   "dependencies": {
     "@solid/lit-term": "{{litVocabTermVersion}}",
     "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}",
-    "@types/rdf-js": "{{rdfjsTypesVersion}}"
+    "@rdfjs/dataset": "{{rdfjsDatasetVersion}}",
+    "@rdfjs/namespace": "{{rdfjsNamespaceVersion}}"
   },
   "devDependencies": {
-    "typescript": "{{typescriptVersion}}"
-  {{#if supportBundling}},
+    "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
+    "@types/rdf-js": "{{rdfjsTypesVersion}}",
     "rollup": "{{rollupVersion}}",
     "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
-    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
-  {{/if}}
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
   }
 }

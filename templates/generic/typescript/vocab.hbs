@@ -4,7 +4,9 @@
 {{/if}}
 import namespace from "@rdfjs/namespace";
 {{#if constantIris}}
-import rdf from "@rdfjs/dataset";
+import dataFactory from "@rdfjs/data-model";
+
+const { namedNode } = dataFactory;
 {{/if}}
 
 /**
@@ -102,7 +104,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdf.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+  {{nameEscapedForLanguage}}: namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
 {{/each}}{{/if}}
 };
 

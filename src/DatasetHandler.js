@@ -26,8 +26,8 @@ const KNOWN_DOMAINS = new Map([
 ]);
 
 // TODO: Special case here for Schema.org. The proper way to address this I
-// think is to allow use of inference, which would find automatically that
-// 'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
+//  think is to allow use of inference, which would find automatically that
+//  'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
 const SUPPORTED_CLASSES = [
   RDFS.Class,
   OWL.Class,
@@ -47,12 +47,23 @@ const SUPPORTED_PROPERTIES = [
 
 // The original intent of using this Class was for constants, but in fact in
 // pure RDF it refers to an RDF Literal (i.e. an object with an optional
-// language tag or datatype).
-// We now have our own defined constant Classes, which matches our intent
-// properly, so this usage should be deprecated when time allows.
+// language tag or datatype). This is extremely useful for defining application
+// message strings, such as error messages, or informational text in multiple
+// languages.
 const SUPPORTED_LITERALS = [RDFS.Literal];
 
+// Useful for defining constant strings. We specifically prevent having multiple
+// values for these constants, since the whole point is that the value is a
+// 'constant'.
 const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
+
+// Useful for defining constant IRIs that are not intended to be related to the
+// vocabulary itself - for example, the Inrupt test vocabulary defines a number
+// of constant IRIs to represent a test Pod, and test Containers within that Pod
+// and test Resources within Containers within that Pod. None of those IRIs are
+// related to the IRI of the test vocabulary itself. We specifically prevent
+// having multiple values for these constants, since the whole point is that the
+// value is a 'constant'.
 const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
