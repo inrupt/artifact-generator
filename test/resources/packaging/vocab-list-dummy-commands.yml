@@ -11,7 +11,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -30,7 +30,7 @@ artifactToGenerate:
         - key: "remote"
           command: "touch mvn-publishRemote"
         packagingTemplates: 
-        - templateInternal: litVocabTermDependent/java/rdf4j/pom.hbs
+        - templateInternal: solidCommonTermDependent/java/rdf4j/pom.hbs
           fileName: pom.xml
 #      - packagingTool: gradle
 #        groupId: com.inrupt.test
@@ -43,11 +43,11 @@ artifactToGenerate:
     npmModuleScope: "@inrupt-test/"
     artifactPrefix: test-prefix-
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
-        npmModuleScope: "@lit/"
+        npmModuleScope: "@inrupt/"
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
@@ -62,9 +62,9 @@ artifactToGenerate:
         - key: "templatedCommand"
           command: "touch templated-${npmModuleScope}-${artifactPrefix}-${artifactName}@${artifactVersion}-file"
         packagingTemplates:
-          - templateInternal: litVocabTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonTermDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: litVocabTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonTermDependent/javascript/index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config

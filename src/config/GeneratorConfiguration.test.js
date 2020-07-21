@@ -44,7 +44,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:
@@ -214,7 +214,7 @@ describe("Generator configuration", () => {
       expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
         path.join(
           "templates",
-          "litVocabTermDependent",
+          "solidCommonTermDependent",
           "java",
           "rdf4j",
           "vocab.hbs"
@@ -226,7 +226,7 @@ describe("Generator configuration", () => {
       ).toEqual(
         path.join(
           "templates",
-          "litVocabTermDependent",
+          "solidCommonTermDependent",
           "java",
           "rdf4j",
           "pom.hbs"
@@ -325,7 +325,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-          moduleNamePrefix: "@lit/generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         },
         undefined
@@ -349,7 +349,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           inputResources: [absolutePath],
-          moduleNamePrefix: "@lit/generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         },
         undefined
@@ -365,7 +365,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-          moduleNamePrefix: "@lit/generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
           npmRegistry: "http://my.registry.ninja",
         },

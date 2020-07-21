@@ -16,15 +16,15 @@ import org.eclipse.rdf4j.model.Namespace;
 import org.eclipse.rdf4j.model.impl.SimpleNamespace;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
-import org.solid.lit.term.LitVocab;
-import org.solid.lit.term.LitVocabTerm;
+import com.inrupt.solid.common.term.Vocab;
+import com.inrupt.solid.common.term.VocabTerm;
 
 /**
 {{#if description}}
  * {{{description}}}
 {{/if}}
  */
-public class {{vocabNameUpperCase}} implements LitVocab {
+public class {{vocabNameUpperCase}} implements Vocab {
     public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";
 
@@ -56,7 +56,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -77,7 +77,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
@@ -98,7 +98,7 @@ public class {{vocabNameUpperCase}} implements LitVocab {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final LitVocabTerm {{nameEscapedForJava}} = new LitVocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTerm(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
         .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}

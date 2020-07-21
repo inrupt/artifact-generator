@@ -5,6 +5,6 @@
   "private": true,
   "dependencies": {
     "mock-local-storage": "^1.1.8",
-    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
+    "@inrupt/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
   }
 }

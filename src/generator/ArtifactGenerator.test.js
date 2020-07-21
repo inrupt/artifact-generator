@@ -69,7 +69,9 @@ describe("Artifact Generator", () => {
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
       expect(packageOutput).toEqual(
-        expect.stringContaining('"name": "@lit/generated-vocab-common-TEST",')
+        expect.stringContaining(
+          '"name": "@inrupt/generated-vocab-common-TEST",'
+        )
       );
       expect(packageOutput).toEqual(
         expect.stringContaining('"version": "10.11.12"')
@@ -133,7 +135,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^1.0.10",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         supportBundling: false,
       });
@@ -207,7 +209,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         supportBundling: true,
       });
@@ -239,7 +241,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
       config.completeInitialConfiguration();
@@ -295,7 +297,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -382,7 +384,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -471,7 +473,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -578,7 +580,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -625,7 +627,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         force: true,
       });
@@ -658,7 +660,7 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         clearOutputDirectory: true,
       });

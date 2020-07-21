@@ -17,11 +17,15 @@ const DUMMY_NPM_MODULE = {
   publishLocal: "npm install",
   publishRemote: "npm install",
   packageTemplate: path.join(
-    "litVocabTermDependent",
+    "solidCommonTermDependent",
     "javascript",
     "package.hbs"
   ),
-  indexTemplate: path.join("litVocabTermDependent", "javascript", "index.hbs"),
+  indexTemplate: path.join(
+    "solidCommonTermDependent",
+    "javascript",
+    "index.hbs"
+  ),
 };
 
 const NPM_MODULE_CONFIG = jest

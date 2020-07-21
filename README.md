@@ -99,7 +99,7 @@ artifact we just generated:
   "private": true,
   "dependencies": {
     "mock-local-storage": "^1.1.8",
-    "@lit/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
+    "@inrupt/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
   }
 }
 ``` 
@@ -108,7 +108,7 @@ artifact we just generated:
 
 ```javascript
 require('mock-local-storage');
-const { PET_ROCK } = require('@lit/generated-vocab-pet-rock');
+const { PET_ROCK } = require('@inrupt/generated-vocab-pet-rock');
 
 console.log(`What is Pet Rock 'shinyness'?\n`);
 

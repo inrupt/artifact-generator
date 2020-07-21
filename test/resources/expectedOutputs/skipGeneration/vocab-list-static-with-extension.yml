@@ -10,11 +10,11 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
-        npmModuleScope: "@lit/"
+        npmModuleScope: "@inrupt/"
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
@@ -24,9 +24,9 @@ artifactToGenerate:
         - key: "remote"
           command: "touch npm-publishRemote"
         packagingTemplates: 
-          - templateInternal: litVocabTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonTermDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: litVocabTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonTermDependent/javascript/index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config

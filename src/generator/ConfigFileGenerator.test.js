@@ -40,7 +40,7 @@ const PROMPTED_JAVA_ARTIFACT = {
 const COMPLETE_JAVA_ARTIFACT = {
   languageKeywordsToUnderscore: ["class", "abstract", "default"],
   templateInternal: path.join(
-    "litVocabTermDependent",
+    "solidCommonTermDependent",
     "java",
     "rdf4j",
     "vocab.hbs"

@@ -24,19 +24,6 @@ const ConfigAll = {
   publish: RUN_PACKAGING,
 };
 
-// Intended for one-off testing, e.g. to try to reproduce problems seen
-// elsewhere.
-const ConfigTest = {
-  _: "generate",
-  force: true,
-  vocabListFile:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/**/*.yml",
-  vocabListFileIgnore:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/lit-artifact-generator/**",
-  outputDirectory:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/GENERATED",
-};
-
 const ConfigLitCommon = {
   _: "generate",
   force: true,
@@ -141,11 +128,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(240000);
     await generateVocabArtifact(ConfigAll);
-  });
-
-  // it("Generate test vocabs recursively", async () => {
-  it.skip("Generate test vocabs", async () => {
-    await generateVocabArtifact(ConfigTest);
   });
 
   // it("Generate ALL vocabs", async () => {
@@ -261,7 +243,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       outputDirectory: "./test",
       artifactVersion: "1.0.0",
       litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
-      moduleNamePrefix: "@lit/generated-vocab-",
+      moduleNamePrefix: "@inrupt/generated-vocab-",
       npmRegistry: NPM_REGISTRY,
       runNpmInstall: false, //RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,

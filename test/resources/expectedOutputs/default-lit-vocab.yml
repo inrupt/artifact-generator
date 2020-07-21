@@ -4,7 +4,7 @@ artifactToGenerate:
     javaPackageName: com.example.java.packagename
     litVocabTermVersion: 0.1.0-SNAPSHOT
     artifactDirectoryName: Java
-    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -21,7 +21,7 @@ artifactToGenerate:
     npmModuleScope: "@exampleScope/"
     litVocabTermVersion: "^0.2.4"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
 
 vocabList:

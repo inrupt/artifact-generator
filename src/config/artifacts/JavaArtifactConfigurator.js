@@ -4,7 +4,7 @@ const ArtifactConfigurator = require("../ArtifactConfigurator");
 const { ADD_REPOSITORY_CONFIRMATION } = require("../ArtifactConfigurator");
 
 const DEFAULT_TEMPLATE = path.join(
-  "litVocabTermDependent",
+  "solidCommonTermDependent",
   "java",
   "rdf4j",
   "vocab.hbs"

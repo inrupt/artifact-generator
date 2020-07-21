@@ -9,22 +9,22 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    npmModuleScope: "@lit/"
+    npmModuleScope: "@inrupt/"
     litVocabTermVersion: "^1.0.10"
     ##
     # This flag is used by the template to configure the LitVocabTerm behaviour
     ##
     strict: true
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
-        npmModuleScope: "@lit/"
+        npmModuleScope: "@inrupt/"
         packagingTemplates: 
-          - templateInternal: litVocabTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonTermDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: litVocabTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonTermDependent/javascript/index.hbs
             fileName: index.js
 
 vocabList:

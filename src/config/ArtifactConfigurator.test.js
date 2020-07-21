@@ -33,7 +33,7 @@ const DUMMY_MAVEN_ARTIFACT = {
     __dirname,
     "..",
     "templates",
-    "litVocabTermDependent",
+    "solidCommonTermDependent",
     "java",
     "rdf4j",
     "pom.hbs"

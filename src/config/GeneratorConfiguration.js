@@ -35,35 +35,35 @@ const WEBPACK_DEFAULT = {
 
 const NPM_DEFAULT = {
   packagingTool: "npm",
-  npmModuleScope: "@lit/",
+  npmModuleScope: "@inrupt/",
   publish: [
     { key: "local", command: "npm publish --registry https://localhost:4873" },
   ],
   packagingTemplates: [
     {
       templateInternal: path.join(
-        "litVocabTermDependent",
+        "solidCommonTermDependent",
         "javascript",
         "package.hbs"
       ),
       fileName: "package.json",
       template: path.join(
         "templates",
-        "litVocabTermDependent",
+        "solidCommonTermDependent",
         "javascript",
         "package.hbs"
       ),
     },
     {
       templateInternal: path.join(
-        "litVocabTermDependent",
+        "solidCommonTermDependent",
         "javascript",
         "index.hbs"
       ),
       fileName: "index.js",
       template: path.join(
         "templates",
-        "litVocabTermDependent",
+        "solidCommonTermDependent",
         "javascript",
         "index.hbs"
       ),
@@ -76,7 +76,7 @@ const DEFAULT_CLI_ARTIFACT = [
     programmingLanguage: "JavaScript",
     artifactDirectoryName: "JavaScript",
     templateInternal: path.join(
-      "litVocabTermDependent",
+      "solidCommonTermDependent",
       "javascript",
       "vocab.hbs"
     ),
@@ -84,7 +84,7 @@ const DEFAULT_CLI_ARTIFACT = [
     packaging: [NPM_DEFAULT],
     sourceCodeTemplate: path.join(
       "templates",
-      "litVocabTermDependent",
+      "solidCommonTermDependent",
       "javascript",
       "vocab.hbs"
     ),
@@ -528,7 +528,7 @@ class GeneratorConfiguration {
         programmingLanguage: "JavaScript",
         artifactDirectoryName: "JavaScript",
         templateInternal: path.join(
-          "litVocabTermDependent",
+          "solidCommonTermDependent",
           "javascript",
           "vocab.hbs"
         ),
