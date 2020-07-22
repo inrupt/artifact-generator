@@ -33,7 +33,7 @@
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
     "axios": "^0.19.2",
-    "chokidar": "3.4.0",
+    "chokidar": "3.4.1",
     "debug": "^4.1.1",
     "del": "^5.1.0",
     "glob": "^7.1.6",
