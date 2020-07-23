@@ -16,19 +16,19 @@ artifactToGenerate:
     npmModuleScope: "@inrupt/"
     litVocabTermVersion: "^99.0.99"
     artifactDirectoryName: TypeScript
-    templateInternal: solidCommonTermDependent/typescript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/typescript/vocab.hbs
     sourceFileExtension: ts
     packaging:
       - packagingTool: npm
         npmModuleScope: "@solid/"
         packagingTemplates:
-          - templateInternal: solidCommonTermDependent/typescript/package.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/package.hbs
             fileName: package.json
-          - templateInternal: solidCommonTermDependent/typescript/index.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/index.hbs
             fileName: index.ts
-          - templateInternal: solidCommonTermDependent/typescript/tsconfig.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/tsconfig.hbs
             fileName: tsconfig.json
-          - templateInternal: solidCommonTermDependent/typescript/rollup.config.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/rollup.config.hbs
             fileName: rollup.config.js
 
 vocabList:

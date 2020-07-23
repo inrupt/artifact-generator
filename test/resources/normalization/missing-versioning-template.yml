@@ -19,7 +19,7 @@ artifactToGenerate:
     ##
     # Here the template is picked from among the internally provided templates.
     ##
-    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:

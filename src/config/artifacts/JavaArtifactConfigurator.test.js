@@ -17,7 +17,7 @@ const DUMMY_MAVEN_ARTIFACT = {
   groupId: "org.some.groupId",
   publishLocal: "mvn install",
   publishRemote: "mvn deploy",
-  template: path.join("solidCommonTermDependent", "java", "rdf4j", "pom.hbs"),
+  template: path.join("solidCommonVocabDependent", "java", "rdf4j", "pom.hbs"),
 };
 
 const DUMMY_RELEASE_REPO = {
@@ -43,7 +43,7 @@ const MAVEN_CONFIG_PROMPT_NO_REPO = jest
   .mockReturnValueOnce(
     Promise.resolve({
       template: path.join(
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "java",
         "rdf4j",
         "pom.hbs"
@@ -63,7 +63,7 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
   .mockReturnValueOnce(
     Promise.resolve({
       template: path.join(
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "java",
         "rdf4j",
         "pom.hbs"

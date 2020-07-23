@@ -6,7 +6,7 @@ artifactToGenerate:
     artifactVersion: "0.1.0"
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: "Java"
-    templateInternal: "solidCommonTermDependent/java/rdf4j/vocab.hbs"
+    templateInternal: "solidCommonVocabDependent/java/rdf4j/vocab.hbs"
     sourceFileExtension: "java"
     languageKeywordsToUnderscore:
       - "class"

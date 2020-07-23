@@ -34,7 +34,7 @@
     </contributors>
 
     <properties>
-        <solid.common.term.version>0.1.0-SNAPSHOT</solid.common.term.version>
+        <solid.common.vocab.version>0.1.0-SNAPSHOT</solid.common.vocab.version>
 
         <slf4j.version>1.7.26</slf4j.version>
 
@@ -53,8 +53,8 @@
     <dependencies>
         <dependency>
             <groupId>com.inrupt</groupId>
-            <artifactId>solid-common-term</artifactId>
-            <version>${solid.common.term.version}</version>
+            <artifactId>solid-common-vocab</artifactId>
+            <version>${solid.common.vocab.version}</version>
         </dependency>
 
         <dependency>

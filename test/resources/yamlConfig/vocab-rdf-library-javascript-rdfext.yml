@@ -25,7 +25,7 @@ artifactToGenerate:
         packagingTemplates:
           - templateCustom: ../../../templates/rdfLibraryDependent/javascript/rdfext/package.hbs
             fileName: package.json
-          - templateInternal: solidCommonTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: index.js
 
 vocabList:

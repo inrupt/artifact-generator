@@ -4,7 +4,7 @@ const path = require("path");
 const ArtifactConfigurator = require("../ArtifactConfigurator");
 
 const DEFAULT_TEMPLATE = path.join(
-  "solidCommonTermDependent",
+  "solidCommonVocabDependent",
   "javascript",
   "vocab.hbs"
 );
@@ -39,13 +39,17 @@ const NPM_PACKAGING_TEMPLATES_PROMPT = [
     type: "input",
     name: "packageTemplate",
     message: "What 'package.json' file template do you want to use ?",
-    default: path.join("solidCommonTermDependent", "javascript", "package.hbs"),
+    default: path.join(
+      "solidCommonVocabDependent",
+      "javascript",
+      "package.hbs"
+    ),
   },
   {
     type: "input",
     name: "indexTemplate",
     message: "What 'index.js' file template do you want to use ?",
-    default: path.join("solidCommonTermDependent", "javascript", "index.hbs"),
+    default: path.join("solidCommonVocabDependent", "javascript", "index.hbs"),
   },
 ];
 

@@ -17,12 +17,12 @@ const DUMMY_NPM_MODULE = {
   publishLocal: "npm install",
   publishRemote: "npm install",
   packageTemplate: path.join(
-    "solidCommonTermDependent",
+    "solidCommonVocabDependent",
     "javascript",
     "package.hbs"
   ),
   indexTemplate: path.join(
-    "solidCommonTermDependent",
+    "solidCommonVocabDependent",
     "javascript",
     "index.hbs"
   ),

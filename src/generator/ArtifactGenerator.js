@@ -338,7 +338,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "solidCommonTermDependent",
+              "solidCommonVocabDependent",
               "java",
               "rdf4j",
               "pom.hbs"
@@ -366,7 +366,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "solidCommonTermDependent",
+              "solidCommonVocabDependent",
               "javascript",
               "package.hbs"
             ),
@@ -378,7 +378,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "solidCommonTermDependent",
+              "solidCommonVocabDependent",
               "javascript",
               "index.hbs"
             ),

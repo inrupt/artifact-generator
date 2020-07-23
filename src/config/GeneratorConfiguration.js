@@ -42,28 +42,28 @@ const NPM_DEFAULT = {
   packagingTemplates: [
     {
       templateInternal: path.join(
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "javascript",
         "package.hbs"
       ),
       fileName: "package.json",
       template: path.join(
         "templates",
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "javascript",
         "package.hbs"
       ),
     },
     {
       templateInternal: path.join(
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "javascript",
         "index.hbs"
       ),
       fileName: "index.js",
       template: path.join(
         "templates",
-        "solidCommonTermDependent",
+        "solidCommonVocabDependent",
         "javascript",
         "index.hbs"
       ),
@@ -76,7 +76,7 @@ const DEFAULT_CLI_ARTIFACT = [
     programmingLanguage: "JavaScript",
     artifactDirectoryName: "JavaScript",
     templateInternal: path.join(
-      "solidCommonTermDependent",
+      "solidCommonVocabDependent",
       "javascript",
       "vocab.hbs"
     ),
@@ -84,7 +84,7 @@ const DEFAULT_CLI_ARTIFACT = [
     packaging: [NPM_DEFAULT],
     sourceCodeTemplate: path.join(
       "templates",
-      "solidCommonTermDependent",
+      "solidCommonVocabDependent",
       "javascript",
       "vocab.hbs"
     ),
@@ -528,7 +528,7 @@ class GeneratorConfiguration {
         programmingLanguage: "JavaScript",
         artifactDirectoryName: "JavaScript",
         templateInternal: path.join(
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),

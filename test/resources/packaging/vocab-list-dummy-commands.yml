@@ -11,7 +11,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -30,7 +30,7 @@ artifactToGenerate:
         - key: "remote"
           command: "touch mvn-publishRemote"
         packagingTemplates: 
-        - templateInternal: solidCommonTermDependent/java/rdf4j/pom.hbs
+        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
           fileName: pom.xml
 #      - packagingTool: gradle
 #        groupId: com.inrupt.test
@@ -43,7 +43,7 @@ artifactToGenerate:
     npmModuleScope: "@inrupt-test/"
     artifactPrefix: test-prefix-
     artifactDirectoryName: JavaScript
-    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
@@ -62,9 +62,9 @@ artifactToGenerate:
         - key: "templatedCommand"
           command: "touch templated-${npmModuleScope}-${artifactPrefix}-${artifactName}@${artifactVersion}-file"
         packagingTemplates:
-          - templateInternal: solidCommonTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: solidCommonTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config

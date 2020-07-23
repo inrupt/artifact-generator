@@ -10,7 +10,7 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
@@ -24,9 +24,9 @@ artifactToGenerate:
         - key: "remote"
           command: "touch npm-publishRemote"
         packagingTemplates: 
-          - templateInternal: solidCommonTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: solidCommonTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: index.js
       - packagingTool: webpack
         packagingFolder: config

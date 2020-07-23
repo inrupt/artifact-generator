@@ -7,7 +7,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
@@ -17,7 +17,7 @@ artifactToGenerate:
         #  These templates should be present
         ##
 #       packagingTemplates: 
-#       - templateInternal: solidCommonTermDependent/java/rdf4j/pom.hbs
+#       - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
 #         fileName: pom.xml
 
 vocabList:

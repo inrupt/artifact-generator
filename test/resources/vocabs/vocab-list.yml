@@ -11,7 +11,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
@@ -22,7 +22,7 @@ artifactToGenerate:
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates: 
-        - templateInternal: solidCommonTermDependent/java/rdf4j/pom.hbs
+        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
           fileName: pom.xml
 
   - programmingLanguage: JavaScript
@@ -30,15 +30,15 @@ artifactToGenerate:
     npmModuleScope: "@inrupt/"
     litVocabTermVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: solidCommonTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@inrupt/"
         packagingTemplates: 
-          - templateInternal: solidCommonTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: solidCommonTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: index.js
 
 vocabList:

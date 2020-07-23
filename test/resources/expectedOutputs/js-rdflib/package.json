@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@solid/lit-vocab-solid-common-rdflib": "^1.0.10"
+    "@solid/solid-common-vocab-rdflib": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

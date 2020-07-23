@@ -32,7 +32,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),
@@ -85,7 +85,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),
@@ -132,7 +132,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),
@@ -166,7 +166,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),
@@ -200,7 +200,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),
@@ -236,7 +236,7 @@ describe("Supported Data Type", () => {
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
         ),

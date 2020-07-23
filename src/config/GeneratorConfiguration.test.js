@@ -44,7 +44,7 @@ artifactToGenerate:
     javaPackageName: com.inrupt.testing
     litVocabTermVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
-    templateInternal: solidCommonTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
 vocabList:
@@ -214,7 +214,7 @@ describe("Generator configuration", () => {
       expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
         path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "java",
           "rdf4j",
           "vocab.hbs"
@@ -226,7 +226,7 @@ describe("Generator configuration", () => {
       ).toEqual(
         path.join(
           "templates",
-          "solidCommonTermDependent",
+          "solidCommonVocabDependent",
           "java",
           "rdf4j",
           "pom.hbs"
