@@ -123,7 +123,6 @@ const ConfigSolidGeneratorUi = {
   outputDirectory: "./test/Generated",
   inputResources: ["../lit-vocab/solid-rdf/GeneratorUi/SolidGeneratorUi.ttl"],
   solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
-
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
   npmRegistry: NPM_REGISTRY,
