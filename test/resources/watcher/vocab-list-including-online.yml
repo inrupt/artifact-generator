@@ -11,7 +11,7 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: "Java"
     artifactVersion: "0.1.0"
-    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: "Java"
     templateInternal: "solidCommonVocabDependent/java/rdf4j/vocab.hbs"
     sourceFileExtension: "java"

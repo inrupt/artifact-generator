@@ -545,9 +545,9 @@ class GeneratorConfiguration {
       cliConfig.artifactToGenerate[0].artifactVersion = args.artifactVersion;
     }
 
-    if (args.litVocabTermVersion) {
-      cliConfig.artifactToGenerate[0].litVocabTermVersion =
-        args.litVocabTermVersion;
+    if (args.solidCommonVocabVersion) {
+      cliConfig.artifactToGenerate[0].solidCommonVocabVersion =
+        args.solidCommonVocabVersion;
     }
 
     return cliConfig;
@@ -570,14 +570,14 @@ class GeneratorConfiguration {
    *
    */
   async completeInitialConfiguration() {
-    if (!this.configuration.artifactToGenerate[0].litVocabTermVersion) {
+    if (!this.configuration.artifactToGenerate[0].solidCommonVocabVersion) {
       if (!this.configuration.noprompt) {
-        const input = await CommandLine.askForLitVocabTermVersion();
-        this.configuration.artifactToGenerate[0].litVocabTermVersion =
-          input.litVocabTermVersion;
+        const input = await CommandLine.askForsolidCommonVocabVersion();
+        this.configuration.artifactToGenerate[0].solidCommonVocabVersion =
+          input.solidCommonVocabVersion;
       } else {
         throw new Error(
-          "Missing LIT VocabTerm version: The LIT VocabTerm version was not provided as a CLI option, and user prompt is deactivated."
+          "Missing Solid Common Vocab version: The Solid Common Vocab version was not provided as a CLI option, and user prompting is deactivated."
         );
       }
     }

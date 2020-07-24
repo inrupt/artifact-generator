@@ -116,7 +116,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
       };
@@ -132,7 +132,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
       };
@@ -150,7 +150,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
         publish: ["local"],
@@ -168,7 +168,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
         publish: ["remote"],
@@ -189,7 +189,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
         publish: ["local", "remote"],
@@ -206,7 +206,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: false,
         noprompt: true,
       };
@@ -219,7 +219,7 @@ describe("App tests", () => {
       const config = {
         _: ["generate"],
         inputResources: ["some_file.ttl"],
-        litVocabTermVersion: "1.1.1",
+        solidCommonVocabVersion: "1.1.1",
         quiet: true,
         noprompt: true,
       };

@@ -53,7 +53,7 @@
     <dependencies>
         <dependency>
             <groupId>com.inrupt</groupId>
-            <artifactId>solid-common-vocab</artifactId>
+            <artifactId>solid-common-vocab-impl</artifactId>
             <version>${solid.common.vocab.version}</version>
         </dependency>
 

@@ -9,7 +9,7 @@ const { UNSUPPORTED_CONFIG_PROMPT } = require("../ArtifactConfigurator.test");
 
 const DUMMY_JS_ARTIFACT = {
   artifactVersion: "0.0.1",
-  litVocabTermVersion: "^0.1.0",
+  solidCommonVocabVersion: "^0.1.0",
 };
 
 const DUMMY_NPM_MODULE = {
@@ -51,8 +51,8 @@ describe("JS ArtifactConfig Generator", () => {
     inquirer.prompt.mockImplementation(NPM_MODULE_CONFIG);
     const artifact = await new NodeArtifactConfigurator().prompt();
     expect(artifact.packaging[0].packagingTool).toEqual("NPM");
-    expect(artifact.packaging[0].litVocabTermVersion).toEqual(
-      DUMMY_NPM_MODULE.litVocabTermVersion
+    expect(artifact.packaging[0].solidCommonVocabVersion).toEqual(
+      DUMMY_NPM_MODULE.solidCommonVocabVersion
     );
     expect(artifact.packaging[0].publishCommand).toEqual(
       DUMMY_NPM_MODULE.publishCommand

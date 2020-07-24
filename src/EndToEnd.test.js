@@ -107,7 +107,7 @@ describe("End-to-end tests", () => {
             outputDirectory,
             artifactVersion: "1.0.0",
             license: { name: "MIT" },
-            litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+            solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
             moduleNamePrefix: "lit-generated-vocab-",
             noprompt: true,
           },
@@ -288,7 +288,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.0",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -332,7 +332,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "lit-generated-vocab-",
           noprompt: true,
         })
@@ -393,7 +393,7 @@ describe("End-to-end tests", () => {
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
@@ -437,7 +437,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -459,13 +459,13 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm")
+        expect.stringContaining("additionalName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTerm")
+        expect.stringContaining("familyName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTerm")
+        expect.stringContaining("givenName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -475,7 +475,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTerm")
+        expect.not.stringContaining("address: new LitVocabTerm(")
       );
     });
 
@@ -502,7 +502,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -524,13 +524,13 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm")
+        expect.stringContaining("additionalName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTerm")
+        expect.stringContaining("familyName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTerm")
+        expect.stringContaining("givenName: new LitVocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -540,7 +540,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTerm")
+        expect.not.stringContaining("address: new LitVocabTerm(")
       );
     });
 
@@ -557,7 +557,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -585,7 +585,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
@@ -611,7 +611,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -634,7 +634,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -664,7 +664,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -694,7 +694,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
-          litVocabTermVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })

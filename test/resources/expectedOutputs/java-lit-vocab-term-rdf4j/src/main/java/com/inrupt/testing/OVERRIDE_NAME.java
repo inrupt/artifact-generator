@@ -40,28 +40,28 @@ public class OVERRIDE_NAME implements LitVocab {
     /**
      * This is a rdfs class.
      */
-    public static final LitVocabTerm class1 = new LitVocabTerm(FULL_IRI("class1"), true)
+    public static final VocabTerm class1 = new VocabTermImpl(FULL_IRI("class1"), true)
       .addLabel("", "A rdfs class")
       .addComment("", "This is a rdfs class.");
 
     /**
      * This is an owl class.
      */
-    public static final LitVocabTerm class2 = new LitVocabTerm(FULL_IRI("class2"), true)
+    public static final VocabTerm class2 = new VocabTermImpl(FULL_IRI("class2"), true)
       .addLabel("", "An owl class")
       .addComment("", "This is an owl class.");
 
     /**
      * This is a skos concept class.
      */
-    public static final LitVocabTerm class3 = new LitVocabTerm(FULL_IRI("class3"), true)
+    public static final VocabTerm class3 = new VocabTermImpl(FULL_IRI("class3"), true)
       .addLabel("", "A skos concept class")
       .addComment("", "This is a skos concept class.");
 
     /**
      * This is a schema payment status type class.
      */
-    public static final LitVocabTerm class4 = new LitVocabTerm(FULL_IRI("class4"), true)
+    public static final VocabTerm class4 = new VocabTermImpl(FULL_IRI("class4"), true)
       .addLabel("", "A schema payment status type class")
       .addComment("", "This is a schema payment status type class.");
 
@@ -72,42 +72,42 @@ public class OVERRIDE_NAME implements LitVocab {
     /**
      * This is a rdf property.
      */
-    public static final LitVocabTerm property1 = new LitVocabTerm(FULL_IRI("property1"), true)
+    public static final VocabTerm property1 = new VocabTermImpl(FULL_IRI("property1"), true)
       .addLabel("", "A rdf property")
       .addComment("", "This is a rdf property.");
 
     /**
      * This is a data type property.
      */
-    public static final LitVocabTerm property2 = new LitVocabTerm(FULL_IRI("property2"), true)
+    public static final VocabTerm property2 = new VocabTermImpl(FULL_IRI("property2"), true)
       .addLabel("", "A rdfs data type property")
       .addComment("", "This is a data type property.");
 
     /**
      * This is an owl object property.
      */
-    public static final LitVocabTerm property3 = new LitVocabTerm(FULL_IRI("property3"), true)
+    public static final VocabTerm property3 = new VocabTermImpl(FULL_IRI("property3"), true)
       .addLabel("", "An owl object property")
       .addComment("", "This is an owl object property.");
 
     /**
      * This is an owl named individual property.
      */
-    public static final LitVocabTerm property4 = new LitVocabTerm(FULL_IRI("property4"), true)
+    public static final VocabTerm property4 = new VocabTermImpl(FULL_IRI("property4"), true)
       .addLabel("", "An owl named individual property")
       .addComment("", "This is an owl named individual property.");
 
     /**
      * This is an owl annotation property.
      */
-    public static final LitVocabTerm property5 = new LitVocabTerm(FULL_IRI("property5"), true)
+    public static final VocabTerm property5 = new VocabTermImpl(FULL_IRI("property5"), true)
       .addLabel("", "An owl annotation property")
       .addComment("", "This is an owl annotation property.");
 
     /**
      * This is an owl datatype property.
      */
-    public static final LitVocabTerm property6 = new LitVocabTerm(FULL_IRI("property6"), true)
+    public static final VocabTerm property6 = new VocabTermImpl(FULL_IRI("property6"), true)
       .addLabel("", "An owl datatype property")
       .addComment("", "This is an owl datatype property.");
 
@@ -118,14 +118,14 @@ public class OVERRIDE_NAME implements LitVocab {
     /**
      * This is a rdfs literal.
      */
-    public static final LitVocabTerm literal1 = new LitVocabTerm(FULL_IRI("literal1"), true)
+    public static final VocabTerm literal1 = new VocabTermImpl(FULL_IRI("literal1"), true)
       .addLabel("", "A rdfs literal")
       .addComment("", "This is a rdfs literal.");
 
     /**
      * Welcome
      */
-    public static final LitVocabTerm literal2 = new LitVocabTerm(FULL_IRI("literal2"), true)
+    public static final VocabTerm literal2 = new VocabTermImpl(FULL_IRI("literal2"), true)
       .addMessage("en", "Welcome")
       .addMessage("es", "Bienvenido")
       .addMessage("fr", "Bienvenue");

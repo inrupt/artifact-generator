@@ -69,7 +69,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
   constructor() {
     super();
     this.language = LANGUAGE;
-    this.litVocabTermVersion = DEFAULT_LIT_VOCAB_TERM_VERSION;
+    this.solidCommonVocabVersion = DEFAULT_LIT_VOCAB_TERM_VERSION;
     this.questions.push(
       {
         type: "input",

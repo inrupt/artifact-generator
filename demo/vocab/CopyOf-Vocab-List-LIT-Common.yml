@@ -28,14 +28,14 @@ artifactName: generated-vocab-common
 artifactToGenerate:
   - programmingLanguage: Java
     javaPackageName: com.inrupt.testing
-    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
     templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
 
   - programmingLanguage: JavaScript
     npmModuleScope: "@inrupt/"
-    litVocabTermVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js

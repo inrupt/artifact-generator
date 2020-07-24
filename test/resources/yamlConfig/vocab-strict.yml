@@ -10,7 +10,7 @@ artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     npmModuleScope: "@inrupt/"
-    litVocabTermVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.0.10"
     ##
     # This flag is used by the template to configure the LitVocabTerm behaviour
     ##

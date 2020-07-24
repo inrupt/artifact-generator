@@ -26,7 +26,7 @@ class ArtifactConfigurator {
     this.packagingConfig = [];
     // This member variable will be overriden by extending classes
     this.language = undefined;
-    this.litVocabTermVersion = undefined;
+    this.solidCommonVocabVersion = undefined;
 
     // The following questions are asked for each artifact, regardless of the target language
     this.questions.push({
@@ -38,10 +38,10 @@ class ArtifactConfigurator {
 
     this.questions.push({
       type: "input",
-      name: "litVocabTermVersion",
+      name: "solidCommonVocabVersion",
       message: "Version string for LIT Vocab Term dependency:",
       // This may be overridden in extending classes.
-      default: this.litVocabTermVersion,
+      default: this.solidCommonVocabVersion,
     });
     this.config.languageKeywordsToUnderscore = DEFAULT_KEYWORDS_TO_UNDERSCORE;
   }

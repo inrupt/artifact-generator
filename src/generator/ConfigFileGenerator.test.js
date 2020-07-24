@@ -33,7 +33,7 @@ const REFERENCE_YAML_SVN = "./test/resources/expectedOutputs/lit-vocab-svn.yml";
 const ARTIFACT_NAME = "myNewArtifact";
 const PROMPTED_JAVA_ARTIFACT = {
   artifactVersion: "0.1.0",
-  litVocabTermVersion: "0.1.0-SNAPSHOT",
+  solidCommonVocabVersion: "0.1.0-SNAPSHOT",
   javaPackageName: "com.example.java.packagename",
 };
 

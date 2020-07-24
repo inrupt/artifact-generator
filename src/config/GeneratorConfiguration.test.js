@@ -42,7 +42,7 @@ artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 3.2.1-SNAPSHOT
     javaPackageName: com.inrupt.testing
-    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
     templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
@@ -391,7 +391,7 @@ describe("Generator configuration", () => {
       });
       expect(
         generatorConfiguration.completeInitialConfiguration()
-      ).rejects.toThrow("Missing LIT VocabTerm version");
+      ).rejects.toThrow("Missing Solid Common Vocab version");
     });
   });
 

@@ -14,7 +14,7 @@ artifactToGenerate:
   - programmingLanguage: TypeScript
     artifactVersion: 99.99.99
     npmModuleScope: "@inrupt/"
-    litVocabTermVersion: "^99.0.99"
+    solidCommonVocabVersion: "^99.0.99"
     artifactDirectoryName: TypeScript
     templateInternal: solidCommonVocabDependent/typescript/vocab.hbs
     sourceFileExtension: ts

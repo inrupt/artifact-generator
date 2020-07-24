@@ -69,12 +69,12 @@ yargs
           "Globbing pattern for files or directories to ignore when searching for vocabulary list files."
         )
 
-        .alias("lv", "litVocabTermVersion")
+        .alias("lv", "solidCommonVocabVersion")
         .describe(
-          "litVocabTermVersion",
+          "solidCommonVocabVersion",
           "The version of the LIT Vocab Term to depend on."
         )
-        .default("litVocabTermVersion", "^0.2.4")
+        .default("solidCommonVocabVersion", "^0.2.4")
 
         .alias("in", "runNpmInstall")
         .boolean("runNpmInstall")

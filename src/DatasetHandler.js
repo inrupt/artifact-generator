@@ -385,7 +385,7 @@ module.exports = class DatasetHandler {
     );
     result.description = this.findDescription();
     result.artifactVersion = this.vocabData.artifactVersion;
-    result.litVocabTermVersion = this.vocabData.litVocabTermVersion;
+    result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
     result.npmRegistry = this.vocabData.npmRegistry;
     result.outputDirectory = this.vocabData.outputDirectory;
     result.authorSet = this.findAuthors();
