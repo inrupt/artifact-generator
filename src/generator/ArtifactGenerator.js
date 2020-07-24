@@ -338,7 +338,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "litVocabTermDependent",
+              "solidCommonVocabDependent",
               "java",
               "rdf4j",
               "pom.hbs"
@@ -352,7 +352,7 @@ class ArtifactGenerator {
     ) {
       FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
         packagingTool: "npm",
-        npmModuleScope: "@lit/",
+        npmModuleScope: "@inrupt/",
         publish: [
           {
             key: "local",
@@ -366,7 +366,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "litVocabTermDependent",
+              "solidCommonVocabDependent",
               "javascript",
               "package.hbs"
             ),
@@ -378,7 +378,7 @@ class ArtifactGenerator {
               "..",
               "..",
               "templates",
-              "litVocabTermDependent",
+              "solidCommonVocabDependent",
               "javascript",
               "index.hbs"
             ),

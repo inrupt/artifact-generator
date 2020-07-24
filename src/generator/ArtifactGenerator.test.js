@@ -21,7 +21,7 @@ const MOCKED_LIT_VOCAB_TERM_VERSION = "0.0.1";
 
 const MOCKED_USER_INPUT = {
   artifactName: MOCKED_ARTIFACT_NAME,
-  litVocabTermVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
+  solidCommonVocabVersion: MOCKED_LIT_VOCAB_TERM_VERSION,
 };
 
 beforeEach(() => {
@@ -69,7 +69,9 @@ describe("Artifact Generator", () => {
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
       expect(packageOutput).toEqual(
-        expect.stringContaining('"name": "@lit/generated-vocab-common-TEST",')
+        expect.stringContaining(
+          '"name": "@inrupt/generated-vocab-common-TEST",'
+        )
       );
       expect(packageOutput).toEqual(
         expect.stringContaining('"version": "10.11.12"')
@@ -132,8 +134,8 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^1.0.10",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^1.0.10",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         supportBundling: false,
       });
@@ -159,7 +161,7 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
-        litVocabTermVersion: "^1.0.10",
+        solidCommonVocabVersion: "^1.0.10",
       });
       config.completeInitialConfiguration();
 
@@ -167,15 +169,15 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
 
       expect(artifactGenerator.artifactData.artifactName).toEqual("someName");
-      expect(artifactGenerator.artifactData.litVocabTermVersion).toEqual(
+      expect(artifactGenerator.artifactData.solidCommonVocabVersion).toEqual(
         "^1.0.10"
       );
       expect(artifactGenerator.artifactData.artifactName).not.toEqual(
         MOCKED_ARTIFACT_NAME
       );
-      expect(artifactGenerator.artifactData.litVocabTermVersion).not.toEqual(
-        MOCKED_LIT_VOCAB_TERM_VERSION
-      );
+      expect(
+        artifactGenerator.artifactData.solidCommonVocabVersion
+      ).not.toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
     it("should ask for user input when version information missing", async () => {
@@ -194,7 +196,8 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
       expect(
-        artifactGenerator.artifactData.artifactToGenerate[0].litVocabTermVersion
+        artifactGenerator.artifactData.artifactToGenerate[0]
+          .solidCommonVocabVersion
       ).toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
@@ -206,8 +209,8 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         supportBundling: true,
       });
@@ -238,8 +241,8 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
       config.completeInitialConfiguration();
@@ -294,8 +297,8 @@ describe("Artifact Generator", () => {
         inputResources: [testFile],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -381,8 +384,8 @@ describe("Artifact Generator", () => {
         vocabListFile: testConfigFile,
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -470,8 +473,8 @@ describe("Artifact Generator", () => {
         vocabListFile: testConfigFile,
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -577,8 +580,8 @@ describe("Artifact Generator", () => {
         vocabListFile: testConfigFile,
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
       });
 
@@ -624,8 +627,8 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         force: true,
       });
@@ -657,8 +660,8 @@ describe("Artifact Generator", () => {
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        litVocabTermVersion: "^0.1.0",
-        moduleNamePrefix: "@lit/generated-vocab-",
+        solidCommonVocabVersion: "^0.1.0",
+        moduleNamePrefix: "@inrupt/generated-vocab-",
         noprompt: true,
         clearOutputDirectory: true,
       });

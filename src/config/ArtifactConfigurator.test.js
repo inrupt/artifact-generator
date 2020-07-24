@@ -16,7 +16,7 @@ const {
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: "0.0.1",
-  litVocabTermVersion: "0.1.0-SNAPSHOT",
+  solidCommonVocabVersion: "0.1.0-SNAPSHOT",
   javaPackageName: "com.example.dummy.packagename",
 };
 
@@ -33,7 +33,7 @@ const DUMMY_MAVEN_ARTIFACT = {
     __dirname,
     "..",
     "templates",
-    "litVocabTermDependent",
+    "solidCommonVocabDependent",
     "java",
     "rdf4j",
     "pom.hbs"

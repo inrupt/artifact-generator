@@ -13,11 +13,11 @@ npm test
 
 
 1) One-off execution, using 'npx':
-npx @lit/artifact-generator
+npx @inrupt/artifact-generator
 
 
 2) Install globally:
-npm install -g @lit/artifact-generator
+npm install -g @inrupt/artifact-generator
 
 
 3) Now run from anywhere:
@@ -81,7 +81,7 @@ python -m SimpleHTTPServer 8889
 
 
 12) Add our new vocab to our Solid App...
-import { PET_ROCK } from '@lit/generated-vocab-pet-rock';
+import { PET_ROCK } from '@inrupt/generated-vocab-pet-rock';
 
  - As you type 'PET_R', hit 'Ctrl-Space' in the IDE to get code completion...
  - As you type 'PET_ROCK.', hit 'Ctrl-Space' again to see all terms in the vocab...
@@ -96,7 +96,7 @@ import { PET_ROCK } from '@lit/generated-vocab-pet-rock';
 
 13) So you want to override a vocab label directly? Just do it!
 
-import { VCARD } from '@lit/generated-vocab-common';
+import { VCARD } from '@inrupt/generated-vocab-common';
 
 VCARD.fn.addLabel('en', 'Kevins family name!');
 

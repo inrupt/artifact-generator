@@ -66,7 +66,7 @@ Providing the version for the LIT Vocab Term dependency (this is the library tha
 
 *NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-term` to pick up that local copy.
 ```shell
-node index.js generate --i ./vocabs/schema-snippet.ttl --litVocabTermVersion ^1.0.10
+node index.js generate --i ./vocabs/schema-snippet.ttl --solidCommonVocabVersion ^1.0.10
 ```
 
 For help run:
@@ -122,7 +122,7 @@ artifactToGenerate:
     # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-term-js for JavaScript, 
     # https://github.com/pmcb55/lit-java/tree/master/lit-term for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
-    litVocabTermVersion: "0.1.0-SNAPSHOT"
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
     artifactDirectoryName: Java
     # MANDATORY - Must be one (and only one) of either:
@@ -166,7 +166,7 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    litVocabTermVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
     templateInternal: litVocabTermDependent/javascript/vocab.hbs
     sourceFileExtension: js

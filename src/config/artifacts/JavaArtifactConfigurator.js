@@ -4,7 +4,7 @@ const ArtifactConfigurator = require("../ArtifactConfigurator");
 const { ADD_REPOSITORY_CONFIRMATION } = require("../ArtifactConfigurator");
 
 const DEFAULT_TEMPLATE = path.join(
-  "litVocabTermDependent",
+  "solidCommonVocabDependent",
   "java",
   "rdf4j",
   "vocab.hbs"
@@ -69,7 +69,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
   constructor() {
     super();
     this.language = LANGUAGE;
-    this.litVocabTermVersion = DEFAULT_LIT_VOCAB_TERM_VERSION;
+    this.solidCommonVocabVersion = DEFAULT_LIT_VOCAB_TERM_VERSION;
     this.questions.push(
       {
         type: "input",

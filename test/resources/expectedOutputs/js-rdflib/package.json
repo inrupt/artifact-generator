@@ -1,5 +1,5 @@
 {
-  "name": "@lit/generated-vocab-common-TEST",
+  "name": "@inrupt/generated-vocab-common-TEST",
   "version": "10.11.12",
   "description": "Bundle of vocabularies that includes the following:\n\n  schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
   "main": "index.js",
@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@solid/lit-vocab-solid-common-rdflib": "^1.0.10"
+    "@solid/solid-common-vocab-rdflib": "^1.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

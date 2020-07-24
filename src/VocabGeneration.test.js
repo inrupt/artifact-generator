@@ -7,7 +7,7 @@ const App = require("./App");
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime arguments.
-const VERSION_LIT_VOCAB_TERM = "^0.2.4";
+const VERSION_SOLID_COMMON_VOCAB = "^0.0.1";
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
@@ -22,19 +22,6 @@ const ConfigAll = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: RUN_PACKAGING,
-};
-
-// Intended for one-off testing, e.g. to try to reproduce problems seen
-// elsewhere.
-const ConfigTest = {
-  _: "generate",
-  force: true,
-  vocabListFile:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/**/*.yml",
-  vocabListFileIgnore:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/lit-artifact-generator/**",
-  outputDirectory:
-    "/home/pmcb55/Work/Projects/Solid/Apps/app-integration/./src/ExternalVocab/lit-vocab/GENERATED",
 };
 
 const ConfigLitCommon = {
@@ -108,7 +95,7 @@ const ConfigSolidComponent = {
   _: "generate",
   force: true,
   inputResources: ["../lit-vocab/solid-rdf-vocab/Component/SolidComponent.ttl"],
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
   npmRegistry: NPM_REGISTRY,
@@ -124,7 +111,7 @@ const ConfigSolidGeneratorUi = {
   inputResources: [
     "../lit-vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl",
   ],
-  litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
+  solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
 
   outputDirectory: "../lit-vocab/solid-rdf-vocab/GeneratorUi",
   artifactVersion: "0.1.0",
@@ -141,11 +128,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(240000);
     await generateVocabArtifact(ConfigAll);
-  });
-
-  // it("Generate test vocabs recursively", async () => {
-  it.skip("Generate test vocabs", async () => {
-    await generateVocabArtifact(ConfigTest);
   });
 
   // it("Generate ALL vocabs", async () => {
@@ -260,8 +242,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
       outputDirectory: "./test",
       artifactVersion: "1.0.0",
-      litVocabTermVersion: VERSION_LIT_VOCAB_TERM,
-      moduleNamePrefix: "@lit/generated-vocab-",
+      solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
+      moduleNamePrefix: "@inrupt/generated-vocab-",
       npmRegistry: NPM_REGISTRY,
       runNpmInstall: false, //RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,

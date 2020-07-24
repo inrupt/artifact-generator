@@ -883,7 +883,7 @@ describe("Artifact generator unit tests", () => {
         VocabGenerator.merge([owlOntologyDatasetWithNoAuthor])
       );
 
-      expect(result.authorSet.has("@lit/artifact-generator-js"));
+      expect(result.authorSet.has("@inrupt/artifact-generator-js"));
     });
   });
 });

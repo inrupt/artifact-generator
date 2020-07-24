@@ -13,10 +13,10 @@ module.exports = class CommandLine {
     return path.dirname(directory);
   }
 
-  static async askForLitVocabTermVersion() {
+  static async askForsolidCommonVocabVersion() {
     return inquirer.prompt({
       type: "input",
-      name: "litVocabTermVersion",
+      name: "solidCommonVocabVersion",
       message: "Version string for LIT Vocab Term dependency ...",
     });
   }

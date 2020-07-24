@@ -9,7 +9,7 @@ const { UNSUPPORTED_CONFIG_PROMPT } = require("../ArtifactConfigurator.test");
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: "0.0.1",
-  litVocabTermVersion: "0.1.0-SNAPSHOT",
+  solidCommonVocabVersion: "0.1.0-SNAPSHOT",
   javaPackageName: "com.example.dummy.packagename",
 };
 
@@ -17,7 +17,7 @@ const DUMMY_MAVEN_ARTIFACT = {
   groupId: "org.some.groupId",
   publishLocal: "mvn install",
   publishRemote: "mvn deploy",
-  template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs"),
+  template: path.join("solidCommonVocabDependent", "java", "rdf4j", "pom.hbs"),
 };
 
 const DUMMY_RELEASE_REPO = {
@@ -42,7 +42,12 @@ const MAVEN_CONFIG_PROMPT_NO_REPO = jest
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
   .mockReturnValueOnce(
     Promise.resolve({
-      template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs"),
+      template: path.join(
+        "solidCommonVocabDependent",
+        "java",
+        "rdf4j",
+        "pom.hbs"
+      ),
     })
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: false }));
@@ -57,7 +62,12 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
   .mockReturnValueOnce(
     Promise.resolve({
-      template: path.join("litVocabTermDependent", "java", "rdf4j", "pom.hbs"),
+      template: path.join(
+        "solidCommonVocabDependent",
+        "java",
+        "rdf4j",
+        "pom.hbs"
+      ),
     })
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: true }))

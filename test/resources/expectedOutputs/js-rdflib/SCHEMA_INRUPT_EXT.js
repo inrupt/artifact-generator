@@ -26,7 +26,7 @@ const SCHEMA_INRUPT_EXT = {
     /**
      * A person (alive, dead, undead, or fictional).
      */
-    Person: new LitVocabTermRdflib(_NS('Person'), localStorage, false)
+    Person: new VocabTermImplRdflib(_NS('Person'), localStorage, false)
       .addLabel(`La personne`, 'fr')
       .addLabel(`Person`, 'de')
       .addLabel(`Persona`, 'es')
@@ -46,7 +46,7 @@ const SCHEMA_INRUPT_EXT = {
     /**
      * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
      */
-    givenName: new LitVocabTermRdflib(_NS('givenName'), localStorage, false)
+    givenName: new VocabTermImplRdflib(_NS('givenName'), localStorage, false)
       .addLabel(`Given Name`, 'en')
       .addLabel(`Prénom`, 'fr')
       .addLabel(`Vorname`, 'de')
@@ -63,7 +63,7 @@ const SCHEMA_INRUPT_EXT = {
     /**
      * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
      */
-    familyName: new LitVocabTermRdflib(_NS('familyName'), localStorage, false)
+    familyName: new VocabTermImplRdflib(_NS('familyName'), localStorage, false)
       .addLabel(`Nom de famille`, 'fr')
       .addLabel(`Nachname`, 'de')
       .addLabel(`Apellido`, 'es')
@@ -79,7 +79,7 @@ const SCHEMA_INRUPT_EXT = {
     /**
      * Additional Name
      */
-    additionalName: new LitVocabTermRdflib(_NS('additionalName'), localStorage, false)
+    additionalName: new VocabTermImplRdflib(_NS('additionalName'), localStorage, false)
       .addLabel(`Additional Name`, 'en')
       .addLabel(`Nom additionnel`, 'fr')
       .addLabel(`Zusätzlicher Name`, 'de')
@@ -94,7 +94,7 @@ const SCHEMA_INRUPT_EXT = {
     /**
      * Must have comment too!
      */
-    newTerm: new LitVocabTermRdflib(_NS('newTerm'), localStorage, false)
+    newTerm: new VocabTermImplRdflib(_NS('newTerm'), localStorage, false)
       .addLabelNoLanguage(`newTerm`)
       .addComment(`Must have comment too!`, 'en')
     ,

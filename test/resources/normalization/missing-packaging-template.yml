@@ -9,7 +9,7 @@ artifactToGenerate:
     ##
     # Here the template is picked from among the internally provided templates.
     ##
-    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     packaging:
       - packagingTool: maven
@@ -19,7 +19,7 @@ artifactToGenerate:
           ##
           # Here we have a template, but it's not what we expect.
           ##
-          - templateFieldWrongName: litVocabTermDependent/java/rdf4j/pom.hbs
+          - templateFieldWrongName: solidCommonVocabDependent/java/rdf4j/pom.hbs
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex

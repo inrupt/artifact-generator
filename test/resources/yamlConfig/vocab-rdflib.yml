@@ -8,7 +8,7 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    npmModuleScope: "@lit/"
+    npmModuleScope: "@inrupt/"
     rdflibVersion: "^99.999.9999"
     artifactDirectoryName: JavaScript
     ##
@@ -18,7 +18,7 @@ artifactToGenerate:
     sourceFileExtension: js
     packaging: 
       - packagingTool: npm 
-        npmModuleScope: "@lit/"
+        npmModuleScope: "@inrupt/"
         packagingTemplates: 
           - templateInternal: rdfLibraryDependent/javascript/rdflib/package.hbs
             fileName: package.json

@@ -13,22 +13,22 @@ license:
 artifactToGenerate:
   - programmingLanguage: TypeScript
     artifactVersion: 99.99.99
-    npmModuleScope: "@lit/"
-    litVocabTermVersion: "^99.0.99"
+    npmModuleScope: "@inrupt/"
+    solidCommonVocabVersion: "^99.0.99"
     artifactDirectoryName: TypeScript
-    templateInternal: litVocabTermDependent/typescript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/typescript/vocab.hbs
     sourceFileExtension: ts
     packaging:
       - packagingTool: npm
         npmModuleScope: "@solid/"
         packagingTemplates:
-          - templateInternal: litVocabTermDependent/typescript/package.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/package.hbs
             fileName: package.json
-          - templateInternal: litVocabTermDependent/typescript/index.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/index.hbs
             fileName: index.ts
-          - templateInternal: litVocabTermDependent/typescript/tsconfig.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/tsconfig.hbs
             fileName: tsconfig.json
-          - templateInternal: litVocabTermDependent/typescript/rollup.config.hbs
+          - templateInternal: solidCommonVocabDependent/typescript/rollup.config.hbs
             fileName: rollup.config.js
 
 vocabList:
