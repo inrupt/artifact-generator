@@ -169,15 +169,21 @@ class ArtifactGenerator {
   }
 
   async generateVocabs() {
-    if (this.artifactData.clearOutputDirectory) {
-      rimraf.sync(this.artifactData.outputDirectory);
-    }
-
     // The outputDirectoryForArtifact attribute is useful for publication,
     // and should be set even if generation is not necessary.
     this.artifactData.artifactToGenerate = this.artifactData.artifactToGenerate.map(
       (artifactDetails) => {
         const result = artifactDetails;
+
+        if (this.artifactData.clearOutputDirectory) {
+          const rootDir = path.join(
+            this.artifactData.outputDirectory,
+            getArtifactDirectoryRoot(this.artifactData)
+          );
+
+          rimraf.sync(rootDir);
+        }
+
         result.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
           getArtifactDirectorySourceCode(this.artifactData),

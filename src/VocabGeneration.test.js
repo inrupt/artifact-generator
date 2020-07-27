@@ -16,8 +16,22 @@ const RUN_PACKAGING = ["mavenLocal", "npmLocal"];
 const ConfigAll = {
   _: "generate",
   force: true,
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
   vocabListFile: "../lit-vocab/**/*.yml",
   vocabListFileIgnore: "../lit-vocab/bin/**",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  publish: RUN_PACKAGING,
+};
+
+const ConfigRdfCommon = {
+  _: "generate",
+  force: true,
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
+  vocabListFile: "../lit-vocab/common-rdf/Common/Vocab-List-Rdf-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -27,18 +41,9 @@ const ConfigAll = {
 const ConfigLitCommon = {
   _: "generate",
   force: true,
-  vocabListFile: "../lit-vocab/lit-rdf-vocab/Common/Vocab-List-LIT-Common.yml",
-  npmRegistry: NPM_REGISTRY,
-  runNpmInstall: RUN_NPM_INSTALL,
-  supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
-};
-
-const ConfigLitCore = {
-  _: "generate",
-  force: true,
   clearOutputDirectory: true,
-  vocabListFile: "../lit-vocab/lit-rdf-vocab/Core/Vocab-List-LIT-Core.yml",
+  outputDirectory: "./test/Generated",
+  vocabListFile: "../lit-vocab/common-rdf/Core/Vocab-List-Lit-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -49,8 +54,8 @@ const ConfigInruptCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  vocabListFile:
-    "../lit-vocab/inrupt-rdf-vocab/Common/Vocab-List-Inrupt-Common.yml",
+  outputDirectory: "./test/Generated",
+  vocabListFile: "../lit-vocab/inrupt-rdf/Common/Vocab-List-Inrupt-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -61,8 +66,9 @@ const ConfigInruptUiCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
   vocabListFile:
-    "../lit-vocab/inrupt-rdf-vocab/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
+    "../lit-vocab/inrupt-rdf/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -72,8 +78,10 @@ const ConfigInruptUiCommon = {
 const ConfigInruptService = {
   _: "generate",
   force: true,
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
   vocabListFile:
-    "../lit-vocab/inrupt-rdf-vocab/Service/Vocab-List-Inrupt-Service.yml",
+    "../lit-vocab/inrupt-rdf/Service/Vocab-List-Inrupt-Service.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -83,8 +91,9 @@ const ConfigInruptService = {
 const ConfigSolidCommon = {
   _: "generate",
   force: true,
-  vocabListFile:
-    "../lit-vocab/solid-rdf-vocab/Common/Vocab-List-Solid-Common.yml",
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
+  vocabListFile: "../lit-vocab/solid-rdf/Common/Vocab-List-Solid-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -94,7 +103,9 @@ const ConfigSolidCommon = {
 const ConfigSolidComponent = {
   _: "generate",
   force: true,
-  inputResources: ["../lit-vocab/solid-rdf-vocab/Component/SolidComponent.ttl"],
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
+  inputResources: ["../lit-vocab/solid-rdf/Component/SolidComponent.ttl"],
   solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
@@ -108,12 +119,11 @@ const ConfigSolidComponent = {
 const ConfigSolidGeneratorUi = {
   _: "generate",
   force: true,
-  inputResources: [
-    "../lit-vocab/solid-rdf-vocab/GeneratorUi/SolidGeneratorUi.ttl",
-  ],
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated",
+  inputResources: ["../lit-vocab/solid-rdf/GeneratorUi/SolidGeneratorUi.ttl"],
   solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
 
-  outputDirectory: "../lit-vocab/solid-rdf-vocab/GeneratorUi",
   artifactVersion: "0.1.0",
   moduleNamePrefix: "@solid/generated-vocab-",
   npmRegistry: NPM_REGISTRY,
@@ -133,8 +143,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(120000);
+    await generateVocabArtifact(ConfigRdfCommon);
     await generateVocabArtifact(ConfigLitCommon);
-    await generateVocabArtifact(ConfigLitCore);
 
     await generateVocabArtifact(ConfigSolidCommon);
 
@@ -151,9 +161,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it("LIT vocabs", async () => {
   it.skip("LIT vocabs", async () => {
-    jest.setTimeout(60000);
+    jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
-    await generateVocabArtifact(ConfigLitCore);
   });
 
   // it('Solid vocabs', async () => {
@@ -165,48 +174,17 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   // it("Inrupt vocab", async () => {
-  it.skip("Inrupt vocab", async () => {
+  it.skip("Inrupt vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigInruptCommon);
     await generateVocabArtifact(ConfigInruptUiCommon);
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it("LIT Common vocabs", async () => {
-  it.skip("LIT Common vocabs", async () => {
+  // it("Common RDF vocabs", async () => {
+  it.skip("Common RDF vocabs", async () => {
     jest.setTimeout(60000);
-    await generateVocabArtifact(ConfigLitCommon);
-  });
-
-  // it('LIT Core vocabs', async () => {
-  it.skip("LIT Core vocabs", async () => {
-    await generateVocabArtifact(ConfigLitCore);
-  });
-
-  // it('Solid Common vocabs', async () => {
-  it.skip("Solid Common vocabs", async () => {
-    jest.setTimeout(15000);
-    await generateVocabArtifact(ConfigSolidCommon);
-  });
-
-  // it('Solid Generator UI vocab', async () => {
-  it.skip("Solid Generator UI vocab", async () => {
-    await generateVocabArtifact(ConfigSolidGeneratorUi);
-  });
-
-  // it('Solid Component vocab', async () => {
-  it.skip("Solid Component vocab", async () => {
-    await generateVocabArtifact(ConfigSolidComponent);
-  });
-
-  // it("Inrupt Commmon vocab", async () => {
-  it.skip("Inrupt Commmon vocab", async () => {
-    await generateVocabArtifact(ConfigInruptCommon);
-  });
-
-  // it('Inrupt Service vocab', async () => {
-  it.skip("Inrupt Service vocab", async () => {
-    await generateVocabArtifact(ConfigInruptService);
+    await generateVocabArtifact(ConfigRdfCommon);
   });
 
   it.skip("Test Demo App", async () => {
@@ -240,7 +218,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['http://www.w3.org/2011/http-headers#'],
       // nameAndPrefixOverride: 'http-headers',
 
-      outputDirectory: "./test",
+      outputDirectory: "./test/Generated",
       artifactVersion: "1.0.0",
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-vocab-",
