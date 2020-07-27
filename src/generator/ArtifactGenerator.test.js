@@ -13,6 +13,7 @@ const GeneratorConfiguration = require("../config/GeneratorConfiguration");
 const {
   getArtifactDirectoryRoot,
   getArtifactDirectorySourceCode,
+  DEFAULT_DIRECTORY_ROOT,
 } = require("../Util");
 const Resource = require("../Resource");
 
@@ -650,11 +651,26 @@ describe("Artifact Generator", () => {
     it("Should clear the target directory if the option is set", async () => {
       const outputDirectory = "./test/Generated/ArtifactGenerator/clear";
       del.sync([`${outputDirectory}/*`]);
-      const canaryPath = path.join(outputDirectory, "canary.txt");
+
       if (!fs.existsSync(outputDirectory)) {
         fs.mkdirSync(outputDirectory);
       }
-      fs.writeFileSync(canaryPath, "A canary file");
+      const canaryFileRoot = path.join(outputDirectory, "canaryRoot.txt");
+      fs.writeFileSync(canaryFileRoot, "A canary file in the root directory");
+
+      const generatedDir = path.join(outputDirectory, DEFAULT_DIRECTORY_ROOT);
+      if (!fs.existsSync(generatedDir)) {
+        fs.mkdirSync(generatedDir);
+      }
+      const canaryFileGeneratedDir = path.join(
+        generatedDir,
+        "canaryInGeneratedDir.txt"
+      );
+      fs.writeFileSync(
+        canaryFileGeneratedDir,
+        "A canary file in the generated directory"
+      );
+
       const config = new GeneratorConfiguration({
         _: "generate",
         inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
@@ -669,7 +685,8 @@ describe("Artifact Generator", () => {
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
-      expect(fs.existsSync(canaryPath)).toEqual(false);
+      expect(fs.existsSync(canaryFileRoot)).toEqual(true);
+      expect(fs.existsSync(canaryFileGeneratedDir)).toEqual(false);
     });
   });
 
