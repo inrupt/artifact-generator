@@ -12,7 +12,7 @@ artifactToGenerate:
     npmModuleScope: "@inrupt/"
     solidCommonVocabVersion: "^1.0.10"
     ##
-    # This flag is used by the template to configure the LitVocabTerm behaviour
+    # This flag is used by the template to configure the VocabTerm behaviour
     ##
     strict: true
     artifactDirectoryName: JavaScript

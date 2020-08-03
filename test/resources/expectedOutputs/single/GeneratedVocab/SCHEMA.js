@@ -1,4 +1,4 @@
-const { LitVocabTerm, getLocalStore } = require("@solid/lit-term");
+const { VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
 const dataFactory = require("@rdfjs/data-model");
 
 const { namedNode } = dataFactory;
@@ -28,7 +28,7 @@ const SCHEMA = {
   /**
    * A person (alive, dead, undead, or fictional).
    */
-  Person: new LitVocabTerm(
+  Person: new VocabTerm(
     _NS("Person"),
     dataFactory,
     getLocalStore(),
@@ -44,7 +44,7 @@ const SCHEMA = {
   /**
    * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
    */
-  givenName: new LitVocabTerm(
+  givenName: new VocabTerm(
     _NS("givenName"),
     dataFactory,
     getLocalStore(),
@@ -56,7 +56,7 @@ const SCHEMA = {
   /**
    * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
    */
-  familyName: new LitVocabTerm(
+  familyName: new VocabTerm(
     _NS("familyName"),
     dataFactory,
     getLocalStore(),
@@ -68,7 +68,7 @@ const SCHEMA = {
   /**
    * The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.
    */
-  addressCountry: new LitVocabTerm(
+  addressCountry: new VocabTerm(
     _NS("addressCountry"),
     dataFactory,
     getLocalStore(),

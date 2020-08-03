@@ -4,7 +4,7 @@ represent the `Person` class from Schema.org (i.e. `https://schema.org/Person`):
     /**
      * A person (alive, dead, undead, or fictional).
      */
-    Person: new LitVocabTerm(_NS('Person'), localStorage, true)
+    Person: new VocabTerm(_NS('Person'), localStorage, true)
       .addLabel('en', `Person`)
       .addComment('en', `A person (alive, dead, undead, or fictional).`),
 ```

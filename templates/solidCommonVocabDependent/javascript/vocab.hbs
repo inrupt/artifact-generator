@@ -2,7 +2,7 @@
 {{license/header}}
 
 {{/if}}
-const { LitVocabTerm, getLocalStore } = require("@solid/lit-term");
+const { VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
 const dataFactory = require("@rdfjs/data-model");
 
 const { namedNode } = dataFactory;
@@ -40,7 +40,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
@@ -66,7 +66,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
@@ -92,7 +92,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
