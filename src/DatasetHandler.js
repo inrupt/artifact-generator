@@ -389,6 +389,7 @@ module.exports = class DatasetHandler {
     result.npmRegistry = this.vocabData.npmRegistry;
     result.outputDirectory = this.vocabData.outputDirectory;
     result.authorSet = this.findAuthors();
+    result.authorSetFormatted = Array.from(result.authorSet).join(", ");
     result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runMavenInstall = this.vocabData.runMavenInstall;
     result.runNpmPublish = this.vocabData.runNpmPublish;

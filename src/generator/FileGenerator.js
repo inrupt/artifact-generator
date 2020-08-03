@@ -3,7 +3,10 @@ const path = require("path");
 const Handlebars = require("handlebars");
 const debug = require("debug")("lit-artifact-generator:FileGenerator");
 
-const { getArtifactDirectoryRoot } = require("../Util");
+const {
+  getArtifactDirectoryRoot,
+  getArtifactDirectorySourceCode,
+} = require("../Util");
 
 class FileGenerator {
   /**
@@ -132,7 +135,7 @@ class FileGenerator {
       );
     });
 
-    FileGenerator.createSharedPackagedFiles(generalInfo);
+    FileGenerator.createSharedPackagedFiles(generalInfo, artifactInfo);
     return generalInfo;
   }
 
@@ -160,7 +163,7 @@ class FileGenerator {
    * This function creates the files that are share in all the packaging (README, .gitignore...)
    * @param {*} argv the generation variables
    */
-  static createSharedPackagedFiles(generalInfo) {
+  static createSharedPackagedFiles(generalInfo, artifactInfo) {
     // For our README (which uses Markdown format), if our artifact was made up
     // of multiple vocabs, break up our description into a list representation.
     // TODO: if a vocab description contains a newline, this will split it out
@@ -169,15 +172,32 @@ class FileGenerator {
       ? {
           ...generalInfo,
           description: generalInfo.description.replace(/\\n/g, "\n\n  *"),
+          artifactVersion: artifactInfo.artifactVersion,
         }
-      : generalInfo;
+      : {
+          ...generalInfo,
+          artifactVersion: artifactInfo.artifactVersion,
+        };
 
+    // Generate README in the root.
     FileGenerator.createFileFromTemplate(
       `${__dirname}/../../templates/README.hbs`,
       dataWithMarkdownDescription,
       path.join(
         generalInfo.outputDirectory,
         getArtifactDirectoryRoot(generalInfo),
+        "README.md"
+      )
+    );
+
+    // Generate README in source code root directory.
+    FileGenerator.createFileFromTemplate(
+      `${__dirname}/../../templates/README.hbs`,
+      dataWithMarkdownDescription,
+      path.join(
+        generalInfo.outputDirectory,
+        getArtifactDirectorySourceCode(generalInfo),
+        artifactInfo.artifactDirectoryName,
         "README.md"
       )
     );

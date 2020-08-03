@@ -11,9 +11,9 @@
     <name>generated-vocab-common-TEST</name>
     <description>Bundle of vocabularies that includes the following:
 
-  schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
+ - schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
 
-  override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.</description>
+ - override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.</description>
 
     <developers>
         <developer>

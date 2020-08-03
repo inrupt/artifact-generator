@@ -1,7 +1,7 @@
 {
   "name": "@inrupt/lit-generated-vocab-schema",
   "version": "1.0.0",
-  "description": "Bundle of vocabularies that includes the following:\n\n  schema: ",
+  "description": "Bundle of vocabularies that includes the following:\n\n - schema: ",
   "main": "index.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",

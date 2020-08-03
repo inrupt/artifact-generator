@@ -44,7 +44,7 @@ install Webpack, e.g. `npm install webpack webpack-cli --save-dev`
 # Quick start
 
 ---
-**__Temporarily__** until we release the LIT Artifact Generator to a public NPM 
+**__Temporarily__** until we release the Artifact Generator to a public NPM 
 repository, we need to manually reference a private GitHub NPM registry. You will
 need to generate a Personal Access Token (PAT) from your GitHub account (under the
 'Developer settings' tab on your profile page), and use it to authenticate with 
@@ -53,7 +53,7 @@ need to add the `--registry` switch (with the suffix of `/inrupt`) when installi
 too.
 ---
 
-To install globally (so that you can run the LIT Artifact Generator from any
+To install globally (so that you can run the Artifact Generator from any
 directory):
 ```shell
 npm -g install @inrupt/lit-artifact-generator
@@ -64,7 +64,7 @@ Ensure the installation completed successfully:
 lit-artifact-generator --help
 ```
 
-If you wish to clone the repository instead of installing the LIT Artifact
+If you wish to clone the repository instead of installing the Artifact
 Generator, you can run it from the cloned directory by simply replacing all the
 example references below to `lit-artifact-generator ...` with 
 `node index.js ...`.
@@ -144,7 +144,7 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 
 ## Create a front-end JavaScript artifact
 
-Run the LIT Artifact Generator using a public demo vocabulary, in this case
+Run the Artifact Generator using a public demo vocabulary, in this case
 the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
 for any input (i.e. `--noprompt`), and asking for a bundled (i.e. WebPack'ed)
 JavaScript artifact (i.e. via the `--supportBundling` command-line flag):
@@ -198,17 +198,17 @@ Perhaps the single most important, and widely used, vocabulary today is
 Schema.org, from Google, Mircosoft, Yaoo and Yandex. The official RDF for
 Schema.org is defined here: https://schema.org/version/latest/schema.ttl.
 
-But any individual or company is completely free to use the LIT Artifact
+But any individual or company is completely free to use the Artifact
 Generator (or any other generator!) to generate their own source code artifacts
 to represent the terms defined in Schema.org. And of course, they are also free
-to use the LIT Artifact Generator to generate source code artifacts (e.g. a
+to use the Artifact Generator to generate source code artifacts (e.g. a
 Java JAR containing Java classes) that represent any available RDF
 vocabularies, including their own, purely internal and proprietary
 vocabularies.
 
 So any individual or company is completely free to define their own RDF
 vocabularies. Likeswise, any individual or company is completely free to run
-the LIT Artifact Generator against any available RDF vocabulary, meaning
+the Artifact Generator against any available RDF vocabulary, meaning
 it's perfectly fine to have a multitude of generated artifacts claiming to
 represent the terms in any RDF vocabulary.
 
@@ -233,7 +233,7 @@ dependencies: {
 }
 ```
 
-The LIT Artifact Generator allows each of these entities to configure their
+The Artifact Generator allows each of these entities to configure their
 generated artifacts as they see fit, e.g. perhaps IBM augments their
 version with translations for various languages (that Schema.org does not
 provide today), or Accenture augments their version with references to
