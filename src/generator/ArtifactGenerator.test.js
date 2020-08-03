@@ -39,6 +39,9 @@ describe("Artifact Generator", () => {
 
   describe("Processing vocab list file.", () => {
     function verifyVocabList(outputDirectory) {
+      const outputDirectoryRoot = `${outputDirectory}${getArtifactDirectoryRoot()}`;
+      expect(fs.existsSync(`${outputDirectoryRoot}/README.md`)).toBe(true);
+
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
