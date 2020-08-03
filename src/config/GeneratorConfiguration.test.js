@@ -8,7 +8,10 @@ const fs = require("fs");
 const packageDotJson = require("../../package.json");
 
 const GeneratorConfiguration = require("./GeneratorConfiguration");
-const { DEFAULT_CLI_ARTIFACT } = require("./GeneratorConfiguration");
+const {
+  DEFAULT_CLI_ARTIFACT,
+  CONFIG_SOURCE_COMMAND_LINE,
+} = require("./GeneratorConfiguration");
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
@@ -243,6 +246,29 @@ describe("Generator configuration", () => {
       );
 
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
+    });
+  });
+
+  describe("Exercise normalizeConfigPaths", () => {
+    it("should normalize config path", () => {
+      const config = GeneratorConfiguration.normalizeConfigPaths(
+        {
+          versioning: {
+            versioningTemplates: [
+              {
+                templateInternal: "templateXXXXInternal",
+                templateCustom: "templateXXXCustom",
+              },
+            ],
+          },
+          artifactToGenerate: [],
+        },
+        CONFIG_SOURCE_COMMAND_LINE
+      );
+
+      expect(config.versioning.versioningTemplates[0].template).toEqual(
+        "templates/templateXXXXInternal"
+      );
     });
   });
 

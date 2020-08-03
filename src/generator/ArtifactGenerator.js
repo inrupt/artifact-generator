@@ -8,6 +8,7 @@ const ChildProcess = require("child_process");
 const FileGenerator = require("./FileGenerator");
 const VocabGenerator = require("./VocabGenerator");
 const Resource = require("../Resource");
+const { describeInput } = require("../Util");
 const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
 // We allow no output directory (in which case generation might be relative to
@@ -70,10 +71,10 @@ class ArtifactGenerator {
           }
           // If the generation was not sufficient to collect all the required information, the user is asked for it
           await this.configuration.askAdditionalQuestions();
-          // TODO: move this formatting directly into the templates
-          this.artifactData.contributors = Array.from(
-            this.artifactData.authorSet
-          );
+          // TODO: move this formatting directly into the templates.
+          const authors = Array.from(this.artifactData.authorSet);
+          this.artifactData.contributors = authors;
+          this.artifactData.authorSetFormatted = authors.join(", ");
         }
       })
       .then(() => this.generatePackaging())
@@ -249,7 +250,7 @@ class ArtifactGenerator {
     this.artifactData.description = `Bundle of vocabularies that includes the following:`;
     await Promise.all(
       vocabDatasets.map(async (vocabData) => {
-        this.artifactData.description += `\n\n  ${vocabData.vocabName}: ${vocabData.description}`;
+        this.artifactData.description += `\n\n - ${vocabData.vocabName}: ${vocabData.description}`;
         this.artifactData.generatedVocabs.push({
           vocabName: vocabData.vocabName,
           vocabNameUpperCase: vocabData.vocabNameUpperCase,
@@ -279,28 +280,44 @@ class ArtifactGenerator {
     // If the artifacts have not been generated, it's not necessary to
     // re-package them, but also only generate if we are configured to generate.
     if (this.resourceGeneration()) {
-      this.artifactData.artifactToGenerate.forEach((artifactDetails) => {
-        if (artifactDetails.packaging) {
-          debug(
-            `Generating [${artifactDetails.programmingLanguage}] packaging`
+      this.artifactData.artifactToGenerate.forEach((artifactDetails, index) => {
+        if (!artifactDetails.packaging) {
+          throw new Error(
+            `No packaging information for artifact number [${index}] from ${describeInput(
+              this.artifactData
+            )}.`
           );
-
-          // TODO: manage repositories properly
-          this.artifactData.gitRepository = artifactDetails.gitRepository;
-          this.artifactData.repository = artifactDetails.repository;
-          artifactDetails.packaging.forEach((packagingDetails) => {
-            FileGenerator.createPackagingFiles(
-              this.artifactData,
-              artifactDetails,
-              packagingDetails
-            );
-          });
-        } else {
-          // TODO: this is a temporary fix that should be cleaned up after having updated
-          // older YAML files
-          this.generateDefaultPackaging(artifactDetails);
         }
+
+        debug(`Generating [${artifactDetails.programmingLanguage}] packaging`);
+
+        // TODO: manage repositories properly
+        this.artifactData.gitRepository = artifactDetails.gitRepository;
+        this.artifactData.repository = artifactDetails.repository;
+        artifactDetails.packaging.forEach((packagingDetails) => {
+          FileGenerator.createPackagingFiles(
+            this.artifactData,
+            artifactDetails,
+            packagingDetails
+          );
+        });
       });
+
+      // Generate README in the root. First convert our bundle description into
+      // Markdown (the format for README files).
+      const dataWithMarkdownDescription = FileGenerator.convertDescriptionToMarkdown(
+        this.artifactData
+      );
+
+      FileGenerator.createFileFromTemplate(
+        `${__dirname}/../../templates/README.hbs`,
+        dataWithMarkdownDescription,
+        path.join(
+          this.artifactData.outputDirectory,
+          getArtifactDirectoryRoot(this.artifactData),
+          "README.md"
+        )
+      );
     }
   }
 
@@ -324,129 +341,51 @@ class ArtifactGenerator {
   }
 
   /**
-   * Generates Maven packaging for Java artifacts, and NPM packaging for JS artifacts. This method is used
-   * to maintain backwards compatibility, and is only called when the relevant options are not set.
-   * @param {*} artifactDetails
-   */
-  generateDefaultPackaging(artifactDetails) {
-    // TODO: manage repositories properly
-    this.artifactData.gitRepository = artifactDetails.gitRepository;
-    this.artifactData.repository = artifactDetails.repository;
-    if (artifactDetails.programmingLanguage.toLowerCase() === "java") {
-      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-        packagingTool: "maven",
-        groupId: artifactDetails.javaPackageName,
-        publish: [{ key: "local", command: "mvn install" }],
-        packagingTemplates: [
-          {
-            template: path.join(
-              __dirname,
-              "..",
-              "..",
-              "templates",
-              "solidCommonVocabDependent",
-              "java",
-              "rdf4j",
-              "pom.hbs"
-            ),
-            fileName: "pom.xml",
-          },
-        ],
-      });
-    } else if (
-      artifactDetails.programmingLanguage.toLowerCase() === "javascript"
-    ) {
-      FileGenerator.createPackagingFiles(this.artifactData, artifactDetails, {
-        packagingTool: "npm",
-        npmModuleScope: "@inrupt/",
-        publish: [
-          {
-            key: "local",
-            command: "npm publish --registry http://localhost:4873/",
-          },
-        ],
-        packagingTemplates: [
-          {
-            template: path.join(
-              __dirname,
-              "..",
-              "..",
-              "templates",
-              "solidCommonVocabDependent",
-              "javascript",
-              "package.hbs"
-            ),
-            fileName: "package.json",
-          },
-          {
-            template: path.join(
-              __dirname,
-              "..",
-              "..",
-              "templates",
-              "solidCommonVocabDependent",
-              "javascript",
-              "index.hbs"
-            ),
-            fileName: "index.js",
-          },
-        ],
-      });
-    } else {
-      debug(
-        `Cannot generate default packaging for unsupported language [${artifactDetails.programmingLanguage}]`
-      );
-    }
-  }
-
-  /**
    * Executes the publication commands associated to a specific artifact.
    * @param {*} artifact
    * @param {string} key identifier for the publication configuration
    */
   static publishArtifact(artifact, key) {
     const homeDir = process.cwd();
-    if (artifact.packaging) {
-      for (let i = 0; i < artifact.packaging.length; i += 1) {
-        // The artifact contains packaging configuration, each of which does not
-        // necessarily encompass publication options
-        const publishConfigs = artifact.packaging[i].publish;
-        if (publishConfigs) {
-          for (let j = 0; j < publishConfigs.length; j += 1) {
-            if (
-              publishConfigs[j].key === key ||
-              publishConfigs[j].key === DEFAULT_PUBLISH_KEY
-            ) {
-              // A special case: when the user uses the --publish option via a
-              // CLI configuration, no key is associated to the publication
-              // config by the user, so the DEFAULT_PUBLISH_KEY is set.
-              const runFrom = path.join(
-                homeDir,
-                artifact.outputDirectoryForArtifact
-              );
-              debug(`Changing to directory [${runFrom}].`);
-              process.chdir(runFrom);
+    for (let i = 0; i < artifact.packaging.length; i += 1) {
+      // The artifact contains packaging configuration, each of which does not
+      // necessarily encompass publication options
+      const publishConfigs = artifact.packaging[i].publish;
+      if (publishConfigs) {
+        for (let j = 0; j < publishConfigs.length; j += 1) {
+          if (
+            publishConfigs[j].key === key ||
+            publishConfigs[j].key === DEFAULT_PUBLISH_KEY
+          ) {
+            // A special case: when the user uses the --publish option via a
+            // CLI configuration, no key is associated to the publication
+            // config by the user, so the DEFAULT_PUBLISH_KEY is set.
+            const runFrom = path.join(
+              homeDir,
+              artifact.outputDirectoryForArtifact
+            );
+            debug(`Changing to directory [${runFrom}].`);
+            process.chdir(runFrom);
 
-              debug(
-                `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
-              );
-              publishConfigs[j].command
-                .split("&&")
-                .map((str) => str.trim())
-                .map((command) => {
-                  debug(`Running sub-command [${command}]...`);
-                  // try {
-                  ChildProcess.execSync(command);
-                  // } catch (e) {
-                  //   if (command.startsWith("npm unpublish")) {
-                  //     debug(`Re-running sub-command [${command}]...`);
-                  //     ChildProcess.execSync(command);
-                  //   }
-                  // }
-                });
+            debug(
+              `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
+            );
+            publishConfigs[j].command
+              .split("&&")
+              .map((str) => str.trim())
+              .map((command) => {
+                debug(`Running sub-command [${command}]...`);
+                // try {
+                ChildProcess.execSync(command);
+                // } catch (e) {
+                //   if (command.startsWith("npm unpublish")) {
+                //     debug(`Re-running sub-command [${command}]...`);
+                //     ChildProcess.execSync(command);
+                //   }
+                // }
+              });
 
-              process.chdir(homeDir);
-            }
+            process.chdir(homeDir);
           }
         }
       }

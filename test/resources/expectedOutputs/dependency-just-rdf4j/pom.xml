@@ -11,7 +11,7 @@
     <name>generated-vocab-TEST</name>
     <description>Bundle of vocabularies that includes the following:
 
-  schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)</description>
+ - schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)</description>
 
     <developers>
         <developer>

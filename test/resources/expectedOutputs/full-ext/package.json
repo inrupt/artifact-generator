@@ -1,7 +1,7 @@
 {
   "name": "@inrupt/lit-generated-vocab-schema-inrupt-ext",
   "version": "1.0.0",
-  "description": "Bundle of vocabularies that includes the following:\n\n  schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
+  "description": "Bundle of vocabularies that includes the following:\n\n - schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
   "main": "index.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
