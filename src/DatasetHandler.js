@@ -13,6 +13,7 @@ const {
 } = require("./CommonTerms");
 
 const FileGenerator = require("./generator/FileGenerator");
+const { describeInput } = require("./Util");
 
 const KNOWN_DOMAINS = new Map([
   ["http://xmlns.com/foaf/0.1", "foaf"],
@@ -353,11 +354,9 @@ module.exports = class DatasetHandler {
     result.generatedTimestamp = this.vocabData.generatedTimestamp;
     result.generatorName = this.vocabData.generatorName;
     result.artifactGeneratorVersion = this.vocabData.artifactGeneratorVersion;
-    result.sourceRdfResources = this.vocabData.vocabListFile
-      ? `Vocabulary built from vocab list file: [${this.vocabData.vocabListFile}].`
-      : `Vocabulary built from input${
-          this.vocabData.inputResources.length === 1 ? "" : "s"
-        }: [${this.vocabData.inputResources.join(", ")}].`;
+    result.sourceRdfResources = `Vocabulary built from ${describeInput(
+      this.vocabData
+    )}.`;
 
     result.classes = [];
     result.properties = [];

@@ -801,38 +801,24 @@ describe("Artifact Generator", () => {
     });
   });
 
-  describe("Backward compatibility features.", () => {
-    it("should generate default packaging options if none are specified in the YAML file", async () => {
+  describe("Missing packaging info.", () => {
+    it("should throw with missing packaging info", async () => {
       const outputDirectory =
         "test/Generated/ArtifactGenerator/backwardCompatibility/";
       del.sync([`${outputDirectory}/*`]);
 
+      const yamlFile =
+        "./test/resources/backwardCompatibility/vocab-list_no-packaging.yml";
       const config = new GeneratorConfiguration({
         _: "generate",
-        vocabListFile:
-          "./test/resources/backwardCompatibility/vocab-list_no-packaging.yml",
+        vocabListFile: yamlFile,
         outputDirectory,
         noprompt: true,
       });
 
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
-      await artifactGenerator.generate().then(() => {
-        artifactGenerator.runPublish(true);
-      });
-
-      // In the config file, the publication command has been replaced by a
-      // command creating a file in the artifact root folder.
-      expect(
-        fs.existsSync(
-          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/pom.xml`
-        )
-      ).toBe(true);
-      expect(
-        fs.existsSync(
-          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/package.json`
-        )
-      ).toBe(true);
+      await expect(artifactGenerator.generate()).rejects.toThrowError(yamlFile);
     });
   });
 

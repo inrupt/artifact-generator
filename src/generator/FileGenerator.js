@@ -160,35 +160,38 @@ class FileGenerator {
   }
 
   /**
-   * This function creates the files that are share in all the packaging (README, .gitignore...)
-   * @param {*} argv the generation variables
+   * Converts the description property of the passed object to a
+   * Markdown-suitable format by converting new-lines into multiple lines and
+   * adding a bullet-point, if and only if that object has a vocabulary list
+   * file (i.e. if it has multiple vocabularies).
+   *
+   * @param data the configuration object
+   * @returns {*}
+   */
+  static convertDescriptionToMarkdown(data) {
+    return data.vocabListFile
+      ? {
+          ...data,
+          description: data.description.replace(/\\n/g, "\n\n  *"),
+        }
+      : data;
+  }
+
+  /**
+   * This function creates the files that are shared across all packaging
+   * (i.e. README, .gitignore, etc.).
+   * @param generalInfo
+   * @param artifactInfo
    */
   static createSharedPackagedFiles(generalInfo, artifactInfo) {
     // For our README (which uses Markdown format), if our artifact was made up
     // of multiple vocabs, break up our description into a list representation.
     // TODO: if a vocab description contains a newline, this will split it out
     //  into another list item!
-    const dataWithMarkdownDescription = generalInfo.vocabListFile
-      ? {
-          ...generalInfo,
-          description: generalInfo.description.replace(/\\n/g, "\n\n  *"),
-          artifactVersion: artifactInfo.artifactVersion,
-        }
-      : {
-          ...generalInfo,
-          artifactVersion: artifactInfo.artifactVersion,
-        };
-
-    // Generate README in the root.
-    FileGenerator.createFileFromTemplate(
-      `${__dirname}/../../templates/README.hbs`,
-      dataWithMarkdownDescription,
-      path.join(
-        generalInfo.outputDirectory,
-        getArtifactDirectoryRoot(generalInfo),
-        "README.md"
-      )
-    );
+    const dataWithMarkdownDescription = {
+      ...FileGenerator.convertDescriptionToMarkdown(generalInfo),
+      artifactVersion: artifactInfo.artifactVersion,
+    };
 
     // Generate README in source code root directory.
     FileGenerator.createFileFromTemplate(

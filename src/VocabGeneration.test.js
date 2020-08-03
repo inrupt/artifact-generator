@@ -18,6 +18,8 @@ const ConfigAll = {
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated",
+  // vocabListFile: "../lit-vocab/**/*.yml",
+  // vocabListFileIgnore: "../lit-vocab/bin/**",
   vocabListFile: "../solid-common-vocab-rdf/**/*.yml",
   vocabListFileIgnore: "../solid-common-vocab-rdf/bin/**",
   npmRegistry: NPM_REGISTRY,
