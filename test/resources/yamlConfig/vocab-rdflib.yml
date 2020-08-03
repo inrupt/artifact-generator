@@ -12,7 +12,7 @@ artifactToGenerate:
     rdflibVersion: "^99.999.9999"
     artifactDirectoryName: JavaScript
     ##
-    # The template imports LitVocabTermRdflib instead of LitVocabTermRdfExt
+    # The template imports VocabTermRdflib instead of VocabTermRdfExt
     ##
     templateInternal: rdfLibraryDependent/javascript/rdflib/vocab.hbs
     sourceFileExtension: js

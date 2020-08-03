@@ -12,7 +12,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@solid/lit-term": "99.999.01",
+    "@inrupt/solid-common-vocab": "99.999.01",
     "@rdfjs/data-model": ""
   }
 }

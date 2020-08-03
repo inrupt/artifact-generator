@@ -305,7 +305,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(generated).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(")
+        expect.stringContaining("Person: new VocabTerm(")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -411,13 +411,13 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(")
+        expect.stringContaining("Person: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("address: new LitVocabTerm(")
+        expect.stringContaining("address: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm(")
+        expect.stringContaining("additionalName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre adicional`, "es")')
@@ -452,20 +452,20 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(")
+        expect.stringContaining("Person: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm(")
+        expect.stringContaining("additionalName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTerm(")
+        expect.stringContaining("familyName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTerm(")
+        expect.stringContaining("givenName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -475,7 +475,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTerm(")
+        expect.not.stringContaining("address: new VocabTerm(")
       );
     });
 
@@ -517,20 +517,20 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new LitVocabTerm(")
+        expect.stringContaining("Person: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new LitVocabTerm(")
+        expect.stringContaining("additionalName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new LitVocabTerm(")
+        expect.stringContaining("familyName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new LitVocabTerm(")
+        expect.stringContaining("givenName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -540,7 +540,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new LitVocabTerm(")
+        expect.not.stringContaining("address: new VocabTerm(")
       );
     });
 
@@ -754,7 +754,7 @@ describe("End-to-end tests", () => {
   });
 
   describe("Specific YAML configurations", () => {
-    it("should pick up the strictness of the LitVocabTerm from the YAML", async () => {
+    it("should pick up the strictness of the VocabTerm from the YAML", async () => {
       const outputDirectory = "test/Generated/EndToEnd/generate-strict/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -779,7 +779,7 @@ describe("End-to-end tests", () => {
         )
         .toString();
 
-      expect(output).toEqual(expect.stringContaining("new LitVocabTerm("));
+      expect(output).toEqual(expect.stringContaining("new VocabTerm("));
     });
   });
 

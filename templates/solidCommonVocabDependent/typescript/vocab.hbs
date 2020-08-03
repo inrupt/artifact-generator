@@ -2,7 +2,7 @@
 {{license/header}}
 
 {{/if}}
-import { LitVocabTerm, getLocalStore } from "@solid/lit-term";
+import { VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
 import dataFactory from "@rdfjs/data-model";
 
 const { namedNode } = dataFactory;
@@ -41,7 +41,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
@@ -67,7 +67,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
@@ -93,7 +93,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new LitVocabTerm(
+  {{nameEscapedForLanguage}}: new VocabTerm(
     _NS("{{{name}}}"),
     dataFactory,
     getLocalStore(),
@@ -109,6 +109,34 @@ const {{vocabNameUpperCase}} = {
     .addMessageNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}},
 {{/each}}
 {{/if}}
+
+{{#if constantStrings}}
+  // **************************
+  // All the constant strings.
+  // **************************
+  {{#each constantStrings}}
+
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: "{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}",
+{{/each}}{{/if}}
+
+{{#if constantIris}}
+  // ***********************
+  // All the constant IRIs.
+  // ***********************
+  {{#each constantIris}}
+
+  /**
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   */
+  {{nameEscapedForLanguage}}: namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+{{/each}}{{/if}}
 };
 
 export default {{vocabNameUpperCase}};
