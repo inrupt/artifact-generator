@@ -28,7 +28,10 @@ function _NS (localName: string) {
   return (_NAMESPACE + localName);
 }
 
-const {{vocabNameUpperCase}} = {
+// Add 'any' type annotation in case this vocab includes 'NamedNode' instances,
+// for example instances of Constant IRIs (TypeScript compiler will complain of
+// "semantic error TS2742" otherwise).
+const {{vocabNameUpperCase}}:any = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: _NAMESPACE,
   PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
