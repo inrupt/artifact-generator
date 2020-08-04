@@ -17,7 +17,7 @@ module.exports = class CommandLine {
     return inquirer.prompt({
       type: "input",
       name: "solidCommonVocabVersion",
-      message: "Version string for LIT Vocab Term dependency ...",
+      message: "Version string for Vocab Term dependency ...",
     });
   }
 

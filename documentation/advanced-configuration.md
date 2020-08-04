@@ -62,9 +62,9 @@ Using short-form alaises for the command-line flags:
 node index.js generate --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inrupt-ext.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
-Providing the version for the LIT Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
+Providing the version for the Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
-*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/lit-term` to pick up that local copy.
+*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/vocab-term` to pick up that local copy.
 ```shell
 node index.js generate --i ./vocabs/schema-snippet.ttl --solidCommonVocabVersion ^1.0.10
 ```
@@ -88,7 +88,7 @@ Creating a YAML configuration file (simply using `node index.js init`) provides 
 ##
 # Name of the generated artifact.
 artifactName: generated-vocab-test
-# MANDATORY. Version of the @lit/artifact-generator with which this YAML file is compatible
+# MANDATORY. Version of the @inrupt/artifact-generator with which this YAML file is compatible
 artifactGeneratorVersion: 0.2.0
 
 ##
@@ -103,7 +103,7 @@ versioning:
   # These files will be generated at the root of the target artifact
   versioningTemplates: 
       # A template name. It can reference existing internal templates supplied
-      # within the LIT Artifact Generator, or custom templates relative to this
+      # within the Artifact Generator, or custom templates relative to this
       # configuration file.
     - templateInternal: ".gitignore.hbs"
       # The name of the file generated from the template
@@ -119,8 +119,8 @@ artifactToGenerate:
     # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
     # depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
     artifactVersion: 3.2.1-SNAPSHOT
-    # The version of the LIT Vocab Term library (e.g. https://github.com/inrupt/lit-term-js for JavaScript, 
-    # https://github.com/pmcb55/lit-java/tree/master/lit-term for Java) upon which the generated vocabularies 
+    # The version of the Vocab Term library (e.g. https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
+    # https://github.com/inrupt/solid-cpommon-vocab-java for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
@@ -131,11 +131,12 @@ artifactToGenerate:
     #  "templates" directory.
     #  - templateCustom References a Handlebars template relative to
     #  the configuration file.
-    templateInternal: litVocabTermDependent/java/rdf4j/vocab.hbs
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     # MANDATORY The extension that is appended after the name of the generated source code files.
     sourceFileExtension: java
-    # These terms will be prefixed by an underscore in the generated code. It allows to prevent conflit if a term from 
-    # a vocabulary is also a keyword in the target language.
+    # These terms will be prefixed by an underscore in the generated code.
+    # It allows us prevent conflicts if a term from a vocabulary is also a
+    # keyword in the target language.
     languageKeywordsToUnderscore:
       - class     
       - abstract
@@ -160,7 +161,7 @@ artifactToGenerate:
           # It can reference a handlebars template relative to the YAML file, and also
           # accepts 'jpom.hbs', 'package.hbs', 'index.hbs', 'webpack.dev.config.hbs'
           # and 'webpack.dev.config.hbs'.
-        - templateInternal: litVocabTermDependent/java/rdf4j/pom.hbs
+        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
           # The name of the generated packaging file
           fileName: pom.xml
 
@@ -168,18 +169,18 @@ artifactToGenerate:
     artifactVersion: 10.11.12
     solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: litVocabTermDependent/javascript/vocab.hbs
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
       # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
       # Gradle and Maven), and how each of these packaging tools may generate more than one file.
       - packagingTool: npm 
         # This is an NPM-specific option, used in the generated package.json
-        npmModuleScope: "@lit/"
+        npmModuleScope: "@inrupt/"
         packagingTemplates: 
-          - templateInternal: litVocabTermDependent/javascript/package.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
-          - templateInternal: litVocabTermDependent/javascript/index.hbs
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: javascript/index.js
       - packagingTool: webpack
         # If this is set (not mandatory), the packaging files are instanciated in this directory
@@ -207,7 +208,7 @@ vocabList:
     nameAndPrefixOverride: schema-inrupt-ext
     # When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be 
     # generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding 
-    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/lit-artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
+    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
     termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
 ```
 

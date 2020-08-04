@@ -18,8 +18,6 @@ const ConfigAll = {
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated",
-  // vocabListFile: "../lit-vocab/**/*.yml",
-  // vocabListFileIgnore: "../lit-vocab/bin/**",
   vocabListFile: "../solid-common-vocab-rdf/**/*.yml",
   vocabListFileIgnore: "../solid-common-vocab-rdf/bin/**",
   npmRegistry: NPM_REGISTRY,
@@ -168,8 +166,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it("LIT vocabs", async () => {
-  it.skip("LIT vocabs", async () => {
+  // it("Common vocabs", async () => {
+  it.skip("Common vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
   });

@@ -157,7 +157,7 @@ describe("Generator configuration", () => {
       );
     });
 
-    it("should produce warning because our LIT Artifact Generator version mismatches the version in the specified config file", async () => {
+    it("should produce warning because our Artifact Generator version mismatches the version in the specified config file", async () => {
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ["generate"],
@@ -168,7 +168,7 @@ describe("Generator configuration", () => {
         undefined
       );
 
-      // We expect the LIT Artifact Generator version number in the generated
+      // We expect the Artifact Generator version number in the generated
       // artifacts to be our actual version number, and not the version number
       // that appears in the incoming config file.
       expect(
@@ -176,12 +176,12 @@ describe("Generator configuration", () => {
       ).toEqual(packageDotJson.version);
     });
 
-    it("should be ok if our LIT Artifact Generator version matches the version number in the specified config file", async () => {
+    it("should be ok if our Artifact Generator version matches the version number in the specified config file", async () => {
       const configDirectory = "./test/Generated/YamlConfig";
       const configPath = `${configDirectory}/vocab-list-version-match.yml`;
 
       // We need to create a local config file with the correct (i.e. our
-      // current LIT Artifact Generator version number (which we read from our
+      // current Artifact Generator version number (which we read from our
       // own 'package.json' file!).
       fs.mkdirSync(configDirectory, { recursive: true });
       fs.writeFileSync(configPath, VERSION_MATCHING_YAML);

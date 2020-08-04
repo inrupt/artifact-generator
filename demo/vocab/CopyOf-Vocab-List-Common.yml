@@ -1,6 +1,6 @@
 #
 # This file contains a simple list of vocabularies that we bundle together to
-# form the collective set of LIT 'Common' vocabularies.
+# form the collective set of 'Common' RDF vocabularies.
 #
 # These are the vocabs that we feel will be the most commonly used across
 # general RDF development efforts, and so we list them here to allow our 
@@ -127,11 +127,11 @@ vocabList:
 #    inputResources:
 #      - https://www.w3.org/ns/ui.ttl
 
-#  - description: The LIT Core vocabulary
+#  - description: The Core vocabulary
 #    inputResources:
 #      - ./rdf/OntologyDirMarker/Lit-Core.ttl
 #
-#  - description: The LIT Consent vocabulary
+#  - description: The Consent vocabulary
 #    inputResources:
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
 #      - ./rdf/OntologyDirMarker/Lit-Consent.ttl

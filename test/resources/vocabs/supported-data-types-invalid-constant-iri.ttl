@@ -15,7 +15,7 @@ lit_gen:
     owl:versionInfo "1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/06/18" ;
-    dcterms:title "LIT Code Generator vocabulary" ;
+    dcterms:title "Code Generator vocabulary" ;
     dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
     vann:preferredNamespacePrefix "lit_gen" ;
     vann:preferredNamespaceUri "https://w3id.org/lit/vocab/code-generation#" ;

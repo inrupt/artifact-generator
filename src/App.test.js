@@ -231,7 +231,7 @@ describe("App tests", () => {
 
     it("should generate a default file", async () => {
       const directoryPath = path.join(".", ".tmp");
-      const filePath = path.join(directoryPath, "lit-vocab.yml");
+      const filePath = path.join(directoryPath, "sample-vocab.yml");
       const argv = {
         _: ["init"],
         outputDirectory: directoryPath,
@@ -246,7 +246,7 @@ describe("App tests", () => {
 
     it("should generate a file through prompt", async () => {
       const directoryPath = path.join(".", ".tmp");
-      const filePath = path.join(directoryPath, "lit-vocab.yml");
+      const filePath = path.join(directoryPath, "sample-vocab.yml");
       const argv = { _: ["init"], outputDirectory: directoryPath };
       // init will call the prompt, which is mocked here
       await new App(argv).init();

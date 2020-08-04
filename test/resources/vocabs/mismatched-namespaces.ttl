@@ -18,12 +18,12 @@ test_vocab:
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
 	dcterms:date "2019/01/01" ;
- 	dcterms:title "LIT Demo Vocab" ;
-	dcterms:description """The LIT Demo Vocabulary. This vocab is just to help illustrate how to use the LIT vocabulary support
+ 	dcterms:title "Demo Vocab" ;
+	dcterms:description """The Demo Vocabulary. This vocab is just to help illustrate how to use the vocabulary support
  to make it easier for developers to work with vocabulary terms, such as Class, Properties, or Text Strings (such as
  descriptive messages or display within a UI, or error messages).""" ;
 	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
-	vann:preferredNamespacePrefix "lit_demo" ;
+	vann:preferredNamespacePrefix "demo" ;
 	vann:preferredNamespaceUri "https://inrupt.net/vocab/different-IRI#" .
 
 test_vocab:sampleTerm a rdfs:Class .

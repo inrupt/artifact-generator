@@ -4,7 +4,7 @@ on:
 jobs:
   generate-and-publish-package:
     runs-on: ubuntu-latest
-    name: LIT Artifact Generator release
+    name: Artifact Generator release
     steps:
      # Makes the current repository available to the workflow.
     - name: Checkout repo

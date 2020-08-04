@@ -22,7 +22,7 @@ test_vocab:
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
 	dcterms:date "2019/01/01" ;
- 	dcterms:title "LIT Demo Vocab" ;
+ 	dcterms:title "Demo Vocab" ;
 	dcterms:description "Testing that terms in LIT-specific ontologies have both labels and comments." ;
 	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
 	vann:preferredNamespacePrefix "test_vocab" ;
