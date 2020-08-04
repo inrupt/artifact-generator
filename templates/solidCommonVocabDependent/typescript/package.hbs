@@ -37,13 +37,13 @@
 {{/if}}
   "dependencies": {
     "@inrupt/solid-common-vocab": "{{solidCommonVocabVersion}}",
+    "@types/rdf-js": "{{rdfjsTypesVersion}}",
     "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}",
     "@rdfjs/dataset": "{{rdfjsDatasetVersion}}",
     "@rdfjs/namespace": "{{rdfjsNamespaceVersion}}"
   },
   "devDependencies": {
     "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
-    "@types/rdf-js": "{{rdfjsTypesVersion}}",
     "rollup": "{{rollupVersion}}",
     "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
