@@ -12,7 +12,7 @@ const Resource = require("./Resource");
 
 // Just a sample configuration file name to use when initialising a YAML file
 // for a users who wants a boilerplate YAML generated for them.
-const SAMPLE_CONFIG_NAME = "lit-vocab.yml";
+const SAMPLE_CONFIG_NAME = "sample-vocab.yml";
 
 const COMMAND_GENERATE = "generate";
 const COMMAND_INITIALIZE = "init";

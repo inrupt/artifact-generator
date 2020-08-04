@@ -56,17 +56,17 @@ too.
 To install globally (so that you can run the Artifact Generator from any
 directory):
 ```shell
-npm -g install @inrupt/lit-artifact-generator
+npm -g install @inrupt/artifact-generator
 ```
 
 Ensure the installation completed successfully:
 ```shell
-lit-artifact-generator --help
+artifact-generator --help
 ```
 
 If you wish to clone the repository instead of installing the Artifact
 Generator, you can run it from the cloned directory by simply replacing all the
-example references below to `lit-artifact-generator ...` with 
+example references below to `artifact-generator ...` with 
 `node index.js ...`.
 
 ## Create a NodeJS artifact
@@ -77,7 +77,7 @@ telling the generator not to prompt us for any manual input during the generatio
 process (i.e. `--noprompt`):
 
 ```shell
-lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
+artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
 ```
 
 This should generate a JavaScript artifact inside the default `Generated`
@@ -93,7 +93,7 @@ artifact we just generated:
 
 ```javascript
 {
-  "name": "LIT-Artifact-Generator-Demo",
+  "name": "Artifact-Generator-Demo",
   "description": "Tiny demo application using generated JavaScript artifact from a custom Pet Rock RDF vocabulary.",
   "license": "MIT",
   "private": true,
@@ -150,7 +150,7 @@ for any input (i.e. `--noprompt`), and asking for a bundled (i.e. WebPack'ed)
 JavaScript artifact (i.e. via the `--supportBundling` command-line flag):
 
 ```shell
-lit-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
+artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
 ```
 
 This generates an artifact, and runs Webpack to bundle all of it's
@@ -184,7 +184,7 @@ have a `Generated` directory within it)...
 My Pet Rock shinyness is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
 ```
 
-# The relationship between LIT-generated source code artifacts and RDF vocabularies
+# The relationship between generated source code artifacts and RDF vocabularies
 
 Source code artifacts (e.g. Java JARs, Node modules, C# assemblies, etc.) can
 be generated from individual RDF vocabularies, or from collections of multiple

@@ -13,7 +13,7 @@ test_vocab_2:
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
 	dcterms:date "2019/01/01" ;
- 	dcterms:title "LIT Demo Vocab" ;
+ 	dcterms:title "Demo Vocab" ;
 	dcterms:description "Testing static file won't cause re-generation." ;
 	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
 	vann:preferredNamespacePrefix "test_vocab_2" ;

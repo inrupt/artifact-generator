@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Normally we'd only want to mock out local storage for testing, but in this
-// case we want to use our LIT-generated vocabularies that depend on
+// case we want to use our generated vocabularies that depend on
 // localStorage for runtime context (e.g. the currently selected language).
 // So since we want to use those vocabularies in our Node application here,
 // they need a mocked local storage to work with.
@@ -72,7 +72,7 @@ yargs
         .alias("lv", "solidCommonVocabVersion")
         .describe(
           "solidCommonVocabVersion",
-          "The version of the LIT Vocab Term to depend on."
+          "The version of the Vocab Term to depend on."
         )
         .default("solidCommonVocabVersion", "^0.2.4")
 

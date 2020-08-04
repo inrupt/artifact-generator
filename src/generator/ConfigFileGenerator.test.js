@@ -23,11 +23,13 @@ const UNSUPPORTED_LANGUAGE = "Ook";
 
 const TARGET_DIR = "./test/Generated/ConfigFileGenerator/";
 const REFERENCE_YAML_PROMPTED =
-  "./test/resources/expectedOutputs/lit-vocab.yml";
+  "./test/resources/expectedOutputs/sample-vocab.yml";
 const REFERENCE_YAML_DEFAULT =
-  "./test/resources/expectedOutputs/default-lit-vocab.yml";
-const REFERENCE_YAML_GIT = "./test/resources/expectedOutputs/lit-vocab-git.yml";
-const REFERENCE_YAML_SVN = "./test/resources/expectedOutputs/lit-vocab-svn.yml";
+  "./test/resources/expectedOutputs/default-sample-vocab.yml";
+const REFERENCE_YAML_GIT =
+  "./test/resources/expectedOutputs/sample-vocab-git.yml";
+const REFERENCE_YAML_SVN =
+  "./test/resources/expectedOutputs/sample-vocab-svn.yml";
 
 // Config components
 const ARTIFACT_NAME = "myNewArtifact";

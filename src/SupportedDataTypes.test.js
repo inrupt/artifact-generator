@@ -20,7 +20,7 @@ describe("Supported Data Type", () => {
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "lit-generated-vocab-",
+        moduleNamePrefix: "generated-vocab-",
         nameAndPrefixOverride: "owl",
 
         generatedVocabs: [],
@@ -73,7 +73,7 @@ describe("Supported Data Type", () => {
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "lit-generated-vocab-",
+        moduleNamePrefix: "generated-vocab-",
         nameAndPrefixOverride: "http",
 
         generatedVocabs: [],
@@ -225,7 +225,7 @@ describe("Supported Data Type", () => {
         inputResources: ["./test/resources/vocabs/supported-data-types.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
-        moduleNamePrefix: "lit-generated-vocab-",
+        moduleNamePrefix: "generated-vocab-",
 
         generatedVocabs: [],
         authorSet: new Set(),

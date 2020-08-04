@@ -39,7 +39,7 @@ class ArtifactConfigurator {
     this.questions.push({
       type: "input",
       name: "solidCommonVocabVersion",
-      message: "Version string for LIT Vocab Term dependency:",
+      message: "Version string for Vocab Term dependency:",
       // This may be overridden in extending classes.
       default: this.solidCommonVocabVersion,
     });

@@ -67,7 +67,7 @@ describe("Touching a file", () => {
       "test",
       "resources",
       "expectedOutputs",
-      "lit-vocab.yml"
+      "sample-vocab.yml"
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
     Resource.touchFile(file);
@@ -80,7 +80,7 @@ describe("Touching a file", () => {
       "test",
       "resources",
       "expectedOutputs",
-      "lit-vocab-git.yml"
+      "sample-vocab-git.yml"
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
     Resource.touchFile(file, {});

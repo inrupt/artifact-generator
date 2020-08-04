@@ -1,5 +1,5 @@
 {
-  "name": "LIT-Artifact-Generator-Demo",
+  "name": "Artifact Generator Demo",
   "description": "Tiny demo application using generated JavaScript artifact from a custom Pet Rock RDF vocabulary.",
   "license": "MIT",
   "private": true,

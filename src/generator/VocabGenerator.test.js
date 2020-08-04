@@ -19,7 +19,7 @@ const VocabGenerator = require("./VocabGenerator");
 const vocabGenerator = new VocabGenerator({
   inputResources: [],
   artifactVersion: "1.0.0",
-  moduleNamePrefix: "lit-generated-vocab-",
+  moduleNamePrefix: "generated-vocab-",
 });
 
 const dataset = rdf
@@ -288,7 +288,7 @@ describe("Artifact generator unit tests", () => {
         VocabGenerator.merge([datasetExtension])
       );
       expect(result.namespace).toBe("http://schema.org/");
-      expect(result.artifactName).toBe("lit-generated-vocab-schema");
+      expect(result.artifactName).toBe("generated-vocab-schema");
       expect(result.vocabNameUpperCase).toBe("SCHEMA");
       expect(result.classes[0].name).toBe("Person");
       expect(result.classes[0].comment).toBe("Person dead or alive");
@@ -432,7 +432,7 @@ describe("Artifact generator unit tests", () => {
       );
 
       expect(result.namespace).toBe("");
-      expect(result.artifactName).toBe("lit-generated-vocab-");
+      expect(result.artifactName).toBe("generated-vocab-");
       expect(result.vocabNameUpperCase).toBe("");
       expect(result.classes.length).toBe(0);
       expect(result.properties.length).toBe(0);
@@ -806,7 +806,7 @@ describe("Artifact generator unit tests", () => {
         VocabGenerator.merge([owlOntologyDataset])
       );
 
-      expect(result.artifactName).toBe("lit-generated-vocab-ext-prefix");
+      expect(result.artifactName).toBe("generated-vocab-ext-prefix");
       expect(result.namespace).toBe("http://rdf-extension.com");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
       expect(result.description).toBe(
@@ -841,7 +841,7 @@ describe("Artifact generator unit tests", () => {
         VocabGenerator.merge([owlOntologyDatasetWithNoComment])
       );
 
-      expect(result.artifactName).toBe("lit-generated-vocab-ext-prefix");
+      expect(result.artifactName).toBe("generated-vocab-ext-prefix");
       expect(result.namespace).toBe("http://rdf-extension.com");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
       expect(result.description).toBe("");

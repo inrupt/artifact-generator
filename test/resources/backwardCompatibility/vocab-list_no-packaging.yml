@@ -1,6 +1,6 @@
 #
 # This file contains a simple list of vocabularies that we bundle together to
-# form the collective set of LIT 'Common' vocabularies.
+# form the collective set of 'Common' vocabularies.
 #
 # These are the vocabs that we feel will be the most commonly used across
 # general RDF development efforts, and so we list them here to allow our 
@@ -45,7 +45,7 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 0.1.0
-    gitRepository: git@github.com:inrupt/lit-generated-vocab-common-js.git
+    gitRepository: git@github.com:inrupt/generated-vocab-common-js.git
     npmModuleScope: "@inrupt/"
     solidCommonVocabVersion: "^0.1.0"
     artifactDirectoryName: JavaScript

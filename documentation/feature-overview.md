@@ -47,7 +47,7 @@ this will generate a JavaScript artifact in the default `./Generated` directory.
 node index.js init
 ```
 
-The output is a YAML file (by default `./lit-vocab.yml`), within which options
+The output is a YAML file (by default `./sample-vocab.yml`), within which options
 can be specified to generate artifacts in different languages (e.g. Java,
 JavaScript, TypeScript, etc.) from a list of vocabularies. 
 

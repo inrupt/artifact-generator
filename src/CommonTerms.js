@@ -1,4 +1,4 @@
-// We could use our generated LIT Common vocabs here (and originally we
+// We could use our generated Common vocabs here (and originally we
 // did!), but doing that creates a circular dependency since we need the
 // generator to generate that bundled vocab artifact in the first place!
 // So we just create the specific terms we need manually here instead

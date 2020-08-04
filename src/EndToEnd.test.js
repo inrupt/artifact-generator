@@ -19,7 +19,7 @@ const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const { getArtifactDirectorySourceCode } = require("./Util");
 
-const LIT_VOCAB_TERM_VERSION = "99.999.01";
+const SOLID_COMMON_VOCAB_VERSION = "99.999.01";
 
 const doNothingPromise = (data) => {
   return new Promise((resolve) => {
@@ -107,8 +107,8 @@ describe("End-to-end tests", () => {
             outputDirectory,
             artifactVersion: "1.0.0",
             license: { name: "MIT" },
-            solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
-            moduleNamePrefix: "lit-generated-vocab-",
+            solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
+            moduleNamePrefix: "generated-vocab-",
             noprompt: true,
           },
           doNothingPromise
@@ -188,7 +188,7 @@ describe("End-to-end tests", () => {
       );
     });
 
-    it("should create from an ontology file using the native RDF4J (and not LIT Vocab Term)", async () => {
+    it("should create from an ontology file using the native RDF4J (and not Vocab Term)", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdf4j/";
       const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);
@@ -234,7 +234,7 @@ describe("End-to-end tests", () => {
       );
     });
 
-    it("should create from an ontology file using native RdfExt (and not LIT Vocab Term)", async () => {
+    it("should create from an ontology file using native RdfExt (and not Vocab Term)", async () => {
       const outputDirectory = "test/Generated/EndToEnd/dependency-just-rdfext/";
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -288,7 +288,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.0",
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -319,7 +319,7 @@ describe("End-to-end tests", () => {
     });
 
     it("should be able to fully extend an ontology with multiple input files", async () => {
-      const outputDirectory = "test/Generated/EndToEnd/multiple-inputs/";
+      const outputDirectory = "test/Generated/EndToEnd/multiple-inputs";
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -332,8 +332,8 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
-          moduleNamePrefix: "lit-generated-vocab-",
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
+          moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
       );
@@ -393,7 +393,7 @@ describe("End-to-end tests", () => {
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
@@ -437,7 +437,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -502,7 +502,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -557,7 +557,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -585,7 +585,7 @@ describe("End-to-end tests", () => {
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
@@ -611,7 +611,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -634,7 +634,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "generated-vocab-",
           noprompt: true,
         })
@@ -664,7 +664,7 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
@@ -694,7 +694,7 @@ describe("End-to-end tests", () => {
           termSelectionResource:
             "./test/resources/vocabs/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
-          solidCommonVocabVersion: LIT_VOCAB_TERM_VERSION,
+          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
