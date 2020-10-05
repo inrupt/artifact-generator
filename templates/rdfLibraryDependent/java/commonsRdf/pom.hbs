@@ -33,9 +33,6 @@
     <properties>
         <slf4j.version>1.7.26</slf4j.version>
 
-        <!-- RDF4J defines a BOM that we can depend on below in our 'dependenciesManagement' section, specifying the
-    exact RDF4J version there. This means Maven child modules can pull in individual RDF4J jars without
-        needing to also specify a version (see https://rdf4j.org/download section 'Using Maven Dependencies'). -->
         <commonsRdf.version>{{commonsRdfVersion}}</commonsRdf.version>
 
         <maven.compiler.target>1.8</maven.compiler.target>
