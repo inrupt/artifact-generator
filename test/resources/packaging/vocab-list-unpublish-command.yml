@@ -6,32 +6,6 @@ artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
-  - programmingLanguage: Java
-    artifactVersion: 3.2.1-SNAPSHOT
-    javaPackageName: com.inrupt.testing
-    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
-    artifactDirectoryName: Java
-    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
-    sourceFileExtension: java
-    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
-    languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
-    packaging:
-      - packagingTool: maven
-        groupId: com.inrupt.test
-        rdf4jVersion: 2.5.3
-        publish:
-        - key: "local"
-          command: "mvn install"
-        packagingTemplates: 
-        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
-          fileName: pom.xml
-#      - packagingTool: gradle
-#        groupId: com.inrupt.test
-#        packagingFileName: build.gradle
-#        packagingTemplate: gradle.hbs
-
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     solidCommonVocabVersion: "^1.0.10"
@@ -43,7 +17,7 @@ artifactToGenerate:
         npmModuleScope: "@inrupt/"
         publish: 
         - key: "local"
-          command: "npm publish --registry http://localhost:4873/"
+          command: "npm unpublish --want-to-fail-regardless-so-make-sure-command-is-nonsense!"
         packagingTemplates: 
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
@@ -61,8 +35,3 @@ vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ../vocabs/schema-snippet.ttl
-
-  - description: Vocab for testing predicate types...
-    nameAndPrefixOverride: override-name
-    inputResources:
-      - ../vocabs/supported-data-types.ttl

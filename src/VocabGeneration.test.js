@@ -174,10 +174,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it('Solid vocabs', async () => {
   it.skip("Solid vocabs", async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(1200000);
     await generateVocabArtifact(ConfigSolidCommon);
-    await generateVocabArtifact(ConfigSolidGeneratorUi);
-    await generateVocabArtifact(ConfigSolidComponent);
+    // await generateVocabArtifact(ConfigSolidGeneratorUi);
+    // await generateVocabArtifact(ConfigSolidComponent);
   });
 
   // it("Inrupt vocab", async () => {
