@@ -370,22 +370,32 @@ class ArtifactGenerator {
             debug(
               `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
             );
-            publishConfigs[j].command
-              .split("&&")
-              .map((str) => str.trim())
-              .map((command) => {
-                debug(`Running sub-command [${command}]...`);
-                // try {
-                ChildProcess.execSync(command);
-                // } catch (e) {
-                //   if (command.startsWith("npm unpublish")) {
-                //     debug(`Re-running sub-command [${command}]...`);
-                //     ChildProcess.execSync(command);
-                //   }
-                // }
-              });
 
-            process.chdir(homeDir);
+            try {
+              publishConfigs[j].command
+                .split("&&")
+                .map((str) => str.trim())
+                .map((command) => {
+                  debug(`Running sub-command [${command}]...`);
+                  try {
+                    ChildProcess.execSync(command);
+                  } catch (err) {
+                    // This handling was added due to intermittent, but regular,
+                    // failures when trying to unpublish packages from a local
+                    // Verdaccio instance when running tests to generate all
+                    // vocabs found within a directory - i.e. simply 'trying
+                    // again immediately' seems to just work!
+                    if (command.startsWith("npm unpublish")) {
+                      debug(`Re-running sub-command [${command}]...`);
+                      ChildProcess.execSync(command);
+                    }
+                  }
+                });
+            } finally {
+              // Make sure we retore our starting directory, regardless of any
+              // process execution problems...
+              process.chdir(homeDir);
+            }
           }
         }
       }

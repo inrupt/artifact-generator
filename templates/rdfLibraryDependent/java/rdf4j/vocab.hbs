@@ -104,7 +104,7 @@ public class {{vocabNameUpperCase}} {
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
-    public static final IRI {{nameEscapedForJava}} = SimpleValueFactory.getInstance().createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
+    public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
 {{/each}}
 {{/if}}
 }

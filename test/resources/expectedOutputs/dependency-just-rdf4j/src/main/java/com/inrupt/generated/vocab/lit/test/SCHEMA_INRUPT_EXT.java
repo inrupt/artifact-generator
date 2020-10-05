@@ -83,5 +83,5 @@ public class SCHEMA_INRUPT_EXT {
     /**
      * Just a test constant IRI.
      */
-    public static final IRI testConstantIri = SimpleValueFactory.getInstance().createIRI("https://test-iri.com/just-for-illustration#test");
+    public static final IRI testConstantIri = valueFactory.createIRI("https://test-iri.com/just-for-illustration#test");
 }

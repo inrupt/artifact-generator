@@ -3,7 +3,6 @@ require("mock-local-storage");
 const fs = require("fs");
 const path = require("path");
 const del = require("del");
-const childProcess = require("child_process");
 
 jest.mock("inquirer");
 const inquirer = require("inquirer");
@@ -801,6 +800,53 @@ describe("Artifact Generator", () => {
         return rerunArtifactGenerator.runPublish("local");
       });
       expect(rerunResult.ranPublish).toBeUndefined();
+    });
+
+    it("should not attempt re-unpublish if failing command is not 'npm unpublish'", async () => {
+      const outputDirectory =
+        "test/Generated/ArtifactGenerator/publish/retryOnlyIfUnpublish";
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile:
+          "./test/resources/packaging/vocab-list-invalid-non-unpublish-command.yml",
+        outputDirectory,
+        noprompt: true,
+        force: true, // We need to FORCE generation to ensure publication.
+      });
+      config.completeInitialConfiguration();
+
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator.generate().then(() => {
+        artifactGenerator.runPublish("local");
+      });
+
+      expect(
+        fs.existsSync(
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
+        )
+      ).toBe(false);
+    });
+
+    it("should attempt re-unpublish if first attempt fails", async () => {
+      const outputDirectory =
+        "test/Generated/ArtifactGenerator/publish/retryUnpublishFails";
+      del.sync([`${outputDirectory}/*`]);
+
+      const config = new GeneratorConfiguration({
+        vocabListFile:
+          "./test/resources/packaging/vocab-list-unpublish-command.yml",
+        outputDirectory,
+        noprompt: true,
+        force: true, // We need to FORCE generation to ensure publication.
+      });
+      config.completeInitialConfiguration();
+
+      const artifactGenerator = new ArtifactGenerator(config);
+      await artifactGenerator.generate();
+      expect(() => artifactGenerator.runPublish("local")).toThrowError(
+        "--want-to-fail-regardless-so-make-sure-command-is-nonsense!"
+      );
     });
   });
 
