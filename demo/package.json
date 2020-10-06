@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "mock-local-storage": "^1.1.8",
+    "mock-local-storage": "^1.1.15",
     "@inrupt/generated-vocab-pet-rock": "file:Generated/SourceCodeArtifacts/JavaScript"
   }
 }
