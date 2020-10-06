@@ -817,9 +817,11 @@ describe("Artifact Generator", () => {
       config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
-      await artifactGenerator.generate().then(() => {
-        artifactGenerator.runPublish("local");
-      });
+      await artifactGenerator.generate();
+
+      expect(() => artifactGenerator.runPublish("local")).toThrowError(
+        "exec-command-guaranteed-to-fail-on-any-operating-system"
+      );
 
       expect(
         fs.existsSync(

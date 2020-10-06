@@ -377,8 +377,9 @@ class ArtifactGenerator {
                 .map((str) => str.trim())
                 .map((command) => {
                   debug(`Running sub-command [${command}]...`);
+                  let response;
                   try {
-                    ChildProcess.execSync(command);
+                    response = ChildProcess.execSync(command).toString();
                   } catch (err) {
                     // This handling was added due to intermittent, but regular,
                     // failures when trying to unpublish packages from a local
@@ -387,12 +388,18 @@ class ArtifactGenerator {
                     // again immediately' seems to just work!
                     if (command.startsWith("npm unpublish")) {
                       debug(`Re-running sub-command [${command}]...`);
-                      ChildProcess.execSync(command);
+                      response = ChildProcess.execSync(command).toString();
+                    } else {
+                      const message = `Error executing sub-command [${command}], details: ${err.stdout.toString()}`;
+                      debug(message);
+                      throw new Error(message);
                     }
                   }
+
+                  debug(`Response from running [${command}] was [${response}]`);
                 });
             } finally {
-              // Make sure we retore our starting directory, regardless of any
+              // Make sure we restore our starting directory, regardless of any
               // process execution problems...
               process.chdir(homeDir);
             }

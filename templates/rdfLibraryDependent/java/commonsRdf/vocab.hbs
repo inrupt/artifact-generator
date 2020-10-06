@@ -24,7 +24,7 @@ public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";
 
-    public static final RDF valueFactory = new SimpleRDF()
+    public static final RDF valueFactory = new SimpleRDF();
     public static final IRI NAMESPACE_IRI = valueFactory.createIRI("{{namespace}}");
 //    public static final Namespace NS = new SimpleNamespace(PREFIX, NAMESPACE);
 
@@ -45,7 +45,7 @@ public class {{vocabNameUpperCase}} {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final IRI {{nameEscapedForLanguage}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
+    public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
 {{/if}}
 
@@ -58,7 +58,7 @@ public class {{vocabNameUpperCase}} {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final IRI {{nameEscapedForLanguage}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
+    public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
 {{/if}}
 
@@ -71,7 +71,7 @@ public class {{vocabNameUpperCase}} {
     /**
      *{{#if comment}} {{{comment}}}{{/if}}
      */
-    public static final IRI {{nameEscapedForLanguage}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
+    public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
 {{/if}}
 
