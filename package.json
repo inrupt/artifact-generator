@@ -34,7 +34,7 @@
     "@rdfjs/sink-map": "^1.0.1",
     "axios": "^0.20.0",
     "chokidar": "3.4.2",
-    "debug": "^4.2.0",
+    "debug": "^4.3.0",
     "del": "^5.1.0",
     "glob": "^7.1.6",
     "handlebars": "^4.7.6",
