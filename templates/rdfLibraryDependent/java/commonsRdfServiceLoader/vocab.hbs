@@ -11,9 +11,10 @@
  */
 package {{javaPackageName}};
 
+import static java.util.ServiceLoader.load;
+
 import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.simple.SimpleRDF;
 
 /**
 {{#if description}}
@@ -24,9 +25,10 @@ public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";
 
-    public static final RDF valueFactory = new SimpleRDF();
+    private static final RDF valueFactory = load(RDF.class).findFirst()
+        .orElseThrow(() -> new RuntimeException("No RDF Commons implementation available - cannot initialise vocabulary [{{vocabNameUpperCase}}]!"));
+
     public static final IRI NAMESPACE_IRI = valueFactory.createIRI("{{namespace}}");
-//    public static final Namespace NS = new SimpleNamespace(PREFIX, NAMESPACE);
 
     public final IRI getNamespaceIri() {
         return NAMESPACE_IRI;
