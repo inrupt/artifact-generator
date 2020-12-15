@@ -46,7 +46,7 @@ jobs:
           WHITESOURCE_CONFIG_PATH: resources/whitesource/wss-${{ github.event_name }}-scan.config
 
       - name: Upload artifacts for debugging
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2.2.1
         if: failure()
         with:
           path: whitesource/policyRejectionSummary.json
