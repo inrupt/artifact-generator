@@ -32,7 +32,7 @@
     "@rdfjs/parser-jsonld": "^1.2.1",
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "chokidar": "3.4.3",
     "debug": "^4.3.1",
     "del": "^6.0.0",
