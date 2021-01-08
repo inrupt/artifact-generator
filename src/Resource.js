@@ -104,7 +104,7 @@ module.exports = class Resource {
   }
 
   static async getHttpResourceLastModificationTime(resource) {
-    // NOTE: If being executed from within a Jest test, we can expect to
+    // Note: If being executed from within a Jest test, we can expect to
     // encounter this error:
     //    Error: Cross origin http://localhost forbidden
     // This test-only error can generally be safely ignored, as we're just
@@ -143,7 +143,7 @@ module.exports = class Resource {
 
   /**
    * Touches (i.e. updates the last modified time) on the specified file.
-   * NOTE: For testing we allow passing in an instance of 'fs'.
+   * Note: For testing we allow passing in an instance of 'fs'.
    * @param filename the file to touch.
    * @param fs the file system to use (allows for testing).
    */

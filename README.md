@@ -48,7 +48,7 @@ install Webpack, e.g. `npm install webpack webpack-cli --save-dev`
 repository, we need to manually reference a private GitHub NPM registry. You will
 need to generate a Personal Access Token (PAT) from your GitHub account (under the
 'Developer settings' tab on your profile page), and use it to authenticate with 
-the command `npm login --registry https://npm.pkg.github.com`.  NOTE: You'll also
+the command `npm login --registry https://npm.pkg.github.com`.  Note: You'll also
 need to add the `--registry` switch (with the suffix of `/inrupt`) when installing
 too.
 ---

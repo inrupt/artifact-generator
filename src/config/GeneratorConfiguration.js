@@ -517,13 +517,13 @@ class GeneratorConfiguration {
 
     // If the registry is set on the command line, override default.
     if (args.npmRegistry) {
-      // Make sure we replace the default NPM repository with the value
+      // Make sure we replace the default npm repository with the value
       // provided on the command-line.
       const publishCommand = NPM_DEFAULT.publish[0].command
         .split(NPM_DEFAULT_REPO)
         .join(args.npmRegistry);
 
-      // NOTE: We don't (currently) require the user to provide a key for this
+      // Note: We don't (currently) require the user to provide a key for this
       // default publishing command, we just use a hard-coded default key value.
       packagingInfo.publish = [
         {
@@ -607,7 +607,7 @@ class GeneratorConfiguration {
    * This function returns all the resources (local files and online
    * repositories) that are listed in the configuration object.
    *
-   * NOTE: This also includes any term-selection resources.
+   * Note: This also includes any term-selection resources.
    */
   getInputResources() {
     const resources = [];
@@ -633,7 +633,7 @@ class GeneratorConfiguration {
    * repositories) that are listed in the configuration object that have changed
    * since the specified timestamp.
    *
-   * NOTE: Special consideration is given any term-selection resources. If this
+   * Note: Special consideration is given any term-selection resources. If this
    * file changes, then all associated vocab files are also considered to have
    * changed, since the terms being selected could be from any of those vocabs.
    */

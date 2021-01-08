@@ -98,7 +98,7 @@ describe("Dataset Handler", () => {
   });
 
   it("should de-duplicate terms defined with multiple predicates we look for", () => {
-    // NOTE: This test relies on the order different predicates are processing
+    // Note: This test relies on the order different predicates are processing
     // in the implementation - i.e. if a subject matches multiple RDF types,
     // then only the first one will be used.
     const testTermClass = rdf.namedNode(`${NAMESPACE}testTermClass`);
