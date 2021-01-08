@@ -2,11 +2,17 @@
   "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
   "version": "{{artifactVersion}}",
   "description": "{{description}}",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
 {{#if supportBundling}}
+  "module": "./dist/index.es.js",
   "scripts": {
-    "dev": "webpack --config ./config/webpack.dev.config.js",
-    "prod": "webpack --config ./config/webpack.prod.config.js"
+    "build": "rollup --config rollup.config.js"
+  },
+{{else}}
+  "scripts": {
+    "build": "tsc"
   },
 {{/if}}
   "author": {
@@ -30,13 +36,14 @@
   },
 {{/if}}
   "dependencies": {
-    "@inrupt/solid-common-vocab": "{{solidCommonVocabVersion}}",
-    "@rdfjs/data-model": "{{rdfjsImplVersion}}"
-  }{{#if supportBundling}},
+    "@types/rdf-js": "{{rdfjsTypesVersion}}",
+    "rdf-data-factory": "{{rdfjsImplVersion}}"
+  },
   "devDependencies": {
-    "@babel/core": "{{babelCoreVersion}}",
-    "babel-loader": "{{babelLoaderVersion}}",
-    "webpack": "{{webpackVersion}}",
-    "webpack-cli": "{{webpackCliVersion}}"
-  }{{/if}}
+    "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
+    "rollup": "{{rollupVersion}}",
+    "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
+    "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
+  }
 }

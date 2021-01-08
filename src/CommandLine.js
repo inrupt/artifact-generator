@@ -38,9 +38,10 @@ module.exports = class CommandLine {
         );
       } catch (error) {
         debug(
-          `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}]: ${error}`
+          `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}] (this probably just means the module has never been published). Error: ${error}`
         );
-        // Its ok to ignore this. It just means that the module hasn't been published before.
+        // Its OK to ignore this. It just means that the module hasn't been
+        // published before.
       }
     }
 

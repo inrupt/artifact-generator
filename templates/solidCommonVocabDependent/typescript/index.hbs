@@ -1,7 +1,0 @@
-{{#if license/header}}
-{{license/header}}
-
-{{/if}}
-{{#each generatedVocabs}}
-export { default as {{vocabNameUpperCase}} } from "./GeneratedVocab/{{vocabNameUpperCase}}";
-{{/each}}

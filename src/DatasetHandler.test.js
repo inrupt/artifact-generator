@@ -1,7 +1,15 @@
 require("mock-local-storage");
 
 const rdf = require("rdf-ext");
-const { RDF, RDFS, OWL, SKOS, VANN, LIT_CORE } = require("./CommonTerms");
+const {
+  RDF,
+  RDF_NAMESPACE,
+  RDFS,
+  OWL,
+  SKOS,
+  VANN,
+  LIT_CORE,
+} = require("./CommonTerms");
 
 const DatasetHandler = require("./DatasetHandler");
 
@@ -145,6 +153,28 @@ describe("Dataset Handler", () => {
     // processing order in the implementation!)
     expect(result.constantIris.length).toEqual(0);
     expect(result.constantStrings.length).toEqual(0);
+  });
+
+  it("should skip classes and sub-classes from other, but well-known, vocabs", () => {
+    // Create terms that look they come from a well-known vocab.
+    const testTermClass = rdf.namedNode(`${RDF_NAMESPACE}testTermClass`);
+    const testTermSubClass = rdf.namedNode(`${RDF_NAMESPACE}testTermSubClass`);
+
+    const dataset = rdf.dataset().addAll([
+      // Define this ontology as having it's own namespace...
+      rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+
+      // ...now add terms from different, but **well-known**, namespaces:
+      rdf.quad(testTermClass, RDF.type, RDFS.Class),
+      rdf.quad(testTermSubClass, RDFS.subClassOf, RDFS.Class),
+    ]);
+
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ["does not matter"],
+    });
+
+    const result = handler.buildTemplateInput();
+    expect(result.classes.length).toEqual(0);
   });
 
   it("should fail if no prefix is defined in the vocabulary", () => {

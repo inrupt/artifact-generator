@@ -50,12 +50,12 @@ module.exports = class App {
   }
 
   async run() {
-    return await this.performFunctionPerGlobMatch(this, async function (
-      app,
-      config
-    ) {
-      return await app.runWithConfig(config);
-    });
+    return await this.performFunctionPerGlobMatch(
+      this,
+      async function (app, config) {
+        return await app.runWithConfig(config);
+      }
+    );
   }
 
   async runWithConfig(config) {
@@ -119,16 +119,16 @@ module.exports = class App {
   }
 
   async watch() {
-    return await this.performFunctionPerGlobMatch(this, async function (
-      app,
-      config
-    ) {
-      const watcher = new VocabWatcher(new ArtifactGenerator(config));
-      await watcher.watch();
+    return await this.performFunctionPerGlobMatch(
+      this,
+      async function (app, config) {
+        const watcher = new VocabWatcher(new ArtifactGenerator(config));
+        await watcher.watch();
 
-      app.watcherList.push(watcher);
-      return app.watcherList.length;
-    });
+        app.watcherList.push(watcher);
+        return app.watcherList.length;
+      }
+    );
   }
 
   async performFunctionPerGlobMatch(app, funcToCall) {
