@@ -16,7 +16,7 @@
 # Local vocabularies can be provided relative to the location of this resource
 # list file.
 #
-# NOTE: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL LIT-COMMON ARTIFACT
+# Note: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL LIT-COMMON ARTIFACT
 # (as of August 2019). WE DO *NOT* APPLY OUR EXTENSIONS HERE FOR VOCABS LIKE
 # Schema.org, OR VCard (OR INCLUDE LOCAL REFERENCES TO VOCABS THAT DON'T HAVE
 # TURTLE SERIALIZATIONS (LIKE the VANN OR HTTP VOCABS) AS WE'D NEED TO
@@ -41,7 +41,7 @@ artifactToGenerate:
     sourceFileExtension: js
 
 vocabList:
-  # NOTE: We *MUST* use the 'https://' URI for Schema.org, since the RIO parser
+  # Note: We *MUST* use the 'https://' URI for Schema.org, since the RIO parser
   # (used in our Java artifact generator) will not follow the 301 redirect from
   # 'http://', and so our RDF4J model will be empty and therefore so will our
   # generated source.

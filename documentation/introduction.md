@@ -9,7 +9,7 @@ represent the `Person` class from Schema.org (i.e. `https://schema.org/Person`):
       .addComment('en', `A person (alive, dead, undead, or fictional).`),
 ```
 
-NOTE: This example shows that we've generated a JavaScript `Person` object that
+Note: This example shows that we've generated a JavaScript `Person` object that
 also provides access to the Label and Comment as defined by Schema.org. We've
 also used the Comment value as the JSDoc for this `Person` object, meaning
 users of this artifact will have helpful documentation available directly in

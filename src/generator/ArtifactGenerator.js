@@ -89,7 +89,7 @@ class ArtifactGenerator {
         // generation). This way, if a vocabulary resource has been modified
         // more recently than this file, we know that the artifacts are
         // outdated.
-        // NOTE: We only check the overall 'generated' flag here, since we need
+        // Note: We only check the overall 'generated' flag here, since we need
         // this file created/updated regardless of whether we're generating or
         // watching.
         if (this.artifactData.generated) {

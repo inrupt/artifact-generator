@@ -64,7 +64,7 @@ node index.js generate --i ./vocabs/schema-snippet.ttl --vtf ./vocabs/schema-inr
 
 Providing the version for the Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
 
-*NOTE:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/vocab-term` to pick up that local copy.
+*Note:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/vocab-term` to pick up that local copy.
 ```shell
 node index.js generate --i ./vocabs/schema-snippet.ttl --solidCommonVocabVersion ^1.0.10
 ```

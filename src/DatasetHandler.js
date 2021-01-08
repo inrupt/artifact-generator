@@ -81,7 +81,7 @@ module.exports = class DatasetHandler {
   /**
    * Handles a specific term.
    *
-   * NOTE: Term may need to be ignored, in which case we can return 'null'.
+   * Note: Term may need to be ignored, in which case we can return 'null'.
    *
    * @param quad
    * @param namespace
@@ -580,7 +580,7 @@ module.exports = class DatasetHandler {
       // which is actually longer than the IRI of the only other term defined
       // (i.e. the HTTP Content-Type header).
       //
-      // BUT NOTE: as described above, the ontology IRI and the actual
+      // But note: as described above, the ontology IRI and the actual
       // namespace for terms can be completely different, but how else can we
       // accurately determine the namespace in cases like HTTPH above!?
       const longestTermName = DatasetHandler.findLongestTermName(

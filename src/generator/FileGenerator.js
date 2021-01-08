@@ -208,7 +208,7 @@ class FileGenerator {
 
   /**
    * Simple utility function that encodes the specified value for use within JSON (e.g. escapes newline characters).
-   * NOTE: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
+   * Note: It simply returns the value ready to be placed into a JSON value string, so it does NOT include delimiting
    * quotes!
    *
    * @param value The value to escape
