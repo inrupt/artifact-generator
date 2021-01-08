@@ -4,111 +4,116 @@ const fs = require("fs");
 const debug = require("debug")("lit-artifact-generator:VocabGenerator");
 
 const App = require("./App");
+const { DEFAULT_PUBLISH_KEY } = require("./config/GeneratorConfiguration");
+
+// This version number is only useful if attempting to build from a single RDF
+// vocabulary, and not using a vocab list file (since the vocab list files would
+// be expected to provide this value).
+const VERSION_SOLID_COMMON_VOCAB = "^0.5.3";
 
 // These values are not expected to be specified in vocab list files - they
-// are expected to be provided as runtime arguments.
-const VERSION_SOLID_COMMON_VOCAB = "^0.0.1";
+// are expected to be provided as runtime command-line arguments.
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
-const RUN_PACKAGING = ["mavenLocal", "npmLocal"];
+const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
 
 const ConfigAll = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_ALL",
   vocabListFile: "../solid-common-vocab-rdf/**/*.yml",
   vocabListFileIgnore: "../solid-common-vocab-rdf/bin/**",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigRdfCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/RdfCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/common-rdf/Common/Vocab-List-Common-Rdf.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigLitCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/LitCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/lit-rdf/Common/Vocab-List-Lit-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigInruptCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Common",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Common/Vocab-List-Inrupt-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigInruptUiCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/InruptUiCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigInruptService = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/InruptService",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Service/Vocab-List-Inrupt-Service.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigSolidCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid-Common.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigSolidComponent = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidComponent",
   inputResources: [
     "../solid-common-vocab-rdf/solid-rdf/Component/SolidComponent.ttl",
   ],
@@ -119,14 +124,14 @@ const ConfigSolidComponent = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 const ConfigSolidGeneratorUi = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidGeneratorUi",
   inputResources: [
     "../solid-common-vocab-rdf/solid-rdf/GeneratorUi/SolidGeneratorUi.ttl",
   ],
@@ -137,7 +142,7 @@ const ConfigSolidGeneratorUi = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
-  publish: RUN_PACKAGING,
+  publish: PUBLISH_TO_REPO_LIST,
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
@@ -166,8 +171,14 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it("Common vocabs", async () => {
-  it.skip("Common vocabs", async () => {
+  // it("Common RDF vocabs", async () => {
+  it.skip("Common RDF vocabs", async () => {
+    jest.setTimeout(60000);
+    await generateVocabArtifact(ConfigRdfCommon);
+  });
+
+  // it("Common LIT vocabs", async () => {
+  it.skip("Common LIT vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigLitCommon);
   });
@@ -188,17 +199,18 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it("Common RDF vocabs", async () => {
-  it.skip("Common RDF vocabs", async () => {
-    jest.setTimeout(60000);
-    await generateVocabArtifact(ConfigRdfCommon);
-  });
-
-  it.skip("Test Demo App", async () => {
-    // it('Test Demo App', async () => {
+  it.skip("tests a single custom vocab", async () => {
+    // it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
-      nameAndPrefixOverride: "test",
+      // inputResources: ["https://www.w3.org/ns/prov-o#"],
+      // nameAndPrefixOverride: "prov-o",
+
+      inputResources: ["https://calum.inrupt.net/public/voc/mudchar.ttl"],
+      nameAndPrefixOverride: "mudchar",
+
+      // inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
+      // nameAndPrefixOverride: "test",
+
       // inputResources: [
       //   "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl"
       // ],
@@ -225,15 +237,18 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ['http://www.w3.org/2011/http-headers#'],
       // nameAndPrefixOverride: 'http-headers',
 
+      _: "generate",
+      force: true,
+      clearOutputDirectory: true,
       outputDirectory: "./test/Generated",
       artifactVersion: "1.0.0",
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
-      moduleNamePrefix: "@inrupt/generated-vocab-",
+      moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       npmRegistry: NPM_REGISTRY,
-      runNpmInstall: false, //RUN_NPM_INSTALL,
-      supportBundling: false, //SUPPORT_BUNDLING,
       runWidoco: false,
-      publish: "", //RUN_PACKAGING
+      runNpmInstall: RUN_NPM_INSTALL,
+      supportBundling: SUPPORT_BUNDLING,
+      publish: [DEFAULT_PUBLISH_KEY],
     });
   });
 });

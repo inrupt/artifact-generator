@@ -36,19 +36,15 @@
   },
 {{/if}}
   "dependencies": {
+    "@inrupt/solid-common-vocab": "{{solidCommonVocabVersion}}",
     "@types/rdf-js": "{{rdfjsTypesVersion}}",
-    "@rdfjs/data-model": "{{rdfjsDatamodelVersion}}",
-    "@rdfjs/dataset": "{{rdfjsDatasetVersion}}",
-    "@rdfjs/namespace": "{{rdfjsNamespaceVersion}}"
+    "rdf-data-factory": "{{rdfjsImplVersion}}"
   },
   "devDependencies": {
-    "typescript": "{{typescriptVersion}}",
-    "@types/rdfjs__namespace": "{{rdfjsNamespaceTypesVersion}}",
-    "@types/rdfjs__dataset": "{{rdfjsDatasetTypesVersion}}"{{#if supportBundling}},
+    "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
     "rollup": "{{rollupVersion}}",
     "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
-    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
-  {{/if}}
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
   }
 }

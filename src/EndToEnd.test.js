@@ -108,7 +108,7 @@ describe("End-to-end tests", () => {
             artifactVersion: "1.0.0",
             license: { name: "MIT" },
             solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-            moduleNamePrefix: "generated-vocab-",
+            moduleNamePrefix: "@inrupt/generated-vocab-",
             noprompt: true,
           },
           doNothingPromise
@@ -243,7 +243,7 @@ describe("End-to-end tests", () => {
           {
             _: ["generate"],
             vocabListFile:
-              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfext.yml",
+              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfjs-impl.yml",
             outputDirectory,
             supportBundling: true,
             noprompt: true,
@@ -289,7 +289,7 @@ describe("End-to-end tests", () => {
           outputDirectory,
           artifactVersion: "1.0.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-          moduleNamePrefix: "generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
       );
@@ -333,7 +333,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           license: { name: "MIT" },
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-          moduleNamePrefix: "generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
       );
@@ -587,7 +587,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
-          moduleNamePrefix: "generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
       );
@@ -612,7 +612,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-          moduleNamePrefix: "generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
       );
@@ -635,7 +635,7 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           license: { name: "MIT" },
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-          moduleNamePrefix: "generated-vocab-",
+          moduleNamePrefix: "@inrupt/generated-vocab-",
           noprompt: true,
         })
       );

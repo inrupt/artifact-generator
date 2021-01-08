@@ -27,12 +27,6 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
   },
 ];
 
-const EXPECTED_VOCAB_LIST_FROM_CLI = [
-  {
-    inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-  },
-];
-
 // This YAML file will always match the latest version of the generator
 const VERSION_MATCHING_YAML = `
 artifactName: generated-vocab-common-TEST
@@ -352,15 +346,20 @@ describe("Generator configuration", () => {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           moduleNamePrefix: "@inrupt/generated-vocab-",
+          nameAndPrefixOverride: "dummy-test",
           noprompt: true,
         },
         undefined
       );
 
       expect(generatorConfiguration.configuration.noprompt).toBe(true);
-      expect(generatorConfiguration.configuration.vocabList).toEqual(
-        EXPECTED_VOCAB_LIST_FROM_CLI
-      );
+
+      expect(generatorConfiguration.configuration.vocabList).toEqual([
+        {
+          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+          nameAndPrefixOverride: "dummy-test",
+        },
+      ]);
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(
         DEFAULT_CLI_ARTIFACT
       );
@@ -380,9 +379,11 @@ describe("Generator configuration", () => {
         },
         undefined
       );
-      expect(generatorConfiguration.configuration.vocabList).toEqual(
-        EXPECTED_VOCAB_LIST_FROM_CLI
-      );
+      expect(generatorConfiguration.configuration.vocabList).toEqual([
+        {
+          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        },
+      ]);
     });
 
     it("should modify the default publication command if a registry is set", async () => {
@@ -401,7 +402,9 @@ describe("Generator configuration", () => {
       expect(
         generatorConfiguration.configuration.artifactToGenerate[0].packaging[0]
           .publish[0].command
-      ).toEqual(`npm publish --registry ${registry}`);
+      ).toEqual(
+        `npm unpublish --force --registry ${registry} && npm install --registry ${registry} && npm publish --registry ${registry}`
+      );
     });
   });
 

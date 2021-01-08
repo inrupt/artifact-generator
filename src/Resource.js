@@ -104,8 +104,13 @@ module.exports = class Resource {
   }
 
   static async getHttpResourceLastModificationTime(resource) {
+    // NOTE: If being executed from within a Jest test, we can expect to
+    // encounter this error:
+    //    Error: Cross origin http://localhost forbidden
+    // This test-only error can generally be safely ignored, as we're just
+    // checking a last-modified time, and fallback to returning 'now'.
     return axios({
-      method: "head",
+      method: "GET",
       url: resource,
     })
       .then((response) => {

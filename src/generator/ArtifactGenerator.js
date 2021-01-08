@@ -265,12 +265,14 @@ class ArtifactGenerator {
 
   /**
    * Checks if we are configured to generate resources (as opposed to watching
-   * resourcs, or initializing, etc.).
+   * resources, or initializing, etc.).
    * @returns {*}
    */
   resourceGeneration() {
     return (
       this.artifactData.generated &&
+      // Our command-line processor (YARGS) places commands (e.g. 'generate',
+      // 'watch', 'validate', etc.) under the key '_' !
       this.artifactData["_"] &&
       this.artifactData["_"].includes("generate")
     );
@@ -349,17 +351,17 @@ class ArtifactGenerator {
     const homeDir = process.cwd();
     for (let i = 0; i < artifact.packaging.length; i += 1) {
       // The artifact contains packaging configuration, each of which does not
-      // necessarily encompass publication options
+      // necessarily encompass publication options.
       const publishConfigs = artifact.packaging[i].publish;
       if (publishConfigs) {
         for (let j = 0; j < publishConfigs.length; j += 1) {
+          // A special case: when the user uses the --publish option via a
+          // CLI configuration, no key is (currently) provided by the user for
+          // a publication config, so a default publish key can be set.
           if (
             publishConfigs[j].key === key ||
             publishConfigs[j].key === DEFAULT_PUBLISH_KEY
           ) {
-            // A special case: when the user uses the --publish option via a
-            // CLI configuration, no key is associated to the publication
-            // config by the user, so the DEFAULT_PUBLISH_KEY is set.
             const runFrom = path.join(
               homeDir,
               artifact.outputDirectoryForArtifact
@@ -390,7 +392,7 @@ class ArtifactGenerator {
                       debug(`Re-running sub-command [${command}]...`);
                       response = ChildProcess.execSync(command).toString();
                     } else {
-                      const message = `Error executing sub-command [${command}], details: ${err.stdout.toString()}`;
+                      const message = `Error executing sub-command [${command}], details (stdout): [${err.stdout.toString()}], stderr: [${err.stderr.toString()}]`;
                       debug(message);
                       throw new Error(message);
                     }
@@ -410,21 +412,24 @@ class ArtifactGenerator {
   }
 
   /**
-   * Executes the publication commands associated to all the declared artifacts.
-   * @param {string} key this key identifies the desired publication configuration
+   * Executes the publication commands associated with all declared artifacts.
+   * @param {string} publicationConfigKey this key identifies the desired
+   * publication configuration
    */
-  runPublish(key) {
+  runPublish(publicationConfigKey) {
     const generationData = this.configuration.configuration;
 
     if (generationData.generated) {
-      // This should be parallelized, but the need to change the CWD makes it harder on thread-safety.
-      // Ideally, new processes should be spawned, each running a packaging command, but the fork
-      // command does not work in Node as it does in Unix (i.e. it does not clone the current process)
-      // so it is more work than expected. Running it sequentially is fine for now.
+      // This should be parallelized, but the need to change the current working
+      // directory for each artifact makes it harder to maintain thread-safety.
+      // Ideally, new processes should be spawned, each running a packaging
+      // command, but the fork command does not work in Node as it does in Unix
+      // (i.e. it does not clone the current process) so it is more work than
+      // expected. Running it sequentially is fine for now.
       for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
         ArtifactGenerator.publishArtifact(
           generationData.artifactToGenerate[i],
-          key
+          publicationConfigKey
         );
       }
 

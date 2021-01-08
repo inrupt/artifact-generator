@@ -33,11 +33,16 @@ const WEBPACK_DEFAULT = {
   ],
 };
 
+const NPM_DEFAULT_REPO = "http://localhost:4873/";
+
 const NPM_DEFAULT = {
   packagingTool: "npm",
-  npmModuleScope: "@inrupt/",
+  npmModuleScope: "",
   publish: [
-    { key: "local", command: "npm publish --registry https://localhost:4873" },
+    {
+      key: "local",
+      command: `npm unpublish --force --registry ${NPM_DEFAULT_REPO} && npm install --registry ${NPM_DEFAULT_REPO} && npm publish --registry ${NPM_DEFAULT_REPO}`,
+    },
   ],
   packagingTemplates: [
     {
@@ -509,12 +514,21 @@ class GeneratorConfiguration {
 
     // We weren't provided with a configuration file, so manually provide defaults.
     const packagingInfo = NPM_DEFAULT;
-    // If the registry is set in the command line, override default
+
+    // If the registry is set on the command line, override default.
     if (args.npmRegistry) {
+      // Make sure we replace the default NPM repository with the value
+      // provided on the command-line.
+      const publishCommand = NPM_DEFAULT.publish[0].command
+        .split(NPM_DEFAULT_REPO)
+        .join(args.npmRegistry);
+
+      // NOTE: We don't (currently) require the user to provide a key for this
+      // default publishing command, we just use a hard-coded default key value.
       packagingInfo.publish = [
         {
           key: DEFAULT_PUBLISH_KEY,
-          command: `npm publish --registry ${args.npmRegistry}`,
+          command: publishCommand,
         },
       ];
     }
@@ -548,6 +562,10 @@ class GeneratorConfiguration {
     if (args.solidCommonVocabVersion) {
       cliConfig.artifactToGenerate[0].solidCommonVocabVersion =
         args.solidCommonVocabVersion;
+    }
+
+    if (args.nameAndPrefixOverride) {
+      cliConfig.vocabList[0].nameAndPrefixOverride = args.nameAndPrefixOverride;
     }
 
     return cliConfig;

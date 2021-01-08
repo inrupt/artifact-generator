@@ -4,8 +4,10 @@ const {
   RDF_NAMESPACE,
   RDF,
   RDFS,
+  RDFS_NAMESPACE,
   SCHEMA_DOT_ORG,
   OWL,
+  OWL_NAMESPACE,
   VANN,
   DCTERMS,
   SKOS,
@@ -108,6 +110,8 @@ module.exports = class DatasetHandler {
       // ignore them...
       if (
         fullName.startsWith(RDF_NAMESPACE) ||
+        fullName.startsWith(RDFS_NAMESPACE) ||
+        fullName.startsWith(OWL_NAMESPACE) ||
         fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
         return null;
@@ -420,9 +424,15 @@ module.exports = class DatasetHandler {
     SUPPORTED_CLASSES.forEach((classType) => {
       this.fullDataset.match(subject, RDF.type, classType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
-          result.classes.push(
-            this.handleTerm(quad, result.localNamespace, classType)
+          const termDetails = this.handleTerm(
+            quad,
+            result.localNamespace,
+            classType
           );
+
+          if (termDetails !== null) {
+            result.classes.push(termDetails);
+          }
         }
       });
     });
@@ -431,9 +441,15 @@ module.exports = class DatasetHandler {
     // class too, regardless of what it's a sub-class of!
     this.fullDataset.match(subject, RDFS.subClassOf, null).forEach((quad) => {
       if (this.isNewTerm(quad.subject.value)) {
-        result.classes.push(
-          this.handleTerm(quad, result.localNamespace, quad.object)
+        const termDetails = this.handleTerm(
+          quad,
+          result.localNamespace,
+          quad.object
         );
+
+        if (termDetails !== null) {
+          result.classes.push(termDetails);
+        }
       }
     });
   }
@@ -443,14 +459,15 @@ module.exports = class DatasetHandler {
       this.fullDataset
         .match(subject, RDF.type, propertyType)
         .forEach((quad) => {
-          const term = this.handleTerm(
+          const termDetails = this.handleTerm(
             quad,
             result.localNamespace,
             propertyType
           );
-          if (term) {
+
+          if (termDetails) {
             if (this.isNewTerm(quad.subject.value)) {
-              result.properties.push(term);
+              result.properties.push(termDetails);
             }
           }
         });
@@ -461,10 +478,15 @@ module.exports = class DatasetHandler {
     this.fullDataset
       .match(subject, RDFS.subPropertyOf, null)
       .forEach((quad) => {
-        const term = this.handleTerm(quad, result.localNamespace, quad.object);
-        if (term) {
+        const termDetails = this.handleTerm(
+          quad,
+          result.localNamespace,
+          quad.object
+        );
+
+        if (termDetails) {
           if (this.isNewTerm(quad.subject.value)) {
-            result.properties.push(term);
+            result.properties.push(termDetails);
           }
         }
       });
@@ -551,7 +573,7 @@ module.exports = class DatasetHandler {
     if (!namespace) {
       // We arbitrarily pick the term with the longest name, simply to prevent
       // cases (like OWL, HTTP 2011, VANN, HTTPH) where the ontology itself
-      // uses the namespace IRI but without the trailing hash or slash.
+      // uses the namespace IRI, but without the trailing hash or slash.
       // We also provide the ontology IRI (if there was one), to only include
       // terms that start with that IRI (this was added specifically for the
       // strange HTTPH namespace document, that defines a term for the author
