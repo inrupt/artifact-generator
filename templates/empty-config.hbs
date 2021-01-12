@@ -6,19 +6,15 @@
 
 # The artifact name is shared among all the artifacts.
 artifactName: {{artifactName}}
-artifactGeneratorVersion: {{artifactGeneratorVersion}}
-{{#if versioning}}
+artifactGeneratorVersion: {{artifactGeneratorVersion}}{{#if versioning}}{{#if versioning.url}}
 versioning:
   type: {{versioning.type}}
-  url: {{versioning.url}}
-  {{#if versioning.versioningTemplates}}
+  url: {{versioning.url}}{{#if versioning.versioningTemplates}}
   versioningTemplates:
   {{#each versioning.versioningTemplates}}
     - template: "{{template}}"
       fileName: "{{fileName}}"
-  {{/each}}
-  {{/if}}
-{{/if}}
+  {{/each}}{{/if}}{{/if}}{{/if}}
 
 artifactToGenerate:
   {{#each artifactToGenerate}}

@@ -291,12 +291,14 @@ class ArtifactGenerator {
           );
         }
 
-        debug(`Generating [${artifactDetails.programmingLanguage}] packaging`);
-
         // TODO: manage repositories properly
         this.artifactData.gitRepository = artifactDetails.gitRepository;
         this.artifactData.repository = artifactDetails.repository;
         artifactDetails.packaging.forEach((packagingDetails) => {
+          debug(
+            `Generating [${artifactDetails.programmingLanguage}] packaging for [${packagingDetails.packagingTool}]`
+          );
+
           FileGenerator.createPackagingFiles(
             this.artifactData,
             artifactDetails,
