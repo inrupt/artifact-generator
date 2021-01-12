@@ -1,0 +1,24 @@
+import pkg from "./package.json";
+import resolve from "@rollup/plugin-node-resolve";
+
+export default {
+  input: "./index.js",
+  output: [
+    {
+      file: pkg.main,
+      format: "cjs",
+    },
+    {
+      file: pkg.module,
+      format: "esm",
+    },
+    {
+      dir: "umd",
+      format: "umd",
+      name: "{{bundleName}}",
+    },
+  ],
+  plugins: [
+    resolve()
+  ],
+};

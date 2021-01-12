@@ -273,9 +273,7 @@ describe("End-to-end tests", () => {
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
-      expect(output).toEqual(
-        expect.stringContaining('Person: RDFJS_NAMESPACE("Person"),')
-      );
+      expect(output).toEqual(expect.stringContaining('Person: _NS("Person"),'));
     });
 
     it("should create from an ontology link", async () => {

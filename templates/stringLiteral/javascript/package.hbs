@@ -36,16 +36,10 @@
   },
 {{/if}}
   "dependencies": {
-    "@types/rdf-js": "{{rdfjsTypesVersion}}",
-    "@rdfjs/data-model": "{{rdfjsImplVersion}}"
   },
   "devDependencies": {
-    "typescript": "{{typescriptVersion}}",
-    "@types/rdfjs__dataset": "{{rdfjsDatasetTypesVersion}}"{{#if supportBundling}},
-    "rollup": "{{rollupVersion}}",
-    "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
+    {{#if supportBundling}}"rollup": "{{rollupVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
-    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
-  {{/if}}
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
   }
 }

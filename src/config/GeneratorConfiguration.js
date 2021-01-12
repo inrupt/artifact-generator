@@ -583,21 +583,24 @@ class GeneratorConfiguration {
   }
 
   /**
-   * If receiving the config from the command line, some information may be missing that we know the vocabulary generation
-   * will not provide. These must be asked to the user.
-   *
+   * If receiving the config from the command line, some information may be
+   * missing that we know the vocabulary generation will not provide. These must
+   * be provided by the user.
    */
   async completeInitialConfiguration() {
+    // TODO: This check is not correct - it's being called even if we process a
+    //  configuration file, and that config might just generate using string
+    //  literals, and not require this library at all...
     if (!this.configuration.artifactToGenerate[0].solidCommonVocabVersion) {
-      if (!this.configuration.noprompt) {
-        const input = await CommandLine.askForsolidCommonVocabVersion();
-        this.configuration.artifactToGenerate[0].solidCommonVocabVersion =
-          input.solidCommonVocabVersion;
-      } else {
+      if (this.configuration.noprompt) {
         throw new Error(
           "Missing Solid Common Vocab version: The Solid Common Vocab version was not provided as a CLI option, and user prompting is deactivated."
         );
       }
+
+      const input = await CommandLine.askForSolidCommonVocabVersion();
+      this.configuration.artifactToGenerate[0].solidCommonVocabVersion =
+        input.solidCommonVocabVersion;
     }
 
     return this;
