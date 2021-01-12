@@ -2,9 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 0.13.1
+## 0.13.2
 
-### New features
+- Allow repository in package.json to be optional on whether an URL is provided
+  in the YAML.
+
+## 0.13.1
 
 - Added string literal templates for Java and JavaScript.
 
