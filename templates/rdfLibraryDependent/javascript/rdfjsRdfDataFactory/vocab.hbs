@@ -19,7 +19,7 @@ const rdfFactory = new DataFactory();
 
 const _NAMESPACE = "{{namespace}}";
 function _NS (localName) {
-  return (_NAMESPACE + localName);
+  return rdfFactory.namedNode(_NAMESPACE + localName);
 }
 
 const {{vocabNameUpperCase}} = {
@@ -36,7 +36,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{{name}}}"),
+  {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
 {{/if}}{{#if properties}}
 
@@ -48,7 +48,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{{name}}}"),
+  {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
 {{/if}}{{#if literals}}
 
@@ -60,7 +60,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{{name}}}"),
+  {{nameEscapedForLanguage}}: _NS"{{{name}}}"),
 {{/each}}
 {{/if}}{{#if constantStrings}}
 
@@ -87,7 +87,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+  {{nameEscapedForLanguage}}: _NS"{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
 {{/each}}{{/if}}
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).

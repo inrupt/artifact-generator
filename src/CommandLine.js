@@ -13,7 +13,7 @@ module.exports = class CommandLine {
     return path.dirname(directory);
   }
 
-  static async askForsolidCommonVocabVersion() {
+  static async askForSolidCommonVocabVersion() {
     return inquirer.prompt({
       type: "input",
       name: "solidCommonVocabVersion",
