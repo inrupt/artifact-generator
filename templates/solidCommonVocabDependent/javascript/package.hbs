@@ -21,14 +21,11 @@
   ],
 {{/if}}
 {{#if license}}
-  "license": "{{license/name}}",
-{{/if}}
-{{#if versioning}}
+  "license": "{{license/name}}",{{/if}}{{#if versioning}}{{#if versioning.url}}
   "repository": {
     "type": "{{versioning.type}}",
     "url": "{{versioning.url}}"
-  },
-{{/if}}
+  },{{/if}}{{/if}}
   "dependencies": {
     "@inrupt/solid-common-vocab": "{{solidCommonVocabVersion}}",
     "@rdfjs/data-model": "{{rdfjsImplVersion}}"

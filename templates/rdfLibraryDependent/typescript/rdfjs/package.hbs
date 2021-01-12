@@ -27,14 +27,11 @@
   ],
 {{/if}}
 {{#if license}}
-  "license": "{{license/name}}",
-{{/if}}
-{{#if versioning}}
+  "license": "{{license/name}}",{{/if}}{{#if versioning}}{{#if versioning.url}}
   "repository": {
     "type": "{{versioning.type}}",
     "url": "{{versioning.url}}"
-  },
-{{/if}}
+  },{{/if}}{{/if}}
   "dependencies": {
     "@types/rdf-js": "{{rdfjsTypesVersion}}",
     "@rdfjs/data-model": "{{rdfjsImplVersion}}"

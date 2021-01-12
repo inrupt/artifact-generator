@@ -148,7 +148,8 @@ class ConfigFileGenerator {
       repositoryConfig.url = (
         await inquirer.prompt(REPOSITORY_URL)
       ).repositoryUrl;
-      // Each repository type may be associated to specific files (e.g. a .gitignore).
+      // Each repository type may be associated with specific files (e.g. a
+      // .gitignore).
       if (repositoryConfig.type === GIT) {
         const template = (await inquirer.prompt(GITIGNORE_TEMPLATE))
           .gitignoreTemplate;
@@ -162,8 +163,8 @@ class ConfigFileGenerator {
       }
     }
 
-    // If the type is not set, return null to avoid adding an empty element to the target
-    // configuration object.
+    // If the type is not set, return null to avoid adding an empty element to
+    // the target configuration object.
     return repositoryConfig.type ? repositoryConfig : null;
   }
 
