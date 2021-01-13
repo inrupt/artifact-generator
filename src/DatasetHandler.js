@@ -386,7 +386,9 @@ module.exports = class DatasetHandler {
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
       result.vocabName
     );
-    result.description = this.findDescription();
+    result.description = this.findDescription(
+      this.vocabData.descriptionFallback
+    );
     result.artifactVersion = this.vocabData.artifactVersion;
     result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
     result.npmRegistry = this.vocabData.npmRegistry;
@@ -666,7 +668,7 @@ module.exports = class DatasetHandler {
     return name.toUpperCase().replace(/-/g, "_");
   }
 
-  findDescription() {
+  findDescription(descriptionFallback) {
     return this.findOwlOntology((owlOntologyTerms) => {
       const onologyComments = this.fullDataset.match(
         owlOntologyTerms.subject,
@@ -674,8 +676,11 @@ module.exports = class DatasetHandler {
         null
       );
 
-      return DatasetHandler.firstDatasetValue(onologyComments, "");
-    });
+      return DatasetHandler.firstDatasetValue(
+        onologyComments,
+        descriptionFallback
+      );
+    }, descriptionFallback);
   }
 
   findAuthors() {

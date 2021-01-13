@@ -15,11 +15,11 @@
  */
 
 import { DataFactory } from 'rdf-data-factory';
-import * as RDF from 'rdf-js';
+import * as RdfTypes from 'rdf-js';
 
-const rdfFactory: RDF.DataFactory = new DataFactory();
+const rdfFactory: RdfTypes.DataFactory = new DataFactory();
 
-function _NS(localName: string): RDF.NamedNode {
+function _NS(localName: string): RdfTypes.NamedNode {
   return rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 
