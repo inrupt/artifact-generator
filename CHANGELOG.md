@@ -2,6 +2,15 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.13.3
+
+- Use the vocabulary description from the YAML configuration file as a fallback
+  description if the vocabulary itself doesn't provide a description that we
+  can detect.
+  
+- Re-instate the generation of the RDF vocabulary (it was temporarily removed
+  due to name clashes).
+
 ## 0.13.2
 
 - Allow repository in package.json to be optional on whether an URL is provided
