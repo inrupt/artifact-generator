@@ -61,9 +61,10 @@ module.exports = class Resource {
         this.termSelectionResource
       );
 
-      // We also add the terms from this resource to our collection of input datasets, since we expect it to contain
-      // possible extensions (e.g. translations of labels of comments into new languages, or possibly completely new
-      // terms).
+      // We also add the terms from this resource to our collection of input
+      // datasets, since we expect it to contain possible extensions (e.g.,
+      // translations of labels or comments into new languages, or possibly
+      // completely new terms).
       datasets.push(termsSelectionDataset);
     }
 

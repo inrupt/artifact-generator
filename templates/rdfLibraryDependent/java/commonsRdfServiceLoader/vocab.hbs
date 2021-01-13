@@ -13,7 +13,6 @@ package {{javaPackageName}};
 
 import static java.util.ServiceLoader.load;
 
-import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.IRI;
 
 /**
@@ -25,7 +24,11 @@ public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";
 
-    private static final RDF valueFactory = load(RDF.class).findFirst()
+    // Fully qualify the RDF instance here to prevent a name clash when
+    // generating from the RDF vocabulary (as we want the name of that generated
+    // class to be 'RDF' too!).
+    private static final org.apache.commons.rdf.api.RDF valueFactory =
+        load(org.apache.commons.rdf.api.RDF.class).findFirst()
         .orElseThrow(() -> new RuntimeException("No RDF Commons implementation available - cannot initialise vocabulary [{{vocabNameUpperCase}}]!"));
 
     public static final IRI NAMESPACE_IRI = valueFactory.createIRI("{{namespace}}");

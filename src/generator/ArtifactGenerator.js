@@ -190,6 +190,7 @@ class ArtifactGenerator {
           getArtifactDirectorySourceCode(this.artifactData),
           artifactDetails.artifactDirectoryName
         );
+
         return result;
       }
     );
@@ -222,6 +223,12 @@ class ArtifactGenerator {
             vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
+          // Just in case the vocabulary itself does not provide a description
+          // of itself, we pass down the description from our configuration as
+          // a fallback (and prefix that description with some text to denote
+          // that it's not coming from the original vocabulary itself).
+          this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+
           // Generate this vocab for each artifact we are generating for.
           const artifactPromises = this.artifactData.artifactToGenerate.map(
             (artifactDetails) => {
@@ -234,15 +241,18 @@ class ArtifactGenerator {
 
           // Wait for all our artifacts to be generated.
           await Promise.all(artifactPromises);
+
           // Only return the first one, as we don't want duplicate info.
           return artifactPromises[0];
         })
       );
     }
 
-    // In this case, the generation is not necessary
+    // In this case, the generation is not necessary.
     this.artifactData.generated = false;
-    // If the generation is not necessary, we just return the initial configuration object
+
+    // If the generation is not necessary, we just return the initial
+    // configuration object.
     return this.artifactData;
   }
 

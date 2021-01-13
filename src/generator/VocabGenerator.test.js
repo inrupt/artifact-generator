@@ -844,7 +844,8 @@ describe("Artifact generator unit tests", () => {
       expect(result.artifactName).toBe("generated-vocab-ext-prefix");
       expect(result.namespace).toBe("http://rdf-extension.com");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
-      expect(result.description).toBe("");
+      expect(result.description).toBeUndefined();
+      expect(result.descriptionFallback).toBeUndefined();
     });
 
     it("should read authors from owl:Ontology terms", () => {
