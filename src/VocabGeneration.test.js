@@ -199,8 +199,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  // it.skip("tests a single custom vocab", async () => {
-  it("tests a single custom vocab", async () => {
+  it.skip("tests a single custom vocab", async () => {
+    // it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
