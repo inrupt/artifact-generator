@@ -902,20 +902,22 @@ describe("Managing remote vocabularies failures", () => {
         outputDirectoryForArtifact: path.join(
           "test",
           "Generated",
+          "UNIT_TEST",
           "VocabGenerator",
           "previouslyGenerated"
         ),
       }
     );
-    const targetDir = path.join(
+    const outputDir = path.join(
       "test",
       "Generated",
+      "UNIT_TEST",
       "VocabGenerator",
       "previouslyGenerated",
       "GeneratedVocab"
     );
-    const targetFile = path.join(targetDir, "TEST.js");
-    fs.mkdirSync(targetDir, { recursive: true });
+    const targetFile = path.join(outputDir, "TEST.js");
+    fs.mkdirSync(outputDir, { recursive: true });
     fs.writeFileSync(targetFile, "This is a test file");
 
     // If the vocabulary cannot be parsed, the following object is returned
@@ -945,20 +947,22 @@ describe("Managing remote vocabularies failures", () => {
         outputDirectoryForArtifact: path.join(
           "test",
           "Generated",
+          "UNIT_TEST",
           "VocabGenerator",
           "notPreviouslyGenerated"
         ),
       }
     );
 
-    const targetDir = path.join(
+    const outputDir = path.join(
       "test",
       "Generated",
+      "UNIT_TEST",
       "VocabGenerator",
       "notPreviouslyGenerated",
       "GeneratedVocab"
     );
-    fs.mkdirSync(targetDir, { recursive: true });
+    fs.mkdirSync(outputDir, { recursive: true });
 
     // If the vocabulary cannot be parsed, the following object is returned
     const vocabGenerationData = {

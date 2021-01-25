@@ -171,7 +171,7 @@ describe("Generator configuration", () => {
     });
 
     it("should be ok if our Artifact Generator version matches the version number in the specified config file", async () => {
-      const configDirectory = "./test/Generated/YamlConfig";
+      const configDirectory = "./test/Generated/UNIT_TEST/YamlConfig";
       const configPath = `${configDirectory}/vocab-list-version-match.yml`;
 
       // We need to create a local config file with the correct (i.e. our
@@ -341,12 +341,15 @@ describe("Generator configuration", () => {
 
     // SUCCESS CASE
     it("should generate collected configuration from command line", async () => {
+      const argNamespaceOverride =
+        "override namespace (should be an IRI really!)";
       const generatorConfiguration = new GeneratorConfiguration(
         {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           moduleNamePrefix: "@inrupt/generated-vocab-",
           nameAndPrefixOverride: "dummy-test",
+          namespaceOverride: argNamespaceOverride,
           noprompt: true,
         },
         undefined
@@ -358,8 +361,10 @@ describe("Generator configuration", () => {
         {
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           nameAndPrefixOverride: "dummy-test",
+          namespaceOverride: argNamespaceOverride,
         },
       ]);
+
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(
         DEFAULT_CLI_ARTIFACT
       );

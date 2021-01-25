@@ -74,7 +74,7 @@ const ConfigInruptUiCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/InruptUiCommon",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/UiCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
   npmRegistry: NPM_REGISTRY,
@@ -87,7 +87,7 @@ const ConfigInruptService = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/InruptService",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Service",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Service/Vocab-List-Inrupt-Service.yml",
   npmRegistry: NPM_REGISTRY,
@@ -100,7 +100,7 @@ const ConfigSolidCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidCommon",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/Common",
   vocabListFile:
     "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid-Common.yml",
   npmRegistry: NPM_REGISTRY,
@@ -113,7 +113,7 @@ const ConfigSolidComponent = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidComponent",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/Component",
   inputResources: [
     "../solid-common-vocab-rdf/solid-rdf/Component/SolidComponent.ttl",
   ],
@@ -131,7 +131,7 @@ const ConfigSolidGeneratorUi = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/SolidGeneratorUi",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/GeneratorUi",
   inputResources: [
     "../solid-common-vocab-rdf/solid-rdf/GeneratorUi/SolidGeneratorUi.ttl",
   ],
@@ -199,14 +199,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  it.skip("tests a single custom vocab", async () => {
-    // it("tests a single custom vocab", async () => {
+  // it.skip("tests a single custom vocab", async () => {
+  it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
 
-      inputResources: ["https://calum.inrupt.net/public/voc/mudchar.ttl"],
-      nameAndPrefixOverride: "mudchar",
+      inputResources: ["https://ontologies.semanticarts.com/o/gistCore9.5.0"],
+      nameAndPrefixOverride: "gistCore",
+      namespaceOverride: "https://ontologies.semanticarts.com/gist/",
 
       // inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
       // nameAndPrefixOverride: "test",
@@ -240,7 +241,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       _: "generate",
       force: true,
       clearOutputDirectory: true,
-      outputDirectory: "./test/Generated",
+      outputDirectory: "./test/Generated/GENERATE_CUSTOM",
       artifactVersion: "1.0.0",
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",

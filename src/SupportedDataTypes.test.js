@@ -9,7 +9,8 @@ const { getArtifactDirectorySourceCode } = require("./Util");
 
 describe("Supported Data Type", () => {
   it("should test the special-case handling for the OWL vocabulary", async () => {
-    const outputDirectory = "test/Generated/SupportedDataType/owl-test";
+    const outputDirectory =
+      "test/Generated/UNIT_TEST/SupportedDataType/owl-test";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
@@ -62,7 +63,8 @@ describe("Supported Data Type", () => {
   });
 
   it("should test the special-case handling for the HTTP vocabulary", async () => {
-    const outputDirectory = "test/Generated/SupportedDataType/http-test";
+    const outputDirectory =
+      "test/Generated/UNIT_TEST/SupportedDataType/http-test";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
@@ -115,7 +117,8 @@ describe("Supported Data Type", () => {
   });
 
   it("should fail with invalid IRI", async () => {
-    const outputDirectory = "test/Generated/SupportedDataType/invalid-iri";
+    const outputDirectory =
+      "test/Generated/UNIT_TEST/SupportedDataType/invalid-iri";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
@@ -149,7 +152,7 @@ describe("Supported Data Type", () => {
 
   it("should fail with too many constant IRI values", async () => {
     const outputDirectory =
-      "test/Generated/SupportedDataType/too-many-constant-iri-values";
+      "test/Generated/UNIT_TEST/SupportedDataType/too-many-constant-iri-values";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
@@ -183,7 +186,7 @@ describe("Supported Data Type", () => {
 
   it("should fail with too many constant string values", async () => {
     const outputDirectory =
-      "test/Generated/SupportedDataType/too-many-constant-string-values";
+      "test/Generated/UNIT_TEST/SupportedDataType/too-many-constant-string-values";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 
@@ -216,7 +219,8 @@ describe("Supported Data Type", () => {
   });
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
-    const outputDirectory = "test/Generated/SupportedDataType/data-types";
+    const outputDirectory =
+      "test/Generated/UNIT_TEST/SupportedDataType/data-types";
     const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
     await del([`${outputDirectory}/*`]);
 

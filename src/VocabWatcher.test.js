@@ -14,7 +14,7 @@ const VOCAB_LIST_PATH_ALTERNATE = "./test/resources/watcher/vocab-list.yaml";
 const VOCAB_LIST_PATH_ONLINE_ONLY =
   "./test/resources/watcher/vocab-list-online-only.yml";
 const VOCAB_LIST_PATH_GLOB = "./test/resources/glob/**/*.yml";
-const OUTPUT_DIRECTORY = "./test/Generated/watcher/initial/";
+const OUTPUT_DIRECTORY = "./test/Generated/UNIT_TEST/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
