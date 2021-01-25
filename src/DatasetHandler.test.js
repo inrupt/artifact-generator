@@ -194,7 +194,7 @@ describe("Dataset Handler", () => {
 
     expect(() => {
       handler.findPreferredNamespacePrefix();
-    }).toThrow("No prefix defined");
+    }).toThrow("No vocabulary prefix defined");
   });
 
   it("should not fail for known namespaces without prefix", () => {

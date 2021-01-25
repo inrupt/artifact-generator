@@ -150,8 +150,8 @@ class GeneratorConfiguration {
     const normalizedVocabConfig = vocabConfig;
     for (let i = 0; i < vocabConfig.inputResources.length; i += 1) {
       if (!normalizedVocabConfig.inputResources[i].startsWith("http")) {
-        // The vocab path is normalized by appending the normalized path of the YAML file to
-        // the vocab path.
+        // The vocab path is normalized by appending the normalized path of the
+        // configuration file to the vocab path.
         normalizedVocabConfig.inputResources[i] = path.join(
           path.dirname(normalizedConfigPath),
           // Vocabularies are all made relative to the YAML file
@@ -168,8 +168,8 @@ class GeneratorConfiguration {
 
   /**
    * Normalizes a path relative to the config file. If the path is absolute,
-   * it is returned as is, and if it was relative to the config file, an equivalent
-   * absolute path is returned, resolved to the running environment.
+   * it is returned as is, and if it was relative to the config file, an
+   * equivalent absolute path is returned, resolved to the running environment.
    * @param {*} relativePath The pat to normalize
    * @param {*} configSource The path to the configuration file
    */
@@ -310,9 +310,9 @@ class GeneratorConfiguration {
   }
 
   /**
-   *  This function makes the local vocabulary path relative to the root of the project,
-   *  rather that to the configuration file. It makes it consistent with vocabularies passed
-   *  on the command line.
+   * This function makes the local vocabulary path relative to the root of the
+   * project, rather that to the configuration file. It makes it consistent
+   * with vocabularies passed on the command line.
    * @param {*} config the path of the vocabulary, relative to the configuration file
    * @param {*} configSource the path to the configuration file, relative to the project root
    */
@@ -342,8 +342,9 @@ class GeneratorConfiguration {
   }
 
   /**
-   * This function takes an absolute path, and makes it relative to the provided base. If the provided path is
-   * already relative, it is returned without modification.
+   * This function takes an absolute path, and makes it relative to the provided
+   * base. If the provided path is already relative, it is returned without
+   * modification.
    * @param {*} absolute the absolute path to the vocabulary
    * @param {*} base the path we want the vocabulary to be relative to (typically the project root)
    */
@@ -500,19 +501,30 @@ class GeneratorConfiguration {
     return vocab;
   }
 
+  /**
+   * Takes command line arguments, and uses them to build a configuration
+   * instance (as if we had read a configuration file that just referred to a
+   * single vocab (since that's all we can reasonably configure on a single
+   * command-line)).
+   *
+   * @param args command-line arguments
+   * @returns {{}} a configuration instance built from the command-line args
+   */
   static fromCommandLine(args) {
     const cliConfig = {};
     GeneratorConfiguration.validateCommandline(args);
 
-    // It is assumed that by default, all vocabularies are resources for the same artifact.
-    // The most common case for using the command line is providing a single vocab anyways.
+    // It is assumed that by default, all vocabularies are resources for the
+    // same artifact. The most common case for using the command line is
+    // providing a single vocab anyways.
     cliConfig.vocabList = [GeneratorConfiguration.collectVocabFromCLI(args)];
 
     cliConfig.outputDirectoryForArtifact = `${
       args.outputDirectory
     }${getArtifactDirectorySourceCode(args)}/JavaScript`;
 
-    // We weren't provided with a configuration file, so manually provide defaults.
+    // We weren't provided with a configuration file, so manually provide
+    // defaults.
     const packagingInfo = NPM_DEFAULT;
 
     // If the registry is set on the command line, override default.
@@ -568,12 +580,17 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].nameAndPrefixOverride = args.nameAndPrefixOverride;
     }
 
+    if (args.namespaceOverride) {
+      cliConfig.vocabList[0].namespaceOverride = args.namespaceOverride;
+    }
+
     return cliConfig;
   }
 
   /**
-   * This function is asked when generating a single vocab, if processing the vocab did not provide the expected
-   * additional information. These information may be completed when generating the vocabularies, and will not
+   * This function is asked when generating a single vocab, if processing the
+   * vocab did not provide the expected additional information. These
+   * information may be completed when generating the vocabularies, and will not
    * necessarily be asked to the user.
    */
   askAdditionalQuestions() {

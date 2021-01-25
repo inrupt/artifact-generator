@@ -69,6 +69,15 @@ yargs
           "Globbing pattern for files or directories to ignore when searching for vocabulary list files."
         )
 
+        // This override is really only relevant if we are generating from a
+        // single vocabulary - if used with a vocab list file, it only applies
+        // to the first vocabulary listed.
+        .alias("no", "namespaceOverride")
+        .describe(
+          "namespaceOverride",
+          "Overrides our namespace determination code to provide an explicit namespace IRI."
+        )
+
         .alias("lv", "solidCommonVocabVersion")
         .describe(
           "solidCommonVocabVersion",
@@ -158,8 +167,9 @@ yargs
         // Can't provide an explicit version, and then also request a version bump!
         .conflicts("artifactVersion", "bumpVersion")
 
-        // Must provide either an input vocab file, or a file containing a list of vocab files (but how can we demand at
-        // least one of these two...?)
+        // Must provide either an input vocab file, or a file containing a
+        // list of vocab files (but how can we demand at least one of these
+        // two...?).
         .conflicts("inputResources", "vocabListFile")
         .strict(),
     (argv) => {

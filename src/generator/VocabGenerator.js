@@ -88,7 +88,7 @@ module.exports = class VocabGenerator {
           resolve(parsed);
         })
         .catch((error) => {
-          const result = `Failed to generate from input [${inputResources}]: [${error.toString()}]. Stack: ${error.stack.toString()}`;
+          const result = `Failed to generate from input [${inputResources}]: [${error.toString()}].\n\nStack: ${error.stack.toString()}`;
           reject(new Error(result));
         });
     });

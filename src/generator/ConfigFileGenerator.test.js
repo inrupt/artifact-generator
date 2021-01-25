@@ -21,7 +21,7 @@ const {
 // it is unlikely https://en.wikipedia.org/wiki/Brainfuck#Derivatives).
 const UNSUPPORTED_LANGUAGE = "Ook";
 
-const TARGET_DIR = "./test/Generated/ConfigFileGenerator/";
+const OUTPUT_DIR = "test/Generated/UNIT_TEST/ConfigFileGenerator/";
 const REFERENCE_YAML_PROMPTED =
   "./test/resources/expectedOutputs/sample-vocab.yml";
 const REFERENCE_YAML_DEFAULT =
@@ -186,7 +186,7 @@ describe("ConfigFile Generator", () => {
   });
 
   it("should fail when using an invalid config at generation time", () => {
-    const targetPath = path.join(TARGET_DIR, "vocab-list.yml");
+    const targetPath = path.join(OUTPUT_DIR, "vocab-list.yml");
     const configGenerator = new ConfigFileGenerator();
     configGenerator.config = INVALID_CONFIG;
     expect(() => {
@@ -232,10 +232,10 @@ describe("ConfigFile Generator", () => {
   });
 
   it("should generate a complete file when directly setting the config", () => {
-    const targetPath = path.join(TARGET_DIR, "vocab-list-set.yml");
+    const targetPath = path.join(OUTPUT_DIR, "vocab-list-set.yml");
     const configGenerator = new ConfigFileGenerator();
     configGenerator.setConfig(COMPLETE_CONFIG);
-    fs.mkdirSync(TARGET_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }
@@ -247,9 +247,9 @@ describe("ConfigFile Generator", () => {
   });
 
   it("should generate a default file even with an empty config", () => {
-    const targetPath = path.join(TARGET_DIR, "vocab-list-empty.yml");
+    const targetPath = path.join(OUTPUT_DIR, "vocab-list-empty.yml");
     const configGenerator = new ConfigFileGenerator({});
-    fs.mkdirSync(TARGET_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }
@@ -262,7 +262,7 @@ describe("ConfigFile Generator", () => {
 
   it("should collect information from the user prompt (including git repository)", async () => {
     // The repository config from this test includes an 'versioningTemplates' field
-    const targetPath = path.join(TARGET_DIR, "vocab-list-git.yml");
+    const targetPath = path.join(OUTPUT_DIR, "vocab-list-git.yml");
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_GIT);
     const configGenerator = new ConfigFileGenerator();
     await configGenerator.collectConfigInfo();
@@ -272,7 +272,7 @@ describe("ConfigFile Generator", () => {
       configGenerator.config.generatedTimestamp;
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_GIT);
 
-    fs.mkdirSync(TARGET_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }
@@ -284,7 +284,7 @@ describe("ConfigFile Generator", () => {
   });
 
   it("should collect information from the user prompt (including svn repository)", async () => {
-    const targetPath = path.join(TARGET_DIR, "vocab-list-svn.yml");
+    const targetPath = path.join(OUTPUT_DIR, "vocab-list-svn.yml");
     // The repository config from this test does not include an 'versioningTemplates' field
     inquirer.prompt.mockImplementation(MOCK_REPO_PROMPT_SVN);
     const configGenerator = new ConfigFileGenerator();
@@ -295,7 +295,7 @@ describe("ConfigFile Generator", () => {
       configGenerator.config.generatedTimestamp;
     expect(configGenerator.config).toEqual(COMPLETE_CONFIG_SVN);
 
-    fs.mkdirSync(TARGET_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }

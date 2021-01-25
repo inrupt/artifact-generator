@@ -91,7 +91,7 @@ describe("Artifact Generator", () => {
 
     it("should generate artifact from vocab list file", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/vocab-list-file";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/vocab-list-file";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -109,7 +109,7 @@ describe("Artifact Generator", () => {
 
     it("should generate associated files from version control", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/vocab-versioning";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/vocab-versioning";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -130,7 +130,8 @@ describe("Artifact Generator", () => {
 
   describe("Processing command line vocab.", () => {
     it("Should generate artifact without bundling", async () => {
-      const outputDirectory = "test/Generated/ArtifactGenerator/no-bundling";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
@@ -157,7 +158,8 @@ describe("Artifact Generator", () => {
     });
 
     it("should not ask for user input if no information is missing", async () => {
-      const outputDirectory = "test/Generated/ArtifactGenerator/no-bundling";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
 
       const config = new GeneratorConfiguration({
         _: "generate",
@@ -184,7 +186,8 @@ describe("Artifact Generator", () => {
     });
 
     it("should ask for user input when version information missing", async () => {
-      const outputDirectory = "test/Generated/ArtifactGenerator/no-bundling";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
       // There are side-effects from test to test in the mocked functions, so we only count the new calls
       const before = inquirer.prompt.mock.calls.length;
       const config = new GeneratorConfiguration({
@@ -205,7 +208,8 @@ describe("Artifact Generator", () => {
     });
 
     it("Should generate artifact with bundling", async () => {
-      const outputDirectory = "test/Generated/ArtifactGenerator/bundling";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/bundling";
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
@@ -231,7 +235,8 @@ describe("Artifact Generator", () => {
     });
 
     it("Should not generate artifacts if the target directory is up-to-date", async () => {
-      const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
@@ -267,6 +272,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "Generated",
+        "UNIT_TEST",
         "ArtifactGenerator",
         "modify-input"
       );
@@ -329,6 +335,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "Generated",
+        "UNIT_TEST",
         "ArtifactGenerator",
         "modify-extension-input"
       );
@@ -423,6 +430,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "Generated",
+        "UNIT_TEST",
         "ArtifactGenerator",
         "modify-one-of-multiple-inputs"
       );
@@ -530,6 +538,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "Generated",
+        "UNIT_TEST",
         "ArtifactGenerator",
         "modify-config-file"
       );
@@ -617,7 +626,8 @@ describe("Artifact Generator", () => {
     });
 
     it("Should generate when forced, even if the target directory is up-to-date", async () => {
-      const outputDirectory = "./test/Generated/ArtifactGenerator/if-necessary";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
@@ -651,7 +661,8 @@ describe("Artifact Generator", () => {
     });
 
     it("Should clear the target directory if the option is set", async () => {
-      const outputDirectory = "./test/Generated/ArtifactGenerator/clear";
+      const outputDirectory =
+        "test/Generated/UNIT_TEST/ArtifactGenerator/clear";
       del.sync([`${outputDirectory}/*`]);
 
       if (!fs.existsSync(outputDirectory)) {
@@ -695,7 +706,7 @@ describe("Artifact Generator", () => {
   describe("Publishing artifacts", () => {
     it("should publish artifacts locally using templated command", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/templatedCommand";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/publish/templatedCommand";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -725,7 +736,7 @@ describe("Artifact Generator", () => {
 
     it("should publish artifacts locally if the publication option is specified, and we regenerated", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/optionSetLocal";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/publish/optionSetLocal";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -767,7 +778,7 @@ describe("Artifact Generator", () => {
 
     it("should not publish artifacts if generation was skipped", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/regenerate";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/publish/regenerate";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -804,7 +815,7 @@ describe("Artifact Generator", () => {
 
     it("should not attempt re-unpublish if failing command is not 'npm unpublish'", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/retryOnlyIfUnpublish";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/publish/retryOnlyIfUnpublish";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -832,7 +843,7 @@ describe("Artifact Generator", () => {
 
     it("should attempt re-unpublish if first attempt fails", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/publish/retryUnpublishFails";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/publish/retryUnpublishFails";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
@@ -855,7 +866,7 @@ describe("Artifact Generator", () => {
   describe("Missing packaging info.", () => {
     it("should throw with missing packaging info", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/backwardCompatibility/";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/backwardCompatibility/";
       del.sync([`${outputDirectory}/*`]);
 
       const yamlFile =
@@ -876,7 +887,7 @@ describe("Artifact Generator", () => {
   describe("License file generation", () => {
     it("should generate a license file", async () => {
       const outputDirectory =
-        "test/Generated/ArtifactGenerator/vocab-list-file";
+        "test/Generated/UNIT_TEST/ArtifactGenerator/vocab-list-file";
       del.sync([`${outputDirectory}/*`]);
 
       const config = new GeneratorConfiguration({
