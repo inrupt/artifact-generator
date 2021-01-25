@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- Added added namespace override to command line (needed to support generation
+  of GIST from custom generation test).
+- Tidied up test generation directory names to have all unit tests generated
+  under a UNIT_TEST directory.
+
 ## 0.13.3
 
 - Use the vocabulary description from the YAML configuration file as a fallback
