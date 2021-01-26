@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   of GIST from custom generation test).
 - Tidied up test generation directory names to have all unit tests generated
   under a UNIT_TEST directory.
+- Changed GitHub default branch to 'main'.
 
 ## 0.13.3
 
