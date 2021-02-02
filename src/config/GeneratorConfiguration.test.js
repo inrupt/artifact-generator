@@ -350,6 +350,7 @@ describe("Generator configuration", () => {
           moduleNamePrefix: "@inrupt/generated-vocab-",
           nameAndPrefixOverride: "dummy-test",
           namespaceOverride: argNamespaceOverride,
+          ignoreNonVocabTerms: true,
           noprompt: true,
         },
         undefined
@@ -362,6 +363,7 @@ describe("Generator configuration", () => {
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           nameAndPrefixOverride: "dummy-test",
           namespaceOverride: argNamespaceOverride,
+          ignoreNonVocabTerms: true,
         },
       ]);
 

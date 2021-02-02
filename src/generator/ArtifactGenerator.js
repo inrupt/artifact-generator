@@ -223,6 +223,9 @@ class ArtifactGenerator {
             vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
 
+          this.artifactData.ignoreNonVocabTerms =
+            vocabDetails.ignoreNonVocabTerms;
+
           // Just in case the vocabulary itself does not provide a description
           // of itself, we pass down the description from our configuration as
           // a fallback (and prefix that description with some text to denote
@@ -288,12 +291,20 @@ class ArtifactGenerator {
     );
   }
 
+  static concatIfDefined(input, value) {
+    return `${input}${value === undefined ? "" : value}`;
+  }
+
   async generatePackaging() {
     // If the artifacts have not been generated, it's not necessary to
     // re-package them, but also only generate if we are configured to generate.
     if (this.resourceGeneration()) {
-      this.artifactData.artifactToGenerate.forEach((artifactDetails, index) => {
-        if (!artifactDetails.packaging) {
+      // Collect info on all generated artifacts (using their full suggested
+      // names).
+      const generatedFullArtifactList = [];
+
+      this.artifactData.artifactToGenerate.forEach((artifactInfo, index) => {
+        if (!artifactInfo.packaging) {
           throw new Error(
             `No packaging information for artifact number [${index}] from ${describeInput(
               this.artifactData
@@ -302,29 +313,60 @@ class ArtifactGenerator {
         }
 
         // TODO: manage repositories properly
-        this.artifactData.gitRepository = artifactDetails.gitRepository;
-        this.artifactData.repository = artifactDetails.repository;
-        artifactDetails.packaging.forEach((packagingDetails) => {
+        this.artifactData.gitRepository = artifactInfo.gitRepository;
+        this.artifactData.repository = artifactInfo.repository;
+        artifactInfo.packaging.forEach((packagingInfo) => {
           debug(
-            `Generating [${artifactDetails.programmingLanguage}] packaging for [${packagingDetails.packagingTool}]`
+            `Generating [${artifactInfo.programmingLanguage}] packaging for [${packagingInfo.packagingTool}]`
           );
+
+          // As a mere convenience, we generate what we think should be the full
+          // artifact name too - but templates are completely free to create their
+          // own interpretations as they see fit.
+          const suggestedFullArtifactName = ArtifactGenerator.concatIfDefined(
+            ArtifactGenerator.concatIfDefined(
+              ArtifactGenerator.concatIfDefined(
+                ArtifactGenerator.concatIfDefined(
+                  ArtifactGenerator.concatIfDefined(
+                    "",
+                    // If we have a Java GroupID, then suffix it with a colon
+                    // (as that's the Java convention).
+                    packagingInfo.groupId === undefined
+                      ? ""
+                      : `${packagingInfo.groupId}:`
+                  ),
+                  packagingInfo.npmModuleScope
+                ),
+                artifactInfo.artifactPrefix
+              ),
+              this.artifactData.artifactName
+            ),
+            artifactInfo.artifactSuffix
+          );
+
+          artifactInfo.suggestedFullArtifactName = suggestedFullArtifactName;
+          generatedFullArtifactList.push({
+            programmingLanguage: artifactInfo.programmingLanguage,
+            suggestedFullArtifactName,
+          });
 
           FileGenerator.createPackagingFiles(
             this.artifactData,
-            artifactDetails,
-            packagingDetails
+            artifactInfo,
+            packagingInfo
           );
         });
       });
 
       // Generate README in the root. First convert our bundle description into
       // Markdown (the format for README files).
-      const dataWithMarkdownDescription = FileGenerator.convertDescriptionToMarkdown(
-        this.artifactData
-      );
+      const dataWithMarkdownDescription = {
+        ...FileGenerator.convertDescriptionToMarkdown(this.artifactData),
+        generatedFullArtifactList,
+      };
 
       FileGenerator.createFileFromTemplate(
-        `${__dirname}/../../templates/README.hbs`,
+        `${__dirname}/../../templates/README-artifactBundle.hbs`,
         dataWithMarkdownDescription,
         path.join(
           this.artifactData.outputDirectory,

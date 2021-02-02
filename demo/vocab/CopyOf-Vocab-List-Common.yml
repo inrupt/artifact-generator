@@ -16,7 +16,7 @@
 # Local vocabularies can be provided relative to the location of this resource
 # list file.
 #
-# Note: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL LIT-COMMON ARTIFACT
+# Note: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL COMMON ARTIFACT
 # (as of August 2019). WE DO *NOT* APPLY OUR EXTENSIONS HERE FOR VOCABS LIKE
 # Schema.org, OR VCard (OR INCLUDE LOCAL REFERENCES TO VOCABS THAT DON'T HAVE
 # TURTLE SERIALIZATIONS (LIKE the VANN OR HTTP VOCABS) AS WE'D NEED TO
@@ -117,24 +117,6 @@ vocabList:
 ##      - http://www.w3.org/2009/08/skos-reference/skos.rdf
 ##      - http://www.w3.org/2004/02/skos/core#
 #      - ./rdf/CopyOfVocabs/skos-as-turtle.ttl
-
-  # Tim Berners-Lee's UI vocabulary.
-  #
-  # Currently fails generation process with this error (i.e. terms uses '#', but namespace ends in '/'...
-  #   Vocabulary term [http://www.w3.org/ns/ui#NumericField] found that is not in our namespace [https://www.w3.org/ns/] - currently this is disallowed (as it indicates a probable typo!)
-  #
-#  - description: ui
-#    inputResources:
-#      - https://www.w3.org/ns/ui.ttl
-
-#  - description: The Core vocabulary
-#    inputResources:
-#      - ./rdf/OntologyDirMarker/Lit-Core.ttl
-#
-#  - description: The Consent vocabulary
-#    inputResources:
-#      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
-#      - ./rdf/OntologyDirMarker/Lit-Consent.ttl
 
   #
   # Could not find an RDF representation for VANN initially, so I created my

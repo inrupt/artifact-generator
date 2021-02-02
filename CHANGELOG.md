@@ -9,6 +9,18 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Tidied up test generation directory names to have all unit tests generated
   under a UNIT_TEST directory.
 - Changed GitHub default branch to 'main'.
+- Added support for 'ignoreNonVocabTerms' option (for vocabs that define terms
+  not within their namespace (this should be rare, but can be done to add
+  vocab-specific context (see https://www.w3.org/TR/dx-prof-conneg/altr.ttl
+  for an example, defining 'rdf:Resource', 'dcterms:conformsTo', etc.))).
+- Split the README for individual artifacts from the README for the overall
+  generation operation (which now lists all individual artifact generated).
+
+## Bug fixes
+
+- README of generated artifacts didn't have the full artifact name, just the
+  name of the overall artifact (i.e., it was missing (if specified at all) the
+  npm module name, the prefix and suffix).
 
 ## 0.13.3
 

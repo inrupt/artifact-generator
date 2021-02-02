@@ -161,9 +161,9 @@ class FileGenerator {
 
   /**
    * Converts the description property of the passed object to a
-   * Markdown-suitable format by converting new-lines into multiple lines and
+   * Markdown-suitable format by converting newlines into multiple lines and
    * adding a bullet-point, if and only if that object has a vocabulary list
-   * file (i.e. if it has multiple vocabularies).
+   * file (i.e., if it has multiple vocabularies).
    *
    * @param data the configuration object
    * @returns {*}
@@ -179,24 +179,24 @@ class FileGenerator {
 
   /**
    * This function creates the files that are shared across all packaging
-   * (i.e. README, .gitignore, etc.).
+   * (i.e., README, .gitignore, etc.).
    * @param generalInfo
    * @param artifactInfo
    */
   static createSharedPackagedFiles(generalInfo, artifactInfo) {
-    // For our README (which uses Markdown format), if our artifact was made up
-    // of multiple vocabs, break up our description into a list representation.
-    // TODO: if a vocab description contains a newline, this will split it out
-    //  into another list item!
-    const dataWithMarkdownDescription = {
+    const generalAndArtifactInfo = {
+      // For our README (which uses Markdown format), if our artifact was made up
+      // of multiple vocabs, break up our description into a list representation.
+      // TODO: if a vocab description contains a newline, this will split it out
+      //  into another list item!
       ...FileGenerator.convertDescriptionToMarkdown(generalInfo),
-      artifactVersion: artifactInfo.artifactVersion,
+      ...artifactInfo,
     };
 
     // Generate README in source code root directory.
     FileGenerator.createFileFromTemplate(
-      `${__dirname}/../../templates/README.hbs`,
-      dataWithMarkdownDescription,
+      `${__dirname}/../../templates/README-package.hbs`,
+      generalAndArtifactInfo,
       path.join(
         generalInfo.outputDirectory,
         getArtifactDirectorySourceCode(generalInfo),
