@@ -584,6 +584,10 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].namespaceOverride = args.namespaceOverride;
     }
 
+    if (args.ignoreNonVocabTerms) {
+      cliConfig.vocabList[0].ignoreNonVocabTerms = args.ignoreNonVocabTerms;
+    }
+
     return cliConfig;
   }
 

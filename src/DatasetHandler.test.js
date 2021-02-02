@@ -64,6 +64,26 @@ describe("Dataset Handler", () => {
     });
   });
 
+  it("should ignore vocab terms not in our namespace, if configured to do so", () => {
+    const dataset = rdf
+      .dataset()
+      .addAll(vocabMetadata)
+      .add(
+        rdf.quad(
+          rdf.namedNode("https://ex.com/different-namespace#term"),
+          RDF.type,
+          RDFS.Class
+        )
+      );
+
+    const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      inputResources: ["does not matter"],
+      ignoreNonVocabTerms: true,
+    });
+    const result = handler.buildTemplateInput();
+    expect(result.classes.length).toEqual(0);
+  });
+
   it("should makes exceptions for vocab terms found in common vocabs - RDF:langString", () => {
     const dataset = rdf
       .dataset()

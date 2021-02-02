@@ -101,6 +101,22 @@ module.exports = class DatasetHandler {
       !fullName.startsWith(namespace) &&
       !fullName.startsWith(this.vocabData.namespaceOverride)
     ) {
+      // Some vocabs define terms that are not actually defined in the
+      // vocabulary itself. For instance the vocabulary defined as part of the
+      // W3C Content Negotiation by Profile work
+      // (https://www.w3.org/TR/dx-prof-conneg/altr.ttl)
+      // defines 'rdf:Resource', and a couple of Dublin Core terms, to provide
+      // extra contextual information for the vocabulary itself.
+      // Normally we'd throw an error on encountering such terms, as it can
+      // indicate a simple typo - but this can be overridden using this option
+      // if needed.
+      if (this.vocabData.ignoreNonVocabTerms) {
+        debug(
+          `Ignoring vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
+        );
+        return null;
+      }
+
       // ...but some vocabs reference terms from other very common
       // vocabs (like ActivityStreams 2.0 having the following two triples:
       //   rdf:langString a rdfs:Datatype .
@@ -114,6 +130,9 @@ module.exports = class DatasetHandler {
         fullName.startsWith(OWL_NAMESPACE) ||
         fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
+        debug(
+          `Ignoring common vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
+        );
         return null;
       }
 
@@ -649,9 +668,9 @@ module.exports = class DatasetHandler {
 
     if (!prefix) {
       throw new Error(`No vocabulary prefix defined for [${namespace}]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
-      - If you control the vocabulary, add a triple [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix"].
-      - If you do not control the vocabulary, you can set create the 'termSelectionResource' option to point to an extension file including the same triple.
-      - If you use a configuration file, you can set the 'nameAndPrefixOverride' option for the vocabulary.`);
+      - If you control the vocabulary, we strongly recommend that you add a triple explicitly providing a preferred prefix (e.g., [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix" .]).
+      - If you do not control the vocabulary but you use a configuration file, then you can set the 'nameAndPrefixOverride' option for this vocabulary.
+      - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes the preferred prefix triple described above.`);
     }
     return prefix;
   }

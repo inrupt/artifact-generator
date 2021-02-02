@@ -6,9 +6,9 @@ artifactToGenerate:
     artifactVersion: 3.2.1-SNAPSHOT
     javaPackageName: com.inrupt.testing
     artifactDirectoryName: Java
-    ##
+    #
     # Here the template is picked from among the internally provided templates.
-    ##
+    #
     templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
     packaging:
@@ -18,17 +18,17 @@ artifactToGenerate:
         packagingTemplates:
         - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
           fileName: pom.xml
-        ##
-        # This is a dummy file path, just here to test normalization
-        ##
+        #
+        # This is a dummy file path, just here to test normalization.
+        #
         - templateCustom: ../../readme.hbs
           fileName: pom.xml
 
   - programmingLanguage: JavaScript
     artifactDirectoryName: JavaScript
-    ##
-    # This is a dummy file path, just here to test normalization
-    ##
+    #
+    # This is a dummy file path, just here to test normalization.
+    #
     templateCustom: ../anotherTemplateDirectory/javascript.hbs
     sourceFileExtension: js
 

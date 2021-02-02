@@ -146,8 +146,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively", async () => {
+  it("Generate ALL vocabs recursively", async () => {
+  // it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
   });
@@ -200,14 +200,21 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   it.skip("tests a single custom vocab", async () => {
-    // it("tests a single custom vocab", async () => {
+  // it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // Perhaps because this is not a standard yet, nothing is returned from
+      // the namespace IRI, so use this (referenced from the working draft itself) instead
+      inputResources: ["https://www.w3.org/TR/dx-prof-conneg/altr.ttl"],
+      nameAndPrefixOverride: "altr",
+      namespaceOverride: "http://www.w3.org/ns/dx/conneg/altr#",
+      ignoreNonVocabTerms: true,
+
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
 
-      inputResources: ["https://ontologies.semanticarts.com/o/gistCore9.5.0"],
-      nameAndPrefixOverride: "gistCore",
-      namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore9.5.0"],
+      // nameAndPrefixOverride: "gistCore",
+      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
 
       // inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
       // nameAndPrefixOverride: "test",
