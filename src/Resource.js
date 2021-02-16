@@ -13,21 +13,26 @@ const SinkMap = require("@rdfjs/sink-map");
 
 const debug = require("debug")("lit-artifact-generator:Resources");
 
-const parserN3 = new ParserN3();
-const parserJsonld = new ParserJsonld();
-const parserRdfXml = new ParserRdfXml();
-
-// In Jan. 1991, the first Web browser was released, so it is unlikely that the resource has been modified earlier
-// This default is used as a generationlast modification date for unreachable online vocabularies to prevent failure
+// In January 1991, the first Web browser was released, so it's unlikely that
+// the resource has been modified earlier. This default is used as a generation
+// last modification date for unreachable online vocabularies to prevent
+// failure.
 const DEFAULT_MODIFICATION_DATE = 662688059000;
+
+const parserN3 = new ParserN3();
 
 const formats = {
   parsers: new SinkMap([
     ["text/turtle", parserN3],
     ["text/n3", parserN3], // The OLO vocab returns this content type.
     ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
-    ["application/ld+json", parserJsonld], // Activity streams only supports JSON-LD and HTML.
-    ["application/rdf+xml", parserRdfXml],
+    ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
+
+    // For this parser we may need to manually set the `baseIRI` on a per-vocab
+    // basis, which we can only do in the constructor. So no point in
+    // constructing a shared parser instance here at all...
+    // See issue here: https://github.com/rdfjs/rdfxml-streaming-parser.js/issues/46
+    // ["application/rdf+xml", new ParserRdfXml()],
 
     // The vocab
     // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
@@ -73,25 +78,34 @@ module.exports = class Resource {
 
   /**
    * Reads resources, either from a local file or a remote IRI.
-   * @param {string} datasetFile path to the file, or IRI.
+   * @param {string} vocabResource path to the file, or IRI.
    */
-  static readResource(datasetFile) {
-    debug(`Loading resource: [${datasetFile}]...`);
-    if (Resource.isOnline(datasetFile)) {
-      return rdfFetch(datasetFile, { factory: rdf, formats })
+  static readResource(vocabResource) {
+    debug(`Loading resource: [${vocabResource}]...`);
+    if (Resource.isOnline(vocabResource)) {
+      // This is unfortunate, but we can't reuse a single RDF/XML parser
+      // instance across vocabs, since we may need the `baseIRI` to be set for
+      // each vocab, and we can only do this via the constructor.
+      // See issue here: https://github.com/rdfjs/rdfxml-streaming-parser.js/issues/46
+      formats.parsers.set(
+        "application/rdf+xml",
+        new ParserRdfXml({ baseIRI: vocabResource })
+      );
+
+      return rdfFetch(vocabResource, { factory: rdf, formats })
         .then((resource) => {
           return resource.dataset();
         })
         .catch((error) => {
           debug(
-            `Encountered error [${error}] while fetching [${datasetFile}], attempting to use previously generated file`
+            `Encountered error [${error}] while fetching [${vocabResource}], attempting to use previously generated file`
           );
           return undefined;
         });
     }
 
     return new Promise((resolve) => {
-      resolve(this.loadTurtleFileIntoDatasetPromise(datasetFile));
+      resolve(this.loadTurtleFileIntoDatasetPromise(vocabResource));
     });
   }
 
