@@ -23,6 +23,10 @@ function _NS(localName) {
   return namedNode(`{{namespace}}${localName}`);
 }
 
+{{#if description}}
+/**
+ * {{{description}}}
+ */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: "{{namespace}}",
@@ -60,7 +64,10 @@ const {{vocabNameUpperCase}} = {
   {{#each properties}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */

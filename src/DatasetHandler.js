@@ -258,19 +258,25 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    const seeAlsos = new Set();
-
+    const seeAlsoValues = new Set();
     this.subjectsOnlyDataset
       .match(quad.subject, RDFS.seeAlso, null)
       .forEach((subQuad) => {
-        seeAlsos.add({ seeAlso: subQuad.object.value });
+        seeAlsoValues.add(subQuad.object.value);
       });
 
     this.fullDataset
       .match(quad.subject, RDFS.seeAlso, null)
       .forEach((subQuad) => {
-        seeAlsos.add({ seeAlso: subQuad.object.value });
+        seeAlsoValues.add(subQuad.object.value);
       });
+
+    // Copy our set of strings into a set of objects.
+    let seeAlsos;
+    if (seeAlsoValues.size > 0) {
+      seeAlsos = new Set();
+      seeAlsoValues.forEach((value) => seeAlsos.add({ seeAlso: value }));
+    }
 
     let isDefinedBy = undefined;
     this.fullDataset

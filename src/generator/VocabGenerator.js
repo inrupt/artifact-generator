@@ -76,6 +76,8 @@ module.exports = class VocabGenerator {
   }
 
   generateData() {
+    // Need to pull this member variable into a local variable to access it from
+    // the arrow function later...
     const inputResources = this.vocabData.inputResources;
 
     return new Promise(async (resolve, reject) => {
