@@ -48,7 +48,10 @@ const {{vocabNameUpperCase}}:any = {
   {{#each classes}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
@@ -63,7 +66,10 @@ const {{vocabNameUpperCase}}:any = {
   {{#each properties}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
@@ -78,7 +84,10 @@ const {{vocabNameUpperCase}}:any = {
   {{#each literals}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
@@ -93,7 +102,10 @@ const {{vocabNameUpperCase}}:any = {
   {{#each constantStrings}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
@@ -107,7 +119,10 @@ const {{vocabNameUpperCase}}:any = {
   {{#each constantIris}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */

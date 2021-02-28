@@ -35,7 +35,12 @@ const {{vocabNameUpperCase}} = {
     {{#each classes}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),
 {{/each}}
@@ -47,7 +52,12 @@ const {{vocabNameUpperCase}} = {
     {{#each properties}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),
 {{/each}}
@@ -59,7 +69,12 @@ const {{vocabNameUpperCase}} = {
     {{#each literals}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *
+     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),
 {{/each}}

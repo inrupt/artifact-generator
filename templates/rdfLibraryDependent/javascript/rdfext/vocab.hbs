@@ -36,7 +36,12 @@ const {{vocabNameUpperCase}} = {
   {{#each classes}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -48,7 +53,12 @@ const {{vocabNameUpperCase}} = {
   {{#each properties}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -60,7 +70,12 @@ const {{vocabNameUpperCase}} = {
   {{#each literals}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *
+   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -72,7 +87,10 @@ const {{vocabNameUpperCase}} = {
   {{#each constantStrings}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
@@ -85,7 +103,10 @@ const {{vocabNameUpperCase}} = {
   {{#each constantIris}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *
+   * See also:{{#each seeAlsos}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
