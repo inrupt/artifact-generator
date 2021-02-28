@@ -15,10 +15,8 @@ const VERSION_SOLID_COMMON_VOCAB = "^0.5.3";
 // are expected to be provided as runtime command-line arguments.
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
-// const SUPPORT_BUNDLING = true;
-// const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
-const SUPPORT_BUNDLING = false;
-const PUBLISH_TO_REPO_LIST = [ ];
+const SUPPORT_BUNDLING = true;
+const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
 
 const ConfigAll = {
   _: "generate",
@@ -148,8 +146,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  it("Generate ALL vocabs recursively", async () => {
-  // it.skip("Generate ALL vocabs recursively", async () => {
+  // it("Generate ALL vocabs recursively", async () => {
+  it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
   });
@@ -173,8 +171,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  it("Common RDF vocabs", async () => {
-  // it.skip("Common RDF vocabs", async () => {
+  // it("Common RDF vocabs", async () => {
+  it.skip("Common RDF vocabs", async () => {
     jest.setTimeout(60000);
     await generateVocabArtifact(ConfigRdfCommon);
   });
@@ -202,11 +200,19 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   it.skip("tests a single custom vocab", async () => {
-  // it("tests a single custom vocab", async () => {
+    // it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["https://www.w3.org/ns/sparql-service-description#"],
-      nameAndPrefixOverride: "sd",
+      inputResources: ["https://www.w3.org/2018/credentials/v1"],
+      nameAndPrefixOverride: "vc",
 
+      // inputResources: ["http://www.w3.org/2006/time#"],
+      // nameAndPrefixOverride: "time",
+      //
+      // inputResources: ["/home/pmcb55/Work/Projects/LIT/solid-common-vocab-rdf/common-rdf/Common/CopyOfVocab/inrupt-void.ttl"],
+
+      // inputResources: ["https://www.w3.org/ns/sparql-service-description#"],
+      // nameAndPrefixOverride: "sd",
+      //
       // inputResources: ["http://www.w3.org/2002/01/bookmark#"],
       // nameAndPrefixOverride: "bookmark",
       //

@@ -52,7 +52,10 @@ public class {{vocabNameUpperCase}} implements Vocab {
     {{#each classes}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
@@ -72,7 +75,10 @@ public class {{vocabNameUpperCase}} implements Vocab {
     {{#each properties}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
@@ -92,7 +98,10 @@ public class {{vocabNameUpperCase}} implements Vocab {
     {{#each literals}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
@@ -114,7 +123,10 @@ public class {{vocabNameUpperCase}} implements Vocab {
     {{#each constantStrings}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
@@ -128,7 +140,10 @@ public class {{vocabNameUpperCase}} implements Vocab {
     {{#each constantIris}}
 
     /**
-     *{{#if comment}} {{{comment}}}{{/if}}{{#if isDefinedBy}}
+     *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+     *
+     * See also:{{#each seeAlsos}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
      *
      * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
      */
