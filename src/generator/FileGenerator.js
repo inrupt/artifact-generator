@@ -26,7 +26,7 @@ class FileGenerator {
     debug(`Created file: [${outputFile}]`);
   }
 
-  static createDirectory(directory) {
+  static createDirectoryIfNotExist(directory) {
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory, { recursive: true });
     }
@@ -91,7 +91,7 @@ class FileGenerator {
     const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(
       artifactDetails
     );
-    FileGenerator.createDirectory(outputDirectoryForSourceCode);
+    FileGenerator.createDirectoryIfNotExist(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
       `${artifactDetails.sourceCodeTemplate}`,
       // Some artifact-specific info may be required in the template (e.g. the java package name)
@@ -118,7 +118,7 @@ class FileGenerator {
         packagingInfo.packagingDirectory
       );
 
-      FileGenerator.createDirectory(packagingDirectory);
+      FileGenerator.createDirectoryIfNotExist(packagingDirectory);
     } else {
       packagingDirectory = artifactInfo.outputDirectoryForArtifact;
     }

@@ -17,6 +17,9 @@ function _NS(localName) {
   return namedNode(`http://schema.org/${localName}`);
 }
 
+/**
+ * Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
+ */
 const SCHEMA_INRUPT_EXT = {
   PREFIX: "schema-inrupt-ext",
   NAMESPACE: "http://schema.org/",

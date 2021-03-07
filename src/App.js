@@ -77,7 +77,7 @@ module.exports = class App {
   }
 
   async init() {
-    FileGenerator.createDirectory(this.argv.outputDirectory);
+    FileGenerator.createDirectoryIfNotExist(this.argv.outputDirectory);
 
     const targetPath = path.join(this.argv.outputDirectory, SAMPLE_CONFIG_NAME);
 

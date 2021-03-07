@@ -1,12 +1,17 @@
 require("mock-local-storage");
-const path = require("path");
+
 const fs = require("fs");
+const path = require("path");
+const rimraf = require("rimraf");
 
 const axios = require("axios");
 jest.mock("axios");
 
+const rdf = require("rdf-ext");
 const rdfFetch = require("@rdfjs/fetch-lite");
 jest.mock("@rdfjs/fetch-lite");
+
+const { RDF, RDFS, SKOS, OWL } = require("./CommonTerms");
 
 const Resource = require("./Resource");
 
@@ -25,6 +30,9 @@ const INVALID_LAST_MODIF_HTTP_RESOURCE = {
     "last-modified": "This is not a date",
   },
 };
+
+const NAMESPACE = "http://rdf-extension.com#";
+const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
 
 describe("Resources last modification", () => {
   it("should get the resource last modification for online resources", async () => {
@@ -56,8 +64,9 @@ describe("Fetching remote resource", () => {
     rdfFetch.mockImplementation(
       jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable")))
     );
-    const resource = Resource.readResource("http://example.org/ns");
-    expect(await resource).toEqual(undefined);
+    expect(() =>
+      Resource.readResource("http://example.org/ns")
+    ).rejects.toThrow("Unreachable");
   });
 });
 
@@ -86,5 +95,174 @@ describe("Touching a file", () => {
     Resource.touchFile(file, {});
     const newModifiedTime = fs.statSync(file).mtimeMs;
     expect(newModifiedTime).toBeGreaterThan(origModifiedTime);
+  });
+
+  describe("local vocab cache", () => {
+    const vocabMetadata = rdf
+      .dataset()
+      .add(rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology));
+
+    describe("storing local copy of vocab", () => {
+      it("should store local copy", (done) => {
+        const testLocalCopyDirectory = path.join(
+          ".",
+          "test",
+          "Generated",
+          "UNIT_TEST",
+          "LocalCopyOfVocab"
+        );
+        rimraf.sync(testLocalCopyDirectory);
+
+        const dataset = rdf
+          .dataset()
+          .addAll(vocabMetadata)
+          .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
+
+        Resource.storeLocalCopyOfResource(
+          testLocalCopyDirectory,
+          "test-vocab",
+          NAMESPACE,
+          dataset,
+          function () {
+            const matches = fs
+              .readdirSync(testLocalCopyDirectory)
+              .filter(
+                (filename) =>
+                  filename.startsWith(`test-vocab-`) &&
+                  filename.endsWith(`__http---rdf-extension.com#.ttl`)
+              );
+
+            expect(matches.length).toBe(1);
+
+            // Call again to test *not* storing again...
+            Resource.storeLocalCopyOfResource(
+              testLocalCopyDirectory,
+              "test-vocab",
+              NAMESPACE,
+              dataset
+            );
+
+            // Now write a different vocab to test multiple vocabs in the same output
+            // directory.
+            Resource.storeLocalCopyOfResource(
+              testLocalCopyDirectory,
+              "different-test-vocab",
+              NAMESPACE,
+              dataset,
+              function () {
+                const differentMatches = fs
+                  .readdirSync(testLocalCopyDirectory)
+                  .filter(
+                    (filename) =>
+                      filename.startsWith(`test-vocab-`) &&
+                      filename.endsWith(`__http---rdf-extension.com#.ttl`)
+                  );
+
+                expect(differentMatches.length).toBe(1);
+                done();
+              }
+            );
+          }
+        );
+      });
+    });
+
+    describe("reading vocab from local", () => {
+      it("should throw if directory doesn't exist", async () => {
+        const rootCause = "some reason...";
+        expect(() =>
+          Resource.attemptToReadGeneratedResource(
+            {},
+            "inputResource doesn't matter",
+            rootCause
+          )
+        ).toThrow(rootCause);
+      });
+
+      it("should throw if no local copy of vocab", async () => {
+        const testLocalCopyDirectory = path.join(
+          ".",
+          "test",
+          "resources",
+          "localCopyOfVocab",
+          "non-existent-directory"
+        );
+
+        const rootCause = "some reason...";
+        expect(() =>
+          Resource.attemptToReadGeneratedResource(
+            { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+            "inputResource doesn't matter",
+            rootCause
+          )
+        ).toThrow(rootCause);
+      });
+
+      it("should throw if copy of vocab doesn't exist", async () => {
+        const testLocalCopyDirectory = path.join(
+          ".",
+          "test",
+          "resources",
+          "localCopyOfVocab",
+          "reading"
+        );
+
+        const rootCause = "some reason...";
+        expect(() =>
+          Resource.attemptToReadGeneratedResource(
+            { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+            "https://does-not-exist.com/",
+            rootCause
+          )
+        ).toThrow(rootCause);
+      });
+
+      it("should read local copy of vocab", async () => {
+        const testLocalCopyDirectory = path.join(
+          ".",
+          "test",
+          "resources",
+          "localCopyOfVocab",
+          "reading"
+        );
+
+        const dataset = await Resource.attemptToReadGeneratedResource(
+          { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+          "http://rdf-extension.com#",
+          "some reason..."
+        );
+        expect(dataset.size).toBe(3);
+      });
+    });
+  });
+
+  describe("quad as string ignoring Blank Nodes", () => {
+    it("should concatenate normal quad", () => {
+      expect(
+        Resource.quadToStringIgnoringBNodes(
+          rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology)
+        )
+      ).toBe(
+        "http://rdf-extension.com#http://www.w3.org/1999/02/22-rdf-syntax-ns#typehttp://www.w3.org/2002/07/owl#Ontology"
+      );
+    });
+
+    it("should provide literal for BNode Subject and Object", () => {
+      expect(
+        Resource.quadToStringIgnoringBNodes(
+          rdf.quad(rdf.blankNode(), RDF.type, rdf.blankNode())
+        )
+      ).toBe("BNodehttp://www.w3.org/1999/02/22-rdf-syntax-ns#typeBNode");
+    });
+  });
+
+  describe("simple string hash function", () => {
+    it("should hash an empty string to 0", () => {
+      expect(Resource.simpleStringHash("")).toBe(0);
+    });
+
+    it("should hash string to fixed value", async () => {
+      expect(Resource.simpleStringHash("test hasing string")).toBe(-103900901);
+    });
   });
 });
