@@ -15,6 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   for an example, defining 'rdf:Resource', 'dcterms:conformsTo', etc.))).
 - Split the README for individual artifacts from the README for the overall
   generation operation (which now lists all individual artifact generated).
+- If configured (using 'storeLocalCopyOfVocabDirectory' option) we can store all
+  vocabs read as Turtle in local files. Convenient for seeing vocabs locally,
+  some of which may be in less-readable serializations (like RDFa, or RDF/XML).
+  Also provides a basis for still generating artifacts even if offline and
+  remote vocabs are not available, as we can use cached copies instead
+  (although of course these could be out-of-date in relation to the 'live'
+  vocab!). 
 
 ## Bug fixes
 
