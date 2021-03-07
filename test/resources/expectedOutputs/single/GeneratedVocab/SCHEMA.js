@@ -15,6 +15,9 @@ function _NS(localName) {
   return namedNode(`http://schema.org/${localName}`);
 }
 
+/**
+ * [Generator provided] - undefined
+ */
 const SCHEMA = {
   PREFIX: "schema",
   NAMESPACE: "http://schema.org/",

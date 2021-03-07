@@ -1,5 +1,5 @@
-const rdf = require("rdf-ext");
 const debug = require("debug")("lit-artifact-generator:VocabGenerator");
+const rdf = require("rdf-ext");
 
 const FileGenerator = require("./FileGenerator");
 const Resource = require("../Resource");
@@ -29,7 +29,8 @@ module.exports = class VocabGenerator {
       vocabGenerationData.constantIris.length === 0 &&
       vocabGenerationData.constantStrings.length === 0
     ) {
-      // In this case, the resource was unreachable, and the source file cannot be generated
+      // In this case, the resource was unreachable, and the source file cannot
+      // be generated.
       return new Promise((resolve, reject) => {
         if (
           FileGenerator.previouslyGeneratedFileExists(
@@ -38,13 +39,18 @@ module.exports = class VocabGenerator {
           )
         ) {
           debug(
-            `A source file is reused for unreachable (or empty of recognisable terms) resource [${this.vocabData.inputResources.toString()}]`
+            `A previously generated source file is being reused for resource [${this.vocabData.inputResources.toString()}], as its currently either unreachable or empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class or RDF:Property, etc. terms) from the namespace [${
+              vocabGenerationData.namespace
+            }].`
           );
           resolve(vocabGenerationData);
         }
+
         reject(
           new Error(
-            `[${this.vocabData.inputResources.toString()}] is unreachable (or empty of recognisable terms), and no previously generated file is available.`
+            `Resource [${this.vocabData.inputResources.toString()}] is unreachable or is empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class or RDF:Property, etc. terms) from the namespace [${
+              vocabGenerationData.namespace
+            }], and no previously generated file is available.`
           )
         );
       });
@@ -82,13 +88,16 @@ module.exports = class VocabGenerator {
 
     return new Promise(async (resolve, reject) => {
       this.resources
-        .processInputs((fullDatasetsArray, vocabTermsOnlyDataset) => {
-          const parsed = this.parseDatasets(
-            fullDatasetsArray,
-            vocabTermsOnlyDataset
-          );
-          resolve(parsed);
-        })
+        .processInputs(
+          this.vocabData,
+          (fullDatasetsArray, vocabTermsOnlyDataset) => {
+            const parsed = this.parseDatasets(
+              fullDatasetsArray,
+              vocabTermsOnlyDataset
+            );
+            resolve(parsed);
+          }
+        )
         .catch((error) => {
           const result = `Failed to generate from input [${inputResources}]: [${error.toString()}].\n\nStack: ${error.stack.toString()}`;
           reject(new Error(result));

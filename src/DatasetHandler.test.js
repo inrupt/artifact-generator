@@ -1,5 +1,9 @@
 require("mock-local-storage");
 
+const fs = require("fs");
+const path = require("path");
+const rimraf = require("rimraf");
+
 const rdf = require("rdf-ext");
 const {
   RDF,
@@ -213,7 +217,7 @@ describe("Dataset Handler", () => {
     });
 
     expect(() => {
-      handler.findPreferredNamespacePrefix();
+      handler.findPreferredNamespacePrefix(NS);
     }).toThrow("No vocabulary prefix defined");
   });
 
@@ -232,7 +236,7 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    expect(handler.findPreferredNamespacePrefix()).toEqual("foaf");
+    expect(handler.findPreferredNamespacePrefix(NS)).toEqual("foaf");
   });
 
   it("should throw an error if the vocabulary does not define any term", () => {
@@ -298,5 +302,41 @@ describe("Dataset Handler", () => {
 
     const result = handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
+  });
+
+  describe("storing local copy of vocab", () => {
+    it("should store local copy", () => {
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
+
+      const testLocalCopyDirectory = path.join(
+        ".",
+        "test",
+        "Generated",
+        "UNIT_TEST",
+        "LocalCopyOfVocab",
+        "testStoringVocab"
+      );
+      rimraf.sync(testLocalCopyDirectory);
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+        storeLocalCopyOfVocabDirectory: testLocalCopyDirectory,
+      });
+
+      handler.buildTemplateInput();
+
+      const matches = fs
+        .readdirSync(testLocalCopyDirectory)
+        .filter(
+          (filename) =>
+            filename.startsWith(`rdf-ext-`) &&
+            filename.endsWith(`--152985056__http---rdf-extension.com#.ttl`)
+        );
+
+      expect(matches.length).toBe(1);
+    });
   });
 });

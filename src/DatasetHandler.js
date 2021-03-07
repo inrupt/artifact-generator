@@ -14,6 +14,7 @@ const {
   LIT_CORE,
 } = require("./CommonTerms");
 
+const Resource = require("./Resource");
 const FileGenerator = require("./generator/FileGenerator");
 const { describeInput } = require("./Util");
 
@@ -112,7 +113,7 @@ module.exports = class DatasetHandler {
       // if needed.
       if (this.vocabData.ignoreNonVocabTerms) {
         debug(
-          `Ignoring vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
+          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespace}] (perhaps you need to provide to the 'namespaceOverride' option to detect terms from the correct namespace).`
         );
         return null;
       }
@@ -131,7 +132,7 @@ module.exports = class DatasetHandler {
         fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
         debug(
-          `Ignoring common vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
+          `Ignoring common RDF vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
         );
         return null;
       }
@@ -308,7 +309,7 @@ module.exports = class DatasetHandler {
   isValidIri(str) {
     try {
       new URL(str);
-    } catch (err) {
+    } catch (error) {
       return false;
     }
     return true;
@@ -396,18 +397,23 @@ module.exports = class DatasetHandler {
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.vocabListFileIgnore = this.vocabData.vocabListFileIgnore;
-    result.namespace = this.vocabData.namespaceOverride || this.findNamespace();
     // Useful when overriding the local namespace, because this is the namespace
     // that is actually used in the terms from the vocab, and that is used
     // when splitting the IRI to get the local part for instance.
     result.localNamespace = this.findNamespace();
+    result.namespace =
+      this.vocabData.namespaceOverride || result.localNamespace;
     result.gitRepository = this.vocabData.gitRepository;
     result.repository = this.vocabData.repository;
 
-    result.artifactName = this.artifactName();
+    // Note: for these values we must have already determined the vocab
+    // namespace we are going to use, as that can determine the vocabulary name
+    // we use, and that in turn can determine the name of the artifact we use.
     result.vocabName =
       this.vocabData.nameAndPrefixOverride ||
-      this.findPreferredNamespacePrefix();
+      this.findPreferredNamespacePrefix(result.namespace);
+    result.artifactName = this.artifactName(result.vocabName);
+
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
       result.vocabName
     );
@@ -427,6 +433,18 @@ module.exports = class DatasetHandler {
     result.runWidoco = this.vocabData.runWidoco;
     result.noprompt = this.vocabData.noprompt;
     result.supportBundling = this.vocabData.supportBundling;
+    result.supportBundling = this.vocabData.supportBundling;
+
+    if (this.vocabData.storeLocalCopyOfVocabDirectory) {
+      result.storeLocalCopyOfVocabDirectory = this.vocabData.storeLocalCopyOfVocabDirectory;
+
+      Resource.storeLocalCopyOfResource(
+        result.storeLocalCopyOfVocabDirectory,
+        result.vocabName,
+        result.namespace,
+        this.fullDataset
+      );
+    }
 
     let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
     if (subjectSet.length === 0) {
@@ -623,6 +641,10 @@ module.exports = class DatasetHandler {
           longestTermName.lastIndexOf("#")
         ) + 1
       );
+
+      debug(
+        `Used a simple heuristic to determine the namespace of [${namespace}] for input resources [${this.vocabData.inputResources}], using the longest term name of [${longestTermName}].`
+      );
     }
 
     return namespace;
@@ -648,8 +670,7 @@ module.exports = class DatasetHandler {
     return prefix;
   }
 
-  findPreferredNamespacePrefix() {
-    const namespace = this.vocabData.namespaceOverride || this.findNamespace();
+  findPreferredNamespacePrefix(namespace) {
     let prefix =
       this.vocabData.nameAndPrefixOverride ||
       this.findOwlOntology((owlOntologyTerms) => {
@@ -681,11 +702,11 @@ module.exports = class DatasetHandler {
     return prefix;
   }
 
-  artifactName() {
+  artifactName(vocabName) {
     return (
       this.vocabData.artifactName ||
       this.vocabData.moduleNamePrefix +
-        this.findPreferredNamespacePrefix().toLowerCase().replace(/_/g, "-")
+        vocabName.toLowerCase().replace(/_/g, "-")
     );
   }
 

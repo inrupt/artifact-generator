@@ -17,6 +17,7 @@ const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
 const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
+const LOCAL_COPY_OF_VOCAB_DIRECTORY = "./test/LocalCopyOfVocab/";
 
 const ConfigAll = {
   _: "generate",
@@ -29,6 +30,7 @@ const ConfigAll = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigRdfCommon = {
@@ -42,6 +44,7 @@ const ConfigRdfCommon = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigLitCommon = {
@@ -55,6 +58,7 @@ const ConfigLitCommon = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigInruptCommon = {
@@ -68,6 +72,7 @@ const ConfigInruptCommon = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigInruptUiCommon = {
@@ -81,6 +86,7 @@ const ConfigInruptUiCommon = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigInruptService = {
@@ -94,6 +100,7 @@ const ConfigInruptService = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigSolidCommon = {
@@ -107,6 +114,7 @@ const ConfigSolidCommon = {
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigSolidComponent = {
@@ -125,6 +133,7 @@ const ConfigSolidComponent = {
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 const ConfigSolidGeneratorUi = {
@@ -143,6 +152,7 @@ const ConfigSolidGeneratorUi = {
   supportBundling: SUPPORT_BUNDLING,
   runWidoco: true,
   publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
@@ -202,14 +212,31 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("tests a single custom vocab", async () => {
     // it("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["https://www.w3.org/2018/credentials/v1"],
-      nameAndPrefixOverride: "vc",
+      // inputResources: ["http://www.w3.org/ns/json-ld#"],
+      // nameAndPrefixOverride: "jsonld",
 
+      inputResources: ["https://w3id.org/security#"],
+      nameAndPrefixOverride: "sec",
+
+      // inputResources: ["http://www.w3.org/2008/05/skos-xl#"],
+      // nameAndPrefixOverride: "skos-xl",
+      //
+      //
+      // inputResources: ["http://www.w3.org/ns/odrl/2/"],
+      // namespaceOverride: "http://www.w3.org/ns/odrl/2/",
+      // nameAndPrefixOverride: "odrl",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://www.w3.org/2018/credentials/v1"],
+      // nameAndPrefixOverride: "vc",
+      //
       // inputResources: ["http://www.w3.org/2006/time#"],
       // nameAndPrefixOverride: "time",
-      //
-      // inputResources: ["/home/pmcb55/Work/Projects/LIT/solid-common-vocab-rdf/common-rdf/Common/CopyOfVocab/inrupt-void.ttl"],
 
+      // inputResources: [
+      //   "/home/pmcb55/Work/Projects/LIT/solid-common-vocab-rdf/common-rdf/Common/CopyOfVocab/inrupt-void.ttl",
+      // ],
+      //
       // inputResources: ["https://www.w3.org/ns/sparql-service-description#"],
       // nameAndPrefixOverride: "sd",
       //
@@ -277,6 +304,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       runNpmInstall: RUN_NPM_INSTALL,
       supportBundling: SUPPORT_BUNDLING,
       publish: [DEFAULT_PUBLISH_KEY],
+      storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
     });
   });
 });

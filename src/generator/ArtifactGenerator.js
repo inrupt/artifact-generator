@@ -1,6 +1,7 @@
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 const rimraf = require("rimraf");
+
 const moment = require("moment");
 const debug = require("debug")("lit-artifact-generator:ArtifactGenerator");
 const ChildProcess = require("child_process");
@@ -69,7 +70,8 @@ class ArtifactGenerator {
           if (!this.artifactData.artifactName) {
             this.artifactData.artifactName = vocabDatasets[0].artifactName;
           }
-          // If the generation was not sufficient to collect all the required information, the user is asked for it
+          // If the generation was not sufficient to collect all the required
+          // information, the user is asked for it.
           await this.configuration.askAdditionalQuestions();
           // TODO: move this formatting directly into the templates.
           const authors = Array.from(this.artifactData.authorSet);
@@ -436,7 +438,7 @@ class ArtifactGenerator {
                   let response;
                   try {
                     response = ChildProcess.execSync(command).toString();
-                  } catch (err) {
+                  } catch (error) {
                     // This handling was added due to intermittent, but regular,
                     // failures when trying to unpublish packages from a local
                     // Verdaccio instance when running tests to generate all
@@ -446,7 +448,7 @@ class ArtifactGenerator {
                       debug(`Re-running sub-command [${command}]...`);
                       response = ChildProcess.execSync(command).toString();
                     } else {
-                      const message = `Error executing sub-command [${command}], details (stdout): [${err.stdout.toString()}], stderr: [${err.stderr.toString()}]`;
+                      const message = `Error executing sub-command [${command}], details (stdout): [${error.stdout.toString()}], stderr: [${error.stderr.toString()}]`;
                       debug(message);
                       throw new Error(message);
                     }
