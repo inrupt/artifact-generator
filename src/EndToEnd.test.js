@@ -467,9 +467,6 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new VocabTerm(")
-      );
-      expect(indexOutput).toEqual(
         expect.stringContaining("familyName: new VocabTerm(")
       );
       expect(indexOutput).toEqual(
@@ -508,8 +505,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "https://jholleran.inrupt.net/public/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "https://does-not-matter-mocked-anyway.com",
           artifactVersion: "1.0.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
@@ -532,9 +528,6 @@ describe("End-to-end tests", () => {
         expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
-      expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new VocabTerm(")
-      );
       expect(indexOutput).toEqual(
         expect.stringContaining("familyName: new VocabTerm(")
       );
@@ -688,7 +681,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '"description": "Bundle of vocabularies that includes the following:\\n\\n - schema-inrupt-ext: Extension to Schema.org terms'
+          '"description": "Bundle of vocabularies that includes the following:\\n\\n - schema-inrupt-ext: '
         )
       );
     });
@@ -717,7 +710,11 @@ describe("End-to-end tests", () => {
 
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
-      ).toEqual(expect.stringContaining('{"name": "Jarlath Holleran"}'));
+      ).toEqual(
+        expect.stringContaining(
+          '{"name": "https://inrupt.com/profile/card/#us"}'
+        )
+      );
     });
   });
 

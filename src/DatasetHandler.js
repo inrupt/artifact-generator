@@ -293,6 +293,24 @@ module.exports = class DatasetHandler {
       labels
     );
 
+    const translationsLabel = DatasetHandler.describeTranslations(
+      "label",
+      labels
+    );
+    const translationsComment = DatasetHandler.describeTranslations(
+      "comment",
+      comments
+    );
+
+    let translationDescription;
+    if (translationsLabel !== undefined || translationsComment !== undefined) {
+      if (translationsLabel === translationsComment) {
+        translationDescription = `This term has [${labels.length}] labels and comments, in the languages [${translationsLabel}].`;
+      } else {
+        translationDescription = `This term has multiple descriptions, but a mismatch between [${labels.length}] labels in languages [${translationsLabel}], and [${comments.length}] comments in languages [${translationsComment}].`;
+      }
+    }
+
     return {
       name,
       nameEscapedForLanguage,
@@ -303,7 +321,21 @@ module.exports = class DatasetHandler {
       definitions,
       seeAlsos,
       isDefinedBy,
+      translationDescription,
     };
+  }
+
+  static describeTranslations(termType, literals) {
+    if (literals.length < 2) {
+      return undefined;
+    }
+
+    const sortedByLang = literals
+      .filter((elem) => elem.language)
+      .sort((a, b) => a.language.localeCompare(b.language))
+      .map((elem) => elem.language);
+
+    return sortedByLang.toString().split(",").join(", ");
   }
 
   isValidIri(str) {

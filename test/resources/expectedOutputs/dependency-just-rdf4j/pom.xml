@@ -11,7 +11,15 @@
     <name>generated-vocab-TEST</name>
     <description>Bundle of vocabularies that includes the following:
 
- - schema-inrupt-ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)</description>
+ - schema-inrupt-ext: Inrupt extension to Schema.org terms providing
+ multilingual alternative names (i.e. labels) and translations for comments
+ (e.g. for use directly as labels or tool-tips in user interfaces or error
+ messages). This extension very deliberately cherry-picks the individual terms
+ from Schema.org that Inrupt currently deem generally useful for Solid and Solid
+ applications (meaning we can provide a much cleaner, less noisy and smaller
+ bundle size when generating programming language artifacts that provide
+ convenient constants for just these selected terms, rather than including the
+ over 2,500 terms currently defined in Schema.org).</description>
 
     <developers>
         <developer>
@@ -24,7 +32,7 @@
         <!-- The contributors listed here are the authors of the vocabularies
         on which these artifacts are based. -->
         <contributor>
-            <name>Jarlath Holleran</name>
+            <name>https://inrupt.com/profile/card/#us</name>
         </contributor>
     </contributors>
 

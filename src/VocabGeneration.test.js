@@ -211,13 +211,14 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   it.skip("tests a single custom vocab", async () => {
     // it("tests a single custom vocab", async () => {
+    jest.setTimeout(10000);
     await generateVocabArtifact({
       // inputResources: ["http://www.w3.org/ns/json-ld#"],
       // nameAndPrefixOverride: "jsonld",
 
-      inputResources: ["https://w3id.org/security#"],
-      nameAndPrefixOverride: "sec",
-
+      // inputResources: ["https://w3id.org/security#"],
+      // nameAndPrefixOverride: "sec",
+      //
       // inputResources: ["http://www.w3.org/2008/05/skos-xl#"],
       // nameAndPrefixOverride: "skos-xl",
       //
@@ -263,8 +264,11 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // nameAndPrefixOverride: "gistCore",
       // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
 
-      // inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
-      // nameAndPrefixOverride: "test",
+      inputResources: [
+        "https://schema.org/version/latest/schemaorg-current-http.ttl",
+      ],
+      termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      nameAndPrefixOverride: "inrupt-schema",
 
       // inputResources: [
       //   "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl"
