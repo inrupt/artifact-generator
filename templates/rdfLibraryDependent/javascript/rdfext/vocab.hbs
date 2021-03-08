@@ -36,7 +36,9 @@ const {{vocabNameUpperCase}} = {
   {{#each classes}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if translationDescription}}
+   *
+   * {{translationDescription}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -53,7 +55,9 @@ const {{vocabNameUpperCase}} = {
   {{#each properties}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if translationDescription}}
+   *
+   * {{translationDescription}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -70,7 +74,9 @@ const {{vocabNameUpperCase}} = {
   {{#each literals}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if translationDescription}}
+   *
+   * {{translationDescription}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -87,7 +93,9 @@ const {{vocabNameUpperCase}} = {
   {{#each constantStrings}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if translationDescription}}
+   *
+   * {{translationDescription}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -103,7 +111,9 @@ const {{vocabNameUpperCase}} = {
   {{#each constantIris}}
 
   /**
-   *{{#if comment}} {{{comment}}}{{/if}}{{#if seeAlsos}}
+   *{{#if comment}} {{{comment}}}{{/if}}{{#if translationDescription}}
+   *
+   * {{translationDescription}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}

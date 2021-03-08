@@ -1,0 +1,41 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<http://inrupt.com/> a owl:Ontology, <https://w3id.org/lit/vocab/core#Ontology>;
+    owl:versionInfo "1";
+    dcterms:creator "Jarlath Holleran";
+    dcterms:date "2019/06/18";
+    dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms";
+    dcterms:description "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)";
+    vann:preferredNamespacePrefix "schema-inrupt-ext";
+    vann:preferredNamespaceUri "http://schema.org/";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/".
+schema:Person schema:alternateName "La personne"@fr, "Person"@de, "Persona"@es, "Persona"@it;
+    rdfs:comment "Une personne (vivante, morte, mort-vivant ou fictive)."@fr, "Eine Person (lebendig, tot, untot oder fiktiv)."@de, "Una persona (viva, muerta, no muerta o ficticia)."@es, "Una persona (viva, morta, non morta o immaginaria)."@it.
+schema:givenName schema:alternateName "Given Name"@en, "Prénom"@fr, "Vorname"@de, "Nombre de pila"@es, "Nome di battesimo"@it;
+    rdfs:comment "Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name."@fr, "Vorname. In den USA der Vorname einer Person. Dies kann zusammen mit familyName anstelle der Eigenschaft name verwendet werden."@de, "Nombre de pila. En los EE. UU., El primer nombre de una persona. Esto se puede usar junto con familyName en lugar de la propiedad name."@es, "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it.
+schema:familyName a rdf:Property;
+    schema:alternateName "Nom de famille"@fr, "Nachname"@de, "Apellido"@es, "Cognome"@it;
+    rdfs:comment "Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name."@fr, "Nachname. In den USA der Nachname einer Person. Dies kann zusammen mit givenName anstelle der Eigenschaft name verwendet werden."@de, "Apellido. En los EE.UU., el apellido de una persona. Esto se puede usar junto con givenName en lugar de la propiedad name."@es, "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it.
+schema:additionalName a rdf:Property;
+    schema:alternateName "Additional Name"@en, "Nom additionnel"@fr, "Zusätzlicher Name"@de, "Nombre adicional"@es, "Nome aggiuntivo"@it;
+    rdfs:comment "Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom."@fr, "Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden."@de, "Un nombre adicional para una persona, se puede utilizar para un segundo nombre."@es, "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it.
+schema:newTerm a rdf:Property;
+    rdfs:comment "Must have comment too!"@en;
+    rdfs:label "newTerm".
+schema:testConstantString a <https://w3id.org/lit/vocab/core#ConstantString>;
+    rdfs:comment "Just a test constant string."@en;
+    rdfs:label "Test constant string"@en;
+    skos:definition "String constant string value - just for illustration...".
+schema:testConstantIri a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:comment "Just a test constant IRI."@en;
+    rdfs:label "Test constant IRI"@en;
+    skos:definition "https://test-iri.com/just-for-illustration#test".

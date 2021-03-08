@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   remote vocabs are not available, as we can use cached copies instead
   (although of course these could be out-of-date in relation to the 'live'
   vocab!). 
+- Add description of term translations for labels and comments (if any).
 
 ## Bug fixes
 
