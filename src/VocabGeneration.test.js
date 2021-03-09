@@ -210,7 +210,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   });
 
   it.skip("tests a single custom vocab", async () => {
-  // it("tests a single custom vocab", async () => {
+    // it("tests a single custom vocab", async () => {
     jest.setTimeout(10000);
     await generateVocabArtifact({
       inputResources: ["http://www.w3.org/ns/earl#"],
