@@ -156,8 +156,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively", async () => {
+  it("Generate ALL vocabs recursively", async () => {
+  // it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
   });
@@ -209,10 +209,14 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  it.skip("tests a single custom vocab", async () => {
-    // it("tests a single custom vocab", async () => {
+  // it.skip("tests a single custom vocab", async () => {
+  it("tests a single custom vocab", async () => {
     jest.setTimeout(10000);
     await generateVocabArtifact({
+      inputResources: ["http://www.w3.org/ns/earl#"],
+
+      // nameAndPrefixOverride: "jsonld",
+
       // inputResources: ["http://www.w3.org/ns/json-ld#"],
       // nameAndPrefixOverride: "jsonld",
 
@@ -264,12 +268,12 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // nameAndPrefixOverride: "gistCore",
       // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
 
-      inputResources: [
-        "https://schema.org/version/latest/schemaorg-current-http.ttl",
-      ],
-      termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
-      nameAndPrefixOverride: "inrupt-schema",
-
+      // inputResources: [
+      //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
+      // ],
+      // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      // nameAndPrefixOverride: "inrupt-schema",
+      //
       // inputResources: [
       //   "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl"
       // ],

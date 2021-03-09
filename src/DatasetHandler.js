@@ -180,7 +180,9 @@ module.exports = class DatasetHandler {
       .replace(/^class$/, "class_")
       .replace(/^abstract$/, "abstract_")
       .replace(/^for$/, "for_")
-      .replace(/^default$/, "default_");
+      .replace(/^default$/, "default_")
+      .replace(/^protected$/, "protected_") // From the JSON-LD vocab.
+      .replace(/^import$/, "import_"); // From the JSON-LD vocab.
 
     this.subjectsOnlyDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)

@@ -1,0 +1,71 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:title "Inrupt-created copy of RLOG"@en;
+    dcterms:description "Inrupt-created copy of RLOG, needed due to Server 500 errors resolving original uni-leipzig.org!"@en;
+    vann:preferredNamespacePrefix "rlog";
+    vann:preferredNamespaceUri "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#".
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#Level> a rdfs:Class;
+    rdfs:label "Log Level"@en;
+    rdfs:comment "look here: http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/Level.html "@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#Entry> a rdfs:Class;
+    rdfs:label "Log Entry"@en;
+    rdfs:comment "An entry in a log."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#StatusCode> a rdfs:Class;
+    rdfs:label "Status Code"@en;
+    rdfs:comment "A status code which can occur in an application. Instances of this class must put the name of the status as rdfs:label and describe it with rdfs:comment."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#ALL> a rdf:Property;
+    rdfs:label "ALL"@en;
+    rdfs:comment "The ALL has the lowest possible rank and is intended to turn on all logging."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#priority> a rdf:Property;
+    rdfs:label "logLevel"@en;
+    rdfs:comment "Attention: the ids here can change, they are just used to define an order over the levels!"@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#DEBUG> a rdf:Property;
+    rdfs:label "DEBUG"@en;
+    rdfs:comment "The DEBUG Level designates fine-grained informational events that are most useful to debug an application."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#ERROR> a rdf:Property;
+    rdfs:label "ERROR"@en;
+    rdfs:comment "The ERROR level designates error events that might still allow the application to continue running."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#FATAL> a rdf:Property;
+    rdfs:label "FATAL"@en;
+    rdfs:comment "The FATAL level designates very severe error events that will presumably lead the application to abort."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#INFO> a rdf:Property;
+    rdfs:label "INFO"@en;
+    rdfs:comment "The INFO level designates informational messages that highlight the progress of the application at coarse-grained level."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#OFF> a rdf:Property;
+    rdfs:label "OFF"@en;
+    rdfs:comment "The OFF has the highest possible rank and is intended to turn off logging."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#TRACE> a rdf:Property;
+    rdfs:label "TRACE"@en;
+    rdfs:comment "The TRACE Level designates finer-grained informational events than the DEBUG."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#WARN> a rdf:Property;
+    rdfs:label "WARN"@en;
+    rdfs:comment "The WARN level designates potentially harmful situations."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#className> a rdf:Property;
+    rdfs:label "class name"@en;
+    rdfs:comment "Outputs the fully qualified class name of the caller issuing the logging request."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#codeId> a rdf:Property;
+    rdfs:label "code id"@en;
+    rdfs:comment "The numerical value of the code, e.g. 200, 404 or 42."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#date> a rdf:Property;
+    rdfs:label "Logging datetime (or just date)"@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#hasCode> a rdf:Property;
+    rdfs:label "has code"@en;
+    rdfs:comment "Links a log message to a status code."@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#level> a rdf:Property;
+    rdfs:label "logLevel"@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#message> a rdf:Property;
+    rdfs:label "Logging message"@en.
+<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#resource> a rdf:Property;
+    rdfs:label "an associated resource"@en;
+    rdfs:comment "If we mix normal and log output, this can be used to refer to the resource in the RDF the error is connected to. "@en.

@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<https://inrupt.com/vocab/sample/client-app#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:title "Sample Inrupt client application vocabulary"@en;
+    dcterms:description "Just a sample of what a cliet application vocabulary\n might look like."@en;
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/11/08"^^xsd:date;
+    dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl";
+    vann:preferredNamespacePrefix "inrupt-client-app";
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/sample/client-app#".
+<https://inrupt.com/vocab/sample/client-app#sampleProperty> a rdf:Property;
+    rdfs:definedBy <https://inrupt.com/vocab/sample/client-app#>;
+    rdfs:label "Sample client application property"@en;
+    rdfs:comment "Just a sample of a propery that a client application might need."@en.

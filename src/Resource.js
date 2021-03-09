@@ -28,10 +28,29 @@ const DEFAULT_MODIFICATION_DATE = 662688059000;
 
 const parserN3 = new ParserN3();
 
+// We need to explicitly stipulate our HTTP Accept header so that we favour
+// Turtle, as some vocabs can default to returning RDFa triples that are a
+// smaller, and very different, set of triples (e.g., the LDP vocab).
+// We can't provide the 'q' values in the SinkMap of formats, since the parser
+// to use is looked up from the response content-type, which won't have the 'q'
+// parameter (so the parser lookup won't match).
+const RDF_ACCEPT_HEADER =
+  "text/turtle;q=1.0, application/x-turtle;q=1.0, text/n3;q=0.8, application/ld+json;q=0.7, text/html;q=0.4, text/plain;q=0.3, application/rdf+xml;q=0.1";
+
+// Unfortunately, the SKOS-XL vocab doesn't support content negotiation properly
+// at all. If basically ignores all content types and just returns RDF/XML
+// *unless* the content-type contains 'text/html' (regardless of any 'q' values
+// provided at all), in which case it returns HTML containing two RDFa triples.
+// So unfortunately we need to work around this exception, and make sure we
+// don't request 'text/html' at all for just this vocab (and since it only
+// returns RDF/XML otherwise, we might as well explicitly ask for that).
+const RDF_ACCEPT_HEADER_SKOS_XL = "application/rdf+xml";
+
 const formats = {
   parsers: new SinkMap([
     ["text/turtle", parserN3],
-    ["text/n3", parserN3], // The OLO vocab returns this content type.
+
+    ["text/n3", parserN3], // The iCal vocab requires this content type, and the OLO vocab returns it.
     ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
     ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
 
@@ -171,13 +190,21 @@ module.exports = class Resource {
         "application/rdf+xml",
         new ParserRdfXml({ baseIRI: inputResource })
       );
-
       formats.parsers.set(
         "text/html",
         new ParserRdfa({ baseIRI: inputResource })
       );
 
-      return rdfFetch(inputResource, { factory: rdf, formats })
+      return rdfFetch(inputResource, {
+        factory: rdf,
+        headers: {
+          accept:
+            inputResource === "http://www.w3.org/2008/05/skos-xl#"
+              ? RDF_ACCEPT_HEADER_SKOS_XL
+              : RDF_ACCEPT_HEADER,
+        },
+        formats,
+      })
         .then((resource) => {
           return resource.dataset();
         })
