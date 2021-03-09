@@ -238,7 +238,7 @@ generated artifacts as they see fit, e.g. perhaps IBM augments their
 version with translations for various languages (that Schema.org does not
 provide today), or Accenture augments their version with references to
 related resources (e.g. via `rdfs:seeAlso` references) to similar terms in
-existing Accenture gloassaries or data dictionaries.
+existing Accenture glossaries or data dictionaries.
 
 Of course, individuals or companies are always completely free to choose
 between reusing existing generated artifacts from entities that they trust,

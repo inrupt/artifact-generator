@@ -30,7 +30,7 @@
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
 <https://w3id.org/security#LinkedDataSignature2015> a rdfs:Class;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
-<https://w3id.org/security#> <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable", "stable".
+<http://www.w3.org/ns/earl#> <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable", "stable".
 <https://w3id.org/security#MerkleProof2019> <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
 <https://w3id.org/security#Ed25519VerificationKey2018> a rdfs:Class;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable".

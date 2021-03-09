@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<https://w3id.org/lit/vocab/lit-meta-client#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:title "LIT Metadata Client Vocabulary"@en;
+    dcterms:description "The LIT vocabulary providing terms (e.g. classes, properties and text strings (e.g.\n informative labels or error messages) used by LIT clients at runtime."@en;
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/08/19"^^xsd:date;
+    vann:preferredNamespacePrefix "lit-meta-client";
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/lit-meta-client#";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/".
+<https://w3id.org/lit/vocab/lit-meta-client#namedGraph> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/lit-meta-client#>;
+    rdfs:label "Client meta-data named graph"@en;
+    rdfs:comment "The Named Graph used to denote client-side meta-data. This\n can be used when a request or response contains multiple Named Graphs of\n information, and we wish to specifically store client-side meta-data separately\n from all other forms of meta-data."@en.
+<https://w3id.org/lit/vocab/lit-meta-client#subjectRoot> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/lit-meta-client#>;
+    rdfs:label "Subject root"@en;
+    rdfs:comment "The root subject for client-generated metadata.\n The idea for subject roots is that we could build up an entire graph of\n metadata (i.e. as processing progresses along a chain of processors, with each\n processor enriching this metadata with their specific metadata), and this\n term defines the root term of that graph."@en.
+<https://w3id.org/lit/vocab/lit-meta-client#requestSentTimestamp> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/lit-meta-client#>;
+    rdfs:label "Request sent timestamp"@en;
+    rdfs:comment "Timestamp this request was sent from the client."@en.

@@ -1,0 +1,677 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<http://www.w3.org/ns/ui> <http://purl.org/dc/elements/1.1/author> <https://www.w3.org/People/Berners-Lee/card#i>;
+    <http://purl.org/dc/elements/1.1/created> "2010-08-07"^^xsd:date;
+    <http://purl.org/dc/elements/1.1/description> "The User Interface ontology allows the definition\n\tof forms for processing RDF model data, and include a bootstrap form for\n\tediting forms. It allows user interface hints such as background colors,\n\tcan be associated with objects and classes.\n\t";
+    <http://purl.org/dc/elements/1.1/license> <https://creativecommons.org/publicdomain/zero/1.0/>;
+    <http://purl.org/dc/elements/1.1/modified> "$Date: 2021/03/04 18:29:49 $";
+    <http://purl.org/dc/elements/1.1/title> "An ontology for User Interface description, Hints and Forms.".
+<http://www.w3.org/ns/ui#BooleanField> rdfs:subClassOf <http://www.w3.org/ns/ui#NumericField>.
+<http://www.w3.org/ns/ui#NumericField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b1043.
+<http://www.w3.org/ns/ui#ValueField> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b1058.
+_:b1043 rdf:first <http://www.w3.org/ns/ui#BooleanField>;
+    rdf:rest _:b1044.
+<http://www.w3.org/ns/ui#CaseForm> <http://purl.org/dc/elements/1.1/title> "Form for a conditional case in a form";
+    a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b921.
+<http://www.w3.org/ns/ui#Group> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>.
+<http://www.w3.org/ns/ui#parts> a rdf:Property;
+    rdfs:label "parts"@en;
+    rdfs:domain <http://www.w3.org/ns/ui#Form>;
+    rdfs:range rdf:Collection.
+_:b921 rdf:first _:b922;
+    rdf:rest _:b923.
+<http://www.w3.org/ns/ui#Form> a rdfs:Class;
+    owl:disjointUnionOf _:b1031;
+    rdfs:comment "A form can be any type of single field, or typically a Group of several fields,\n    including interspersed headings and comments.  ";
+    <http://www.w3.org/ns/ui#creationForm> <http://www.w3.org/ns/ui#FormForm>.
+<http://www.w3.org/ns/ui#Single> a rdfs:Class;
+    owl:disjointUnionOf _:b1048.
+_:b922 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> rdfs:Class;
+    <http://www.w3.org/ns/ui#label> "when it is";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#for>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b923 rdf:first _:b924;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#Choice> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>.
+<http://www.w3.org/ns/ui#from> a rdf:Property;
+    rdfs:label "from";
+    rdfs:domain <http://www.w3.org/ns/ui#Choice>;
+    rdfs:range rdf:Class;
+    <http://www.w3.org/ns/ui#prompt> "from what class".
+<http://www.w3.org/ns/ui#label> a rdf:Property;
+    rdfs:label "Etiqueta"@es, "Label"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#property> a rdf:Property;
+    rdfs:label "property to be stored"@en;
+    rdfs:domain <http://www.w3.org/ns/ui#Form>;
+    rdfs:range rdf:Property;
+    rdfs:comment "Many fields prompt for information about a given property of the subject.\n    When field is filled in, this gives which property is written into the data.".
+<http://www.w3.org/ns/ui#for> a rdf:Property;
+    rdfs:label "for"@en;
+    rdfs:comment "The value for which this case is selected.".
+<http://www.w3.org/ns/ui#prompt> a rdf:Property;
+    rdfs:label "user prompt";
+    <http://www.w3.org/ns/ui#prompt> "A longer prompt for a user inputting this property";
+    rdfs:comment "A string for the UI to use if the user needs a longer\n        prompts than just a field name, the s:label. ".
+_:b924 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> <http://www.w3.org/ns/ui#Form>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#use>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#use> <http://www.w3.org/ns/ui#FieldForm>.
+<http://www.w3.org/ns/ui#use> a rdf:Property;
+    rdfs:range <http://www.w3.org/ns/ui#Form>.
+<http://www.w3.org/ns/ui#FieldForm> <http://purl.org/dc/elements/1.1/title> "Form for selecting a type of field";
+    a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b926.
+_:b1031 rdf:first <http://www.w3.org/ns/ui#ValueField>;
+    rdf:rest _:b1032.
+<http://www.w3.org/ns/ui#creationForm> a rdf:Property;
+    rdfs:label "creation form";
+    rdfs:domain rdfs:Class;
+    rdfs:range <http://www.w3.org/ns/ui#Form>;
+    rdfs:comment "A form which may be used to collect information about a\n    hitherto locally undocumented instance instance of this class.".
+<http://www.w3.org/ns/ui#FormForm> <http://purl.org/dc/elements/1.1/title> "Form for editing Forms";
+    a <http://www.w3.org/ns/ui#Group>, <http://www.w3.org/ns/ui#Form>;
+    <http://www.w3.org/ns/ui#parts> _:b1039.
+_:b926 rdf:first _:b927;
+    rdf:rest _:b928.
+_:b1048 rdf:first <http://www.w3.org/ns/ui#ValueField>;
+    rdf:rest _:b1049.
+<http://www.w3.org/ns/ui#Classifier> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>;
+    a rdfs:Class;
+    rdfs:label "classifier";
+    rdfs:comment "A classifier allows the user to select the type of an object.\n    The possible types must be subclasses of some overall class, the \"category\".\n    (Ideally, the superclass is also set up as the disjoint union of the subclasses,\n    if they are disjoint.)\n\n    The form normally stores the resulting classes using an r:type triple,\n    but a different predicate can be used if required, so the classifier field\n    needs is 'property' defined too.\n\n    If the subclass selected itself is has subclasses defined, the user can\n    recursively select from them in turn, as many levels as needed.".
+<http://www.w3.org/ns/ui#Color> a rdfs:Datatype;
+    rdfs:label "hex color"@en;
+    rdfs:comment "Must be a valid CSS color string such as one could put in\n\t\t\tan HTML style attribute.  This must be in the #xxxxxx form,\n\t\t\t(with 6 digits of lowercase hex) so that it\n\t\t\tcan work eg with Graphviz.\n\t\t\tAs this is just an encoded array of RGB values,\n\t\t\tyou can do math with these, such as blending, complement, etc.";
+    owl:onDatatype xsd:string;
+    owl:withRestrictions _:b925.
+_:b925 rdf:first <http://www.w3.org/ns/ui#ColorValuespaceRestriction>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#ColorValuespaceRestriction> xsd:pattern "#[0-9a-z]{6}".
+<http://www.w3.org/ns/ui#ColorField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>.
+_:b1058 rdf:first <http://www.w3.org/ns/ui#TextField>;
+    rdf:rest _:b1059.
+<http://www.w3.org/ns/ui#Comment> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>;
+    a rdfs:Class;
+    rdfs:label "Comentario"@es, "Comment"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#DateField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>.
+<http://www.w3.org/ns/ui#DateTimeField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>.
+<http://www.w3.org/ns/ui#DecimalField> rdfs:subClassOf <http://www.w3.org/ns/ui#NumericField>.
+<http://www.w3.org/ns/ui#EmailField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>.
+<http://www.w3.org/ns/ui#FF1> a <http://www.w3.org/ns/ui#Heading>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer;
+    <http://www.w3.org/ns/ui#contents> "Edit Form"@en.
+<http://www.w3.org/ns/ui#Heading> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>.
+<http://www.w3.org/ns/ui#contents> a rdf:Property;
+    rdfs:label "Contenido"@es, "Contents"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#FF2> a <http://www.w3.org/ns/ui#SingleLineTextField>;
+    <http://www.w3.org/ns/ui#property> <http://purl.org/dc/elements/1.1/title>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#size> "60"^^xsd:integer.
+<http://www.w3.org/ns/ui#SingleLineTextField> rdfs:subClassOf <http://www.w3.org/ns/ui#TextField>.
+<http://www.w3.org/ns/ui#size> a rdf:Property;
+    rdfs:label "size of field";
+    rdfs:domain <http://www.w3.org/ns/ui#ValueField>;
+    rdfs:range xsd:integer;
+    <http://www.w3.org/ns/ui#prompt> "size of field in characters".
+<http://www.w3.org/ns/ui#TextField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b1055.
+<http://www.w3.org/ns/ui#FF3> a <http://www.w3.org/ns/ui#Comment>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer;
+    <http://www.w3.org/ns/ui#contents> "To add a field to the form, press the plus at the bottom,\n        and then select what sort of field you want."@en;
+    <http://www.w3.org/ns/ui#style> "background-color: #ffe;".
+<http://www.w3.org/ns/ui#style> a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "style";
+    <http://www.w3.org/ns/ui#prompt> "CSS style";
+    rdfs:comment "Must be a valid CSS style string such as one could put in\n        an HTML style attribute.  Depending on the user interface system, this can\n        by given to individuals, classes or properties. It is up to a user interface\n        which wants to draw on them to pick how it uses styles from which parts\n        of the data it has.  For example, the style of a class may be picked\n        to distinguish information about things in that class.".
+_:b927 a <http://www.w3.org/ns/ui#Classifier>;
+    <http://www.w3.org/ns/ui#property> rdf:type;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer;
+    <http://www.w3.org/ns/ui#category> <http://www.w3.org/ns/ui#Form>.
+_:b928 rdf:first _:b929;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#category> a rdf:Property;
+    rdfs:label "overall superclass"@en;
+    rdfs:domain <http://www.w3.org/ns/ui#Classifier>;
+    rdfs:range rdfs:Class;
+    rdfs:comment "The superclass subclasses of which will be selected.".
+_:b929 a <http://www.w3.org/ns/ui#Options>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#case> _:b930, _:b938, _:b946, _:b954, _:b962, _:b966, _:b974, _:b982, _:b986, _:b990, _:b991, _:b997, _:b1007, _:b1017, _:b1027, _:b1029;
+    <http://www.w3.org/ns/ui#dependingOn> rdf:type.
+<http://www.w3.org/ns/ui#Options> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>, <http://www.w3.org/ns/ui#Single>.
+_:b930 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#TextField>;
+    <http://www.w3.org/ns/ui#use> _:b931.
+_:b938 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#use> _:b939.
+_:b946 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#DecimalField>;
+    <http://www.w3.org/ns/ui#use> _:b947.
+_:b954 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#FloatField>;
+    <http://www.w3.org/ns/ui#use> _:b955.
+_:b962 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#ColorField>;
+    <http://www.w3.org/ns/ui#use> _:b963.
+_:b966 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#DateField>;
+    <http://www.w3.org/ns/ui#use> _:b967.
+_:b974 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#DateTimeField>;
+    <http://www.w3.org/ns/ui#use> _:b975.
+_:b982 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#EmailField>;
+    <http://www.w3.org/ns/ui#use> _:b983.
+_:b986 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#PhoneField>;
+    <http://www.w3.org/ns/ui#use> _:b987.
+_:b990 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#use> <http://www.w3.org/ns/ui#FieldList>.
+_:b991 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Options>;
+    <http://www.w3.org/ns/ui#use> _:b992.
+_:b997 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#use> _:b998.
+_:b1007 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Classifier>;
+    <http://www.w3.org/ns/ui#use> _:b1008.
+_:b1017 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Multiple>;
+    <http://www.w3.org/ns/ui#use> _:b1018.
+_:b1027 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Heading>;
+    <http://www.w3.org/ns/ui#use> _:b1028.
+_:b1029 <http://www.w3.org/ns/ui#for> <http://www.w3.org/ns/ui#Comment>;
+    <http://www.w3.org/ns/ui#use> _:b1030.
+<http://www.w3.org/ns/ui#dependingOn> a rdf:Property;
+    rdfs:label "depending on"@en;
+    rdfs:domain <http://www.w3.org/ns/ui#Options>;
+    rdfs:range rdf:Property;
+    rdfs:comment "Many fields prompt for information about a given property of the subject".
+_:b931 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b932.
+_:b1055 rdf:first <http://www.w3.org/ns/ui#SingleLineTextField>;
+    rdf:rest _:b1056.
+_:b932 rdf:first _:b933;
+    rdf:rest _:b934.
+_:b933 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>.
+_:b934 rdf:first _:b935;
+    rdf:rest _:b936.
+_:b935 a <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#label> "field size";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#size>;
+    <http://www.w3.org/ns/ui#max> "4096"^^xsd:integer;
+    <http://www.w3.org/ns/ui#min> "1"^^xsd:integer.
+_:b936 rdf:first _:b937;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#IntegerField> rdfs:subClassOf <http://www.w3.org/ns/ui#NumericField>.
+_:b937 a <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#label> "Max. length of string";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#maxLength>;
+    <http://www.w3.org/ns/ui#min> "1"^^xsd:integer.
+<http://www.w3.org/ns/ui#maxLength> a rdf:Property;
+    rdfs:label "Longitud máxima"@es, "Max length"@en, "max length of value";
+    rdfs:domain <http://www.w3.org/ns/ui#TextField>;
+    rdfs:range xsd:integer;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+_:b939 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b940.
+_:b940 rdf:first _:b941;
+    rdf:rest _:b942.
+_:b941 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b942 rdf:first _:b943;
+    rdf:rest _:b944.
+_:b943 a <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#label> "minimum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b944 rdf:first _:b945;
+    rdf:rest rdf:nil.
+_:b945 a <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#label> "maximum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#max>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+_:b947 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b948.
+_:b948 rdf:first _:b949;
+    rdf:rest _:b950.
+_:b949 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b950 rdf:first _:b951;
+    rdf:rest _:b952.
+_:b951 a <http://www.w3.org/ns/ui#DecimalField>;
+    <http://www.w3.org/ns/ui#label> "minimum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b952 rdf:first _:b953;
+    rdf:rest rdf:nil.
+_:b953 a <http://www.w3.org/ns/ui#DecimalField>;
+    <http://www.w3.org/ns/ui#label> "maximum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#max>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+<http://www.w3.org/ns/ui#FloatField> rdfs:subClassOf <http://www.w3.org/ns/ui#NumericField>.
+_:b955 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b956.
+_:b956 rdf:first _:b957;
+    rdf:rest _:b958.
+_:b957 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b958 rdf:first _:b959;
+    rdf:rest _:b960.
+_:b959 a <http://www.w3.org/ns/ui#FloatField>;
+    <http://www.w3.org/ns/ui#label> "minimum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b960 rdf:first _:b961;
+    rdf:rest rdf:nil.
+_:b961 a <http://www.w3.org/ns/ui#FloatField>;
+    <http://www.w3.org/ns/ui#label> "maximum value";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#max>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+_:b963 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b964.
+_:b964 rdf:first _:b965;
+    rdf:rest rdf:nil.
+_:b965 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b967 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b968.
+_:b968 rdf:first _:b969;
+    rdf:rest _:b970.
+_:b969 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b970 rdf:first _:b971;
+    rdf:rest _:b972.
+_:b971 a <http://www.w3.org/ns/ui#DateField>;
+    <http://www.w3.org/ns/ui#label> "min";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b972 rdf:first _:b973;
+    rdf:rest rdf:nil.
+_:b973 a <http://www.w3.org/ns/ui#DateField>;
+    <http://www.w3.org/ns/ui#label> "max";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#max>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+_:b975 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b976.
+_:b976 rdf:first _:b977;
+    rdf:rest _:b978.
+_:b977 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:DatatypeProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b978 rdf:first _:b979;
+    rdf:rest _:b980.
+_:b979 a <http://www.w3.org/ns/ui#DateTimeField>;
+    <http://www.w3.org/ns/ui#label> "min";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b980 rdf:first _:b981;
+    rdf:rest rdf:nil.
+_:b981 a <http://www.w3.org/ns/ui#DateTimeField>;
+    <http://www.w3.org/ns/ui#label> "max";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#max>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+_:b983 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b984.
+_:b984 rdf:first _:b985;
+    rdf:rest rdf:nil.
+_:b985 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:ObjectProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+<http://www.w3.org/ns/ui#PhoneField> rdfs:subClassOf <http://www.w3.org/ns/ui#ValueField>.
+_:b987 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b988.
+_:b988 rdf:first _:b989;
+    rdf:rest rdf:nil.
+_:b989 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:ObjectProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+<http://www.w3.org/ns/ui#FieldList> a <http://www.w3.org/ns/ui#Multiple>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#parts>;
+    <http://www.w3.org/ns/ui#sequence> "10"^^xsd:integer;
+    <http://www.w3.org/ns/ui#part> <http://www.w3.org/ns/ui#FieldForm>;
+    <http://www.w3.org/ns/ui#ordered> <http://www.w3.org/ns/ui#true>.
+<http://www.w3.org/ns/ui#Multiple> rdfs:subClassOf <http://www.w3.org/ns/ui#Form>.
+<http://www.w3.org/ns/ui#part> a rdf:Property;
+    rdfs:label "part"@en;
+    rdfs:domain <http://www.w3.org/ns/ui#Form>;
+    rdfs:range <http://www.w3.org/ns/ui#Form>.
+<http://www.w3.org/ns/ui#ordered> rdfs:label "ordered";
+    rdfs:range xsd:Boolean;
+    <http://www.w3.org/ns/ui#e> rdf:Property.
+_:b992 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b993.
+_:b993 rdf:first _:b994;
+    rdf:rest _:b995.
+_:b994 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> rdf:Property;
+    <http://www.w3.org/ns/ui#label> "depending on";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#dependingOn>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer;
+    <http://www.w3.org/ns/ui#default> rdf:type.
+_:b995 rdf:first _:b996;
+    rdf:rest rdf:nil.
+_:b996 a <http://www.w3.org/ns/ui#Multiple>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#case>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#part> <http://www.w3.org/ns/ui#CaseForm>.
+_:b998 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b999.
+_:b999 rdf:first _:b1000;
+    rdf:rest _:b1001.
+_:b1000 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:ObjectProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b1001 rdf:first _:b1002;
+    rdf:rest _:b1003.
+_:b1002 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> rdfs:Class;
+    <http://www.w3.org/ns/ui#label> "destination class";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#from>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer.
+_:b1003 rdf:first _:b1004;
+    rdf:rest _:b1005.
+_:b1004 a <http://www.w3.org/ns/ui#BooleanField>;
+    <http://www.w3.org/ns/ui#label> "user can add new";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#canMintNew>;
+    <http://www.w3.org/ns/ui#sequence> "3"^^xsd:integer.
+_:b1005 rdf:first _:b1006;
+    rdf:rest rdf:nil.
+_:b1006 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> <http://www.w3.org/ns/ui#Form>;
+    <http://www.w3.org/ns/ui#label> "Nested Form (if any)";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#use>;
+    <http://www.w3.org/ns/ui#sequence> "4"^^xsd:integer;
+    <http://www.w3.org/ns/ui#use> <http://www.w3.org/ns/ui#FormForm>;
+    <http://www.w3.org/ns/ui#optional> <http://www.w3.org/ns/ui#true>.
+_:b1039 rdf:first <http://www.w3.org/ns/ui#FF1>;
+    rdf:rest _:b1040.
+_:b1008 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b1009.
+_:b1009 rdf:first _:b1010;
+    rdf:rest _:b1011.
+_:b1010 a <http://www.w3.org/ns/ui#Comment>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#contents> "A classifier allows the user to which classes the item belongs to, given a common superclass of the allowed classes.  Give the superclass here:".
+_:b1011 rdf:first _:b1012;
+    rdf:rest _:b1013.
+_:b1012 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> rdfs:Class;
+    <http://www.w3.org/ns/ui#label> "superclass";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#category>;
+    <http://www.w3.org/ns/ui#sequence> "4"^^xsd:integer.
+_:b1013 rdf:first _:b1014;
+    rdf:rest _:b1015.
+_:b1014 a <http://www.w3.org/ns/ui#Comment>;
+    <http://www.w3.org/ns/ui#sequence> "6"^^xsd:integer;
+    <http://www.w3.org/ns/ui#contents> "(When the choice is made normally the item is given a r:type. Set this to r:type unless you want the form to set a different property.)".
+_:b1015 rdf:first _:b1016;
+    rdf:rest rdf:nil.
+_:b1016 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> owl:ObjectProperty;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "8"^^xsd:integer;
+    <http://www.w3.org/ns/ui#default> rdf:type.
+_:b1018 a <http://www.w3.org/ns/ui#Group>;
+    <http://www.w3.org/ns/ui#parts> _:b1019.
+_:b1019 rdf:first _:b1020;
+    rdf:rest _:b1021.
+_:b1020 a <http://www.w3.org/ns/ui#BooleanField>;
+    <http://www.w3.org/ns/ui#label> "ordered";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#ordered>;
+    <http://www.w3.org/ns/ui#sequence> "0"^^xsd:integer.
+_:b1021 rdf:first _:b1022;
+    rdf:rest _:b1023.
+_:b1022 a <http://www.w3.org/ns/ui#IntegerField>;
+    <http://www.w3.org/ns/ui#label> "minimum number";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#min>;
+    <http://www.w3.org/ns/ui#sequence> "0"^^xsd:integer.
+_:b1023 rdf:first _:b1024;
+    rdf:rest _:b1025.
+_:b1024 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> rdf:Property;
+    <http://www.w3.org/ns/ui#label> "property";
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#property>;
+    <http://www.w3.org/ns/ui#sequence> "1"^^xsd:integer.
+_:b1025 rdf:first _:b1026;
+    rdf:rest rdf:nil.
+_:b1026 a <http://www.w3.org/ns/ui#Choice>;
+    <http://www.w3.org/ns/ui#canMintNew> <http://www.w3.org/ns/ui#true>;
+    <http://www.w3.org/ns/ui#from> <http://www.w3.org/ns/ui#Form>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#part>;
+    <http://www.w3.org/ns/ui#sequence> "2"^^xsd:integer;
+    <http://www.w3.org/ns/ui#use> <http://www.w3.org/ns/ui#FieldForm>.
+_:b1028 a <http://www.w3.org/ns/ui#SingleLineTextField>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#contents>.
+_:b1030 a <http://www.w3.org/ns/ui#MultiLineTextField>;
+    <http://www.w3.org/ns/ui#property> <http://www.w3.org/ns/ui#contents>.
+<http://www.w3.org/ns/ui#MultiLineTextField> rdfs:subClassOf <http://www.w3.org/ns/ui#TextField>.
+_:b1032 rdf:first <http://www.w3.org/ns/ui#Group>;
+    rdf:rest _:b1033.
+_:b1033 rdf:first <http://www.w3.org/ns/ui#Choice>;
+    rdf:rest _:b1034.
+_:b1034 rdf:first <http://www.w3.org/ns/ui#Classifier>;
+    rdf:rest _:b1035.
+_:b1035 rdf:first <http://www.w3.org/ns/ui#Options>;
+    rdf:rest _:b1036.
+_:b1036 rdf:first <http://www.w3.org/ns/ui#Multiple>;
+    rdf:rest _:b1037.
+_:b1037 rdf:first <http://www.w3.org/ns/ui#Heading>;
+    rdf:rest _:b1038.
+_:b1038 rdf:first <http://www.w3.org/ns/ui#Comment>;
+    rdf:rest rdf:nil.
+_:b1040 rdf:first <http://www.w3.org/ns/ui#FF2>;
+    rdf:rest _:b1041.
+_:b1041 rdf:first <http://www.w3.org/ns/ui#FF3>;
+    rdf:rest _:b1042.
+_:b1042 rdf:first <http://www.w3.org/ns/ui#FieldList>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#NamedNodeURIField> rdfs:subClassOf <http://www.w3.org/ns/ui#TextField>;
+    a rdfs:Class;
+    rdfs:label "Something by its URI";
+    rdfs:comment "A NamedNodeURIField is like a SingleLineTextField, except\n\t\tthat the value it generates is not a literal string but an RDF node with the given URI.\n\t\tNormally users should not see URIs. When they do, this a way to do it.\n\t\t".
+_:b1044 rdf:first <http://www.w3.org/ns/ui#TriStateField>;
+    rdf:rest _:b1045.
+<http://www.w3.org/ns/ui#TriStateField> rdfs:subClassOf <http://www.w3.org/ns/ui#NumericField>.
+_:b1045 rdf:first <http://www.w3.org/ns/ui#IntegerField>;
+    rdf:rest _:b1046.
+_:b1046 rdf:first <http://www.w3.org/ns/ui#DecimalField>;
+    rdf:rest _:b1047.
+_:b1047 rdf:first <http://www.w3.org/ns/ui#FloatField>;
+    rdf:rest rdf:nil.
+_:b1049 rdf:first <http://www.w3.org/ns/ui#Group>;
+    rdf:rest _:b1050.
+_:b1050 rdf:first <http://www.w3.org/ns/ui#Choice>;
+    rdf:rest _:b1051.
+_:b1051 rdf:first <http://www.w3.org/ns/ui#Classifier>;
+    rdf:rest _:b1052.
+_:b1052 rdf:first <http://www.w3.org/ns/ui#Options>;
+    rdf:rest _:b1053.
+_:b1053 rdf:first <http://www.w3.org/ns/ui#Heading>;
+    rdf:rest _:b1054.
+_:b1054 rdf:first <http://www.w3.org/ns/ui#Comment>;
+    rdf:rest rdf:nil.
+_:b1056 rdf:first <http://www.w3.org/ns/ui#MultiLineTextField>;
+    rdf:rest _:b1057.
+_:b1057 rdf:first <http://www.w3.org/ns/ui#NamedNodeURIField>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#TimeField> a rdf:Property;
+    rdfs:label "Campo de tiempo"@es, "Time field"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+_:b1059 rdf:first <http://www.w3.org/ns/ui#NumericField>;
+    rdf:rest _:b1060.
+_:b1060 rdf:first <http://www.w3.org/ns/ui#ColorField>;
+    rdf:rest _:b1061.
+_:b1061 rdf:first <http://www.w3.org/ns/ui#DateField>;
+    rdf:rest _:b1062.
+_:b1062 rdf:first <http://www.w3.org/ns/ui#DateTimeField>;
+    rdf:rest _:b1063.
+_:b1063 rdf:first <http://www.w3.org/ns/ui#PhoneField>;
+    rdf:rest _:b1064.
+_:b1064 rdf:first <http://www.w3.org/ns/ui#EmailField>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/ui#annotationForm> a rdf:Property;
+    rdfs:label "annotation form";
+    rdfs:domain rdfs:Class;
+    rdfs:range <http://www.w3.org/ns/ui#Form>;
+    rdfs:comment "A form which may be used to add more infromation to an\ninstance of this class which we know something about.  Anything from\nadding just add one more fact, to adding a whole lot of information about a specific\nfacet of the thing.\n".
+<http://www.w3.org/ns/ui#backgroundColor> a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "background color"@en;
+    rdfs:range <http://www.w3.org/ns/ui#Color>.
+<http://www.w3.org/ns/ui#backgroundImage> a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "background image"@en;
+    rdfs:comment "URI or base64 representation of an image".
+<http://www.w3.org/ns/ui#base> a rdf:Property;
+    rdfs:label "Base"@en, "Base"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#color> a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "color"@en;
+    rdfs:range <http://www.w3.org/ns/ui#Color>.
+<http://www.w3.org/ns/ui#defaultError> a rdf:Property;
+    rdfs:label "Default error"@en, "Error predeterminado"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#initialProperties> a rdf:Property;
+    rdfs:label "initial properties";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:List;
+    <http://www.w3.org/ns/ui#prompt> "Properties to be specified for new ones";
+    rdfs:comment "A really simple way of enabling user interfaces to\n            create new information about a class of things is to make a define of properties\n            to be specified when a information about a new item\n            (\"New item\" here means an item which the system\n            does not have prvious information about yet,\n            not an items which has just been created,\n            like new friend as opposed to new baby)".
+<http://www.w3.org/ns/ui#maxDateOffset> a rdf:Property;
+    rdfs:label "Fecha máxima de desplazamiento"@es, "Maximum date offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#maxDatetimeOffset> a rdf:Property;
+    rdfs:label "Desplazamiento máximo de fecha y hora"@es, "Maximum datetime offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#maxValue> a rdf:Property;
+    rdfs:label "max";
+    rdfs:domain <http://www.w3.org/ns/ui#ValueField>.
+<http://www.w3.org/ns/ui#minDateOffset> a rdf:Property;
+    rdfs:label "Fecha mínima compensada"@es, "Minimum date offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#minDatetimeOffset> a rdf:Property;
+    rdfs:label "Desplazamiento mínimo de fecha y hora"@es, "Minimum datetime offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#minLength> a rdf:Property;
+    rdfs:label "Longitud mínima"@es, "Min length"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#minValue> a rdf:Property;
+    rdfs:label "min";
+    rdfs:domain <http://www.w3.org/ns/ui#ValueField>.
+<http://www.w3.org/ns/ui#name> a rdf:Property;
+    rdfs:label "Name"@en, "Nombre"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#oldValue> a rdf:Property;
+    rdfs:label "Old value"@en, "Valor antiguo"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#parentProperty> a rdf:Property;
+    rdfs:label "Parent property"@en, "Propiedad principal"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#partsClone> a rdf:Property;
+    rdfs:label "Clon de piezas"@es, "Parts clone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#pattern> a rdf:Property;
+    rdfs:label "Modelo"@es, "Pattern"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#reference> a rdf:Property;
+    rdfs:label "Reference"@en, "Referencia"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#required> a rdf:Property;
+    rdfs:label "Requerido"@es, "Required"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#requiredError> a rdf:Property;
+    rdfs:label "Error requerido"@es, "Required error"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#seqeunce> a rdf:Property;
+    rdfs:label "sequence number";
+    rdfs:range xsd:integer;
+    rdfs:comment "The sequence in which this item is arranged with repect to other parts.".
+<http://www.w3.org/ns/ui#sortBy> a rdf:Property;
+    rdfs:label "sort by";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:Property;
+    rdfs:comment "A property which typically is used to sort\n        members of a given class.".
+<http://www.w3.org/ns/ui#sortPriority> a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "sort priority";
+    rdfs:range xsd:integer;
+    rdfs:comment "When individuals or classes must be sorted, then\n        if they are given different values of sortPriority a user agent can\n        use this as a hint to how to present information.".
+<http://www.w3.org/ns/ui#tableProperties> a rdf:Property;
+    rdfs:label "table properties";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:List;
+    <http://www.w3.org/ns/ui#prompt> "Properties to be given in a default table view";
+    rdfs:comment "This  is a crude way of specifying a table-based\n            view for objects of this class.".
+<http://www.w3.org/ns/ui#valid> a rdf:Property;
+    rdfs:label "Valid"@en, "Válida"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#validationError> a rdf:Property;
+    rdfs:label "Error de validacion"@es, "Validation error"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#value> a rdf:Property;
+    rdfs:label "Valor"@es, "Value"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<http://www.w3.org/ns/ui#values> a rdf:Property;
+    rdfs:label "Valores"@es, "Values"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<https://w3id.org/inrupt/vocab/extension/ui#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2020/04/26"^^xsd:date;
+    dcterms:title "Inrupt extension for UI terms";
+    dcterms:description "Extension to UI terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/";
+    vann:preferredNamespacePrefix "ui";
+    vann:preferredNamespaceUri "http://www.w3.org/ns/ui#".

@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<https://inrupt.com/vocab/solid-meta-server-runtime#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:title "Solid Metadata Server runtime Vocabulary"@en;
+    dcterms:description "The Solid vocabulary providing terms (e.g. classes, properties and text strings (e.g.\n informative labels or error messages) used by Solid servers at server creation time."@en;
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/08/19"^^xsd:date;
+    vann:preferredNamespacePrefix "solid-meta-server-runtime";
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/solid-meta-server-runtime#";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/".
+<https://inrupt.com/vocab/solid-meta-server-runtime#subjectRoot> a rdf:Property;
+    rdfs:isDefinedBy <https://inrupt.com/vocab/solid-meta-server-runtime#>;
+    rdfs:label "Subject root"@en;
+    rdfs:comment "The root subject for runtime server-generated metadata.\n The idea for subject roots is that we could build up an entire graph of\n metadata (i.e. as processing progresses along a chain of processors, with each\n processor enriching this metadata with their specific metadata), and this\n term defines the root term of that graph."@en.
+<https://inrupt.com/vocab/solid-meta-server-runtime#requestReceivedTimestamp> a rdf:Property;
+    rdfs:isDefinedBy <https://inrupt.com/vocab/solid-meta-server-runtime#>;
+    rdfs:label "Request received timestamp"@en;
+    rdfs:comment "Timestamp this request was received at this server."@en.

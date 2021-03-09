@@ -1,0 +1,138 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+
+<https://w3id.org/lit/vocab/consent#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/01/01"^^xsd:date;
+    dcterms:title "Consent vocabulary for the LIT"@en;
+    dcterms:description "Consent vocabulary defining LIT-specific terms, especially terms that provide context"@en;
+    vann:preferredNamespacePrefix "lit_consent";
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/consent#";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/";
+    <https://w3id.org/lit/vocab/code-generation#generateSourceCode> "true".
+<https://w3id.org/lit/vocab/consent#defaultConsentExpiryMonths> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Default Consent Expiry (Months)"@en;
+    rdfs:comment "Property stating the default expiry period (in months) for consent. This value may be\n overridden in many scenarios, but is useful for providing a default."@en.
+<https://w3id.org/lit/vocab/consent#Controller> a owl:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Controller"@en;
+    rdfs:comment "A ThirdPartyDataController is a Third Party entity that acts as a Data Controller"@en;
+    rdfs:subClassOf <http://purl.org/adaptcentre/openscience/ontologies/gdprov#ThirdParty>.
+<https://w3id.org/lit/vocab/consent#hasController> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Has Controller"@en;
+    rdfs:comment "Should be in a more authoritative vocab... Provides a convenient link directly to the Data\n Controller responsible for collecting and managing personal data in a consent context."@en.
+<https://w3id.org/lit/vocab/consent#replacesConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Replaces Consent"@en;
+    rdfs:comment "(Should propose adding to GConsent vocab) Property linking back to the Consent that the current\n Consent replaces. It's necessary to complete replace a Consent object when the data subject changes the Purpose (e.g.\n removes the Sharing action) or changes the structure of the personal data being consented (e.g. such as a new field\n being added)."@en.
+<https://w3id.org/lit/vocab/consent#wasReplacedByConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Was Replaced By Consent"@en;
+    rdfs:comment "(Should propose adding to GConsent vocab) Property linking an old Consent to the Consent\n that replaces it. It's necessary to complete replace a Consent object when the data subject changes the Purpose (e.g.\n removes the Sharing action) or changes the structure of the personal data being consented (e.g. such as a new field\n being added)."@en.
+<https://w3id.org/lit/vocab/consent#profileContainsConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Profile Contains Consent"@en;
+    rdfs:comment "Property linking a user's profile (which can contain personal data or non-personal data) to it's current Consent."@en;
+    owl:subPropertyOf <http://www.w3.org/ns/ldp#contains>;
+    rdfs:range <https://w3id.org/GConsent#Consent>.
+<https://w3id.org/lit/vocab/consent#latestConsentInstance> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Should be in GConsent..."@en;
+    rdfs:comment "Should be in GConsent...Provides a convenient link directly to the last ConsentInstance in the\n chain (rather than having to traverse the linked list, or querying for 'most recent')."@en.
+<https://w3id.org/lit/vocab/consent#ConsentContainer> a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Consent Container"@en;
+    rdfs:comment "Consent container (which is a collection of Consent occurances)."@en.
+<https://w3id.org/lit/vocab/consent#hasConsentContainer> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Has Consent Container"@en;
+    rdfs:comment "Property linking a consent with it's container."@en.
+<https://w3id.org/lit/vocab/consent#capturedByWebId> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "WebID of entity capturing consent"@en;
+    rdfs:comment "The WebID of the individual that captured or\n obtained this instance of consent.";
+    rdfs:range <https://www.w3.org/ns/webid#webId>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://w3id.org/GConsent#ConsentInstance>.
+<https://w3id.org/lit/vocab/consent#isWebIdThatCapturedGivenConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "is WebID of entity that captured this consent"@en;
+    rdfs:comment "The WebID of the entity that captured this consent instance."@en;
+    rdfs:range <https://w3id.org/GConsent#ConsentInstance>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://www.w3.org/ns/webid#webId>.
+<https://w3id.org/lit/vocab/consent#capturedByOrganisationWebId> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "WebID of the organization capturing/obtaining consent"@en;
+    rdfs:comment "The WebID of the organisation (e.g. an NGO, a mobile operator, a merchant, etc.) that captured or\n obtained this instance of consent.";
+    rdfs:range <https://www.w3.org/ns/webid#webId>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://w3id.org/GConsent#ConsentInstance>.
+<https://w3id.org/lit/vocab/consent#isOrganisationWebIdThatCapturedGivenConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "WebID of organisation that captured this consent"@en;
+    rdfs:comment "The WebID of the organisation that captured this consent instance."@en;
+    rdfs:range <https://w3id.org/GConsent#ConsentInstance>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://www.w3.org/ns/webid#webId>.
+<https://w3id.org/lit/vocab/consent#capturedThroughApplication> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Captured through application"@en;
+    rdfs:comment "Links the captured/obtained consent with the specific application used."@en;
+    rdfs:range schema:SoftwareApplication;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://w3id.org/GConsent#ConsentInstance>.
+<https://w3id.org/lit/vocab/consent#isApplicationForGivenConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "is Application For Given Consent"@en;
+    rdfs:comment "Links the application object to the consent instances obtained using it."@en;
+    rdfs:range <https://w3id.org/GConsent#ConsentInstance>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain schema:SoftwareApplication.
+<https://w3id.org/lit/vocab/consent#capturedThroughWebForm> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "capturedThroughWebForm"@en;
+    rdfs:comment "Links the captured/obtained consent with the specific version of web form filled-in by the user."@en;
+    rdfs:range <https://w3id.org/lit/vocab/core#WebForm>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#hasContext>;
+    rdfs:domain <https://w3id.org/GConsent#ConsentInstance>.
+<https://w3id.org/lit/vocab/consent#isWebFormForGivenConsent> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "isWebFormForGivenConsent"@en;
+    rdfs:comment "Links the Web Form object to the consent instances obtained using it."@en;
+    rdfs:range <https://w3id.org/GConsent#ConsentInstance>;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>;
+    rdfs:domain <https://w3id.org/lit/vocab/core#WebForm>.
+<https://w3id.org/lit/vocab/consent#ProjectApp> a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Project Applications"@en;
+    rdfs:comment "The class of applications that are considered to make up the entire Project eco-system, as developed by\nCompany. Project can consist of a number of applications (e.g. a registration app, a reporting tool, a personal\ndata manager app).";
+    rdfs:subClassOf schema:SoftwareApplication.
+<https://w3id.org/lit/vocab/consent#webFormRegistration> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Registration Web Form on Project system"@en;
+    rdfs:comment "Project Web form used to gather registration data for an individual."@en;
+    rdfs:subPropertyOf <https://w3id.org/GConsent#isContextForConsentInstance>, schema:WebPage.
+<https://w3id.org/lit/vocab/consent#app_pam_registration_android> a rdfs:Class, <https://data.company.com/vocab/apps/project#ProjectApp>;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Project Registration"@en;
+    rdfs:comment "The Project registration app (currently native Android app only)."@en.
+<https://w3id.org/lit/vocab/consent#app_pam_reporting_web> a rdfs:Class, <https://data.company.com/vocab/apps/project#ProjectApp>;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Project Reporting"@en;
+    rdfs:comment "The Project reporting webapp, which provides high-level analysis of the Project eco-system)."@en.
+<https://w3id.org/lit/vocab/consent#app_pam_personal_web> a rdfs:Class, <https://data.company.com/vocab/apps/project#ProjectApp>;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/consent#>;
+    rdfs:label "Project Personal"@en;
+    rdfs:comment "The Project Personal Data Manager webapp, used by individuals to manage their profiles."@en.
