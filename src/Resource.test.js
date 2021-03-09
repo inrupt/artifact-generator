@@ -68,6 +68,15 @@ describe("Fetching remote resource", () => {
       Resource.readResource("http://example.org/ns")
     ).rejects.toThrow("Unreachable");
   });
+
+  it("should handle SKOS-XL as a known exception", async () => {
+    rdfFetch.mockImplementation(
+      jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable")))
+    );
+    expect(() =>
+      Resource.readResource("http://www.w3.org/2008/05/skos-xl#")
+    ).rejects.toThrow("Unreachable");
+  });
 });
 
 describe("Touching a file", () => {
