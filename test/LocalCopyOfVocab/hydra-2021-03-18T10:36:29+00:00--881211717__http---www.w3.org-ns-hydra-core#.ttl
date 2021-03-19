@@ -1,0 +1,416 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix hydra: <http://www.w3.org/ns/hydra/core#>.
+
+<http://www.w3.org/ns/hydra/core> a owl:Ontology;
+    <http://creativecommons.org/ns#attributionName> "Hydra W3C Community Group";
+    <http://creativecommons.org/ns#attributionURL> <http://www.hydra-cg.com/>;
+    <http://creativecommons.org/ns#license> <http://creativecommons.org/licenses/by/4.0/>;
+    dcterms:description "The Hydra Core Vocabulary is a lightweight vocabulary to create hypermedia-driven Web APIs. By specifying a number of concepts commonly used in Web APIs it enables the creation of generic API clients.";
+    dcterms:publisher "Hydra W3C Community Group";
+    dcterms:rights "Copyright © 2012-2014 the Contributors to the Hydra Core Vocabulary Specification";
+    vann:preferredNamespacePrefix "hydra";
+    rdfs:comment "A lightweight vocabulary for hypermedia-driven Web APIs";
+    rdfs:label "The Hydra Core Vocabulary";
+    rdfs:seeAlso <https://www.hydra-cg.com/spec/latest/core/>.
+hydra:Resource a hydra:Class;
+    rdfs:comment "The class of dereferenceable resources by means a client can attempt to dereference; however, the received responses should still be verified.";
+    rdfs:label "Hydra Resource";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:Class a hydra:Resource, rdfs:Class;
+    rdfs:comment "The class of Hydra classes.";
+    rdfs:label "Hydra Class";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf rdfs:Class.
+hydra:Link a hydra:Class;
+    rdfs:comment "The class of properties representing links.";
+    rdfs:label "Link";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource, rdf:Property.
+hydra:apiDocumentation a hydra:Link;
+    rdfs:comment "A link to the API documentation";
+    rdfs:label "apiDocumentation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:ApiDocumentation.
+hydra:ApiDocumentation a hydra:Class;
+    rdfs:comment "The Hydra API documentation class";
+    rdfs:label "ApiDocumentation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource.
+hydra:entrypoint a hydra:Link;
+    rdfs:comment "A link to main entry point of the Web API";
+    rdfs:label "entrypoint";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:ApiDocumentation;
+    rdfs:range hydra:Resource.
+hydra:supportedClass a hydra:Link;
+    rdfs:comment "A class known to be supported by the Web API";
+    rdfs:label "supported classes";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:ApiDocumentation;
+    rdfs:range rdfs:Class.
+hydra:possibleStatus a hydra:Link;
+    rdfs:comment "A status that might be returned by the Web API (other statuses should be expected and properly handled as well)";
+    rdfs:label "possible status";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range hydra:Status;
+    schema:domainIncludes hydra:ApiDocumentation, hydra:Operation.
+hydra:Operation a hydra:Class;
+    rdfs:comment "An operation.";
+    rdfs:label "Operation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:Status a hydra:Class;
+    rdfs:comment "Additional information about a status code that might be returned.";
+    rdfs:label "Status code description";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:supportedProperty a hydra:Link;
+    rdfs:comment "The properties known to be supported by a Hydra class";
+    rdfs:label "supported properties";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain rdfs:Class;
+    rdfs:range hydra:SupportedProperty.
+hydra:SupportedProperty a hydra:Class;
+    rdfs:comment "A property known to be supported by a Hydra class.";
+    rdfs:label "Supported Property";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:property a rdf:Property;
+    rdfs:comment "A property";
+    rdfs:label "property";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range rdf:Property;
+    schema:domainIncludes hydra:SupportedProperty, hydra:IriTemplateMapping.
+hydra:IriTemplateMapping a hydra:Class;
+    rdfs:comment "A mapping from an IRI template variable to a property.";
+    rdfs:label "IriTemplateMapping";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:required a rdf:Property;
+    rdfs:comment "True if the property is required, false otherwise.";
+    rdfs:label "required";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:boolean;
+    schema:domainIncludes hydra:SupportedProperty, hydra:IriTemplateMapping.
+hydra:readable a rdf:Property;
+    rdfs:comment "True if the client can retrieve the property's value, false otherwise.";
+    rdfs:label "readable";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:SupportedProperty;
+    rdfs:range xsd:boolean.
+hydra:writable a rdf:Property;
+    rdfs:comment "True if the client can change the property's value, false otherwise.";
+    rdfs:label "writable";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:SupportedProperty;
+    rdfs:range xsd:boolean.
+hydra:writeable rdfs:comment "This property is left for compatibility purposes and hydra:writable should be used instead.";
+    rdfs:label "writable";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "archaic";
+    rdfs:subPropertyOf hydra:writable.
+hydra:supportedOperation a hydra:Link;
+    rdfs:comment "An operation supported by instances of the specific Hydra class or the target of the Hydra link";
+    rdfs:label "supported operation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range hydra:Operation;
+    schema:domainIncludes hydra:Class, rdfs:Class, hydra:Link, hydra:SupportedProperty, hydra:TemplatedLink.
+hydra:TemplatedLink a hydra:Class;
+    rdfs:comment "A templated link.";
+    rdfs:label "Templated Link";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource, rdf:Property.
+hydra:operation a hydra:Link;
+    rdfs:comment "An operation supported by the Hydra resource";
+    rdfs:label "operation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:Operation.
+hydra:method a rdf:Property;
+    rdfs:comment "The HTTP method.";
+    rdfs:label "method";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Operation;
+    rdfs:range xsd:string.
+hydra:expects a hydra:Link;
+    rdfs:comment "The information expected by the Web API.";
+    rdfs:label "expects";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Operation;
+    schema:rangeIncludes hydra:Resource, hydra:Class, rdfs:Class, rdfs:Resource.
+hydra:returns a hydra:Link;
+    rdfs:comment "The information returned by the Web API on success";
+    rdfs:label "returns";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Operation;
+    schema:rangeIncludes hydra:Resource, hydra:Class, rdfs:Class, rdfs:Resource.
+hydra:statusCode a rdf:Property;
+    rdfs:comment "The HTTP status code. Please note it may happen this value will be different to actual status code received.";
+    rdfs:label "status code";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Status;
+    rdfs:range xsd:integer.
+hydra:title a rdf:Property;
+    rdfs:comment "A title, often used along with a description.";
+    rdfs:label "title";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:string;
+    schema:domainIncludes hydra:Class, hydra:Link, hydra:ApiDocumentation, hydra:Operation, hydra:Status, hydra:SupportedProperty, hydra:TemplatedLink;
+    rdfs:subPropertyOf rdfs:label.
+hydra:description a rdf:Property;
+    rdfs:comment "A description.";
+    rdfs:label "description";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:string;
+    schema:domainIncludes hydra:Class, hydra:Link, hydra:ApiDocumentation, hydra:Operation, hydra:Status, hydra:SupportedProperty, hydra:TemplatedLink;
+    rdfs:subPropertyOf rdfs:comment.
+hydra:Error a hydra:Class;
+    rdfs:comment "A runtime error, used to report information beyond the returned status code.";
+    rdfs:label "Error";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Status.
+hydra:Collection a hydra:Class;
+    rdfs:comment "A collection holding references to a number of related resources.";
+    rdfs:label "Collection";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource.
+hydra:collection a hydra:Link;
+    rdfs:comment "Collections somehow related to this resource.";
+    rdfs:label "collection";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range hydra:Collection.
+hydra:memberAssertion rdfs:comment "Semantics of each member provided by the collection.";
+    rdfs:label "member assertion";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Collection.
+hydra:manages rdfs:comment "This predicate is left for compatibility purposes and hydra:memberAssertion should be used instead.";
+    rdfs:label "manages";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "archaic";
+    rdfs:subPropertyOf hydra:memberAssertion.
+hydra:subject rdfs:comment "The subject.";
+    rdfs:label "subject";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:object rdfs:comment "The object.";
+    rdfs:label "object";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:member a hydra:Link;
+    rdfs:comment "A member of the collection";
+    rdfs:label "member";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Collection.
+hydra:view a hydra:Link;
+    rdfs:comment "A specific view of a resource.";
+    rdfs:label "view";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:PartialCollectionView a hydra:Class;
+    rdfs:comment "A PartialCollectionView describes a partial view of a Collection. Multiple PartialCollectionViews can be connected with the the next/previous properties to allow a client to retrieve all members of the collection.";
+    rdfs:label "PartialCollectionView";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource.
+hydra:totalItems a rdf:Property;
+    rdfs:comment "The total number of items referenced by a collection.";
+    rdfs:label "total items";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Collection;
+    rdfs:range xsd:integer.
+hydra:first a hydra:Link;
+    rdfs:comment "The first resource of an interlinked set of resources.";
+    rdfs:label "first";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:Resource.
+hydra:last a hydra:Link;
+    rdfs:comment "The last resource of an interlinked set of resources.";
+    rdfs:label "last";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:Resource.
+hydra:next a hydra:Link;
+    rdfs:comment "The resource following the current instance in an interlinked set of resources.";
+    rdfs:label "next";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:Resource.
+hydra:previous a hydra:Link;
+    rdfs:comment "The resource preceding the current instance in an interlinked set of resources.";
+    rdfs:label "previous";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:Resource.
+hydra:search a hydra:TemplatedLink;
+    rdfs:comment "A IRI template that can be used to query a collection.";
+    rdfs:label "search";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range hydra:IriTemplate.
+hydra:IriTemplate a hydra:Class;
+    rdfs:comment "The class of IRI templates.";
+    rdfs:label "IRI Template";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:freetextQuery a rdf:Property;
+    rdfs:comment "A property representing a freetext query.";
+    rdfs:label "freetext query";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Resource;
+    rdfs:range xsd:string.
+hydra:template a rdf:Property;
+    rdfs:comment "A templated string with placeholders. The literal's datatype indicates the template syntax; if not specified, hydra:Rfc6570Template is assumed.";
+    rdfs:label "template";
+    rdfs:seeAlso hydra:Rfc6570Template;
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:IriTemplate;
+    rdfs:range hydra:Rfc6570Template.
+hydra:Rfc6570Template a rdfs:Datatype;
+    rdfs:comment "An IRI template as defined by RFC6570.";
+    rdfs:label "RFC6570 IRI template";
+    rdfs:seeAlso <http://tools.ietf.org/html/rfc6570>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:string.
+hydra:variableRepresentation a rdf:Property;
+    rdfs:comment "The representation format to use when expanding the IRI template.";
+    rdfs:label "variable representation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:IriTemplateMapping;
+    rdfs:range hydra:VariableRepresentation.
+hydra:VariableRepresentation a hydra:Class;
+    rdfs:comment "A representation specifies how to serialize variable values into strings.";
+    rdfs:label "VariableRepresentation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:BasicRepresentation a hydra:VariableRepresentation;
+    rdfs:comment "A representation that serializes just the lexical form of a variable value, but omits language and type information.";
+    rdfs:label "BasicRepresentation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:ExplicitRepresentation a hydra:VariableRepresentation;
+    rdfs:comment "A representation that serializes a variable value including its language and type information and thus differentiating between IRIs and literals.";
+    rdfs:label "ExplicitRepresentation";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:mapping a rdf:Property;
+    rdfs:comment "A variable-to-property mapping of the IRI template.";
+    rdfs:label "mapping";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:IriTemplate;
+    rdfs:range hydra:IriTemplateMapping.
+hydra:variable a rdf:Property;
+    rdfs:comment "An IRI template variable";
+    rdfs:label "variable";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:IriTemplateMapping;
+    rdfs:range xsd:string.
+hydra:resolveRelativeUsing a rdf:Property;
+    rdfs:label "relative Uri resolution";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:IriTemplate;
+    rdfs:range hydra:BaseUriSource.
+hydra:BaseUriSource a hydra:Class;
+    rdfs:comment "Provides a base abstract for base Uri source for Iri template resolution.";
+    rdfs:label "Base Uri source";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource.
+hydra:Rfc3986 a hydra:BaseUriSource;
+    rdfs:comment "States that the base Uri should be established using RFC 3986 reference resolution algorithm specified in section 5.";
+    rdfs:label "RFC 3986 based";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:LinkContext a hydra:BaseUriSource;
+    rdfs:comment "States that the link's context IRI, as defined in RFC 5988, should be used as the base Uri";
+    rdfs:label "Link context";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:offset a rdf:Property;
+    rdfs:comment "Instructs to skip N elements of the set.";
+    rdfs:label "skip";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:nonNegativeInteger.
+hydra:limit a rdf:Property;
+    rdfs:comment "Instructs to limit set only to N elements.";
+    rdfs:label "take";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:nonNegativeInteger.
+hydra:pageIndex a rdf:Property;
+    rdfs:comment "Instructs to provide a specific page of the collection at a given index.";
+    rdfs:label "page index";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:range xsd:nonNegativeInteger;
+    rdfs:subPropertyOf hydra:pageReference.
+hydra:pageReference a rdf:Property;
+    rdfs:comment "Instructs to provide a specific page reference of the collection.";
+    rdfs:label "page reference";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing".
+hydra:returnsHeader a rdf:Property;
+    rdfs:comment "Name of the header returned by the operation.";
+    rdfs:label "returns header";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Operation;
+    rdfs:range xsd:string.
+hydra:expectsHeader a rdf:Property;
+    rdfs:comment "Specification of the header expected by the operation.";
+    rdfs:label "expects header";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:Operation;
+    rdfs:range xsd:string.

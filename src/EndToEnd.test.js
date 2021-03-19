@@ -382,6 +382,11 @@ describe("End-to-end tests", () => {
             "./test/resources/vocabs/Person.ttl"
           );
         },
+        headers: {
+          get: function () {
+            return "media type doesn't matter";
+          },
+        },
       };
       rdfFetch.mockImplementation(() => {
         return Promise.resolve(rdfFetchMock);
@@ -490,6 +495,11 @@ describe("End-to-end tests", () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
             "./test/resources/vocabs/schema-inrupt-ext.ttl"
           );
+        },
+        headers: {
+          get: function () {
+            return "media type doesn't matter";
+          },
         },
       };
       rdfFetch.mockImplementation(() => {

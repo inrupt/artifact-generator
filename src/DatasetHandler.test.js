@@ -10,6 +10,7 @@ const {
   RDF_NAMESPACE,
   RDFS,
   OWL,
+  OWL_NAMESPACE,
   SKOS,
   VANN,
   LIT_CORE,
@@ -29,6 +30,22 @@ const vocabMetadata = rdf
   ]);
 
 describe("Dataset Handler", () => {
+  describe("Edge-case vocabulary cases ", () => {
+    it("should ignore properties defined on the namespace IRI", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(OWL_NAMESPACE), RDF.type, RDF.Property))
+        .add(rdf.quad(OWL.Ontology, RDF.type, rdf.namedNode(OWL_NAMESPACE)));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.properties.length).toBe(0);
+    });
+  });
+
   describe("Handle sub-classes or sub-properties", () => {
     it("should handle sub-classes", () => {
       const dataset = rdf

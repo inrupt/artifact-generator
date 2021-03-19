@@ -1,4 +1,4 @@
-const debug = require("debug")("lit-artifact-generator:VocabGenerator");
+const debug = require("debug")("artifact-generator:VocabGenerator");
 const rdf = require("rdf-ext");
 
 const FileGenerator = require("./FileGenerator");
@@ -69,7 +69,9 @@ module.exports = class VocabGenerator {
   generate() {
     this.resources = new Resource(
       this.vocabData.inputResources,
-      this.vocabData.termSelectionResource
+      this.vocabData.termSelectionResource,
+      this.vocabData.vocabAcceptHeaderOverride,
+      this.vocabData.vocabContentTypeHeaderFallback
     );
 
     return this.generateData()

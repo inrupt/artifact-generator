@@ -1,0 +1,147 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix earl: <http://usefulinc.com/ns/doap#>.
+
+<http://usefulinc.com/ns/doap> a <http://www.w3.org/2002/07/owlOntology>;
+    rdfs:label "Evaluation and Report Language (EARL) 1.0 Schema"@en;
+    rdfs:comment "Formal schema of the Evaluation and Report Language (EARL) 1.0"@en;
+    <http://www.w3.org/2002/07/owlversionInfo> "Editor's Working Draft 10 June 2009"@en;
+    rdfs:isDefinedBy <http://www.w3.org/TR/EARL10/>;
+    rdfs:seeAlso <http://www.w3.org/WAI/intro/earl>, <http://www.w3.org/TR/HTTP-in-RDF/>, <http://www.w3.org/TR/Content-in-RDF/>, <http://www.w3.org/TR/Pointers-in-RDF/>.
+earl:Assertion a owl:Class, rdfs:Class;
+    rdfs:label "Assertion"@en;
+    rdfs:comment "a statement that embodies the results of a test"@en.
+earl:Assertor a owl:Class, rdfs:Class;
+    rdfs:label "Assertor"@en;
+    rdfs:comment "an entity such as a person, a software tool, an organization, or any other grouping that carries out a test collectively"@en.
+earl:TestSubject a owl:Class, rdfs:Class;
+    rdfs:label "Test Subject"@en;
+    rdfs:comment "the class of things that have been tested against some test criterion"@en.
+earl:TestCriterion a owl:Class, rdfs:Class;
+    rdfs:label "Test Criterion"@en;
+    rdfs:comment "a testable statement, usually one that can be passed or failed"@en.
+earl:TestRequirement a owl:Class, rdfs:Class;
+    rdfs:label "Test Requirement"@en;
+    rdfs:comment "a higher-level requirement that is tested by executing one or more sub-tests"@en;
+    rdfs:subClassOf earl:TestCriterion.
+earl:TestCase a owl:Class, rdfs:Class;
+    rdfs:label "Test Case"@en;
+    rdfs:comment "an atomic test, usually one that is a partial test for a requirement"@en;
+    rdfs:subClassOf earl:TestCriterion.
+earl:TestResult a owl:Class, rdfs:Class;
+    rdfs:label "Test Result"@en;
+    rdfs:comment "the actual result of performing the test"@en.
+earl:TestMode a owl:Class, rdfs:Class;
+    rdfs:label "Test Mode"@en;
+    rdfs:comment "describes how a test was carried out"@en.
+earl:OutcomeValue a owl:Class, rdfs:Class;
+    rdfs:label "Outcome Value"@en;
+    rdfs:comment "a discrete value that describes a resulting condition from carrying out the test"@en.
+earl:Pass a owl:Class, rdfs:Class;
+    rdfs:label "Pass"@en;
+    rdfs:comment "the class of outcomes to denote passing a test"@en;
+    rdfs:subClassOf earl:OutcomeValue.
+earl:Fail a owl:Class, rdfs:Class;
+    rdfs:label "Fail"@en;
+    rdfs:comment "the class of outcomes to denote failing a test"@en;
+    rdfs:subClassOf earl:OutcomeValue.
+earl:CannotTell a owl:Class, rdfs:Class;
+    rdfs:label "Undetermined"@en;
+    rdfs:comment "the class of outcomes to denote an undetermined outcome"@en;
+    rdfs:subClassOf earl:OutcomeValue.
+earl:NotApplicable a owl:Class, rdfs:Class;
+    rdfs:label "Not applicable"@en;
+    rdfs:comment "the class of outcomes to denote the test is not applicable"@en;
+    rdfs:subClassOf earl:OutcomeValue.
+earl:NotTested a owl:Class, rdfs:Class;
+    rdfs:label "Not tested"@en;
+    rdfs:comment "the class of outcomes to denote the test has not been carried out"@en;
+    rdfs:subClassOf earl:OutcomeValue.
+earl:Software a owl:Class, rdfs:Class;
+    rdfs:label "Software"@en;
+    rdfs:comment "any piece of software such as an authoring tool, browser, or evaluation tool"@en;
+    rdfs:subClassOf earl:Project.
+earl:assertedBy a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Asserted By"@en;
+    rdfs:comment "assertor of an assertion"@en;
+    rdfs:domain earl:Assertion;
+    rdfs:range earl:Assertor.
+earl:subject a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Subject"@en;
+    rdfs:comment "test subject of an assertion"@en;
+    rdfs:domain earl:Assertion;
+    rdfs:range earl:TestSubject.
+earl:test a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Test"@en;
+    rdfs:comment "test criterion of an assertion"@en;
+    rdfs:domain earl:Assertion;
+    rdfs:range earl:TestCriterion.
+earl:result a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Result"@en;
+    rdfs:comment "result of an assertion"@en;
+    rdfs:domain earl:Assertion;
+    rdfs:range earl:TestResult.
+earl:mode a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Mode"@en;
+    rdfs:comment "mode in which the test was performed"@en;
+    rdfs:domain earl:Assertion;
+    rdfs:range earl:TestMode.
+earl:mainAssertor a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Main Assertor"@en;
+    rdfs:comment "assertor that is primarily responsible for performing the test"@en;
+    rdfs:domain earl:Assertor;
+    rdfs:range earl:Assertor;
+    rdfs:subPropertyOf <http://xmlns.com/foaf/spec/#term_member>.
+earl:outcome a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Outcome"@en;
+    rdfs:comment "outcome of performing the test"@en;
+    rdfs:domain earl:TestResult;
+    rdfs:range earl:OutcomeValue.
+earl:pointer a owl:ObjectProperty, rdf:Property;
+    rdfs:label "Pointer"@en;
+    rdfs:comment "location within a test subject that are most relevant to a test result"@en;
+    rdfs:domain <http://usefulinc.com/ns/TestResult>;
+    rdfs:range <http://www.w3.org/2009/pointers#Pointer>.
+earl:info a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "Info"@en;
+    rdfs:comment "additional warnings or error messages in a human-readable form"@en;
+    rdfs:domain earl:TestResult;
+    rdfs:range rdfs:Literal.
+earl:automatic a earl:TestMode;
+    dcterms:title "Automatic"@en;
+    dcterms:description "where the test was carried out automatically by the software tool and without any human intervention"@en.
+earl:manual a earl:TestMode;
+    dcterms:title "Manual"@en;
+    dcterms:description "where the test was carried out by human evaluators"@en.
+earl:semiAuto a earl:TestMode;
+    dcterms:title "Semi-Automatic"@en;
+    dcterms:description "where the test was partially carried out by software tools, but where human input or judgment was still required to decide or help decide the outcome of the test"@en.
+earl:undisclosed a earl:TestMode;
+    dcterms:title "Undisclosed"@en;
+    dcterms:description "where the exact testing process is undisclosed"@en.
+earl:unknownMode a earl:TestMode;
+    dcterms:title "Unknown"@en;
+    dcterms:description "where the testing process is unknown or undetermined"@en.
+earl:passed a earl:Pass;
+    dcterms:title "Passed"@en;
+    dcterms:description "the subject passed the test"@en.
+earl:failed a earl:Fail;
+    dcterms:title "Failed"@en;
+    dcterms:description "the subject failed the test"@en.
+earl:cantTell a earl:CannotTell;
+    dcterms:title "Cannot tell"@en;
+    dcterms:description "it is unclear if the subject passed or failed the test"@en.
+earl:inapplicable a earl:NotApplicable;
+    dcterms:title "Inapplicable"@en;
+    dcterms:description "the test is not applicable to the subject"@en.
+earl:untested a earl:NotTested;
+    dcterms:title "Untested"@en;
+    dcterms:description "the test has not been carried out"@en.

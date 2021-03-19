@@ -1,0 +1,48 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix httph-inrupt: <http://www.w3.org/2007/ont/httph#>.
+
+<http://www.w3.org/2007/ont/httph> a owl:Ontology;
+    <http://purl.org/dc/elements/1.1/creator> <http://web.mit.edu/dsheets/www/foaf.rdf#dsheets>;
+    <http://purl.org/dc/elements/1.1/date> "2006-07-26";
+    <http://purl.org/dc/elements/1.1/description> "This is a vocabulary for describing HTTP headers.";
+    <http://purl.org/dc/elements/1.1/title> "HTTP Header Vocabulary";
+    rdfs:comment "This vocabulary is a one deemed to contain all HTTP headers.\nThe rdflib.js library uses it as for relationships between an HTTP response\nand the  content (value) of the HTTP header in that response.     The ontology\nis deemed to contain one property for every HTTP header, standard or not.\nThe property in this ontology has a localname which is the header field converted\nto lower case.".
+<http://web.mit.edu/dsheets/www/foaf.rdf#dsheets> a <http://xmlns.com/foaf/0.1/Person>;
+    <http://xmlns.com/foaf/0.1/mbox> <mailto:dsheets@mit.edu>;
+    <http://xmlns.com/foaf/0.1/name> "David Sheets".
+httph-inrupt:content-type a rdf:Property;
+    rdfs:comment "See the HTTP specification";
+    rdfs:domain <http://www.w3.org/2007/ont/http#Message>;
+    rdfs:isDefinedBy <http://www.w3.org/2007/ont/httph>;
+    rdfs:label "content type";
+    rdfs:range rdfs:Literal.
+<https://w3id.org/inrupt/vocab/extension/httph#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/07/28"^^xsd:date;
+    dcterms:title "Inrupt extension adding terms and multilingual meta-data for HTTP headers";
+    dcterms:description "Extension to th HTTPH (HTTP Headers) vocabulary\n providing terms for more headers that the current (Aug 2019) namespace document,\n and multilingual alternative names and translations for comments (e.g. for use\n directly as labels or tool-tips in user interfaces or error messages)";
+    vann:preferredNamespacePrefix "httph-inrupt-ext";
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/extension/httph#";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/".
+httph-inrupt:accept a rdf:Property;
+    rdfs:comment "See the HTTP specification"@en;
+    rdfs:domain <https://www.w3.org/2007/ont/http#Message>;
+    rdfs:isDefinedBy <https://w3id.org/inrupt/vocab/extension/httph#>, <http://www.w3.org/2007/ont/httph#>;
+    rdfs:label "Accept"@en;
+    rdfs:range rdfs:Literal.
+httph-inrupt:accept-language a rdf:Property;
+    rdfs:comment "See the HTTP specification"@en;
+    rdfs:domain <https://www.w3.org/2007/ont/http#Message>;
+    rdfs:isDefinedBy <https://w3id.org/inrupt/vocab/extension/httph#>, <http://www.w3.org/2007/ont/httph#>;
+    rdfs:label "Accept-Language"@en;
+    rdfs:range rdfs:Literal.

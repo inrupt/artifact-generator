@@ -1,0 +1,878 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#>.
+
+vcard:Acquaintance a owl:Class;
+    rdfs:label "Acquaintance"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+<http://www.w3.org/2006/vcard/ns> a owl:Ontology;
+    rdfs:label "Ontology for vCard"@en;
+    rdfs:comment "Ontology for vCard based on RFC6350"@en;
+    owl:versionInfo "Final"@en.
+vcard:RelatedType a owl:Class;
+    rdfs:label "Relation Type"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used for relation type codes. The URI of the relation type code must be used as the value for the Relation Type."@en.
+vcard:Agent a owl:Class;
+    rdfs:label "Agent"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:BBS a owl:Class;
+    rdfs:label "BBS"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:TelephoneType a owl:Class;
+    rdfs:label "Phone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used for telephone type codes. The URI of the telephone type code must be used as the value for the Telephone Type."@en.
+vcard:Car a owl:Class;
+    rdfs:label "Car"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Cell a owl:Class;
+    rdfs:label "Cell"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "Also called mobile telephone"@en.
+vcard:Child a owl:Class;
+    rdfs:label "Child"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Colleague a owl:Class;
+    rdfs:label "Colleague"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Contact a owl:Class;
+    rdfs:label "Contact"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Coresident a owl:Class;
+    rdfs:label "Coresident"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Coworker a owl:Class;
+    rdfs:label "Coworker"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Crush a owl:Class;
+    rdfs:label "Crush"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Date a owl:Class;
+    rdfs:label "Date"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Dom a owl:Class;
+    rdfs:label "Dom"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Type a owl:Class;
+    rdfs:label "Type"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used for type codes. The URI of the type code must be used as the value for Type."@en.
+vcard:Emergency a owl:Class;
+    rdfs:label "Emergency"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Fax a owl:Class;
+    rdfs:label "Fax"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType.
+vcard:Female a owl:Class;
+    rdfs:label "Female"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Gender.
+vcard:Gender a owl:Class;
+    rdfs:label "Gender"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used for gender codes. The URI of the gender code must be used as the value for Gender."@en.
+vcard:Friend a owl:Class;
+    rdfs:label "Friend"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Home a owl:Class;
+    rdfs:label "Home"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This implies that the property is related to an individual's personal life"@en.
+vcard:ISDN a owl:Class;
+    rdfs:label "ISDN"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Internet a owl:Class;
+    rdfs:label "Internet"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Intl a owl:Class;
+    rdfs:label "Intl"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Kin a owl:Class;
+    rdfs:label "Kin"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Label a owl:Class;
+    rdfs:label "Label"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Male a owl:Class;
+    rdfs:label "Male"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Gender.
+vcard:Me a owl:Class;
+    rdfs:label "Me"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Met a owl:Class;
+    rdfs:label "Met"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Modem a owl:Class;
+    rdfs:label "Modem"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Msg a owl:Class;
+    rdfs:label "Msg"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Muse a owl:Class;
+    rdfs:label "Muse"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Neighbor a owl:Class;
+    rdfs:label "Neighbor"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:None a owl:Class;
+    rdfs:label "None"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Gender.
+vcard:Other a owl:Class;
+    rdfs:label "Other"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Gender.
+vcard:PCS a owl:Class;
+    rdfs:label "PCS"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Pager a owl:Class;
+    rdfs:label "Pager"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType.
+vcard:Parcel a owl:Class;
+    rdfs:label "Parcel"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Parent a owl:Class;
+    rdfs:label "Parent"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Postal a owl:Class;
+    rdfs:label "Postal"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Pref a owl:Class;
+    rdfs:label "Pref"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Sibling a owl:Class;
+    rdfs:label "Sibling"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Spouse a owl:Class;
+    rdfs:label "Spouse"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Sweetheart a owl:Class;
+    rdfs:label "Sweetheart"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:RelatedType.
+vcard:Tel a owl:Class;
+    rdfs:label "Tel"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This class is deprecated. Use the hasTelephone object property."@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Text a owl:Class;
+    rdfs:label "Text"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType;
+    rdfs:comment "Also called sms telephone"@en.
+vcard:TextPhone a owl:Class;
+    rdfs:label "Text phone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType.
+vcard:Unknown a owl:Class;
+    rdfs:label "Unknown"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Gender.
+vcard:Video a owl:Class;
+    rdfs:label "Video"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType.
+vcard:Voice a owl:Class;
+    rdfs:label "Voice"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:TelephoneType.
+vcard:Work a owl:Class;
+    rdfs:label "Work"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This implies that the property is related to an individual's work place"@en.
+vcard:X400 a owl:Class;
+    rdfs:label "X400"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Type;
+    rdfs:comment "This class is deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:adr a owl:ObjectProperty;
+    rdfs:label "address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasAddress.
+vcard:hasAddress a owl:ObjectProperty;
+    rdfs:label "has address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the components of the delivery address for the object"@en;
+    rdfs:range vcard:Address.
+vcard:agent a owl:ObjectProperty;
+    rdfs:label "agent"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:anniversary a owl:DatatypeProperty;
+    rdfs:label "anniversary"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The date of marriage, or equivalent, of the object"@en;
+    rdfs:range _:b15.
+_:b15 a rdfs:Datatype;
+    owl:unionOf _:b16.
+_:b16 rdf:first xsd:dateTime;
+    rdf:rest _:b17.
+_:b17 rdf:first xsd:gYear;
+    rdf:rest rdf:nil.
+vcard:bday a owl:DatatypeProperty;
+    rdfs:label "birth date"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the birth date of the object"@en;
+    rdfs:range _:b18.
+_:b18 a rdfs:Datatype;
+    owl:unionOf _:b19.
+_:b19 rdf:first xsd:dateTime;
+    rdf:rest _:b20.
+_:b20 rdf:first xsd:dateTimeStamp;
+    rdf:rest _:b21.
+_:b21 rdf:first xsd:gYear;
+    rdf:rest rdf:nil.
+vcard:category a owl:DatatypeProperty;
+    rdfs:label "category"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The category information about the object, also known as tags"@en;
+    rdfs:range xsd:string.
+vcard:class a owl:DatatypeProperty;
+    rdfs:label "class"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:email a owl:ObjectProperty;
+    rdfs:label "email"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasEmail.
+vcard:hasEmail a owl:ObjectProperty;
+    rdfs:label "has email"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the electronic mail address for communication with the object"@en;
+    rdfs:range vcard:Email.
+vcard:extended-address a owl:DatatypeProperty;
+    rdfs:label "extended address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:geo a owl:ObjectProperty;
+    rdfs:label "geo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasGeo.
+vcard:hasGeo a owl:ObjectProperty;
+    rdfs:label "has geo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify information related to the global positioning of the object. May also be used as a property parameter."@en.
+vcard:hasAdditionalName a owl:ObjectProperty;
+    rdfs:label "has additional name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the additional name data property"@en.
+vcard:hasCalendarBusy a owl:ObjectProperty;
+    rdfs:label "has calendar busy"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the busy time associated with the object. (Was called FBURL in RFC6350)"@en.
+vcard:hasCalendarLink a owl:ObjectProperty;
+    rdfs:label "has calendar link"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the calendar associated with the object. (Was called CALURI in RFC6350)"@en.
+vcard:hasCalendarRequest a owl:ObjectProperty;
+    rdfs:label "has calendar request"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the calendar user address to which a scheduling request be sent for the object. (Was called CALADRURI in RFC6350)"@en.
+vcard:hasCategory a owl:ObjectProperty;
+    rdfs:label "has category"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the category data property"@en.
+vcard:hasCountryName a owl:ObjectProperty;
+    rdfs:label "has country name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the country name data property"@en.
+vcard:hasFN a owl:ObjectProperty;
+    rdfs:label "has formatted name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the formatted name data property"@en.
+vcard:hasFamilyName a owl:ObjectProperty;
+    rdfs:label "has family name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the family name data property"@en.
+vcard:hasGender a owl:ObjectProperty;
+    rdfs:label "has gender"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify  the sex or gender identity of the object. URIs are recommended to enable interoperable sex and gender codes to be used."@en.
+vcard:hasGivenName a owl:ObjectProperty;
+    rdfs:label "has given name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the given name data property"@en.
+vcard:hasHonorificPrefix a owl:ObjectProperty;
+    rdfs:label "has honorific prefix"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the honorific prefix data property"@en.
+vcard:hasHonorificSuffix a owl:ObjectProperty;
+    rdfs:label "has honorific suffix"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the honorific suffix data property"@en.
+vcard:hasInstantMessage a owl:ObjectProperty;
+    rdfs:label "has messaging"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the instant messaging and presence protocol communications with the object. (Was called IMPP in RFC6350)"@en.
+vcard:hasLanguage a owl:ObjectProperty;
+    rdfs:label "has language"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the language data property"@en.
+vcard:hasLocality a owl:ObjectProperty;
+    rdfs:label "has locality"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the locality data property"@en.
+vcard:hasNickname a owl:ObjectProperty;
+    rdfs:label "has nickname"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the nickname data property"@en;
+    rdfs:seeAlso vcard:nickname.
+vcard:nickname a owl:DatatypeProperty;
+    rdfs:label "nickname"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The nick name associated with the object"@en;
+    rdfs:range xsd:string.
+vcard:hasNote a owl:ObjectProperty;
+    rdfs:label "has note"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the note data property"@en.
+vcard:hasOrganizationName a owl:ObjectProperty;
+    rdfs:label "has organization name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the organization name data property"@en.
+vcard:hasOrganizationUnit a owl:ObjectProperty;
+    rdfs:label "has organization unit name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the organization unit name data property"@en.
+vcard:hasPostalCode a owl:ObjectProperty;
+    rdfs:label "has postal code"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the postal code data property"@en.
+vcard:hasRegion a owl:ObjectProperty;
+    rdfs:label "has region"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the region data property"@en.
+vcard:hasRelated a owl:ObjectProperty;
+    rdfs:label "has related"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a relationship between another entity and the entity represented by this object"@en.
+vcard:hasRole a owl:ObjectProperty;
+    rdfs:label "has role"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the role data property"@en.
+vcard:hasSource a owl:ObjectProperty;
+    rdfs:label "has source"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To identify the source of directory information of the object"@en.
+vcard:hasStreetAddress a owl:ObjectProperty;
+    rdfs:label "has street address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the street address data property"@en.
+vcard:hasTitle a owl:ObjectProperty;
+    rdfs:label "has title"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to support property parameters for the title data property"@en.
+vcard:hasUID a owl:ObjectProperty;
+    rdfs:label "has uid"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a value that represents a globally unique identifier corresponding to the object"@en.
+vcard:hasValue a owl:ObjectProperty;
+    rdfs:label "has value"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to indicate the resource value of an object property that requires property parameters"@en.
+vcard:label a owl:DatatypeProperty;
+    rdfs:label "label"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:language a owl:DatatypeProperty;
+    rdfs:label "language"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the language that may be used for contacting the object. May also be used as a property parameter."@en.
+vcard:latitude a owl:DatatypeProperty;
+    rdfs:label "latitude"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated. See hasGeo"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:longitude a owl:DatatypeProperty;
+    rdfs:label "longitude"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated. See hasGeo"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:mailer a owl:DatatypeProperty;
+    rdfs:label "mailer"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:note a owl:DatatypeProperty;
+    rdfs:label "note"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "A note associated with the object"@en;
+    rdfs:range xsd:string.
+vcard:org a owl:ObjectProperty;
+    rdfs:label "organization"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped. Use the organization-name data property."@en;
+    owl:equivalentProperty vcard:organization-name.
+vcard:organization-name a owl:DatatypeProperty;
+    rdfs:label "organization name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the organizational name associated with the object"@en;
+    rdfs:range xsd:string.
+vcard:organization-unit a owl:DatatypeProperty;
+    rdfs:label "organizational unit name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the organizational unit name associated with the object"@en;
+    rdfs:range xsd:string;
+    rdfs:subPropertyOf vcard:organization-name.
+vcard:post-office-box a owl:DatatypeProperty;
+    rdfs:label "post office box"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This data property has been deprecated"@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:prodid a owl:DatatypeProperty;
+    rdfs:label "product id"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the identifier for the product that created the object"@en;
+    rdfs:range xsd:string.
+vcard:rev a owl:DatatypeProperty;
+    rdfs:label "revision"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify revision information about the object"@en;
+    rdfs:range xsd:dateTime.
+vcard:role a owl:DatatypeProperty;
+    rdfs:label "role"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the function or part played in a particular situation by the object"@en;
+    rdfs:range xsd:string.
+vcard:sort-string a owl:DatatypeProperty;
+    rdfs:label "sort as"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the string to be used for national-language-specific sorting. Used as a property parameter only."@en;
+    rdfs:range xsd:string.
+vcard:title a owl:DatatypeProperty;
+    rdfs:label "title"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the position or job of the object"@en;
+    rdfs:range xsd:string.
+vcard:tz a owl:DatatypeProperty;
+    rdfs:label "time zone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To indicate time zone information that is specific to the object. May also be used as a property parameter."@en;
+    rdfs:range xsd:string.
+vcard:value a owl:DatatypeProperty;
+    rdfs:label "value"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "Used to indicate the literal value of a data property that requires property parameters"@en.
+vcard:Address a owl:Class;
+    rdfs:label "Address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the components of the delivery address for the  object"@en;
+    owl:equivalentClass _:b256.
+_:b256 a owl:Class;
+    owl:unionOf _:b257.
+_:b257 rdf:first _:b258;
+    rdf:rest _:b263.
+_:b258 a owl:Class;
+    owl:intersectionOf _:b259.
+_:b259 rdf:first _:b260;
+    rdf:rest _:b261.
+_:b260 a owl:Restriction;
+    owl:onProperty vcard:country-name;
+    owl:someValuesFrom xsd:string.
+vcard:country-name a owl:DatatypeProperty;
+    rdfs:label "country name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The country name associated with the address of the object"@en;
+    rdfs:range xsd:string.
+_:b261 rdf:first _:b262;
+    rdf:rest rdf:nil.
+_:b262 a owl:Restriction;
+    owl:onProperty vcard:country-name;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b263 rdf:first _:b264;
+    rdf:rest _:b269.
+_:b264 a owl:Class;
+    owl:intersectionOf _:b265.
+_:b265 rdf:first _:b266;
+    rdf:rest _:b267.
+_:b266 a owl:Restriction;
+    owl:onProperty vcard:locality;
+    owl:someValuesFrom xsd:string.
+vcard:locality a owl:DatatypeProperty;
+    rdfs:label "locality"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The locality (e.g. city or town) associated with the address of the object"@en;
+    rdfs:range xsd:string.
+_:b267 rdf:first _:b268;
+    rdf:rest rdf:nil.
+_:b268 a owl:Restriction;
+    owl:onProperty vcard:locality;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b269 rdf:first _:b270;
+    rdf:rest _:b275.
+_:b270 a owl:Class;
+    owl:intersectionOf _:b271.
+_:b271 rdf:first _:b272;
+    rdf:rest _:b273.
+_:b272 a owl:Restriction;
+    owl:onProperty vcard:postal-code;
+    owl:someValuesFrom xsd:string.
+vcard:postal-code a owl:DatatypeProperty;
+    rdfs:label "postal code"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The postal code associated with the address of the object"@en;
+    rdfs:range xsd:string.
+_:b273 rdf:first _:b274;
+    rdf:rest rdf:nil.
+_:b274 a owl:Restriction;
+    owl:onProperty vcard:postal-code;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b275 rdf:first _:b276;
+    rdf:rest _:b281.
+_:b276 a owl:Class;
+    owl:intersectionOf _:b277.
+_:b277 rdf:first _:b278;
+    rdf:rest _:b279.
+_:b278 a owl:Restriction;
+    owl:onProperty vcard:region;
+    owl:someValuesFrom xsd:string.
+vcard:region a owl:DatatypeProperty;
+    rdfs:label "region"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The region (e.g. state or province) associated with the address of the object"@en;
+    rdfs:range xsd:string.
+_:b279 rdf:first _:b280;
+    rdf:rest rdf:nil.
+_:b280 a owl:Restriction;
+    owl:onProperty vcard:region;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b281 rdf:first _:b282;
+    rdf:rest rdf:nil.
+_:b282 a owl:Class;
+    owl:intersectionOf _:b283.
+_:b283 rdf:first _:b284;
+    rdf:rest _:b285.
+_:b284 a owl:Restriction;
+    owl:onProperty vcard:street-address;
+    owl:someValuesFrom xsd:string.
+vcard:street-address a owl:DatatypeProperty;
+    rdfs:label "street address"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The street address associated with the address of the object"@en;
+    rdfs:range xsd:string.
+_:b285 rdf:first _:b286;
+    rdf:rest rdf:nil.
+_:b286 a owl:Restriction;
+    owl:onProperty vcard:street-address;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+vcard:Email a owl:Class;
+    rdfs:label "Email"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the electronic mail address for communication with the object the vCard represents. Use the hasEmail object property."@en;
+    owl:deprecated "true"^^xsd:boolean.
+vcard:Group a owl:Class;
+    rdfs:label "Group"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Kind;
+    rdfs:comment "Object representing a group of persons or entities.  A group object will usually contain hasMember properties to specify the members of the group."@en;
+    owl:equivalentClass _:b287;
+    owl:disjointWith vcard:Individual, vcard:Location, vcard:Organization.
+vcard:Kind a owl:Class;
+    rdfs:label "Kind"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The parent class for all objects"@en;
+    owl:equivalentClass vcard:VCard, _:b323.
+vcard:Individual a owl:Class;
+    rdfs:label "Individual"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Kind;
+    rdfs:comment "An object representing a single person or entity"@en;
+    owl:disjointWith vcard:Location, vcard:Organization.
+vcard:Location a owl:Class;
+    rdfs:label "Location"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Kind;
+    rdfs:comment "An object representing a named geographical place"@en;
+    owl:disjointWith vcard:Organization.
+vcard:Organization a owl:Class;
+    rdfs:label "Organization"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:subClassOf vcard:Kind;
+    rdfs:comment "An object representing an organization.  An organization is a single entity, and might represent a business or government, a department or division within a business or government, a club, an association, or the like.\n"@en.
+_:b287 a owl:Class;
+    owl:intersectionOf _:b288.
+_:b288 rdf:first _:b289;
+    rdf:rest _:b290.
+_:b289 a owl:Restriction;
+    owl:onProperty vcard:hasMember;
+    owl:someValuesFrom vcard:Kind.
+vcard:hasMember a owl:ObjectProperty;
+    rdfs:label "has member"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To include a member in the group this object represents. (This property can only be used by Group individuals)"@en;
+    rdfs:range vcard:Kind;
+    rdfs:domain vcard:Group.
+_:b290 rdf:first _:b291;
+    rdf:rest rdf:nil.
+_:b291 a owl:Restriction;
+    owl:onProperty vcard:hasMember;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger;
+    owl:onClass vcard:Kind.
+vcard:Name a owl:Class;
+    rdfs:label "Name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the components of the name of the object"@en;
+    owl:equivalentClass _:b292.
+_:b292 a owl:Class;
+    owl:unionOf _:b293.
+_:b293 rdf:first _:b294;
+    rdf:rest _:b299.
+_:b294 a owl:Class;
+    owl:intersectionOf _:b295.
+_:b295 rdf:first _:b296;
+    rdf:rest _:b297.
+_:b296 a owl:Restriction;
+    owl:onProperty vcard:additional-name;
+    owl:someValuesFrom xsd:string.
+vcard:additional-name a owl:DatatypeProperty;
+    rdfs:label "additional name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The additional name associated with the object"@en;
+    rdfs:range xsd:string.
+_:b297 rdf:first _:b298;
+    rdf:rest rdf:nil.
+_:b298 a owl:Restriction;
+    owl:onProperty vcard:additional-name;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger.
+_:b299 rdf:first _:b300;
+    rdf:rest _:b305.
+_:b300 a owl:Class;
+    owl:intersectionOf _:b301.
+_:b301 rdf:first _:b302;
+    rdf:rest _:b303.
+_:b302 a owl:Restriction;
+    owl:onProperty vcard:family-name;
+    owl:someValuesFrom xsd:string.
+vcard:family-name a owl:DatatypeProperty;
+    rdfs:label "family name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The family name associated with the object"@en;
+    rdfs:range xsd:string.
+_:b303 rdf:first _:b304;
+    rdf:rest rdf:nil.
+_:b304 a owl:Restriction;
+    owl:onProperty vcard:family-name;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b305 rdf:first _:b306;
+    rdf:rest _:b311.
+_:b306 a owl:Class;
+    owl:intersectionOf _:b307.
+_:b307 rdf:first _:b308;
+    rdf:rest _:b309.
+_:b308 a owl:Restriction;
+    owl:onProperty vcard:given-name;
+    owl:someValuesFrom xsd:string.
+vcard:given-name a owl:DatatypeProperty;
+    rdfs:label "given name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The given name associated with the object"@en;
+    rdfs:range xsd:string.
+_:b309 rdf:first _:b310;
+    rdf:rest rdf:nil.
+_:b310 a owl:Restriction;
+    owl:onProperty vcard:given-name;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+_:b311 rdf:first _:b312;
+    rdf:rest _:b317.
+_:b312 a owl:Class;
+    owl:intersectionOf _:b313.
+_:b313 rdf:first _:b314;
+    rdf:rest _:b315.
+_:b314 a owl:Restriction;
+    owl:onProperty vcard:honorific-prefix;
+    owl:someValuesFrom xsd:string.
+vcard:honorific-prefix a owl:DatatypeProperty;
+    rdfs:label "honorific prefix"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The honorific prefix of the name associated with the object"@en;
+    rdfs:range xsd:string.
+_:b315 rdf:first _:b316;
+    rdf:rest rdf:nil.
+_:b316 a owl:Restriction;
+    owl:onProperty vcard:honorific-prefix;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger.
+_:b317 rdf:first _:b318;
+    rdf:rest rdf:nil.
+_:b318 a owl:Class;
+    owl:intersectionOf _:b319.
+_:b319 rdf:first _:b320;
+    rdf:rest _:b321.
+_:b320 a owl:Restriction;
+    owl:onProperty vcard:honorific-suffix;
+    owl:someValuesFrom xsd:string.
+vcard:honorific-suffix a owl:DatatypeProperty;
+    rdfs:label "honorific suffix"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The honorific suffix of the name associated with the object"@en;
+    rdfs:range xsd:string.
+_:b321 rdf:first _:b322;
+    rdf:rest rdf:nil.
+_:b322 a owl:Restriction;
+    owl:onProperty vcard:honorific-suffix;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger.
+vcard:VCard a owl:Class;
+    rdfs:label "VCard"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The vCard class is  equivalent to the new Kind class, which is the parent for the four explicit types of vCards (Individual, Organization, Location, Group)"@en;
+    owl:equivalentClass vcard:Kind.
+vcard:fn a owl:DatatypeProperty;
+    rdfs:label "formatted name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "The formatted text corresponding to the name of the object"@en;
+    rdfs:range xsd:string.
+vcard:hasKey a owl:ObjectProperty;
+    rdfs:label "has key"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a public key or authentication certificate associated with the object"@en;
+    owl:equivalentProperty vcard:key.
+vcard:key a owl:ObjectProperty;
+    rdfs:label "key"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasKey.
+vcard:hasLogo a owl:ObjectProperty;
+    rdfs:label "has logo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a graphic image of a logo associated with the object "@en;
+    owl:equivalentProperty vcard:logo.
+vcard:logo a owl:ObjectProperty;
+    rdfs:label "logo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasLogo.
+vcard:hasName a owl:ObjectProperty;
+    rdfs:label "has name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the components of the name of the object"@en;
+    owl:equivalentProperty vcard:n;
+    rdfs:range vcard:Name.
+vcard:n a owl:ObjectProperty;
+    rdfs:label "name"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasName.
+vcard:hasPhoto a owl:ObjectProperty;
+    rdfs:label "has photo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify an image or photograph information that annotates some aspect of the object"@en;
+    owl:equivalentProperty vcard:photo.
+vcard:photo a owl:ObjectProperty;
+    rdfs:label "photo"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasPhoto.
+vcard:hasSound a owl:ObjectProperty;
+    rdfs:label "has sound"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a digital sound content information that annotates some aspect of the object"@en;
+    owl:equivalentProperty vcard:sound.
+vcard:sound a owl:ObjectProperty;
+    rdfs:label "sound"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasSound.
+vcard:hasTelephone a owl:ObjectProperty;
+    rdfs:label "has telephone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify the telephone number for telephony communication with the object"@en;
+    owl:equivalentProperty vcard:tel.
+vcard:tel a owl:ObjectProperty;
+    rdfs:label "telephone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasTelephone.
+vcard:hasURL a owl:ObjectProperty;
+    rdfs:label "has url"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "To specify a uniform resource locator associated with the object"@en;
+    owl:equivalentProperty vcard:url.
+vcard:url a owl:ObjectProperty;
+    rdfs:label "url"@en;
+    rdfs:isDefinedBy <http://www.w3.org/2006/vcard/ns>;
+    rdfs:comment "This object property has been mapped"@en;
+    owl:equivalentProperty vcard:hasURL.
+_:b323 a owl:Restriction;
+    owl:onProperty vcard:fn;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger;
+    owl:onDataRange xsd:string.

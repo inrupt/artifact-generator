@@ -1,0 +1,94 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix ws: <http://www.w3.org/ns/pim/space#>.
+
+<http://www.w3.org/ns/pim/space> <http://purl.org/dc/elements/1.1/title> "Workspace Ontology";
+    rdfs:comment "This ontology is for use in describing \nWorkspaces.  Workspaces are places where data is stored and associated policies of privacy.\nA given application typically stores information in several different\nworkspaces, some being user private, some shared, and some public.\nit is crucial that the user has easy control over the destiny of information.\n\nGoals then are that the user can\n\n      - create workspaces\n      - easily understand which workspace data is going into\n      - understand what the implications of that are\n      - (later) set ACLS on them\n      - publish apropriate use policies for them\n\n";
+    <http://www.w3.org/2000/10/swap/pim/doc#version> "$Id: space.ttl,v 1.3 2020/12/06 10:08:07 eric Exp $".
+ws:ConfigurationFile rdfs:comment "A file describing a configuration. In this context, it is\n expected to describe the workspace configuration."@en;
+    rdfs:subClassOf <http://www.w3.org/2006/gen/ont#InformationResource>;
+    a rdfs:Class;
+    rdfs:label "Configuration file"@en, "Fichier de configuration"@fr.
+ws:ControlledStorage rdfs:comment "A  storage is a space of URIs in which you can individually control for each resource\n    who has access to it.\n";
+    rdfs:subClassOf ws:Storage;
+    a rdfs:Class;
+    rdfs:label "access controlled storage".
+ws:Storage rdfs:comment "A storage is a space of URIs in which you have access to data.\n";
+    a rdfs:Class;
+    rdfs:label "storage".
+ws:MasterWorkspace rdfs:comment "This is a workspace for storing the \n    information about the other workspaces.\n    As a user, you normally don't have to worry about it.";
+    rdfs:subClassOf ws:PrivateWorkspace;
+    a rdfs:Class;
+    rdfs:label "Master Workspace"@en.
+ws:PrivateWorkspace rdfs:comment "Access only by the you, the user.";
+    rdfs:subClassOf ws:Workspace;
+    a rdfs:Class;
+    rdfs:label "Private workspace".
+ws:Workspace rdfs:comment "Workspaces are place where data is stored, and associated polices of privacy.\nA given application typically stores information in several different\nworkspaces, some being user private, some shared, and some public.\n";
+    a rdfs:Class;
+    rdfs:label "workspace";
+    owl:disjointUnionOf _:b7555.
+ws:PersonalStorage rdfs:comment "A personal storage is a space of URIs in which you and only you have access to data,\n    you cannot give access to anyone else.\n";
+    rdfs:subClassOf ws:Storage;
+    a rdfs:Class;
+    rdfs:label "personal storage".
+_:b7555 rdf:first ws:PrivateWorkspace;
+    rdf:rest _:b7556.
+ws:PublicStorage rdfs:comment "A public storage is a space of URIs in which you have access to data,\n    and all data is accessible to anyone without control.\n";
+    rdfs:subClassOf ws:Storage;
+    a rdfs:Class;
+    rdfs:label "public storage".
+ws:PublicWorkspace rdfs:comment "Aceess is open to the public. Anything in a public workspace\n    can be accesed by anyone.";
+    rdfs:subClassOf ws:Workspace;
+    a rdfs:Class;
+    rdfs:label "Public workspace".
+ws:PreferencesWorkspace rdfs:comment "AAceess may not be open to the public. \n    Contains preferences resources";
+    rdfs:subClassOf ws:Workspace;
+    a rdfs:Class;
+    rdfs:label "Preferences workspace".
+ws:SharedWorkspace rdfs:comment "Access is to some but not all people.";
+    rdfs:subClassOf ws:Workspace;
+    a rdfs:Class;
+    rdfs:label "Shared workspace".
+_:b7556 rdf:first ws:SharedWorkspace;
+    rdf:rest _:b7557.
+_:b7557 rdf:first ws:PublicWorkspace;
+    rdf:rest rdf:nil.
+ws:masterWorkspace a rdf:Property;
+    rdfs:label "master workspace"@en;
+    rdfs:domain <http://xmlns.com/foaf/0.1/Agent>;
+    rdfs:range ws:MasterWorkspace.
+ws:preferencesFile a rdf:Property;
+    rdfs:label "preferences file";
+    rdfs:domain <http://xmlns.com/foaf/0.1/Agent>;
+    rdfs:range ws:ConfigurationFile.
+ws:storage rdfs:comment "The storage in which this workspace is";
+    a rdf:Property;
+    rdfs:label "storage";
+    rdfs:range ws:Storage;
+    owl:inverse _:b7558.
+_:b7558 rdfs:label "workspace included".
+ws:uriPrefix rdfs:comment "URIs which start with this string are in this workspace or storage.\nThis may be used for constructing URIs for new storage resources.\n";
+    a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "URI prefix";
+    <http://www.w3.org/ns/ui#prompt> "Give the first part of the URis in this workspace".
+ws:workspace a rdf:Property;
+    rdfs:label "workspace"@en;
+    rdfs:range ws:Workspace.
+<https://w3id.org/lit/vocab/extension/ws#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/07/28"^^xsd:date;
+    dcterms:title "Inrupt extension to the Workspace Ontology"@en;
+    dcterms:description "This extension adds predicates making explicit some implicit knowledge in the Workspace ontology."@en;
+    vann:preferredNamespacePrefix "ws-solid-ext";
+    vann:preferredNamespaceUri "http://www.w3.org/ns/pim/space#";
+    dcterms:license "https://opensource.org/licenses/MIT".

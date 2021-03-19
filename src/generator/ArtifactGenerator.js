@@ -3,7 +3,7 @@ const path = require("path");
 const rimraf = require("rimraf");
 
 const moment = require("moment");
-const debug = require("debug")("lit-artifact-generator:ArtifactGenerator");
+const debug = require("debug")("artifact-generator:ArtifactGenerator");
 const ChildProcess = require("child_process");
 
 const FileGenerator = require("./FileGenerator");
@@ -221,6 +221,10 @@ class ArtifactGenerator {
           this.artifactData.inputResources = vocabDetails.inputResources;
           this.artifactData.termSelectionResource =
             vocabDetails.termSelectionResource;
+
+          this.artifactData.vocabAcceptHeaderOverride =
+            vocabDetails.vocabAcceptHeaderOverride;
+
           this.artifactData.nameAndPrefixOverride =
             vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;

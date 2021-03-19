@@ -1,0 +1,249 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix lit-core: <https://w3id.org/lit/vocab/core#>.
+
+<https://w3id.org/lit/vocab/core#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:title "LIT Core Ontology"@en;
+    dcterms:description "The LIT Core Ontology. The LIT is intended to be a collection of utility libraries to ease the\n adoption of RDF for developers."@en;
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/01/01"^^xsd:date;
+    dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl";
+    vann:preferredNamespacePrefix "lit-core";
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/core#".
+lit-core:Ontology a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "LIT Ontology"@en, "Ontologie LIT"@fr, "Ontología LIT"@es, "LIT-Ontologie"@de;
+    rdfs:comment "Class of LIT-specific ontologies. Useful for enforcing LIT constraints when generating source\ncode from LIT ontologies, such as enforcing all terms to have rdfs:label and rdfs:comment predicates."@en.
+lit-core:ConstantString a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Constant string"@en;
+    rdfs:comment "Used to provide a constant String value within a vocabulary - e.g. the value of\n the constant could be a default timeout value to use as a system configuration value."@en.
+lit-core:ConstantIri a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Constant IRI"@en;
+    rdfs:comment "Used to provide a constant IRI value within a vocabulary - e.g. the value of\n the constant could be default WebID to be used for testing (in other words it doesn't need to have\n reference to the IRI of the vocabulary itself)."@en.
+lit-core:subjectRoot a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Subject root"@en;
+    rdfs:comment "The root subject for metadata.\n The idea for subject roots is that we could build up an entire graph of\n metadata (i.e. as processing progresses along a chain of processors, with each\n processor enriching this metadata with their specific metadata), and this\n term defines the root term of that graph."@en.
+lit-core:MultiLingualLiteral a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Multi-lingual literal"@en, "Literal multilingüe"@es;
+    rdfs:comment "The class of multi-lingual literal strings. Could be used by code generation to auto-generate\n multi-lingual message resource bundles (e.g. for supporting error messages in multiple languages, or UI labels)."@en;
+    <https://w3id.org/lit/vocab/code-generation#generatedSourceIriMustUsePrefix> "Yes".
+lit-core:ExpressRdfHandler a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Express RDF Handler"@en, "Express RDF Handler"@es, "Gestionnaire RDF Express"@fr;
+    rdfs:comment "This class is used to identify Node Express RDF handlers (i.e. the outer-most handlers of a Node\n server). This can be very useful when determining the overall status of a request, where that single request may have\n initiated, within the server, a very complex workflow that resulted in multiple request/response actions, each of which\n would have their own response codes and data."@en, "Esta clase se usa para identificar los manejadores RDF de Node Express (es decir, los manejadores más externos de un nodo)\n  servidor). Esto puede ser muy útil al determinar el estado general de una solicitud, donde esa única solicitud puede tener\n  inició, dentro del servidor, un flujo de trabajo muy complejo que resultó en múltiples acciones de solicitud / respuesta, cada una de las cuales\n  Tendrían sus propios códigos de respuesta y datos."@es, "Cette classe est utilisée pour identifier les gestionnaires RDF Node Express (c’est-à-dire les gestionnaires les plus externes d’un nœud).\n   serveur). Cela peut être très utile pour déterminer l’état général d’une demande, où cette demande unique peut avoir\n   a initié, au sein du serveur, un flux de travail très complexe qui a entraîné plusieurs actions de demande / réponse, chacune\n   aurait ses propres codes et données de réponse."@fr.
+lit-core:ExpressRdfHandlerInput a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Express RDF Input Handler"@en;
+    rdfs:comment "This class is used to identify Node Express RDF input handlers (i.e. the outer-most handlers of a\n Node server). This can be very useful when determining the 'entrypoint' into a complex input (i.e. input that contains\n not just the data from the client, but also cookie session information, or proxy information, or infrastructure\n information."@en.
+lit-core:RequestData a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Request Data"@en;
+    rdfs:comment "Class to represent request data."@en.
+lit-core:hasRequestData a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Request Data"@en;
+    rdfs:comment "An incoming request can contain lots of contextual information (such as cookie info from the client\n but also server-side context like the machine processing a request, or proxies, etc.). This property is used to\n reference all of that request data."@en.
+lit-core:ResultListSuccess a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Result List Success"@en;
+    rdfs:comment "Class to represent a list of successful outcomes (e.g. when importing a file of people to\n auto-register, this class can be used to represent the list of people successfully registered from that import\n file)."@en.
+lit-core:hasResultListSuccess a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Result List Success"@en;
+    rdfs:comment "Property pointing to list of successful results."@en.
+lit-core:ResultListFail a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Result List Success"@en;
+    rdfs:comment "Class to represent a list of failed outcomes (e.g. when importing a file of people to\n auto-register, this class can be used to represent the list of people that failed to register from that import\n file)."@en.
+lit-core:hasResultListFail a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Result List Success"@en;
+    rdfs:comment "Property pointing to list of failed results."@en.
+lit-core:SessionInfo a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Session Info"@en;
+    rdfs:comment "Class to represent session info - typically cookies (i.e. if set as a property on a ResponseData\n object returned from a server-side operation, then our Express handler will attempt to set cookies for each property\n contained within the referenced entity."@en.
+lit-core:RemoveSessionInfo a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Session Info"@en;
+    rdfs:comment "Class to represent session info that we wish to remove - typically cookies (i.e. if set as a\n property on a ResponseData object returned from a server-side operation, then our Express handler will attempt to\n remove cookies for each property contained within the referenced entity).\nNote: We may only wish to remove 'some' cookies, and not all - for instance if an Admin user is logged into a\n registration app, and uses their app to log in a beneficiary, then logging out that beneficiary would require removing\n just that beneficies cookie data, but not the Admin user's cookie data, since they may continue using the app to login\n the next beneficary. Therefore this class can contain just the session info we wish to remove."@en.
+lit-core:hasSessionInfo a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Session Info"@en;
+    rdfs:comment "Link to a collection of session informatoin values, intended to be treated as cookie values (i.e.\n if set as a property on a ResponseData object returned from a server-side operation, then our Express handler will\n attempt to set cookies for each property contained within the referenced entity."@en.
+lit-core:HttpHeaderInfo a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Http Header Info"@en;
+    rdfs:comment "Class to represent HTTP Headers - our Express handler will attempt to collect all HTTP request\n headers and create a dataset (or this 'type') containing them all."@en.
+lit-core:hasHttpHeaderInfo a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Session Info"@en;
+    rdfs:comment "Link to a collection of HTTP headers associated with an incoming HTTP request."@en.
+lit-core:RequestDataQueryParams a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Request Query Params"@en;
+    rdfs:comment "An incoming request can contain lots of query parameters."@en.
+lit-core:hasRequestDataQueryParams a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Request Query Params"@en;
+    rdfs:comment "An incoming request can contain lots of query parameters."@en.
+lit-core:RequestDataCookies a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Request Data Cookies"@en;
+    rdfs:comment "An incoming request can contain lots of cookies and this class is used to represent a collection of\n them."@en.
+lit-core:hasRequestDataCookies a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Request Data Cookies"@en;
+    rdfs:comment "An incoming request can contain lots of cookie values."@en.
+lit-core:ResponseData a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Response Data"@en;
+    rdfs:comment "Class to represent response data.".
+lit-core:hasResponseData a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "has response data"@en;
+    rdfs:comment "When a response can contain lots of information, this predicate tells us the specific response\n data. For example, if storing requests in multiple backends (e.g. file system, SPARQL endpoint, in-memory, etc.), the\n response may contain the results of each separate storage attempt - but this predicate points us directly at the\n response we should consider overall (i.e. the 'definitive' response, which is extremely subjective, in that every\n service will need to determine what that means for itself). It simply provides a simple way for any client to\n immediately and consistently find where to start in navigating a potentially complex server response."@en.
+lit-core:webId a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Web ID"@en;
+    rdfs:comment "The WebID specification should define a namespace for this I think, but currently it doesn't (Feb 2018)."@en.
+lit-core:statusCode a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Status Code"@en;
+    rdfs:comment "Status Code - based on HTTP status codes, but not necessarily restricted by them."@en.
+lit-core:resourceLocation a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Resource Location"@en;
+    rdfs:comment "Resource Location is intended to stipulate a HTTP 'Location:' header value in server responses."@en.
+lit-core:errorMessage a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Error Message"@en;
+    rdfs:comment "Contains the error message text of an error or exception"@en.
+lit-core:errorStackTrace a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Error Stack Trace"@en;
+    rdfs:comment "Contains the error stack trace of an error or exception - typically only seen in DEBUG mode, and\n    not in Production environments (as it can reveal too much internal information from a security perspective."@en.
+lit-core:Link a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Link"@en;
+    rdfs:comment "Used to mark something as being a Link, which effectively means this 'thing' is being 'Linked To'\n from another triple, i.e. it's a 'target' of a link from somewhere else."@en.
+lit-core:hasLink a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has link"@en;
+    rdfs:comment "Used to specify a Link to a new subject, e.g. for Skolemization when we want to avoid using blank nodes."@en.
+lit-core:isLinkedFrom a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Is Linked From"@en;
+    rdfs:comment "The source of a link to this entity, i.e. from where this entity is Linked."@en.
+lit-core:WebForm a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Web Form"@en;
+    rdfs:comment "The class of generic web forms."@en.
+lit-core:ServerResponse a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Server Response"@en;
+    rdfs:comment "The class of Server-side responses (very generic)."@en.
+lit-core:username a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "User Name"@en;
+    rdfs:comment "The short form user name."@en.
+lit-core:EventRegister a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Event Register"@en;
+    rdfs:comment "Event marking a registration (e.g. user registration, account registration)."@en.
+lit-core:EventUnregister a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Event Unregister"@en;
+    rdfs:comment "Event marking an unregistration (e.g. unregistering a user, or an account)."@en.
+lit-core:EventLogin a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Event Login"@en;
+    rdfs:comment "Event marking a login."@en.
+lit-core:EventLogout a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Event Logout"@en;
+    rdfs:comment "Event marking a logout."@en.
+lit-core:Agent a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Agent"@en;
+    rdfs:comment "A generic Agent class, that can be used to represent a User, or an Administrator, or a Shop, or an NGO, or a Donor, etc."@en.
+lit-core:AgentUser a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "User"@en;
+    rdfs:comment "A generic User class."@en;
+    rdfs:subClassOf lit-core:Agent.
+lit-core:AgentAdmin a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Admin"@en;
+    rdfs:comment "A generic Admin class."@en;
+    rdfs:subClassOf lit-core:Agent.
+lit-core:ProfileContainer a rdfs:Class;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Profile Container"@en;
+    rdfs:comment "Profile container (which is a collection of Profiles, both core and extensions)."@en.
+lit-core:hasProfileContainer a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Profile Container"@en;
+    rdfs:comment "Property linking a Profile with it's container."@en.
+lit-core:authorizationToken a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Authorization Token"@en;
+    rdfs:comment "An Authorization Token used to authenticate a user."@en.
+lit-core:errRequireNotNull a rdfs:Literal;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    skos:definition "Internal error: A value of 'null' was provided when our system specifically disallows 'null' values here."@en.
+lit-core:errUuidTooShort a rdfs:Literal;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    skos:definition "UUID provided for conversion [{{0}}] was too short at only [{{1}}] characters long (we requirea minimum of [{{2}}])."@en.
+lit-core:errFocusSubjectRelativeToBlankNode a rdfs:Literal;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    skos:definition "Cannot create a builder with a focus subject relative to a blank node: [{{0}}] (relative part was [{{1}}])."@en, "SPANISH text - Cannot create a builder with a focus subject relative to a blank node: [{{0}}] (relative part was [{{1}}])."@es, "FRENCH - Cannot create a builder with a focus subject relative to a blank node: [{{0}}] (relative part was [{{1}}])."@fr.
+lit-core:errDifferentSubjectsPreventsConversionToObject a rdfs:Literal;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    skos:definition "Cannot convert dataset to a simple object, as it contains at least two triples with different subjects: [{{0}}] and [{{1}}]"@en.
+lit-core:errWrappingErrorNeedsErrorAndMessage a rdfs:Literal;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    skos:definition "Must provide both an error to wrap and a message - but one (or both) were missing (error: [{{0}}], message: [{{1}}]."@en, "Debe proporcionar tanto un error para envolver como un mensaje, pero faltaba uno (o ambos) (error: [{{0}}], mensaje: [{{1}}]."@es.
+lit-core:errMandatoryFieldNotProvided a rdfs:Literal;
+    skos:definition "The mandatory field [{{0}}] was not provided"@en, "No se proporcionó el campo obligatorio [{{0}}]"@es.
+lit-core:errMandatoryLiteralExpectedOne a rdfs:Literal;
+    skos:definition "The mandatory literal field [{{0}}] has [{{1}}] values when we explicitly require only 1 - needed [{{2}}]"@en, "El campo literal obligatorio [{{0}}] tiene valores [{{1}}] cuando explícitamente requiere solo 1 - necesaria [{{2}}]"@es.
+lit-core:errMandatoryIriExpectedOne a rdfs:Literal;
+    skos:definition "The mandatory IRI field [{{0}}] has [{{1}}] values when we explicitly require only 1"@en, "El campo IRI obligatorio [{{0}}] tiene valores [{{1}}] cuando explícitamente requiere solo 1"@es.
+lit-core:errLiteralExpectedButFoundIri a rdfs:Literal;
+    skos:definition "Expected a literal value, but found the IRI [{{0}}]"@en, "Esperaba un valor literal, pero encontró el IRI [{{0}}]"@es.
+lit-core:errUnsupportedContentType a rdfs:Literal;
+    skos:definition "Incoming request (for resource [{{0}}]) has unsupported content type:[{{1}}]"@en, "La solicitud entrante (para el recurso [{{0}}]) tiene un tipo de contenido no admitido: [{{1}}]"@es.
+lit-core:errUnsupportedFileExtension a rdfs:Literal;
+    skos:definition "We cannot determine a supported RDF format from the extension of the specified filename: [{{0}}]"@en, "No podemos determinar un formato RDF compatible a partir de la extensión del nombre de archivo especificado: [{{0}}]"@es.
+lit-core:errLoadingStreamFromIri a rdfs:Literal;
+    skos:definition "Failed to load stream from IRI [{{0}}]"@en, "Error al cargar la secuencia desde IRI [{{0}}]"@es.
+lit-core:errLoadingStreamFromJavaResource a rdfs:Literal;
+    skos:definition "Failed to load stream from local resource [{{0}}] (we expect it to exist on the current Classpath, e.g. as a file on the local file system, or within a JAR on the Classpath)"@en, "Error al cargar la secuencia desde el recurso local [{{0}}] (esperamos que exista en el Classpath actual, p. como un archivo en el sistema de archivos local, o dentro de un JAR en el Classpath)"@es.
+lit-core:errLoadingStreamIntoNamedGraph a rdfs:Literal;
+    skos:definition "Failed to load stream from [{{0}}] in format [{{1}}] into named graph [{{2}}]"@en, "Error al cargar la transmisión desde [{{0}}] en formato [{{1}}] en el gráfico con nombre [{{2}}]"@es.
+lit-core:errEmptyRequestBody a rdfs:Literal;
+    skos:definition "Incoming request has an empty body (but we require a body). Request content type: [{{0}}]"@en, "La solicitud entrante tiene un cuerpo vacío (pero requerimos un cuerpo). Solicitar tipo de contenido: [{{0}}]"@es.
+lit-core:errGenericInternal a rdfs:Literal;
+    skos:definition "Internal LIT log message: [{{0}}]"@en, "Mensaje de registro interno de LIT: [{{0}}]"@es.
+lit-core:hasShaclShape a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has SHACL Shape"@en;
+    rdfs:comment "Property linking a resource to a specific SHACL shape (with the intent that\n any request with this property will be validated against the specified shape)."@en.
+lit-core:hasVocabulary a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/lit/vocab/core#>;
+    rdfs:label "Has Vocabulary"@en;
+    rdfs:comment "Property linking a resource to a specific vocabulary (with the intent that this\n vocabulary will be used in SHACL validation to provide rdfs:subClassOf inference)."@en.
