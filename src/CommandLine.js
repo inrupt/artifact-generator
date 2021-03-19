@@ -1,7 +1,7 @@
 const path = require("path");
 const inquirer = require("inquirer");
 const ChildProcess = require("child_process");
-const debug = require("debug")("lit-artifact-generator:CommandLine");
+const debug = require("debug")("artifact-generator:CommandLine");
 
 const {
   getArtifactDirectoryRoot,

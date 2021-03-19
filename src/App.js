@@ -1,5 +1,5 @@
 const path = require("path");
-const debug = require("debug")("lit-artifact-generator:App");
+const debug = require("debug")("artifact-generator:App");
 const glob = require("glob");
 
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");

@@ -1,0 +1,179 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix inrupt_test: <https://inrupt.com/vocab/test#>.
+
+<https://inrupt.com/vocab/test#> a owl:Ontology, <https://w3id.org/lit/vocab/core#Ontology>;
+    owl:versionInfo "0.1";
+    dcterms:title "Inrupt test vocabulary"@en;
+    dcterms:description "The Inrupt test vocabulary - just commonly used terms\n across all Inrupt tests."@en;
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2020/07/05"^^xsd:date;
+    dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl";
+    vann:preferredNamespacePrefix "inrupt_test";
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/test#".
+inrupt_test:somePodRoot a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Root of some Pod"@en;
+    rdfs:comment "Root of some Pod."@en;
+    skos:definition "https://some.pod/".
+inrupt_test:somePodContainer a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Container in some Pod"@en;
+    rdfs:comment "Container in some Pod."@en;
+    skos:definition "https://some.pod/rootContainer/container/".
+inrupt_test:someOtherPodContainer a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Container in some *other* Pod"@en;
+    rdfs:comment "Container in some *other* Pod."@en;
+    skos:definition "https://some.other.pod.com/canBeAnywhere/rootContainer/otherContainer".
+inrupt_test:somePodResource a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some resource in a Pod"@en;
+    rdfs:comment "Some resource in a Pod."@en;
+    skos:definition "https://some.pod/rootContainer/container/Resource1".
+inrupt_test:somePodResourceAcl a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "ACL for some resource"@en;
+    rdfs:comment "ACL for some resource."@en;
+    skos:definition "https://some.pod/rootContainer/container/Resource1.acl".
+inrupt_test:someOtherPodResource a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* resource in another Pod"@en;
+    rdfs:comment "Some *other* resource in another Pod."@en;
+    skos:definition "https://some.other.pod.com/OtherResource".
+inrupt_test:somePodResourceHashSomeSubject a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod resource with a hash fragment identifying a Subject"@en;
+    rdfs:comment "Some Pod resource with a hash fragment identifying a Subject."@en;
+    skos:definition "https://some.pod/rootContainer/container/Resource1#some-subject".
+inrupt_test:somePodResourceHashSomeObject a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod resource with a hash fragment identifying an Object"@en;
+    rdfs:comment "Some Pod resource with a hash fragment identifying an Object."@en;
+    skos:definition "https://some.pod/rootContainer/container/Resource1#some-object".
+inrupt_test:somePodRootAcl a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod root ACL"@en;
+    rdfs:comment "Some Pod root ACL."@en;
+    skos:definition "https://some.pod/.acl".
+inrupt_test:somePodContainerAcl a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod container ACL"@en;
+    rdfs:comment "Some Pod container ACL."@en;
+    skos:definition "https://some.pod/rootContainer/container/.acl".
+inrupt_test:somePodGroupId a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod Group ID"@en;
+    rdfs:comment "Some Pod Group ID."@en;
+    skos:definition "https://some.pod/group#id".
+inrupt_test:somePodOtherGroupId a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* Pod Group ID"@en;
+    rdfs:comment "Some *other* Pod Group ID."@en;
+    skos:definition "https://some.other.pod/otherGroup#other-id".
+inrupt_test:somePodWebId a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Pod WebID"@en;
+    rdfs:comment "Some Pod WebID."@en;
+    skos:definition "https://some.pod/somePodWebId/profile/card#me".
+inrupt_test:someOtherPodWebId a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* Pod WebID"@en;
+    rdfs:comment "Some *other* Pod WebID."@en;
+    skos:definition "https://some.other.pod.com#i".
+inrupt_test:someNamedGraph a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some Named Graph"@en;
+    rdfs:comment "Some Named Graph."@en;
+    skos:definition "https://some.pod/someNamedGraph".
+inrupt_test:someOtherNamedGraph a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* Named Graph"@en;
+    rdfs:comment "Some *other* Named Graph."@en;
+    skos:definition "https://some.other.pod.com/someOtherNamedGraph".
+inrupt_test:someNonRdfResource a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some non-RDF resource"@en;
+    rdfs:comment "Some non-RDF resource."@en;
+    skos:definition "https://some.pod/someNonRdfResource".
+inrupt_test:someSubject a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some subject"@en;
+    rdfs:comment "Some subject."@en;
+    skos:definition "https://some.pod/resource#subject".
+inrupt_test:somePredicate a rdf:Property;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some predicate"@en;
+    rdfs:comment "Some predicate."@en.
+inrupt_test:someObject a rdf:Property;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some object as an IRI"@en;
+    rdfs:comment "Some object as an IRI."@en.
+inrupt_test:someOtherSubject a <https://w3id.org/lit/vocab/core#ConstantIri>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* subject"@en;
+    rdfs:comment "Some *other* subject."@en;
+    skos:definition "https://some.other.pod/resource#other-subject".
+inrupt_test:someOtherPredicate a rdf:Property;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* predicate"@en;
+    rdfs:comment "Some *other* predicate."@en.
+inrupt_test:someOtherObject a rdf:Property;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Some *other* object value as an IRI"@en;
+    rdfs:comment "Some *other* object value as an IRI."@en.
+inrupt_test:hashSomeSubject a <https://w3id.org/lit/vocab/core#ConstantString>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Hash fragment used to identify a some Subject"@en;
+    rdfs:comment "Hash fragment used to identify a some Subject."@en;
+    skos:definition "some-subject".
+inrupt_test:hashSomeObject a <https://w3id.org/lit/vocab/core#ConstantString>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Hash fragment used to identify a some Object"@en;
+    rdfs:comment "Hash fragment used to identify a some Object."@en;
+    skos:definition "some-object".
+inrupt_test:somePodContainerAclRelativePath a <https://w3id.org/lit/vocab/core#ConstantString>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Relative path to some Pod container ACL"@en;
+    rdfs:comment "Relative path to some Pod container ACL."@en;
+    skos:definition ".acl".
+inrupt_test:somePodResourceAclRelativePath a <https://w3id.org/lit/vocab/core#ConstantString>;
+    rdfs:definedBy <https://inrupt.com/vocab/test#>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:label "Relative path to some Pod resource ACL"@en;
+    rdfs:comment "Relative path to some Pod resource ACL."@en;
+    skos:definition "Resource1.acl".

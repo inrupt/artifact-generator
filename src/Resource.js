@@ -16,7 +16,7 @@ const N3 = require("n3");
 
 const SinkMap = require("@rdfjs/sink-map");
 
-const debug = require("debug")("lit-artifact-generator:Resources");
+const debug = require("debug")("artifact-generator:Resources");
 
 const FileGenerator = require("./generator/FileGenerator");
 
@@ -94,16 +94,34 @@ module.exports = class Resource {
    *
    * @param inputResources
    * @param termSelectionResource
+   * @param vocabAcceptHeaderOverride the HTTP Accept header value to use (some
+   * vocab servers don't respect the `q` qualifier, e.g.,
+   * "https://w3id.org/survey-ontology#")
+   * @param vocabContentTypeHeaderFallback HTTP Content Type header (some vocab
+   * servers (e.g., DOAP) don't return a Content Type header, meaning we can't
+   * know how to parse (apart from sniffing the response, which is very
+   * error-prone) so this param allows us provide one explicitly)
    */
-  constructor(inputResources, termSelectionResource) {
+  constructor(
+    inputResources,
+    termSelectionResource,
+    vocabAcceptHeaderOverride,
+    vocabContentTypeHeaderFallback
+  ) {
     this.inputResources = inputResources;
     this.termSelectionResource = termSelectionResource;
+    this.vocabAcceptHeaderOverride = vocabAcceptHeaderOverride;
+    this.vocabContentTypeHeaderFallback = vocabContentTypeHeaderFallback;
   }
 
   async processInputs(config, processInputsCallback) {
     debug(`Processing input resources: [${this.inputResources}]...`);
     const datasetsPromises = this.inputResources.map((inputResource) => {
-      return Resource.readResource(inputResource).catch((rootCause) =>
+      return Resource.readResource(
+        inputResource,
+        this.vocabAcceptHeaderOverride,
+        this.vocabContentTypeHeaderFallback
+      ).catch((rootCause) =>
         Resource.attemptToReadGeneratedResource(
           config,
           inputResource,
@@ -151,7 +169,7 @@ module.exports = class Resource {
     // Scan our provided directory for any pre-existing copies of this
     // vocabulary, sorting alphabetically which will get us the most recently
     // cached version...
-    const failureMessage = `No locally cached vocab found for input resource [${inputResource}] in directory [${cacheDirectory}] (either our local cache was cleared out, or we've never successfully read this vocabulary) - root cause of failure: [${rootCause}]`;
+    const failureMessage = `No locally cached vocab found for input resource [${inputResource}] in directory [${cacheDirectory}] (either our local cache was cleared out, or we've never successfully read and parsed this vocabulary) - root cause of failure: [${rootCause}]`;
     try {
       const files = fs
         .readdirSync(cacheDirectory)
@@ -177,8 +195,19 @@ module.exports = class Resource {
   /**
    * Reads resources, either from a local file or a remote IRI.
    * @param {string} inputResource path to the file, or IRI.
+   * @param {string} vocabAcceptHeaderOverride the HTTP Accept header value to
+   * use (some vocab servers don't respect the `q` qualifier, e.g.,
+   * "https://w3id.org/survey-ontology#")
+   * @param {string} vocabContentTypeHeaderFallback HTTP Content Type header
+   * (some vocab servers (e.g., DOAP) don't return a Content Type header,
+   * meaning we can't know how to parse (apart from sniffing the response, which
+   * is very error-prone) so this param allows us provide one explicitly)
    */
-  static readResource(inputResource) {
+  static readResource(
+    inputResource,
+    vocabAcceptHeaderOverride,
+    vocabContentTypeHeaderFallback
+  ) {
     debug(`Loading resource: [${inputResource}]...`);
     if (Resource.isOnline(inputResource)) {
       // This is unfortunate, but we can't reuse single parser instances for
@@ -195,18 +224,49 @@ module.exports = class Resource {
         new ParserRdfa({ baseIRI: inputResource })
       );
 
+      let acceptHeader;
+      if (vocabAcceptHeaderOverride) {
+        acceptHeader = vocabAcceptHeaderOverride;
+        debug(`Overriding Accept header with: [${vocabAcceptHeaderOverride}].`);
+      } else {
+        // Unfortunately we need to make an exception for the SKOS-XL vocab,
+        // since if it's server sees a request with 'text/html' *anywhere* in
+        // the HTTP Accept header (regardless of 'q' values), it'll return
+        // HTML with just two meaningless RDFa triples instead of the actual
+        // vocab!
+        acceptHeader =
+          inputResource === "http://www.w3.org/2008/05/skos-xl#"
+            ? RDF_ACCEPT_HEADER_SKOS_XL
+            : RDF_ACCEPT_HEADER;
+      }
+
       return rdfFetch(inputResource, {
         factory: rdf,
         headers: {
-          accept:
-            inputResource === "http://www.w3.org/2008/05/skos-xl#"
-              ? RDF_ACCEPT_HEADER_SKOS_XL
-              : RDF_ACCEPT_HEADER,
+          accept: acceptHeader,
         },
         formats,
       })
-        .then((resource) => {
-          return resource.dataset();
+        .then((rdfResponse) => {
+          // The vocab server may not provide a HTTP Content-Type header (e.g.,
+          // the DOAP server). So if we weren't provided with an explicit
+          // fallback content type (e.g., RDF/XML in the case of DOAP), then we
+          // can't reliably know which RDF parser to use, and therefore need to
+          // bomb out.
+          if (!rdfResponse.headers.get("content-type")) {
+            if (vocabContentTypeHeaderFallback) {
+              rdfResponse.headers.set(
+                "content-type",
+                vocabContentTypeHeaderFallback
+              );
+            } else {
+              throw new Error(
+                `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response.`
+              );
+            }
+          }
+
+          return rdfResponse.dataset();
         })
         .catch((error) => {
           const message = `Encountered error while attempting to fetch resource [${inputResource}]: ${error}`;
@@ -250,8 +310,9 @@ module.exports = class Resource {
     doneCallback
   ) {
     const writer = new N3.Writer({
+      baseIRI: vocabNamespace,
       format: "text/turtle",
-      prefixes,
+      prefixes: { ...prefixes, [vocabName]: vocabNamespace },
     });
 
     // We can't simply digest (or hash) the serialized RDF, due to potential of

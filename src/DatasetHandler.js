@@ -1,4 +1,4 @@
-const debug = require("debug")("lit-artifact-generator:DatasetHandler");
+const debug = require("debug")("artifact-generator:DatasetHandler");
 
 const {
   RDF_NAMESPACE,
@@ -159,6 +159,13 @@ module.exports = class DatasetHandler {
     }
     const name = splitIri[1];
 
+    // A vocab may define the vocabulary itself using a predicate we use for
+    // properties, for example the Survey ontology
+    // (https://w3id.org/survey-ontology#) defines itself as an
+    // `owl:NamedIndividual`.
+    if (name.length === 0) {
+      return null;
+    }
     const nameEscapedForLanguage = name.replace(/-/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
@@ -182,7 +189,8 @@ module.exports = class DatasetHandler {
       .replace(/^for$/, "for_")
       .replace(/^default$/, "default_")
       .replace(/^protected$/, "protected_") // From the JSON-LD vocab.
-      .replace(/^import$/, "import_"); // From the JSON-LD vocab.
+      .replace(/^import$/, "import_") // From the JSON-LD vocab.
+      .replace(/^implements$/, "implements_"); // From the DOAP vocab.
 
     this.subjectsOnlyDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
@@ -750,11 +758,20 @@ module.exports = class DatasetHandler {
 
   findDescription(descriptionFallback) {
     return this.findOwlOntology((owlOntologyTerms) => {
-      const onologyComments = this.fullDataset.match(
+      let onologyComments = this.fullDataset.match(
         owlOntologyTerms.subject,
         DCTERMS.description,
         null
       );
+
+      // Check fallback description predicate...
+      if (onologyComments.size === 0) {
+        onologyComments = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          RDFS.comment,
+          null
+        );
+      }
 
       return DatasetHandler.firstDatasetValue(
         onologyComments,

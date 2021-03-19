@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
-const debug = require("debug")("lit-artifact-generator:FileGenerator");
+const debug = require("debug")("artifact-generator:FileGenerator");
 
 const {
   getArtifactDirectoryRoot,

@@ -1,6 +1,6 @@
 const moment = require("moment");
 const chokidar = require("chokidar");
-const debug = require("debug")("lit-artifact-generator:VocabWatcher");
+const debug = require("debug")("artifact-generator:VocabWatcher");
 
 class VocabWatcher {
   constructor(generator) {

@@ -19,8 +19,9 @@ const Resource = require("./Resource");
 const MOCKED_LAST_MODIFIED = 64060588859000;
 const VALID_LAST_MODIF_HTTP_RESOURCE = {
   headers: {
-    // This date should alway be more recent than the considered artifacts (unless you are running this test
-    // 2000 years in the future and are trying to figure out what stopped working)
+    // This date should alway be more recent than the considered artifacts
+    // (unless you are running this test 2000 years in the future and are trying
+    // to figure out what stopped working)
     "last-modified": "Mon, 01 Jan 4000 00:00:59 GMT",
   },
 };
@@ -76,6 +77,64 @@ describe("Fetching remote resource", () => {
     expect(() =>
       Resource.readResource("http://www.w3.org/2008/05/skos-xl#")
     ).rejects.toThrow("Unreachable");
+  });
+
+  it("should use Accept header override", async () => {
+    const mockedDataset = "mocked dataset response";
+    const rdfFetchMock = {
+      dataset: () => {
+        return mockedDataset;
+      },
+      headers: { get: function () {}, set: function () {} },
+    };
+    rdfFetch.mockImplementation(() => {
+      return Promise.resolve(rdfFetchMock);
+    });
+
+    expect(
+      await Resource.readResource(
+        "http://www.example.com",
+        "mocked accept media type",
+        "mocked media type"
+      )
+    ).toEqual(mockedDataset);
+  });
+
+  it("should use Content Type header fallback", async () => {
+    const mockedDataset = "mocked dataset response";
+    const rdfFetchMock = {
+      dataset: () => {
+        return mockedDataset;
+      },
+      headers: { get: function () {}, set: function () {} },
+    };
+    rdfFetch.mockImplementation(() => {
+      return Promise.resolve(rdfFetchMock);
+    });
+
+    expect(
+      await Resource.readResource(
+        "http://www.example.com",
+        undefined,
+        "mocked media type"
+      )
+    ).toEqual(mockedDataset);
+  });
+
+  it("should throw if no Content Type header and no fallback", async () => {
+    const rdfFetchMock = {
+      dataset: () => {
+        "mocked response";
+      },
+      headers: { get: function () {} },
+    };
+    rdfFetch.mockImplementation(() => {
+      return Promise.resolve(rdfFetchMock);
+    });
+
+    expect(() =>
+      Resource.readResource("http://www.example.com")
+    ).rejects.toThrow("cannot reliably determine the correct RDF parser");
   });
 });
 
@@ -213,7 +272,7 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "reading"
+          "testCacheForReading-DoNotDelete"
         );
 
         const rootCause = "some reason...";
@@ -232,7 +291,7 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "reading"
+          "testCacheForReading-DoNotDelete"
         );
 
         const dataset = await Resource.attemptToReadGeneratedResource(

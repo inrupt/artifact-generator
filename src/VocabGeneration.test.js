@@ -1,7 +1,7 @@
 require("mock-local-storage");
 
 const fs = require("fs");
-const debug = require("debug")("lit-artifact-generator:VocabGenerator");
+const debug = require("debug")("artifact-generator:VocabGenerator");
 
 const App = require("./App");
 const { DEFAULT_PUBLISH_KEY } = require("./config/GeneratorConfiguration");
@@ -209,13 +209,22 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
+  // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
-    // it("tests a single custom vocab", async () => {
     jest.setTimeout(10000);
     await generateVocabArtifact({
-      inputResources: ["http://www.w3.org/ns/earl#"],
+      inputResources: ["http://usefulinc.com/ns/doap#"],
+      nameAndPrefixOverride: "doap",
+      vocabContentTypeHeaderFallback: "application/rdf+xml",
 
-      // nameAndPrefixOverride: "jsonld",
+      // inputResources: ["https://w3id.org/survey-ontology#"],
+      // nameAndPrefixOverride: "sur",
+      // vocabAcceptHeaderOverride: "text/turtle",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/2003/06/sw-vocab-status/ns#"],
+      //
+      // inputResources: ["http://www.w3.org/ns/earl#"],
 
       // inputResources: ["http://www.w3.org/ns/json-ld#"],
       // nameAndPrefixOverride: "jsonld",

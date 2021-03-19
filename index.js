@@ -160,7 +160,7 @@ yargs
         .boolean("clearOutputDirectory")
         .describe(
           "clearOutputDirectory",
-          "Forces generation, even if the target artifacts are considered up-to-date"
+          "Deletes the entire output directory before generation"
         )
         .alias("c", "clearOutputDirectory")
         .default("clearOutputDirectory", false)
