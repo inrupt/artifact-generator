@@ -15,13 +15,13 @@
     rdfs:comment "This ontology allows for the description of representations of Internet resources.\n\nRepresentations may conform to prof:Profile instances and may have the format of a particular dct:MediaType."@en;
     dcterms:created "2019-08-07"^^xsd:date;
     dcterms:modified "2019-08-10"^^xsd:date;
-    dcterms:creator _:b7531.
-_:b7531 a schema:Person;
+    dcterms:creator _:b7766.
+_:b7766 a schema:Person;
     schema:name "Nicholas J. Car";
-    schema:affiliation _:b7532;
+    schema:affiliation _:b7767;
     schema:email <mailto:nicholas.car@surroundaustralia.com>;
     schema:identifier <http://orcid.org/0000-0002-8742-7730>.
-_:b7532 schema:name "SURROUND Australia Pty Ltd";
+_:b7767 schema:name "SURROUND Australia Pty Ltd";
     schema:url <https://surroundaustralia.com>.
 dcterms:conformsTo a owl:ObjectProperty;
     rdfs:label "conforms to";
@@ -38,23 +38,23 @@ rdf:Resource a owl:Class;
     dcterms:source "http://www.w3.org/2000/01/rdf-schema#Resource";
     skos:scopeNote "In the context of this mode, rdf:Resource instances are used to identify Internet resources, that is items identified by a URI.";
     skos:definition "The class resource, everything."@en;
-    rdfs:subClassOf _:b7533.
+    rdfs:subClassOf _:b7768.
 <http://www.w3.org/ns/dx/connegp/altp#Representation> a owl:Class;
     rdfs:label "Representation";
     dcterms:source <https://httpwg.org/specs/rfc7230.html>;
     skos:scopeNote "Use this class to indicate instances of representations of resources";
     skos:definition "An abstraction of the current or desired state of a thing in HTTP communications."@en;
-    rdfs:subClassOf _:b7534;
+    rdfs:subClassOf _:b7769;
     rdfs:isDefinedBy <http://www.w3.org/ns/dx/connegp/altp>.
 <http://www.w3.org/ns/dx/connegp/altp#hasDefaultRepresentation> a owl:ObjectProperty;
     rdfs:label "has default representation";
     skos:scopeNote "Use this property to indicate the default HTTP-delivered representation of a resource that is obtained when no further instructions are given to a server to obtain a resource's representation other than the identification (URI) of the resource";
     skos:definition "Indicates the default Representation of a Resource."@en;
     rdfs:subPropertyOf <http://www.w3.org/ns/dx/connegp/altp#hasRepresentation>.
-_:b7533 a owl:Restriction;
+_:b7768 a owl:Restriction;
     owl:onProperty <http://www.w3.org/ns/dx/connegp/altp#hasRepresentation>;
     owl:allValuesFrom <http://www.w3.org/ns/dx/connegp/altp#Representation>.
-_:b7534 a owl:Restriction;
+_:b7769 a owl:Restriction;
     owl:onProperty dcterms:conformsTo;
     owl:allValuesFrom dcterms:Standard.
 dcterms:Standard a owl:Class;

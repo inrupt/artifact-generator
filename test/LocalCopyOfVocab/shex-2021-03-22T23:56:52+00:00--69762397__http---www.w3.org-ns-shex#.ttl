@@ -135,15 +135,15 @@ shex:annotation a rdf:Property;
     rdfs:label "annotation"@en;
     rdfs:comment "Annotations on a TripleExpression."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3605;
+    rdfs:domain _:b4970;
     rdfs:range shex:Annotation.
-_:b3606 rdf:first shex:EachOf;
-    rdf:rest _:b3607.
-_:b3607 rdf:first shex:OneOf;
-    rdf:rest _:b3608.
-_:b3608 rdf:first shex:TripleConstraint;
+_:b4971 rdf:first shex:EachOf;
+    rdf:rest _:b4972.
+_:b4972 rdf:first shex:OneOf;
+    rdf:rest _:b4973.
+_:b4973 rdf:first shex:TripleConstraint;
     rdf:rest rdf:nil.
-_:b3605 owl:unionOf _:b3606.
+_:b4970 owl:unionOf _:b4971.
 shex:closed a rdf:Property;
     rdfs:label "closed"@en;
     rdfs:comment "Indicates that a Shape is closed, meaning that it may contain no property values other than those used within TripleConstraints."@en;
@@ -167,12 +167,12 @@ shex:exclusion a rdf:Property;
     rdfs:comment "Values that are excluded from value matching."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:StemRange;
-    rdfs:range _:b3609.
-_:b3610 rdf:first rdfs:Resource;
-    rdf:rest _:b3611.
-_:b3611 rdf:first shex:Stem;
+    rdfs:range _:b4974.
+_:b4975 rdf:first rdfs:Resource;
+    rdf:rest _:b4976.
+_:b4976 rdf:first shex:Stem;
     rdf:rest rdf:nil.
-_:b3609 owl:unionOf _:b3610.
+_:b4974 owl:unionOf _:b4975.
 shex:expression a rdf:Property;
     rdfs:label "expression"@en;
     rdfs:comment "Expression associated with the TripleExpression."@en;
@@ -183,13 +183,13 @@ shex:expressions a rdf:Property;
     rdfs:label "expressions"@en;
     rdfs:comment "List of 2 or more expressions associated with the TripleExpression."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3612;
+    rdfs:domain _:b4977;
     rdfs:range shex:TripleExpression.
-_:b3613 rdf:first shex:EachOf;
-    rdf:rest _:b3614.
-_:b3614 rdf:first shex:OneOf;
+_:b4978 rdf:first shex:EachOf;
+    rdf:rest _:b4979.
+_:b4979 rdf:first shex:OneOf;
     rdf:rest rdf:nil.
-_:b3612 owl:unionOf _:b3613.
+_:b4977 owl:unionOf _:b4978.
 shex:extra a rdf:Property;
     rdfs:label "extra"@en;
     rdfs:comment "Properties which may have extra values beyond those matched through a constraint."@en;
@@ -242,43 +242,43 @@ shex:max a rdf:Property;
     rdfs:label "maximum cardinality"@en;
     rdfs:comment "Maximum number of times this TripleExpression may match; -1 for “*”"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3615;
+    rdfs:domain _:b4980;
     rdfs:range xsd:integer.
-_:b3616 rdf:first shex:EachOf;
-    rdf:rest _:b3617.
-_:b3617 rdf:first shex:OneOf;
-    rdf:rest _:b3618.
-_:b3618 rdf:first shex:TripleConstraint;
+_:b4981 rdf:first shex:EachOf;
+    rdf:rest _:b4982.
+_:b4982 rdf:first shex:OneOf;
+    rdf:rest _:b4983.
+_:b4983 rdf:first shex:TripleConstraint;
     rdf:rest rdf:nil.
-_:b3615 owl:unionOf _:b3616.
+_:b4980 owl:unionOf _:b4981.
 shex:maxexclusive a rdf:Property;
     rdfs:label "max exclusive"@en;
     rdfs:comment "An atomic property that contains a single number that is the maximum valid value (exclusive)."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:NodeConstraint;
-    rdfs:range _:b3619;
+    rdfs:range _:b4984;
     rdfs:subPropertyOf shex:numericFacet.
-_:b3620 rdf:first xsd:integer;
-    rdf:rest _:b3621.
-_:b3621 rdf:first xsd:decimal;
-    rdf:rest _:b3622.
-_:b3622 rdf:first xsd:double;
+_:b4985 rdf:first xsd:integer;
+    rdf:rest _:b4986.
+_:b4986 rdf:first xsd:decimal;
+    rdf:rest _:b4987.
+_:b4987 rdf:first xsd:double;
     rdf:rest rdf:nil.
-_:b3619 owl:unionOf _:b3620.
+_:b4984 owl:unionOf _:b4985.
 shex:maxinclusive a rdf:Property;
     rdfs:label "max inclusive"@en;
     rdfs:comment "An atomic property that contains a single number that is the maximum valid value (inclusive)."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:NodeConstraint;
-    rdfs:range _:b3623;
+    rdfs:range _:b4988;
     rdfs:subPropertyOf shex:numericFacet.
-_:b3624 rdf:first xsd:integer;
-    rdf:rest _:b3625.
-_:b3625 rdf:first xsd:decimal;
-    rdf:rest _:b3626.
-_:b3626 rdf:first xsd:double;
+_:b4989 rdf:first xsd:integer;
+    rdf:rest _:b4990.
+_:b4990 rdf:first xsd:decimal;
+    rdf:rest _:b4991.
+_:b4991 rdf:first xsd:double;
     rdf:rest rdf:nil.
-_:b3623 owl:unionOf _:b3624.
+_:b4988 owl:unionOf _:b4989.
 shex:maxlength a rdf:Property;
     rdfs:label "max length"@en;
     rdfs:comment "A numeric atomic property that contains a single integer that is the maximum length of the value."@en;
@@ -290,43 +290,43 @@ shex:min a rdf:Property;
     rdfs:label "minimum cardinatliy"@en;
     rdfs:comment "Minimum number of times this TripleExpression may match."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3627;
+    rdfs:domain _:b4992;
     rdfs:range xsd:integer.
-_:b3628 rdf:first shex:EachOf;
-    rdf:rest _:b3629.
-_:b3629 rdf:first shex:OneOf;
-    rdf:rest _:b3630.
-_:b3630 rdf:first shex:TripleConstraint;
+_:b4993 rdf:first shex:EachOf;
+    rdf:rest _:b4994.
+_:b4994 rdf:first shex:OneOf;
+    rdf:rest _:b4995.
+_:b4995 rdf:first shex:TripleConstraint;
     rdf:rest rdf:nil.
-_:b3627 owl:unionOf _:b3628.
+_:b4992 owl:unionOf _:b4993.
 shex:minexclusive a rdf:Property;
     rdfs:label "min exclusive"@en;
     rdfs:comment "An atomic property that contains a single number that is the minimum valid value (exclusive)."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:NodeConstraint;
-    rdfs:range _:b3631;
+    rdfs:range _:b4996;
     rdfs:subPropertyOf shex:numericFacet.
-_:b3632 rdf:first xsd:integer;
-    rdf:rest _:b3633.
-_:b3633 rdf:first xsd:decimal;
-    rdf:rest _:b3634.
-_:b3634 rdf:first xsd:double;
+_:b4997 rdf:first xsd:integer;
+    rdf:rest _:b4998.
+_:b4998 rdf:first xsd:decimal;
+    rdf:rest _:b4999.
+_:b4999 rdf:first xsd:double;
     rdf:rest rdf:nil.
-_:b3631 owl:unionOf _:b3632.
+_:b4996 owl:unionOf _:b4997.
 shex:mininclusive a rdf:Property;
     rdfs:label "min inclusive"@en;
     rdfs:comment "An atomic property that contains a single number that is the minimum valid value (inclusive)."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:NodeConstraint;
-    rdfs:range _:b3635;
+    rdfs:range _:b5000;
     rdfs:subPropertyOf shex:numericFacet.
-_:b3636 rdf:first xsd:integer;
-    rdf:rest _:b3637.
-_:b3637 rdf:first xsd:decimal;
-    rdf:rest _:b3638.
-_:b3638 rdf:first xsd:double;
+_:b5001 rdf:first xsd:integer;
+    rdf:rest _:b5002.
+_:b5002 rdf:first xsd:decimal;
+    rdf:rest _:b5003.
+_:b5003 rdf:first xsd:double;
     rdf:rest rdf:nil.
-_:b3635 owl:unionOf _:b3636.
+_:b5000 owl:unionOf _:b5001.
 shex:minlength a rdf:Property;
     rdfs:label "min length"@en;
     rdfs:comment "An atomic property that contains a single integer that is the minimum length of the value."@en;
@@ -368,26 +368,26 @@ shex:predicate a rdf:Property;
     rdfs:label "predicate"@en;
     rdfs:comment "The predicate of a TripleConstraint or Annotation."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3639;
+    rdfs:domain _:b5004;
     rdfs:range rdfs:Resource.
-_:b3640 rdf:first shex:Annotation;
-    rdf:rest _:b3641.
-_:b3641 rdf:first shex:TripleConstraint;
+_:b5005 rdf:first shex:Annotation;
+    rdf:rest _:b5006.
+_:b5006 rdf:first shex:TripleConstraint;
     rdf:rest rdf:nil.
-_:b3639 owl:unionOf _:b3640.
+_:b5004 owl:unionOf _:b5005.
 shex:semActs a rdf:Property;
     rdfs:label "semantic action"@en;
     rdfs:comment "Semantic Actions on this TripleExpression."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3642;
+    rdfs:domain _:b5007;
     rdfs:range shex:SemAct.
-_:b3643 rdf:first shex:EachOf;
-    rdf:rest _:b3644.
-_:b3644 rdf:first shex:OneOf;
-    rdf:rest _:b3645.
-_:b3645 rdf:first shex:TripleConstraint;
+_:b5008 rdf:first shex:EachOf;
+    rdf:rest _:b5009.
+_:b5009 rdf:first shex:OneOf;
+    rdf:rest _:b5010.
+_:b5010 rdf:first shex:TripleConstraint;
     rdf:rest rdf:nil.
-_:b3642 owl:unionOf _:b3643.
+_:b5007 owl:unionOf _:b5008.
 shex:shapeExpr a rdf:Property;
     rdfs:label "shape expression"@en;
     rdfs:comment "Shape Expression referenced by this shape."@en;
@@ -398,14 +398,14 @@ shex:shapeExprs a rdf:Property;
     rdfs:label "shape expressions"@en;
     rdfs:comment "A list of 2 or more Shape Expressions referenced by this shape."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3646;
+    rdfs:domain _:b5011;
     rdfs:range shex:ShapeExpression;
     rdfs:subPropertyOf shex:shapeExpr.
-_:b3647 rdf:first shex:ShapeAnd;
-    rdf:rest _:b3648.
-_:b3648 rdf:first shex:ShapeOr;
+_:b5012 rdf:first shex:ShapeAnd;
+    rdf:rest _:b5013.
+_:b5013 rdf:first shex:ShapeOr;
     rdf:rest rdf:nil.
-_:b3646 owl:unionOf _:b3647.
+_:b5011 owl:unionOf _:b5012.
 shex:shapes a rdf:Property;
     rdfs:label "shapes"@en;
     rdfs:comment "Shapes in this Schema."@en;
@@ -428,18 +428,18 @@ shex:stem a rdf:Property;
     rdfs:label "stem"@en;
     rdfs:comment "A stem value used for matching or excluding values."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
-    rdfs:domain _:b3649;
-    rdfs:range _:b3652.
-_:b3650 rdf:first shex:Stem;
-    rdf:rest _:b3651.
-_:b3651 rdf:first shex:StemRange;
+    rdfs:domain _:b5014;
+    rdfs:range _:b5017.
+_:b5015 rdf:first shex:Stem;
+    rdf:rest _:b5016.
+_:b5016 rdf:first shex:StemRange;
     rdf:rest rdf:nil.
-_:b3649 owl:unionOf _:b3650.
-_:b3653 rdf:first xsd:string;
-    rdf:rest _:b3654.
-_:b3654 rdf:first shex:Wildcard;
+_:b5014 owl:unionOf _:b5015.
+_:b5018 rdf:first xsd:string;
+    rdf:rest _:b5019.
+_:b5019 rdf:first shex:Wildcard;
     rdf:rest rdf:nil.
-_:b3652 owl:unionOf _:b3653.
+_:b5017 owl:unionOf _:b5018.
 shex:totaldigits a rdf:Property;
     rdfs:label "total digits"@en;
     rdfs:comment "for \"totaldigits\" constraints, v equals the number of digits in the XML Schema canonical form[xmlschema-2] of the value of n"@en;
@@ -458,16 +458,16 @@ shex:values a rdf:Property;
     rdfs:comment "A value restriction on a NodeConstraint."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/shex#>;
     rdfs:domain shex:NodeConstraint;
-    rdfs:range _:b3655.
-_:b3656 rdf:first rdfs:Resource;
-    rdf:rest _:b3657.
-_:b3657 rdf:first shex:Language;
-    rdf:rest _:b3658.
-_:b3658 rdf:first shex:Stem;
-    rdf:rest _:b3659.
-_:b3659 rdf:first shex:StemRange;
+    rdfs:range _:b5020.
+_:b5021 rdf:first rdfs:Resource;
+    rdf:rest _:b5022.
+_:b5022 rdf:first shex:Language;
+    rdf:rest _:b5023.
+_:b5023 rdf:first shex:Stem;
+    rdf:rest _:b5024.
+_:b5024 rdf:first shex:StemRange;
     rdf:rest rdf:nil.
-_:b3655 owl:unionOf _:b3656.
+_:b5020 owl:unionOf _:b5021.
 shex:bnode a shex:NodeKind;
     rdfs:label "bnode"@en;
     rdfs:comment "Requires node to be a Blank Node"@en;

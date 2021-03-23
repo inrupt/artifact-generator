@@ -10,7 +10,7 @@
 @prefix time: <http://www.w3.org/2006/time#>.
 @prefix bookmark: <http://www.w3.org/2002/01/bookmark#>.
 
-<https://w3id.org/survey-ontology> rdfs:comment "$Id: bookmark.rdf,v 1.16 2003/07/18 18:15:18 swick Exp $";
+<http://www.w3.org/2002/01/bookmark> rdfs:comment "$Id: bookmark.rdf,v 1.16 2003/07/18 18:15:18 swick Exp $";
     <http://purl.org/dc/elements/1.1/title> "Bookmark Schema";
     <http://purl.org/dc/elements/1.1/description> "The Annotea Bookmark Schema, describing properties used\n        to define instances of bookmarks, topics, and shortcuts.".
 bookmark:hasTopic rdfs:comment "relates a bookmark to a topic.\n                A bookmark must have at least one hasTopic property.\n                The typical user operation of following a bookmark link\n                will use the value of the b:recalls property. This property\n                corresponds to XBEL:href property.";

@@ -225,6 +225,9 @@ class ArtifactGenerator {
           this.artifactData.vocabAcceptHeaderOverride =
             vocabDetails.vocabAcceptHeaderOverride;
 
+          this.artifactData.vocabContentTypeHeaderFallback =
+            vocabDetails.vocabContentTypeHeaderFallback;
+
           this.artifactData.nameAndPrefixOverride =
             vocabDetails.nameAndPrefixOverride;
           this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;

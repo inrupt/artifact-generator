@@ -18,12 +18,12 @@
     dcterms:modified "2010-11-27"^^xsd:date, "2013-03-02"^^xsd:date, "2013-07-26"^^xsd:date;
     dcterms:title "Vocabulary for multi-dimensional (e.g. statistical) data publishing";
     dcterms:license <http://www.opendatacommons.org/licenses/pddl/1.0/>;
-    dcterms:contributor _:b3595, _:b3596, _:b3597, _:b3598, _:b3599.
-_:b3595 <http://xmlns.com/foaf/0.1/mbox> "richard@cyganiak.de".
-_:b3596 <http://xmlns.com/foaf/0.1/mbox> "jeni@jenitennison.com".
-_:b3597 <http://xmlns.com/foaf/0.1/mbox> "arofan.gregory@earthlink.net".
-_:b3598 <http://xmlns.com/foaf/0.1/mbox> "ian@epimorphics.com".
-_:b3599 <http://xmlns.com/foaf/0.1/mbox> "dave@epimorphics.com".
+    dcterms:contributor _:b4418, _:b4419, _:b4420, _:b4421, _:b4422.
+_:b4418 <http://xmlns.com/foaf/0.1/mbox> "richard@cyganiak.de".
+_:b4419 <http://xmlns.com/foaf/0.1/mbox> "jeni@jenitennison.com".
+_:b4420 <http://xmlns.com/foaf/0.1/mbox> "arofan.gregory@earthlink.net".
+_:b4421 <http://xmlns.com/foaf/0.1/mbox> "ian@epimorphics.com".
+_:b4422 <http://xmlns.com/foaf/0.1/mbox> "dave@epimorphics.com".
 qb:DataSet a rdfs:Class, owl:Class;
     rdfs:label "Data set"@en;
     rdfs:comment "Represents a collection of observations, possibly organized into various slices, conforming to some common dimensional structure."@en;
@@ -209,18 +209,18 @@ qb:codeList a rdf:Property, owl:ObjectProperty;
     rdfs:comment "gives the code list associated with a CodedProperty"@en;
     rdfs:isDefinedBy <http://purl.org/linked-data/cube>;
     rdfs:domain qb:CodedProperty;
-    rdfs:range _:b4219.
-_:b4220 rdf:first skos:ConceptScheme;
-    rdf:rest _:b4221.
-_:b4221 rdf:first skos:Collection;
-    rdf:rest _:b7301.
-_:b7301 rdf:first qb:HierarchicalCodeList;
+    rdfs:range _:b4423.
+_:b4424 rdf:first skos:ConceptScheme;
+    rdf:rest _:b4425.
+_:b4425 rdf:first skos:Collection;
+    rdf:rest _:b4426.
+_:b4426 rdf:first qb:HierarchicalCodeList;
     rdf:rest rdf:nil.
 qb:HierarchicalCodeList a rdfs:Class, owl:Class;
     rdfs:label "Hierarchical Code List"@en;
     rdfs:comment "Represents a generalized hierarchy of concepts which can be used for coding. The hierarchy is defined by one or more roots together with a property which relates concepts in the hierarchy to thier child concept .  The same concepts may be members of multiple hierarchies provided that different qb:parentChildProperty values are used for each hierarchy."@en;
     rdfs:isDefinedBy <http://purl.org/linked-data/cube>.
-_:b4219 owl:unionOf _:b4220.
+_:b4423 owl:unionOf _:b4424.
 qb:hierarchyRoot a rdf:Property, owl:ObjectProperty;
     rdfs:comment "Specifies a root of the hierarchy. A hierarchy may have multiple roots but must have at least one."@en;
     rdfs:isDefinedBy <http://purl.org/linked-data/cube>;

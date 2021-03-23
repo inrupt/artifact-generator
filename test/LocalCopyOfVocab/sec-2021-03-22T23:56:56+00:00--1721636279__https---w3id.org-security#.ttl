@@ -31,7 +31,7 @@ sec:Signature a rdfs:Class;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
 sec:LinkedDataSignature2015 a rdfs:Class;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
-<http://www.w3.org/2003/06/sw-vocab-status/ns#> <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable", "stable".
+<https://w3id.org/security#> <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable", "stable".
 sec:MerkleProof2019 <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable".
 sec:Ed25519VerificationKey2018 a rdfs:Class;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "unstable".

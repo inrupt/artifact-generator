@@ -19,14 +19,14 @@
 ui:BooleanField rdfs:subClassOf ui:NumericField.
 ui:NumericField rdfs:subClassOf ui:ValueField;
     a rdfs:Class;
-    owl:disjointUnionOf _:b518.
+    owl:disjointUnionOf _:b1530.
 ui:CaseForm <http://purl.org/dc/elements/1.1/title> "Form for a conditional case in a form";
     a ui:Group;
-    ui:parts _:b36.
+    ui:parts _:b1408.
 ui:Group rdfs:subClassOf ui:Form, ui:Single.
-_:b36 rdf:first _:b37;
-    rdf:rest _:b38.
-_:b37 a ui:Choice;
+_:b1408 rdf:first _:b1409;
+    rdf:rest _:b1410.
+_:b1409 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from rdfs:Class;
     ui:label "when it is";
@@ -49,9 +49,9 @@ ui:property a rdf:Property;
 ui:for a rdf:Property;
     rdfs:comment "The value for which this case is selected.";
     rdfs:label "for"@en.
-_:b38 rdf:first _:b39;
+_:b1410 rdf:first _:b1411;
     rdf:rest rdf:nil.
-_:b39 a ui:Choice;
+_:b1411 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from ui:Form;
     ui:property ui:use;
@@ -59,19 +59,19 @@ _:b39 a ui:Choice;
     ui:use ui:FieldForm.
 ui:Form a rdfs:Class;
     rdfs:comment "A form can be any type of single field, or typically a Group of several fields,\n    including interspersed headings and comments.  ";
-    owl:disjointUnionOf _:b506;
+    owl:disjointUnionOf _:b1518;
     ui:creationForm ui:FormForm.
 ui:use a rdf:Property;
     rdfs:range ui:Form.
 ui:FieldForm <http://purl.org/dc/elements/1.1/title> "Form for selecting a type of field";
     a ui:Group;
-    ui:parts _:b41.
+    ui:parts _:b1413.
 ui:parts a rdf:Property;
     rdfs:label "parts"@en;
     rdfs:domain ui:Form;
     rdfs:range rdf:Collection.
 ui:Single a rdfs:Class;
-    owl:disjointUnionOf _:b523.
+    owl:disjointUnionOf _:b1535.
 ui:Classifier rdfs:subClassOf ui:Form, ui:Single;
     a rdfs:Class;
     rdfs:comment "A classifier allows the user to select the type of an object.\n    The possible types must be subclasses of some overall class, the \"category\".\n    (Ideally, the superclass is also set up as the disjoint union of the subclasses,\n    if they are disjoint.)\n\n    The form normally stores the resulting classes using an r:type triple,\n    but a different predicate can be used if required, so the classifier field\n    needs is 'property' defined too.\n\n    If the subclass selected itself is has subclasses defined, the user can\n    recursively select from them in turn, as many levels as needed.";
@@ -80,14 +80,14 @@ ui:Color a rdfs:Datatype;
     rdfs:comment "Must be a valid CSS color string such as one could put in\n\t\t\tan HTML style attribute.  This must be in the #xxxxxx form,\n\t\t\t(with 6 digits of lowercase hex) so that it\n\t\t\tcan work eg with Graphviz.\n\t\t\tAs this is just an encoded array of RGB values,\n\t\t\tyou can do math with these, such as blending, complement, etc.";
     rdfs:label "hex color"@en;
     owl:onDatatype xsd:string;
-    owl:withRestrictions _:b40.
-_:b40 rdf:first ui:ColorValuespaceRestriction;
+    owl:withRestrictions _:b1412.
+_:b1412 rdf:first ui:ColorValuespaceRestriction;
     rdf:rest rdf:nil.
 ui:ColorValuespaceRestriction xsd:pattern "#[0-9a-z]{6}".
 ui:ColorField rdfs:subClassOf ui:ValueField.
 ui:ValueField rdfs:subClassOf ui:Form, ui:Single;
     a rdfs:Class;
-    owl:disjointUnionOf _:b533.
+    owl:disjointUnionOf _:b1545.
 ui:Comment rdfs:subClassOf ui:Form, ui:Single;
     a rdfs:Class;
     rdfs:label "Comentario"@es, "Comment"@en;
@@ -121,9 +121,9 @@ ui:style a owl:DatatypeProperty, rdf:Property;
     rdfs:comment "Must be a valid CSS style string such as one could put in\n        an HTML style attribute.  Depending on the user interface system, this can\n        by given to individuals, classes or properties. It is up to a user interface\n        which wants to draw on them to pick how it uses styles from which parts\n        of the data it has.  For example, the style of a class may be picked\n        to distinguish information about things in that class.";
     rdfs:label "style";
     ui:prompt "CSS style".
-_:b41 rdf:first _:b42;
-    rdf:rest _:b43.
-_:b42 a ui:Classifier;
+_:b1413 rdf:first _:b1414;
+    rdf:rest _:b1415.
+_:b1414 a ui:Classifier;
     ui:property rdf:type;
     ui:sequence "1"^^xsd:integer;
     ui:category ui:Form.
@@ -132,38 +132,38 @@ ui:category a rdf:Property;
     rdfs:label "overall superclass"@en;
     rdfs:domain ui:Classifier;
     rdfs:range rdfs:Class.
-_:b43 rdf:first _:b44;
+_:b1415 rdf:first _:b1416;
     rdf:rest rdf:nil.
-_:b44 a ui:Options;
+_:b1416 a ui:Options;
     ui:sequence "2"^^xsd:integer;
-    ui:case _:b45, _:b53, _:b61, _:b69, _:b77, _:b81, _:b89, _:b97, _:b101, _:b105, _:b106, _:b112, _:b482, _:b492, _:b502, _:b504;
+    ui:case _:b1417, _:b1425, _:b1433, _:b1441, _:b1449, _:b1453, _:b1461, _:b1469, _:b1473, _:b1477, _:b1478, _:b1484, _:b1494, _:b1504, _:b1514, _:b1516;
     ui:dependingOn rdf:type.
 ui:Options rdfs:subClassOf ui:Form, ui:Single.
-_:b45 ui:for ui:TextField;
-    ui:use _:b46.
+_:b1417 ui:for ui:TextField;
+    ui:use _:b1418.
 ui:TextField rdfs:subClassOf ui:ValueField;
     a rdfs:Class;
-    owl:disjointUnionOf _:b530.
-_:b46 a ui:Group;
-    ui:parts _:b47.
-_:b47 rdf:first _:b48;
-    rdf:rest _:b49.
-_:b48 a ui:Choice;
+    owl:disjointUnionOf _:b1542.
+_:b1418 a ui:Group;
+    ui:parts _:b1419.
+_:b1419 rdf:first _:b1420;
+    rdf:rest _:b1421.
+_:b1420 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property.
-_:b49 rdf:first _:b50;
-    rdf:rest _:b51.
-_:b50 a ui:IntegerField;
+_:b1421 rdf:first _:b1422;
+    rdf:rest _:b1423.
+_:b1422 a ui:IntegerField;
     ui:label "field size";
     ui:property ui:size;
     ui:max "4096"^^xsd:integer;
     ui:min "1"^^xsd:integer.
 ui:IntegerField rdfs:subClassOf ui:NumericField.
-_:b51 rdf:first _:b52;
+_:b1423 rdf:first _:b1424;
     rdf:rest rdf:nil.
-_:b52 a ui:IntegerField;
+_:b1424 a ui:IntegerField;
     ui:label "Max. length of string";
     ui:property ui:maxLength;
     ui:min "1"^^xsd:integer.
@@ -172,178 +172,178 @@ ui:maxLength a rdf:Property;
     rdfs:isDefinedBy <http://www.w3.org/ns/ui>;
     rdfs:domain ui:TextField;
     rdfs:range xsd:integer.
-_:b53 ui:for ui:IntegerField;
-    ui:use _:b54.
-_:b54 a ui:Group;
-    ui:parts _:b55.
-_:b55 rdf:first _:b56;
-    rdf:rest _:b57.
-_:b56 a ui:Choice;
+_:b1425 ui:for ui:IntegerField;
+    ui:use _:b1426.
+_:b1426 a ui:Group;
+    ui:parts _:b1427.
+_:b1427 rdf:first _:b1428;
+    rdf:rest _:b1429.
+_:b1428 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b57 rdf:first _:b58;
-    rdf:rest _:b59.
-_:b58 a ui:IntegerField;
+_:b1429 rdf:first _:b1430;
+    rdf:rest _:b1431.
+_:b1430 a ui:IntegerField;
     ui:label "minimum value";
     ui:property ui:min;
     ui:sequence "2"^^xsd:integer.
-_:b59 rdf:first _:b60;
+_:b1431 rdf:first _:b1432;
     rdf:rest rdf:nil.
-_:b60 a ui:IntegerField;
+_:b1432 a ui:IntegerField;
     ui:label "maximum value";
     ui:property ui:max;
     ui:sequence "3"^^xsd:integer.
-_:b61 ui:for ui:DecimalField;
-    ui:use _:b62.
-_:b62 a ui:Group;
-    ui:parts _:b63.
-_:b63 rdf:first _:b64;
-    rdf:rest _:b65.
-_:b64 a ui:Choice;
+_:b1433 ui:for ui:DecimalField;
+    ui:use _:b1434.
+_:b1434 a ui:Group;
+    ui:parts _:b1435.
+_:b1435 rdf:first _:b1436;
+    rdf:rest _:b1437.
+_:b1436 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b65 rdf:first _:b66;
-    rdf:rest _:b67.
-_:b66 a ui:DecimalField;
+_:b1437 rdf:first _:b1438;
+    rdf:rest _:b1439.
+_:b1438 a ui:DecimalField;
     ui:label "minimum value";
     ui:property ui:min;
     ui:sequence "2"^^xsd:integer.
-_:b67 rdf:first _:b68;
+_:b1439 rdf:first _:b1440;
     rdf:rest rdf:nil.
-_:b68 a ui:DecimalField;
+_:b1440 a ui:DecimalField;
     ui:label "maximum value";
     ui:property ui:max;
     ui:sequence "3"^^xsd:integer.
-_:b69 ui:for ui:FloatField;
-    ui:use _:b70.
+_:b1441 ui:for ui:FloatField;
+    ui:use _:b1442.
 ui:FloatField rdfs:subClassOf ui:NumericField.
-_:b70 a ui:Group;
-    ui:parts _:b71.
-_:b71 rdf:first _:b72;
-    rdf:rest _:b73.
-_:b72 a ui:Choice;
+_:b1442 a ui:Group;
+    ui:parts _:b1443.
+_:b1443 rdf:first _:b1444;
+    rdf:rest _:b1445.
+_:b1444 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b73 rdf:first _:b74;
-    rdf:rest _:b75.
-_:b74 a ui:FloatField;
+_:b1445 rdf:first _:b1446;
+    rdf:rest _:b1447.
+_:b1446 a ui:FloatField;
     ui:label "minimum value";
     ui:property ui:min;
     ui:sequence "2"^^xsd:integer.
-_:b75 rdf:first _:b76;
+_:b1447 rdf:first _:b1448;
     rdf:rest rdf:nil.
-_:b76 a ui:FloatField;
+_:b1448 a ui:FloatField;
     ui:label "maximum value";
     ui:property ui:max;
     ui:sequence "3"^^xsd:integer.
-_:b77 ui:for ui:ColorField;
-    ui:use _:b78.
-_:b78 a ui:Group;
-    ui:parts _:b79.
-_:b79 rdf:first _:b80;
+_:b1449 ui:for ui:ColorField;
+    ui:use _:b1450.
+_:b1450 a ui:Group;
+    ui:parts _:b1451.
+_:b1451 rdf:first _:b1452;
     rdf:rest rdf:nil.
-_:b80 a ui:Choice;
+_:b1452 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b81 ui:for ui:DateField;
-    ui:use _:b82.
-_:b82 a ui:Group;
-    ui:parts _:b83.
-_:b83 rdf:first _:b84;
-    rdf:rest _:b85.
-_:b84 a ui:Choice;
+_:b1453 ui:for ui:DateField;
+    ui:use _:b1454.
+_:b1454 a ui:Group;
+    ui:parts _:b1455.
+_:b1455 rdf:first _:b1456;
+    rdf:rest _:b1457.
+_:b1456 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b85 rdf:first _:b86;
-    rdf:rest _:b87.
-_:b86 a ui:DateField;
+_:b1457 rdf:first _:b1458;
+    rdf:rest _:b1459.
+_:b1458 a ui:DateField;
     ui:label "min";
     ui:property ui:min;
     ui:sequence "2"^^xsd:integer.
-_:b87 rdf:first _:b88;
+_:b1459 rdf:first _:b1460;
     rdf:rest rdf:nil.
-_:b88 a ui:DateField;
+_:b1460 a ui:DateField;
     ui:label "max";
     ui:property ui:max;
     ui:sequence "3"^^xsd:integer.
-_:b89 ui:for ui:DateTimeField;
-    ui:use _:b90.
-_:b90 a ui:Group;
-    ui:parts _:b91.
-_:b91 rdf:first _:b92;
-    rdf:rest _:b93.
-_:b92 a ui:Choice;
+_:b1461 ui:for ui:DateTimeField;
+    ui:use _:b1462.
+_:b1462 a ui:Group;
+    ui:parts _:b1463.
+_:b1463 rdf:first _:b1464;
+    rdf:rest _:b1465.
+_:b1464 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:DatatypeProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b93 rdf:first _:b94;
-    rdf:rest _:b95.
-_:b94 a ui:DateTimeField;
+_:b1465 rdf:first _:b1466;
+    rdf:rest _:b1467.
+_:b1466 a ui:DateTimeField;
     ui:label "min";
     ui:property ui:min;
     ui:sequence "2"^^xsd:integer.
-_:b95 rdf:first _:b96;
+_:b1467 rdf:first _:b1468;
     rdf:rest rdf:nil.
-_:b96 a ui:DateTimeField;
+_:b1468 a ui:DateTimeField;
     ui:label "max";
     ui:property ui:max;
     ui:sequence "3"^^xsd:integer.
-_:b97 ui:for ui:EmailField;
-    ui:use _:b98.
-_:b98 a ui:Group;
-    ui:parts _:b99.
-_:b99 rdf:first _:b100;
+_:b1469 ui:for ui:EmailField;
+    ui:use _:b1470.
+_:b1470 a ui:Group;
+    ui:parts _:b1471.
+_:b1471 rdf:first _:b1472;
     rdf:rest rdf:nil.
-_:b100 a ui:Choice;
+_:b1472 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:ObjectProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b101 ui:for ui:PhoneField;
-    ui:use _:b102.
+_:b1473 ui:for ui:PhoneField;
+    ui:use _:b1474.
 ui:PhoneField rdfs:subClassOf ui:ValueField.
-_:b102 a ui:Group;
-    ui:parts _:b103.
-_:b103 rdf:first _:b104;
+_:b1474 a ui:Group;
+    ui:parts _:b1475.
+_:b1475 rdf:first _:b1476;
     rdf:rest rdf:nil.
-_:b104 a ui:Choice;
+_:b1476 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:ObjectProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b105 ui:for ui:Group;
+_:b1477 ui:for ui:Group;
     ui:use ui:FieldList.
 ui:FieldList a ui:Multiple;
     ui:property ui:parts;
     ui:sequence "10"^^xsd:integer;
     ui:part ui:FieldForm;
     ui:ordered ui:true.
-_:b106 ui:for ui:Options;
-    ui:use _:b107.
-_:b107 a ui:Group;
-    ui:parts _:b108.
-_:b108 rdf:first _:b109;
-    rdf:rest _:b110.
-_:b109 a ui:Choice;
+_:b1478 ui:for ui:Options;
+    ui:use _:b1479.
+_:b1479 a ui:Group;
+    ui:parts _:b1480.
+_:b1480 rdf:first _:b1481;
+    rdf:rest _:b1482.
+_:b1481 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from rdf:Property;
     ui:label "depending on";
@@ -355,9 +355,9 @@ ui:dependingOn a rdf:Property;
     rdfs:label "depending on"@en;
     rdfs:domain ui:Options;
     rdfs:range rdf:Property.
-_:b110 rdf:first _:b111;
+_:b1482 rdf:first _:b1483;
     rdf:rest rdf:nil.
-_:b111 a ui:Multiple;
+_:b1483 a ui:Multiple;
     ui:property ui:case;
     ui:sequence "2"^^xsd:integer;
     ui:part ui:CaseForm.
@@ -366,35 +366,35 @@ ui:part a rdf:Property;
     rdfs:label "part"@en;
     rdfs:domain ui:Form;
     rdfs:range ui:Form.
-_:b112 ui:for ui:Choice;
-    ui:use _:b113.
-_:b113 a ui:Group;
-    ui:parts _:b114.
-_:b114 rdf:first _:b115;
-    rdf:rest _:b116.
-_:b115 a ui:Choice;
+_:b1484 ui:for ui:Choice;
+    ui:use _:b1485.
+_:b1485 a ui:Group;
+    ui:parts _:b1486.
+_:b1486 rdf:first _:b1487;
+    rdf:rest _:b1488.
+_:b1487 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:ObjectProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b116 rdf:first _:b117;
-    rdf:rest _:b118.
-_:b117 a ui:Choice;
+_:b1488 rdf:first _:b1489;
+    rdf:rest _:b1490.
+_:b1489 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from rdfs:Class;
     ui:label "destination class";
     ui:property ui:from;
     ui:sequence "2"^^xsd:integer.
-_:b118 rdf:first _:b119;
-    rdf:rest _:b480.
-_:b119 a ui:BooleanField;
+_:b1490 rdf:first _:b1491;
+    rdf:rest _:b1492.
+_:b1491 a ui:BooleanField;
     ui:label "user can add new";
     ui:property ui:canMintNew;
     ui:sequence "3"^^xsd:integer.
-_:b480 rdf:first _:b481;
+_:b1492 rdf:first _:b1493;
     rdf:rest rdf:nil.
-_:b481 a ui:Choice;
+_:b1493 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from ui:Form;
     ui:label "Nested Form (if any)";
@@ -404,162 +404,162 @@ _:b481 a ui:Choice;
     ui:optional ui:true.
 ui:FormForm <http://purl.org/dc/elements/1.1/title> "Form for editing Forms";
     a ui:Group, ui:Form;
-    ui:parts _:b514.
-_:b482 ui:for ui:Classifier;
-    ui:use _:b483.
-_:b483 a ui:Group;
-    ui:parts _:b484.
-_:b484 rdf:first _:b485;
-    rdf:rest _:b486.
-_:b485 a ui:Comment;
+    ui:parts _:b1526.
+_:b1494 ui:for ui:Classifier;
+    ui:use _:b1495.
+_:b1495 a ui:Group;
+    ui:parts _:b1496.
+_:b1496 rdf:first _:b1497;
+    rdf:rest _:b1498.
+_:b1497 a ui:Comment;
     ui:sequence "2"^^xsd:integer;
     ui:contents "A classifier allows the user to which classes the item belongs to, given a common superclass of the allowed classes.  Give the superclass here:".
-_:b486 rdf:first _:b487;
-    rdf:rest _:b488.
-_:b487 a ui:Choice;
+_:b1498 rdf:first _:b1499;
+    rdf:rest _:b1500.
+_:b1499 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from rdfs:Class;
     ui:label "superclass";
     ui:property ui:category;
     ui:sequence "4"^^xsd:integer.
-_:b488 rdf:first _:b489;
-    rdf:rest _:b490.
-_:b489 a ui:Comment;
+_:b1500 rdf:first _:b1501;
+    rdf:rest _:b1502.
+_:b1501 a ui:Comment;
     ui:sequence "6"^^xsd:integer;
     ui:contents "(When the choice is made normally the item is given a r:type. Set this to r:type unless you want the form to set a different property.)".
-_:b490 rdf:first _:b491;
+_:b1502 rdf:first _:b1503;
     rdf:rest rdf:nil.
-_:b491 a ui:Choice;
+_:b1503 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from owl:ObjectProperty;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "8"^^xsd:integer;
     ui:default rdf:type.
-_:b492 ui:for ui:Multiple;
-    ui:use _:b493.
-_:b493 a ui:Group;
-    ui:parts _:b494.
-_:b494 rdf:first _:b495;
-    rdf:rest _:b496.
-_:b495 a ui:BooleanField;
+_:b1504 ui:for ui:Multiple;
+    ui:use _:b1505.
+_:b1505 a ui:Group;
+    ui:parts _:b1506.
+_:b1506 rdf:first _:b1507;
+    rdf:rest _:b1508.
+_:b1507 a ui:BooleanField;
     ui:label "ordered";
     ui:property ui:ordered;
     ui:sequence "0"^^xsd:integer.
 ui:ordered rdfs:label "ordered";
     rdfs:range xsd:Boolean;
     ui:e rdf:Property.
-_:b496 rdf:first _:b497;
-    rdf:rest _:b498.
-_:b497 a ui:IntegerField;
+_:b1508 rdf:first _:b1509;
+    rdf:rest _:b1510.
+_:b1509 a ui:IntegerField;
     ui:label "minimum number";
     ui:property ui:min;
     ui:sequence "0"^^xsd:integer.
-_:b498 rdf:first _:b499;
-    rdf:rest _:b500.
-_:b499 a ui:Choice;
+_:b1510 rdf:first _:b1511;
+    rdf:rest _:b1512.
+_:b1511 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from rdf:Property;
     ui:label "property";
     ui:property ui:property;
     ui:sequence "1"^^xsd:integer.
-_:b500 rdf:first _:b501;
+_:b1512 rdf:first _:b1513;
     rdf:rest rdf:nil.
-_:b501 a ui:Choice;
+_:b1513 a ui:Choice;
     ui:canMintNew ui:true;
     ui:from ui:Form;
     ui:property ui:part;
     ui:sequence "2"^^xsd:integer;
     ui:use ui:FieldForm.
-_:b502 ui:for ui:Heading;
-    ui:use _:b503.
-_:b503 a ui:SingleLineTextField;
+_:b1514 ui:for ui:Heading;
+    ui:use _:b1515.
+_:b1515 a ui:SingleLineTextField;
     ui:property ui:contents.
-_:b504 ui:for ui:Comment;
-    ui:use _:b505.
-_:b505 a ui:MultiLineTextField;
+_:b1516 ui:for ui:Comment;
+    ui:use _:b1517.
+_:b1517 a ui:MultiLineTextField;
     ui:property ui:contents.
 ui:MultiLineTextField rdfs:subClassOf ui:TextField.
-_:b506 rdf:first ui:ValueField;
-    rdf:rest _:b507.
-_:b507 rdf:first ui:Group;
-    rdf:rest _:b508.
-_:b508 rdf:first ui:Choice;
-    rdf:rest _:b509.
-_:b509 rdf:first ui:Classifier;
-    rdf:rest _:b510.
-_:b510 rdf:first ui:Options;
-    rdf:rest _:b511.
-_:b511 rdf:first ui:Multiple;
-    rdf:rest _:b512.
-_:b512 rdf:first ui:Heading;
-    rdf:rest _:b513.
-_:b513 rdf:first ui:Comment;
+_:b1518 rdf:first ui:ValueField;
+    rdf:rest _:b1519.
+_:b1519 rdf:first ui:Group;
+    rdf:rest _:b1520.
+_:b1520 rdf:first ui:Choice;
+    rdf:rest _:b1521.
+_:b1521 rdf:first ui:Classifier;
+    rdf:rest _:b1522.
+_:b1522 rdf:first ui:Options;
+    rdf:rest _:b1523.
+_:b1523 rdf:first ui:Multiple;
+    rdf:rest _:b1524.
+_:b1524 rdf:first ui:Heading;
+    rdf:rest _:b1525.
+_:b1525 rdf:first ui:Comment;
     rdf:rest rdf:nil.
 ui:creationForm a rdf:Property;
     rdfs:comment "A form which may be used to collect information about a\n    hitherto locally undocumented instance instance of this class.";
     rdfs:label "creation form";
     rdfs:domain rdfs:Class;
     rdfs:range ui:Form.
-_:b514 rdf:first ui:FF1;
-    rdf:rest _:b515.
-_:b515 rdf:first ui:FF2;
-    rdf:rest _:b516.
-_:b516 rdf:first ui:FF3;
-    rdf:rest _:b517.
-_:b517 rdf:first ui:FieldList;
+_:b1526 rdf:first ui:FF1;
+    rdf:rest _:b1527.
+_:b1527 rdf:first ui:FF2;
+    rdf:rest _:b1528.
+_:b1528 rdf:first ui:FF3;
+    rdf:rest _:b1529.
+_:b1529 rdf:first ui:FieldList;
     rdf:rest rdf:nil.
 ui:NamedNodeURIField rdfs:subClassOf ui:TextField;
     a rdfs:Class;
     rdfs:comment "A NamedNodeURIField is like a SingleLineTextField, except\n\t\tthat the value it generates is not a literal string but an RDF node with the given URI.\n\t\tNormally users should not see URIs. When they do, this a way to do it.\n\t\t";
     rdfs:label "Something by its URI".
-_:b518 rdf:first ui:BooleanField;
-    rdf:rest _:b519.
-_:b519 rdf:first ui:TriStateField;
-    rdf:rest _:b520.
+_:b1530 rdf:first ui:BooleanField;
+    rdf:rest _:b1531.
+_:b1531 rdf:first ui:TriStateField;
+    rdf:rest _:b1532.
 ui:TriStateField rdfs:subClassOf ui:NumericField.
-_:b520 rdf:first ui:IntegerField;
-    rdf:rest _:b521.
-_:b521 rdf:first ui:DecimalField;
-    rdf:rest _:b522.
-_:b522 rdf:first ui:FloatField;
+_:b1532 rdf:first ui:IntegerField;
+    rdf:rest _:b1533.
+_:b1533 rdf:first ui:DecimalField;
+    rdf:rest _:b1534.
+_:b1534 rdf:first ui:FloatField;
     rdf:rest rdf:nil.
-_:b523 rdf:first ui:ValueField;
-    rdf:rest _:b524.
-_:b524 rdf:first ui:Group;
-    rdf:rest _:b525.
-_:b525 rdf:first ui:Choice;
-    rdf:rest _:b526.
-_:b526 rdf:first ui:Classifier;
-    rdf:rest _:b527.
-_:b527 rdf:first ui:Options;
-    rdf:rest _:b528.
-_:b528 rdf:first ui:Heading;
-    rdf:rest _:b529.
-_:b529 rdf:first ui:Comment;
+_:b1535 rdf:first ui:ValueField;
+    rdf:rest _:b1536.
+_:b1536 rdf:first ui:Group;
+    rdf:rest _:b1537.
+_:b1537 rdf:first ui:Choice;
+    rdf:rest _:b1538.
+_:b1538 rdf:first ui:Classifier;
+    rdf:rest _:b1539.
+_:b1539 rdf:first ui:Options;
+    rdf:rest _:b1540.
+_:b1540 rdf:first ui:Heading;
+    rdf:rest _:b1541.
+_:b1541 rdf:first ui:Comment;
     rdf:rest rdf:nil.
-_:b530 rdf:first ui:SingleLineTextField;
-    rdf:rest _:b531.
-_:b531 rdf:first ui:MultiLineTextField;
-    rdf:rest _:b532.
-_:b532 rdf:first ui:NamedNodeURIField;
+_:b1542 rdf:first ui:SingleLineTextField;
+    rdf:rest _:b1543.
+_:b1543 rdf:first ui:MultiLineTextField;
+    rdf:rest _:b1544.
+_:b1544 rdf:first ui:NamedNodeURIField;
     rdf:rest rdf:nil.
 ui:TimeField a rdf:Property;
     rdfs:label "Campo de tiempo"@es, "Time field"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/ui>.
-_:b533 rdf:first ui:TextField;
-    rdf:rest _:b534.
-_:b534 rdf:first ui:NumericField;
-    rdf:rest _:b535.
-_:b535 rdf:first ui:ColorField;
-    rdf:rest _:b536.
-_:b536 rdf:first ui:DateField;
-    rdf:rest _:b537.
-_:b537 rdf:first ui:DateTimeField;
-    rdf:rest _:b538.
-_:b538 rdf:first ui:PhoneField;
-    rdf:rest _:b539.
-_:b539 rdf:first ui:EmailField;
+_:b1545 rdf:first ui:TextField;
+    rdf:rest _:b1546.
+_:b1546 rdf:first ui:NumericField;
+    rdf:rest _:b1547.
+_:b1547 rdf:first ui:ColorField;
+    rdf:rest _:b1548.
+_:b1548 rdf:first ui:DateField;
+    rdf:rest _:b1549.
+_:b1549 rdf:first ui:DateTimeField;
+    rdf:rest _:b1550.
+_:b1550 rdf:first ui:PhoneField;
+    rdf:rest _:b1551.
+_:b1551 rdf:first ui:EmailField;
     rdf:rest rdf:nil.
 ui:annotationForm a rdf:Property;
     rdfs:comment "A form which may be used to add more infromation to an\ninstance of this class which we know something about.  Anything from\nadding just add one more fact, to adding a whole lot of information about a specific\nfacet of the thing.\n";

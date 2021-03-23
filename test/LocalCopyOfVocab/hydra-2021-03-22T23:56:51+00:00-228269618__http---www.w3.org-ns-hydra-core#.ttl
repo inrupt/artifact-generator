@@ -19,7 +19,8 @@
     dcterms:rights "Copyright © 2012-2014 the Contributors to the Hydra Core Vocabulary Specification";
     vann:preferredNamespacePrefix "hydra";
     rdfs:comment "A lightweight vocabulary for hypermedia-driven Web APIs";
-    rdfs:label "The Hydra Core Vocabulary".
+    rdfs:label "The Hydra Core Vocabulary";
+    rdfs:seeAlso <https://www.hydra-cg.com/spec/latest/core/>.
 hydra:Resource a hydra:Class;
     rdfs:comment "The class of dereferenceable resources by means a client can attempt to dereference; however, the received responses should still be verified.";
     rdfs:label "Hydra Resource";
@@ -305,18 +306,18 @@ hydra:freetextQuery a rdf:Property;
 hydra:template a rdf:Property;
     rdfs:comment "A templated string with placeholders. The literal's datatype indicates the template syntax; if not specified, hydra:Rfc6570Template is assumed.";
     rdfs:label "template";
+    rdfs:seeAlso hydra:Rfc6570Template;
     rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
     rdfs:domain hydra:IriTemplate;
-    rdfs:range hydra:Rfc6570Template;
-    rdfs:seeAlso hydra:Rfc6570Template.
+    rdfs:range hydra:Rfc6570Template.
 hydra:Rfc6570Template a rdfs:Datatype;
     rdfs:comment "An IRI template as defined by RFC6570.";
     rdfs:label "RFC6570 IRI template";
+    rdfs:seeAlso <http://tools.ietf.org/html/rfc6570>;
     rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
-    rdfs:range xsd:string;
-    rdfs:seeAlso <http://tools.ietf.org/html/rfc6570>.
+    rdfs:range xsd:string.
 hydra:variableRepresentation a rdf:Property;
     rdfs:comment "The representation format to use when expanding the IRI template.";
     rdfs:label "variable representation";
@@ -405,11 +406,44 @@ hydra:returnsHeader a rdf:Property;
     rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
     rdfs:domain hydra:Operation;
-    rdfs:range xsd:string.
+    schema:rangeIncludes xsd:string, hydra:HeaderSpecification.
+hydra:HeaderSpecification a rdfs:Class;
+    rdfs:comment "Specifies a possible either expected or returned header values";
+    rdfs:label "Header specification";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:subClassOf hydra:Resource.
 hydra:expectsHeader a rdf:Property;
     rdfs:comment "Specification of the header expected by the operation.";
     rdfs:label "expects header";
     rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
     rdfs:domain hydra:Operation;
+    schema:rangeIncludes xsd:string, hydra:HeaderSpecification.
+hydra:headerName a rdf:Property;
+    rdfs:comment "Name of the header.";
+    rdfs:label "header name";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:HeaderSpecification;
     rdfs:range xsd:string.
+hydra:possibleValue a rdf:Property;
+    rdfs:comment "Possible value of the header.";
+    rdfs:label "possible header value";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:HeaderSpecification;
+    rdfs:range xsd:string.
+hydra:closedSet a rdf:Property;
+    rdfs:comment "Determines whether the provided set of header values is closed or not.";
+    rdfs:label "closed set";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:HeaderSpecification;
+    rdfs:range xsd:boolean.
+hydra:extension a rdf:Property;
+    rdfs:comment "Hint on what kind of extensions are in use.";
+    rdfs:label "extension";
+    rdfs:isDefinedBy <http://www.w3.org/ns/hydra/core>;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing";
+    rdfs:domain hydra:ApiDocumentation.
