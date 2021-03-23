@@ -23,6 +23,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   (although of course these could be out-of-date in relation to the 'live'
   vocab!). 
 - Add description of term translations for labels and comments (if any).
+- Add option (`vocabAcceptHeaderOverride`) to override the HTTP Accept header
+  sent when requesting vocabs as some vocabs (such as https://w3id.org/survey-ontology#)
+  may not process the `q` parameter correctly, or at all!
+- Add option (`vocabContentTypeHeaderFallback`) for vocabs (such as DOAP http://usefulinc.com/ns/doap#)
+  that fail to respond with a HTTP Content-Type header (meaning we can't
+  reliably know which RDF parser to use to parse the response).
+- Don't share parser format instances across vocab processing, since we need to
+  provide base IRI values to parser constructors.
 
 ## Bug fixes
 
