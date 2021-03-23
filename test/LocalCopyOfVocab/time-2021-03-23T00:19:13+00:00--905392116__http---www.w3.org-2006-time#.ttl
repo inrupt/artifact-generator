@@ -26,15 +26,15 @@
 time:DateTimeDescription a owl:Class;
     rdfs:label "Date-Time description"@en, "descripción de fecha-tiempo"@es;
     rdfs:comment "Description of date and time structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and xsd:gDay, respectively."@en, "Descripción de fecha y tiempo estructurada con valores separados para los diferentes elementos de un sistema calendario-reloj. El sistema de referencia temporal está fijado al calendario gregoriano, y el rango de las propiedades año, mes, día restringidas a los correspondientes tipos del XML Schema xsd:gYear, xsd:gMonth y xsd:gDay respectivamente."@es;
-    rdfs:subClassOf time:GeneralDateTimeDescription, _:b6620, _:b6621, _:b6622, _:b6623;
+    rdfs:subClassOf time:GeneralDateTimeDescription, _:b7815, _:b7816, _:b7817, _:b7818;
     skos:definition "Description of date and time structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and xsd:gDay, respectively."@en, "Descripción de fecha y tiempo estructurada con valores separados para los diferentes elementos de un sistema calendario-reloj. El sistema de referencia temporal está fijado al calendario gregoriano, y el rango de las propiedades año, mes, día restringidas a los correspondientes tipos del XML Schema xsd:gYear, xsd:gMonth y xsd:gDay respectivamente."@es.
 time:GeneralDateTimeDescription a owl:Class;
     rdfs:label "Generalized date-time description"@en, "descripción de fecha-hora generalizada"@es;
     rdfs:comment "Description of date and time structured with separate values for the various elements of a calendar-clock system"@en, "Descripción de fecha y hora estructurada con valores separados para los distintos elementos de un sistema calendario-reloj."@es;
-    rdfs:subClassOf time:TemporalPosition, _:b6634, _:b6635, _:b6636, _:b6637, _:b6638, _:b6639, _:b6640, _:b6641, _:b6642, _:b6643, _:b6644, _:b6645;
+    rdfs:subClassOf time:TemporalPosition, _:b7829, _:b7830, _:b7831, _:b7832, _:b7833, _:b7834, _:b7835, _:b7836, _:b7837, _:b7838, _:b7839, _:b7840;
     skos:definition "Description of date and time structured with separate values for the various elements of a calendar-clock system"@en, "Descripción de fecha y hora estructurada con valores separados para los distintos elementos de un sistema calendario-reloj.";
     skos:note "Some combinations of properties are redundant - for example, within a specified :year if :dayOfYear is provided then :day and :month can be computed, and vice versa. Individual values should be consistent with each other and the calendar, indicated through the value of the :hasTRS property.", "Algunas combinaciones de propiedades son redundantes - por ejemplo, dentro de un 'año' especificado si se proporciona 'día del año' entonces 'día' y 'mes' se pueden computar, y viceversa. Los valores individuales deberían ser consistentes entre ellos y con el calendario, indicado a través del valor de la propiedad 'tiene TRS'."@es.
-_:b6620 a owl:Restriction;
+_:b7815 a owl:Restriction;
     owl:allValuesFrom xsd:gDay;
     owl:onProperty time:day.
 time:day a owl:DatatypeProperty;
@@ -42,7 +42,7 @@ time:day a owl:DatatypeProperty;
     rdfs:comment "Day position in a calendar-clock system.\n\nThe range of this property is not specified, so can be replaced by any specific representation of a calendar day from any calendar. "@en, "Posición de día en un sistema calendario-reloj."@es;
     skos:definition "Day position in a calendar-clock system.\n\nThe range of this property is not specified, so can be replaced by any specific representation of a calendar day from any calendar. "@en, "Posición de día en un sistema calendario-reloj.\n\nEl rango de esta propiedad no está especificado, por tanto, se puede reemplazar por una representación específica de un día de calendario de cualquier calendario."@es;
     rdfs:domain time:GeneralDateTimeDescription.
-_:b6621 a owl:Restriction;
+_:b7816 a owl:Restriction;
     owl:allValuesFrom xsd:gMonth;
     owl:onProperty time:month.
 time:month a owl:DatatypeProperty;
@@ -50,21 +50,21 @@ time:month a owl:DatatypeProperty;
     rdfs:comment "Month position in a calendar-clock system.\n\nThe range of this property is not specified, so can be replaced by any specific representation of a calendar month from any calendar. "@en, "Posición de mes en un sistema calendario-reloj.\n    El rango de esta propiedad no está especificado, por tanto, se puede reemplazar por cualquier representación específica de un mes de calendario de un calendario cualquiera."@es;
     skos:definition "Month position in a calendar-clock system.\n\nThe range of this property is not specified, so can be replaced by any specific representation of a calendar month from any calendar. "@en, "Posición de mes en un sistema calendario-reloj.\n            El rango de esta propiedad no está especificado, por tanto, se puede reemplazar por cualquier representación específica de un mes de calendario de un calendario cualquiera."@es;
     rdfs:domain time:GeneralDateTimeDescription.
-_:b6622 a owl:Restriction;
+_:b7817 a owl:Restriction;
     owl:allValuesFrom xsd:gYear;
     owl:onProperty time:year.
 time:year a owl:DatatypeProperty;
     rdfs:label "year"@en;
     rdfs:comment "Year position in a calendar-clock system.\n\nThe range of this property is not specified, so can be replaced by any specific representation of a calendar year from any calendar. "@en, "Posición de año en un sistema calendario-reloj.\n\nl rango de esta propiedad no está especificado, por tanto, se puede reemplazar por cualquier representación específica de un año de calendario de un calendario cualquiera."@es;
     rdfs:domain time:GeneralDateTimeDescription.
-_:b6623 a owl:Restriction;
+_:b7818 a owl:Restriction;
     owl:onProperty time:hasTRS;
     owl:hasValue <http://www.opengis.net/def/uom/ISO-8601/0/Gregorian>.
 time:hasTRS a owl:ObjectProperty, owl:FunctionalProperty;
     rdfs:label "Temporal reference system used"@en, "sistema de referencia temporal utilizado"@es;
     rdfs:comment "The temporal reference system used by a temporal position or extent description. "@en, "El sistema de referencia temporal utilizado por una posición temporal o descripción de extensión."@es;
     skos:definition "The temporal reference system used by a temporal position or extent description. "@en, "El sistema de referencia temporal utilizado por una posición temporal o descripción de extensión."@es;
-    rdfs:domain _:b6685;
+    rdfs:domain _:b8194;
     rdfs:range time:TRS.
 time:DateTimeInterval a owl:Class;
     rdfs:label "Date-time interval"@en, "intervalo de fecha-hora"@es;
@@ -88,14 +88,14 @@ time:DayOfWeek a owl:Class;
 time:Duration a owl:Class;
     rdfs:label "Time duration"@en, "duración de tiempo";
     rdfs:comment "Duration of a temporal extent expressed as a number scaled by a temporal unit"@en, "Duración de una extensión temporal expresada como un número escalado por una unidad temporal."@es;
-    rdfs:subClassOf time:TemporalDuration, _:b6624, _:b6625;
+    rdfs:subClassOf time:TemporalDuration, _:b7819, _:b7820;
     skos:definition "Duration of a temporal extent expressed as a number scaled by a temporal unit"@en, "Duración de una extensión temporal expresada como un número escalado por una unidad temporal."@es;
     skos:note "Alternative to time:DurationDescription to support description of a temporal duration other than using a calendar/clock system."@en, "Alternativa a 'descripción de tiempo' para proporcionar descripción soporte a una duración temporal diferente a utilizar un sistema de calendario/reloj."@es.
 time:TemporalDuration a owl:Class;
     rdfs:label "Temporal duration"@en, "duración temporal"@es;
     rdfs:comment "Time extent; duration of a time interval separate from its particular start position"@en, "Extensión de tiempo; duración de un intervalo de tiempo independiente de su posición de inicio particular."@es;
     skos:definition "Time extent; duration of a time interval separate from its particular start position"@en, "Extensión de tiempo; duración de un intervalo de tiempo independiente de su posición de inicio particular."@es.
-_:b6624 a owl:Restriction;
+_:b7819 a owl:Restriction;
     owl:onProperty time:numericDuration;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
 time:numericDuration a owl:DatatypeProperty;
@@ -104,27 +104,27 @@ time:numericDuration a owl:DatatypeProperty;
     skos:definition "Value of a temporal extent expressed as a decimal number scaled by a temporal unit"@en, "Valor de una extensión temporal expresada como un número decimal escalado por una unidad de tiempo."@es;
     rdfs:domain time:Duration;
     rdfs:range xsd:decimal.
-_:b6625 a owl:Restriction;
+_:b7820 a owl:Restriction;
     owl:onProperty time:unitType;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
 time:unitType a owl:ObjectProperty;
     rdfs:label "temporal unit type"@en, "tipo de unidad temporal"@es;
     rdfs:comment "The temporal unit which provides the precision of a date-time value or scale of a temporal extent"@en, "La unidad de tiempo que proporciona la precisión de un valor fecha-hora o la escala de una extensión temporal."@es;
-    rdfs:domain _:b7417;
+    rdfs:domain _:b8623;
     rdfs:range time:TemporalUnit.
 time:DurationDescription a owl:Class;
     rdfs:label "Duration description"@en, "descripción de duración"@es;
     rdfs:comment "Description of temporal extent structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of each of the numeric properties is restricted to xsd:decimal"@en, "Descripción de extensión temporal estructurada con valores separados para los distintos elementos de un sistema de horario-calendario. El sistema de referencia temporal se fija al calendario gregoriano, y el intervalo de cada una de las propiedades numéricas se restringe a xsd:decimal."@es;
-    rdfs:subClassOf time:GeneralDurationDescription, _:b6626, _:b6627, _:b6628, _:b6629, _:b6630, _:b6631, _:b6632, _:b6633;
+    rdfs:subClassOf time:GeneralDurationDescription, _:b7821, _:b7822, _:b7823, _:b7824, _:b7825, _:b7826, _:b7827, _:b7828;
     skos:definition "Description of temporal extent structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of each of the numeric properties is restricted to xsd:decimal"@en, "Descripción de extensión temporal estructurada con valores separados para los distintos elementos de un sistema de horario-calendario. El sistema de referencia temporal se fija al calendario gregoriano, y el intervalo de cada una de las propiedades numéricas se restringe a xsd:decimal."@es;
     skos:note "In the Gregorian calendar the length of the month is not fixed. Therefore, a value like \"2.5 months\" cannot be exactly compared with a similar duration expressed in terms of weeks or days."@en, "En el calendario gregoriano la longitud de los meses no es fija. Por lo tanto, un valor como \"2,5 meses\" no se puede comparar exactamente con una duración similar expresada en términos de semanas o días."@es.
 time:GeneralDurationDescription a owl:Class;
     rdfs:label "Generalized duration description"@en, "descripción de duración generalizada"@es;
     rdfs:comment "Description of temporal extent structured with separate values for the various elements of a calendar-clock system."@en, "Descripción de extensión temporal estructurada con valores separados para los distintos elementos de un sistema de horario-calendario."@es;
-    rdfs:subClassOf time:TemporalDuration, _:b6646, _:b6647, _:b6648, _:b6649, _:b6650, _:b6651, _:b6652, _:b6653;
+    rdfs:subClassOf time:TemporalDuration, _:b7841, _:b7842, _:b7843, _:b7844, _:b7845, _:b7846, _:b7847, _:b7848;
     skos:definition "Description of temporal extent structured with separate values for the various elements of a calendar-clock system."@en, "Descripción de extensión temporal estructurada con valores separados para los distintos elementos de un sistema de horario-calendario."@es;
     skos:note "The extent of a time duration expressed as a GeneralDurationDescription depends on the Temporal Reference System. In some calendars the length of the week or month is not constant within the year. Therefore, a value like \"2.5 months\" may not necessarily be exactly compared with a similar duration expressed in terms of weeks or days. When non-earth-based calendars are considered even more care must be taken in comparing durations."@en, "La extensión de una duración de tiempo expresada como una 'descripción de duración general' depende del Sistema de Referencia Temporal. En algunos calendarios la longitud de la semana o del mes no es constante a lo largo del año. Por tanto, un valor como \"25 meses\" puede no ser necesariamente ser comparado con un duración similar expresada en términos de semanas o días. Cuando se consideran calendarios que no están basados en el movimiento de la Tierra, se deben tomar incluso más precauciones en la comparación de duraciones."@es.
-_:b6626 a owl:Restriction;
+_:b7821 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:days.
 time:days a owl:DatatypeProperty;
@@ -133,7 +133,7 @@ time:days a owl:DatatypeProperty;
     skos:definition "length of, or element of the length of, a temporal extent expressed in days"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en días."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6627 a owl:Restriction;
+_:b7822 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:hours.
 time:hours a owl:DatatypeProperty;
@@ -142,7 +142,7 @@ time:hours a owl:DatatypeProperty;
     skos:definition "length of, or element of the length of, a temporal extent expressed in hours"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en horas."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6628 a owl:Restriction;
+_:b7823 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:minutes.
 time:minutes a owl:DatatypeProperty;
@@ -151,7 +151,7 @@ time:minutes a owl:DatatypeProperty;
     skos:definition "length, or element of, a temporal extent expressed in minutes"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en minutos."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6629 a owl:Restriction;
+_:b7824 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:months.
 time:months a owl:DatatypeProperty;
@@ -160,7 +160,7 @@ time:months a owl:DatatypeProperty;
     skos:definition "length of, or element of the length of, a temporal extent expressed in months"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en meses."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6630 a owl:Restriction;
+_:b7825 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:seconds.
 time:seconds a owl:DatatypeProperty;
@@ -169,7 +169,7 @@ time:seconds a owl:DatatypeProperty;
     rdfs:comment "length of, or element of the length of, a temporal extent expressed in seconds"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en segundos."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6631 a owl:Restriction;
+_:b7826 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:weeks.
 time:weeks a owl:DatatypeProperty;
@@ -177,7 +177,7 @@ time:weeks a owl:DatatypeProperty;
     rdfs:comment "length of, or element of the length of, a temporal extent expressed in weeks"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en semanas."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6632 a owl:Restriction;
+_:b7827 a owl:Restriction;
     owl:allValuesFrom xsd:decimal;
     owl:onProperty time:years.
 time:years a owl:DatatypeProperty;
@@ -185,7 +185,7 @@ time:years a owl:DatatypeProperty;
     rdfs:comment "length of, or element of the length of, a temporal extent expressed in years"@en, "Longitud de, o elemento de la longitud de, una extensión temporal expresada en años."@es;
     rdfs:domain time:GeneralDurationDescription;
     rdfs:range xsd:decimal.
-_:b6633 a owl:Restriction;
+_:b7828 a owl:Restriction;
     owl:onProperty time:hasTRS;
     owl:hasValue <http://www.opengis.net/def/uom/ISO-8601/0/Gregorian>.
 time:Friday a time:DayOfWeek;
@@ -194,15 +194,15 @@ time:Friday a time:DayOfWeek;
 time:TemporalPosition a owl:Class;
     rdfs:label "Temporal position"@en, "posición temporal"@es;
     rdfs:comment "A position on a time-line"@en, "Una posición sobre una línea de tiempo."@es;
-    rdfs:subClassOf _:b6666;
+    rdfs:subClassOf _:b7906;
     skos:definition "A position on a time-line"@en, "Una posición sobre una línea de tiempo."@es.
-_:b6634 a owl:Restriction;
+_:b7829 a owl:Restriction;
     owl:onProperty time:unitType;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
-_:b6635 a owl:Restriction;
+_:b7830 a owl:Restriction;
     owl:onProperty time:day;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6636 a owl:Restriction;
+_:b7831 a owl:Restriction;
     owl:onProperty time:dayOfWeek;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:dayOfWeek a owl:ObjectProperty;
@@ -211,7 +211,7 @@ time:dayOfWeek a owl:ObjectProperty;
     skos:definition "The day of week, whose value is a member of the class time:DayOfWeek"@en, "El día de la semana, cuyo valor es un miembro de la clase 'día de la semana'."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range time:DayOfWeek.
-_:b6637 a owl:Restriction;
+_:b7832 a owl:Restriction;
     owl:onProperty time:dayOfYear;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:dayOfYear a owl:DatatypeProperty;
@@ -220,7 +220,7 @@ time:dayOfYear a owl:DatatypeProperty;
     skos:definition "The number of the day within the year"@en, "El número de día en el año."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range xsd:nonNegativeInteger.
-_:b6638 a owl:Restriction;
+_:b7833 a owl:Restriction;
     owl:onProperty time:hour;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:hour a owl:DatatypeProperty;
@@ -229,7 +229,7 @@ time:hour a owl:DatatypeProperty;
     skos:definition "Hour position in a calendar-clock system."@en, "Posición de hora en un sistema calendario-reloj."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range xsd:nonNegativeInteger.
-_:b6639 a owl:Restriction;
+_:b7834 a owl:Restriction;
     owl:onProperty time:minute;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:minute a owl:DatatypeProperty;
@@ -238,10 +238,10 @@ time:minute a owl:DatatypeProperty;
     skos:definition "Minute position in a calendar-clock system."@en, "Posición de minuto en un sistema calendario-reloj."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range xsd:nonNegativeInteger.
-_:b6640 a owl:Restriction;
+_:b7835 a owl:Restriction;
     owl:onProperty time:month;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6641 a owl:Restriction;
+_:b7836 a owl:Restriction;
     owl:onProperty time:monthOfYear;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:monthOfYear a owl:ObjectProperty;
@@ -251,7 +251,7 @@ time:monthOfYear a owl:ObjectProperty;
     skos:editorialNote "Feature at risk - added in 2017 revision, and not yet widely used. "@en, "Característica arriesgada - añadida en la revisión de 2017, y todavía no ampliamente utilizada."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range time:MonthOfYear.
-_:b6642 a owl:Restriction;
+_:b7837 a owl:Restriction;
     owl:onProperty time:second;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:second a owl:DatatypeProperty;
@@ -259,7 +259,7 @@ time:second a owl:DatatypeProperty;
     rdfs:comment "Second position in a calendar-clock system."@en, "Posición de segundo en un sistema calendario-reloj."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range xsd:decimal.
-_:b6643 a owl:Restriction;
+_:b7838 a owl:Restriction;
     owl:onProperty time:timeZone;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:timeZone a owl:ObjectProperty;
@@ -269,7 +269,7 @@ time:timeZone a owl:ObjectProperty;
     skos:note "IANA maintains a database of timezones. These are well maintained and generally considered authoritative, but individual items are not available at individual URIs, so cannot be used directly in data expressed using OWL-Time.\n\nDBPedia provides a set of resources corresponding to the IANA timezones, with a URI for each (e.g. http://dbpedia.org/resource/Australia/Eucla). The World Clock service also provides a list of time zones with the description of each available as an individual webpage with a convenient individual URI (e.g. https://www.timeanddate.com/time/zones/acwst). These or other, similar, resources might be used as a value of the time:timeZone property.", "IANA mantiene una base de datos de husos horarios. Éstas están bien mantenidas y generalmente se consideran autorizadas, pero los ítems individuales no están disponibles en URIs individuales, por tanto, no se pueden utilizar directamente en datos expresados utilizando OWL-Time.\n            La BDPedia proporciona un conjunto de recursos correspondientes a los husos horarios de IANA, con una URI para cada uno (por ejemplo, http://dbpedia.org/resource/Australia/Eucla). El Servicio de Reloj Mundial también proporciona una lista de husos horarios con la descripción de cada uno de los disponibles como una página Web individual con una URI adecuada individual (por ejemplo, https://www.timeanddate.com/time/zones/acwst). Éstos, y otros recursos similares, se puden usar como un valor de la propiedad 'huso horario'."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range time:TimeZone.
-_:b6644 a owl:Restriction;
+_:b7839 a owl:Restriction;
     owl:onProperty time:week;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:week a owl:DatatypeProperty;
@@ -279,31 +279,31 @@ time:week a owl:DatatypeProperty;
     skos:scopeNote "Las semanas están numeradas de forma diferente dependiendo del calendario en uso y de las convenciones lingüísticas y culturales locales (locale en inglés). El ISO-8601 especifica que la primera semana del año incluye al menos cuatro días, y que el lunes es el primer día de la semana. En ese sistema, la semana 1 es la semana que contiene el primer jueves del año."@es;
     rdfs:domain time:GeneralDateTimeDescription;
     rdfs:range xsd:nonNegativeInteger.
-_:b6645 a owl:Restriction;
+_:b7840 a owl:Restriction;
     owl:onProperty time:year;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6646 a owl:Restriction;
+_:b7841 a owl:Restriction;
     owl:onProperty time:hasTRS;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
-_:b6647 a owl:Restriction;
+_:b7842 a owl:Restriction;
     owl:onProperty time:days;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6648 a owl:Restriction;
+_:b7843 a owl:Restriction;
     owl:onProperty time:hours;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6649 a owl:Restriction;
+_:b7844 a owl:Restriction;
     owl:onProperty time:minutes;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6650 a owl:Restriction;
+_:b7845 a owl:Restriction;
     owl:onProperty time:months;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6651 a owl:Restriction;
+_:b7846 a owl:Restriction;
     owl:onProperty time:seconds;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6652 a owl:Restriction;
+_:b7847 a owl:Restriction;
     owl:onProperty time:weeks;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
-_:b6653 a owl:Restriction;
+_:b7848 a owl:Restriction;
     owl:onProperty time:years;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 time:Instant a owl:Class;
@@ -316,7 +316,7 @@ time:TemporalEntity a owl:Class;
     rdfs:comment "A temporal interval or instant."@en, "Un intervalo temporal o un instante."@es;
     rdfs:subClassOf owl:Thing;
     skos:definition "A temporal interval or instant."@en, "Un intervalo temporal o un instante."@es;
-    owl:unionOf _:b6664.
+    owl:unionOf _:b7904.
 time:Interval a owl:Class;
     rdfs:label "Time interval"@en, "intervalo de tiempo"@es;
     rdfs:comment "A temporal entity with an extent or duration"@en, "Una entidad temporal con una extensión o duración."@es;
@@ -325,9 +325,9 @@ time:Interval a owl:Class;
 time:January a owl:Class, owl:DeprecatedClass;
     rdfs:label "January";
     skos:historyNote "This class was present in the 2006 version of OWL-Time. It was presented as an example of how DateTimeDescription could be specialized, but does not belong in the revised ontology. ";
-    rdfs:subClassOf time:DateTimeDescription, _:b6654, _:b6655;
+    rdfs:subClassOf time:DateTimeDescription, _:b7849, _:b7895;
     owl:deprecated "true"^^xsd:boolean.
-_:b6654 a owl:Restriction;
+_:b7849 a owl:Restriction;
     owl:onProperty time:unitType;
     owl:hasValue time:unitMonth.
 time:unitMonth a time:TemporalUnit;
@@ -340,7 +340,7 @@ time:unitMonth a time:TemporalUnit;
     time:weeks "0"^^xsd:decimal;
     time:years "0"^^xsd:decimal;
     skos:prefLabel "month"@en, "maand"@nl, "mes"@es, "mese"@it, "miesiąc"@pl, "mois"@fr, "Monat"@de, "один месяц"@ru, "شهر واحد"@ar, "一か月"@jp, "一個月"@zh, "한달"@kr.
-_:b6655 a owl:Restriction;
+_:b7895 a owl:Restriction;
     owl:onProperty time:month;
     owl:hasValue "--01".
 time:Monday a time:DayOfWeek;
@@ -349,32 +349,32 @@ time:Monday a time:DayOfWeek;
 time:MonthOfYear a owl:Class;
     rdfs:label "Month of year"@en, "mes del año"@es;
     rdfs:comment "The month of the year"@en, "El mes del año."@es;
-    rdfs:subClassOf time:DateTimeDescription, _:b6656, _:b6657, _:b6658, _:b6659, _:b6660, _:b6661, _:b6662, _:b6663;
+    rdfs:subClassOf time:DateTimeDescription, _:b7896, _:b7897, _:b7898, _:b7899, _:b7900, _:b7901, _:b7902, _:b7903;
     skos:definition "The month of the year"@en, "El mes del año."@es;
     skos:note "Membership of the class :MonthOfYear is open, to allow for alternative annual calendars and different month names."@en, "La pertenencia a la clase 'mes del año' está abierta, a permitir calendarios anuales alternativos y diferentes nombres de meses."@es;
     skos:editorialNote "Feature at risk - added in 2017 revision, and not yet widely used. "@en, "Característica en riesgo - añadida en la revisión de 2017, y no utilizada todavía de forma amplia."@es.
-_:b6656 a owl:Restriction;
+_:b7896 a owl:Restriction;
     owl:onProperty time:day;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6657 a owl:Restriction;
+_:b7897 a owl:Restriction;
     owl:onProperty time:hour;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6658 a owl:Restriction;
+_:b7898 a owl:Restriction;
     owl:onProperty time:minute;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6659 a owl:Restriction;
+_:b7899 a owl:Restriction;
     owl:onProperty time:second;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6660 a owl:Restriction;
+_:b7900 a owl:Restriction;
     owl:onProperty time:week;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6661 a owl:Restriction;
+_:b7901 a owl:Restriction;
     owl:onProperty time:year;
     owl:cardinality "0"^^xsd:nonNegativeInteger.
-_:b6662 a owl:Restriction;
+_:b7902 a owl:Restriction;
     owl:onProperty time:month;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
-_:b6663 a owl:Restriction;
+_:b7903 a owl:Restriction;
     owl:onProperty time:unitType;
     owl:hasValue time:unitMonth.
 time:Saturday a time:DayOfWeek;
@@ -388,11 +388,11 @@ time:TRS a owl:Class;
     rdfs:comment "A temporal reference system, such as a temporal coordinate system (with an origin, direction, and scale), a calendar-clock combination, or a (possibly hierarchical) ordinal system. \n\nThis is a stub class, representing the set of all temporal reference systems."@en, "Un sistema de referencia temporal, tal como un sistema de coordenadas temporales (con un origen, una dirección y una escala), una combinación calendario-reloj, o un sistema ordinal (posiblemente jerárquico).\n        Esta clase comodín representa el conjunto de todos los sistemas de referencia temporal."@es;
     skos:definition "A temporal reference system, such as a temporal coordinate system (with an origin, direction, and scale), a calendar-clock combination, or a (possibly hierarchical) ordinal system. \n\nThis is a stub class, representing the set of all temporal reference systems."@en, "Un sistema de referencia temporal, tal como un sistema de coordenadas temporales (con un origen, una dirección y una escala), una combinación calendario-reloj, o un sistema ordinal (posiblemente jerárquico).\n    Esta clase comodín representa el conjunto de todos los sistemas de referencia temporal."@es;
     skos:note "A taxonomy of temporal reference systems is provided in ISO 19108:2002 [ISO19108], including (a) calendar + clock systems; (b) temporal coordinate systems (i.e. numeric offset from an epoch); (c) temporal ordinal reference systems (i.e. ordered sequence of named intervals, not necessarily of equal duration)."@en, "En el ISO 19108:2002 [ISO19108] se proporciona una taxonomía de sistemas de referencia temporal, incluyendo (a) sistemas de calendario + reloj; (b) sistemas de coordenadas temporales (es decir, desplazamiento numérico a partir de una época); (c) sistemas de referencia ordinales temporales (es decir, secuencia ordenada de intervalos nombrados, no necesariamente de igual duración)."@es.
-_:b6664 rdf:first time:Instant;
-    rdf:rest _:b6665.
-_:b6665 rdf:first time:Interval;
+_:b7904 rdf:first time:Instant;
+    rdf:rest _:b7905.
+_:b7905 rdf:first time:Interval;
     rdf:rest rdf:nil.
-_:b6666 a owl:Restriction;
+_:b7906 a owl:Restriction;
     owl:onProperty time:hasTRS;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
 time:TemporalUnit a owl:Class;
@@ -408,13 +408,13 @@ time:Thursday a time:DayOfWeek;
 time:TimePosition a owl:Class;
     rdfs:label "Time position"@en, "posición de tiempo"@es;
     rdfs:comment "A temporal position described using either a (nominal) value from an ordinal reference system, or a (numeric) value in a temporal coordinate system. "@en, "Una posición temporal descrita utilizando bien un valor (nominal) de un sistema de referencia ordinal, o un valor (numérico) en un sistema de coordenadas temporales."@es;
-    rdfs:subClassOf time:TemporalPosition, _:b6667;
+    rdfs:subClassOf time:TemporalPosition, _:b7907;
     skos:definition "A temporal position described using either a (nominal) value from an ordinal reference system, or a (numeric) value in a temporal coordinate system. "@en, "Una posición temporal descrita utilizando bien un valor (nominal) de un sistema de referencia ordinal, o un valor (numérico) en un sistema de coordenadas temporales."@es.
-_:b6667 a owl:Class;
-    owl:unionOf _:b6668.
-_:b6668 rdf:first _:b6669;
-    rdf:rest _:b6670.
-_:b6669 a owl:Restriction;
+_:b7907 a owl:Class;
+    owl:unionOf _:b7908.
+_:b7908 rdf:first _:b7909;
+    rdf:rest _:b7910.
+_:b7909 a owl:Restriction;
     owl:onProperty time:numericPosition;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
 time:numericPosition a owl:DatatypeProperty;
@@ -423,9 +423,9 @@ time:numericPosition a owl:DatatypeProperty;
     skos:definition "The (numeric) value indicating position within a temporal coordinate system "@en, "El valor (numérico) que indica posición temporal en un sistema de referencia ordinal."@es;
     rdfs:domain time:TimePosition;
     rdfs:range xsd:decimal.
-_:b6670 rdf:first _:b6671;
+_:b7910 rdf:first _:b7911;
     rdf:rest rdf:nil.
-_:b6671 a owl:Restriction;
+_:b7911 a owl:Restriction;
     owl:onProperty time:nominalPosition;
     owl:cardinality "1"^^xsd:nonNegativeInteger.
 time:nominalPosition a owl:DatatypeProperty;
@@ -451,29 +451,29 @@ time:Year a owl:Class, owl:DeprecatedClass;
     rdfs:label "Year"@en;
     skos:historyNote "Year was proposed in the 2006 version of OWL-Time as an example of how DurationDescription could be specialized to allow for a duration to be restricted to a number of years. \n\nIt is deprecated in this edition of OWL-Time. ";
     rdfs:comment "Year duration";
-    rdfs:subClassOf time:DurationDescription, _:b6672, _:b6673, _:b6674, _:b6675, _:b6676, _:b6677, _:b6678;
+    rdfs:subClassOf time:DurationDescription, _:b7912, _:b7913, _:b7914, _:b7915, _:b7916, _:b7917, _:b7918;
     skos:definition "Year duration";
     skos:prefLabel "Year"@en, "Anno"@it, "Année (calendrier)"@fr, "Ano"@pt, "Año"@es, "Jaar"@nl, "Jahr"@de, "Rok"@pl, "Год"@ru, "سنة"@ar, "年"@ja, "年"@zh;
     owl:deprecated "true"^^xsd:boolean.
-_:b6672 a owl:Restriction;
+_:b7912 a owl:Restriction;
     owl:onProperty time:days;
     owl:cardinality "0"^^xsd:integer.
-_:b6673 a owl:Restriction;
+_:b7913 a owl:Restriction;
     owl:onProperty time:hours;
     owl:cardinality "0"^^xsd:integer.
-_:b6674 a owl:Restriction;
+_:b7914 a owl:Restriction;
     owl:onProperty time:minutes;
     owl:cardinality "0"^^xsd:integer.
-_:b6675 a owl:Restriction;
+_:b7915 a owl:Restriction;
     owl:onProperty time:months;
     owl:cardinality "0"^^xsd:integer.
-_:b6676 a owl:Restriction;
+_:b7916 a owl:Restriction;
     owl:onProperty time:seconds;
     owl:cardinality "0"^^xsd:integer.
-_:b6677 a owl:Restriction;
+_:b7917 a owl:Restriction;
     owl:onProperty time:weeks;
     owl:cardinality "0"^^xsd:integer.
-_:b6678 a owl:Restriction;
+_:b7918 a owl:Restriction;
     owl:onProperty time:years;
     owl:cardinality "1"^^xsd:integer.
 time:after a owl:ObjectProperty;
@@ -495,28 +495,28 @@ time:generalDay a rdfs:Datatype;
     rdfs:comment "Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Día del mes - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gDay, excepto que se permiten valores hasta el 99, con el propósito de proporcionar soporte a calendarios con meses con más de 31 días.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     skos:definition "Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Día del mes - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gDay, excepto que se permiten valores hasta el 99, con el propósito de proporcionar soporte a calendarios con meses con más de 31 días.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     owl:onDatatype xsd:string;
-    owl:withRestrictions _:b6679.
-_:b6679 rdf:first _:b6680;
+    owl:withRestrictions _:b8188.
+_:b8188 rdf:first _:b8189;
     rdf:rest rdf:nil.
-_:b6680 xsd:pattern "---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
+_:b8189 xsd:pattern "---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
 time:generalMonth a rdfs:Datatype;
     rdfs:label "Generalized month"@en, "Mes generalizado"@es;
     rdfs:comment "Month of year - formulated as a text string with a pattern constraint to reproduce the same lexical form as gMonth, except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Mes del año - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gMonth, excepto que se permiten valores hasta el 20, con el propósito de proporcionar soporte a calendarios con años con más de 12 meses.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     skos:definition "Month of year - formulated as a text string with a pattern constraint to reproduce the same lexical form as gMonth, except that values up to 20 are permitted, in order to support calendars with more than 12 months in the year. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Mes del año - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gMonth, excepto que se permiten valores hasta el 20, con el propósito de proporcionar soporte a calendarios con años con más de 12 meses.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     owl:onDatatype xsd:string;
-    owl:withRestrictions _:b6681.
-_:b6681 rdf:first _:b6682;
+    owl:withRestrictions _:b8190.
+_:b8190 rdf:first _:b8191;
     rdf:rest rdf:nil.
-_:b6682 xsd:pattern "--(0[1-9]|1[0-9]|20)(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
+_:b8191 xsd:pattern "--(0[1-9]|1[0-9]|20)(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
 time:generalYear a rdfs:Datatype;
     rdfs:label "Generalized year"@en, "Año generalizado"@es;
     rdfs:comment "Year number - formulated as a text string with a pattern constraint to reproduce the same lexical form as gYear, but not restricted to values from the Gregorian calendar. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Número de año - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gYear, aunque no está restringido a valores del calendario gregoriano.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     skos:definition "Year number - formulated as a text string with a pattern constraint to reproduce the same lexical form as gYear, but not restricted to values from the Gregorian calendar. \nNote that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type."@en, "Número de año - formulado como una cadena de texto con una restricción patrón para reproducir la misma forma léxica que gYear, aunque no está restringido a valores del calendario gregoriano.\n            Nótese que el espacio de valores no está definido, por tanto, un procesador genérico de OWL2 no puede computar relaciones de orden de valores de este tipo."@es;
     owl:onDatatype xsd:string;
-    owl:withRestrictions _:b6683.
-_:b6683 rdf:first _:b6684;
+    owl:withRestrictions _:b8192.
+_:b8192 rdf:first _:b8193;
     rdf:rest rdf:nil.
-_:b6684 xsd:pattern "-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
+_:b8193 xsd:pattern "-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?".
 time:hasBeginning a owl:ObjectProperty;
     rdfs:label "has beginning"@en, "tiene principio"@es;
     rdfs:comment "Beginning of a temporal entity"@en, "Comienzo de una entidad temporal."@es;
@@ -561,11 +561,11 @@ time:hasEnd a owl:ObjectProperty;
     rdfs:domain time:TemporalEntity;
     rdfs:range time:Instant;
     rdfs:subPropertyOf time:hasTime.
-_:b6685 a owl:Class;
-    owl:unionOf _:b6686.
-_:b6686 rdf:first time:TemporalPosition;
-    rdf:rest _:b6687.
-_:b6687 rdf:first time:GeneralDurationDescription;
+_:b8194 a owl:Class;
+    owl:unionOf _:b8195.
+_:b8195 rdf:first time:TemporalPosition;
+    rdf:rest _:b8196.
+_:b8196 rdf:first time:GeneralDurationDescription;
     rdf:rest rdf:nil.
 time:hasXSDDuration a owl:DatatypeProperty;
     rdfs:label "has XSD duration"@en, "tiene duración XSD"@es;
@@ -784,11 +784,11 @@ time:unitSecond a time:TemporalUnit;
     time:weeks "0"^^xsd:decimal;
     time:years "0"^^xsd:decimal;
     skos:prefLabel "second"@en, "Sekunde"@de, "Sekundę"@pl, "seconde"@fr, "seconde"@nl, "secondo"@it, "segundo"@es, "segundo"@pt, "ثانية واحدة"@ar, "一秒"@jp, "一秒"@zh, "일초"@kr.
-_:b7417 a owl:Class;
-    owl:unionOf _:b7418.
-_:b7418 rdf:first time:GeneralDateTimeDescription;
-    rdf:rest _:b7419.
-_:b7419 rdf:first time:Duration;
+_:b8623 a owl:Class;
+    owl:unionOf _:b8624.
+_:b8624 rdf:first time:GeneralDateTimeDescription;
+    rdf:rest _:b8625.
+_:b8625 rdf:first time:Duration;
     rdf:rest rdf:nil.
 time:unitWeek a time:TemporalUnit;
     rdfs:label "Week (unit of temporal duration)"@en;

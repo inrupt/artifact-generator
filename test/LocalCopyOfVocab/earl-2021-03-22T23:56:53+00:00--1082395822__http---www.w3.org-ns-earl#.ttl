@@ -8,9 +8,9 @@
 @prefix schema: <http://schema.org/>.
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix time: <http://www.w3.org/2006/time#>.
-@prefix earl: <http://usefulinc.com/ns/doap#>.
+@prefix earl: <http://www.w3.org/ns/earl#>.
 
-<http://usefulinc.com/ns/doap> a <http://www.w3.org/2002/07/owlOntology>;
+<http://www.w3.org/ns/earl> a <http://www.w3.org/2002/07/owlOntology>;
     rdfs:label "Evaluation and Report Language (EARL) 1.0 Schema"@en;
     rdfs:comment "Formal schema of the Evaluation and Report Language (EARL) 1.0"@en;
     <http://www.w3.org/2002/07/owlversionInfo> "Editor's Working Draft 10 June 2009"@en;
@@ -68,7 +68,7 @@ earl:NotTested a owl:Class, rdfs:Class;
 earl:Software a owl:Class, rdfs:Class;
     rdfs:label "Software"@en;
     rdfs:comment "any piece of software such as an authoring tool, browser, or evaluation tool"@en;
-    rdfs:subClassOf earl:Project.
+    rdfs:subClassOf <http://usefulinc.com/ns/doap#Project>.
 earl:assertedBy a owl:ObjectProperty, rdf:Property;
     rdfs:label "Asserted By"@en;
     rdfs:comment "assertor of an assertion"@en;
@@ -108,7 +108,7 @@ earl:outcome a owl:ObjectProperty, rdf:Property;
 earl:pointer a owl:ObjectProperty, rdf:Property;
     rdfs:label "Pointer"@en;
     rdfs:comment "location within a test subject that are most relevant to a test result"@en;
-    rdfs:domain <http://usefulinc.com/ns/TestResult>;
+    rdfs:domain <http://www.w3.org/ns/TestResult>;
     rdfs:range <http://www.w3.org/2009/pointers#Pointer>.
 earl:info a rdf:Property, owl:DatatypeProperty;
     rdfs:label "Info"@en;

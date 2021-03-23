@@ -16,10 +16,10 @@
     rdfs:comment "The Solid Terms vocabulary defines terms referenced in Solid specifications."@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/solid/terms#>;
     dcterms:issued "2015-11-16"^^xsd:date;
-    owl:versionInfo _:b7588;
+    owl:versionInfo _:b8846;
     vann:preferredNamespacePrefix "solid";
     vann:preferredNamespaceUri "http://www.w3.org/ns/solid/terms#"^^xsd:anyURI.
-_:b7588 dcterms:date "2020-12-22"^^xsd:date;
+_:b8846 dcterms:date "2020-12-22"^^xsd:date;
     dcterms:replaces <https://raw.githubusercontent.com/solid/vocab/387df145ef39936120b25b48891315fe53cb4d91/solid-terms.ttl>;
     rdfs:seeAlso <https://github.com/solid/vocab/pull/46>.
 solid:Account a rdfs:Class;

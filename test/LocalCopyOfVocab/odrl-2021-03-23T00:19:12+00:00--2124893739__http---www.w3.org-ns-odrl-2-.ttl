@@ -40,7 +40,7 @@ odrl:uid a skos:Concept, rdf:Property;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "An unambiguous identifier"@en;
     skos:note "Used by the Policy, Rule, Asset, Party, Constraint, and Logical Constraint Classes."@en;
-    rdfs:domain _:b6987.
+    rdfs:domain _:b8585.
 odrl:profile a skos:Concept, rdf:Property;
     rdfs:label "Profile"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
@@ -68,13 +68,13 @@ odrl:relation a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Relation is an abstract property which creates an explicit link between an Action and an Asset."@en;
     skos:note "Sub-properties of relation are used to define the nature of that link."@en;
-    rdfs:domain _:b6997;
+    rdfs:domain _:b8595;
     rdfs:range odrl:Asset.
 odrl:function a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Function"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Function is an abstract property whose sub-properties define the functional roles which may be fulfilled by a party in relation to a Rule."@en;
-    rdfs:domain _:b7003;
+    rdfs:domain _:b8601;
     rdfs:range odrl:Party.
 odrl:failure a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Failure"@en;
@@ -198,7 +198,7 @@ odrl:target a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Target"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "The target property indicates the Asset that is the primary subject to which the Rule action directly applies."@en;
-    rdfs:domain _:b7000;
+    rdfs:domain _:b8598;
     rdfs:range odrl:Asset;
     rdfs:subPropertyOf odrl:relation.
 odrl:hasPolicy a skos:Concept, rdf:Property, owl:ObjectProperty;
@@ -229,7 +229,7 @@ odrl:Party a skos:Concept, rdfs:Class, owl:Class;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "An entity or a collection of entities that undertake Roles in a Rule."@en;
     skos:note "The Party entity could be a person, group of people, organisation, or agent. An agent is a person or thing that takes an active role or produces a specified effect. To describe more details about the Party, it is recommended to use W3C vCard Ontology [[vcard-rdf]] or FOAF Vocabulary [[foaf]]."@en;
-    rdfs:subClassOf _:b6978.
+    rdfs:subClassOf _:b8172.
 odrl:PartyCollection a skos:Concept, rdfs:Class, owl:Class;
     rdfs:label "Party Collection"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
@@ -243,14 +243,14 @@ odrl:assignee a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Assignee"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "The Party is the recipient of the Rule."@en;
-    rdfs:domain _:b7491;
+    rdfs:domain _:b8753;
     rdfs:range odrl:Party;
     rdfs:subPropertyOf odrl:function.
 odrl:assigner a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Assigner"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "The Party is the issuer of the Rule."@en;
-    rdfs:domain _:b7494;
+    rdfs:domain _:b8756;
     rdfs:range odrl:Party;
     rdfs:subPropertyOf odrl:function.
 odrl:assigneeOf a skos:Concept, rdf:Property, owl:ObjectProperty;
@@ -361,14 +361,14 @@ odrl:partOf a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Part Of"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Identifies an Asset/PartyCollection that the Asset/Party is a member of."@en;
-    rdfs:domain _:b6972;
-    rdfs:range _:b6975.
+    rdfs:domain _:b8166;
+    rdfs:range _:b8169.
 odrl:source a skos:Concept, rdf:Property;
     rdfs:label "Source"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Reference to a Asset/PartyCollection"@en;
     skos:note "Used by AssetCollection and PartyCollection when constraints are applied."@en;
-    rdfs:domain _:b6994.
+    rdfs:domain _:b8592.
 <http://www.w3.org/ns/odrl/2/#actionConcepts> a skos:Collection;
     skos:prefLabel "Action"@en;
     skos:scopeNote "ODRL Core Vocabulary Terms"@en;
@@ -383,7 +383,7 @@ odrl:action a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Has Action"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "The operation relating to the Asset for which the Rule is being subjected."@en;
-    rdfs:domain _:b7006;
+    rdfs:domain _:b8604;
     rdfs:range odrl:Action.
 odrl:includedIn a skos:Concept, rdf:Property, owl:ObjectProperty, owl:TransitiveProperty;
     rdfs:label "Included In"@en;
@@ -834,15 +834,15 @@ odrl:constraint a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Constraint applied to a Rule"@en;
     skos:note "Constraints on Rules are used to determine if a rule is Active or not. Example: the Permission rule is only active during the year 2018."@en;
-    rdfs:domain _:b7009;
-    rdfs:range _:b7012.
+    rdfs:domain _:b8607;
+    rdfs:range _:b8610.
 odrl:refinement a skos:Concept, rdf:Property, owl:ObjectProperty;
     rdfs:label "Refinement"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
     skos:definition "Constraint used to refine the semantics of an Action, or Party/Asset Collection"@en;
     skos:note "Example: the Action print is only permitted on 50% of the asset."@en;
-    rdfs:domain _:b7015;
-    rdfs:range _:b7019.
+    rdfs:domain _:b8613;
+    rdfs:range _:b8617.
 odrl:Operator a skos:Concept, rdfs:Class, owl:Class;
     rdfs:label "Operator"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
@@ -865,7 +865,7 @@ odrl:rightOperand a skos:Concept, rdf:Property, owl:DatatypeProperty;
     skos:definition "The value of the right operand in a constraint expression."@en;
     skos:note "When used with set-based operators, a list of values may be used."@en;
     rdfs:domain odrl:Constraint;
-    rdfs:range _:b7022.
+    rdfs:range _:b8749.
 odrl:rightOperandReference a skos:Concept, rdf:Property;
     rdfs:label "Has Right Operand Reference"@en;
     rdfs:isDefinedBy <http://www.w3.org/ns/odrl/2/>;
@@ -1467,126 +1467,126 @@ odrl:core a owl:Thing, skos:Concept;
 skos:Concept a owl:Class.
 skos:definition a owl:AnnotationProperty.
 skos:note a owl:AnnotationProperty.
-_:b6972 a owl:Class;
-    owl:unionOf _:b6973.
-_:b6973 rdf:first odrl:Asset;
-    rdf:rest _:b6974.
-_:b6974 rdf:first odrl:Party;
+_:b8166 a owl:Class;
+    owl:unionOf _:b8167.
+_:b8167 rdf:first odrl:Asset;
+    rdf:rest _:b8168.
+_:b8168 rdf:first odrl:Party;
     rdf:rest rdf:nil.
-_:b6975 a owl:Class;
-    owl:unionOf _:b6976.
-_:b6976 rdf:first odrl:AssetCollection;
-    rdf:rest _:b6977.
-_:b6977 rdf:first odrl:PartyCollection;
+_:b8169 a owl:Class;
+    owl:unionOf _:b8170.
+_:b8170 rdf:first odrl:AssetCollection;
+    rdf:rest _:b8171.
+_:b8171 rdf:first odrl:PartyCollection;
     rdf:rest rdf:nil.
-_:b6978 a owl:Class;
-    owl:unionOf _:b6979.
-_:b6979 rdf:first schema:Person;
-    rdf:rest _:b6980.
-_:b6980 rdf:first schema:Organization;
-    rdf:rest _:b6981.
-_:b6981 rdf:first <http://xmlns.com/foaf/0.1/Person>;
-    rdf:rest _:b6982.
-_:b6982 rdf:first <http://xmlns.com/foaf/0.1/Organization>;
-    rdf:rest _:b6983.
-_:b6983 rdf:first <http://xmlns.com/foaf/0.1/Agent>;
-    rdf:rest _:b6984.
-_:b6984 rdf:first <http://www.w3.org/2006/vcard/ns#Individual>;
-    rdf:rest _:b6985.
-_:b6985 rdf:first <http://www.w3.org/2006/vcard/ns#Organization>;
-    rdf:rest _:b6986.
-_:b6986 rdf:first <http://www.w3.org/2006/vcard/ns#Agent>;
+_:b8172 a owl:Class;
+    owl:unionOf _:b8173.
+_:b8173 rdf:first schema:Person;
+    rdf:rest _:b8578.
+_:b8578 rdf:first schema:Organization;
+    rdf:rest _:b8579.
+_:b8579 rdf:first <http://xmlns.com/foaf/0.1/Person>;
+    rdf:rest _:b8580.
+_:b8580 rdf:first <http://xmlns.com/foaf/0.1/Organization>;
+    rdf:rest _:b8581.
+_:b8581 rdf:first <http://xmlns.com/foaf/0.1/Agent>;
+    rdf:rest _:b8582.
+_:b8582 rdf:first <http://www.w3.org/2006/vcard/ns#Individual>;
+    rdf:rest _:b8583.
+_:b8583 rdf:first <http://www.w3.org/2006/vcard/ns#Organization>;
+    rdf:rest _:b8584.
+_:b8584 rdf:first <http://www.w3.org/2006/vcard/ns#Agent>;
     rdf:rest rdf:nil.
-_:b6987 a owl:Class;
-    owl:unionOf _:b6988.
-_:b6988 rdf:first odrl:Policy;
-    rdf:rest _:b6989.
-_:b6989 rdf:first odrl:Asset;
-    rdf:rest _:b6990.
-_:b6990 rdf:first odrl:Rule;
-    rdf:rest _:b6991.
-_:b6991 rdf:first odrl:Party;
-    rdf:rest _:b6992.
-_:b6992 rdf:first odrl:Constraint;
-    rdf:rest _:b6993.
-_:b6993 rdf:first odrl:LogicalConstraint;
+_:b8585 a owl:Class;
+    owl:unionOf _:b8586.
+_:b8586 rdf:first odrl:Policy;
+    rdf:rest _:b8587.
+_:b8587 rdf:first odrl:Asset;
+    rdf:rest _:b8588.
+_:b8588 rdf:first odrl:Rule;
+    rdf:rest _:b8589.
+_:b8589 rdf:first odrl:Party;
+    rdf:rest _:b8590.
+_:b8590 rdf:first odrl:Constraint;
+    rdf:rest _:b8591.
+_:b8591 rdf:first odrl:LogicalConstraint;
     rdf:rest rdf:nil.
-_:b6994 a owl:Class;
-    owl:unionOf _:b6995.
-_:b6995 rdf:first odrl:AssetCollection;
-    rdf:rest _:b6996.
-_:b6996 rdf:first odrl:PartyCollection;
+_:b8592 a owl:Class;
+    owl:unionOf _:b8593.
+_:b8593 rdf:first odrl:AssetCollection;
+    rdf:rest _:b8594.
+_:b8594 rdf:first odrl:PartyCollection;
     rdf:rest rdf:nil.
-_:b6997 a owl:Class;
-    owl:unionOf _:b6998.
-_:b6998 rdf:first odrl:Rule;
-    rdf:rest _:b6999.
-_:b6999 rdf:first odrl:Policy;
+_:b8595 a owl:Class;
+    owl:unionOf _:b8596.
+_:b8596 rdf:first odrl:Rule;
+    rdf:rest _:b8597.
+_:b8597 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
-_:b7000 a owl:Class;
-    owl:unionOf _:b7001.
-_:b7001 rdf:first odrl:Rule;
-    rdf:rest _:b7002.
-_:b7002 rdf:first odrl:Policy;
+_:b8598 a owl:Class;
+    owl:unionOf _:b8599.
+_:b8599 rdf:first odrl:Rule;
+    rdf:rest _:b8600.
+_:b8600 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
-_:b7003 a owl:Class;
-    owl:unionOf _:b7004.
-_:b7004 rdf:first odrl:Rule;
-    rdf:rest _:b7005.
-_:b7005 rdf:first odrl:Policy;
+_:b8601 a owl:Class;
+    owl:unionOf _:b8602.
+_:b8602 rdf:first odrl:Rule;
+    rdf:rest _:b8603.
+_:b8603 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
-_:b7006 a owl:Class;
-    owl:unionOf _:b7007.
-_:b7007 rdf:first odrl:Rule;
-    rdf:rest _:b7008.
-_:b7008 rdf:first odrl:Policy;
+_:b8604 a owl:Class;
+    owl:unionOf _:b8605.
+_:b8605 rdf:first odrl:Rule;
+    rdf:rest _:b8606.
+_:b8606 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
-_:b7009 a owl:Class;
-    owl:unionOf _:b7010.
-_:b7010 rdf:first odrl:Policy;
-    rdf:rest _:b7011.
-_:b7011 rdf:first odrl:Rule;
+_:b8607 a owl:Class;
+    owl:unionOf _:b8608.
+_:b8608 rdf:first odrl:Policy;
+    rdf:rest _:b8609.
+_:b8609 rdf:first odrl:Rule;
     rdf:rest rdf:nil.
-_:b7012 a owl:Class;
-    owl:unionOf _:b7013.
-_:b7013 rdf:first odrl:Constraint;
-    rdf:rest _:b7014.
-_:b7014 rdf:first odrl:LogicalConstraint;
+_:b8610 a owl:Class;
+    owl:unionOf _:b8611.
+_:b8611 rdf:first odrl:Constraint;
+    rdf:rest _:b8612.
+_:b8612 rdf:first odrl:LogicalConstraint;
     rdf:rest rdf:nil.
-_:b7015 a owl:Class;
-    owl:unionOf _:b7016.
-_:b7016 rdf:first odrl:Action;
-    rdf:rest _:b7017.
-_:b7017 rdf:first odrl:AssetCollection;
-    rdf:rest _:b7018.
-_:b7018 rdf:first odrl:PartyCollection;
+_:b8613 a owl:Class;
+    owl:unionOf _:b8614.
+_:b8614 rdf:first odrl:Action;
+    rdf:rest _:b8615.
+_:b8615 rdf:first odrl:AssetCollection;
+    rdf:rest _:b8616.
+_:b8616 rdf:first odrl:PartyCollection;
     rdf:rest rdf:nil.
-_:b7019 a owl:Class;
-    owl:unionOf _:b7020.
-_:b7020 rdf:first odrl:Constraint;
-    rdf:rest _:b7021.
-_:b7021 rdf:first odrl:LogicalConstraint;
+_:b8617 a owl:Class;
+    owl:unionOf _:b8618.
+_:b8618 rdf:first odrl:Constraint;
+    rdf:rest _:b8619.
+_:b8619 rdf:first odrl:LogicalConstraint;
     rdf:rest rdf:nil.
-_:b7022 a owl:Class;
-    owl:unionOf _:b7023.
-_:b7023 rdf:first odrl:RightOperand;
-    rdf:rest _:b7024.
-_:b7024 rdf:first rdfs:Literal;
-    rdf:rest _:b7025.
-_:b7025 rdf:first xsd:anyURI;
+_:b8749 a owl:Class;
+    owl:unionOf _:b8750.
+_:b8750 rdf:first odrl:RightOperand;
+    rdf:rest _:b8751.
+_:b8751 rdf:first rdfs:Literal;
+    rdf:rest _:b8752.
+_:b8752 rdf:first xsd:anyURI;
     rdf:rest rdf:nil.
 skos:broaderTransitive a owl:AnnotationProperty.
-_:b7491 a owl:Class;
-    owl:unionOf _:b7492.
-_:b7492 rdf:first odrl:Rule;
-    rdf:rest _:b7493.
-_:b7493 rdf:first odrl:Policy;
+_:b8753 a owl:Class;
+    owl:unionOf _:b8754.
+_:b8754 rdf:first odrl:Rule;
+    rdf:rest _:b8755.
+_:b8755 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
-_:b7494 a owl:Class;
-    owl:unionOf _:b7495.
-_:b7495 rdf:first odrl:Rule;
-    rdf:rest _:b7496.
-_:b7496 rdf:first odrl:Policy;
+_:b8756 a owl:Class;
+    owl:unionOf _:b8757.
+_:b8757 rdf:first odrl:Rule;
+    rdf:rest _:b8758.
+_:b8758 rdf:first odrl:Policy;
     rdf:rest rdf:nil.
 skos:broader a owl:AnnotationProperty.
 skos:hasTopConcept a owl:AnnotationProperty.

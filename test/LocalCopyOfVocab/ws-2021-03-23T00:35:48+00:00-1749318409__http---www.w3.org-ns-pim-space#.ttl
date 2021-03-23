@@ -35,13 +35,13 @@ ws:PrivateWorkspace rdfs:comment "Access only by the you, the user.";
 ws:Workspace rdfs:comment "Workspaces are place where data is stored, and associated polices of privacy.\nA given application typically stores information in several different\nworkspaces, some being user private, some shared, and some public.\n";
     a rdfs:Class;
     rdfs:label "workspace";
-    owl:disjointUnionOf _:b7555.
+    owl:disjointUnionOf _:b8814.
 ws:PersonalStorage rdfs:comment "A personal storage is a space of URIs in which you and only you have access to data,\n    you cannot give access to anyone else.\n";
     rdfs:subClassOf ws:Storage;
     a rdfs:Class;
     rdfs:label "personal storage".
-_:b7555 rdf:first ws:PrivateWorkspace;
-    rdf:rest _:b7556.
+_:b8814 rdf:first ws:PrivateWorkspace;
+    rdf:rest _:b8815.
 ws:PublicStorage rdfs:comment "A public storage is a space of URIs in which you have access to data,\n    and all data is accessible to anyone without control.\n";
     rdfs:subClassOf ws:Storage;
     a rdfs:Class;
@@ -58,9 +58,9 @@ ws:SharedWorkspace rdfs:comment "Access is to some but not all people.";
     rdfs:subClassOf ws:Workspace;
     a rdfs:Class;
     rdfs:label "Shared workspace".
-_:b7556 rdf:first ws:SharedWorkspace;
-    rdf:rest _:b7557.
-_:b7557 rdf:first ws:PublicWorkspace;
+_:b8815 rdf:first ws:SharedWorkspace;
+    rdf:rest _:b8816.
+_:b8816 rdf:first ws:PublicWorkspace;
     rdf:rest rdf:nil.
 ws:masterWorkspace a rdf:Property;
     rdfs:label "master workspace"@en;
@@ -74,8 +74,8 @@ ws:storage rdfs:comment "The storage in which this workspace is";
     a rdf:Property;
     rdfs:label "storage";
     rdfs:range ws:Storage;
-    owl:inverse _:b7558.
-_:b7558 rdfs:label "workspace included".
+    owl:inverse _:b8817.
+_:b8817 rdfs:label "workspace included".
 ws:uriPrefix rdfs:comment "URIs which start with this string are in this workspace or storage.\nThis may be used for constructing URIs for new storage resources.\n";
     a rdf:Property, owl:DatatypeProperty;
     rdfs:label "URI prefix";

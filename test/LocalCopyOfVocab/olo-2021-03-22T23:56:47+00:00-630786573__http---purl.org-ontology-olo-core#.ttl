@@ -21,9 +21,9 @@ olo:OrderedList a rdfs:Class, owl:Class;
     rdfs:comment "An ordered list with a given length an indexed items."@en;
     rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
     rdfs:label "Ordered List"@en;
-    rdfs:subClassOf owl:Thing, _:b1548;
+    rdfs:subClassOf owl:Thing, _:b2848;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en.
-_:b1548 a owl:Restriction;
+_:b2848 a owl:Restriction;
     owl:cardinality "1"^^xsd:nonNegativeInteger;
     owl:onProperty olo:length.
 olo:length a owl:FunctionalProperty, rdf:Property, owl:DatatypeProperty;
@@ -37,9 +37,9 @@ olo:Slot a rdfs:Class, owl:Class;
     rdfs:comment "A slot in an ordered list with a fixed index."@en;
     rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
     rdfs:label "Slot"@en;
-    rdfs:subClassOf owl:Thing, _:b1549, _:b1550, _:b1551, _:b1552;
+    rdfs:subClassOf owl:Thing, _:b2849, _:b2850, _:b2851, _:b2852;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en.
-_:b1549 a owl:Restriction;
+_:b2849 a owl:Restriction;
     owl:onProperty olo:next;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 olo:next a owl:FunctionalProperty, rdf:Property;
@@ -49,7 +49,7 @@ olo:next a owl:FunctionalProperty, rdf:Property;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing"@en;
     rdfs:domain olo:Slot;
     rdfs:range olo:Slot.
-_:b1550 a owl:Restriction;
+_:b2850 a owl:Restriction;
     owl:cardinality "1"^^xsd:nonNegativeInteger;
     owl:onProperty olo:index.
 olo:index a owl:FunctionalProperty, rdf:Property, owl:DatatypeProperty;
@@ -59,7 +59,7 @@ olo:index a owl:FunctionalProperty, rdf:Property, owl:DatatypeProperty;
     <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en;
     rdfs:domain olo:Slot;
     rdfs:range xsd:positiveInteger.
-_:b1551 a owl:Restriction;
+_:b2851 a owl:Restriction;
     owl:onProperty olo:ordered_list;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 olo:ordered_list a owl:FunctionalProperty, rdf:Property;
@@ -70,7 +70,7 @@ olo:ordered_list a owl:FunctionalProperty, rdf:Property;
     rdfs:domain olo:Slot;
     rdfs:range olo:OrderedList;
     owl:inverseOf olo:slot.
-_:b1552 a owl:Restriction;
+_:b2852 a owl:Restriction;
     owl:onProperty olo:previous;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger.
 olo:previous a rdf:Property, owl:InverseFunctionalProperty;

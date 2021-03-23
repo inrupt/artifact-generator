@@ -26,8 +26,6 @@ const FileGenerator = require("./generator/FileGenerator");
 // failure.
 const DEFAULT_MODIFICATION_DATE = 662688059000;
 
-const parserN3 = new ParserN3();
-
 // We need to explicitly stipulate our HTTP Accept header so that we favour
 // Turtle, as some vocabs can default to returning RDFa triples that are a
 // smaller, and very different, set of triples (e.g., the LDP vocab).
@@ -45,28 +43,6 @@ const RDF_ACCEPT_HEADER =
 // don't request 'text/html' at all for just this vocab (and since it only
 // returns RDF/XML otherwise, we might as well explicitly ask for that).
 const RDF_ACCEPT_HEADER_SKOS_XL = "application/rdf+xml";
-
-const formats = {
-  parsers: new SinkMap([
-    ["text/turtle", parserN3],
-
-    ["text/n3", parserN3], // The iCal vocab requires this content type, and the OLO vocab returns it.
-    ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
-    ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
-
-    // For these parsers we may need to manually set the `baseIRI` on a
-    // per-vocab basis, which we can only do in the constructor. So no point in
-    // constructing a shared parser instance here at all...
-    // See issue here: https://github.com/rdfjs/rdfxml-streaming-parser.js/issues/46
-    // ["application/rdf+xml", new ParserRdfXml()],
-    // ["text/html", new ParserRdfa( { baseIRI: `${namespace} })],
-
-    // The vocab
-    // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
-    // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
-    ["text/plain", parserN3],
-  ]),
-};
 
 /**
  * Prefixes used for writing RDF in serializations that support prefixes, such
@@ -169,16 +145,18 @@ module.exports = class Resource {
     // Scan our provided directory for any pre-existing copies of this
     // vocabulary, sorting alphabetically which will get us the most recently
     // cached version...
-    const failureMessage = `No locally cached vocab found for input resource [${inputResource}] in directory [${cacheDirectory}] (either our local cache was cleared out, or we've never successfully read and parsed this vocabulary) - root cause of failure: [${rootCause}]`;
     try {
+      const expectedCacheResource = `__${formatNamespace}.ttl`;
       const files = fs
         .readdirSync(cacheDirectory)
-        .filter((filename) => filename.endsWith(`__${formatNamespace}.ttl`))
+        .filter((filename) => filename.endsWith(expectedCacheResource))
         .sort((a, b) => b.localeCompare(a));
 
       // ...if no existing copies of this vocabulary, report the original problem.
       if (files.length === 0) {
-        throw new Error(failureMessage);
+        throw new Error(
+          `No locally cached resources in directory [${cacheDirectory}] ending with [${expectedCacheResource}]`
+        );
       }
 
       // Get the latest cached version...
@@ -187,7 +165,7 @@ module.exports = class Resource {
       );
     } catch (error) {
       throw new Error(
-        `Context: [${failureMessage}] - local cache processing error: [${error}]`
+        `Context: [${rootCause}] - cache lookup failure: [${error}]`
       );
     }
   }
@@ -210,19 +188,7 @@ module.exports = class Resource {
   ) {
     debug(`Loading resource: [${inputResource}]...`);
     if (Resource.isOnline(inputResource)) {
-      // This is unfortunate, but we can't reuse single parser instances for
-      // these serializations across vocabs, since we may need the `baseIRI` to
-      // be set for each vocab, and we can only do this via their respective
-      // constructors.
-      // See issue here: https://github.com/rdfjs/rdfxml-streaming-parser.js/issues/46
-      formats.parsers.set(
-        "application/rdf+xml",
-        new ParserRdfXml({ baseIRI: inputResource })
-      );
-      formats.parsers.set(
-        "text/html",
-        new ParserRdfa({ baseIRI: inputResource })
-      );
+      const formats = this.createParserFormats(inputResource);
 
       let acceptHeader;
       if (vocabAcceptHeaderOverride) {
@@ -261,7 +227,7 @@ module.exports = class Resource {
               );
             } else {
               throw new Error(
-                `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response.`
+                `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response`
               );
             }
           }
@@ -278,6 +244,29 @@ module.exports = class Resource {
     return new Promise((resolve) => {
       resolve(this.loadTurtleFileIntoDatasetPromise(inputResource));
     });
+  }
+
+  // We need to create instances of some parsers per vocab due to the need to
+  // set a base IRI for certain vocabs, which we can only do in the constructor.
+  static createParserFormats(inputResource) {
+    const parserN3 = new ParserN3();
+
+    const formats = {
+      parsers: new SinkMap([
+        ["text/turtle", parserN3],
+        ["text/n3", parserN3], // The iCal vocab requires this content type, and the OLO vocab returns it.
+        ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
+        ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
+        ["application/rdf+xml", new ParserRdfXml({ baseIRI: inputResource })],
+        ["text/html", new ParserRdfa({ baseIRI: inputResource })],
+        // The vocab
+        // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
+        // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
+        ["text/plain", parserN3],
+      ]),
+    };
+
+    return formats;
   }
 
   /**
