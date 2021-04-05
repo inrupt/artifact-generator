@@ -71,9 +71,16 @@ const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
 const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
-  constructor(fullDataset, termExtensionDataset, vocabData) {
+  /**
+   *
+   * @param fullDataset union of all input resources, making up the full set of terms
+   * @param termSelectionDataset dataset used to selectively list the terms we wish to generate
+   * from
+   * @param vocabData details of the vocabulary we wish to generate
+   */
+  constructor(fullDataset, termSelectionDataset, vocabData) {
     this.fullDataset = fullDataset;
-    this.termExtensionDataset = termExtensionDataset;
+    this.termSelectionDataset = termSelectionDataset;
     this.vocabData = vocabData;
 
     this.termsProcessed = new Map();
@@ -192,13 +199,13 @@ module.exports = class DatasetHandler {
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
       .replace(/^implements$/, "implements_"); // From the DOAP vocab.
 
-    this.termExtensionDataset
+    this.termSelectionDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
-    this.termExtensionDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.label, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
@@ -218,7 +225,7 @@ module.exports = class DatasetHandler {
 
     const comments = [];
 
-    this.termExtensionDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.comment, null)
       .forEach((subQuad) => {
         DatasetHandler.add(comments, subQuad);
@@ -232,7 +239,7 @@ module.exports = class DatasetHandler {
 
     const definitions = [];
 
-    this.termExtensionDataset
+    this.termSelectionDataset
       .match(quad.subject, SKOS.definition, null)
       .forEach((subQuad) => {
         DatasetHandler.add(definitions, subQuad);
@@ -270,7 +277,7 @@ module.exports = class DatasetHandler {
     });
 
     const seeAlsoValues = new Set();
-    this.termExtensionDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.seeAlso, null)
       .forEach((subQuad) => {
         seeAlsoValues.add(subQuad.object.value);
@@ -541,7 +548,7 @@ module.exports = class DatasetHandler {
       );
     }
 
-    let subjectSet = DatasetHandler.subjectsOnly(this.termExtensionDataset);
+    let subjectSet = DatasetHandler.subjectsOnly(this.termSelectionDataset);
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }

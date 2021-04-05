@@ -114,10 +114,10 @@ module.exports = class VocabGenerator {
     );
   }
 
-  buildTemplateInput(fullData, termExtensionDataset) {
+  buildTemplateInput(fullData, termSelectionDataset) {
     const datasetHandler = new DatasetHandler(
       fullData,
-      termExtensionDataset,
+      termSelectionDataset,
       this.vocabData
     );
 
