@@ -46,7 +46,143 @@ describe("Dataset Handler", () => {
     });
   });
 
-  describe("Handle sub-classes or sub-properties", () => {
+  describe("handle non-English translations for labels, comments, etc.", () => {
+    const labelInIrish = rdf.literal("Lipéad éigin i nGaeilge", "ga");
+    const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
+    const labelInFrench = rdf.literal("Une étiquette en français", "fr");
+    const commentInFrench = rdf.literal(
+      "Quelques commentaires en français",
+      "fr"
+    );
+
+    it("should describe single matching non-English label and comment", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].translationDescription;
+      expect(description).toContain("language [ga]");
+      expect(description).toContain("[1] label and comment");
+    });
+
+    it("should describe multiple matching non-English label and comment", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].translationDescription;
+      expect(description).toContain("[2] labels and comments");
+      expect(description).toContain("languages [fr, ga]");
+    });
+
+    it("should provide no translation description if only xsd:string descriptions", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, rdf.literal("label...")))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, rdf.literal("blah...")));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      expect(result.classes[0].translationDescription).toBeUndefined();
+    });
+
+    it("should provide no translation description if only English or xsd:string", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, rdf.literal("label", "en")))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, rdf.literal("label no lang")));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      expect(result.classes[0].translationDescription).toBeUndefined();
+    });
+
+    it("should describe mismatch label and missing comment", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].translationDescription;
+      expect(description).toContain("mismatch");
+      expect(description).toContain("language [ga]");
+      expect(description).toContain("[0] comments");
+    });
+
+    it("should describe mismatch label and multiple missing comment", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].translationDescription;
+      expect(description).toContain("mismatch");
+      expect(description).toContain("languages [fr, ga]");
+      expect(description).toContain("[0] comments");
+    });
+
+    it("should describe mismatch comment and multiple missing label", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].translationDescription;
+      expect(description).toContain("mismatch");
+      expect(description).toContain("[0] labels");
+      expect(description).toContain("languages [fr, ga]");
+    });
+  });
+
+  describe("handle sub-classes or sub-properties", () => {
     it("should handle sub-classes", () => {
       const dataset = rdf
         .dataset()

@@ -301,6 +301,23 @@ describe("Touching a file", () => {
         );
         expect(dataset.size).toBe(3);
       });
+
+      it("should read local copy of vocab with a TTL extension", async () => {
+        const testLocalCopyDirectory = path.join(
+          ".",
+          "test",
+          "resources",
+          "localCopyOfVocab",
+          "testCacheForReading-DoNotDelete"
+        );
+
+        const dataset = await Resource.attemptToReadGeneratedResource(
+          { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
+          "http://rdf-extension.com#.ttl",
+          "some reason..."
+        );
+        expect(dataset.size).toBe(3);
+      });
     });
   });
 

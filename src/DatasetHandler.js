@@ -71,9 +71,21 @@ const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
 const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
-  constructor(fullDataset, subjectsOnlyDataset, vocabData) {
+  /**
+   * Note: The term selection dataset we provide is used to selectively choose terms to generate
+   * from a source vocabulary (for instance to cherry-pick specific terms from the huge
+   * collection of terms in Schema.org). But the extension can can also add more meta-data for
+   * those selected terms (for example, to add missing labels or comments, or translations for
+   * existing labels and comments, see-also links, etc.)
+   *
+   * @param fullDataset union of all input resources, making up the full set of terms
+   * @param termSelectionDataset dataset used to selectively list the terms we wish to generate
+   * from
+   * @param vocabData details of the vocabulary we wish to generate
+   */
+  constructor(fullDataset, termSelectionDataset, vocabData) {
     this.fullDataset = fullDataset;
-    this.subjectsOnlyDataset = subjectsOnlyDataset;
+    this.termSelectionDataset = termSelectionDataset;
     this.vocabData = vocabData;
 
     this.termsProcessed = new Map();
@@ -192,13 +204,13 @@ module.exports = class DatasetHandler {
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
       .replace(/^implements$/, "implements_"); // From the DOAP vocab.
 
-    this.subjectsOnlyDataset
+    this.termSelectionDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
-    this.subjectsOnlyDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.label, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
@@ -218,7 +230,7 @@ module.exports = class DatasetHandler {
 
     const comments = [];
 
-    this.subjectsOnlyDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.comment, null)
       .forEach((subQuad) => {
         DatasetHandler.add(comments, subQuad);
@@ -232,7 +244,7 @@ module.exports = class DatasetHandler {
 
     const definitions = [];
 
-    this.subjectsOnlyDataset
+    this.termSelectionDataset
       .match(quad.subject, SKOS.definition, null)
       .forEach((subQuad) => {
         DatasetHandler.add(definitions, subQuad);
@@ -270,7 +282,7 @@ module.exports = class DatasetHandler {
     });
 
     const seeAlsoValues = new Set();
-    this.subjectsOnlyDataset
+    this.termSelectionDataset
       .match(quad.subject, RDFS.seeAlso, null)
       .forEach((subQuad) => {
         seeAlsoValues.add(subQuad.object.value);
@@ -303,23 +315,10 @@ module.exports = class DatasetHandler {
       labels
     );
 
-    const translationsLabel = DatasetHandler.describeTranslations(
-      "label",
-      labels
-    );
-    const translationsComment = DatasetHandler.describeTranslations(
-      "comment",
+    let translationDescription = DatasetHandler.buildCompositeTranslationDescription(
+      labels,
       comments
     );
-
-    let translationDescription;
-    if (translationsLabel !== undefined || translationsComment !== undefined) {
-      if (translationsLabel === translationsComment) {
-        translationDescription = `This term has [${labels.length}] labels and comments, in the languages [${translationsLabel}].`;
-      } else {
-        translationDescription = `This term has multiple descriptions, but a mismatch between [${labels.length}] labels in languages [${translationsLabel}], and [${comments.length}] comments in languages [${translationsComment}].`;
-      }
-    }
 
     return {
       name,
@@ -335,13 +334,79 @@ module.exports = class DatasetHandler {
     };
   }
 
-  static describeTranslations(termType, literals) {
-    if (literals.length < 2) {
+  /**
+   * This function builds a single string description of the translation values provided for the
+   * specified term metadata.
+   *
+   * @param labels the collection of label literals
+   * @param comments the collection of comment literals
+   * @returns {any}
+   */
+  static buildCompositeTranslationDescription(labels, comments) {
+    let translationDescription = undefined;
+
+    // We're only interested in language string translations from English, so filter accordingly.
+    const nonEnglishLabels = labels.filter(
+      (elem) => elem.language && !elem.language.startsWith("en")
+    );
+
+    // We're only interested in language string translations from English, so filter accordingly.
+    const nonEnglishComments = comments.filter(
+      (elem) => elem.language && !elem.language.startsWith("en")
+    );
+
+    const translationsLabel = DatasetHandler.sortedListOfTranslations(
+      nonEnglishLabels
+    );
+    const translationsComment = DatasetHandler.sortedListOfTranslations(
+      nonEnglishComments
+    );
+
+    if (translationsLabel !== undefined || translationsComment !== undefined) {
+      if (translationsLabel === translationsComment) {
+        const singular = nonEnglishLabels.length === 1;
+        translationDescription = `This term has [${
+          nonEnglishLabels.length
+        }] label${singular ? "" : "s"} and comment${
+          singular ? "" : "s"
+        }, in the language${singular ? "" : "s"} [${translationsLabel}].`;
+      } else {
+        const labelLanguages =
+          translationsLabel === undefined
+            ? ""
+            : ` in ${
+                nonEnglishLabels.length === 1 ? "the language" : "languages"
+              } [${translationsLabel}]`;
+
+        const labelDetails = `[${nonEnglishLabels.length}] label${
+          nonEnglishLabels.length === 1 ? "" : "s"
+        }${labelLanguages}`;
+
+        const commentLanguages =
+          translationsComment === undefined
+            ? ""
+            : ` in ${
+                nonEnglishComments.length === 1 ? "the language" : "languages"
+              } [${translationsComment}]`;
+
+        const commentDetails = `[${nonEnglishComments.length}] comment${
+          nonEnglishComments.length === 1 ? "" : "s"
+        }${commentLanguages}`;
+
+        translationDescription = `This term provides non-English descriptions, but a mismatch between labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+      }
+    }
+
+    return translationDescription;
+  }
+
+  static sortedListOfTranslations(literals) {
+    // If we have no literals at, just return.
+    if (literals.length === 0) {
       return undefined;
     }
 
     const sortedByLang = literals
-      .filter((elem) => elem.language)
       .sort((a, b) => a.language.localeCompare(b.language))
       .map((elem) => elem.language);
 
@@ -488,7 +553,7 @@ module.exports = class DatasetHandler {
       );
     }
 
-    let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
+    let subjectSet = DatasetHandler.subjectsOnly(this.termSelectionDataset);
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }

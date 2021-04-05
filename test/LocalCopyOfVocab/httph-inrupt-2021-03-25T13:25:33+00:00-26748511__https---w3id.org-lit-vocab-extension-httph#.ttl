@@ -1,0 +1,33 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix httph-inrupt: <https://w3id.org/lit/vocab/extension/httph#>.
+
+<https://w3id.org/inrupt/vocab/extension/httph#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2019/07/28"^^xsd:date;
+    dcterms:title "Inrupt extension adding terms and multilingual meta-data for HTTP headers";
+    dcterms:description "Extension to th HTTPH (HTTP Headers) vocabulary\n providing terms for more headers that the current (Aug 2019) namespace document,\n and multilingual alternative names and translations for comments (e.g. for use\n directly as labels or tool-tips in user interfaces or error messages)";
+    vann:preferredNamespacePrefix "httph-inrupt-ext";
+    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/extension/httph#";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/".
+<http://www.w3.org/2007/ont/httph#accept> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/inrupt/vocab/extension/httph#>, <http://www.w3.org/2007/ont/httph#>;
+    rdfs:label "Accept"@en;
+    rdfs:comment "See the HTTP specification"@en;
+    rdfs:domain <https://www.w3.org/2007/ont/http#Message>;
+    rdfs:range rdfs:Literal.
+<http://www.w3.org/2007/ont/httph#accept-language> a rdf:Property;
+    rdfs:isDefinedBy <https://w3id.org/inrupt/vocab/extension/httph#>, <http://www.w3.org/2007/ont/httph#>;
+    rdfs:label "Accept-Language"@en;
+    rdfs:comment "See the HTTP specification"@en;
+    rdfs:domain <https://www.w3.org/2007/ont/http#Message>;
+    rdfs:range rdfs:Literal.

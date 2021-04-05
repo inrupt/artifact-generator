@@ -49,7 +49,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * A person (alive, dead, undead, or fictional).
    *
-   * This term has multiple descriptions, but a mismatch between [6] labels in languages [de, en, es, fr, it], and [5] comments in languages [de, es, fr, it].
+   * This term has [4] labels and comments, in the languages [de, es, fr, it].
    *
    * Defined by the vocabulary: https://w3id.org/inrupt/vocab/extension/schema#
    */
@@ -80,7 +80,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
    *
-   * This term has multiple descriptions, but a mismatch between [6] labels in languages [de, en, es, fr, it], and [5] comments in languages [de, es, fr, it].
+   * This term has [4] labels and comments, in the languages [de, es, fr, it].
    *
    * Defined by the vocabulary: https://w3id.org/inrupt/vocab/extension/schema#
    */
@@ -106,7 +106,7 @@ const SCHEMA_INRUPT_EXT = {
   /**
    * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
    *
-   * This term has multiple descriptions, but a mismatch between [6] labels in languages [de, en, es, fr, it], and [5] comments in languages [de, es, fr, it].
+   * This term has [4] labels and comments, in the languages [de, es, fr, it].
    *
    * Defined by the vocabulary: https://w3id.org/inrupt/vocab/extension/schema#
    */
