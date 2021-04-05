@@ -156,8 +156,8 @@ const ConfigSolidGeneratorUi = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively", async () => {
+  it("Generate ALL vocabs recursively", async () => {
+  // it.skip("Generate ALL vocabs recursively", async () => {
     jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
   });

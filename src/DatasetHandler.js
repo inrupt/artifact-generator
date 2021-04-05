@@ -303,23 +303,10 @@ module.exports = class DatasetHandler {
       labels
     );
 
-    const translationsLabel = DatasetHandler.describeTranslations(
-      "label",
-      labels
-    );
-    const translationsComment = DatasetHandler.describeTranslations(
-      "comment",
+    let translationDescription = DatasetHandler.buildCompositeTranslationDescription(
+      labels,
       comments
     );
-
-    let translationDescription;
-    if (translationsLabel !== undefined || translationsComment !== undefined) {
-      if (translationsLabel === translationsComment) {
-        translationDescription = `This term has [${labels.length}] labels and comments, in the languages [${translationsLabel}].`;
-      } else {
-        translationDescription = `This term has multiple descriptions, but a mismatch between [${labels.length}] labels in languages [${translationsLabel}], and [${comments.length}] comments in languages [${translationsComment}].`;
-      }
-    }
 
     return {
       name,
@@ -335,13 +322,79 @@ module.exports = class DatasetHandler {
     };
   }
 
-  static describeTranslations(termType, literals) {
-    if (literals.length < 2) {
+  /**
+   * This function builds a single string description of the translation values provided for the
+   * specified term metadata.
+   *
+   * @param labels the collection of label literals
+   * @param comments the collection of comment literals
+   * @returns {any}
+   */
+  static buildCompositeTranslationDescription(labels, comments) {
+    let translationDescription = undefined;
+
+    // We're only interested in language string translations from English, so filter accordingly.
+    const nonEnglishLabels = labels.filter(
+      (elem) => elem.language && !elem.language.startsWith("en")
+    );
+
+    // We're only interested in language string translations from English, so filter accordingly.
+    const nonEnglishComments = comments.filter(
+      (elem) => elem.language && !elem.language.startsWith("en")
+    );
+
+    const translationsLabel = DatasetHandler.sortedListOfTranslations(
+      nonEnglishLabels
+    );
+    const translationsComment = DatasetHandler.sortedListOfTranslations(
+      nonEnglishComments
+    );
+
+    if (translationsLabel !== undefined || translationsComment !== undefined) {
+      if (translationsLabel === translationsComment) {
+        const singular = nonEnglishLabels.length === 1;
+        translationDescription = `This term has [${
+          nonEnglishLabels.length
+        }] label${singular ? "" : "s"} and comment${
+          singular ? "" : "s"
+        }, in the language${singular ? "" : "s"} [${translationsLabel}].`;
+      } else {
+        const labelLanguages =
+          translationsLabel === undefined
+            ? ""
+            : ` in ${
+                nonEnglishLabels.length === 1 ? "the language" : "languages"
+              } [${translationsLabel}]`;
+
+        const labelDetails = `[${nonEnglishLabels.length}] label${
+          nonEnglishLabels.length === 1 ? "" : "s"
+        }${labelLanguages}`;
+
+        const commentLanguages =
+          translationsComment === undefined
+            ? ""
+            : ` in ${
+                nonEnglishComments.length === 1 ? "the language" : "languages"
+              } [${translationsComment}]`;
+
+        const commentDetails = `[${nonEnglishComments.length}] comment${
+          nonEnglishComments.length === 1 ? "" : "s"
+        }${commentLanguages}`;
+
+        translationDescription = `This term provides non-English descriptions, but a mismatch between labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+      }
+    }
+
+    return translationDescription;
+  }
+
+  static sortedListOfTranslations(literals) {
+    // If we have no literals at, just return.
+    if (literals.length === 0) {
       return undefined;
     }
 
     const sortedByLang = literals
-      .filter((elem) => elem.language)
       .sort((a, b) => a.language.localeCompare(b.language))
       .map((elem) => elem.language);
 

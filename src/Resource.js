@@ -35,15 +35,6 @@ const DEFAULT_MODIFICATION_DATE = 662688059000;
 const RDF_ACCEPT_HEADER =
   "text/turtle;q=1.0, application/x-turtle;q=1.0, text/n3;q=0.8, application/ld+json;q=0.7, text/html;q=0.4, text/plain;q=0.3, application/rdf+xml;q=0.1";
 
-// Unfortunately, the SKOS-XL vocab doesn't support content negotiation properly
-// at all. If basically ignores all content types and just returns RDF/XML
-// *unless* the content-type contains 'text/html' (regardless of any 'q' values
-// provided at all), in which case it returns HTML containing two RDFa triples.
-// So unfortunately we need to work around this exception, and make sure we
-// don't request 'text/html' at all for just this vocab (and since it only
-// returns RDF/XML otherwise, we might as well explicitly ask for that).
-const RDF_ACCEPT_HEADER_SKOS_XL = "application/rdf+xml";
-
 /**
  * Prefixes used for writing RDF in serializations that support prefixes, such
  * as Turtle (which we might do to cache local copies of vocabularies, for
@@ -126,7 +117,7 @@ module.exports = class Resource {
 
   static attemptToReadGeneratedResource(config, inputResource, rootCause) {
     const cacheDirectory = config.storeLocalCopyOfVocabDirectory;
-    if (cacheDirectory == undefined) {
+    if (cacheDirectory === undefined) {
       throw new Error(
         `No local cached vocab directory to fallback to when processing resource [${inputResource}] - root cause of failure: [${rootCause}]`
       );
@@ -195,15 +186,7 @@ module.exports = class Resource {
         acceptHeader = vocabAcceptHeaderOverride;
         debug(`Overriding Accept header with: [${vocabAcceptHeaderOverride}].`);
       } else {
-        // Unfortunately we need to make an exception for the SKOS-XL vocab,
-        // since if it's server sees a request with 'text/html' *anywhere* in
-        // the HTTP Accept header (regardless of 'q' values), it'll return
-        // HTML with just two meaningless RDFa triples instead of the actual
-        // vocab!
-        acceptHeader =
-          inputResource === "http://www.w3.org/2008/05/skos-xl#"
-            ? RDF_ACCEPT_HEADER_SKOS_XL
-            : RDF_ACCEPT_HEADER;
+        acceptHeader = RDF_ACCEPT_HEADER;
       }
 
       return rdfFetch(inputResource, {
