@@ -1,10 +1,10 @@
 {
   "name": "@inrupt/lit-artifact-generator",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "A generator for building artifacts (e.g. Java JARs, NPM modules, etc.) from RDF vocabularies.",
   "main": "index.js",
   "bin": {
-    "lit-artifact-generator": "./index.js"
+    "lit-artifact-generator": "index.js"
   },
   "scripts": {
     "test": "npm run format && npm run lint && jest",
