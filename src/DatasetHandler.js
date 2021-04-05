@@ -71,9 +71,9 @@ const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
 const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
-  constructor(fullDataset, subjectsOnlyDataset, vocabData) {
+  constructor(fullDataset, termExtensionDataset, vocabData) {
     this.fullDataset = fullDataset;
-    this.subjectsOnlyDataset = subjectsOnlyDataset;
+    this.termExtensionDataset = termExtensionDataset;
     this.vocabData = vocabData;
 
     this.termsProcessed = new Map();
@@ -192,13 +192,13 @@ module.exports = class DatasetHandler {
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
       .replace(/^implements$/, "implements_"); // From the DOAP vocab.
 
-    this.subjectsOnlyDataset
+    this.termExtensionDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
 
-    this.subjectsOnlyDataset
+    this.termExtensionDataset
       .match(quad.subject, RDFS.label, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
@@ -218,7 +218,7 @@ module.exports = class DatasetHandler {
 
     const comments = [];
 
-    this.subjectsOnlyDataset
+    this.termExtensionDataset
       .match(quad.subject, RDFS.comment, null)
       .forEach((subQuad) => {
         DatasetHandler.add(comments, subQuad);
@@ -232,7 +232,7 @@ module.exports = class DatasetHandler {
 
     const definitions = [];
 
-    this.subjectsOnlyDataset
+    this.termExtensionDataset
       .match(quad.subject, SKOS.definition, null)
       .forEach((subQuad) => {
         DatasetHandler.add(definitions, subQuad);
@@ -270,7 +270,7 @@ module.exports = class DatasetHandler {
     });
 
     const seeAlsoValues = new Set();
-    this.subjectsOnlyDataset
+    this.termExtensionDataset
       .match(quad.subject, RDFS.seeAlso, null)
       .forEach((subQuad) => {
         seeAlsoValues.add(subQuad.object.value);
@@ -541,7 +541,7 @@ module.exports = class DatasetHandler {
       );
     }
 
-    let subjectSet = DatasetHandler.subjectsOnly(this.subjectsOnlyDataset);
+    let subjectSet = DatasetHandler.subjectsOnly(this.termExtensionDataset);
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }
