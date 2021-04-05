@@ -72,6 +72,11 @@ const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
 
 module.exports = class DatasetHandler {
   /**
+   * Note: The term selection dataset we provide is used to selectively choose terms to generate
+   * from a source vocabulary (for instance to cherry-pick specific terms from the huge
+   * collection of terms in Schema.org). But the extension can can also add more meta-data for
+   * those selected terms (for example, to add missing labels or comments, or translations for
+   * existing labels and comments, see-also links, etc.)
    *
    * @param fullDataset union of all input resources, making up the full set of terms
    * @param termSelectionDataset dataset used to selectively list the terms we wish to generate

@@ -115,6 +115,26 @@ module.exports = class Resource {
     processInputsCallback(datasets, termsSelectionDataset);
   }
 
+  // WIP - commenting out for now...
+  // async readResourceUsingLocalCache(config, inputResource) {
+  //   let resource;
+  //   try {
+  //     resource = await this.readResource(
+  //       inputResource,
+  //       this.vocabAcceptHeaderOverride,
+  //       this.vocabContentTypeHeaderFallback
+  //     );
+  //
+  //     if (inputResource.startsWith("http") && config.storeLocalCopyOfVocabDirectory) {
+  //       Resource.storeLocalCopyOfResource(config.storeLocalCopyOfVocabDirectory, resource);
+  //     }
+  //   } catch (error) {
+  //     resource = attemptToReadGeneratedResource(config, inputResource, error);
+  //   }
+  //
+  //   return resource;
+  // }
+
   static attemptToReadGeneratedResource(config, inputResource, rootCause) {
     const cacheDirectory = config.storeLocalCopyOfVocabDirectory;
     if (cacheDirectory === undefined) {
@@ -137,10 +157,12 @@ module.exports = class Resource {
     // vocabulary, sorting alphabetically which will get us the most recently
     // cached version...
     try {
-      const expectedCacheResource = `__${formatNamespace}.ttl`;
+      const expectedCacheResource = Resource.addTurtleExtensionIfNeeded(
+        formatNamespace
+      );
       const files = fs
         .readdirSync(cacheDirectory)
-        .filter((filename) => filename.endsWith(expectedCacheResource))
+        .filter((filename) => filename.endsWith(`__${expectedCacheResource}`))
         .sort((a, b) => b.localeCompare(a));
 
       // ...if no existing copies of this vocabulary, report the original problem.
@@ -256,7 +278,17 @@ module.exports = class Resource {
    * Stores the specified RDF resource as a local file in the specified
    * directory.
    *
-   * Note: The format of the locally save filename is as follows:
+   * Note: this saves the union of all input resources and also unions in
+   * any term selection resources that may apply (since those term selection
+   * resources can also add extra meta-data (e.g., label or comment
+   * translations, see-also links, etc.)). So do not expect the local copy
+   * to be an exact representation of just a single source vocabulary.
+   * A consequence of this is that our local copy can represent many remote
+   * input resources, which can be very convenient (however, at the moment,
+   * if the term selection resources are remote (which we don't expect right
+   * now), or generation process will (probably) fail somehow!).
+   *
+   * The format of the locally save filename is as follows:
    *   <Vocab prefix>-<Timestamp of generation>-<Digest of vocab>__<Encoded vocab namespace>.ttl
    *
    *   - <Vocab prefix> - to make the filename easily readable. Prefixes *should*
@@ -287,9 +319,10 @@ module.exports = class Resource {
       prefixes: { ...prefixes, [vocabName]: vocabNamespace },
     });
 
-    // We can't simply digest (or hash) the serialized RDF, due to potential of
-    // having pesky Blank Nodes. So as we serialize, we also need to collect
-    // that same serialization with Blank Nodes removed.
+    // We can't simply digest (or hash) the serialized RDF, due to the
+    // potential of having pesky Blank Nodes (whose value will differ on each
+    // parse). So as we serialize, we also need to explicitly ignore Blank
+    // Nodes.
     let vocabDigestInput = "";
 
     dataset.forEach((quad) => {
@@ -322,17 +355,20 @@ module.exports = class Resource {
 
       // Scan our provided directory for any pre-existing copies of this
       // vocabulary with a matching digest...
+      const namespaceFilename = Resource.addTurtleExtensionIfNeeded(
+        formatNamespace
+      );
       const files = fs
         .readdirSync(directory)
         .filter((filename) =>
-          filename.endsWith(`-${vocabDigest}__${formatNamespace}.ttl`)
+          filename.endsWith(`-${vocabDigest}__${namespaceFilename}`)
         );
 
       // ...if no existing copies of this vocabulary, store a copy now.
       if (files.length === 0) {
         const outputFilename = path.join(
           directory,
-          `${vocabName}-${moment().format()}-${vocabDigest}__${formatNamespace}.ttl`
+          `${vocabName}-${moment().format()}-${vocabDigest}__${namespaceFilename}`
         );
 
         // File errors will just propagate back up. (We should add specific
@@ -354,6 +390,16 @@ module.exports = class Resource {
    */
   static formatUrlWithFilenameCharacters(url) {
     return url.replace(/[/\\?%*:|"<>]/g, "-");
+  }
+
+  /**
+   * Simply adds a default Turtle extension if needed to the specific resource
+   * name.
+   * @param resourceName name of resource to process
+   * @returns {*|string}
+   */
+  static addTurtleExtensionIfNeeded(resourceName) {
+    return resourceName.endsWith(".ttl") ? resourceName : `${resourceName}.ttl`;
   }
 
   /**
