@@ -48,7 +48,7 @@
     "rdfxml-streaming-parser": "^1.4.0",
     "rimraf": "^3.0.2",
     "string-to-stream": "^3.0.1",
-    "yargs": "^16.2.0"
+    "yargs": "^17.0.0"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
