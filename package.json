@@ -27,7 +27,7 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
-    "@rdfjs/fetch-lite": "^2.1.1",
+    "@rdfjs/fetch-lite": "^2.1.0",
     "@rdfjs/formats-common": "^2.1.0",
     "@rdfjs/parser-jsonld": "^1.2.1",
     "@rdfjs/parser-n3": "^1.1.4",
@@ -39,7 +39,7 @@
     "del": "^6.0.0",
     "glob": "^7.1.7",
     "handlebars": "^4.7.7",
-    "inquirer": "^8.1.0",
+    "inquirer": "^7.3.3",
     "js-yaml": "^3.14.1",
     "mock-local-storage": "^1.1.17",
     "moment": "^2.29.1",
@@ -54,8 +54,8 @@
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.0.4",
-    "prettier": "^2.3.1"
+    "jest": "^26.6.3",
+    "prettier": "^2.3.0"
   },
   "jest": {
     "modulePathIgnorePatterns": [
