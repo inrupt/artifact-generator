@@ -34,7 +34,7 @@ node index.js generate --inputResources ./example/Skydiving.ttl ./example/PetRoc
 Selecting only specific terms from a vocabulary.
 Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
 ```shell
-node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --vocabTermsFrom ./example/just-the-terms-we-want-from-schema-dot-org.ttl
+node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --termSelectionResource ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:

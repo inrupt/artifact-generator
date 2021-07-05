@@ -43,16 +43,16 @@ artifact-generator -i https://schema.org/version/latest/schema.ttl --noprompt
 
  
 7) Create a selective RDF file...
-artifact-generator -i https://schema.org/version/latest/schema.ttl --vocabTermsFrom vocab/just-the-terms-we-want-from-schema-dot-org.ttl --noprompt
+artifact-generator -i https://schema.org/version/latest/schema.ttl --termSelectionResource vocab/just-the-terms-we-want-from-schema-dot-org.ttl --noprompt
 
 
 
 
 8) Enhance selected terms with multi-lingual translations.
-artifact-generator -i https://schema.org/version/latest/schema.ttl --vocabTermsFrom vocab/our-translations-for-schema-dot-org.ttl --noprompt
+artifact-generator -i https://schema.org/version/latest/schema.ttl --termSelectionResource vocab/our-translations-for-schema-dot-org.ttl --noprompt
 
 And again, for real, with VCard:
-artifact-generator -i http://www.w3.org/2006/vcard/ns# --vocabTermsFrom vocab/vcard-inrupt-ext.ttl --noprompt
+artifact-generator -i http://www.w3.org/2006/vcard/ns# --termSelectionResource vocab/vcard-inrupt-ext.ttl --noprompt
 
 
 
@@ -63,7 +63,7 @@ artifact-generator -i http://www.w3.org/2006/vcard/ns# --vocabTermsFrom vocab/vc
 
  ...or 'npm publish' them (to any registry), or just bump the version number of
  an already published version...
-artifact-generator -i https://schema.org/version/latest/schema.ttl --vocabTermsFrom vocab/our-translations-for-schema-dot-org.ttl --noprompt --bumpVersion major
+artifact-generator -i https://schema.org/version/latest/schema.ttl --termSelectionResource vocab/our-translations-for-schema-dot-org.ttl --noprompt --bumpVersion major
 
 
 
