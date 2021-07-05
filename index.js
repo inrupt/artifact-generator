@@ -83,7 +83,7 @@ yargs
           "solidCommonVocabVersion",
           "The version of the Vocab Term to depend on."
         )
-        .default("solidCommonVocabVersion", "^0.2.4")
+        .default("solidCommonVocabVersion", "^0.5.3")
 
         .alias("in", "runNpmInstall")
         .boolean("runNpmInstall")
