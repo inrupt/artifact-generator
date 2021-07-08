@@ -4,7 +4,7 @@ Options for installation are detailed in the the [quickstart](../README.md#quick
 
 To ensure the installation was completed successfully: 
 ```shell
-lit-artifact-generator --help
+artifact-generator --help
 ```
 
 ## To generate source code from a vocabulary:
