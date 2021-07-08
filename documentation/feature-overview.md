@@ -1,23 +1,6 @@
-# How to build
-
-Temporarily, until we release the `lit-term` library to the public NPM
-repository, we need our local NPM to point at the Inrupt Verdaccio instance to
-find this dependency.
-
-```shell
-npm set registry https://verdaccio.inrupt.com
-```
-
-```shell
-npm install
-```
-
-Or to install globally (so you can run the generator from any directory):
-```shell
-npm -g install @lit/artifact-generator
-```
-
 # How to run
+
+Options for installation are detailed in the the [quickstart](../README.md#quickstart)
 
 To ensure the installation was completed successfully: 
 ```shell
