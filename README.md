@@ -285,8 +285,8 @@ have a `Generated` directory within it)...
 	<script src="./Generated/SourceCodeArtifacts/JavaScript/dist/index.js" type="text/javascript"/></script>
 	
 	<script type="text/javascript">
-		document.getElementById("shinyness-comment").innerHTML = `${PR.shinyness.comment}`;
-		document.getElementById("petrock-iri").innerHTML = `${PR.NAMESPACE}`;
+		document.getElementById("shinyness-comment").innerHTML = `${PET_ROCK.shinyness.comment}`;
+		document.getElementById("petrock-iri").innerHTML = `${PET_ROCK.NAMESPACE}`;
 	</script>
 	
 	</body>
