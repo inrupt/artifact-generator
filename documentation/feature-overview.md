@@ -33,7 +33,7 @@ node index.js generate --inputResources <vocab resources (e.g. local
 The output is a NodeJS Module containing a JavaScript file with constants
 defined for the RDF terms found in the vocabulary (or multiple vocabularies)
 specified by the `--inputResources` flag. This module is located inside the
-**./FGenerated** directory by default. To generate artifacts in a different
+**./Generated** directory by default. To generate artifacts in a different
 programming language, a YAML configuration file must be used (see below).
 
 For example:
