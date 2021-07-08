@@ -1,0 +1,38 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix lit_core: <https://w3id.org/lit/vocab/core#>
+
+prefix skydiving: <http://pat.com/vocab/skydiving#>
+
+
+skydiving:
+    a owl:Ontology, lit_core:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/07/28" ;
+    dcterms:title "Skydiving vocabulary" ;
+    dcterms:description "Vocabulary for the sport of skydiving." ;
+    vann:preferredNamespacePrefix "skydiving" ;
+    vann:preferredNamespaceUri "http://example.com/vocab/skydiving#" ;
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+
+
+skydiving:DropZone a owl:Class ;
+  rdfs:label "Drop Zone"@en ;
+  rdfs:label "Zona de descenso"@es ;
+  rdfs:comment "Location designated as the landing zone for skydivers."@en ;
+  rdfs:comment "Lugar designado como zona de aterrizaje para paracaidistas."@es .
+
+skydiving:ranking a owl:ObjectProperty ;
+  rdfs:label "Ranking"@en ;
+  rdfs:label "Clasificación"@es ;
+  rdfs:comment "A ranking denoting a skydivers proficiency in the sport."@en .
+
+skydiving:eight-way a owl:ObjectProperty ;
+  rdfs:label "Eight-Way"@en ;
+  rdfs:label "Ocho vías"@es ;
+  rdfs:comment "Freefall formation with 8 skydivers arranging into geometric patterns."@en ;
+  rdfs:comment "Formación de caída libre con 8 paracaidistas organizados en patrones geométricos."@es .
