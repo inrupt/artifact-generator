@@ -66,7 +66,7 @@ To generate from **multiple vocabularies**, and/or generate artifacts that are *
 node index.js generate --vocabListFile <./path/to/the/yaml/file>
 ```
 
-The details of the available options are listed in the [dedicated section of the documentation](#yaml)
+The details of the available options are listed in the [advanced configuration section of the documentation](./advanced-configuration.md)
 
 ## To **watch** a set of vocabularies
 This command starts a daemon that continuously watches a list of vocabularies, and re-generates artifacts accordingly, you can use the following command:
