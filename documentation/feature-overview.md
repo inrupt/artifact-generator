@@ -1,4 +1,9 @@
-# How to run
+# Feature Overview
+
+The Artifact Generator can be run using a YAML configuration file, or using CLI options.
+More details can be found in [Advanced Configuration](./advanced-configuration.md).
+
+## How to run
 
 Options for installation are detailed in the the [quickstart](../README.md#quickstart)
 
