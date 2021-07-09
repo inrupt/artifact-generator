@@ -62,7 +62,7 @@ Specifing a custom NPM registry where the generated artifact will be published:
 node index.js generate --inputResources ./example/PetRock.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
-Using short-form alaises for the command-line flags:
+Using short-form aliases for the command-line flags:
 ```shell
 node index.js generate --i https://schema.org/version/latest/schema.ttl --tsr ./example/just-the-terms-we-want-from-schema-dot-org.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
