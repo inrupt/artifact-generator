@@ -39,7 +39,7 @@ const ConfigRdfCommon = {
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SINGLE/RdfCommon",
   vocabListFile:
-    "../solid-common-vocab-rdf/common-rdf/Common/Vocab-List-Common-Rdf.yml",
+    "../solid-common-vocab-rdf/common-rdf/Vocab-List-Common-Rdf.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -248,7 +248,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // nameAndPrefixOverride: "time",
 
       // inputResources: [
-      //   "/home/pmcb55/Work/Projects/LIT/solid-common-vocab-rdf/common-rdf/Common/CopyOfVocab/inrupt-void.ttl",
+      //   "/home/pmcb55/Work/Projects/LIT/solid-common-vocab-rdf/common-rdf/CopyOfVocab/inrupt-void.ttl",
       // ],
       //
       // inputResources: ["https://www.w3.org/ns/sparql-service-description#"],
