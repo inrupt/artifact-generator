@@ -217,10 +217,4 @@ vocabList:
     termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
 ```
 
-Example of bundling multiple vocabs into one single module, using a YAML file to
-stipulate them all.
-```shell
-node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt
-```
-
 [Back to the homepage](../README.md)
