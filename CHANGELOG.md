@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Add option 'vocabContentTypeHeaderOverride' as a HTTP Content Type header
+  override, as (some vocab servers (e.g., Resume-RDF 
+  "http://rdfs.org/resume-rdf/cv.rdfs#")) return a content type of 'text/plain'
+  even though the response is XML/RDF. This value allows us override the
+  server header so that we can use the correct parser.
+- Add options 'vocabContentTypeHeaderOverride', 'vocabContentTypeHeaderFallback'
+
+
 ## 0.13.4
 
 - Added namespace override to command line (needed to support generation

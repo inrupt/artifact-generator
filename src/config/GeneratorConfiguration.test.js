@@ -326,11 +326,29 @@ describe("Generator configuration", () => {
   });
 
   describe("Processing command line.", () => {
-    // FAILURE CASE
     it("should fail with non-existent input resource for generation", async () => {
       await expect(() => {
         GeneratorConfiguration.fromCommandLine({ _: ["generate"] });
       }).toThrow("Missing input resource");
+    });
+
+    // FAILURE CASE
+    it("should fail with non-existent input resource for generation", async () => {
+      const config = GeneratorConfiguration.fromCommandLine({
+        _: ["generate"],
+        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        vocabAcceptHeaderOverride: "text/turtle",
+        vocabContentTypeHeaderOverride: "text/trig",
+        vocabContentTypeHeaderFallback: "text/trig-star",
+      });
+
+      expect(config.vocabList[0].vocabAcceptHeaderOverride).toBe("text/turtle");
+      expect(config.vocabList[0].vocabContentTypeHeaderOverride).toBe(
+        "text/trig"
+      );
+      expect(config.vocabList[0].vocabContentTypeHeaderFallback).toBe(
+        "text/trig-star"
+      );
     });
 
     it("should accept a non-existent input resource for initialization", async () => {
@@ -473,16 +491,19 @@ describe("Generator configuration", () => {
         "schema-inrupt-ext.ttl"
       );
 
-      const timeTermSelectionChanged = fs.statSync(termSelectionResource)
-        .mtimeMs;
-      const changedBefore = await generatorConfiguration.getInputResourcesChangedSince(
-        timeTermSelectionChanged - 10
-      );
+      const timeTermSelectionChanged = fs.statSync(
+        termSelectionResource
+      ).mtimeMs;
+      const changedBefore =
+        await generatorConfiguration.getInputResourcesChangedSince(
+          timeTermSelectionChanged - 10
+        );
       expect(changedBefore).toContain(termSelectionResource);
 
-      const changedAfter = await generatorConfiguration.getInputResourcesChangedSince(
-        timeTermSelectionChanged + 10
-      );
+      const changedAfter =
+        await generatorConfiguration.getInputResourcesChangedSince(
+          timeTermSelectionChanged + 10
+        );
       expect(changedAfter).not.toContain(termSelectionResource);
     });
   });

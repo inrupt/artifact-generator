@@ -88,9 +88,8 @@ class FileGenerator {
   }
 
   static createSourceCodeFile(argv, artifactDetails, templateData) {
-    const outputDirectoryForSourceCode = FileGenerator.buildTargetSourceCodeFolder(
-      artifactDetails
-    );
+    const outputDirectoryForSourceCode =
+      FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
     FileGenerator.createDirectoryIfNotExist(outputDirectoryForSourceCode);
     FileGenerator.createFileFromTemplate(
       `${artifactDetails.sourceCodeTemplate}`,

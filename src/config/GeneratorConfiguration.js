@@ -137,10 +137,11 @@ class GeneratorConfiguration {
   static normalizeCliOptions(cliConfig) {
     const normalizedConfig = { ...cliConfig };
     if (normalizedConfig.outputDirectory) {
-      normalizedConfig.outputDirectory = GeneratorConfiguration.normalizeAbsolutePath(
-        normalizedConfig.outputDirectory,
-        process.cwd()
-      );
+      normalizedConfig.outputDirectory =
+        GeneratorConfiguration.normalizeAbsolutePath(
+          normalizedConfig.outputDirectory,
+          process.cwd()
+        );
     }
 
     return normalizedConfig;
@@ -230,18 +231,20 @@ class GeneratorConfiguration {
       normalizedConfig.versioning &&
       normalizedConfig.versioning.versioningTemplates
     ) {
-      normalizedConfig.versioning.versioningTemplates = normalizedConfig.versioning.versioningTemplates.map(
-        (versioningFile) => {
-          const normalizedVersioningFile = versioningFile;
-          normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
-            versioningFile.templateInternal,
-            versioningFile.templateCustom,
-            configSource
-          );
+      normalizedConfig.versioning.versioningTemplates =
+        normalizedConfig.versioning.versioningTemplates.map(
+          (versioningFile) => {
+            const normalizedVersioningFile = versioningFile;
+            normalizedVersioningFile.template =
+              GeneratorConfiguration.normalizeTemplatePath(
+                versioningFile.templateInternal,
+                versioningFile.templateCustom,
+                configSource
+              );
 
-          return normalizedVersioningFile;
-        }
-      );
+            return normalizedVersioningFile;
+          }
+        );
     }
 
     // Normalize each artifact to generate.
@@ -273,37 +276,37 @@ class GeneratorConfiguration {
    */
   static normalizePerArtifactTemplates(artifactConfig, configSource) {
     const normalizedArtifactConfig = artifactConfig;
-    normalizedArtifactConfig.sourceCodeTemplate = GeneratorConfiguration.normalizeTemplatePath(
-      artifactConfig.templateInternal,
-      artifactConfig.templateCustom,
-      configSource
-    );
+    normalizedArtifactConfig.sourceCodeTemplate =
+      GeneratorConfiguration.normalizeTemplatePath(
+        artifactConfig.templateInternal,
+        artifactConfig.templateCustom,
+        configSource
+      );
 
     if (normalizedArtifactConfig.packaging) {
-      normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
-        (packagingConfig) => {
+      normalizedArtifactConfig.packaging =
+        normalizedArtifactConfig.packaging.map((packagingConfig) => {
           const normalizedPackagingConfig = { ...packagingConfig };
-          normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
-            (packagingTemplate) => {
+          normalizedPackagingConfig.packagingTemplates =
+            packagingConfig.packagingTemplates.map((packagingTemplate) => {
               // Make sure we clone the original structure (rather than just
               // refer to it directly), as otherwise running tests in parallel
               // will result in corrupted data (e.g. filenames like
               // 'templates/templates/templates/templates/<FILENAME>')
               const normalizedPackagingTemplate = { ...packagingTemplate };
 
-              normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
-                packagingTemplate.templateInternal,
-                packagingTemplate.templateCustom,
-                configSource
-              );
+              normalizedPackagingTemplate.template =
+                GeneratorConfiguration.normalizeTemplatePath(
+                  packagingTemplate.templateInternal,
+                  packagingTemplate.templateCustom,
+                  configSource
+                );
 
               return normalizedPackagingTemplate;
-            }
-          );
+            });
 
           return normalizedPackagingConfig;
-        }
-      );
+        });
     }
 
     return normalizedArtifactConfig;
@@ -588,6 +591,21 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].ignoreNonVocabTerms = args.ignoreNonVocabTerms;
     }
 
+    if (args.vocabAcceptHeaderOverride) {
+      cliConfig.vocabList[0].vocabAcceptHeaderOverride =
+        args.vocabAcceptHeaderOverride;
+    }
+
+    if (args.vocabContentTypeHeaderOverride) {
+      cliConfig.vocabList[0].vocabContentTypeHeaderOverride =
+        args.vocabContentTypeHeaderOverride;
+    }
+
+    if (args.vocabContentTypeHeaderFallback) {
+      cliConfig.vocabList[0].vocabContentTypeHeaderFallback =
+        args.vocabContentTypeHeaderFallback;
+    }
+
     return cliConfig;
   }
 
@@ -666,8 +684,8 @@ class GeneratorConfiguration {
     for (let i = 0; i < this.configuration.vocabList.length; i += 1) {
       let addAllVocabs = false;
 
-      const termSelectionResource = this.configuration.vocabList[i]
-        .termSelectionResource;
+      const termSelectionResource =
+        this.configuration.vocabList[i].termSelectionResource;
       if (termSelectionResource) {
         const modifiedTime = await Resource.getResourceLastModificationTime(
           termSelectionResource

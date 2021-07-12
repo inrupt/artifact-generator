@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:inrupt/lit-artifact-generator.git"
+    "url": "git+ssh://git@github.com/inrupt/lit-artifact-generator.git"
   },
   "license": "MIT",
   "preferGlobal": true,
@@ -55,7 +55,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "jest": "^26.6.3",
-    "prettier": "^2.3.0"
+    "prettier": "^2.3.1"
   },
   "jest": {
     "modulePathIgnorePatterns": [
@@ -74,5 +74,12 @@
         "branches": 100
       }
     }
+  },
+  "bugs": {
+    "url": "https://github.com/inrupt/lit-artifact-generator/issues"
+  },
+  "homepage": "https://github.com/inrupt/lit-artifact-generator#readme",
+  "directories": {
+    "test": "test"
   }
 }

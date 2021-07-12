@@ -144,9 +144,10 @@ class ArtifactGenerator {
       // A generated directory exists, so we are going to check the contained
       // artifacts are up-to-date.
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
-      modifiedResourceList = await this.configuration.getInputResourcesChangedSince(
-        lastGenerationTime
-      );
+      modifiedResourceList =
+        await this.configuration.getInputResourcesChangedSince(
+          lastGenerationTime
+        );
 
       if (modifiedResourceList.length === 0) {
         debug(
@@ -174,8 +175,8 @@ class ArtifactGenerator {
   async generateVocabs() {
     // The outputDirectoryForArtifact attribute is useful for publication,
     // and should be set even if generation is not necessary.
-    this.artifactData.artifactToGenerate = this.artifactData.artifactToGenerate.map(
-      (artifactDetails) => {
+    this.artifactData.artifactToGenerate =
+      this.artifactData.artifactToGenerate.map((artifactDetails) => {
         const result = artifactDetails;
 
         if (this.artifactData.clearOutputDirectory) {
@@ -194,8 +195,7 @@ class ArtifactGenerator {
         );
 
         return result;
-      }
-    );
+      });
 
     // TODO: This code evolved from where we originally only had a list of
     //  vocabs to generate from. But now we can create artifacts for multiple
@@ -224,6 +224,9 @@ class ArtifactGenerator {
 
           this.artifactData.vocabAcceptHeaderOverride =
             vocabDetails.vocabAcceptHeaderOverride;
+
+          this.artifactData.vocabContentTypeHeaderOverride =
+            vocabDetails.vocabContentTypeHeaderOverride;
 
           this.artifactData.vocabContentTypeHeaderFallback =
             vocabDetails.vocabContentTypeHeaderFallback;
