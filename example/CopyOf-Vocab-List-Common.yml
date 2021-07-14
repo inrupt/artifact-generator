@@ -24,9 +24,11 @@
 # POSITION ON THE FILE SYSTEM.
 #
 artifactName: generated-vocab-common
+artifactGeneratorVersion: 0.2.0
 
 artifactToGenerate:
   - programmingLanguage: Java
+    artifactVersion: 0.1.0
     javaPackageName: com.inrupt.testing
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
@@ -34,6 +36,7 @@ artifactToGenerate:
     sourceFileExtension: java
 
   - programmingLanguage: JavaScript
+    artifactVersion: 0.1.0
     npmModuleScope: "@inrupt/"
     solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
@@ -47,7 +50,7 @@ vocabList:
   # generated source.
   - description: Schema.org (the full vocabulary)
     inputResources:
-      - https://schema.org/version/latest/schema-snippet.ttl
+      - https://schema.org/version/latest/schemaorg-current-http.ttl
 
 #  - description: Schema.org with selective terms having translations
 #    nameAndPrefixOverride: schema-inrupt-ext

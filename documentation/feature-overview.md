@@ -1,27 +1,15 @@
-# How to build
+# Feature Overview
 
-Temporarily, until we release the `lit-term` library to the public NPM
-repository, we need our local NPM to point at the Inrupt Verdaccio instance to
-find this dependency.
+The Artifact Generator can be run using a YAML configuration file, or using CLI options.
+More details can be found in [Advanced Configuration](./advanced-configuration.md).
 
-```shell
-npm set registry https://verdaccio.inrupt.com
-```
+## How to run
 
-```shell
-npm install
-```
-
-Or to install globally (so you can run the generator from any directory):
-```shell
-npm -g install @lit/artifact-generator
-```
-
-# How to run
+Options for installation are detailed in the the [quickstart](../README.md#quickstart)
 
 To ensure the installation was completed successfully: 
 ```shell
-lit-artifact-generator --help
+artifact-generator --help
 ```
 
 ## To generate source code from a vocabulary:
@@ -33,7 +21,7 @@ node index.js generate --inputResources <vocab resources (e.g. local
 The output is a NodeJS Module containing a JavaScript file with constants
 defined for the RDF terms found in the vocabulary (or multiple vocabularies)
 specified by the `--inputResources` flag. This module is located inside the
-**./FGenerated** directory by default. To generate artifacts in a different
+**./Generated** directory by default. To generate artifacts in a different
 programming language, a YAML configuration file must be used (see below).
 
 For example:
@@ -66,7 +54,7 @@ To generate from **multiple vocabularies**, and/or generate artifacts that are *
 node index.js generate --vocabListFile <./path/to/the/yaml/file>
 ```
 
-The details of the available options are listed in the [dedicated section of the documentation](#yaml)
+The details of the available options are listed in the [advanced configuration section of the documentation](./advanced-configuration.md)
 
 ## To **watch** a set of vocabularies
 This command starts a daemon that continuously watches a list of vocabularies, and re-generates artifacts accordingly, you can use the following command:
