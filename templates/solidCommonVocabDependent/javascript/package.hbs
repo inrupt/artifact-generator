@@ -3,6 +3,7 @@
   "version": "{{artifactVersion}}",
   "description": "{{{description}}}",
   "main": "index.js",
+  "sideEffects": false,
 {{#if supportBundling}}
   "scripts": {
     "dev": "webpack --config ./config/webpack.dev.config.js",
