@@ -2,18 +2,15 @@
   "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
   "version": "{{artifactVersion}}",
   "description": "{{{description}}}",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
 {{#if supportBundling}}
+  "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "scripts": {
     "build": "rollup --config rollup.config.js"
   },
 {{else}}
-  "scripts": {
-    "build": "tsc"
-  },
+  "main": "index.js",
 {{/if}}
   "author": {
     "name": "{{generatorName}}",
