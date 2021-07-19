@@ -16,17 +16,12 @@ const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
 // This is the path to the template directory
 const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "templates");
 
-const WEBPACK_DEFAULT = {
-  packagingTool: "webpack",
-  packagingDirectory: "config",
+const ROLLUP_DEFAULT = {
+  packagingTool: "rollup",
   packagingTemplates: [
     {
-      templateInternal: "webpack.dev.config.hbs",
-      fileName: "webpack.dev.config.js",
-    },
-    {
-      templateInternal: "webpack.prod.config.hbs",
-      fileName: "webpack.prod.config.js",
+      templateInternal: "generic/javascript/rollup.config.hbs",
+      fileName: "rollup.config.js",
     },
   ],
 };
@@ -565,7 +560,7 @@ class GeneratorConfiguration {
     ];
 
     if (args.supportBundling) {
-      cliConfig.artifactToGenerate[0].packaging.push(WEBPACK_DEFAULT);
+      cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
     }
 
     if (args.artifactVersion) {
