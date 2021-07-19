@@ -34,8 +34,9 @@
   }{{#if supportBundling}},
   "devDependencies": {
     "@babel/core": "{{babelCoreVersion}}",
-    "babel-loader": "{{babelLoaderVersion}}",
-    "webpack": "{{webpackVersion}}",
-    "webpack-cli": "{{webpackCliVersion}}"
+    "rollup": "{{rollupVersion}}",
+    "@rollup/plugin-babel": "{{rollupBabelPluginVersion}}",
+    "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
   }{{/if}}
 }

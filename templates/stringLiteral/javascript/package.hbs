@@ -32,7 +32,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    {{#if supportBundling}}"rollup": "{{rollupVersion}}",
+    {{#if supportBundling}}"@babel/core": "{{babelCoreVersion}}",
+    "rollup": "{{rollupVersion}}",
+    "@rollup/plugin-babel": "{{rollupBabelPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
     "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
   }
