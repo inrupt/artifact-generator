@@ -64,6 +64,10 @@ module.exports = class Resource {
    * @param vocabAcceptHeaderOverride the HTTP Accept header value to use (some
    * vocab servers don't respect the `q` qualifier, e.g.,
    * "https://w3id.org/survey-ontology#")
+   * @param vocabContentTypeHeaderOverride HTTP Content Type header override
+   * (some vocab servers (e.g., Resume-RDF) return a content type of
+   * 'text/plain' even though the response is RDF/XML. This value allows us
+   * override the server header so that we can use the correct parser.
    * @param vocabContentTypeHeaderFallback HTTP Content Type header (some vocab
    * servers (e.g., DOAP) don't return a Content Type header, meaning we can't
    * know how to parse (apart from sniffing the response, which is very
@@ -73,11 +77,13 @@ module.exports = class Resource {
     inputResources,
     termSelectionResource,
     vocabAcceptHeaderOverride,
+    vocabContentTypeHeaderOverride,
     vocabContentTypeHeaderFallback
   ) {
     this.inputResources = inputResources;
     this.termSelectionResource = termSelectionResource;
     this.vocabAcceptHeaderOverride = vocabAcceptHeaderOverride;
+    this.vocabContentTypeHeaderOverride = vocabContentTypeHeaderOverride;
     this.vocabContentTypeHeaderFallback = vocabContentTypeHeaderFallback;
   }
 
@@ -87,6 +93,7 @@ module.exports = class Resource {
       return Resource.readResource(
         inputResource,
         this.vocabAcceptHeaderOverride,
+        this.vocabContentTypeHeaderOverride,
         this.vocabContentTypeHeaderFallback
       ).catch((rootCause) =>
         Resource.attemptToReadGeneratedResource(
@@ -187,6 +194,10 @@ module.exports = class Resource {
    * @param {string} vocabAcceptHeaderOverride the HTTP Accept header value to
    * use (some vocab servers don't respect the `q` qualifier, e.g.,
    * "https://w3id.org/survey-ontology#")
+   * @param vocabContentTypeHeaderOverride HTTP Content Type header override
+   * (some vocab servers (e.g., Resume-RDF) return a content type of
+   * 'text/plain' even though the response is RDF/XML. This value allows us
+   * override the server header so that we can use the correct parser.
    * @param {string} vocabContentTypeHeaderFallback HTTP Content Type header
    * (some vocab servers (e.g., DOAP) don't return a Content Type header,
    * meaning we can't know how to parse (apart from sniffing the response, which
@@ -195,6 +206,7 @@ module.exports = class Resource {
   static readResource(
     inputResource,
     vocabAcceptHeaderOverride,
+    vocabContentTypeHeaderOverride,
     vocabContentTypeHeaderFallback
   ) {
     debug(`Loading resource: [${inputResource}]...`);
@@ -217,21 +229,32 @@ module.exports = class Resource {
         formats,
       })
         .then((rdfResponse) => {
-          // The vocab server may not provide a HTTP Content-Type header (e.g.,
-          // the DOAP server). So if we weren't provided with an explicit
-          // fallback content type (e.g., RDF/XML in the case of DOAP), then we
-          // can't reliably know which RDF parser to use, and therefore need to
-          // bomb out.
-          if (!rdfResponse.headers.get("content-type")) {
-            if (vocabContentTypeHeaderFallback) {
-              rdfResponse.headers.set(
-                "content-type",
-                vocabContentTypeHeaderFallback
-              );
-            } else {
-              throw new Error(
-                `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response`
-              );
+          // Check if we were given a 'Content-Type' override value (can be
+          // needed when a vocab server returns the wrong type (e.g., the
+          // Resume/CV vocab server returns 'text/plain' when in fact the data
+          // returned is RDF/XML!).
+          if (vocabContentTypeHeaderOverride) {
+            rdfResponse.headers.set(
+              "content-type",
+              vocabContentTypeHeaderOverride
+            );
+          } else {
+            // The vocab server may not provide a HTTP Content-Type header (e.g.,
+            // the DOAP server). So if we weren't provided with an explicit
+            // fallback content type (e.g., RDF/XML in the case of DOAP), then we
+            // can't reliably know which RDF parser to use, and therefore need to
+            // bomb out.
+            if (!rdfResponse.headers.get("content-type")) {
+              if (vocabContentTypeHeaderFallback) {
+                rdfResponse.headers.set(
+                  "content-type",
+                  vocabContentTypeHeaderFallback
+                );
+              } else {
+                throw new Error(
+                  `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response`
+                );
+              }
             }
           }
 

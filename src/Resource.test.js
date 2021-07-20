@@ -100,7 +100,7 @@ describe("Fetching remote resource", () => {
     ).toEqual(mockedDataset);
   });
 
-  it("should use Content Type header fallback", async () => {
+  it("should use Content Type header override", async () => {
     const mockedDataset = "mocked dataset response";
     const rdfFetchMock = {
       dataset: () => {
@@ -121,7 +121,29 @@ describe("Fetching remote resource", () => {
     ).toEqual(mockedDataset);
   });
 
-  it("should throw if no Content Type header and no fallback", async () => {
+  it("should use Content Type header fallback", async () => {
+    const mockedDataset = "mocked dataset response";
+    const rdfFetchMock = {
+      dataset: () => {
+        return mockedDataset;
+      },
+      headers: { get: function () {}, set: function () {} },
+    };
+    rdfFetch.mockImplementation(() => {
+      return Promise.resolve(rdfFetchMock);
+    });
+
+    expect(
+      await Resource.readResource(
+        "http://www.example.com",
+        undefined,
+        undefined,
+        "mocked media type"
+      )
+    ).toEqual(mockedDataset);
+  });
+
+  it("should throw if no Content Type header, no override, and no fallback", async () => {
     const rdfFetchMock = {
       dataset: () => {
         "mocked response";

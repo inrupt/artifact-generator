@@ -589,6 +589,21 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].ignoreNonVocabTerms = args.ignoreNonVocabTerms;
     }
 
+    if (args.vocabAcceptHeaderOverride) {
+      cliConfig.vocabList[0].vocabAcceptHeaderOverride =
+        args.vocabAcceptHeaderOverride;
+    }
+
+    if (args.vocabContentTypeHeaderOverride) {
+      cliConfig.vocabList[0].vocabContentTypeHeaderOverride =
+        args.vocabContentTypeHeaderOverride;
+    }
+
+    if (args.vocabContentTypeHeaderFallback) {
+      cliConfig.vocabList[0].vocabContentTypeHeaderFallback =
+        args.vocabContentTypeHeaderFallback;
+    }
+
     return cliConfig;
   }
 

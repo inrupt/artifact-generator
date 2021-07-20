@@ -1,0 +1,81 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix cv-base: <http://rdfs.org/resume-rdf/base.rdfs#>.
+
+cv-base:SexProperty rdfs:label "SexProperty";
+    a rdfs:Class.
+cv-base:Female rdfs:label "Female";
+    a cv-base:SexProperty.
+cv-base:Male rdfs:label "Male";
+    a cv-base:SexProperty.
+cv-base:MaritalStatus rdfs:label "Marital Status";
+    a rdfs:Class.
+cv-base:Married a cv-base:MaritalStatus.
+cv-base:Divorced a cv-base:MaritalStatus.
+cv-base:Single a cv-base:MaritalStatus.
+cv-base:Widowed a cv-base:MaritalStatus.
+cv-base:BooleanValue rdfs:label "Boolean value (true/false)";
+    a rdfs:Class.
+cv-base:True a cv-base:BooleanValue.
+cv-base:False a cv-base:BooleanValue.
+cv-base:CVJobMode rdfs:label "CV job mode (full/part - time)";
+    a rdfs:Class.
+cv-base:Full-time a cv-base:CVJobMode.
+cv-base:Part-time a cv-base:CVJobMode.
+cv-base:CVJobType rdfs:label "CV job type (employee/contractor/intern)";
+    a rdfs:Class.
+cv-base:Emplyee a cv-base:CVJobType.
+cv-base:Contractor a cv-base:CVJobType.
+cv-base:Intern a cv-base:CVJobType.
+cv-base:CVCareerLevel rdfs:label "CV career level";
+    a rdfs:Class.
+cv-base:HighSchool rdfs:label "Student (high school)";
+    a cv-base:CVCareerLevel.
+cv-base:Student rdfs:label "Student (graduate/undergraduate)";
+    a cv-base:CVCareerLevel.
+cv-base:EntryLvl rdfs:label "Entry level (less than 2 years of experience)";
+    a cv-base:CVCareerLevel.
+cv-base:MidCareer rdfs:label "Mid-career (2+ years of experience)";
+    a cv-base:CVCareerLevel.
+cv-base:Management rdfs:label "Management (manager/director of staff)";
+    a cv-base:CVCareerLevel.
+cv-base:Executive rdfs:label "Executive (SVP, EVP, VP)";
+    a cv-base:CVCareerLevel.
+cv-base:SeniorExecutive rdfs:label "Senior Executive (president / CEO)";
+    a cv-base:CVCareerLevel.
+cv-base:EduDegree rdfs:label "Degrees";
+    a rdfs:Class.
+cv-base:EduHighSchool rdfs:label "High school or equivalent.";
+    a cv-base:EduDegree.
+cv-base:EduVocational rdfs:label "Vocational";
+    a cv-base:EduDegree.
+cv-base:EduCollegeCoursework rdfs:label "Some college coursework completed.";
+    a cv-base:EduDegree.
+cv-base:EduBachelor rdfs:label "Bachelor's degree";
+    a cv-base:EduDegree.
+cv-base:EduMaster rdfs:label "Master's degree";
+    a cv-base:EduDegree.
+cv-base:EduDoctorate rdfs:label "Doctorate";
+    a cv-base:EduDegree.
+cv-base:EduAssociate rdfs:label "Associate degree";
+    a cv-base:EduDegree.
+cv-base:EduProfessional rdfs:label "Professional";
+    a cv-base:EduDegree.
+cv-base:OtherCVInfoType rdfs:label "Type of misc information added to a CV.";
+    a rdfs:Class.
+cv-base:Interests a cv-base:OtherCVInfoType.
+cv-base:Awards a cv-base:OtherCVInfoType.
+cv-base:Accomplishments a cv-base:OtherCVInfoType.
+cv-base:PointOfView a cv-base:OtherCVInfoType.
+cv-base:Membership a cv-base:OtherCVInfoType.
+cv-base:SocialActivities a cv-base:OtherCVInfoType.
+cv-base:Publications a cv-base:OtherCVInfoType.
+cv-base:Other a cv-base:OtherCVInfoType.

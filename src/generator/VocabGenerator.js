@@ -71,6 +71,7 @@ module.exports = class VocabGenerator {
       this.vocabData.inputResources,
       this.vocabData.termSelectionResource,
       this.vocabData.vocabAcceptHeaderOverride,
+      this.vocabData.vocabContentTypeHeaderOverride,
       this.vocabData.vocabContentTypeHeaderFallback
     );
 

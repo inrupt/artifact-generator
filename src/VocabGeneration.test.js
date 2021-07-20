@@ -213,9 +213,17 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("tests a single custom vocab", async () => {
     jest.setTimeout(10000);
     await generateVocabArtifact({
-      inputResources: ["http://usefulinc.com/ns/doap#"],
-      nameAndPrefixOverride: "doap",
-      vocabContentTypeHeaderFallback: "application/rdf+xml",
+      // inputResources: ["http://rdfs.org/resume-rdf/cv.rdfs#"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // nameAndPrefixOverride: "cv",
+
+      inputResources: ["http://rdfs.org/resume-rdf/base.rdfs#"],
+      vocabContentTypeHeaderOverride: "application/rdf+xml",
+      nameAndPrefixOverride: "cv-base",
+
+      // inputResources: ["http://usefulinc.com/ns/doap#"],
+      // nameAndPrefixOverride: "doap",
+      // vocabContentTypeHeaderFallback: "application/rdf+xml",
 
       // inputResources: ["https://w3id.org/survey-ontology#"],
       // nameAndPrefixOverride: "sur",
