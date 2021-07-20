@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Update default javascript solidVocabVersion
 - Updates and fixes to documentation
 - Remove /demo folder, incorporate some examples into Advanced Configuration docs
+- Added instructions to run Widoco.
+- Tidied up some circular dependencies on command-line constants.
 
 ## 0.13.4
 
