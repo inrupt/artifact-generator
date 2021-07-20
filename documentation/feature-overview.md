@@ -64,6 +64,33 @@ node index.js watch --vocabListFile <./path/to/the/yaml/file>
 
 The process will run in the foreground until you hit "Enter", and artifacts will be kept up-to-date with vocabularies as long as the daemon is running.
 
+## To generate human-readable documentation for a vocabulary (using Widoco)
+
+-    **Note:** This feature requires that at least [Java version 1.8](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)
+     be installed on your machine, and that you install Widoco (this simply involves downloading a 
+     single JAR file from [here](https://github.com/dgarijo/Widoco/releases)). The JAR file will be
+     named `widoco-X.Y.Z-jar-with-dependencies.jar`, where X, Y, and Z represent the
+     [Semantic Versioning number](https://semver.org/)). 
+     
+-    Lastly you need to set the environment variable `WIDOCO_HOME` to the name of the directory in 
+     where you placed the Widoco JAR file you downloaded.
+    
+-    As an example, using `wget` on Linux:
+        ```shell
+        mkdir Widoco
+        cd Widoco
+        wget https://github.com/dgarijo/Widoco/releases/download/v1.4.15/widoco-1.4.15-jar-with-dependencies.jar
+        export WIDOCO_HOME=`pwd`
+        ```
+
+To generate a Widoco documentation website in the default `./Generated/Widoco` directory, run:
+```shell
+node index.js generate --inputResources ./example/PetRock.ttl --runWidoco --noprompt
+```
+
+You'll need to publish this website somewhere to serve it up (or simply open the file
+`./Generated/Widoco/index-en.html` in a browser to view it locally).
+
 ## See the help
 ```shell
 node index.js --help

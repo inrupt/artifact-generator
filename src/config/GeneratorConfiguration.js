@@ -7,8 +7,6 @@ const packageDotJson = require("../../package.json");
 const CommandLine = require("../CommandLine");
 const Resource = require("../Resource");
 
-const { COMMAND_INITIALIZE, COMMAND_GENERATE } = require("../App");
-
 const { getArtifactDirectorySourceCode } = require("../Util");
 
 const DEFAULT_PUBLISH_KEY = "_default";
@@ -137,10 +135,11 @@ class GeneratorConfiguration {
   static normalizeCliOptions(cliConfig) {
     const normalizedConfig = { ...cliConfig };
     if (normalizedConfig.outputDirectory) {
-      normalizedConfig.outputDirectory = GeneratorConfiguration.normalizeAbsolutePath(
-        normalizedConfig.outputDirectory,
-        process.cwd()
-      );
+      normalizedConfig.outputDirectory =
+        GeneratorConfiguration.normalizeAbsolutePath(
+          normalizedConfig.outputDirectory,
+          process.cwd()
+        );
     }
 
     return normalizedConfig;
@@ -230,18 +229,20 @@ class GeneratorConfiguration {
       normalizedConfig.versioning &&
       normalizedConfig.versioning.versioningTemplates
     ) {
-      normalizedConfig.versioning.versioningTemplates = normalizedConfig.versioning.versioningTemplates.map(
-        (versioningFile) => {
-          const normalizedVersioningFile = versioningFile;
-          normalizedVersioningFile.template = GeneratorConfiguration.normalizeTemplatePath(
-            versioningFile.templateInternal,
-            versioningFile.templateCustom,
-            configSource
-          );
+      normalizedConfig.versioning.versioningTemplates =
+        normalizedConfig.versioning.versioningTemplates.map(
+          (versioningFile) => {
+            const normalizedVersioningFile = versioningFile;
+            normalizedVersioningFile.template =
+              GeneratorConfiguration.normalizeTemplatePath(
+                versioningFile.templateInternal,
+                versioningFile.templateCustom,
+                configSource
+              );
 
-          return normalizedVersioningFile;
-        }
-      );
+            return normalizedVersioningFile;
+          }
+        );
     }
 
     // Normalize each artifact to generate.
@@ -273,37 +274,37 @@ class GeneratorConfiguration {
    */
   static normalizePerArtifactTemplates(artifactConfig, configSource) {
     const normalizedArtifactConfig = artifactConfig;
-    normalizedArtifactConfig.sourceCodeTemplate = GeneratorConfiguration.normalizeTemplatePath(
-      artifactConfig.templateInternal,
-      artifactConfig.templateCustom,
-      configSource
-    );
+    normalizedArtifactConfig.sourceCodeTemplate =
+      GeneratorConfiguration.normalizeTemplatePath(
+        artifactConfig.templateInternal,
+        artifactConfig.templateCustom,
+        configSource
+      );
 
     if (normalizedArtifactConfig.packaging) {
-      normalizedArtifactConfig.packaging = normalizedArtifactConfig.packaging.map(
-        (packagingConfig) => {
+      normalizedArtifactConfig.packaging =
+        normalizedArtifactConfig.packaging.map((packagingConfig) => {
           const normalizedPackagingConfig = { ...packagingConfig };
-          normalizedPackagingConfig.packagingTemplates = packagingConfig.packagingTemplates.map(
-            (packagingTemplate) => {
+          normalizedPackagingConfig.packagingTemplates =
+            packagingConfig.packagingTemplates.map((packagingTemplate) => {
               // Make sure we clone the original structure (rather than just
               // refer to it directly), as otherwise running tests in parallel
               // will result in corrupted data (e.g. filenames like
               // 'templates/templates/templates/templates/<FILENAME>')
               const normalizedPackagingTemplate = { ...packagingTemplate };
 
-              normalizedPackagingTemplate.template = GeneratorConfiguration.normalizeTemplatePath(
-                packagingTemplate.templateInternal,
-                packagingTemplate.templateCustom,
-                configSource
-              );
+              normalizedPackagingTemplate.template =
+                GeneratorConfiguration.normalizeTemplatePath(
+                  packagingTemplate.templateInternal,
+                  packagingTemplate.templateCustom,
+                  configSource
+                );
 
               return normalizedPackagingTemplate;
-            }
-          );
+            });
 
           return normalizedPackagingConfig;
-        }
-      );
+        });
     }
 
     return normalizedArtifactConfig;
@@ -419,7 +420,7 @@ class GeneratorConfiguration {
   }
 
   static validateCommandline(args) {
-    let mode = COMMAND_GENERATE;
+    let mode = CommandLine.COMMAND_GENERATE();
     if (args._) {
       // Only one command is passed to yargs, so this array always contains one
       // element.
@@ -428,7 +429,7 @@ class GeneratorConfiguration {
 
     // If the options are provided by command line, at least one input resource
     // must be specified (except for initialization).
-    if (mode !== COMMAND_INITIALIZE && !args.inputResources) {
+    if (mode !== CommandLine.COMMAND_INITIALIZE() && !args.inputResources) {
       throw new Error(
         "Missing input resource. Please provide either a YAML configuration file, or at least one input resource."
       );
@@ -666,8 +667,8 @@ class GeneratorConfiguration {
     for (let i = 0; i < this.configuration.vocabList.length; i += 1) {
       let addAllVocabs = false;
 
-      const termSelectionResource = this.configuration.vocabList[i]
-        .termSelectionResource;
+      const termSelectionResource =
+        this.configuration.vocabList[i].termSelectionResource;
       if (termSelectionResource) {
         const modifiedTime = await Resource.getResourceLastModificationTime(
           termSelectionResource

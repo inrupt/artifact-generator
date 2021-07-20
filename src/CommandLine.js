@@ -9,6 +9,19 @@ const {
 } = require("./Util");
 
 module.exports = class CommandLine {
+  static COMMAND_GENERATE() {
+    return "generate";
+  }
+  static COMMAND_INITIALIZE() {
+    return "init";
+  }
+  static COMMAND_WATCH() {
+    return "watch";
+  }
+  static COMMAND_VALIDATE() {
+    return "validate";
+  }
+
   static getParentFolder(directory) {
     return path.dirname(directory);
   }
@@ -243,8 +256,7 @@ module.exports = class CommandLine {
     // Run Widoco using environment variable (since putting the JAR in a local
     // 'lib' directory doesn't work with NPM publish, as it's too big at
     // 46MB!)...
-    const widocoJar =
-      "$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar";
+    const widocoJar = "$WIDOCO_HOME/widoco-1.4.15-jar-with-dependencies.jar";
 
     const inputResource = data.inputResources[0];
     const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
@@ -258,7 +270,7 @@ module.exports = class CommandLine {
     );
 
     ChildProcess.execSync(
-      `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
+      `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius`
     );
 
     debug(

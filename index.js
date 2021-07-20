@@ -12,20 +12,15 @@ const debugInstance = require("debug");
 const yargs = require("yargs");
 const App = require("./src/App");
 const { getArtifactDirectoryRoot } = require("./src/Util");
-const {
-  COMMAND_GENERATE,
-  COMMAND_INITIALIZE,
-  COMMAND_WATCH,
-  COMMAND_VALIDATE,
-} = require("./src/App");
+const CommandLine = require("./src/CommandLine");
 
 const debug = debugInstance("lit-artifact-generator:index");
 
 const SUPPORTED_COMMANDS = [
-  COMMAND_GENERATE,
-  COMMAND_INITIALIZE,
-  COMMAND_WATCH,
-  COMMAND_VALIDATE,
+  CommandLine.COMMAND_GENERATE(),
+  CommandLine.COMMAND_INITIALIZE(),
+  CommandLine.COMMAND_WATCH(),
+  CommandLine.COMMAND_VALIDATE(),
 ];
 
 function validateCommandLine(argv, options) {
@@ -46,7 +41,7 @@ function validateCommandLine(argv, options) {
 
 yargs
   .command(
-    COMMAND_GENERATE,
+    CommandLine.COMMAND_GENERATE(),
     "Generate code artifacts from RDF vocabularies.",
     (yargs) =>
       yargs
@@ -184,7 +179,7 @@ yargs
     }
   )
   .command(
-    COMMAND_INITIALIZE,
+    CommandLine.COMMAND_INITIALIZE(),
     "Initializes a configuration YAML file used for fine-grained " +
       "control of artifact generation.",
     (yargs) => yargs,
@@ -193,7 +188,7 @@ yargs
     }
   )
   .command(
-    COMMAND_VALIDATE,
+    CommandLine.COMMAND_VALIDATE(),
     "Validates a configuration YAML file used for artifact generation.",
     (yargs) =>
       yargs
@@ -208,7 +203,7 @@ yargs
     }
   )
   .command(
-    COMMAND_WATCH,
+    CommandLine.COMMAND_WATCH(),
     "Starts a daemon process watching the configured vocabulary" +
       " resources, and automatically re-generates artifacts whenever it detects" +
       " a vocabulary change.",

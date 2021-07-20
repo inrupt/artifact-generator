@@ -315,10 +315,8 @@ module.exports = class DatasetHandler {
       labels
     );
 
-    let translationDescription = DatasetHandler.buildCompositeTranslationDescription(
-      labels,
-      comments
-    );
+    let translationDescription =
+      DatasetHandler.buildCompositeTranslationDescription(labels, comments);
 
     return {
       name,
@@ -355,12 +353,10 @@ module.exports = class DatasetHandler {
       (elem) => elem.language && !elem.language.startsWith("en")
     );
 
-    const translationsLabel = DatasetHandler.sortedListOfTranslations(
-      nonEnglishLabels
-    );
-    const translationsComment = DatasetHandler.sortedListOfTranslations(
-      nonEnglishComments
-    );
+    const translationsLabel =
+      DatasetHandler.sortedListOfTranslations(nonEnglishLabels);
+    const translationsComment =
+      DatasetHandler.sortedListOfTranslations(nonEnglishComments);
 
     if (translationsLabel !== undefined || translationsComment !== undefined) {
       if (translationsLabel === translationsComment) {
@@ -543,7 +539,8 @@ module.exports = class DatasetHandler {
     result.supportBundling = this.vocabData.supportBundling;
 
     if (this.vocabData.storeLocalCopyOfVocabDirectory) {
-      result.storeLocalCopyOfVocabDirectory = this.vocabData.storeLocalCopyOfVocabDirectory;
+      result.storeLocalCopyOfVocabDirectory =
+        this.vocabData.storeLocalCopyOfVocabDirectory;
 
       Resource.storeLocalCopyOfResource(
         result.storeLocalCopyOfVocabDirectory,
