@@ -97,9 +97,9 @@ You have a number of options for running the Artifact Generator:
    registry, even when logged into that registry using a PAT:
    
    ```bash
-   > npm_config_registry=https://npm.pkg.github.com/ npx @inrupt/lit-artifact-generator --version
+   > npm_config_registry=https://npm.pkg.github.com/ npx @inrupt/artifact-generator --version
    Need to install the following packages:
-   @inrupt/lit-artifact-generator
+   @inrupt/artifact-generator
    Ok to proceed? (y) y
    npm ERR! code E404
    npm ERR! 404 Not Found - GET https://npm.pkg.github.com/@rdfjs%2ffetch-lite - npm package "fetch-lite" does not exist under owner "rdfjs"
@@ -121,12 +121,12 @@ to run the Artifact Generator easily from any directory on your local machine,
 you can do so by running:
 
 ```shell
-npm -g install @inrupt/lit-artifact-generator  --registry https://npm.pkg.github.com/inrupt
+npm -g install @inrupt/artifact-generator  --registry https://npm.pkg.github.com/inrupt
 ```
 
 Ensure the installation completed successfully:
 ```shell
-lit-artifact-generator --help
+artifact-generator --help
 ```
 
 ### 2. Local install
@@ -142,16 +142,16 @@ This utility will walk you through creating a package.json file.
 :
 Is this OK? (yes) 
 >
-> npm install @inrupt/lit-artifact-generator --registry https://npm.pkg.github.com/inrupt
+> npm install @inrupt/artifact-generator --registry https://npm.pkg.github.com/inrupt
 :
 :
-+ @inrupt/lit-artifact-generator@0.13.3
++ @inrupt/artifact-generator@0.13.3
 added 204 packages from 247 contributors in 25.349s
 
 17 packages are looking for funding
   run `npm fund` for details
 >
-> node node_modules/@inrupt/lit-artifact-generator/index.js --version
+> node node_modules/@inrupt/artifact-generator/index.js --version
 0.13.3
 >
 ```
@@ -163,8 +163,8 @@ If you wish to clone, build and run the Artifact Generator instead of installing
 it as a pre-built module, then follow these steps:
 
 ```script
-> git clone git@github.com:inrupt/lit-artifact-generator.git
-> cd lit-artifact-generator
+> git clone git@github.com:inrupt/artifact-generator.git
+> cd artifact-generator
 > npm install
 ```
 
@@ -180,7 +180,7 @@ simply executing:
 ```
 
 You can now replace all the example references below that begin with
-`lit-artifact-generator ...` with `node index.js ...` instead.
+`artifact-generator ...` with `node index.js ...` instead.
 
 
 ## Create a Node.js artifact
@@ -232,7 +232,7 @@ console.log(`Our vocabulary describes it as:`);
 console.log(`"${PET_ROCK.shinyness.comment}"\n`);
 
 console.log(`Or in Spanish (our Pet Rock vocab has Spanish translations!):`);
-console.log(`"${PET_ROCK.shinyness.commentInLang('es')}"`);
+console.log(`"${PET_ROCK.shinyness.asLanguage('es').comment}"`);
 ``` 
 
 Now simply `npm install`...
@@ -285,8 +285,8 @@ have a `Generated` directory within it)...
 	<script src="./Generated/SourceCodeArtifacts/JavaScript/dist/index.js" type="text/javascript"/></script>
 	
 	<script type="text/javascript">
-		document.getElementById("shinyness-comment").innerHTML = `${PR.shinyness.comment}`;
-		document.getElementById("petrock-iri").innerHTML = `${PR.NAMESPACE}`;
+		document.getElementById("shinyness-comment").innerHTML = `${PET_ROCK.shinyness.comment}`;
+		document.getElementById("petrock-iri").innerHTML = `${PET_ROCK.NAMESPACE}`;
 	</script>
 	
 	</body>

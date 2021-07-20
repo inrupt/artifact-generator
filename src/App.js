@@ -14,11 +14,6 @@ const Resource = require("./Resource");
 // for a users who wants a boilerplate YAML generated for them.
 const SAMPLE_CONFIG_NAME = "sample-vocab.yml";
 
-const COMMAND_GENERATE = "generate";
-const COMMAND_INITIALIZE = "init";
-const COMMAND_WATCH = "watch";
-const COMMAND_VALIDATE = "validate";
-
 module.exports = class App {
   constructor(argv) {
     if (!argv) {
@@ -213,8 +208,3 @@ module.exports = class App {
     this.watcherList = [];
   }
 };
-
-module.exports.COMMAND_GENERATE = COMMAND_GENERATE;
-module.exports.COMMAND_INITIALIZE = COMMAND_INITIALIZE;
-module.exports.COMMAND_WATCH = COMMAND_WATCH;
-module.exports.COMMAND_VALIDATE = COMMAND_VALIDATE;

@@ -9,6 +9,19 @@ const {
 } = require("./Util");
 
 module.exports = class CommandLine {
+  static COMMAND_GENERATE() {
+    return "generate";
+  }
+  static COMMAND_INITIALIZE() {
+    return "init";
+  }
+  static COMMAND_WATCH() {
+    return "watch";
+  }
+  static COMMAND_VALIDATE() {
+    return "validate";
+  }
+
   static getParentFolder(directory) {
     return path.dirname(directory);
   }
@@ -242,9 +255,14 @@ module.exports = class CommandLine {
   static runWidoco(data) {
     // Run Widoco using environment variable (since putting the JAR in a local
     // 'lib' directory doesn't work with NPM publish, as it's too big at
-    // 46MB!)...
-    const widocoJar =
-      "$WIDOCO_HOME/widoco-1.4.11-PATCHED-jar-with-dependencies.jar";
+    // 46MB!).
+    // If running on the command line, and Node is not picking up a
+    // system-defined env var, then you can set this manually before running
+    // node itself, e.g.:
+    //   WIDOCO_JAR=$WIDOCO_JAR node index.js ...
+    // ...or if no system-wide env var, just:
+    //   WIDOCO_JAR=/path/to/jar/widoco-1.4.15-jar-with-dependencies.jar node index.js ...
+    const widocoJar = "$WIDOCO_JAR";
 
     const inputResource = data.inputResources[0];
     const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
@@ -258,7 +276,7 @@ module.exports = class CommandLine {
     );
 
     ChildProcess.execSync(
-      `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius -excludeIntroduction`
+      `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius`
     );
 
     debug(
