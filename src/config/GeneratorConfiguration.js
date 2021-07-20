@@ -66,6 +66,20 @@ const NPM_DEFAULT = {
         "index.hbs"
       ),
     },
+    {
+      templateInternal: path.join(
+        "generic",
+        "javascript",
+        "wrapper.hbs"
+      ),
+      fileName: "wrapper.js",
+      template: path.join(
+        "templates",
+        "generic",
+        "javascript",
+        "wrapper.hbs"
+      ),
+    },
   ],
 };
 
