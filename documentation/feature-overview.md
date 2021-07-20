@@ -72,15 +72,15 @@ The process will run in the foreground until you hit "Enter", and artifacts will
      named `widoco-X.Y.Z-jar-with-dependencies.jar`, where X, Y, and Z represent the
      [Semantic Versioning number](https://semver.org/)). 
      
--    Lastly you need to set the environment variable `WIDOCO_HOME` to the name of the directory in 
-     where you placed the Widoco JAR file you downloaded.
+-    Lastly you need to set the environment variable `WIDOCO_JAR` to the Widoco JAR file you just 
+     downloaded.
     
 -    As an example, using `wget` on Linux:
         ```shell
         mkdir Widoco
         cd Widoco
         wget https://github.com/dgarijo/Widoco/releases/download/v1.4.15/widoco-1.4.15-jar-with-dependencies.jar
-        export WIDOCO_HOME=`pwd`
+        export WIDOCO_JAR=`pwd`/widoco-1.4.15-jar-with-dependencies.jar
         ```
 
 To generate a Widoco documentation website in the default `./Generated/Widoco` directory, run:
@@ -88,7 +88,15 @@ To generate a Widoco documentation website in the default `./Generated/Widoco` d
 node index.js generate --inputResources ./example/PetRock.ttl --runWidoco --noprompt
 ```
 
-You'll need to publish this website somewhere to serve it up (or simply open the file
+-    **Note:** If you have trouble with Node picking up your environment variable, you can try 
+     providing it manually:
+     ```shell
+     WIDOCO_JAR=$WIDOCO_JAR node index.js ...
+     # ...or if no system-wide env var, just:
+     WIDOCO_JAR=/path/to/jar/widoco-1.4.15-jar-with-dependencies.jar node index.js ...
+     ```
+
+You'll need to publish this generated website somewhere to serve it up (or simply open the file
 `./Generated/Widoco/index-en.html` in a browser to view it locally).
 
 ## See the help
