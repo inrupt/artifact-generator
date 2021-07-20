@@ -473,16 +473,19 @@ describe("Generator configuration", () => {
         "schema-inrupt-ext.ttl"
       );
 
-      const timeTermSelectionChanged = fs.statSync(termSelectionResource)
-        .mtimeMs;
-      const changedBefore = await generatorConfiguration.getInputResourcesChangedSince(
-        timeTermSelectionChanged - 10
-      );
+      const timeTermSelectionChanged = fs.statSync(
+        termSelectionResource
+      ).mtimeMs;
+      const changedBefore =
+        await generatorConfiguration.getInputResourcesChangedSince(
+          timeTermSelectionChanged - 10
+        );
       expect(changedBefore).toContain(termSelectionResource);
 
-      const changedAfter = await generatorConfiguration.getInputResourcesChangedSince(
-        timeTermSelectionChanged + 10
-      );
+      const changedAfter =
+        await generatorConfiguration.getInputResourcesChangedSince(
+          timeTermSelectionChanged + 10
+        );
       expect(changedAfter).not.toContain(termSelectionResource);
     });
   });

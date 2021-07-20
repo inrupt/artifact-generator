@@ -13,6 +13,14 @@ const defaultInputs = {
 };
 
 describe("Command Line unit tests", () => {
+  describe("WATCH command...", () => {
+    expect(CommandLine.COMMAND_WATCH()).toBe("watch");
+  });
+
+  describe("VALIDATE command...", () => {
+    expect(CommandLine.COMMAND_VALIDATE()).toBe("validate");
+  });
+
   describe("NPM publishing...", () => {
     it("Should find the latest published artifact from registry", () => {
       childProcess.execSync.mockImplementation(

@@ -406,11 +406,11 @@ describe("Artifact Generator", () => {
       // target source files.
       await artifactGenerator.generate();
       expect(fs.existsSync(generatedFilePackage)).toBe(true);
-      const initialGenerationTimePackage = fs.statSync(generatedFilePackage)
-        .mtimeMs;
+      const initialGenerationTimePackage =
+        fs.statSync(generatedFilePackage).mtimeMs;
       expect(fs.existsSync(generatedFileVocab)).toBe(true);
-      const initialGenerationTimeVocab = fs.statSync(generatedFileVocab)
-        .mtimeMs;
+      const initialGenerationTimeVocab =
+        fs.statSync(generatedFileVocab).mtimeMs;
 
       // Modify our extension file.
       Resource.touchFile(testFileExtension);
@@ -497,10 +497,10 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       expect(fs.existsSync(generatedFileFirst)).toBe(true);
       expect(fs.existsSync(generatedFileSecond)).toBe(true);
-      const initialGenerationTimeFirst = fs.statSync(generatedFileFirst)
-        .mtimeMs;
-      const initialGenerationTimeSecond = fs.statSync(generatedFileSecond)
-        .mtimeMs;
+      const initialGenerationTimeFirst =
+        fs.statSync(generatedFileFirst).mtimeMs;
+      const initialGenerationTimeSecond =
+        fs.statSync(generatedFileSecond).mtimeMs;
 
       // Modify just one of our input files.
       Resource.touchFile(testInputSecond);
@@ -605,10 +605,10 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       expect(fs.existsSync(generatedFileFirst)).toBe(true);
       expect(fs.existsSync(generatedFileSecond)).toBe(true);
-      const initialGenerationTimeFirst = fs.statSync(generatedFileFirst)
-        .mtimeMs;
-      const initialGenerationTimeSecond = fs.statSync(generatedFileSecond)
-        .mtimeMs;
+      const initialGenerationTimeFirst =
+        fs.statSync(generatedFileFirst).mtimeMs;
+      const initialGenerationTimeSecond =
+        fs.statSync(generatedFileSecond).mtimeMs;
 
       // Modify just our configuration file.
       Resource.touchFile(testConfigFile);

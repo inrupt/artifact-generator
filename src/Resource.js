@@ -149,17 +149,15 @@ module.exports = class Resource {
 
     // Assume the input resource is actually the vocab namespace (which it
     // should be, generally!).
-    const formatNamespace = Resource.formatUrlWithFilenameCharacters(
-      inputResource
-    );
+    const formatNamespace =
+      Resource.formatUrlWithFilenameCharacters(inputResource);
 
     // Scan our provided directory for any pre-existing copies of this
     // vocabulary, sorting alphabetically which will get us the most recently
     // cached version...
     try {
-      const expectedCacheResource = Resource.addTurtleExtensionIfNeeded(
-        formatNamespace
-      );
+      const expectedCacheResource =
+        Resource.addTurtleExtensionIfNeeded(formatNamespace);
       const files = fs
         .readdirSync(cacheDirectory)
         .filter((filename) => filename.endsWith(`__${expectedCacheResource}`))
@@ -349,15 +347,13 @@ module.exports = class Resource {
       const vocabDigest = Resource.simpleStringHash(vocabDigestInput);
 
       // Format our vocab namespace to only include valid filename characters.
-      const formatNamespace = Resource.formatUrlWithFilenameCharacters(
-        vocabNamespace
-      );
+      const formatNamespace =
+        Resource.formatUrlWithFilenameCharacters(vocabNamespace);
 
       // Scan our provided directory for any pre-existing copies of this
       // vocabulary with a matching digest...
-      const namespaceFilename = Resource.addTurtleExtensionIfNeeded(
-        formatNamespace
-      );
+      const namespaceFilename =
+        Resource.addTurtleExtensionIfNeeded(formatNamespace);
       const files = fs
         .readdirSync(directory)
         .filter((filename) =>
@@ -410,9 +406,8 @@ module.exports = class Resource {
    * @returns {string}
    */
   static quadToStringIgnoringBNodes(quad) {
-    return (quad.subject.termType === "BlankNode"
-      ? "BNode"
-      : quad.subject.value
+    return (
+      quad.subject.termType === "BlankNode" ? "BNode" : quad.subject.value
     )
       .concat(quad.predicate.value)
       .concat(
