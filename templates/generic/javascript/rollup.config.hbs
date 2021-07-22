@@ -8,16 +8,14 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: "cjs",
-    },
-    {
-      file: pkg.module,
-      format: "esm",
-    },
-    {
-      dir: "umd",
       format: "umd",
-      name: "{{bundleName}}",
+      name: "{{artifactName}}",
+    },
+    {
+      dir: './dist',
+      entryFileNames: '[name].es.js',
+      format: "esm",
+      preserveModules: true,
     },
   ],
   plugins: [
