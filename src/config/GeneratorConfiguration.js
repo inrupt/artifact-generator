@@ -26,6 +26,20 @@ const ROLLUP_DEFAULT = {
   ],
 };
 
+const WRAPPER_DEFAULT = {
+  packagingTool: "esmWrapper",
+  packagingTemplates: [
+    {
+      templateInternal: path.join(
+        "generic",
+        "javascript",
+        "wrapper.hbs"
+      ),
+      fileName: "wrapper.js",
+    },
+  ],
+};
+
 const NPM_DEFAULT_REPO = "http://localhost:4873/";
 
 const NPM_DEFAULT = {
@@ -64,20 +78,6 @@ const NPM_DEFAULT = {
         "solidCommonVocabDependent",
         "javascript",
         "index.hbs"
-      ),
-    },
-    {
-      templateInternal: path.join(
-        "generic",
-        "javascript",
-        "wrapper.hbs"
-      ),
-      fileName: "wrapper.js",
-      template: path.join(
-        "templates",
-        "generic",
-        "javascript",
-        "wrapper.hbs"
       ),
     },
   ],
@@ -575,6 +575,8 @@ class GeneratorConfiguration {
 
     if (args.supportBundling) {
       cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
+    } else {
+      cliConfig.artifactToGenerate[0].packaging.push(WRAPPER_DEFAULT);
     }
 
     if (args.artifactVersion) {
