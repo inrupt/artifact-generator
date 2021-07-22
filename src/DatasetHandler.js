@@ -479,6 +479,12 @@ module.exports = class DatasetHandler {
   buildTemplateInput() {
     const result = {};
 
+    result.rollupVersion = this.vocabData.rollupVersion;
+    result.rollupBabelPluginVersion = this.vocabData.rollupBabelPluginVersion;
+    result.rollupCommonjsPluginVersion =
+      this.vocabData.rollupCommonjsPluginVersion;
+    result.rollupNodeResolveVersion = this.vocabData.rollupNodeResolveVersion;
+
     result.webpackVersion = this.vocabData.webpackVersion;
     result.webpackCliVersion = this.vocabData.webpackCliVersion;
     result.babelCoreVersion = this.vocabData.babelCoreVersion;

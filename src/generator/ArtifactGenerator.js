@@ -51,6 +51,10 @@ class ArtifactGenerator {
     this.artifactData.webpackCliVersion = "^3.3.6";
     this.artifactData.babelCoreVersion = "^7.5.5";
     this.artifactData.babelLoaderVersion = "^8.0.6";
+    this.artifactData.rollupVersion = "^2.53.1";
+    this.artifactData.rollupBabelPluginVersion = "^5.3.0";
+    this.artifactData.rollupCommonjsPluginVersion = "^19.0.1";
+    this.artifactData.rollupNodeResolveVersion = "^13.0.0";
 
     // Make sure we have something for the output directory.
     this.artifactData.outputDirectory =
