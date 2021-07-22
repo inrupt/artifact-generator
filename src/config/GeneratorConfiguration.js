@@ -20,8 +20,14 @@ const ROLLUP_DEFAULT = {
   packagingTool: "rollup",
   packagingTemplates: [
     {
-      templateInternal: "generic/javascript/rollup.config.hbs",
+      templateInternal: path.join("generic", "javascript", "rollup.config.hbs"),
       fileName: "rollup.config.js",
+      template: path.join(
+        "templates",
+        "generic",
+        "javascript",
+        "rollup.config.hbs"
+      ),
     },
   ],
 };
@@ -30,12 +36,9 @@ const WRAPPER_DEFAULT = {
   packagingTool: "esmWrapper",
   packagingTemplates: [
     {
-      templateInternal: path.join(
-        "generic",
-        "javascript",
-        "wrapper.hbs"
-      ),
+      templateInternal: path.join("generic", "javascript", "wrapper.hbs"),
       fileName: "wrapper.js",
+      template: path.join("templates", "generic", "javascript", "wrapper.hbs"),
     },
   ],
 };
@@ -93,7 +96,7 @@ const DEFAULT_CLI_ARTIFACT = [
       "vocab.hbs"
     ),
     sourceFileExtension: "js",
-    packaging: [NPM_DEFAULT],
+    packaging: [NPM_DEFAULT, WRAPPER_DEFAULT],
     sourceCodeTemplate: path.join(
       "templates",
       "solidCommonVocabDependent",

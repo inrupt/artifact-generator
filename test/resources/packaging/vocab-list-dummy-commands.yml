@@ -66,13 +66,10 @@ artifactToGenerate:
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: index.js
-      - packagingTool: webpack
-        packagingFolder: config
+      - packagingTool: rollup
         packagingTemplates:
-          - templateInternal: webpack.dev.config.hbs
-            fileName: webpack.dev.config.js
-          - templateInternal: webpack.prod.config.hbs
-            fileName: webpack.prod.config.js
+          - templateInternal: generic/javascript/rollup.config.hbs
+            fileName: rollup.config.js
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex

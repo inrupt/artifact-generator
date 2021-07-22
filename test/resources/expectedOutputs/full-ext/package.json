@@ -2,7 +2,9 @@
   "name": "@inrupt/generated-vocab-schema-inrupt-ext",
   "version": "1.0.0",
   "description": "Bundle of vocabularies that includes the following:\n\n - schema-inrupt-ext: Inrupt extension to Schema.org terms providing\n multilingual alternative names (i.e. labels) and translations for comments\n (e.g. for use directly as labels or tool-tips in user interfaces or error\n messages). This extension very deliberately cherry-picks the individual terms\n from Schema.org that Inrupt currently deem generally useful for Solid and Solid\n applications (meaning we can provide a much cleaner, less noisy and smaller\n bundle size when generating programming language artifacts that provide\n convenient constants for just these selected terms, rather than including the\n over 2,500 terms currently defined in Schema.org).",
+  "sideEffects": false,
   "main": "index.js",
+  "module": "wrapper.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
     "url": "https://github.com/inrupt/lit-artifact-generator"
