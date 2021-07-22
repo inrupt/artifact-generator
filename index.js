@@ -140,7 +140,7 @@ yargs
         .boolean("supportBundling")
         .describe(
           "supportBundling",
-          "If set will use bundling support within generated artifact (currently supports Webpack only)."
+          "If set will use bundling support within generated artifact (currently supports Rollup only)."
         )
         .default("supportBundling", true)
 
