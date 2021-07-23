@@ -26,11 +26,6 @@ errors, when trying to run `npm install -g`. If so, please refer to this npm
 [document](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)
 on how to set your permissions correctly.
 
-## Webpack
-
-If you wish to bundle generated artifacts for use in browsers, you will need to
-install Webpack, e.g., `npm install webpack webpack-cli --save-dev`
-
 # Table of contents
 
 - [Introduction](./documentation/introduction.md)
@@ -262,14 +257,14 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 
 Run the Artifact Generator using a public demo vocabulary, in this case
 the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
-for any input (i.e., `--noprompt`), and asking for a bundled (i.e., WebPack'ed)
+for any input (i.e., `--noprompt`), and asking for a bundled (i.e., with Rollup config)
 JavaScript artifact (i.e., via the `--supportBundling` command-line flag):
 
 ```shell
 artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
 ```
 
-This generates an artifact, and runs Webpack to bundle all of it's dependencies.
+This generates an artifact, including Rollup config to bundle all of its dependencies.
 Everything is generated into the default `Generated` directory,
 and bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist` directory.
 
@@ -311,7 +306,7 @@ static constants for each of the defined terms within a corresponding RDF
 vocabulary.
 
 Perhaps the single most important, and widely used, vocabulary today is
-Schema.org, from Google, Mircosoft, Yaoo and Yandex. The official RDF for
+Schema.org, from Google, Microsoft, Yahoo and Yandex. The official RDF for
 Schema.org is defined here: `https://schema.org/version/latest/schemaorg-current-http.ttl`.
 
 But any individual or company is completely free to use the Artifact
