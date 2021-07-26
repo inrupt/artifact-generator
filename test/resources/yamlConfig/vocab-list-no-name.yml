@@ -3,7 +3,7 @@
 # form the collective set vocabularies within a single artifact.
 #
 ##
-# The generator version MUST be present
+# The artifact name MUST be present
 ##
 # artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
