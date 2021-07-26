@@ -125,6 +125,14 @@ describe("Generator configuration", () => {
       }).toThrow("No templates associated to packaging tool");
     });
 
+    it("should fail if the YAML config does not provide an artifactName", () => {
+      expect(() => {
+        GeneratorConfiguration.fromConfigFile(
+          "./test/resources/yamlConfig/vocab-list-no-name.yml"
+        );
+      }).toThrow("Missing 'artifactName' field");
+    });
+
     it("should fail if the YAML config does not provide a artifactGeneratorVersion", () => {
       expect(() => {
         GeneratorConfiguration.fromConfigFile(
