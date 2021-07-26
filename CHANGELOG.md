@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Remove /demo folder, incorporate some examples into Advanced Configuration docs
 - Added instructions to run Widoco.
 - Tidied up some circular dependencies on command-line constants.
+- Add artifactName to required properties in YAML validation
 
 ## 0.13.4
 
