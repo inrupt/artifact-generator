@@ -150,9 +150,7 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
-      expect(
-        fs.existsSync(`${outputDirectoryJavaScript}/rollup.config.js`)
-      ).toBe(false);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
         true
       );
@@ -232,9 +230,7 @@ describe("Artifact Generator", () => {
       await artifactGenerator.generate();
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
-      expect(
-        fs.existsSync(`${outputDirectoryJavaScript}/rollup.config.js`)
-      ).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
         false
       );

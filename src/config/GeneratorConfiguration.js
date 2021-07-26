@@ -18,6 +18,7 @@ const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "templates");
 
 const ROLLUP_DEFAULT = {
   packagingTool: "rollup",
+  packagingDirectory: "config",
   packagingTemplates: [
     {
       templateInternal: path.join("generic", "javascript", "rollup.config.hbs"),
