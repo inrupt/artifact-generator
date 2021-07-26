@@ -27,7 +27,7 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
-    "@rdfjs/fetch-lite": "^2.1.0",
+    "@rdfjs/fetch-lite": "^2.1.2",
     "@rdfjs/formats-common": "^2.1.0",
     "@rdfjs/parser-jsonld": "^1.2.1",
     "@rdfjs/parser-n3": "^1.1.4",
