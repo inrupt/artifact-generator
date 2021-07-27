@@ -278,16 +278,20 @@ class ArtifactGenerator {
   async collectGeneratedVocabDetails(vocabDatasets) {
     this.artifactData.description = `Bundle of vocabularies that includes the following:`;
     await Promise.all(
-      vocabDatasets.map(async (vocabData) => {
-        this.artifactData.description += `\n\n - ${vocabData.vocabName}: ${vocabData.description}`;
-        this.artifactData.generatedVocabs.push({
-          vocabName: vocabData.vocabName,
-          vocabNameUpperCase: vocabData.vocabNameUpperCase,
-        });
-        vocabData.authorSet.forEach((author) =>
-          this.artifactData.authorSet.add(author)
-        );
-      })
+      [...vocabDatasets]
+        .sort((vocabDataA, vocabDataB) =>
+          vocabDataA.vocabName.localeCompare(vocabDataB.vocabName)
+        )
+        .map(async (vocabData) => {
+          this.artifactData.description += `\n\n - ${vocabData.vocabName}: ${vocabData.description}`;
+          this.artifactData.generatedVocabs.push({
+            vocabName: vocabData.vocabName,
+            vocabNameUpperCase: vocabData.vocabNameUpperCase,
+          });
+          vocabData.authorSet.forEach((author) =>
+            this.artifactData.authorSet.add(author)
+          );
+        })
     );
     return vocabDatasets;
   }
