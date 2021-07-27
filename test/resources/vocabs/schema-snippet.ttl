@@ -18,7 +18,7 @@ prefix void: <http://rdfs.org/ns/void#>
 prefix xml: <http://www.w3.org/XML/1998/namespace>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
 
 schema:Person a rdfs:Class ;

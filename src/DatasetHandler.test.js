@@ -13,7 +13,7 @@ const {
   OWL_NAMESPACE,
   SKOS,
   VANN,
-  LIT_CORE,
+  ARTIFACT_GENERATOR,
 } = require("./CommonTerms");
 
 const DatasetHandler = require("./DatasetHandler");
@@ -30,6 +30,19 @@ const vocabMetadata = rdf
   ]);
 
 describe("Dataset Handler", () => {
+  describe("Static reporting helpers", () => {
+    it("should report override only if one provided", () => {
+      expect(DatasetHandler.mentionNamespaceOverrideIfPresent({})).toBe("");
+
+      const override = "test override";
+      expect(
+        DatasetHandler.mentionNamespaceOverrideIfPresent({
+          namespaceOverride: override,
+        })
+      ).toContain(override);
+    });
+  });
+
   describe("Edge-case vocabulary cases ", () => {
     it("should ignore properties defined on the namespace IRI", () => {
       const dataset = rdf
@@ -304,12 +317,16 @@ describe("Dataset Handler", () => {
         // Define this subject as a Literal first, meaning it'll be ignored as
         // as a constant IRI.
         rdf.quad(testTermConstantIri, RDF.type, RDFS.Literal),
-        rdf.quad(testTermConstantIri, RDF.type, LIT_CORE.ConstantIri),
+        rdf.quad(testTermConstantIri, RDF.type, ARTIFACT_GENERATOR.ConstantIri),
 
         // Define this subject as a Literal first, meaning it'll be ignored as
         // as a constant string.
         rdf.quad(testTermConstantString, RDF.type, RDFS.Literal),
-        rdf.quad(testTermConstantString, RDF.type, LIT_CORE.ConstantString),
+        rdf.quad(
+          testTermConstantString,
+          RDF.type,
+          ARTIFACT_GENERATOR.ConstantString
+        ),
       ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {

@@ -11,7 +11,7 @@ const {
   VANN,
   DCTERMS,
   SKOS,
-  LIT_CORE,
+  ARTIFACT_GENERATOR,
 } = require("./CommonTerms");
 
 const Resource = require("./Resource");
@@ -59,7 +59,7 @@ const SUPPORTED_LITERALS = [RDFS.Literal];
 // Useful for defining constant strings. We specifically prevent having multiple
 // values for these constants, since the whole point is that the value is a
 // 'constant'.
-const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
+const SUPPORTED_CONSTANT_STRINGS = [ARTIFACT_GENERATOR.ConstantString];
 
 // Useful for defining constant IRIs that are not intended to be related to the
 // vocabulary itself - for example, the Inrupt test vocabulary defines a number
@@ -68,7 +68,7 @@ const SUPPORTED_CONSTANT_STRINGS = [LIT_CORE.ConstantString];
 // related to the IRI of the test vocabulary itself. We specifically prevent
 // having multiple values for these constants, since the whole point is that the
 // value is a 'constant'.
-const SUPPORTED_CONSTANT_IRIS = [LIT_CORE.ConstantIri];
+const SUPPORTED_CONSTANT_IRIS = [ARTIFACT_GENERATOR.ConstantIri];
 
 module.exports = class DatasetHandler {
   /**
@@ -144,13 +144,17 @@ module.exports = class DatasetHandler {
         fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
         debug(
-          `Ignoring common RDF vocabulary term [${fullName}], as it's not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}].`
+          `Ignoring common RDF vocabulary term [${fullName}], as it's not in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
+            this.vocabData
+          )}`
         );
         return null;
       }
 
       throw new Error(
-        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - currently this is disallowed (as it indicates a probable typo!)`
+        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
+          this.vocabData
+        )} - currently this is disallowed (as it indicates a probable typo!)`
       );
     }
 
@@ -257,20 +261,28 @@ module.exports = class DatasetHandler {
     );
 
     if (
-      rdfType.equals(LIT_CORE.ConstantIri) ||
-      rdfType.equals(LIT_CORE.ConstantString)
+      rdfType.equals(ARTIFACT_GENERATOR.ConstantIri) ||
+      rdfType.equals(ARTIFACT_GENERATOR.ConstantString)
     ) {
       if (skosMatches.length > 1) {
         throw new Error(
-          `Vocabulary term [${fullName}] in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - found [${skosMatches.length}] values for constant of type [${rdfType.value}] when one, and only one, value is required`
+          `Vocabulary term [${fullName}] in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
+            this.vocabData
+          )} - found [${skosMatches.length}] values for constant of type [${
+            rdfType.value
+          }] when one, and only one, value is required`
         );
       }
 
-      if (rdfType.equals(LIT_CORE.ConstantIri)) {
+      if (rdfType.equals(ARTIFACT_GENERATOR.ConstantIri)) {
         skosMatches.forEach((quad) => {
           if (!this.isValidIri(quad.object.value)) {
             throw new Error(
-              `Vocabulary term [${fullName}] in our namespace [${namespace}] or in the namespace override [${this.vocabData.namespaceOverride}] - constant IRI value [${quad.object.value}] does not appear to be a valid IRI`
+              `Vocabulary term [${fullName}] in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
+                this.vocabData
+              )} - constant IRI value [${
+                quad.object.value
+              }] does not appear to be a valid IRI`
             );
           }
         });
@@ -330,6 +342,12 @@ module.exports = class DatasetHandler {
       isDefinedBy,
       translationDescription,
     };
+  }
+
+  static mentionNamespaceOverrideIfPresent(vocabData) {
+    return vocabData.namespaceOverride === undefined
+      ? ""
+      : ` or in the namespace override [${vocabData.namespaceOverride}]`;
   }
 
   /**

@@ -72,8 +72,11 @@ module.exports.SCHEMA_DOT_ORG = {
   ),
 };
 
-const LIT_CORE_NAMESPACE = "https://w3id.org/lit/vocab/core#";
-module.exports.LIT_CORE = {
-  ConstantString: rdf.namedNode(`${LIT_CORE_NAMESPACE}ConstantString`),
-  ConstantIri: rdf.namedNode(`${LIT_CORE_NAMESPACE}ConstantIri`),
+const ARTIFACT_GENERATOR_NAMESPACE =
+  "https://inrupt.com/vocab/tool/artifact_generator#";
+module.exports.ARTIFACT_GENERATOR = {
+  ConstantString: rdf.namedNode(
+    `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`
+  ),
+  ConstantIri: rdf.namedNode(`${ARTIFACT_GENERATOR_NAMESPACE}ConstantIri`),
 };

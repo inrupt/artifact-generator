@@ -20,9 +20,9 @@ test: a owl:Ontology, inrupt_gen:Ontology ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-test:constantStringTooMany a inrupt_gen:ConstantString ;
+test:constantStringDifferentLanguages a inrupt_gen:ConstantString ;
     rdfs:label "A constant string"@en ;
     rdfs:comment "This is an invalid constant string value."@en ;
-    skos:definition "First value..." ;
-    skos:definition "...but we can't have more than one value..." ;
-    skos:definition "...and we've got 3!" .
+    skos:definition "First value..."@en ;
+    skos:definition "...but we can't have more than one value..."@es ;
+    skos:definition "...even if they're in different languages!"@fr .

@@ -181,7 +181,7 @@ describe("Supported Data Type", () => {
 
     expect(async () => {
       await generator.generate();
-    }).rejects.toThrow("constantIriTooMany", "3");
+    }).rejects.toThrow("constantIriTooMany");
   });
 
   it("should fail with too many constant string values", async () => {
@@ -216,6 +216,40 @@ describe("Supported Data Type", () => {
     expect(async () => {
       await generator.generate();
     }).rejects.toThrow("constantStringTooMany", "2");
+  });
+
+  it("should fail if many constant string values of different languages", async () => {
+    const outputDirectory =
+      "test/Generated/UNIT_TEST/SupportedDataType/constant-string-values-with-different-languages";
+    const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
+    await del([`${outputDirectory}/*`]);
+
+    const generator = new VocabGenerator(
+      {
+        inputResources: [
+          "./test/resources/vocabs/supported-data-types-many-constant-string-values-but-different-languages.ttl",
+        ],
+        outputDirectory,
+      },
+      {
+        programmingLanguage: "JavaScript",
+        artifactDirectoryName: "JavaScript",
+        // We assume normalization has resolved this template location.
+        sourceCodeTemplate: path.join(
+          "templates",
+          "solidCommonVocabDependent",
+          "javascript",
+          "vocab.hbs"
+        ),
+        sourceFileExtension: "js",
+        // We need to provide the artifact-specific output directory.
+        outputDirectoryForArtifact: outputDirectoryJavaScript,
+      }
+    );
+
+    expect(async () => {
+      await generator.generate();
+    }).rejects.toThrow("constantStringDifferentLanguages");
   });
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
@@ -253,7 +287,7 @@ describe("Supported Data Type", () => {
     await generator.generate();
 
     const indexOutput = fs
-      .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/LIT_GEN.js`)
+      .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/TEST.js`)
       .toString();
 
     expect(indexOutput).toEqual(
