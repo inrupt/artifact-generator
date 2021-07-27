@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Add artifactName to required properties in YAML validation
+
+## 0.14.0 2021-07-27
+
 - Add option 'vocabContentTypeHeaderOverride' as a HTTP Content Type header
   override, as (some vocab servers (e.g., Resume-RDF 
   "http://rdfs.org/resume-rdf/cv.rdfs#")) return a content type of 'text/plain'
@@ -15,7 +19,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Remove /demo folder, incorporate some examples into Advanced Configuration docs
 - Added instructions to run Widoco.
 - Tidied up some circular dependencies on command-line constants.
-- Add artifactName to required properties in YAML validation
+- Updates to new namespace for the Artifact Generator's own vocab, and picks up
+  major YAML reorganization.
+- Removed type 'any' from generated vocabs in TS
 
 ## 0.13.4
 

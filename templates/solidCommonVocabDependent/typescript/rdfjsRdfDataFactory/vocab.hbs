@@ -25,14 +25,11 @@ function _NS(localName: string): RDF.NamedNode {
   return rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 
-// Add 'any' type annotation in case this vocab includes 'NamedNode' instances,
-// for example instances of Constant IRIs (TypeScript compiler will complain of
-// "semantic error TS2742" otherwise).
 {{#if description}}
 /**
  * {{{description}}}
  */{{/if}}
-const {{vocabNameUpperCase}}: any = {
+const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: "{{namespace}}",
   PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },

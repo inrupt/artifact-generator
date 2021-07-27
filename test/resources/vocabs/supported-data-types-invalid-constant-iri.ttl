@@ -5,13 +5,14 @@ prefix schema: <http://schema.org/>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 prefix lit_gen: <https://w3id.org/lit/vocab/code-generation#>
 prefix schema-inrupt-ext: <http://inrupt.com/>
 
 
 lit_gen:
-    a owl:Ontology, lit_core:Ontology ;
+    a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/06/18" ;
@@ -22,7 +23,7 @@ lit_gen:
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-lit_gen:constantIriInvalid a lit_core:ConstantIri ;
+lit_gen:constantIriInvalid a inrupt_gen:ConstantIri ;
     rdfs:label "A constant IRI"@en ;
     rdfs:comment "This is an invalid constant IRI value."@en ;
     skos:definition "not a valid IRI!" .

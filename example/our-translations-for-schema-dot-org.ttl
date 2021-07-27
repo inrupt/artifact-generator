@@ -4,7 +4,7 @@ prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix schema: <http://schema.org/>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
 prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation/schema#>
 
@@ -17,7 +17,7 @@ prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation
 # 'no lnaguage tag' values?
 #
 our-translations-for-schema-dot-org:
-    a owl:Ontology, lit_core:Ontology ;
+    a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "0.0.1" ;
     dcterms:creator "Jarlath Holleran" ;
     dcterms:date "2019/06/18" ;

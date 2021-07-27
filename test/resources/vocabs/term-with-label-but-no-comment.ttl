@@ -18,7 +18,7 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 test_vocab:
-	a owl:Ontology, lit_core:Ontology ;
+	a owl:Ontology, inrupt_gen:Ontology ;
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
 	dcterms:date "2019/01/01" ;

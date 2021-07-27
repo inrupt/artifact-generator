@@ -1,0 +1,37 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix inrupt_glossary_release: <http://w3id.org/inrupt/vocab/glossary/release#>.
+
+<http://w3id.org/inrupt/vocab/glossary/release#> a owl:Ontology;
+    dcterms:title "Inrupt release glossary vocabulary";
+    dcterms:description "The Inrupt release vocabulary describes the terms used within Inrupt to describe the various stages of product releases."@en;
+    vann:preferredNamespacePrefix "inrupt_glossary_release";
+    vann:preferredNamespaceURI <http://w3id.org/inrupt/vocab/glossary/release#>.
+inrupt_glossary_release:ProofOfConcept a rdfs:Class;
+    rdfs:label "Proof of Concept"@en;
+    rdfs:comment "Proof of Concept"@en;
+    rdfs:seeAlso <https://inrupt.atlassian.net/wiki/spaces/PD/pages/9830859/Release+Types?focusedCommentId=12255296#Proof-of-Concept>.
+inrupt_glossary_release:Pilot a rdfs:Class;
+    rdfs:label "Pilot"@en;
+    rdfs:comment ""@en;
+    rdfs:seeAlso <https://inrupt.atlassian.net/wiki/spaces/PD/pages/9830859/Release+Types?focusedCommentId=12255296#Pilot>.
+inrupt_glossary_release:Alpha a rdfs:Class;
+    rdfs:label "Alpha"@en;
+    rdfs:comment "Alpha"@en;
+    rdfs:seeAlso <https://inrupt.atlassian.net/wiki/spaces/PD/pages/9830859/Release+Types?focusedCommentId=12255296#Alpha>.
+inrupt_glossary_release:Beta a rdfs:Class;
+    rdfs:label "Beta"@en;
+    rdfs:comment "Beta"@en;
+    rdfs:seeAlso <https://inrupt.atlassian.net/wiki/spaces/PD/pages/9830859/Release+Types?focusedCommentId=12255296#Beta>.
+inrupt_glossary_release:GeneralAvailability a rdfs:Class;
+    rdfs:label "General Availability"@en;
+    rdfs:comment "General Availability"@en;
+    rdfs:seeAlso <https://inrupt.atlassian.net/wiki/spaces/PD/pages/9830859/Release+Types?focusedCommentId=12255296#GA>.
