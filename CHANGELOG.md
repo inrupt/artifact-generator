@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Add artifactName to required properties in YAML validation
+
 ## 0.14.0 2021-07-27
 
 - Add option 'vocabContentTypeHeaderOverride' as a HTTP Content Type header
