@@ -5,24 +5,23 @@ prefix schema: <http://schema.org/>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
-prefix lit_gen: <https://w3id.org/lit/vocab/code-generation#>
-prefix schema-inrupt-ext: <http://inrupt.com/>
 
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
-lit_gen:
-    a owl:Ontology, lit_core:Ontology ;
+prefix test: <https://ex.com/vocab/test#>
+
+test: a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/06/18" ;
     dcterms:title "Code Generator vocabulary" ;
     dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
-    vann:preferredNamespacePrefix "lit_gen" ;
-    vann:preferredNamespaceUri "https://w3id.org/lit/vocab/code-generation#" ;
+    vann:preferredNamespacePrefix "test" ;
+    vann:preferredNamespaceUri "https://ex.com/vocab/test#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-lit_gen:constantIriTooMany a lit_core:ConstantString ;
+test:constantIriTooMany a inrupt_gen:ConstantString ;
     rdfs:label "A constant IRI"@en ;
     rdfs:comment "This is an invalid constant IRI value."@en ;
     skos:definition "https://first.value.com" ;

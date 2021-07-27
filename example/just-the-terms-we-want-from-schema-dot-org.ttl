@@ -4,13 +4,13 @@ prefix owl:      <http://www.w3.org/2002/07/owl#>
 prefix schema:   <http://schema.org/>
 prefix vann:     <http://purl.org/vocab/vann/>
 prefix dcterms:  <http://purl.org/dc/terms/>
-prefix lit_core: <https://w3id.org/lit/vocab/core#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
 prefix just-the-terms-we-want-from-schema-org: <http://inrupt.com/vocab/just-the-terms-we-want-from-schema-org#>
 
 
 just-the-terms-we-want-from-schema-org:
-    a owl:Ontology, lit_core:Ontology ;
+    a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "0.0.1" ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
