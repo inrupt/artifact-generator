@@ -61,13 +61,13 @@ const ConfigInruptCore = {
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
-const ConfigInruptUiCommon = {
+const ConfigInruptUi = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/UiCommon",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Ui",
   vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-UiComponent.yml",
+    "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-Ui.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -118,7 +118,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolid);
 
     await generateVocabArtifact(ConfigInruptCore);
-    await generateVocabArtifact(ConfigInruptUiCommon);
+    await generateVocabArtifact(ConfigInruptUi);
     await generateVocabArtifact(ConfigInruptService);
   });
 
@@ -138,7 +138,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("Inrupt vocabs", async () => {
     jest.setTimeout(30000);
     await generateVocabArtifact(ConfigInruptCore);
-    await generateVocabArtifact(ConfigInruptUiCommon);
+    await generateVocabArtifact(ConfigInruptUi);
     await generateVocabArtifact(ConfigInruptService);
   });
 
