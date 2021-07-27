@@ -151,6 +151,9 @@ describe("Artifact Generator", () => {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
+        true
+      );
       const packageOutput = fs
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();
@@ -228,6 +231,9 @@ describe("Artifact Generator", () => {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
+        false
+      );
       const packageOutput = fs
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
         .toString();

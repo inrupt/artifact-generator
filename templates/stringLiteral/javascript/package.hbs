@@ -2,18 +2,16 @@
   "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
   "version": "{{artifactVersion}}",
   "description": "{{{description}}}",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "sideEffects": false,
 {{#if supportBundling}}
+  "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config config/rollup.config.js"
   },
 {{else}}
-  "scripts": {
-    "build": "tsc"
-  },
+  "main": "index.js",
+  "module": "wrapper.js",
 {{/if}}
   "author": {
     "name": "{{generatorName}}",
@@ -35,7 +33,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    {{#if supportBundling}}"rollup": "{{rollupVersion}}",
+    {{#if supportBundling}}"@babel/core": "{{babelCoreVersion}}",
+    "rollup": "{{rollupVersion}}",
+    "@rollup/plugin-babel": "{{rollupBabelPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
     "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
   }

@@ -2,7 +2,9 @@
   "name": "@inrupt/generated-vocab-schema",
   "version": "1.0.0",
   "description": "Bundle of vocabularies that includes the following:\n\n - schema: [Generator provided] - undefined",
+  "sideEffects": false,
   "main": "index.js",
+  "module": "wrapper.js",
   "author": {
     "name": "@inrupt/lit-artifact-generator",
     "url": "https://github.com/inrupt/lit-artifact-generator"

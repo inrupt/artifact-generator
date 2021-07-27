@@ -2,12 +2,16 @@
   "name": "{{npmModuleScope}}{{artifactPrefix}}{{artifactName}}{{artifactSuffix}}",
   "version": "{{artifactVersion}}",
   "description": "{{{description}}}",
-  "main": "index.js",
+  "sideEffects": false,
 {{#if supportBundling}}
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
   "scripts": {
-    "dev": "webpack --config ./config/webpack.dev.config.js",
-    "prod": "webpack --config ./config/webpack.prod.config.js"
+    "build": "rollup --config config/rollup.config.js"
   },
+{{else}}
+  "main": "index.js",
+  "module": "wrapper.js",
 {{/if}}
   "author": {
     "name": "{{generatorName}}",
@@ -31,8 +35,9 @@
   }{{#if supportBundling}},
   "devDependencies": {
     "@babel/core": "{{babelCoreVersion}}",
-    "babel-loader": "{{babelLoaderVersion}}",
-    "webpack": "{{webpackVersion}}",
-    "webpack-cli": "{{webpackCliVersion}}"
+    "rollup": "{{rollupVersion}}",
+    "@rollup/plugin-babel": "{{rollupBabelPluginVersion}}",
+    "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
   }{{/if}}
 }

@@ -164,4 +164,8 @@ const {{vocabNameUpperCase}} = {
   END_OF_VOCAB: "End of vocab."
 }
 
+{{#if supportBundling}}
+export default {{vocabNameUpperCase}};
+{{else}}
 module.exports = {{vocabNameUpperCase}};
+{{/if}}

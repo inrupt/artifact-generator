@@ -2,6 +2,11 @@
 {{license/header}}
 
 {{/if}}
+{{#if supportBundling}}
+{{#each generatedVocabs}}
+export { default as {{vocabNameUpperCase}} } from "./GeneratedVocab/{{vocabNameUpperCase}}";
+{{/each}}
+{{else}}
 {{#each generatedVocabs}}
 module.exports.{{vocabNameUpperCase}} = require("./GeneratedVocab/{{vocabNameUpperCase}}");
-{{/each}}
+{{/each}}{{/if}}

@@ -177,7 +177,7 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
-      # Note how different packaging tools can be used for the same artifact (e.g. NPM and webpack, or 
+      # Note how different packaging tools can be used for the same artifact (e.g. NPM and rollup, or 
       # Gradle and Maven), and how each of these packaging tools may generate more than one file.
       - packagingTool: npm 
         # This is an NPM-specific option, used in the generated package.json
@@ -187,14 +187,12 @@ artifactToGenerate:
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs
             fileName: javascript/index.js
-      - packagingTool: webpack
-        # If this is set (not mandatory), the packaging files are instanciated in this directory
+      - packagingTool: rollup
+        # If this is set (not mandatory), the packaging files are instantiated in this directory
         packagingFolder: config
         packagingTemplates:
-          - templateInteral: webpack.dev.config.hbs
-            fileName: webpack.dev.config.js
-          - templateInteral: webpack.prod.config.hbs
-            fileName: webpack.prod.config.js
+          - templateInternal: generic/javascript/rollup.config.hbs
+            fileName: rollup.config.js
 
 ##
 # INPUT VOCABULARIES

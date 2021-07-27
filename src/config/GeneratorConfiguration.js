@@ -16,17 +16,30 @@ const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
 // This is the path to the template directory
 const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "templates");
 
-const WEBPACK_DEFAULT = {
-  packagingTool: "webpack",
+const ROLLUP_DEFAULT = {
+  packagingTool: "rollup",
   packagingDirectory: "config",
   packagingTemplates: [
     {
-      templateInternal: "webpack.dev.config.hbs",
-      fileName: "webpack.dev.config.js",
+      templateInternal: path.join("generic", "javascript", "rollup.config.hbs"),
+      fileName: "rollup.config.js",
+      template: path.join(
+        "templates",
+        "generic",
+        "javascript",
+        "rollup.config.hbs"
+      ),
     },
+  ],
+};
+
+const WRAPPER_DEFAULT = {
+  packagingTool: "esmWrapper",
+  packagingTemplates: [
     {
-      templateInternal: "webpack.prod.config.hbs",
-      fileName: "webpack.prod.config.js",
+      templateInternal: path.join("generic", "javascript", "wrapper.hbs"),
+      fileName: "wrapper.js",
+      template: path.join("templates", "generic", "javascript", "wrapper.hbs"),
     },
   ],
 };
@@ -84,7 +97,7 @@ const DEFAULT_CLI_ARTIFACT = [
       "vocab.hbs"
     ),
     sourceFileExtension: "js",
-    packaging: [NPM_DEFAULT],
+    packaging: [NPM_DEFAULT, WRAPPER_DEFAULT],
     sourceCodeTemplate: path.join(
       "templates",
       "solidCommonVocabDependent",
@@ -569,7 +582,9 @@ class GeneratorConfiguration {
     ];
 
     if (args.supportBundling) {
-      cliConfig.artifactToGenerate[0].packaging.push(WEBPACK_DEFAULT);
+      cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
+    } else {
+      cliConfig.artifactToGenerate[0].packaging.push(WRAPPER_DEFAULT);
     }
 
     if (args.artifactVersion) {

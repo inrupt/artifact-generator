@@ -1,0 +1,9 @@
+{{#if license/header}}
+{{license/header}}
+
+{{/if}}
+import cjsModule from './index.js';
+{{#each generatedVocabs}}
+export const {{vocabNameUpperCase}} = cjsModule.{{vocabNameUpperCase}};
+{{/each}}
+export default cjsModule;

@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## Unreleased
 
 - Add artifactName to required properties in YAML validation
+- Add ES module support to generated JavaScript artifacts:
+  - Adds sideEffects: false to package templates
+  - Adds module entrypoint exposing ES module wrapper
+  - Switch default bundler from webpack -> rollup, for consistency within the
+    AG and with other Inrupt libraries
+  - When supportBundling===true, use ES module import/exports internally for
+    generated vocabs, to enable effective tree-shaking by consuming applications
 
 ## 0.14.0 2021-07-27
 
