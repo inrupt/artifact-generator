@@ -4,12 +4,12 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 
-@prefix lit_core: <https://w3id.org/lit/vocab/core#> .
+@prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#> .
 prefix test_vocab_1: <https://inrupt.com/vocab/static-test-1#>
 
 
 test_vocab_1:
-	a owl:Ontology, lit_core:Ontology ;
+	a owl:Ontology, inrupt_gen:Ontology ;
 	owl:versionInfo "1" ;
 	dcterms:creator "PatMcB" ;
 	dcterms:date "2019/01/01" ;

@@ -47,27 +47,13 @@ const ConfigRdfCommon = {
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
-const ConfigLitCommon = {
+const ConfigInruptCore = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/LitCommon",
+  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Core",
   vocabListFile:
-    "../solid-common-vocab-rdf/lit-rdf/Common/Vocab-List-Lit-Common.yml",
-  npmRegistry: NPM_REGISTRY,
-  runNpmInstall: RUN_NPM_INSTALL,
-  supportBundling: SUPPORT_BUNDLING,
-  publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
-};
-
-const ConfigInruptCommon = {
-  _: "generate",
-  force: true,
-  clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Common",
-  vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/Common/Vocab-List-Inrupt-Common.yml",
+    "../solid-common-vocab-rdf/inrupt-rdf/Core/Vocab-List-Inrupt-Core.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -103,54 +89,16 @@ const ConfigInruptService = {
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
-const ConfigSolidCommon = {
+const ConfigSolid = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/Common",
   vocabListFile:
-    "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid-Common.yml",
+    "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
-};
-
-const ConfigSolidComponent = {
-  _: "generate",
-  force: true,
-  clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/Component",
-  inputResources: [
-    "../solid-common-vocab-rdf/solid-rdf/Component/SolidComponent.ttl",
-  ],
-  solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
-  artifactVersion: "0.1.0",
-  moduleNamePrefix: "@inrupt/",
-  npmRegistry: NPM_REGISTRY,
-  runNpmInstall: RUN_NPM_INSTALL,
-  supportBundling: SUPPORT_BUNDLING,
-  runWidoco: true,
-  publish: PUBLISH_TO_REPO_LIST,
-  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
-};
-
-const ConfigSolidGeneratorUi = {
-  _: "generate",
-  force: true,
-  clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/GeneratorUi",
-  inputResources: [
-    "../solid-common-vocab-rdf/solid-rdf/GeneratorUi/SolidGeneratorUi.ttl",
-  ],
-  solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
-  artifactVersion: "0.1.0",
-  moduleNamePrefix: "@inrupt/",
-  npmRegistry: NPM_REGISTRY,
-  runNpmInstall: RUN_NPM_INSTALL,
-  supportBundling: SUPPORT_BUNDLING,
-  runWidoco: true,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
@@ -166,17 +114,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(120000);
     await generateVocabArtifact(ConfigRdfCommon);
-    await generateVocabArtifact(ConfigLitCommon);
 
-    await generateVocabArtifact(ConfigSolidCommon);
+    await generateVocabArtifact(ConfigSolid);
 
-    // Just note - these configurations generate from single RDF vocab files
-    // (i.e. not via YAML config files), so they'll only generate JavaScript
-    // (i.e. the command-line default).
-    await generateVocabArtifact(ConfigSolidComponent);
-    await generateVocabArtifact(ConfigSolidGeneratorUi);
-
-    await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptCore);
     await generateVocabArtifact(ConfigInruptUiCommon);
     await generateVocabArtifact(ConfigInruptService);
   });
@@ -187,24 +128,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigRdfCommon);
   });
 
-  // it("Common LIT vocabs", async () => {
-  it.skip("Common LIT vocabs", async () => {
-    jest.setTimeout(30000);
-    await generateVocabArtifact(ConfigLitCommon);
-  });
-
   // it('Solid vocabs', async () => {
   it.skip("Solid vocabs", async () => {
     jest.setTimeout(1200000);
-    await generateVocabArtifact(ConfigSolidCommon);
-    // await generateVocabArtifact(ConfigSolidGeneratorUi);
-    // await generateVocabArtifact(ConfigSolidComponent);
+    await generateVocabArtifact(ConfigSolid);
   });
 
   // it("Inrupt vocab", async () => {
   it.skip("Inrupt vocabs", async () => {
     jest.setTimeout(30000);
-    await generateVocabArtifact(ConfigInruptCommon);
+    await generateVocabArtifact(ConfigInruptCore);
     await generateVocabArtifact(ConfigInruptUiCommon);
     await generateVocabArtifact(ConfigInruptService);
   });
