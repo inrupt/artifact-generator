@@ -1,0 +1,24 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+##
+# The artifact name MUST be present
+##
+# artifactName: generated-vocab-common-TEST
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    javaPackageName: com.inrupt.testing
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: Java
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+    sourceFileExtension: java
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - ./schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext.ttl

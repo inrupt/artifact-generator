@@ -399,6 +399,10 @@ class GeneratorConfiguration {
    * @param {string} configSource the source of our configuration (e.g. a file)
    */
   static validateConfiguration(config, configSource) {
+    if (!config.artifactName) {
+      throw new Error(`Missing 'artifactName' field in [${configSource}].`);
+    }
+
     // Check version mismatch.
     if (!config.artifactGeneratorVersion) {
       throw new Error(
