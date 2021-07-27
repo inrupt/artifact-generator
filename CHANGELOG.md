@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
     AG and with other Inrupt libraries
   - When supportBundling===true, use ES module import/exports internally for
     generated vocabs, to enable effective tree-shaking by consuming applications
+- Sort list of generated vocabs alphabetically, in e.g. generated README
 
 ## 0.14.0 2021-07-27
 
