@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Tidied up some circular dependencies on command-line constants.
 - Updates to new namespace for the Artifact Generator's own vocab, and picks up
   major YAML reorganization.
+- Removed type 'any' from generated vocabs in TS
 
 ## 0.13.4
 
