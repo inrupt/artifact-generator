@@ -11,6 +11,8 @@
     <name>generated-vocab-common-TEST</name>
     <description>Bundle of vocabularies that includes the following:
 
+ - override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.
+
  - schema-inrupt-ext: Inrupt extension to Schema.org terms providing
  multilingual alternative names (i.e. labels) and translations for comments
  (e.g. for use directly as labels or tool-tips in user interfaces or error
@@ -19,9 +21,7 @@
  applications (meaning we can provide a much cleaner, less noisy and smaller
  bundle size when generating programming language artifacts that provide
  convenient constants for just these selected terms, rather than including the
- over 2,500 terms currently defined in Schema.org).
-
- - override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.</description>
+ over 2,500 terms currently defined in Schema.org).</description>
 
     <developers>
         <developer>
@@ -34,10 +34,10 @@
         <!-- The contributors listed here are the authors of the vocabularies
         on which these artifacts are based. -->
         <contributor>
-            <name>https://inrupt.com/profile/card/#us</name>
+            <name>Pat McBennett</name>
         </contributor>
         <contributor>
-            <name>Pat McBennett</name>
+            <name>https://inrupt.com/profile/card/#us</name>
         </contributor>
     </contributors>
 
