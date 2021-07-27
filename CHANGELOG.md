@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+## 0.14.0 2021-07-27
+
 - Add option 'vocabContentTypeHeaderOverride' as a HTTP Content Type header
   override, as (some vocab servers (e.g., Resume-RDF 
   "http://rdfs.org/resume-rdf/cv.rdfs#")) return a content type of 'text/plain'
