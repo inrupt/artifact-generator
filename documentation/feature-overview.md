@@ -64,6 +64,27 @@ node index.js watch --vocabListFile <./path/to/the/yaml/file>
 
 The process will run in the foreground until you hit "Enter", and artifacts will be kept up-to-date with vocabularies as long as the daemon is running.
 
+## To see detection of configuration file changes causing re-generation
+
+Run this command from the repository root, and then edit the local 
+`./example/PetRock.ttl` vocabulary, or the YAML configuration file to see
+the real-time re-generation of the bundle each time you save a change:
+
+```
+node index.js watch --vocabListFile ./example/CopyOf-Vocab-List-Common.yml
+```
+
+Run this command multiple times to see re-generation ignored after
+the first time (since no vocabulary files nor the YAML file where changed),
+but then edit either the YAML file or the local `./example/PetRock.ttl`
+vocabulary to see the re-generation again (due to the generator
+detecting the file change):
+
+```
+node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt
+```
+
+
 ## To generate human-readable documentation for a vocabulary (using Widoco)
 
 -    **Note:** This feature requires that at least [Java version 1.8](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)

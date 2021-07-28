@@ -14,7 +14,7 @@ const App = require("./src/App");
 const { getArtifactDirectoryRoot } = require("./src/Util");
 const CommandLine = require("./src/CommandLine");
 
-const debug = debugInstance("lit-artifact-generator:index");
+const debug = debugInstance("artifact-generator:index");
 
 const SUPPORTED_COMMANDS = [
   CommandLine.COMMAND_GENERATE(),
@@ -170,7 +170,7 @@ yargs
     (argv) => {
       if (!argv.inputResources && !argv.vocabListFile) {
         debugInstance(argv.help);
-        debugInstance.enable("lit-artifact-generator:*");
+        debugInstance.enable("artifact-generator:*");
         throw new Error(
           "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
         );
@@ -225,7 +225,7 @@ yargs
   .boolean("quiet")
   .describe(
     "quiet",
-    `If set will not display logging output to console (but you can still use DEBUG environment variable, set to 'lit-artifact-generator:*').`
+    `If set will not display logging output to console (but you can still use DEBUG environment variable, set to 'artifact-generator:*').`
   )
   .default("quiet", false)
 
@@ -259,8 +259,8 @@ function configureLog(argv) {
 
     // Unless our generator's debug logging has been explicitly configured, turn
     // all debugging on.
-    if (namespaces.indexOf("lit-artifact-generator") === -1) {
-      debugInstance.enable("lit-artifact-generator:*");
+    if (namespaces.indexOf("artifact-generator") === -1) {
+      debugInstance.enable("artifact-generator:*");
     }
   }
 }

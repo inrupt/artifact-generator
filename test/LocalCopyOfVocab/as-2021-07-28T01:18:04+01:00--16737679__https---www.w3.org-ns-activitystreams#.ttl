@@ -1,0 +1,918 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+
+<http://www.w3.org/ns/activitystreams#> a owl:Ontology;
+    rdfs:comment "Extended Activity Streams 2.0 Vocabulary"@en;
+    rdfs:label "Activity Streams 2.0"@en;
+    owl:imports <http://www.w3.org/ns/prov#>.
+rdf:langString a rdfs:Datatype.
+xsd:duration a rdfs:Datatype.
+<http://www.w3.org/ns/activitystreams#actor> a owl:ObjectProperty;
+    rdfs:comment "Subproperty of as:attributedTo that identifies the primary actor"@en;
+    rdfs:label "actor"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:subPropertyOf <http://www.w3.org/ns/activitystreams#attributedTo>;
+    rdfs:range _:b3749.
+<http://www.w3.org/ns/activitystreams#Activity> a owl:Class;
+    rdfs:comment "An Object representing some form of Action that has been taken"@en;
+    rdfs:label "Activity"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#attributedTo> a owl:ObjectProperty;
+    rdfs:comment "Identifies an entity to which an object is attributed"@en;
+    rdfs:label "attributedTo"@en;
+    rdfs:domain _:b3755;
+    rdfs:range _:b3752.
+_:b3749 a owl:Class;
+    owl:unionOf _:b3750.
+_:b3750 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3751.
+<http://www.w3.org/ns/activitystreams#Object> a owl:Class;
+    rdfs:label "Object"@en.
+_:b3751 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#Link> a owl:Class;
+    rdfs:comment "Represents a qualified reference to another resource. Patterned after the RFC5988 Web Linking Model"@en;
+    rdfs:label "Link"@en;
+    owl:disjointWith <http://www.w3.org/ns/activitystreams#Object>.
+rdf:nil a <http://www.w3.org/ns/activitystreams#OrderedItems>.
+_:b3752 a owl:Class;
+    owl:unionOf _:b3753.
+_:b3753 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3754.
+_:b3754 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+_:b3755 a owl:Class;
+    owl:unionOf _:b3756.
+_:b3756 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3757.
+_:b3757 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#attachment> a owl:ObjectProperty;
+    rdfs:label "attachment"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3758;
+    owl:equivalentProperty <http://www.w3.org/ns/activitystreams#attachments>.
+_:b3758 a owl:Class;
+    owl:unionOf _:b3759.
+_:b3759 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest _:b3760.
+_:b3760 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#attachments> a owl:ObjectProperty, owl:DeprecatedProperty;
+    rdfs:label "attachments"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3761.
+_:b3761 a owl:Class;
+    owl:unionOf _:b3762.
+_:b3762 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3763.
+_:b3763 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#author> a owl:ObjectProperty, owl:DeprecatedProperty;
+    rdfs:comment "Identifies the author of an object. Deprecated. Use as:attributedTo instead"@en;
+    rdfs:label "author"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:subPropertyOf <http://www.w3.org/ns/activitystreams#attributedTo>;
+    rdfs:range _:b3764.
+_:b3764 a owl:Class;
+    owl:unionOf _:b3765.
+_:b3765 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3766.
+_:b3766 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#bcc> a owl:ObjectProperty;
+    rdfs:label "bcc"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3767.
+_:b3767 a owl:Class;
+    owl:unionOf _:b3768.
+_:b3768 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3769.
+_:b3769 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#bto> a owl:ObjectProperty;
+    rdfs:label "bto"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3770.
+_:b3770 a owl:Class;
+    owl:unionOf _:b3771.
+_:b3771 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3772.
+_:b3772 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#cc> a owl:ObjectProperty;
+    rdfs:label "cc"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3773.
+_:b3773 a owl:Class;
+    owl:unionOf _:b3774.
+_:b3774 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3775.
+_:b3775 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#context> a owl:ObjectProperty;
+    rdfs:comment "Specifies the context within which an object exists or an activity was performed"@en;
+    rdfs:label "context"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3776.
+_:b3776 a owl:Class;
+    owl:unionOf _:b3777.
+_:b3777 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3778.
+_:b3778 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#current> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "current"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Collection>;
+    rdfs:range _:b3779.
+<http://www.w3.org/ns/activitystreams#Collection> a owl:Class;
+    rdfs:comment "An ordered or unordered collection of Objects or Links"@en;
+    rdfs:label "Collection"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+_:b3779 a owl:Class;
+    owl:unionOf _:b3780.
+_:b3780 rdf:first <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdf:rest _:b3781.
+<http://www.w3.org/ns/activitystreams#CollectionPage> a owl:Class;
+    rdfs:comment "A subset of items from a Collection"@en;
+    rdfs:label "CollectionPage"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Collection>.
+_:b3781 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#first> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "first"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Collection>;
+    rdfs:range _:b3782.
+_:b3782 a owl:Class;
+    owl:unionOf _:b3783.
+_:b3783 rdf:first <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdf:rest _:b3784.
+_:b3784 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#generator> a owl:ObjectProperty;
+    rdfs:label "generator"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3785.
+_:b3785 a owl:Class;
+    owl:unionOf _:b3786.
+_:b3786 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3787.
+_:b3787 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#icon> a owl:ObjectProperty;
+    rdfs:label "icon"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3788.
+_:b3788 a owl:Class;
+    owl:unionOf _:b3789.
+_:b3789 rdf:first <http://www.w3.org/ns/activitystreams#Image>;
+    rdf:rest _:b3790.
+<http://www.w3.org/ns/activitystreams#Image> a owl:Class;
+    rdfs:comment "An Image file"@en;
+    rdfs:label "Image"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Document>.
+_:b3790 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#image> a owl:ObjectProperty;
+    rdfs:label "image"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3791.
+_:b3791 a owl:Class;
+    owl:unionOf _:b3792.
+_:b3792 rdf:first <http://www.w3.org/ns/activitystreams#Image>;
+    rdf:rest _:b3793.
+_:b3793 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#inReplyTo> a owl:ObjectProperty;
+    rdfs:label "inReplyTo"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3794.
+_:b3794 a owl:Class;
+    owl:unionOf _:b3795.
+_:b3795 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3796.
+_:b3796 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#items> a owl:ObjectProperty;
+    rdfs:label "items"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Collection>;
+    rdfs:range _:b3797.
+_:b3797 a owl:Class;
+    owl:unionOf _:b3798.
+_:b3798 rdf:first _:b3799;
+    rdf:rest _:b3802.
+_:b3799 a owl:Class;
+    owl:unionOf _:b3800.
+_:b3800 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3801.
+_:b3801 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+_:b3802 rdf:first <http://www.w3.org/ns/activitystreams#OrderedItems>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#OrderedItems> a owl:Class;
+    rdfs:comment "A rdf:List variant for Objects and Links"@en;
+    rdfs:label "OrderedItems"@en;
+    rdfs:subClassOf _:b3920.
+<http://www.w3.org/ns/activitystreams#last> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "last"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Collection>;
+    rdfs:range _:b3803.
+_:b3803 a owl:Class;
+    owl:unionOf _:b3804.
+_:b3804 rdf:first <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdf:rest _:b3805.
+_:b3805 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#location> a owl:ObjectProperty;
+    rdfs:label "location"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3806.
+_:b3806 a owl:Class;
+    owl:unionOf _:b3807.
+_:b3807 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3808.
+_:b3808 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#next> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "next"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdfs:range _:b3809.
+_:b3809 a owl:Class;
+    owl:unionOf _:b3810.
+_:b3810 rdf:first <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdf:rest _:b3811.
+_:b3811 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#object> a owl:ObjectProperty;
+    rdfs:label "object"@en;
+    rdfs:domain _:b3812;
+    rdfs:range _:b3815.
+_:b3812 a owl:Class;
+    owl:unionOf _:b3813.
+_:b3813 rdf:first <http://www.w3.org/ns/activitystreams#Activity>;
+    rdf:rest _:b3814.
+_:b3814 rdf:first <http://www.w3.org/ns/activitystreams#Relationship>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#Relationship> a owl:Class, rdf:Statement;
+    rdfs:comment "Represents a Social Graph relationship between two Individuals (indicated by the 'a' and 'b' properties)"@en;
+    rdfs:label "Relationship"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+_:b3815 a owl:Class;
+    owl:unionOf _:b3816.
+_:b3816 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3817.
+_:b3817 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#oneOf> a owl:ObjectProperty;
+    rdfs:comment "Describes a possible exclusive answer or option for a question."@en;
+    rdfs:label "oneOf"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Question>;
+    rdfs:range _:b3818.
+_:b3818 a owl:Class;
+    owl:unionOf _:b3819.
+_:b3819 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3820.
+_:b3820 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#Question> a owl:Class;
+    rdfs:comment "A question of any sort."@en;
+    rdfs:label "Question"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#IntransitiveActivity>.
+<http://www.w3.org/ns/activitystreams#anyOf> a owl:ObjectProperty;
+    rdfs:comment "Describes a possible inclusive answer or option for a question."@en;
+    rdfs:label "oneOf"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Question>;
+    rdfs:range _:b3821.
+_:b3821 a owl:Class;
+    owl:unionOf _:b3822.
+_:b3822 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3823.
+_:b3823 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#prev> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "prev"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdfs:range _:b3824.
+_:b3824 a owl:Class;
+    owl:unionOf _:b3825.
+_:b3825 rdf:first <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdf:rest _:b3826.
+_:b3826 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#preview> a owl:ObjectProperty;
+    rdfs:label "preview"@en;
+    rdfs:domain _:b3827;
+    rdfs:range _:b3830.
+_:b3827 a owl:Class;
+    owl:unionOf _:b3828.
+_:b3828 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3829.
+_:b3829 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+_:b3830 a owl:Class;
+    owl:unionOf _:b3831.
+_:b3831 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3832.
+_:b3832 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#provider> a owl:ObjectProperty, owl:DeprecatedProperty;
+    rdfs:label "provider"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3833.
+_:b3833 a owl:Class;
+    owl:unionOf _:b3834.
+_:b3834 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3835.
+_:b3835 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#replies> a owl:ObjectProperty;
+    rdfs:label "replies"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range <http://www.w3.org/ns/activitystreams#Collection>.
+<http://www.w3.org/ns/activitystreams#result> a owl:ObjectProperty;
+    rdfs:label "result"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:range _:b3836.
+_:b3836 a owl:Class;
+    owl:unionOf _:b3837.
+_:b3837 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3838.
+_:b3838 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#audience> a owl:ObjectProperty;
+    rdfs:label "audience"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3839.
+_:b3839 a owl:Class;
+    owl:unionOf _:b3840.
+_:b3840 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3841.
+_:b3841 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#partOf> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "partOf"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#CollectionPage>;
+    rdfs:range _:b3842.
+_:b3842 a owl:Class;
+    owl:unionOf _:b3843.
+_:b3843 rdf:first <http://www.w3.org/ns/activitystreams#Collection>;
+    rdf:rest _:b3844.
+_:b3844 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#tag> a owl:ObjectProperty;
+    rdfs:label "tag"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3845.
+_:b3845 a owl:Class;
+    owl:unionOf _:b3846.
+_:b3846 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3847.
+_:b3847 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#tags> a owl:ObjectProperty, owl:DeprecatedProperty;
+    rdfs:label "tags"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3848;
+    owl:equivalentProperty <http://www.w3.org/ns/activitystreams#tag>.
+_:b3848 a owl:Class;
+    owl:unionOf _:b3849.
+_:b3849 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3850.
+_:b3850 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#target> a owl:ObjectProperty;
+    rdfs:label "target"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:range _:b3851.
+_:b3851 a owl:Class;
+    owl:unionOf _:b3852.
+_:b3852 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3853.
+_:b3853 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#origin> a owl:ObjectProperty;
+    rdfs:comment "For certain activities, specifies the entity from which the action is directed."@en;
+    rdfs:label "origin"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:range _:b3854.
+_:b3854 a owl:Class;
+    owl:unionOf _:b3855.
+_:b3855 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3856.
+_:b3856 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#instrument> a owl:ObjectProperty;
+    rdfs:comment "Indentifies an object used (or to be used) to complete an activity"@en;
+    rdfs:label "instrument"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:range _:b3857.
+_:b3857 a owl:Class;
+    owl:unionOf _:b3858.
+_:b3858 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3859.
+_:b3859 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#to> a owl:ObjectProperty;
+    rdfs:label "to"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3860.
+_:b3860 a owl:Class;
+    owl:unionOf _:b3861.
+_:b3861 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3862.
+_:b3862 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#url> a owl:ObjectProperty;
+    rdfs:comment "Specifies a link to a specific representation of the Object"@en;
+    rdfs:label "url"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3863.
+_:b3863 a owl:Class;
+    owl:unionOf _:b3864.
+_:b3864 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest _:b3865.
+_:b3865 rdf:first owl:Thing;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#subject> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:comment "On a Relationship object, identifies the subject. e.g. when saying \"John is connected to Sally\", 'subject' refers to 'John'"@en;
+    rdfs:label "a"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Relationship>;
+    rdfs:subPropertyOf rdf:subject;
+    rdfs:range _:b3866.
+_:b3866 a owl:Class;
+    owl:unionOf _:b3867.
+_:b3867 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest _:b3868.
+_:b3868 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#relationship> a owl:ObjectProperty;
+    rdfs:comment "On a Relationship object, describes the type of relationship"@en;
+    rdfs:label "relationship"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Relationship>;
+    rdfs:subPropertyOf rdf:predicate;
+    rdfs:range rdf:Property.
+<http://www.w3.org/ns/activitystreams#describes> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:comment "On a Profile object, describes the object described by the profile"@en;
+    rdfs:label "describes"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Profile>;
+    rdfs:range <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Profile> a owl:Class;
+    rdfs:comment "A Profile Document"@en;
+    rdfs:label "Profile"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#formerType> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:comment "On a Tombstone object, describes the former type of the deleted object"@en;
+    rdfs:label "formerType"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Tombstone>;
+    rdfs:range <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Tombstone> a owl:Class;
+    rdfs:comment "A placeholder for a deleted object"@en;
+    rdfs:label "Tombstone"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#accuracy> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies the accuracy around the point established by the longitude and latitude"@en;
+    rdfs:label "accuracy"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range _:b3869.
+<http://www.w3.org/ns/activitystreams#Place> a owl:Class;
+    rdfs:comment "A physical or logical location"@en;
+    rdfs:label "Place"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+_:b3869 a rdfs:Datatype;
+    owl:onDatatype xsd:float;
+    owl:withRestrictions _:b3870.
+_:b3870 rdf:first _:b3871;
+    rdf:rest rdf:nil.
+_:b3871 xsd:minInclusive "0.0"^^xsd:float.
+<http://www.w3.org/ns/activitystreams#altitude> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The altitude of a place"@en;
+    rdfs:label "altitude"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range xsd:float.
+<http://www.w3.org/ns/activitystreams#content> a owl:DatatypeProperty;
+    rdfs:comment "The content of the object."@en;
+    rdfs:label "content"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3872.
+_:b3872 a owl:Class;
+    owl:unionOf _:b3873.
+_:b3873 rdf:first rdf:langString;
+    rdf:rest _:b3874.
+_:b3874 rdf:first xsd:string;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#name> a owl:DatatypeProperty;
+    rdfs:label "name"@en;
+    rdfs:domain _:b3878;
+    rdfs:range _:b3875;
+    rdfs:name "The default, plain-text display name of the object or link."@en.
+_:b3875 a owl:Class;
+    owl:unionOf _:b3876.
+_:b3876 rdf:first rdf:langString;
+    rdf:rest _:b3877.
+_:b3877 rdf:first xsd:string;
+    rdf:rest rdf:nil.
+_:b3878 a owl:Class;
+    owl:unionOf _:b3879.
+_:b3879 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3880.
+_:b3880 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#downstreamDuplicates> a owl:DeprecatedProperty, owl:DatatypeProperty;
+    rdfs:label "downstreamDuplicates"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:anyURI.
+<http://www.w3.org/ns/activitystreams#duration> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The duration of the object"@en;
+    rdfs:label "duration"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:duration.
+<http://www.w3.org/ns/activitystreams#endTime> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The ending time of the object"@en;
+    rdfs:label "endTime"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:dateTime.
+<http://www.w3.org/ns/activitystreams#height> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The display height expressed as device independent pixels"@en;
+    rdfs:label "height"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Link>;
+    rdfs:range xsd:nonNegativeInteger.
+<http://www.w3.org/ns/activitystreams#href> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The target URI of the Link"@en;
+    rdfs:label "href"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Link>;
+    rdfs:range xsd:anyURI.
+<http://www.w3.org/ns/activitystreams#hreflang> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "A hint about the language of the referenced resource"@en;
+    rdfs:label "hreflang"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Link>;
+    rdfs:range xsd:language.
+<http://www.w3.org/ns/activitystreams#id> a owl:DeprecatedProperty, owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:label "id"@en;
+    rdfs:domain _:b3881;
+    rdfs:range xsd:anyURI.
+_:b3881 a owl:Class;
+    owl:unionOf _:b3882.
+_:b3882 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest _:b3883.
+_:b3883 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#latitude> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The latitude"@en;
+    rdfs:label "latitude"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range xsd:float.
+<http://www.w3.org/ns/activitystreams#longitude> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The longitude"@en;
+    rdfs:label "longitude"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range xsd:float.
+<http://www.w3.org/ns/activitystreams#mediaType> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The MIME Media Type"@en;
+    rdfs:label "mediaType"@en;
+    rdfs:domain _:b3884;
+    rdfs:range xsd:string.
+_:b3884 a owl:Class;
+    owl:unionOf _:b3885.
+_:b3885 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest _:b3886.
+_:b3886 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#objectType> a owl:DeprecatedProperty, owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:label "objectType"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:anyURI.
+<http://www.w3.org/ns/activitystreams#published> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies the date and time the object was published"@en;
+    rdfs:label "published"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:dateTime.
+<http://www.w3.org/ns/activitystreams#radius> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies a radius around the point established by the longitude and latitude"@en;
+    rdfs:label "radius"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range _:b3887.
+_:b3887 a rdfs:Datatype;
+    owl:onDatatype xsd:float;
+    owl:withRestrictions _:b3888.
+_:b3888 rdf:first _:b3889;
+    rdf:rest rdf:nil.
+_:b3889 xsd:minInclusive "0.0"^^xsd:float.
+<http://www.w3.org/ns/activitystreams#rating> a owl:DeprecatedProperty, owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "A numeric rating (>= 0.0, <= 5.0) for the object"@en;
+    rdfs:label "rating"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3890.
+_:b3890 a rdfs:Datatype;
+    owl:onDatatype xsd:float;
+    owl:withRestrictions _:b3891.
+_:b3891 rdf:first _:b3892;
+    rdf:rest _:b3893.
+_:b3892 xsd:minInclusive "0.0"^^xsd:float.
+_:b3893 rdf:first _:b3894;
+    rdf:rest rdf:nil.
+_:b3894 xsd:maxInclusive "5.0"^^xsd:float.
+<http://www.w3.org/ns/activitystreams#rel> a owl:DatatypeProperty;
+    rdfs:comment "The RFC 5988 or HTML5 Link Relation associated with the Link"@en;
+    rdfs:label "rel"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Link>;
+    rdfs:range xsd:string.
+<http://www.w3.org/ns/activitystreams#startIndex> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "In a strictly ordered logical collection, specifies the index position of the first item in the items list"@en;
+    rdfs:label "startIndex"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#OrderedCollectionPage>;
+    rdfs:range xsd:nonNegativeInteger.
+<http://www.w3.org/ns/activitystreams#OrderedCollectionPage> a owl:Class;
+    rdfs:comment "An ordered subset of items from an OrderedCollection"@en;
+    rdfs:label "OrderedCollectionPage"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#CollectionPage>, <http://www.w3.org/ns/activitystreams#OrderedCollection>.
+<http://www.w3.org/ns/activitystreams#startTime> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The starting time of the object"@en;
+    rdfs:label "startTime"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:dateTime.
+<http://www.w3.org/ns/activitystreams#summary> a owl:DatatypeProperty;
+    rdfs:comment "A short summary of the object"@en;
+    rdfs:label "summary"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range _:b3895.
+_:b3895 a owl:Class;
+    owl:unionOf _:b3896.
+_:b3896 rdf:first rdf:langString;
+    rdf:rest _:b3897.
+_:b3897 rdf:first xsd:string;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#totalItems> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "The total number of items in a logical collection"@en;
+    rdfs:label "totalItems"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Collection>;
+    rdfs:range xsd:nonNegativeInteger.
+<http://www.w3.org/ns/activitystreams#units> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Identifies the unit of measurement used by the radius, altitude and accuracy properties. The value can be expressed either as one of a set of predefined units or as a well-known common URI that identifies units."@en;
+    rdfs:label "units"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Place>;
+    rdfs:range _:b3898.
+_:b3898 a rdfs:Datatype;
+    owl:unionOf _:b3899.
+_:b3899 rdf:first _:b3900;
+    rdf:rest _:b3907.
+_:b3900 a rdfs:Datatype;
+    owl:oneOf _:b3901.
+_:b3901 rdf:first "inches";
+    rdf:rest _:b3902.
+_:b3902 rdf:first "feet";
+    rdf:rest _:b3903.
+_:b3903 rdf:first "miles";
+    rdf:rest _:b3904.
+_:b3904 rdf:first "cm";
+    rdf:rest _:b3905.
+_:b3905 rdf:first "m";
+    rdf:rest _:b3906.
+_:b3906 rdf:first "km";
+    rdf:rest rdf:nil.
+_:b3907 rdf:first xsd:anyURI;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/activitystreams#updated> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies when the object was last updated"@en;
+    rdfs:label "updated"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:dateTime.
+<http://www.w3.org/ns/activitystreams#upstreamDuplicates> a owl:DeprecatedProperty, owl:DatatypeProperty;
+    rdfs:label "upstreamDuplicates"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Object>;
+    rdfs:range xsd:anyURI.
+<http://www.w3.org/ns/activitystreams#verb> a owl:DeprecatedProperty, owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:label "verb"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Activity>;
+    rdfs:range xsd:anyURI.
+<http://www.w3.org/ns/activitystreams#width> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies the preferred display width of the content, expressed in terms of device independent pixels."@en;
+    rdfs:label "width"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Link>;
+    rdfs:range xsd:nonNegativeInteger.
+<http://www.w3.org/ns/activitystreams#deleted> a owl:FunctionalProperty, owl:DatatypeProperty;
+    rdfs:comment "Specifies the date and time the object was deleted"@en;
+    rdfs:label "deleted"@en;
+    rdfs:domain <http://www.w3.org/ns/activitystreams#Tombstone>;
+    rdfs:range xsd:dateTime.
+<http://www.w3.org/ns/activitystreams#Accept> a owl:Class;
+    rdfs:comment "Actor accepts the Object"@en;
+    rdfs:label "Accept"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Block> a owl:Class;
+    rdfs:label "Block"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Ignore>.
+<http://www.w3.org/ns/activitystreams#Ignore> a owl:Class;
+    rdfs:comment "Actor is ignoring the Object"@en;
+    rdfs:label "Ignore"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#IntransitiveActivity> a owl:Class;
+    rdfs:comment "An Activity that has no direct object"@en;
+    rdfs:label "IntransitiveActivity"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>, _:b3908.
+_:b3908 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/activitystreams#object>;
+    owl:maxCardinality "0"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/activitystreams#Add> a owl:Class;
+    rdfs:comment "To Add an Object or Link to Something"@en;
+    rdfs:label "Add"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Announce> a owl:Class;
+    rdfs:comment "Actor announces the object to the target"@en;
+    rdfs:label "Announce"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Application> a owl:Class;
+    rdfs:comment "Represents a software application of any sort"@en;
+    rdfs:label "Application"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Arrive> a owl:Class;
+    rdfs:comment "To Arrive Somewhere (can be used, for instance, to indicate that a particular entity is currently located somewhere, e.g. a \"check-in\")"@en;
+    rdfs:label "Arrive"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#IntransitiveActivity>.
+<http://www.w3.org/ns/activitystreams#Article> a owl:Class;
+    rdfs:comment "A written work. Typically several paragraphs long. For example, a blog post or a news article."@en;
+    rdfs:label "Article"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Audio> a owl:Class;
+    rdfs:comment "An audio file"@en;
+    rdfs:label "Audio"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Document>.
+<http://www.w3.org/ns/activitystreams#Document> a owl:Class;
+    rdfs:comment "Represents a digital document/file of any sort"@en;
+    rdfs:label "Document"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#OrderedCollection> a owl:Class;
+    rdfs:comment "A variation of Collection in which items are strictly ordered"@en;
+    rdfs:label "OrderedCollection"@en;
+    rdfs:subClassOf _:b3909.
+<http://www.w3.org/ns/activitystreams#Create> a owl:Class;
+    rdfs:comment "To Create Something"@en;
+    rdfs:label "Create"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Delete> a owl:Class;
+    rdfs:comment "To Delete Something"@en;
+    rdfs:label "Delete"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Dislike> a owl:Class;
+    rdfs:comment "The actor dislikes the object"@en;
+    rdfs:label "Dislike"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Event> a owl:Class;
+    rdfs:comment "An Event of any kind"@en;
+    rdfs:label "Event"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Flag> a owl:Class;
+    rdfs:comment "To flag something (e.g. flag as inappropriate, flag as spam, etc)"@en;
+    rdfs:label "Flag"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Follow> a owl:Class;
+    rdfs:comment "To Express Interest in Something"@en;
+    rdfs:label "Follow"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Group> a owl:Class;
+    rdfs:comment "A Group of any kind."@en;
+    rdfs:label "Group"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Invite> a owl:Class;
+    rdfs:comment "To invite someone or something to something"@en;
+    rdfs:label "Invite"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Offer>.
+<http://www.w3.org/ns/activitystreams#Offer> a owl:Class;
+    rdfs:comment "To Offer something to someone or something"@en;
+    rdfs:label "Offer"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Join> a owl:Class;
+    rdfs:comment "To Join Something"@en;
+    rdfs:label "Join"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Leave> a owl:Class;
+    rdfs:comment "To Leave Something"@en;
+    rdfs:label "Leave"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Like> a owl:Class;
+    rdfs:comment "To Like Something"@en;
+    rdfs:label "Like"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#View> a owl:Class;
+    rdfs:comment "The actor viewed the object"@en;
+    rdfs:label "View"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Listen> a owl:Class;
+    rdfs:comment "The actor listened to the object"@en;
+    rdfs:label "Listen"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Read> a owl:Class;
+    rdfs:comment "The actor read the object"@en;
+    rdfs:label "Read"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Move> a owl:Class;
+    rdfs:comment "The actor is moving the object. The target specifies where the object is moving to. The origin specifies where the object is moving from.";
+    rdfs:label "Move"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Travel> a owl:Class;
+    rdfs:comment "The actor is traveling to the target. The origin specifies where the actor is traveling from.";
+    rdfs:label "Travel"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#IntransitiveActivity>.
+<http://www.w3.org/ns/activitystreams#Mention> a owl:Class;
+    rdfs:comment "A specialized Link that represents an @mention"@en;
+    rdfs:label "Mention"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Link>.
+<http://www.w3.org/ns/activitystreams#Note> a owl:Class;
+    rdfs:comment "A Short note, typically less than a single paragraph. A \"tweet\" is an example, or a \"status update\""@en;
+    rdfs:label "Note"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+_:b3909 a owl:Class;
+    owl:intersectionOf _:b3910.
+_:b3910 rdf:first <http://www.w3.org/ns/activitystreams#Collection>;
+    rdf:rest _:b3911.
+_:b3911 rdf:first _:b3912;
+    rdf:rest rdf:nil.
+_:b3912 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/activitystreams#items>;
+    owl:allValuesFrom _:b3913.
+_:b3913 a owl:Class;
+    owl:intersectionOf _:b3914.
+_:b3914 rdf:first <http://www.w3.org/ns/activitystreams#OrderedItems>;
+    rdf:rest _:b3915.
+_:b3915 rdf:first _:b3916;
+    rdf:rest rdf:nil.
+_:b3916 a owl:Class;
+    owl:complementOf _:b3917.
+_:b3917 a owl:Class;
+    owl:unionOf _:b3918.
+_:b3918 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3919.
+_:b3919 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+_:b3920 a owl:Class;
+    owl:intersectionOf _:b3921.
+_:b3921 rdf:first rdf:List;
+    rdf:rest _:b3922.
+_:b3922 rdf:first _:b3923;
+    rdf:rest _:b3927.
+_:b3923 a owl:Restriction;
+    owl:onProperty rdf:first;
+    owl:allValuesFrom _:b3924.
+_:b3924 a owl:Class;
+    owl:unionOf _:b3925.
+_:b3925 rdf:first <http://www.w3.org/ns/activitystreams#Object>;
+    rdf:rest _:b3926.
+_:b3926 rdf:first <http://www.w3.org/ns/activitystreams#Link>;
+    rdf:rest rdf:nil.
+_:b3927 rdf:first _:b3928;
+    rdf:rest rdf:nil.
+_:b3928 a owl:Restriction;
+    owl:onProperty rdf:rest;
+    owl:allValuesFrom <http://www.w3.org/ns/activitystreams#OrderedItems>.
+<http://www.w3.org/ns/activitystreams#Page> a owl:Class;
+    rdfs:comment "A Web Page"@en;
+    rdfs:label "Page"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Person> a owl:Class;
+    rdfs:comment "A Person"@en;
+    rdfs:label "Person"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Organization> a owl:Class;
+    rdfs:comment "An Organization"@en;
+    rdfs:label "Organization"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#Reject> a owl:Class;
+    rdfs:comment "Actor rejects the Object"@en;
+    rdfs:label "Reject"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Remove> a owl:Class;
+    rdfs:comment "To Remove Something"@en;
+    rdfs:label "Remove"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Service> a owl:Class;
+    rdfs:comment "A service provided by some entity"@en;
+    rdfs:label "Service"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Object>.
+<http://www.w3.org/ns/activitystreams#TentativeAccept> a owl:Class;
+    rdfs:comment "Actor tentatively accepts the Object"@en;
+    rdfs:label "TentativeAccept"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Accept>.
+<http://www.w3.org/ns/activitystreams#TentativeReject> a owl:Class;
+    rdfs:comment "Actor tentatively rejects the object"@en;
+    rdfs:label "TentativeReject"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Reject>.
+<http://www.w3.org/ns/activitystreams#Undo> a owl:Class;
+    rdfs:comment "To Undo Something. This would typically be used to indicate that a previous Activity has been undone."@en;
+    rdfs:label "Undo"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Update> a owl:Class;
+    rdfs:comment "To Update/Modify Something"@en;
+    rdfs:label "Update"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Activity>.
+<http://www.w3.org/ns/activitystreams#Video> a owl:Class;
+    rdfs:comment "A Video document of any kind."@en;
+    rdfs:label "Video"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/activitystreams#Document>.

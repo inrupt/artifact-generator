@@ -6,8 +6,8 @@
   "main": "index.js",
   "module": "wrapper.js",
   "author": {
-    "name": "@inrupt/lit-artifact-generator",
-    "url": "https://github.com/inrupt/lit-artifact-generator"
+    "name": "@inrupt/artifact-generator",
+    "url": "https://github.com/inrupt/artifact-generator"
   },
   "license": "MIT",
   "dependencies": {

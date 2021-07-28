@@ -729,7 +729,7 @@ describe("End-to-end tests", () => {
   });
 
   describe("Build Java artifacts", () => {
-    it("should create from an ontology file", async () => {
+    it("should create from an ontology file - Java artifact", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/generate-java";
       const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);

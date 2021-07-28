@@ -11,7 +11,7 @@ const FileGenerator = require("./generator/FileGenerator");
 const Resource = require("./Resource");
 
 // Just a sample configuration file name to use when initialising a YAML file
-// for a users who wants a boilerplate YAML generated for them.
+// for a user who wants a boilerplate YAML generated for them.
 const SAMPLE_CONFIG_NAME = "sample-vocab.yml";
 
 module.exports = class App {

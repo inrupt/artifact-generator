@@ -1,0 +1,678 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix ui-inrupt: <http://www.w3.org/ns/ui#>.
+
+<http://www.w3.org/ns/ui> <http://purl.org/dc/elements/1.1/author> <https://www.w3.org/People/Berners-Lee/card#i>;
+    <http://purl.org/dc/elements/1.1/created> "2010-08-07"^^xsd:date;
+    <http://purl.org/dc/elements/1.1/description> "The User Interface ontology allows the definition\n\tof forms for processing RDF model data, and include a bootstrap form for\n\tediting forms. It allows user interface hints such as background colors,\n\tcan be associated with objects and classes.\n\t";
+    <http://purl.org/dc/elements/1.1/license> <https://creativecommons.org/publicdomain/zero/1.0/>;
+    <http://purl.org/dc/elements/1.1/modified> "$Date: 2021/03/04 18:29:49 $";
+    <http://purl.org/dc/elements/1.1/title> "An ontology for User Interface description, Hints and Forms.".
+ui-inrupt:BooleanField rdfs:subClassOf ui-inrupt:NumericField.
+ui-inrupt:NumericField rdfs:subClassOf ui-inrupt:ValueField;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b2711.
+ui-inrupt:ValueField rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b2726.
+_:b2711 rdf:first ui-inrupt:BooleanField;
+    rdf:rest _:b2712.
+ui-inrupt:CaseForm <http://purl.org/dc/elements/1.1/title> "Form for a conditional case in a form";
+    a ui-inrupt:Group;
+    ui-inrupt:parts _:b1701.
+ui-inrupt:Group rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single.
+ui-inrupt:parts a rdf:Property;
+    rdfs:label "parts"@en;
+    rdfs:domain ui-inrupt:Form;
+    rdfs:range rdf:Collection.
+_:b1701 rdf:first _:b1702;
+    rdf:rest _:b1703.
+ui-inrupt:Form a rdfs:Class;
+    owl:disjointUnionOf _:b2699;
+    rdfs:comment "A form can be any type of single field, or typically a Group of several fields,\n    including interspersed headings and comments.  ";
+    ui-inrupt:creationForm ui-inrupt:FormForm.
+ui-inrupt:Single a rdfs:Class;
+    owl:disjointUnionOf _:b2716.
+_:b1702 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from rdfs:Class;
+    ui-inrupt:label "when it is";
+    ui-inrupt:property ui-inrupt:for;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1703 rdf:first _:b1704;
+    rdf:rest rdf:nil.
+ui-inrupt:Choice rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single.
+ui-inrupt:from a rdf:Property;
+    rdfs:label "from";
+    rdfs:domain ui-inrupt:Choice;
+    rdfs:range rdf:Class;
+    ui-inrupt:prompt "from what class".
+ui-inrupt:label a rdf:Property;
+    rdfs:label "Etiqueta"@es, "Label"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:property a rdf:Property;
+    rdfs:label "property to be stored"@en;
+    rdfs:domain ui-inrupt:Form;
+    rdfs:range rdf:Property;
+    rdfs:comment "Many fields prompt for information about a given property of the subject.\n    When field is filled in, this gives which property is written into the data.".
+ui-inrupt:for a rdf:Property;
+    rdfs:label "for"@en;
+    rdfs:comment "The value for which this case is selected.".
+ui-inrupt:prompt a rdf:Property;
+    rdfs:label "user prompt";
+    ui-inrupt:prompt "A longer prompt for a user inputting this property";
+    rdfs:comment "A string for the UI to use if the user needs a longer\n        prompts than just a field name, the s:label. ".
+_:b1704 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from ui-inrupt:Form;
+    ui-inrupt:property ui-inrupt:use;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:use ui-inrupt:FieldForm.
+ui-inrupt:use a rdf:Property;
+    rdfs:range ui-inrupt:Form.
+ui-inrupt:FieldForm <http://purl.org/dc/elements/1.1/title> "Form for selecting a type of field";
+    a ui-inrupt:Group;
+    ui-inrupt:parts _:b1706.
+_:b2699 rdf:first ui-inrupt:ValueField;
+    rdf:rest _:b2700.
+ui-inrupt:creationForm a rdf:Property;
+    rdfs:label "creation form";
+    rdfs:domain rdfs:Class;
+    rdfs:range ui-inrupt:Form;
+    rdfs:comment "A form which may be used to collect information about a\n    hitherto locally undocumented instance instance of this class.".
+ui-inrupt:FormForm <http://purl.org/dc/elements/1.1/title> "Form for editing Forms";
+    a ui-inrupt:Group, ui-inrupt:Form;
+    ui-inrupt:parts _:b2707.
+_:b1706 rdf:first _:b1707;
+    rdf:rest _:b1708.
+_:b2716 rdf:first ui-inrupt:ValueField;
+    rdf:rest _:b2717.
+ui-inrupt:Classifier rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single;
+    a rdfs:Class;
+    rdfs:label "classifier";
+    rdfs:comment "A classifier allows the user to select the type of an object.\n    The possible types must be subclasses of some overall class, the \"category\".\n    (Ideally, the superclass is also set up as the disjoint union of the subclasses,\n    if they are disjoint.)\n\n    The form normally stores the resulting classes using an r:type triple,\n    but a different predicate can be used if required, so the classifier field\n    needs is 'property' defined too.\n\n    If the subclass selected itself is has subclasses defined, the user can\n    recursively select from them in turn, as many levels as needed.".
+ui-inrupt:Color a rdfs:Datatype;
+    rdfs:label "hex color"@en;
+    rdfs:comment "Must be a valid CSS color string such as one could put in\n\t\t\tan HTML style attribute.  This must be in the #xxxxxx form,\n\t\t\t(with 6 digits of lowercase hex) so that it\n\t\t\tcan work eg with Graphviz.\n\t\t\tAs this is just an encoded array of RGB values,\n\t\t\tyou can do math with these, such as blending, complement, etc.";
+    owl:onDatatype xsd:string;
+    owl:withRestrictions _:b1705.
+_:b1705 rdf:first ui-inrupt:ColorValuespaceRestriction;
+    rdf:rest rdf:nil.
+ui-inrupt:ColorValuespaceRestriction xsd:pattern "#[0-9a-z]{6}".
+ui-inrupt:ColorField rdfs:subClassOf ui-inrupt:ValueField.
+_:b2726 rdf:first ui-inrupt:TextField;
+    rdf:rest _:b2727.
+ui-inrupt:Comment rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single;
+    a rdfs:Class;
+    rdfs:label "Comentario"@es, "Comment"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:DateField rdfs:subClassOf ui-inrupt:ValueField.
+ui-inrupt:DateTimeField rdfs:subClassOf ui-inrupt:ValueField.
+ui-inrupt:DecimalField rdfs:subClassOf ui-inrupt:NumericField.
+ui-inrupt:EmailField rdfs:subClassOf ui-inrupt:ValueField.
+ui-inrupt:FF1 a ui-inrupt:Heading;
+    ui-inrupt:sequence "1"^^xsd:integer;
+    ui-inrupt:contents "Edit Form"@en.
+ui-inrupt:Heading rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single.
+ui-inrupt:contents a rdf:Property;
+    rdfs:label "Contenido"@es, "Contents"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:FF2 a ui-inrupt:SingleLineTextField;
+    ui-inrupt:property <http://purl.org/dc/elements/1.1/title>;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:size "60"^^xsd:integer.
+ui-inrupt:SingleLineTextField rdfs:subClassOf ui-inrupt:TextField.
+ui-inrupt:size a rdf:Property;
+    rdfs:label "size of field";
+    rdfs:domain ui-inrupt:ValueField;
+    rdfs:range xsd:integer;
+    ui-inrupt:prompt "size of field in characters".
+ui-inrupt:TextField rdfs:subClassOf ui-inrupt:ValueField;
+    a rdfs:Class;
+    owl:disjointUnionOf _:b2723.
+ui-inrupt:FF3 a ui-inrupt:Comment;
+    ui-inrupt:sequence "3"^^xsd:integer;
+    ui-inrupt:contents "To add a field to the form, press the plus at the bottom,\n        and then select what sort of field you want."@en;
+    ui-inrupt:style "background-color: #ffe;".
+ui-inrupt:style a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "style";
+    ui-inrupt:prompt "CSS style";
+    rdfs:comment "Must be a valid CSS style string such as one could put in\n        an HTML style attribute.  Depending on the user interface system, this can\n        by given to individuals, classes or properties. It is up to a user interface\n        which wants to draw on them to pick how it uses styles from which parts\n        of the data it has.  For example, the style of a class may be picked\n        to distinguish information about things in that class.".
+_:b1707 a ui-inrupt:Classifier;
+    ui-inrupt:property rdf:type;
+    ui-inrupt:sequence "1"^^xsd:integer;
+    ui-inrupt:category ui-inrupt:Form.
+_:b1708 rdf:first _:b1709;
+    rdf:rest rdf:nil.
+ui-inrupt:category a rdf:Property;
+    rdfs:label "overall superclass"@en;
+    rdfs:domain ui-inrupt:Classifier;
+    rdfs:range rdfs:Class;
+    rdfs:comment "The superclass subclasses of which will be selected.".
+_:b1709 a ui-inrupt:Options;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:case _:b1710, _:b1718, _:b1726, _:b1734, _:b1742, _:b1746, _:b1754, _:b1762, _:b1766, _:b1770, _:b1771, _:b1777, _:b2675, _:b2685, _:b2695, _:b2697;
+    ui-inrupt:dependingOn rdf:type.
+ui-inrupt:Options rdfs:subClassOf ui-inrupt:Form, ui-inrupt:Single.
+_:b1710 ui-inrupt:for ui-inrupt:TextField;
+    ui-inrupt:use _:b1711.
+_:b1718 ui-inrupt:for ui-inrupt:IntegerField;
+    ui-inrupt:use _:b1719.
+_:b1726 ui-inrupt:for ui-inrupt:DecimalField;
+    ui-inrupt:use _:b1727.
+_:b1734 ui-inrupt:for ui-inrupt:FloatField;
+    ui-inrupt:use _:b1735.
+_:b1742 ui-inrupt:for ui-inrupt:ColorField;
+    ui-inrupt:use _:b1743.
+_:b1746 ui-inrupt:for ui-inrupt:DateField;
+    ui-inrupt:use _:b1747.
+_:b1754 ui-inrupt:for ui-inrupt:DateTimeField;
+    ui-inrupt:use _:b1755.
+_:b1762 ui-inrupt:for ui-inrupt:EmailField;
+    ui-inrupt:use _:b1763.
+_:b1766 ui-inrupt:for ui-inrupt:PhoneField;
+    ui-inrupt:use _:b1767.
+_:b1770 ui-inrupt:for ui-inrupt:Group;
+    ui-inrupt:use ui-inrupt:FieldList.
+_:b1771 ui-inrupt:for ui-inrupt:Options;
+    ui-inrupt:use _:b1772.
+_:b1777 ui-inrupt:for ui-inrupt:Choice;
+    ui-inrupt:use _:b1778.
+_:b2675 ui-inrupt:for ui-inrupt:Classifier;
+    ui-inrupt:use _:b2676.
+_:b2685 ui-inrupt:for ui-inrupt:Multiple;
+    ui-inrupt:use _:b2686.
+_:b2695 ui-inrupt:for ui-inrupt:Heading;
+    ui-inrupt:use _:b2696.
+_:b2697 ui-inrupt:for ui-inrupt:Comment;
+    ui-inrupt:use _:b2698.
+ui-inrupt:dependingOn a rdf:Property;
+    rdfs:label "depending on"@en;
+    rdfs:domain ui-inrupt:Options;
+    rdfs:range rdf:Property;
+    rdfs:comment "Many fields prompt for information about a given property of the subject".
+_:b1711 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1712.
+_:b2723 rdf:first ui-inrupt:SingleLineTextField;
+    rdf:rest _:b2724.
+_:b1712 rdf:first _:b1713;
+    rdf:rest _:b1714.
+_:b1713 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property.
+_:b1714 rdf:first _:b1715;
+    rdf:rest _:b1716.
+_:b1715 a ui-inrupt:IntegerField;
+    ui-inrupt:label "field size";
+    ui-inrupt:property ui-inrupt:size;
+    ui-inrupt:max "4096"^^xsd:integer;
+    ui-inrupt:min "1"^^xsd:integer.
+_:b1716 rdf:first _:b1717;
+    rdf:rest rdf:nil.
+ui-inrupt:IntegerField rdfs:subClassOf ui-inrupt:NumericField.
+_:b1717 a ui-inrupt:IntegerField;
+    ui-inrupt:label "Max. length of string";
+    ui-inrupt:property ui-inrupt:maxLength;
+    ui-inrupt:min "1"^^xsd:integer.
+ui-inrupt:maxLength a rdf:Property;
+    rdfs:label "Longitud máxima"@es, "Max length"@en, "max length of value";
+    rdfs:domain ui-inrupt:TextField;
+    rdfs:range xsd:integer;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+_:b1719 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1720.
+_:b1720 rdf:first _:b1721;
+    rdf:rest _:b1722.
+_:b1721 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1722 rdf:first _:b1723;
+    rdf:rest _:b1724.
+_:b1723 a ui-inrupt:IntegerField;
+    ui-inrupt:label "minimum value";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1724 rdf:first _:b1725;
+    rdf:rest rdf:nil.
+_:b1725 a ui-inrupt:IntegerField;
+    ui-inrupt:label "maximum value";
+    ui-inrupt:property ui-inrupt:max;
+    ui-inrupt:sequence "3"^^xsd:integer.
+_:b1727 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1728.
+_:b1728 rdf:first _:b1729;
+    rdf:rest _:b1730.
+_:b1729 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1730 rdf:first _:b1731;
+    rdf:rest _:b1732.
+_:b1731 a ui-inrupt:DecimalField;
+    ui-inrupt:label "minimum value";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1732 rdf:first _:b1733;
+    rdf:rest rdf:nil.
+_:b1733 a ui-inrupt:DecimalField;
+    ui-inrupt:label "maximum value";
+    ui-inrupt:property ui-inrupt:max;
+    ui-inrupt:sequence "3"^^xsd:integer.
+ui-inrupt:FloatField rdfs:subClassOf ui-inrupt:NumericField.
+_:b1735 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1736.
+_:b1736 rdf:first _:b1737;
+    rdf:rest _:b1738.
+_:b1737 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1738 rdf:first _:b1739;
+    rdf:rest _:b1740.
+_:b1739 a ui-inrupt:FloatField;
+    ui-inrupt:label "minimum value";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1740 rdf:first _:b1741;
+    rdf:rest rdf:nil.
+_:b1741 a ui-inrupt:FloatField;
+    ui-inrupt:label "maximum value";
+    ui-inrupt:property ui-inrupt:max;
+    ui-inrupt:sequence "3"^^xsd:integer.
+_:b1743 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1744.
+_:b1744 rdf:first _:b1745;
+    rdf:rest rdf:nil.
+_:b1745 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1747 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1748.
+_:b1748 rdf:first _:b1749;
+    rdf:rest _:b1750.
+_:b1749 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1750 rdf:first _:b1751;
+    rdf:rest _:b1752.
+_:b1751 a ui-inrupt:DateField;
+    ui-inrupt:label "min";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1752 rdf:first _:b1753;
+    rdf:rest rdf:nil.
+_:b1753 a ui-inrupt:DateField;
+    ui-inrupt:label "max";
+    ui-inrupt:property ui-inrupt:max;
+    ui-inrupt:sequence "3"^^xsd:integer.
+_:b1755 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1756.
+_:b1756 rdf:first _:b1757;
+    rdf:rest _:b1758.
+_:b1757 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:DatatypeProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1758 rdf:first _:b1759;
+    rdf:rest _:b1760.
+_:b1759 a ui-inrupt:DateTimeField;
+    ui-inrupt:label "min";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1760 rdf:first _:b1761;
+    rdf:rest rdf:nil.
+_:b1761 a ui-inrupt:DateTimeField;
+    ui-inrupt:label "max";
+    ui-inrupt:property ui-inrupt:max;
+    ui-inrupt:sequence "3"^^xsd:integer.
+_:b1763 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1764.
+_:b1764 rdf:first _:b1765;
+    rdf:rest rdf:nil.
+_:b1765 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:ObjectProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+ui-inrupt:PhoneField rdfs:subClassOf ui-inrupt:ValueField.
+_:b1767 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1768.
+_:b1768 rdf:first _:b1769;
+    rdf:rest rdf:nil.
+_:b1769 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:ObjectProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+ui-inrupt:FieldList a ui-inrupt:Multiple;
+    ui-inrupt:property ui-inrupt:parts;
+    ui-inrupt:sequence "10"^^xsd:integer;
+    ui-inrupt:part ui-inrupt:FieldForm;
+    ui-inrupt:ordered ui-inrupt:true.
+ui-inrupt:Multiple rdfs:subClassOf ui-inrupt:Form.
+ui-inrupt:part a rdf:Property;
+    rdfs:label "part"@en;
+    rdfs:domain ui-inrupt:Form;
+    rdfs:range ui-inrupt:Form.
+ui-inrupt:ordered rdfs:label "ordered";
+    rdfs:range xsd:Boolean;
+    ui-inrupt:e rdf:Property.
+_:b1772 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1773.
+_:b1773 rdf:first _:b1774;
+    rdf:rest _:b1775.
+_:b1774 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from rdf:Property;
+    ui-inrupt:label "depending on";
+    ui-inrupt:property ui-inrupt:dependingOn;
+    ui-inrupt:sequence "1"^^xsd:integer;
+    ui-inrupt:default rdf:type.
+_:b1775 rdf:first _:b1776;
+    rdf:rest rdf:nil.
+_:b1776 a ui-inrupt:Multiple;
+    ui-inrupt:property ui-inrupt:case;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:part ui-inrupt:CaseForm.
+_:b1778 a ui-inrupt:Group;
+    ui-inrupt:parts _:b1779.
+_:b1779 rdf:first _:b1780;
+    rdf:rest _:b1781.
+_:b1780 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:ObjectProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b1781 rdf:first _:b1782;
+    rdf:rest _:b1783.
+_:b1782 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from rdfs:Class;
+    ui-inrupt:label "destination class";
+    ui-inrupt:property ui-inrupt:from;
+    ui-inrupt:sequence "2"^^xsd:integer.
+_:b1783 rdf:first _:b1784;
+    rdf:rest _:b2673.
+_:b1784 a ui-inrupt:BooleanField;
+    ui-inrupt:label "user can add new";
+    ui-inrupt:property ui-inrupt:canMintNew;
+    ui-inrupt:sequence "3"^^xsd:integer.
+_:b2673 rdf:first _:b2674;
+    rdf:rest rdf:nil.
+_:b2674 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from ui-inrupt:Form;
+    ui-inrupt:label "Nested Form (if any)";
+    ui-inrupt:property ui-inrupt:use;
+    ui-inrupt:sequence "4"^^xsd:integer;
+    ui-inrupt:use ui-inrupt:FormForm;
+    ui-inrupt:optional ui-inrupt:true.
+_:b2707 rdf:first ui-inrupt:FF1;
+    rdf:rest _:b2708.
+_:b2676 a ui-inrupt:Group;
+    ui-inrupt:parts _:b2677.
+_:b2677 rdf:first _:b2678;
+    rdf:rest _:b2679.
+_:b2678 a ui-inrupt:Comment;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:contents "A classifier allows the user to which classes the item belongs to, given a common superclass of the allowed classes.  Give the superclass here:".
+_:b2679 rdf:first _:b2680;
+    rdf:rest _:b2681.
+_:b2680 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from rdfs:Class;
+    ui-inrupt:label "superclass";
+    ui-inrupt:property ui-inrupt:category;
+    ui-inrupt:sequence "4"^^xsd:integer.
+_:b2681 rdf:first _:b2682;
+    rdf:rest _:b2683.
+_:b2682 a ui-inrupt:Comment;
+    ui-inrupt:sequence "6"^^xsd:integer;
+    ui-inrupt:contents "(When the choice is made normally the item is given a r:type. Set this to r:type unless you want the form to set a different property.)".
+_:b2683 rdf:first _:b2684;
+    rdf:rest rdf:nil.
+_:b2684 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from owl:ObjectProperty;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "8"^^xsd:integer;
+    ui-inrupt:default rdf:type.
+_:b2686 a ui-inrupt:Group;
+    ui-inrupt:parts _:b2687.
+_:b2687 rdf:first _:b2688;
+    rdf:rest _:b2689.
+_:b2688 a ui-inrupt:BooleanField;
+    ui-inrupt:label "ordered";
+    ui-inrupt:property ui-inrupt:ordered;
+    ui-inrupt:sequence "0"^^xsd:integer.
+_:b2689 rdf:first _:b2690;
+    rdf:rest _:b2691.
+_:b2690 a ui-inrupt:IntegerField;
+    ui-inrupt:label "minimum number";
+    ui-inrupt:property ui-inrupt:min;
+    ui-inrupt:sequence "0"^^xsd:integer.
+_:b2691 rdf:first _:b2692;
+    rdf:rest _:b2693.
+_:b2692 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from rdf:Property;
+    ui-inrupt:label "property";
+    ui-inrupt:property ui-inrupt:property;
+    ui-inrupt:sequence "1"^^xsd:integer.
+_:b2693 rdf:first _:b2694;
+    rdf:rest rdf:nil.
+_:b2694 a ui-inrupt:Choice;
+    ui-inrupt:canMintNew ui-inrupt:true;
+    ui-inrupt:from ui-inrupt:Form;
+    ui-inrupt:property ui-inrupt:part;
+    ui-inrupt:sequence "2"^^xsd:integer;
+    ui-inrupt:use ui-inrupt:FieldForm.
+_:b2696 a ui-inrupt:SingleLineTextField;
+    ui-inrupt:property ui-inrupt:contents.
+_:b2698 a ui-inrupt:MultiLineTextField;
+    ui-inrupt:property ui-inrupt:contents.
+ui-inrupt:MultiLineTextField rdfs:subClassOf ui-inrupt:TextField.
+_:b2700 rdf:first ui-inrupt:Group;
+    rdf:rest _:b2701.
+_:b2701 rdf:first ui-inrupt:Choice;
+    rdf:rest _:b2702.
+_:b2702 rdf:first ui-inrupt:Classifier;
+    rdf:rest _:b2703.
+_:b2703 rdf:first ui-inrupt:Options;
+    rdf:rest _:b2704.
+_:b2704 rdf:first ui-inrupt:Multiple;
+    rdf:rest _:b2705.
+_:b2705 rdf:first ui-inrupt:Heading;
+    rdf:rest _:b2706.
+_:b2706 rdf:first ui-inrupt:Comment;
+    rdf:rest rdf:nil.
+_:b2708 rdf:first ui-inrupt:FF2;
+    rdf:rest _:b2709.
+_:b2709 rdf:first ui-inrupt:FF3;
+    rdf:rest _:b2710.
+_:b2710 rdf:first ui-inrupt:FieldList;
+    rdf:rest rdf:nil.
+ui-inrupt:NamedNodeURIField rdfs:subClassOf ui-inrupt:TextField;
+    a rdfs:Class;
+    rdfs:label "Something by its URI";
+    rdfs:comment "A NamedNodeURIField is like a SingleLineTextField, except\n\t\tthat the value it generates is not a literal string but an RDF node with the given URI.\n\t\tNormally users should not see URIs. When they do, this a way to do it.\n\t\t".
+_:b2712 rdf:first ui-inrupt:TriStateField;
+    rdf:rest _:b2713.
+ui-inrupt:TriStateField rdfs:subClassOf ui-inrupt:NumericField.
+_:b2713 rdf:first ui-inrupt:IntegerField;
+    rdf:rest _:b2714.
+_:b2714 rdf:first ui-inrupt:DecimalField;
+    rdf:rest _:b2715.
+_:b2715 rdf:first ui-inrupt:FloatField;
+    rdf:rest rdf:nil.
+_:b2717 rdf:first ui-inrupt:Group;
+    rdf:rest _:b2718.
+_:b2718 rdf:first ui-inrupt:Choice;
+    rdf:rest _:b2719.
+_:b2719 rdf:first ui-inrupt:Classifier;
+    rdf:rest _:b2720.
+_:b2720 rdf:first ui-inrupt:Options;
+    rdf:rest _:b2721.
+_:b2721 rdf:first ui-inrupt:Heading;
+    rdf:rest _:b2722.
+_:b2722 rdf:first ui-inrupt:Comment;
+    rdf:rest rdf:nil.
+_:b2724 rdf:first ui-inrupt:MultiLineTextField;
+    rdf:rest _:b2725.
+_:b2725 rdf:first ui-inrupt:NamedNodeURIField;
+    rdf:rest rdf:nil.
+ui-inrupt:TimeField a rdf:Property;
+    rdfs:label "Campo de tiempo"@es, "Time field"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+_:b2727 rdf:first ui-inrupt:NumericField;
+    rdf:rest _:b2728.
+_:b2728 rdf:first ui-inrupt:ColorField;
+    rdf:rest _:b2729.
+_:b2729 rdf:first ui-inrupt:DateField;
+    rdf:rest _:b2730.
+_:b2730 rdf:first ui-inrupt:DateTimeField;
+    rdf:rest _:b2731.
+_:b2731 rdf:first ui-inrupt:PhoneField;
+    rdf:rest _:b2732.
+_:b2732 rdf:first ui-inrupt:EmailField;
+    rdf:rest rdf:nil.
+ui-inrupt:annotationForm a rdf:Property;
+    rdfs:label "annotation form";
+    rdfs:domain rdfs:Class;
+    rdfs:range ui-inrupt:Form;
+    rdfs:comment "A form which may be used to add more infromation to an\ninstance of this class which we know something about.  Anything from\nadding just add one more fact, to adding a whole lot of information about a specific\nfacet of the thing.\n".
+ui-inrupt:backgroundColor a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "background color"@en;
+    rdfs:range ui-inrupt:Color.
+ui-inrupt:backgroundImage a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "background image"@en;
+    rdfs:comment "URI or base64 representation of an image".
+ui-inrupt:base a rdf:Property;
+    rdfs:label "Base"@en, "Base"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:color a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "color"@en;
+    rdfs:range ui-inrupt:Color.
+ui-inrupt:defaultError a rdf:Property;
+    rdfs:label "Default error"@en, "Error predeterminado"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:initialProperties a rdf:Property;
+    rdfs:label "initial properties";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:List;
+    ui-inrupt:prompt "Properties to be specified for new ones";
+    rdfs:comment "A really simple way of enabling user interfaces to\n            create new information about a class of things is to make a define of properties\n            to be specified when a information about a new item\n            (\"New item\" here means an item which the system\n            does not have prvious information about yet,\n            not an items which has just been created,\n            like new friend as opposed to new baby)".
+ui-inrupt:maxDateOffset a rdf:Property;
+    rdfs:label "Fecha máxima de desplazamiento"@es, "Maximum date offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:maxDatetimeOffset a rdf:Property;
+    rdfs:label "Desplazamiento máximo de fecha y hora"@es, "Maximum datetime offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:maxValue a rdf:Property;
+    rdfs:label "max";
+    rdfs:domain ui-inrupt:ValueField.
+ui-inrupt:minDateOffset a rdf:Property;
+    rdfs:label "Fecha mínima compensada"@es, "Minimum date offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:minDatetimeOffset a rdf:Property;
+    rdfs:label "Desplazamiento mínimo de fecha y hora"@es, "Minimum datetime offset"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:minLength a rdf:Property;
+    rdfs:label "Longitud mínima"@es, "Min length"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:minValue a rdf:Property;
+    rdfs:label "min";
+    rdfs:domain ui-inrupt:ValueField.
+ui-inrupt:name a rdf:Property;
+    rdfs:label "Name"@en, "Nombre"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:oldValue a rdf:Property;
+    rdfs:label "Old value"@en, "Valor antiguo"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:parentProperty a rdf:Property;
+    rdfs:label "Parent property"@en, "Propiedad principal"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:partsClone a rdf:Property;
+    rdfs:label "Clon de piezas"@es, "Parts clone"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:pattern a rdf:Property;
+    rdfs:label "Modelo"@es, "Pattern"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:reference a rdf:Property;
+    rdfs:label "Reference"@en, "Referencia"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:required a rdf:Property;
+    rdfs:label "Requerido"@es, "Required"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:requiredError a rdf:Property;
+    rdfs:label "Error requerido"@es, "Required error"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:seqeunce a rdf:Property;
+    rdfs:label "sequence number";
+    rdfs:range xsd:integer;
+    rdfs:comment "The sequence in which this item is arranged with repect to other parts.".
+ui-inrupt:sortBy a rdf:Property;
+    rdfs:label "sort by";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:Property;
+    rdfs:comment "A property which typically is used to sort\n        members of a given class.".
+ui-inrupt:sortPriority a rdf:Property, owl:DatatypeProperty;
+    rdfs:label "sort priority";
+    rdfs:range xsd:integer;
+    rdfs:comment "When individuals or classes must be sorted, then\n        if they are given different values of sortPriority a user agent can\n        use this as a hint to how to present information.".
+ui-inrupt:tableProperties a rdf:Property;
+    rdfs:label "table properties";
+    rdfs:domain rdfs:Class;
+    rdfs:range rdf:List;
+    ui-inrupt:prompt "Properties to be given in a default table view";
+    rdfs:comment "This  is a crude way of specifying a table-based\n            view for objects of this class.".
+ui-inrupt:valid a rdf:Property;
+    rdfs:label "Valid"@en, "Válida"@es;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:validationError a rdf:Property;
+    rdfs:label "Error de validacion"@es, "Validation error"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:value a rdf:Property;
+    rdfs:label "Valor"@es, "Value"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+ui-inrupt:values a rdf:Property;
+    rdfs:label "Valores"@es, "Values"@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ui>, <https://w3id.org/inrupt/vocab/extension/ui#>.
+<https://w3id.org/inrupt/vocab/extension/ui#> a owl:Ontology;
+    owl:versionInfo "0.1";
+    dcterms:creator <https://inrupt.com/profile/card/#us>;
+    dcterms:issued "2020/04/26"^^xsd:date;
+    dcterms:title "Inrupt extension for UI terms";
+    dcterms:description "Extension to UI terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)";
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/";
+    vann:preferredNamespacePrefix "ui_inrupt_ext";
+    vann:preferredNamespaceUri "http://www.w3.org/ns/ui#".
