@@ -4,6 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Removed nearly all `lit-` prefixes now (just GitHub workflows left, for when
+  repo is renamed).
+- Added local vocabulary (PetRock.ttl) to example vocab list. Useful for testing
+  watcher detecting changes in YAML file (i.e., just run from the repo root and
+  edit that vocab to see real-time re-generation:
+    `node index.js watch --vocabListFile ./example/CopyOf-Vocab-List-Common.yml`
+  ...or run this multiple times to see re-generation ignored after first time,
+  but then edit YAML file and re-run to see re-generation again (due to the
+  generator detecting the config file change):
+    `node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt`
 - Add artifactName to required properties in YAML validation
 - Add ES module support to generated JavaScript artifacts:
   - Adds sideEffects: false to package templates
@@ -13,14 +23,6 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   - When supportBundling===true, use ES module import/exports internally for
     generated vocabs, to enable effective tree-shaking by consuming applications
 - Sort list of generated vocabs alphabetically, in e.g. generated README
-- Added local vocabulary (PetRock.ttl) to example vocab list. Useful for testing
-  watcher detecting changes in YAML file (i.e., just run from the repo root and
-  edit that vocab to see real-time re-generation:
-    `node index.js watch --vocabListFile ./example/CopyOf-Vocab-List-Common.yml`
-  ...or run this multiple times to see re-generation ignored after first time,
-  but then edit YAML file and re-run to see re-generation again (due to the
-  generator detecting the config file change)
-    `node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt`
 
 ## 0.14.0 2021-07-27
 
