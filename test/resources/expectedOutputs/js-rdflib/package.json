@@ -9,8 +9,8 @@
     "prod": "webpack --config ./config/webpack.prod.config.js"
   },
   "author": {
-    "name": "@inrupt/lit-artifact-generator",
-    "url": "https://github.com/inrupt/lit-artifact-generator"
+    "name": "@inrupt/artifact-generator",
+    "url": "https://github.com/inrupt/artifact-generator"
   },
   "contributors": [
     {"name": "Jarlath Holleran"}

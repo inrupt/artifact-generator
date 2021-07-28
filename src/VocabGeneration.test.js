@@ -142,6 +142,28 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
+  it("tests a single vocab config file", async () => {
+    // it.skip("tests a single vocab config file", async () => {
+    jest.setTimeout(10000);
+    await generateVocabArtifact({
+      vocabListFile: "./example/CopyOf-Vocab-List-Common.yml",
+
+      _: "generate",
+      force: true,
+      clearOutputDirectory: true,
+      outputDirectory: "./test/Generated/GENERATE_CUSTOM_CONFIG_FILE",
+      // artifactVersion: "1.0.0",
+      // solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
+      // moduleNamePrefix: "@inrupt/generated-custom-vocab-",
+      // npmRegistry: NPM_REGISTRY,
+      // runWidoco: false,
+      // runNpmInstall: RUN_NPM_INSTALL,
+      // supportBundling: SUPPORT_BUNDLING,
+      // publish: [DEFAULT_PUBLISH_KEY],
+      // storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+    });
+  });
+
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     jest.setTimeout(10000);

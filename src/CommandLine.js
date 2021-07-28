@@ -101,7 +101,7 @@ module.exports = class CommandLine {
         {
           type: "confirm",
           name: "runNpmInstall",
-          message: `Do you want to run NPM install [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
+          message: `Do you want to run NPM install for artifact [${data.artifactName}] in the directory [${data.outputDirectory}]?`,
           default: false,
         },
       ];
@@ -127,7 +127,7 @@ module.exports = class CommandLine {
         {
           type: "confirm",
           name: "runNpmPublish",
-          message: `Do you want to run NPM publish [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
+          message: `Do you want to run NPM publish for artifact [${data.artifactName}] to the registry [${data.npmRegistry}]?`,
           default: false,
         },
       ];

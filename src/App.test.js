@@ -111,7 +111,7 @@ describe("App tests", () => {
 
   describe("Testing mocked generator...", () => {
     it("should pass through in non-quiet mode (with DEBUG setting too)", async () => {
-      debugInstance.enable("lit-artifact-generator:*");
+      debugInstance.enable("artifact-generator:*");
 
       const config = {
         _: ["generate"],
@@ -127,7 +127,7 @@ describe("App tests", () => {
     });
 
     it("should pass through in non-quiet mode", async () => {
-      debugInstance.disable("lit-artifact-generator:*");
+      debugInstance.disable("artifact-generator:*");
 
       const config = {
         _: ["generate"],
@@ -143,7 +143,7 @@ describe("App tests", () => {
     });
 
     it("should publish artifacts if the option is set", async () => {
-      debugInstance.disable("lit-artifact-generator:*");
+      debugInstance.disable("artifact-generator:*");
 
       ArtifactGenerator.mockImplementation(locallyPublishingGenerator);
 
@@ -162,7 +162,7 @@ describe("App tests", () => {
     });
 
     it("should publish artifacts remotely if the option is set", async () => {
-      debugInstance.disable("lit-artifact-generator:*");
+      debugInstance.disable("artifact-generator:*");
       ArtifactGenerator.mockImplementation(remotelyPublishingGenerator);
 
       const config = {
@@ -180,7 +180,7 @@ describe("App tests", () => {
     });
 
     it("should publish artifacts both locally and remotely if the options are set", async () => {
-      debugInstance.disable("lit-artifact-generator:*");
+      debugInstance.disable("artifact-generator:*");
 
       ArtifactGenerator.mockImplementation(
         locallyAndRemotelyPublishingGenerator
@@ -201,7 +201,7 @@ describe("App tests", () => {
     });
 
     it("should not publish artifacts if not asked to", async () => {
-      debugInstance.disable("lit-artifact-generator:*");
+      debugInstance.disable("artifact-generator:*");
 
       const config = {
         _: ["generate"],

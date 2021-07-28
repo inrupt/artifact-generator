@@ -1,0 +1,96 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix vann: <http://purl.org/vocab/vann/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix schema: <http://schema.org/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix time: <http://www.w3.org/2006/time#>.
+@prefix olo: <http://purl.org/ontology/olo/core#>.
+
+<http://purl.org/ontology/olo/core#> a owl:Ontology;
+    <http://purl.org/dc/elements/1.1/creator> <http://foaf.me/zazi#me>, "Samer Abdallah";
+    <http://purl.org/dc/elements/1.1/date> "2010-07-23T13:30:52+01:00"^^xsd:dateTime;
+    <http://purl.org/dc/elements/1.1/description> "The Ordered Lists Ontology Specification provides basic concepts and properties \nfor describing ordered lists as semantic graph. This document contains a RDF description of the Ordered Lists Ontology\nas proposed by Samer Abdallah."@en;
+    <http://purl.org/dc/elements/1.1/title> "The Ordered Lists Ontology"@en;
+    owl:imports <http://www.w3.org/2003/06/sw-vocab-status/ns>, <http://purl.org/dc/elements/1.1/>;
+    owl:versionInfo "0.72"^^xsd:decimal.
+olo:OrderedList a rdfs:Class, owl:Class;
+    rdfs:comment "An ordered list with a given length an indexed items."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "Ordered List"@en;
+    rdfs:subClassOf owl:Thing, _:b1032;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en.
+_:b1032 a owl:Restriction;
+    owl:cardinality "1"^^xsd:nonNegativeInteger;
+    owl:onProperty olo:length.
+olo:length a owl:FunctionalProperty, rdf:Property, owl:DatatypeProperty;
+    rdfs:comment "The length of an ordered list."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has length"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en;
+    rdfs:domain olo:OrderedList;
+    rdfs:range xsd:nonNegativeInteger.
+olo:Slot a rdfs:Class, owl:Class;
+    rdfs:comment "A slot in an ordered list with a fixed index."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "Slot"@en;
+    rdfs:subClassOf owl:Thing, _:b1033, _:b1034, _:b1035, _:b1036;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en.
+_:b1033 a owl:Restriction;
+    owl:onProperty olo:next;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+olo:next a owl:FunctionalProperty, rdf:Property;
+    rdfs:comment "Associates the next slot in an ordered list."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has next"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing"@en;
+    rdfs:domain olo:Slot;
+    rdfs:range olo:Slot.
+_:b1034 a owl:Restriction;
+    owl:cardinality "1"^^xsd:nonNegativeInteger;
+    owl:onProperty olo:index.
+olo:index a owl:FunctionalProperty, rdf:Property, owl:DatatypeProperty;
+    rdfs:comment "An index of a slot in an ordered list."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has index"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en;
+    rdfs:domain olo:Slot;
+    rdfs:range xsd:positiveInteger.
+_:b1035 a owl:Restriction;
+    owl:onProperty olo:ordered_list;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+olo:ordered_list a owl:FunctionalProperty, rdf:Property;
+    rdfs:comment "An ordered list of an slot."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has ordered list"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing"@en;
+    rdfs:domain olo:Slot;
+    rdfs:range olo:OrderedList;
+    owl:inverseOf olo:slot.
+_:b1036 a owl:Restriction;
+    owl:onProperty olo:previous;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger.
+olo:previous a rdf:Property, owl:InverseFunctionalProperty;
+    rdfs:comment "Associates the previous slot in an ordered list"@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has previous"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "testing"@en;
+    rdfs:domain olo:Slot;
+    rdfs:range olo:Slot;
+    owl:inverseOf olo:next.
+olo:item a rdf:Property;
+    rdfs:comment "An item of a slot in an ordered list."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has item"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en;
+    rdfs:domain olo:Slot.
+olo:slot a rdf:Property, owl:ObjectProperty;
+    rdfs:comment "A slot in an ordered list."@en;
+    rdfs:isDefinedBy <http://purl.org/ontology/olo/core#>;
+    rdfs:label "has slot"@en;
+    <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable"@en;
+    rdfs:domain olo:OrderedList;
+    rdfs:range olo:Slot.

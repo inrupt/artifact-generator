@@ -1,12 +1,6 @@
 #
 # This file contains a simple list of vocabularies that we bundle together to
-# form the collective set of 'Common' RDF vocabularies.
-#
-# These are the vocabs that we feel will be the most commonly used across
-# general RDF development efforts, and so we list them here to allow our 
-# artifact generators to create programming-language-specific bundles
-# providing convenient constants representing the terms from these 
-# vocabularies.
+# form a collective set of 'Common' RDF vocabularies.
 #
 # For example, for Java developers we can generate a single JAR, or for
 # JavaScript we can generate a single NPM module, that developers can depend
@@ -18,120 +12,94 @@
 #
 # Note: THIS IS AN EXAMPLE OF HOW WE GENERATE THE ACTUAL COMMON ARTIFACT
 # (as of August 2019). WE DO *NOT* APPLY OUR EXTENSIONS HERE FOR VOCABS LIKE
-# Schema.org, OR VCard (OR INCLUDE LOCAL REFERENCES TO VOCABS THAT DON'T HAVE
-# TURTLE SERIALIZATIONS (LIKE the VANN OR HTTP VOCABS) AS WE'D NEED TO
+# Schema.org, OR vCard (OR INCLUDE LOCAL REFERENCES TO VOCABS THAT DON'T HAVE
+# TURTLE SERIALIZATIONS (LIKE THE VANN OR HTTP VOCABS), AS WE'D NEED TO
 # REFERENCE THOSE EXTENSIONS FROM HERE, WHICH WOULD TIE US TO THEIR RELATIVE
 # POSITION ON THE FILE SYSTEM.
 #
-artifactName: generated-vocab-common
-artifactGeneratorVersion: 0.2.0
+artifactName: vocab-sample-common
+artifactGeneratorVersion: 0.14.0
 
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.0
-    javaPackageName: com.inrupt.testing
-    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
-    artifactDirectoryName: Java
-    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
-    sourceFileExtension: java
 
-  - programmingLanguage: JavaScript
+    artifactDirectoryName: Java
+    sourceFileExtension: java
+    javaPackageName: com.inrupt.testing
+
+    solidCommonVocabVersion: 0.0.3
+    rdf4jVersion: 3.4.2
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt
+#        repository:
+#          - type: repository
+#            id: cloudsmith-staging
+#            url: https://maven.cloudsmith.io/inrupt/sdk-staging/
+#          - type: snapshotRepository
+#            id: cloudsmith-development
+#            url: https://maven.cloudsmith.io/inrupt/sdk-development/
+        publish:
+          - key: "mavenLocal"
+            command: "mvn --version && mvn install"
+        packagingTemplates:
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
+
+
+  - programmingLanguage: TypeScript
     artifactVersion: 0.1.0
-    npmModuleScope: "@inrupt/"
-    solidCommonVocabVersion: "^1.0.10"
-    artifactDirectoryName: JavaScript
-    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
-    sourceFileExtension: js
+
+    artifactDirectoryName: TypeScript-rdfjs-RdfDataFactory
+    sourceFileExtension: ts
+    artifactSuffix: -rdfjs-rdfdatafactory
+
+    solidCommonVocabVersion: "^0.5.3"
+    templateInternal: solidCommonVocabDependent/typescript/rdfjsRdfDataFactory/vocab.hbs
+
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@inrupt/"
+        typescriptVersion: "^4.1.3"
+        rdfjsTypesVersion: "^4.0.0"
+        rdfjsImplVersion: "^1.0.4"
+        rollupVersion: "^2.36.1"
+        rollupTypescriptPluginVersion: "^0.29.0"
+        rollupCommonjsPluginVersion: "^17.0.0"
+        rollupNodeResolveVersion: "^11.0.1"
+        bundleName: "VocabSample"
+        publish:
+          - key: "npmLocal"
+            command: "npm unpublish --force --registry http://localhost:4873/ && npm install --registry http://localhost:4873/ && npm run build && npm publish --registry http://localhost:4873/"
+        packagingTemplates:
+          - templateInternal: rdfLibraryDependent/typescript/rdfjsRdfDataFactory/package.hbs
+            fileName: package.json
+          - templateInternal: generic/typescript/index.hbs
+            fileName: index.ts
+          - templateInternal: generic/typescript/tsconfig.hbs
+            fileName: tsconfig.json
+          - templateInternal: generic/typescript/rollup.config.hbs
+            fileName: rollup.config.js
 
 vocabList:
-  # Note: We *MUST* use the 'https://' URI for Schema.org, since the RIO parser
-  # (used in our Java artifact generator) will not follow the 301 redirect from
-  # 'http://', and so our RDF4J model will be empty and therefore so will our
-  # generated source.
-  - description: Schema.org (the full vocabulary)
+  - description: The sample Pet Rock vocabulary
     inputResources:
-      - https://schema.org/version/latest/schemaorg-current-http.ttl
-
-#  - description: Schema.org with selective terms having translations
-#    nameAndPrefixOverride: schema-inrupt-ext
-#    inputResources:
-#      - https://schema.org/version/latest/schema.ttl
-#    termSelectionFile: ./rdf/Extensions/schema-inrupt-ext.ttl
-
-
-  - description: VCARD (the full vocabulary)
-    nameAndPrefixOverride: vcard
-    inputResources:
-      - http://www.w3.org/2006/vcard/ns#
-
-#  - description: VCARD with selective terms having translations
-#    nameAndPrefixOverride: vcard-inrupt-ext
-#    inputResources:
-#      - http://www.w3.org/2006/vcard/ns#
-#    termSelectionFile: ./rdf/Extensions/vcard-inrupt-ext.ttl
-
+      - ./PetRock.ttl
 
   - description: RDF (the full vocabulary)
     nameAndPrefixOverride: rdf
     inputResources:
       - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
-#  - description: RDF with selective terms having translations
-#    nameAndPrefixOverride: rdf-inrupt-ext
-#    inputResources:
-#      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
-#    termSelectionFile: ./rdf/Extensions/rdf-inrupt-ext.ttl
-
-
-
   - description: rdfs
     nameAndPrefixOverride: rdfs
     inputResources:
       - http://www.w3.org/2000/01/rdf-schema#
 
-  # OWL seems to have a bug in that the ontology itself is identified using a subject IRI without the
-  # hash, yet the 'owl:' prefix correctly appends the hash.
-  - description: OWL
-    nameAndPrefixOverride: owl
-    inputResources:
-      - http://www.w3.org/2002/07/owl#
-
-  - description: LDP
-    inputResources:
-      - https://www.w3.org/ns/ldp#
-
-  # Default serialization is RDF/XML (and we have no parser available)...
-#  - description: http
-#    nameAndPrefixOverride: http
-#    inputResources:
-#      - http://www.w3.org/2011/http#
-
   - description: The Ordered List Ontology
     nameAndPrefixOverride: olo
     inputResources:
       - http://svn.code.sf.net/p/smiy/code/orderedlistonto/trunk/rdf/orderedlistontology.n3
-
-#  - description: Simple Knowledge Organisation System (SKOS)
-#    nameAndPrefixOverride: skos
-#    inputResources:
-##
-## Both these 'authoritative' endpoints only seem to ever return RDF/XML (for which we don't have a parser!), so
-## reference a local copy converted (using https://rdf-translator.appspot.com/) to Turtle instead.
-##      - http://www.w3.org/2009/08/skos-reference/skos.rdf
-##      - http://www.w3.org/2004/02/skos/core#
-#      - ./rdf/CopyOfVocabs/skos-as-turtle.ttl
-
-  #
-  # Could not find an RDF representation for VANN initially, so I created my
-  # own. But Jarlath found an RDF/XML version somewhere, so that should be the
-  # authorative one (and once I add RDF/XML parsing to the generator I can
-  # remove this local version...!)
-  #
-#  - description: vann
-#    inputResources:
-#      - ./rdf/CopyOfVocabs/vann.ttl
-
-  - description: dcterms
-    nameAndPrefixOverride: dcterms
-    inputResources:
-      - http://dublincore.org/2012/06/14/dcterms.ttl
