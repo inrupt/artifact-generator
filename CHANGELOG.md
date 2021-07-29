@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   - When supportBundling===true, use ES module import/exports internally for
     generated vocabs, to enable effective tree-shaking by consuming applications
 - Sort list of generated vocabs alphabetically, in e.g. generated README
+- Add missing parentheses to vocab templates
 
 ## 0.14.0 2021-07-27
 
