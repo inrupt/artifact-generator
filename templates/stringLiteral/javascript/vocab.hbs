@@ -82,7 +82,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: _NS"{{{name}}}"),
+  {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
 {{/if}}{{#if constantStrings}}
 
@@ -119,7 +119,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: _NS"{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+  {{nameEscapedForLanguage}}: _NS("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
 {{/each}}{{/if}}
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
