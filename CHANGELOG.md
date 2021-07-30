@@ -24,6 +24,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
     generated vocabs, to enable effective tree-shaking by consuming applications
 - Sort list of generated vocabs alphabetically, in e.g. generated README
 - Add missing parentheses to vocab templates
+- No longer push to Git the locally generated Turtle files (we need to ensure
+  we use proper graph isomorphism - current code only deals with BNodes, and
+  not parser-dependent ordering changes in terms, or ordering of literal values
+  by language)
 
 ## 0.14.0 2021-07-27
 
