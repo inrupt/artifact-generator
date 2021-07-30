@@ -20,22 +20,16 @@ artifactToGenerate:
       - "class"
       - "abstract"
     javaPackageName: "com.example.java.packagename"
-#    gitRepository: git@github.com:some_user/some_project.git
-#    repository:
-#      - type: repository
-#        id: nexus-releases
-#        url: https://nexus.mycompany.com/repository/maven-releases/
-#        registry: http://localhost:4873/
 
 vocabList:
-# The following is the list of IRI and/or paths to read when building the artifact.
+  # The following is the list of IRI and/or paths to read when building the artifact.
   - inputResources:
       - "./schema-snippet.ttl"
-# This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
-# If not provided, the generator will look for the vann:preferredNamespacePrefix property, 
-# and otherwise will propose a default based on the domain name. 
+    # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
+    # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
+    # and otherwise will propose a default based on the domain name.
     nameAndPrefixOverride: "schema"
     description: "A schema snippet"
   - inputResources: 
-# The tests will mock HTTP requests, so this IRI does not need to actually exist
+    # The tests will mock HTTP requests, so this IRI does not need to actually exist.
     - "http://some.online.voc"

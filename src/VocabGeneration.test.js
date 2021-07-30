@@ -17,13 +17,13 @@ const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
 const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
-const LOCAL_COPY_OF_VOCAB_DIRECTORY = "./test/LocalCopyOfVocab/";
+const LOCAL_COPY_OF_VOCAB_DIRECTORY = "./test/Generated/LOCAL_COPY_OF_VOCAB/";
 
 const ConfigAll = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_ALL",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/ALL",
   vocabListFile: "../solid-common-vocab-rdf/**/*.yml",
   vocabListFileIgnore: "../solid-common-vocab-rdf/bin/**",
   npmRegistry: NPM_REGISTRY,
@@ -37,7 +37,7 @@ const ConfigRdfCommon = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/RdfCommon",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/RdfCommon",
   vocabListFile:
     "../solid-common-vocab-rdf/common-rdf/Vocab-List-Common-Rdf.yml",
   npmRegistry: NPM_REGISTRY,
@@ -51,7 +51,7 @@ const ConfigInruptCore = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Core",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Core",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Core/Vocab-List-Inrupt-Core.yml",
   npmRegistry: NPM_REGISTRY,
@@ -65,7 +65,7 @@ const ConfigInruptUi = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Ui",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Ui",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-Ui.yml",
   npmRegistry: NPM_REGISTRY,
@@ -79,7 +79,7 @@ const ConfigInruptService = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Inrupt/Service",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Service",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Service/Vocab-List-Inrupt-Service.yml",
   npmRegistry: NPM_REGISTRY,
@@ -93,7 +93,7 @@ const ConfigSolid = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
-  outputDirectory: "./test/Generated/GENERATE_SINGLE/Solid/Common",
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Solid/Common",
   vocabListFile:
     "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid.yml",
   npmRegistry: NPM_REGISTRY,
@@ -151,7 +151,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       _: "generate",
       force: true,
       clearOutputDirectory: true,
-      outputDirectory: "./test/Generated/GENERATE_CUSTOM_CONFIG_FILE",
+      outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM_CONFIG_FILE",
       // artifactVersion: "1.0.0",
       // solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       // moduleNamePrefix: "@inrupt/generated-custom-vocab-",
@@ -275,7 +275,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       _: "generate",
       force: true,
       clearOutputDirectory: true,
-      outputDirectory: "./test/Generated/GENERATE_CUSTOM",
+      outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM",
       artifactVersion: "1.0.0",
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",

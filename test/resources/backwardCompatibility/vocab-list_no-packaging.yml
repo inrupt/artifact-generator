@@ -32,9 +32,10 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - class     # Defined in VCard.
       - abstract  # Defined in DCTerms.
-      ##
-      # No packaging options are explitely set, as the generator initially generated Maven artifacts only for Java code
-      ##
+    ##
+    # No packaging options are explicitly set, as the generator initially generated Maven
+    # artifacts only for Java code.
+    ##
     repository:
       - type: repository
         id: nexus-releases
