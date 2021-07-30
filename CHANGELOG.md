@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Removed nearly all `lit-` prefixes now (just GitHub workflows left, for when
-  repo is renamed).
+## 0.15.0 2021-07-30
+
+- Repo renamed to be simply 'artifact-generator'.
 - Added local vocabulary (PetRock.ttl) to example vocab list. Useful for testing
   watcher detecting changes in YAML file (i.e., just run from the repo root and
   edit that vocab to see real-time re-generation:
