@@ -30,8 +30,6 @@ artifactToGenerate:
             command: "mvn install"
           - key: "remoteMaven"
             command: "mvn deploy"
-          - key: "nexus"
-            command: "mvn -s /home/runner/work/lit-rdf-vocab/lit-rdf-vocab/settings.xml deploy"
         packagingTemplates:
           - templateInternal: rdfLibraryDependent/java/rdf4j/pom.hbs
             fileName: pom.xml

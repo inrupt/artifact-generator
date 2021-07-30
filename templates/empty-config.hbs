@@ -70,24 +70,18 @@ artifactToGenerate:
         {{/if}}
     {{/each}}
     {{/if}}
-#    gitRepository: git@github.com:some_user/some_project.git
-#    repository:
-#      - type: repository
-#        id: nexus-releases
-#        url: https://nexus.mycompany.com/repository/maven-releases/
-#        registry: http://localhost:4873/
   {{/each}}
 
 vocabList:
   {{#each vocabList}}
-# The following is the list of IRI and/or paths to read when building the artifact.
+  # The following is the list of IRI and/or paths to read when building the artifact.
   - inputResources:
     {{#each inputResources}}
       - "{{this}}"
     {{/each}}
-# This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
-# If not provided, the generator will look for the vann:preferredNamespacePrefix property, 
-# and otherwise will propose a default based on the domain name. 
+    # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
+    # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
+    # and otherwise will propose a default based on the domain name.
     {{#if nameAndPrefixOverride}}
     nameAndPrefixOverride: "{{nameAndPrefixOverride}}"
     {{/if}}
@@ -95,9 +89,9 @@ vocabList:
     description: "{{description}}"
     {{/if}}
     {{#if termSelectionFile}}
-# This option allow us provide a second vocabulary that can add new terms, provide translations
-# for existing terms' labels or comments, and that also only generates output for terms explicitly
-# defined in this vocabulary (i.e. to selectively choose terms from the input resource(s))
+    # This option allow us provide a second vocabulary that can add new terms, provide translations
+    # for existing terms' labels or comments, and that also only generates output for terms explicitly
+    # defined in this vocabulary (i.e. to selectively choose terms from the input resource(s))
     termSelectionFile: "{{termSelectionFile}}"
     {{/if}}
   {{/each}}
