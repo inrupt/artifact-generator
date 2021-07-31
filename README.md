@@ -16,7 +16,8 @@ be run via `npx`).
 
 We highly recommend the use of Node.js Version Manager (nvm) to manage multiple
 versions of `npm`, and also to set up your npm permissions properly. To install
-nvm, follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-node-js-and-npm).
+nvm, follow the instructions
+[here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-node-js-and-npm).
 
 **Note on `npm` permissions:**
 
@@ -28,8 +29,8 @@ on how to set your permissions correctly.
 
 # Table of contents
 
-- [Introduction](./documentation/introduction.md)
 - [Quickstart](#quickstart)
+- [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
 - [Advanced configuration](./documentation/advanced-configuration.md)
 
@@ -37,77 +38,17 @@ on how to set your permissions correctly.
 
 # Quick start
 
----
-**__Temporarily,__** until we release the Artifact Generator to a public npm
-repository, you'll need to manually clone down the source code (which would be
-the easiest option (see option 1 below), or reference the private Inrupt GitHub
-npm registry to be able to install the Artifact Generator module that we
-currently publish there.
+There are a number of options for running the Artifact Generator:
 
-#### Accessing private GitHub registries
-
-To access the private Inrupt GitHub npm registry, you'll need to first generate
-a Personal Access Token (PAT) from your personal GitHub account (under the
-'Developer settings' tab on your profile page).
-
-Note that when generating a new PAT for accessing the Artifact Generator module,
-you need only select the scopes of 'repo', and just the 'read:packages' option
-under the 'write:packages' scope.
-
-Also note that the generated PAT value (i.e., a random-looking token string such
-as `7a2c9c64b2d90a1da4eec92d0fe2c46b706a7a15`) will be displayed once,
-**_and only once_**, by GitHub, so if you want to use this PAT repeatedly,
-you'll need to store a copy of it somewhere secure (such as 1Password). We'd
-recommend adding a note of where you've stored in it the 'Note' text field
-available when you generate the PAT in the first place!
-
-You now need to use the value of the generated PAT token as the 'Password' value
-to log into the GitHub registry, using the `npm login` command, for example:
-
-```bash
-> npm login --registry https://npm.pkg.github.com
-Username: <Your GitHub User Name>
-Password: <The generated PAT value>
-Email: (this IS public) <Your EMail as registered in your GitHub account>
-Logged in as <Your GitHub User Name> on https://npm.pkg.github.com/.
->
-```
-
-And now you'll be able to install (either globally or locally) that Artifact
-Generator module on your local machine by explicitly referencing the GitHub npm
-registry (see options 1 and 2 below).
-
----
-
-You have a number of options for running the Artifact Generator:
-
-1. Install it globally (convenient if you plan to use it a lot, and don't mind
-   globally installed packages).
+1. Install it globally (convenient if you plan to use it a lot, and you don't
+   mind globally installed packages).
 2. Install it locally (convenient for regular use, but you want to avoid
    globally installed packages).   
 3. Clone the repo and execute it from the install directory (slightly less
    convenient than a global install, but still useful if you plan to use it
    often).
-4. Unfortunately `npx` cannot be used to run the generator from a private GitHub
-   registry, even when logged into that registry using a PAT:
-   
-   ```bash
-   > npm_config_registry=https://npm.pkg.github.com/ npx @inrupt/artifact-generator --version
-   Need to install the following packages:
-   @inrupt/artifact-generator
-   Ok to proceed? (y) y
-   npm ERR! code E404
-   npm ERR! 404 Not Found - GET https://npm.pkg.github.com/@rdfjs%2ffetch-lite - npm package "fetch-lite" does not exist under owner "rdfjs"
-   npm ERR! 404
-   npm ERR! 404  '@rdfjs/fetch-lite@^2.1.0' is not in the npm registry.
-   npm ERR! 404 You should bug the author to publish it (or use the name yourself!)
-   npm ERR! 404
-   npm ERR! 404 Note that you can also install from a
-   npm ERR! 404 tarball, folder, http url, or git url.
-   
-   npm ERR! A complete log of this run can be found in:
-   npm ERR!     /home/pmcb55/.npm/_logs/2021-03-09T12_35_47_281Z-debug.log
-   ```
+4. Use `npx` (very convenient for single time use, or just to try it out, but
+   much slower to execute if using often).
 
 ### 1. Global install
 
@@ -116,7 +57,7 @@ to run the Artifact Generator easily from any directory on your local machine,
 you can do so by running:
 
 ```shell
-npm -g install @inrupt/artifact-generator  --registry https://npm.pkg.github.com/inrupt
+npm -g install @inrupt/artifact-generator
 ```
 
 Ensure the installation completed successfully:
@@ -137,7 +78,7 @@ This utility will walk you through creating a package.json file.
 :
 Is this OK? (yes) 
 >
-> npm install @inrupt/artifact-generator --registry https://npm.pkg.github.com/inrupt
+> npm install @inrupt/artifact-generator
 :
 :
 + @inrupt/artifact-generator@0.13.3
@@ -177,6 +118,14 @@ simply executing:
 You can now replace all the example references below that begin with
 `artifact-generator ...` with `node index.js ...` instead.
 
+### 4. Use `npx`
+
+If you just want to try out the Artifact Generator, or don't like installing
+packages, then you can run it very easily using `npx`:
+
+```bash
+> npm_config_registry=https://npm.pkg.github.com/ npx @inrupt/artifact-generator --version
+```
 
 ## Create a Node.js artifact
 
@@ -194,7 +143,7 @@ artifact-generator generate --inputResources https://team.inrupt.net/public/voca
 This should generate a JavaScript artifact inside the default `Generated`
 directory. Specifically it should generate a JavaScript file named PET_ROCK.js
 in the directory `Generated/SourceCodeArtifacts/JavaScript/GeneratedVocab` that 
-provides constants for all the terms described within the public Pet Rock
+provides constants for all the terms described within the public Pet Rock RDF
 vocabulary.
 
 We can now use this JavaScript artifact directly in our applications, both
@@ -257,20 +206,22 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 
 Run the Artifact Generator using a public demo vocabulary, in this case
 the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
-for any input (i.e., `--noprompt`), and asking for a bundled (i.e., with Rollup config)
-JavaScript artifact (i.e., via the `--supportBundling` command-line flag):
+for any input (i.e., `--noprompt`), and asking for a bundled (i.e., with
+Rollup config) JavaScript artifact (i.e., via the `--supportBundling`
+command-line flag):
 
 ```shell
 artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
 ```
 
-This generates an artifact, including Rollup config to bundle all of its dependencies.
-Everything is generated into the default `Generated` directory,
-and bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist` directory.
+This generates an artifact, including Rollup configuration to bundle all of
+its dependencies. Everything is generated into the default `Generated`
+directory, and bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
+directory.
 
 If you copy-and-paste the following HTML into a new file in the directory
-from which you ran the Artifact Generator (i.e., the directory which should now
-have a `Generated` directory within it)...
+from which you ran the Artifact Generator (i.e., the directory which should
+now have a `Generated` directory within it)...
 
 ```html
 <html>
@@ -309,18 +260,18 @@ Perhaps the single most important, and widely used, vocabulary today is
 Schema.org, from Google, Microsoft, Yahoo and Yandex. The official RDF for
 Schema.org is defined here: `https://schema.org/version/latest/schemaorg-current-http.ttl`.
 
-But any individual or company is completely free to use the Artifact
-Generator (or any other generator!) to generate their own source code artifacts
-to represent the terms defined in Schema.org. And of course, they are also free
-to use the Artifact Generator to generate source code artifacts (e.g., a
-Java JAR containing Java classes) that represents any available RDF
+Any individual or company is completely free to use the Artifact Generator
+(or any other generator!) to generate their own source code artifacts
+to represent the terms defined in Schema.org. And of course, they are also
+free to use the Artifact Generator to generate source code artifacts (e.g.,
+a Java JAR containing Java classes) that represents any available RDF
 vocabularies, including their own purely internal and/or proprietary
 vocabularies.
 
 So anyone is completely free to define their own RDF vocabularies. Likewise,
 anyone is completely free to run the Artifact Generator against any available
 RDF vocabulary, meaning it's perfectly fine to have a multitude of generated
-artifacts claiming to represent the terms from any RDF vocabulary.
+artifacts claiming to represent the terms from anyone else's RDF vocabulary.
 
 In other words, it's important to remember that it's not necessary to control
 an RDF vocabulary in order to generate useful source code artifacts from it.
@@ -346,9 +297,9 @@ dependencies: {
 The Artifact Generator allows each of these entities to configure their
 generated artifacts as they see fit, e.g., perhaps IBM augments their version
 with translations for various languages (that Schema.org does not provide
-today), or Accenture augments their version with references to related resources
-(e.g., via `rdfs:seeAlso` references) to similar terms in existing Accenture
-glossaries or data dictionaries.
+today), or Accenture augments their version with references to related
+resources (e.g., via `rdfs:seeAlso` references) to similar terms in existing
+Accenture glossaries or data dictionaries.
 
 Of course, individuals or companies are always completely free to choose
 between reusing existing generated artifacts from entities that they trust,
