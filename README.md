@@ -146,6 +146,30 @@ in the directory `Generated/SourceCodeArtifacts/JavaScript/GeneratedVocab` that
 provides constants for all the terms described within the public Pet Rock RDF
 vocabulary.
 
+By default, this will include Rollup configuration to bundle all of
+its dependencies and produce UMD and ES modules, which should be useable
+across NodeJS and browsers. To build those, you need to run the install
+and build commands from inside the `Generated/SourceCodeArtifacts/JavaScript/`
+directory:
+
+```shell
+npm i
+```
+
+```shell
+npm run build
+```
+
+The output will be bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
+directory.
+
+If you would prefer not to produce a bundled artifact, you can run the
+generate command with the `--supportBundling` option set to false:
+
+```shell
+artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling=false
+```
+
 We can now use this JavaScript artifact directly in our applications, both
 Node.js and browser based. For example, for Node.js manually create a new 
 `package.json` file using the following content that references the Pet Rock
@@ -204,24 +228,11 @@ Or in Spanish (our Pet Rock vocab has Spanish translations!):
 
 ## Create a front-end JavaScript artifact
 
-Run the Artifact Generator using a public demo vocabulary, in this case
-the simple Pet Rock vocabulary provided by Inrupt, telling it not to prompt 
-for any input (i.e., `--noprompt`), and asking for a bundled (i.e., with
-Rollup config) JavaScript artifact (i.e., via the `--supportBundling`
-command-line flag):
-
-```shell
-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling
-```
-
-This generates an artifact, including Rollup configuration to bundle all of
-its dependencies. Everything is generated into the default `Generated`
-directory, and bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
-directory.
-
-If you copy-and-paste the following HTML into a new file in the directory
-from which you ran the Artifact Generator (i.e., the directory which should
-now have a `Generated` directory within it)...
+If a bundled artifact is generated, it can be used directly in a
+`<script>` tag. If you copy-and-paste the following HTML into a
+new file in the directory from which you ran the Artifact Generator
+(i.e., the directory which should now have a `Generated` directory
+within it)...
 
 ```html
 <html>
