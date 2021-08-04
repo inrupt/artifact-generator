@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Add logging to highlight missing values used in handlebars templates
+
 ## 0.15.0 2021-07-30
 
 - Repo renamed to be simply 'artifact-generator'.
