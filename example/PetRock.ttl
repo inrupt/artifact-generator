@@ -29,9 +29,9 @@ pet_rock:PetRock a owl:Class ;
   rdfs:comment "The class of all rocks that this app considers excellent Pets."@en ;
   rdfs:comment "La clase de todas las rocas que esta aplicación considera excelentes mascotas."@es .
 
-pet_rock:shinyness a owl:ObjectProperty ;
+pet_rock:shininess a owl:ObjectProperty ;
   rdfs:domain pet_rock:PetRock ;
-  rdfs:label "Shinyness"@en ;
+  rdfs:label "Shininess"@en ;
   rdfs:label "Brillo"@es ;
   rdfs:comment "How wonderfully shiny a rock is."@en ;
   rdfs:comment "Qué maravillosamente brillante es una roca."@es .

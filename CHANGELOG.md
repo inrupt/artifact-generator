@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Add logging to highlight missing values used in handlebars templates
+- Add logging to highlight missing values used in handlebars templates.
+- Fixed typo in example Pet Rock vocab and README.
 
 ## 0.15.0 2021-07-30
 
