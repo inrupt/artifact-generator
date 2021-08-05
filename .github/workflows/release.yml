@@ -9,7 +9,7 @@ jobs:
      # Makes the current repository available to the workflow.
     - name: Checkout repo
       uses: actions/checkout@v2.3.4
-      # Initializes NodeJS for the runner.
+      # Initializes Node.js for the runner.
     - name: Node setup
       uses: actions/setup-node@v2.3.2
       with:
