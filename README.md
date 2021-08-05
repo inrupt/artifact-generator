@@ -147,9 +147,9 @@ provides constants for all the terms described within the public Pet Rock RDF
 vocabulary.
 
 By default, this will include Rollup configuration to bundle all of
-its dependencies and produce UMD and ES modules, which should be useable
-across NodeJS and browsers. To build those, you need to run the install
-and build commands from inside the `Generated/SourceCodeArtifacts/JavaScript/`
+its dependencies and produce UMD and ES modules, which should be usable
+across Node.js and browsers. To build those, you need to run the `install`
+and `build` commands from inside the `Generated/SourceCodeArtifacts/JavaScript/`
 directory:
 
 ```shell
@@ -163,8 +163,8 @@ npm run build
 The output will be bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
 directory.
 
-If you would prefer not to produce a bundled artifact, you can run the
-generate command with the `--supportBundling` option set to false:
+If you'd prefer not to produce a bundled artifact, you can run the
+`generate` command with the `--supportBundling` option set to `false`:
 
 ```shell
 artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling=false
