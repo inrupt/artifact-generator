@@ -8,6 +8,13 @@ const {
   getArtifactDirectorySourceCode,
 } = require("../Util");
 
+Handlebars.registerHelper("helperMissing", function (/* dynamic arguments */) {
+  const options = arguments[arguments.length - 1];
+  debug(
+    `Undefined template variable: [${options.name}] was used in a template, but was not defined`
+  );
+});
+
 class FileGenerator {
   /**
    *
