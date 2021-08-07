@@ -67,7 +67,7 @@ const ConfigInruptUi = {
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Ui",
   vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/UiComponent/Vocab-List-Inrupt-Ui.yml",
+    "../solid-common-vocab-rdf/inrupt-rdf/Ui/Vocab-List-Inrupt-Ui.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -95,7 +95,7 @@ const ConfigSolid = {
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Solid/Common",
   vocabListFile:
-    "../solid-common-vocab-rdf/solid-rdf/Common/Vocab-List-Solid.yml",
+    "../solid-common-vocab-rdf/solid-rdf/Vocab-List-Solid.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
