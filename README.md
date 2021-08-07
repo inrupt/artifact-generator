@@ -194,13 +194,13 @@ artifact we just generated:
 require('mock-local-storage');
 const { PET_ROCK } = require('@inrupt/generated-vocab-pet-rock');
 
-console.log(`What is Pet Rock 'shinyness'?\n`);
+console.log(`What is Pet Rock 'shininess'?\n`);
 
 console.log(`Our vocabulary describes it as:`);
-console.log(`"${PET_ROCK.shinyness.comment}"\n`);
+console.log(PET_ROCK.shininess.comment);
 
 console.log(`Or in Spanish (our Pet Rock vocab has Spanish translations!):`);
-console.log(`"${PET_ROCK.shinyness.asLanguage('es').comment}"`);
+console.log(PET_ROCK.shininess.asLanguage('es').comment);
 ``` 
 
 Now simply `npm install`...
@@ -216,7 +216,7 @@ node index.js
 ...we should see the following output:
 ```
 [demo]$ node index.js 
-What is Pet Rock 'shinyness'?
+What is Pet Rock 'shininess'?
 
 Our vocabulary describes it as:
 "How wonderfully shiny a rock is."
@@ -237,13 +237,13 @@ within it)...
 ```html
 <html>
 	<body>
-		<p>My Pet Rock shinyness "<span id="shinyness-comment"></span>" by <span id="petrock-iri"></span></p>
+		<p>My Pet Rock shininess "<span id="shininess-comment"></span>" by <span id="petrock-iri"></span></p>
 	
 	<script src="./Generated/SourceCodeArtifacts/JavaScript/dist/index.js" type="text/javascript"/></script>
 	
 	<script type="text/javascript">
-		document.getElementById("shinyness-comment").innerHTML = `${PET_ROCK.shinyness.comment}`;
-		document.getElementById("petrock-iri").innerHTML = `${PET_ROCK.NAMESPACE}`;
+		document.getElementById("shininess-comment").innerHTML = PET_ROCK.shininess.comment;
+		document.getElementById("petrock-iri").innerHTML = PET_ROCK.NAMESPACE;
 	</script>
 	
 	</body>
@@ -253,7 +253,7 @@ within it)...
 ...and open this HTML file with a web browser, you should see:
 
 ```
-My Pet Rock shinyness is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
+My Pet Rock shininess is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
 ```
 
 # The relationship between generated source code artifacts and RDF vocabularies

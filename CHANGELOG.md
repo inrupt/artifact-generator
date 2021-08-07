@@ -4,9 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Add logging to highlight missing values used in handlebars templates
 - Move ES Module wrapper file into npm packaging, rather than adding as separate
   packing tool.
+- Add logging to highlight missing values used in handlebars templates.
+- Fixed typo in example Pet Rock vocab and README.
+- Updated YAML filenames for generation tests.
 
 ## 0.15.0 2021-07-30
 
