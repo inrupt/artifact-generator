@@ -14,15 +14,17 @@
 {{/if}}
  */
 
-import { VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
+import { VocabTerm as _VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
 
-import { DataFactory } from 'rdf-data-factory';
-import * as RDF from 'rdf-js';
+import { DataFactory as _DataFactory } from 'rdf-data-factory';
+import * as _RDF from 'rdf-js';
 
-const rdfFactory: RDF.DataFactory = new DataFactory();
+const _rdfFactory: _RDF.DataFactory = new _DataFactory();
 
-function _NS(localName: string): RDF.NamedNode {
-  return rdfFactory.namedNode(`{{namespace}}${localName}`);
+function _NS(localName: string): _RDF.NamedNode {
+  return _rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 
 {{#if description}}
@@ -50,9 +52,9 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
@@ -80,9 +82,9 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
@@ -110,9 +112,9 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}

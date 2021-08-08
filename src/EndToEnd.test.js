@@ -310,7 +310,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(generated).toEqual(
-        expect.stringContaining("Person: new VocabTerm(")
+        expect.stringContaining("Person: new _VocabTerm(")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -423,13 +423,13 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new VocabTerm(")
+        expect.stringContaining("Person: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("address: new VocabTerm(")
+        expect.stringContaining("address: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new VocabTerm(")
+        expect.stringContaining("additionalName: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre adicional`, "es")')
@@ -465,17 +465,17 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new VocabTerm(")
+        expect.stringContaining("Person: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new VocabTerm(")
+        expect.stringContaining("familyName: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new VocabTerm(")
+        expect.stringContaining("givenName: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -485,7 +485,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new VocabTerm(")
+        expect.not.stringContaining("address: new _VocabTerm(")
       );
     });
 
@@ -532,17 +532,17 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new VocabTerm(")
+        expect.stringContaining("Person: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`La personne`, "fr")')
       );
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new VocabTerm(")
+        expect.stringContaining("familyName: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new VocabTerm(")
+        expect.stringContaining("givenName: new _VocabTerm(")
       );
       expect(indexOutput).toEqual(
         expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
@@ -552,7 +552,7 @@ describe("End-to-end tests", () => {
       );
 
       expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new VocabTerm(")
+        expect.not.stringContaining("address: new _VocabTerm(")
       );
     });
 
@@ -800,7 +800,7 @@ describe("End-to-end tests", () => {
         )
         .toString();
 
-      expect(output).toEqual(expect.stringContaining("new VocabTerm("));
+      expect(output).toEqual(expect.stringContaining("new _VocabTerm("));
     });
   });
 

@@ -14,13 +14,15 @@
 {{/if}}
  */
 
-import { VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
+import { VocabTerm as _VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
 
-import rdfFactory from "@rdfjs/data-model";
-import { NamedNode } from "rdf-js";
+import rdfFactory as _rdfFactory from "@rdfjs/data-model";
+import { NamedNode as _NamedNode } from "rdf-js";
 
-function _NS(localName: string): NamedNode {
-  return rdfFactory.namedNode(`{{namespace}}${localName}`);
+function _NS(localName: string): _NamedNode {
+  return _rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 
 {{#if description}}
@@ -48,14 +50,14 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -78,14 +80,14 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -108,14 +110,14 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    rdfFactory,
+    _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -158,7 +160,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+  {{nameEscapedForLanguage}}: _rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
 {{/each}}{{/if}} };
 
 export default {{vocabNameUpperCase}};

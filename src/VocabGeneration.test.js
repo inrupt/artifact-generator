@@ -33,13 +33,12 @@ const ConfigAll = {
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
-const ConfigRdfCommon = {
+const ConfigCommonRdf = {
   _: "generate",
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/RdfCommon",
-  vocabListFile:
-    "../solid-common-vocab-rdf/common-rdf/Vocab-List-Common-Rdf.yml",
+  vocabListFile: "../solid-common-vocab-rdf/common-rdf/vocab-common-rdf.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -53,7 +52,7 @@ const ConfigInruptCore = {
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Core",
   vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/Core/Vocab-List-Inrupt-Core.yml",
+    "../solid-common-vocab-rdf/inrupt-rdf/Core/vocab-inrupt-core.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -66,8 +65,7 @@ const ConfigInruptUi = {
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Ui",
-  vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/Ui/Vocab-List-Inrupt-Ui.yml",
+  vocabListFile: "../solid-common-vocab-rdf/inrupt-rdf/Ui/vocab-inrupt-ui.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -81,7 +79,7 @@ const ConfigInruptService = {
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Service",
   vocabListFile:
-    "../solid-common-vocab-rdf/inrupt-rdf/Service/Vocab-List-Inrupt-Service.yml",
+    "../solid-common-vocab-rdf/inrupt-rdf/Service/vocab-inrupt-service.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -94,8 +92,7 @@ const ConfigSolid = {
   force: true,
   clearOutputDirectory: true,
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Solid/Common",
-  vocabListFile:
-    "../solid-common-vocab-rdf/solid-rdf/Vocab-List-Solid.yml",
+  vocabListFile: "../solid-common-vocab-rdf/solid-rdf/vocab-solid.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -113,7 +110,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(120000);
-    await generateVocabArtifact(ConfigRdfCommon);
+    await generateVocabArtifact(ConfigCommonRdf);
 
     await generateVocabArtifact(ConfigSolid);
 
@@ -125,7 +122,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Common RDF vocabs", async () => {
   it.skip("Common RDF vocabs", async () => {
     jest.setTimeout(60000);
-    await generateVocabArtifact(ConfigRdfCommon);
+    await generateVocabArtifact(ConfigCommonRdf);
   });
 
   // it('Solid vocabs', async () => {

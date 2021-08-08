@@ -14,6 +14,8 @@
 {{/if}}
  */
 
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
 const _NAMESPACE = "{{namespace}}";
 function _NS (localName) {
   return (_NAMESPACE + localName);

@@ -14,13 +14,15 @@
 {{/if}}
  */
 
-import { DataFactory } from 'rdf-data-factory';
-import * as RdfTypes from 'rdf-js';
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
+import { DataFactory as _DataFactory } from 'rdf-data-factory';
+import * as _RdfTypes from 'rdf-js';
 
-const rdfFactory: RdfTypes.DataFactory = new DataFactory();
+const _rdfFactory: _RdfTypes.DataFactory = new _DataFactory();
 
-function _NS(localName: string): RdfTypes.NamedNode {
-  return rdfFactory.namedNode(`{{namespace}}${localName}`);
+function _NS(localName: string): _RdfTypes.NamedNode {
+  return _rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 
 {{#if description}}
