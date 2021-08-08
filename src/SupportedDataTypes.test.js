@@ -54,7 +54,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("AllDifferent: new VocabTerm(")
+      expect.stringContaining("AllDifferent: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -108,7 +108,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("Connection: new VocabTerm(")
+      expect.stringContaining("Connection: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -291,28 +291,28 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class1: new VocabTerm(")
+      expect.stringContaining("class1: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A rdfs class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class2: new VocabTerm(")
+      expect.stringContaining("class2: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`An owl class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class3: new VocabTerm(")
+      expect.stringContaining("class3: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A skos concept class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class4: new VocabTerm(")
+      expect.stringContaining("class4: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -321,21 +321,21 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("class5: new VocabTerm(")
+      expect.not.stringContaining("class5: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.not.stringContaining(".addLabelNoLanguage(`Not supported class`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property1: new VocabTerm(")
+      expect.stringContaining("property1: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`A rdf property`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property2: new VocabTerm(")
+      expect.stringContaining("property2: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -344,14 +344,14 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property3: new VocabTerm(")
+      expect.stringContaining("property3: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(".addLabelNoLanguage(`An owl object property`)")
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property4: new VocabTerm(")
+      expect.stringContaining("property4: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -360,7 +360,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property5: new VocabTerm(")
+      expect.stringContaining("property5: new _VocabTerm(")
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
@@ -369,7 +369,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property6: new VocabTerm(")
+      expect.stringContaining("property6: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -377,7 +377,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("property7: new VocabTerm(")
+      expect.not.stringContaining("property7: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -391,7 +391,7 @@ describe("Supported Data Type", () => {
     //   var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("literal1: new VocabTerm(")
+      expect.stringContaining("literal1: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -399,7 +399,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("literal2: new VocabTerm(")
+      expect.stringContaining("literal2: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(
@@ -413,7 +413,7 @@ describe("Supported Data Type", () => {
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("literal3: new VocabTerm(")
+      expect.not.stringContaining("literal3: new _VocabTerm(")
     );
 
     expect(indexOutput).toEqual(

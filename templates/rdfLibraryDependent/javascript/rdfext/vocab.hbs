@@ -14,14 +14,16 @@
 {{/if}}
  */
 
-const namespace = require("@rdfjs/namespace");
-const rdfFactory = require('@rdfjs/data-model')
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
+const namespace as _namespace = require("@rdfjs/namespace");
+const rdfFactory as _rdfFactory = require('@rdfjs/data-model')
 
-const RDFJS_NAMESPACE = namespace("{{namespace}}");
+const _RDFJS_NAMESPACE = _namespace("{{namespace}}");
 
 const _NAMESPACE = "{{namespace}}";
 function _NS (localName) {
-  return RDFJS_NAMESPACE(localName);
+  return _RDFJS_NAMESPACE(localName);
 }
 
 const {{vocabNameUpperCase}} = {
@@ -120,7 +122,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
+  {{nameEscapedForLanguage}}: _rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
 {{/each}}{{/if}}
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).

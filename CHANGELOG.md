@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Add logging to highlight missing values used in handlebars templates.
 - Fixed typo in example Pet Rock vocab and README.
 - Updated YAML filenames for generation tests.
+- Removed '@types/rdf-js' and 'rdfjsTypesVersion' from templates (it's
+  deprecated now).
+- Local instance names prefixed with underscore in vocab templates to
+  try and prevent potential name clashes with vocab terms.
 
 ## 0.15.0 2021-07-30
 

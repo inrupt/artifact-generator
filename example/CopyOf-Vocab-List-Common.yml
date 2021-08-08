@@ -64,7 +64,6 @@ artifactToGenerate:
       - packagingTool: npm
         npmModuleScope: "@inrupt/"
         typescriptVersion: "^4.1.3"
-        rdfjsTypesVersion: "^4.0.0"
         rdfjsImplVersion: "^1.0.4"
         rollupVersion: "^2.36.1"
         rollupTypescriptPluginVersion: "^0.29.0"

@@ -14,13 +14,15 @@
 {{/if}}
  */
 
-const { VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
-const DataFactory = require("@rdfjs/data-model");
+// We prefix our local variables with underscores to (hopefully!) prevent
+// potential names clashes with terms from vocabularies.
+const { VocabTerm as _VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
+const DataFactory as _DataFactory = require("@rdfjs/data-model");
 
-const { namedNode } = DataFactory;
+const { namedNode as _namedNode } = _DataFactory;
 
 function _NS(localName) {
-  return namedNode(`{{namespace}}${localName}`);
+  return _namedNode(`{{namespace}}${localName}`);
 }
 
 {{#if description}}
@@ -48,14 +50,14 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    DataFactory,
+    _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -78,14 +80,14 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    DataFactory,
+    _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -108,9 +110,9 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: new VocabTerm(
+  {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
-    DataFactory,
+    _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#each labels}}{{#if language}}
@@ -156,7 +158,8 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: {{#each definitions}}namedNode("{{{valueEscapedForJavaScript}}}"){{/each}},
+  {{nameEscapedForLanguage}}: {{#each definitions}}_namedNode("{{{valueEscapedForJavaScript}}}")
+  {{/each}},
 {{/each}}{{/if}}
   //
   // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
