@@ -58,8 +58,8 @@ const {{vocabNameUpperCase}} = {
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(_NS("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(_NS("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -88,8 +88,8 @@ const {{vocabNameUpperCase}} = {
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(_NS("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(_NS("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -118,8 +118,8 @@ const {{vocabNameUpperCase}} = {
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
   ){{#if isDefinedBy}}
-    .addIsDefinedBy(_NS("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
-    .addSeeAlso(_NS("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}

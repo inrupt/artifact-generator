@@ -16,10 +16,10 @@
 
 // We prefix our local variables with underscores to (hopefully!) prevent
 // potential names clashes with terms from vocabularies.
-const { VocabTerm as _VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
-const DataFactory as _DataFactory = require("@rdfjs/data-model");
+const { VocabTerm: _VocabTerm, getLocalStore } = require("@inrupt/solid-common-vocab");
+const _DataFactory = require("@rdfjs/data-model");
 
-const { namedNode as _namedNode } = _DataFactory;
+const { namedNode: _namedNode } = _DataFactory;
 
 function _NS(localName) {
   return _namedNode(`{{namespace}}${localName}`);
