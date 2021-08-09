@@ -139,8 +139,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptService);
   });
 
-  it("tests a single vocab config file", async () => {
-    // it.skip("tests a single vocab config file", async () => {
+  // it("tests a single vocab config file", async () => {
+  it.skip("tests a single vocab config file", async () => {
     jest.setTimeout(10000);
     await generateVocabArtifact({
       vocabListFile: "./example/CopyOf-Vocab-List-Common.yml",
