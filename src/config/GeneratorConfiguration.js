@@ -95,10 +95,10 @@ const DEFAULT_CLI_ARTIFACT = [
     packaging: [
       {
         ...NPM_DEFAULT,
-        packagingTemplates: {
+        packagingTemplates: [
           ...NPM_DEFAULT.packagingTemplates,
           WRAPPER_DEFAULT,
-        },
+        ],
       },
     ],
     sourceCodeTemplate: path.join(
@@ -546,7 +546,11 @@ class GeneratorConfiguration {
 
     // We weren't provided with a configuration file, so manually provide
     // defaults.
-    const packagingInfo = NPM_DEFAULT;
+    const packagingInfo = {
+      ...NPM_DEFAULT,
+      publish: [...NPM_DEFAULT.publish],
+      packagingTemplates: [...NPM_DEFAULT.packagingTemplates],
+    };
 
     // If the registry is set on the command line, override default.
     if (args.npmRegistry) {
