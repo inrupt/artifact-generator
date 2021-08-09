@@ -34,14 +34,9 @@ const ROLLUP_DEFAULT = {
 };
 
 const WRAPPER_DEFAULT = {
-  packagingTool: "esmWrapper",
-  packagingTemplates: [
-    {
-      templateInternal: path.join("generic", "javascript", "wrapper.hbs"),
-      fileName: "wrapper.js",
-      template: path.join("templates", "generic", "javascript", "wrapper.hbs"),
-    },
-  ],
+  templateInternal: path.join("generic", "javascript", "wrapper.hbs"),
+  fileName: "wrapper.js",
+  template: path.join("templates", "generic", "javascript", "wrapper.hbs"),
 };
 
 const NPM_DEFAULT_REPO = "http://localhost:4873/";
@@ -97,7 +92,15 @@ const DEFAULT_CLI_ARTIFACT = [
       "vocab.hbs"
     ),
     sourceFileExtension: "js",
-    packaging: [NPM_DEFAULT, WRAPPER_DEFAULT],
+    packaging: [
+      {
+        ...NPM_DEFAULT,
+        packagingTemplates: [
+          ...NPM_DEFAULT.packagingTemplates,
+          WRAPPER_DEFAULT,
+        ],
+      },
+    ],
     sourceCodeTemplate: path.join(
       "templates",
       "solidCommonVocabDependent",
@@ -543,7 +546,11 @@ class GeneratorConfiguration {
 
     // We weren't provided with a configuration file, so manually provide
     // defaults.
-    const packagingInfo = NPM_DEFAULT;
+    const packagingInfo = {
+      ...NPM_DEFAULT,
+      publish: [...NPM_DEFAULT.publish],
+      packagingTemplates: [...NPM_DEFAULT.packagingTemplates],
+    };
 
     // If the registry is set on the command line, override default.
     if (args.npmRegistry) {
@@ -584,7 +591,9 @@ class GeneratorConfiguration {
     if (args.supportBundling) {
       cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
     } else {
-      cliConfig.artifactToGenerate[0].packaging.push(WRAPPER_DEFAULT);
+      cliConfig.artifactToGenerate[0].packaging[0].packagingTemplates.push(
+        WRAPPER_DEFAULT
+      );
     }
 
     if (args.artifactVersion) {

@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## Unreleased
 
 - Add logging to highlight missing values used in handlebars templates
+- Move ES Module wrapper file into npm packaging, rather than adding as separate
+  packing tool.
 
 ## 0.15.0 2021-07-30
 
