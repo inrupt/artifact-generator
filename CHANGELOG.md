@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   deprecated now).
 - Local instance names prefixed with underscore in vocab templates to
   try and prevent potential name clashes with vocab terms.
+- Bump version CLI option removed.  
 
 ## 0.15.0 2021-07-30
 
