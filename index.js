@@ -95,13 +95,6 @@ yargs
           "the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag."
         )
 
-        .alias("b", "bumpVersion")
-        .describe(
-          "bumpVersion",
-          "Bump up the semantic version of the artifact from the currently published version."
-        )
-        .choices("bumpVersion", ["patch", "minor", "major"])
-
         .alias("tsr", "termSelectionResource")
         .describe(
           "termSelectionResource",
@@ -159,8 +152,6 @@ yargs
         )
         .alias("c", "clearOutputDirectory")
         .default("clearOutputDirectory", false)
-        // Can't provide an explicit version, and then also request a version bump!
-        .conflicts("artifactVersion", "bumpVersion")
 
         // Must provide either an input vocab file, or a file containing a
         // list of vocab files (but how can we demand at least one of these

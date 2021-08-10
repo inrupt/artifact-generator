@@ -57,7 +57,6 @@ module.exports = class App {
     const artifactGenerator = new ArtifactGenerator(config);
     return artifactGenerator
       .generate()
-      .then(CommandLine.askForArtifactToBeNpmVersionBumped)
       .then(CommandLine.askForArtifactToBeNpmInstalled)
       .then((generationData) => {
         const publicationData = generationData;
