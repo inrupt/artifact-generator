@@ -556,7 +556,6 @@ module.exports = class DatasetHandler {
     result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runMavenInstall = this.vocabData.runMavenInstall;
     result.runNpmPublish = this.vocabData.runNpmPublish;
-    result.bumpVersion = this.vocabData.bumpVersion;
     result.runWidoco = this.vocabData.runWidoco;
     result.noprompt = this.vocabData.noprompt;
     result.supportBundling = this.vocabData.supportBundling;

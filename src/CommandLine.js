@@ -61,35 +61,6 @@ module.exports = class CommandLine {
     return cloneData;
   }
 
-  static async askForArtifactToBeNpmVersionBumped(data) {
-    if (data.bumpVersion && data.publishedVersion) {
-      return { ...data, ...CommandLine.runNpmVersion(data) }; // Merge the answers in with the data and return
-    }
-
-    let answer = {};
-    if (!data.noprompt && data.publishedVersion) {
-      const bumpQuestion = [
-        {
-          type: "list",
-          name: "bumpVersion",
-          message: `Current artifact version in registry is [${data.publishedVersion}]. Do you want to bump the version?`,
-          choices: ["patch", "minor", "major", "no"],
-          default: data.bumpVersion,
-        },
-      ];
-
-      answer = await inquirer.prompt(bumpQuestion);
-
-      if (answer.bumpVersion && answer.bumpVersion !== "no") {
-        answer = { ...answer, ...CommandLine.runNpmVersion(data) };
-      }
-
-      return { ...data, ...answer }; // Merge the answers in with the data and return
-    }
-
-    return data;
-  }
-
   static async askForArtifactToBeNpmInstalled(data) {
     if (data.runNpmInstall) {
       return { ...data, ...CommandLine.runNpmInstall(data) }; // Merge the answers in with the data and return
@@ -218,22 +189,6 @@ module.exports = class CommandLine {
     }
 
     return data;
-  }
-
-  static runNpmVersion(data) {
-    debug(
-      `Running 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectoryForArtifact}]...`
-    );
-
-    const newVersion = ChildProcess.execSync(
-      `cd ${data.outputDirectoryForArtifact} && npm version ${data.bumpVersion}`
-    );
-
-    debug(
-      `Ran 'npm version ${data.bumpVersion}' for artifact [${data.artifactName}] in directory [${data.outputDirectory}].`
-    );
-
-    return { ...data, ranNpmVersion: true, bumpedVersion: newVersion }; // Merge the answers in with the data and return
   }
 
   static runNpmPublish(data) {
