@@ -120,7 +120,7 @@ yargs
           "npmRegistry",
           "The NPM Registry where artifacts will be published"
         )
-        .default("npmRegistry", "https://verdaccio.inrupt.com")
+        .default("npmRegistry", "http://localhost:4873")
 
         .alias("w", "runWidoco")
         .boolean("runWidoco")
