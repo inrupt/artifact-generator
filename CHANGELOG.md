@@ -4,7 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Change default npm registry to local Verdaccio
+## 1.0.0 2021-08-11
+
+- Change default npm registry to local Verdaccio.
 
 ## 0.15.1 2021-08-10
 
