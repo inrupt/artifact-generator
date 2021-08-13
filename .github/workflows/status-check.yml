@@ -1,7 +1,4 @@
-on:
-  pull_request:
-    branches:
-    - main
+on: push
 
 env:
   CI: true
@@ -11,7 +8,7 @@ jobs:
     strategy:
       matrix:
         # Available OS's: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners
-        os: [ubuntu-20.04]
+        os: [ubuntu-20.04, windows-2019, macos-11]
         node-version: [16.x, 14.x, 12.x]
     runs-on: ${{ matrix.os }}
     name: Run tests on all PRs to 'main'
