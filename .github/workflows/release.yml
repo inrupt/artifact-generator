@@ -13,13 +13,15 @@ jobs:
     - name: Node setup
       uses: actions/setup-node@v2.4.0
       with:
-        node-version: '12.12.0'
-        registry-url: https://npm.pkg.github.com/
-        scope: '@solid'
+        node-version: "14.x"
+        registry-url: "https://registry.npmjs.org"
     - name: NPM install, test and publish
       run: |
         npm ci
         npm test
-        npm publish --registry https://npm.pkg.github.com/inrupt
+        npm publish
+        echo "Packages published. To install, run:"
+        echo ""
+        echo "    npm install @inrupt/artifact-generator"
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
