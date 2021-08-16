@@ -33,11 +33,11 @@
     "url": "{{versioning.url}}"
   },{{/if}}{{/if}}
   "dependencies": {
+    "@rdfjs/types": "{{rdfjsTypesVersion}}",
     "@rdfjs/data-model": "{{rdfjsImplVersion}}"
   },
   "devDependencies": {
-    "typescript": "{{typescriptVersion}}",
-    "@types/rdfjs__dataset": "{{rdfjsDatasetTypesVersion}}"{{#if supportBundling}},
+    "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
     "rollup": "{{rollupVersion}}",
     "rollup-plugin-typescript2": "{{rollupTypescriptPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",

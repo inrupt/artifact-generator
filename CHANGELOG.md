@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Added description of the generated directory structure to the docs.
 - Removed unused Whitesource resources.
 - Always try and use the English description for a vocab (instead of just the first one).
+- Update version of rdf-datafactory.
+- Pull in RDF/JS types from the new types package (not DefinitelyTyped anymore).
 
 ## 1.0.0 2021-08-11
 

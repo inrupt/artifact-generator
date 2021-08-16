@@ -16,12 +16,12 @@
 
 // We prefix our local variables with underscores to (hopefully!) prevent
 // potential names clashes with terms from vocabularies.
-import { DataFactory as _DataFactory } from 'rdf-data-factory';
-import * as _RdfTypes from 'rdf-js';
+import type { NamedNode as _NamedNode, DataFactory as _DataFactoryType } from '@rdfjs/types/data-model'
+import { DataFactory as _DataFactoryImpl } from 'rdf-data-factory';
 
-const _rdfFactory: _RdfTypes.DataFactory = new _DataFactory();
+const _rdfFactory: _DataFactoryType = new _DataFactoryImpl();
 
-function _NS(localName: string): _RdfTypes.NamedNode {
+function _NS(localName: string): _NamedNode {
   return _rdfFactory.namedNode(`{{namespace}}${localName}`);
 }
 

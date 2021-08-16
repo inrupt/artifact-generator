@@ -239,9 +239,9 @@ describe("End-to-end tests", () => {
       );
     });
 
-    it("should create from an ontology file using native RdfExt (and not Vocab Term)", async () => {
+    it("should create from an ontology file using Rdf-Data-Factory (and not Vocab Term)", async () => {
       const outputDirectory =
-        "test/Generated/UNIT_TEST/EndToEnd/dependency-just-rdfext/";
+        "test/Generated/UNIT_TEST/EndToEnd/dependency-just-rdf-data-factory/";
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
@@ -249,7 +249,7 @@ describe("End-to-end tests", () => {
           {
             _: ["generate"],
             vocabListFile:
-              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdfjs-impl.yml",
+              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-data-factory.yml",
             outputDirectory,
             supportBundling: true,
             noprompt: true,
@@ -268,7 +268,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(packageDotJson).toEqual(
-        expect.stringContaining("@rdfjs/namespace")
+        expect.stringContaining('"rdf-data-factory": "')
       );
 
       expect(packageDotJson).toEqual(expect.stringContaining("^9.8.7"));

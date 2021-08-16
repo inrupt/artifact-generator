@@ -19,7 +19,7 @@
 import { VocabTerm as _VocabTerm, getLocalStore } from "@inrupt/solid-common-vocab";
 
 import rdfFactory as _rdfFactory from "@rdfjs/data-model";
-import { NamedNode as _NamedNode } from "rdf-js";
+import { NamedNode as _NamedNode } from "@rdfjs/types";
 
 function _NS(localName: string): _NamedNode {
   return _rdfFactory.namedNode(`{{namespace}}${localName}`);
