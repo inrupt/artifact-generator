@@ -11,11 +11,13 @@ artifactToGenerate:
     npmModuleScope: "@inrupt/"
     rdflibVersion: "^99.999.9999"
     artifactDirectoryName: JavaScript
+
     ##
-    # The template imports VocabTermRdflib instead of VocabTermRdfExt
+    # The template imports Rdflib.
     ##
     templateInternal: rdfLibraryDependent/javascript/rdflib/vocab.hbs
     sourceFileExtension: js
+
     packaging: 
       - packagingTool: npm 
         npmModuleScope: "@inrupt/"
