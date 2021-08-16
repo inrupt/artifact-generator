@@ -326,6 +326,8 @@ describe("Artifact Generator", () => {
       expect(fs.existsSync(generatedFile)).toBe(true);
       const initialGenerationTime = fs.statSync(generatedFile).mtimeMs;
 
+      // Ensure there's at least 1ms before making changes
+      await new Promise((res) => setTimeout(res, 1));
       // Modify our input file.
       Resource.touchFile(testFile);
 
@@ -418,6 +420,8 @@ describe("Artifact Generator", () => {
       const initialGenerationTimeVocab =
         fs.statSync(generatedFileVocab).mtimeMs;
 
+      // Ensure there's at least 1ms before making changes
+      await new Promise((res) => setTimeout(res, 1));
       // Modify our extension file.
       Resource.touchFile(testFileExtension);
 
@@ -508,6 +512,8 @@ describe("Artifact Generator", () => {
       const initialGenerationTimeSecond =
         fs.statSync(generatedFileSecond).mtimeMs;
 
+      // Ensure there's at least 1ms before making changes
+      await new Promise((res) => setTimeout(res, 1));
       // Modify just one of our input files.
       Resource.touchFile(testInputSecond);
 
@@ -522,8 +528,11 @@ describe("Artifact Generator", () => {
         initialGenerationTimeFirst
       );
 
+      // Ensure there's at least 1ms before making changes
+      await new Promise((res) => setTimeout(res, 1));
       // Modify the other input file.
       Resource.touchFile(testInputFirst);
+
       // Record the current time for the non-touched input file.
       const newGenerationTimeSecond = fs.statSync(generatedFileSecond).mtimeMs;
 
@@ -616,6 +625,8 @@ describe("Artifact Generator", () => {
       const initialGenerationTimeSecond =
         fs.statSync(generatedFileSecond).mtimeMs;
 
+      // Ensure there's at least 1ms before making changes
+      await new Promise((res) => setTimeout(res, 1));
       // Modify just our configuration file.
       Resource.touchFile(testConfigFile);
 
