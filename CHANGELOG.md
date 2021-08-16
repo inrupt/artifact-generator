@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Fix artifact regeneration tests on MacOS
+- Fix artifact regeneration tests for cases where timestamp based comparison is unreliable
 
 ## 1.0.0 2021-08-11
 
