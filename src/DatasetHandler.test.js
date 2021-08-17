@@ -43,6 +43,85 @@ describe("Dataset Handler", () => {
     });
   });
 
+  describe("Ontology description ", () => {
+    it("should use English description if multiple", () => {
+      const commentInEnglish = rdf.literal("Some comment in English", "en");
+      const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
+      const commentInFrench = rdf.literal(
+        "Quelques commentaires en français",
+        "fr"
+      );
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInEnglish))
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.description).toContain(commentInEnglish.value);
+    });
+
+    it("should use description that starts with explicit English tag", () => {
+      const commentInUsEnglish = rdf.literal(
+        "Some comment in US English",
+        "en-US"
+      );
+      const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
+      const commentInFrench = rdf.literal(
+        "Quelques commentaires en français",
+        "fr"
+      );
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInUsEnglish))
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.description).toContain(commentInUsEnglish.value);
+    });
+
+    it("should fallback to no language tag if no explicit English", () => {
+      const commentWithNoLocale = rdf.literal(
+        "Some comment with no language tag"
+      );
+      const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
+      const commentInFrench = rdf.literal(
+        "Quelques commentaires en français",
+        "fr"
+      );
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentWithNoLocale))
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.description).toContain(commentWithNoLocale.value);
+    });
+  });
+
   describe("Edge-case vocabulary cases ", () => {
     it("should ignore properties defined on the namespace IRI", () => {
       const dataset = rdf
