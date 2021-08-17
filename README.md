@@ -1,3 +1,11 @@
+---
+**NOTE**
+
+This is an Alpha release. Alpha releases are strictly for testing purposes
+only, may break your site, application, or destroy your data. Never use in
+production, with production data or with an existing Git repository.
+---
+
 # Artifact Generator
 
 This tool automatically generates deployable artifacts for various programming
@@ -32,6 +40,7 @@ on how to set your permissions correctly.
 - [Quickstart](#quickstart)
 - [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
+- [Generated directory structure](./generated-directory-structure.md)  
 - [Multiple forms of generated artifact](./multiple-forms-of-artifact.md)
 - [Generated source-code documentation](./generated-source-code-documentation.md)
 - [The relationship between generated source-code artifacts and RDF vocabularies](./relationship-artifact-vocab.md)
