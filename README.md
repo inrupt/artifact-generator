@@ -1,10 +1,10 @@
----
-**NOTE**
-
+---------------------
+**:warning: NOTE:**
 This is an Alpha release. Alpha releases are strictly for testing purposes
 only, may break your site, application, or destroy your data. Never use in
 production with production data.
----
+
+---------------------
 
 # Artifact Generator
 
@@ -249,7 +249,8 @@ within it)...
 ```html
 <html>
 	<body>
-		<p>My Pet Rock shininess "<span id="shininess-comment"></span>" by <span id="petrock-iri"></span></p>
+		<p>My Pet Rock shininess is defined as: "<span id="shininess-comment"></span>"<p>
+        <p>in vocab [<span id="petrock-iri"></span>].</p>
 	
 	<script src="./Generated/SourceCodeArtifacts/JavaScript/dist/index.js" type="text/javascript"/></script>
 	
@@ -265,5 +266,6 @@ within it)...
 ...and open this HTML file with a web browser, you should see:
 
 ```
-My Pet Rock shininess is defined as "How wonderfully shiny a rock is." by https://team.inrupt.net/public/vocab/PetRock.ttl#
+My Pet Rock shininess is defined as: "How wonderfully shiny a rock is."
+in vocab [https://team.inrupt.net/public/vocab/PetRock.ttl#].
 ```

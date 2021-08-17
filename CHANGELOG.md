@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Added documentation around the different forms of generated artifacts.
 - Split up the README/introduction documentation to better organize it.
 - Added description of the generated directory structure to the docs.
+- Removed unused Whitesource resources.
+- Always try and use the English description for a vocab (instead of just the first one).
 
 ## 1.0.0 2021-08-11
 

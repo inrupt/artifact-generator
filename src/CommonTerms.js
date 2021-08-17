@@ -51,6 +51,12 @@ module.exports.OWL = {
   DatatypeProperty: rdf.namedNode(`${OWL_NAMESPACE}DatatypeProperty`),
 };
 
+const XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema#";
+module.exports.XSD_NAMESPACE = XSD_NAMESPACE;
+module.exports.XSD = {
+  string: rdf.namedNode(`${XSD_NAMESPACE}string`),
+};
+
 const VANN_NAMESPACE = "http://purl.org/vocab/vann/";
 module.exports.VANN = {
   preferredNamespacePrefix: rdf.namedNode(

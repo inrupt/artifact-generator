@@ -8,6 +8,7 @@ const {
   SCHEMA_DOT_ORG,
   OWL,
   OWL_NAMESPACE,
+  XSD,
   VANN,
   DCTERMS,
   SKOS,
@@ -858,8 +859,10 @@ module.exports = class DatasetHandler {
         );
       }
 
+      // Find the first match, preferably in English.
       return DatasetHandler.firstDatasetValue(
         onologyComments,
+        "en",
         descriptionFallback
       );
     }, descriptionFallback);
@@ -909,8 +912,38 @@ module.exports = class DatasetHandler {
     return [...new Set(termSubjects)];
   }
 
-  static firstDatasetValue(dataset, defaultValue) {
-    const first = dataset.toArray().shift();
+  static firstDatasetValue(dataset, languageTag, defaultValue) {
+    const quads = dataset.toArray();
+    let result;
+
+    if (languageTag !== undefined) {
+      // Search our matches for language tags that start with the explicitly
+      // specified language tag.
+      quads.forEach((elem) => {
+        if (elem.object.language.startsWith(languageTag)) {
+          result = elem.object.value;
+        }
+      });
+
+      if (result) {
+        return result;
+      }
+
+      // Fallback to searching our matches with no language tag at all.
+      quads.forEach((elem) => {
+        if (XSD.string.equals(elem.object.datatype)) {
+          result = elem.object.value;
+        }
+      });
+
+      if (result) {
+        return result;
+      }
+    }
+
+    // Even if we did specify a language tag, but got no matches, then just
+    // fallback to the first match, or the ultimate fallback passed in.
+    const first = quads.shift();
     return first ? first.object.value : defaultValue;
   }
 };
