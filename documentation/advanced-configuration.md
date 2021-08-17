@@ -103,7 +103,7 @@ artifactGeneratorVersion: 0.2.0
 versioning:
   # Type of the versioning protocol. This is for documentation purpose.
   type: git
-  # URL of the target repository. This is used in some packaging systems (e.g. NPM)
+  # URL of the target repository. This is used in some packaging systems (e.g., NPM)
   url: https://repository.git
   # These files will be generated at the root of the target artifact
   versioningTemplates: 
@@ -122,9 +122,9 @@ artifactToGenerate:
     # The generated programming language. This is for documentation purpose.
   - programmingLanguage: Java
     # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
-    # depending on the package manager (e.g. NPM does not allow re-publication of the same version, while Maven does)
+    # depending on the package manager (e.g., NPM does not allow re-publication of the same version, while Maven does)
     artifactVersion: 3.2.1-SNAPSHOT
-    # The version of the Vocab Term library (e.g. https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
+    # The version of the Vocab Term library (e.g., https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
     # https://github.com/inrupt/solid-cpommon-vocab-java for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
@@ -177,7 +177,7 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
-      # Note how different packaging tools can be used for the same artifact (e.g. NPM and rollup, or 
+      # Note how different packaging tools can be used for the same artifact (e.g., NPM and rollup, or 
       # Gradle and Maven), and how each of these packaging tools may generate more than one file.
       - packagingTool: npm 
         # This is an NPM-specific option, used in the generated package.json
@@ -200,18 +200,25 @@ artifactToGenerate:
 vocabList:
     # Description of the vocabulary, that will be used as a comment describing the generated class
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex with selective terms having translations
-    # MANDATORY A list of resources, which can be any mixture of local RDF files (whose path may be absolute, 
-    # or relative to the YAML file itself) or remote IRI's, from which a single vocabulary source file will 
-    # be generated.
+    # MANDATORY A list of resources, which can be any mixture of local RDF
+    # files (whose path may be absolute, or relative to the YAML file itself)
+    # or remote IRI's, from which a single vocabulary source file will be
+    # generated.
     inputResources:
       - https://schema.org/version/latest/schema.ttl
-    # The name of the generated vocabulary class. For instance, if set to `foo`, the corresponding Java class will
-    # be `FOO.java`. If not set, the generator will look in the source RDF vocabulary for the 
-    # `vann:preferredNamespacePrefix` property, and if it is not defined the generation will be interrupted.
+    # The name of the generated vocabulary class. For instance, if set to
+    # `foo`, the corresponding Java class will be `FOO.java`. If not set, the
+    # generator will look in the source RDF vocabulary for the 
+    # `vann:preferredNamespacePrefix` property, and if it is not defined the
+    # generation will be interrupted.
     nameAndPrefixOverride: schema-inrupt-ext
-    # When using only a portion of a large vocabulary, this option specifies a second input vocabulary that defines the subset of terms that are to be 
-    # generated from the `inputResources`. Moreover, it also enables adding custom information to a vocabulary you don't have control over (e.g. adding 
-    # translations for existing labels or comments, or overriding existing values, or adding completely new terms, etc.). For an example, see https://github.com/inrupt/artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
+    # When using only a portion of a large vocabulary, this option specifies a
+    # second input vocabulary that defines the subset of terms that are to be 
+    # generated from the `inputResources`. Moreover, it also enables adding
+    # custom information to a vocabulary you don't have control over (e.g.,
+    # adding translations for existing labels or comments, or overriding
+    # existing values, or adding completely new terms, etc.). For an example,
+    # see https://github.com/inrupt/artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
     termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
 ```
 
