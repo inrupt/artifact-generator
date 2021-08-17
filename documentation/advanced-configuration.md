@@ -177,7 +177,7 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
     packaging: 
-      # Note how different packaging tools can be used for the same artifact (e.g,. NPM and rollup, or 
+      # Note how different packaging tools can be used for the same artifact (e.g., NPM and rollup, or 
       # Gradle and Maven), and how each of these packaging tools may generate more than one file.
       - packagingTool: npm 
         # This is an NPM-specific option, used in the generated package.json

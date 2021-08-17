@@ -7,9 +7,8 @@ RDF libraries, all the way to forms that provide full access to the meta-data
 associated with individual vocabulary terms that may have been helpfully
 provided by the vocabulary creator.
 
-In the following examples, we show the generator producing a JavaScript
-constants to represent the `Person` class from Schema.org (i.e.,
-`https://schema.org/Person`).
+In the following sections, we show the Artifact Generator producing constants
+in either JavaScript or Java in each of the various 'forms'.
 
 ## Generating simple string constants
 

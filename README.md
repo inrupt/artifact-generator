@@ -3,7 +3,7 @@
 
 This is an Alpha release. Alpha releases are strictly for testing purposes
 only, may break your site, application, or destroy your data. Never use in
-production, with production data or with an existing Git repository.
+production with production data.
 ---
 
 # Artifact Generator
