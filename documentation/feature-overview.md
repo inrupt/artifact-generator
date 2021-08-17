@@ -16,7 +16,7 @@ artifact-generator --help
 
 ## To generate source code from a vocabulary:
 ```shell
-node index.js generate --inputResources <vocab resources (e.g. local files, or remote IRI's)>
+node index.js generate --inputResources <vocab resources (e.g., local files, or remote IRI's)>
 ```
 
 The output is a Node.js Module containing a JavaScript file with constants
@@ -149,7 +149,7 @@ it locally).
 node index.js --help
 ```
 
-This will list all the available commands (e.g. `generate`, `init`,
+This will list all the available commands (e.g., `generate`, `init`,
 `validate`, or `watch`), and the options available for each command.
 
 [Back to the homepage](../README.md)
