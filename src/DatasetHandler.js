@@ -919,25 +919,17 @@ module.exports = class DatasetHandler {
     if (languageTag !== undefined) {
       // Search our matches for language tags that start with the explicitly
       // specified language tag.
-      quads.forEach((elem) => {
-        if (elem.object.language.startsWith(languageTag)) {
-          result = elem.object.value;
-        }
-      });
-
+      result = quads.find((elem) =>
+        elem.object.language.startsWith(languageTag)
+      );
       if (result) {
-        return result;
+        return result.object.value;
       }
 
       // Fallback to searching our matches with no language tag at all.
-      quads.forEach((elem) => {
-        if (XSD.string.equals(elem.object.datatype)) {
-          result = elem.object.value;
-        }
-      });
-
+      result = quads.find((elem) => XSD.string.equals(elem.object.datatype));
       if (result) {
-        return result;
+        return result.object.value;
       }
     }
 
