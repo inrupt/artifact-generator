@@ -143,10 +143,6 @@ const SCHEMA_INRUPT_EXT = {
     .addLabelNoLanguage(`addressCountry`)
     .addCommentNoLanguage(`The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.`),
 
-  //
-  // Marker allowing us put commas at the end of all lines above (only the last line does not have a comma).
-  //
-  END_OF_VOCAB: "End of vocab."
 }
 
 module.exports = SCHEMA_INRUPT_EXT;

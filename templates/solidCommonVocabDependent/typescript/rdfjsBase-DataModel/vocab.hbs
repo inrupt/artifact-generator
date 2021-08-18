@@ -160,7 +160,7 @@ const {{vocabNameUpperCase}} = {
    *
    * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
    */
-  {{nameEscapedForLanguage}}: _rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),
-{{/each}}{{/if}} };
+  {{nameEscapedForLanguage}}: _rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),{{/each}}{{/if}}
+};
 
 export default {{vocabNameUpperCase}};
