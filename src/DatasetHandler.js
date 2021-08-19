@@ -362,14 +362,20 @@ module.exports = class DatasetHandler {
   static buildCompositeTermDescription(labels, comments) {
     let termDescription = undefined;
 
+    // Create simple strings to represent the sorted list of language tags we
+    // have for both our term's labels and comments (can be 'undefined' if
+    // nothing there at all).
     const sortedLangTagsLabel = DatasetHandler.sortListOfLangTags(labels);
     const sortedLangTagsComment = DatasetHandler.sortListOfLangTags(comments);
 
+    // If we have no labels or comments, report that explicitly.
     if (labels.length === 0 && comments.length === 0) {
       termDescription =
         "This term has no descriptions at all (i.e., the vocabulary doesn't provide any " +
         "'rdfs:label', 'rdfs:comment', or 'dcterms:description' meta-data).";
     } else {
+      // Having no comments is bad - so report that omission (but at least
+      // describe the labels we do have).
       if (comments.length === 0) {
         const singular = labels.length === 1;
         const labelDescription = singular
@@ -381,7 +387,7 @@ module.exports = class DatasetHandler {
         } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' meta-data).`;
       } else {
         // Common to only have a single label and comment, which will
-        // generally be both in explicit English, of just no language tag at
+        // generally be both in explicit English, or just no language tag at
         // all - so provide specific messages for each case.
         if (labels.length === 1 && comments.length === 1) {
           if (
