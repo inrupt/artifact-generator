@@ -85,7 +85,7 @@ most definitely a best practice for any vocabulary creator to adopt!).
 For instance, it might be useful to be able to link back to the vocabulary
 within which a term is defined (via `rdfs:isDefinedBy` meta-data), or to
 follow links to concepts that relate to the term (concepts that might be
-defined anywhere else on the web, like Wikipedia (or it's RDF equivalents,
+defined anywhere else on the web, like Wikipedia (or its RDF equivalents,
 [DBPedia](https://www.dbpedia.org/) or 
 [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)) (via
 `rdfs:seeAlso` meta-data), or to see examples of that term's usage (via
