@@ -401,8 +401,8 @@ module.exports = class DatasetHandler {
               termDescription =
                 "This term provides descriptions only with no explicit locale.";
             } else {
-              // Here we have 1 label and 1 comment, but they're tags don't
-              // match - so describe multilingual situation.
+              // Here we have 1 label and 1 comment, but their tags don't
+              // match - so describe the multilingual situation.
               termDescription = DatasetHandler.describeMultipleLanguages(
                 labels,
                 sortedLangTagsLabel,
