@@ -40,10 +40,10 @@ on how to set your permissions correctly.
 - [Quickstart](#quickstart)
 - [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
-- [Generated directory structure](./generated-directory-structure.md)  
-- [Multiple forms of generated artifact](./multiple-forms-of-artifact.md)
-- [Generated source-code documentation](./generated-source-code-documentation.md)
-- [The relationship between generated source-code artifacts and RDF vocabularies](./relationship-artifact-vocab.md)
+- [Generated directory structure](./documentation/generated-directory-structure.md)  
+- [Multiple forms of generated artifact](./documentation/multiple-forms-of-artifact.md)
+- [Generated source-code documentation](./documentation/generated-source-code-documentation.md)
+- [The relationship between generated source-code artifacts and RDF vocabularies](./documentation/relationship-artifact-vocab.md)
 - [Advanced configuration](./documentation/advanced-configuration.md)
 
 <a id="quickstart"></a>

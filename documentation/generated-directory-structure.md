@@ -2,13 +2,15 @@
 
 The Artifact Generator is capable of generating a very large number of
 artifacts during a single execution, e.g., artifacts for multiple different
-programming languages, with each language providing an artifact supporting
+programming languages, with each language providing artifacts supporting
 multiple different programming-language-specific RDF libraries, as well as
 string literal artifacts, and possibly `VocabTerm` artifacts.
 
 It can also generate not just source-code artifacts, but also formal
 documentation resources, such as an entire website documenting a single
-vocabulary using [Widoco] (https://github.com/dgarijo/Widoco).
+vocabulary using [Widoco] (https://github.com/dgarijo/Widoco) (currently
+this capability is only supported when generating from a single vocabulary
+using the Command Line Interface (CLI)).
 
 Therefore, the generated directory structure is highly organized to allow a
 clean separation of all these various generated resources.
@@ -28,43 +30,60 @@ directory also just being the current root directory. Therefore, so as not to
 pollute the developer's root directory, we always create a containing
 `/Generated` directory inside the specified output directory.
 
-The next sub-directory is generally the programming language, which could be
-any number of languages, such as Java, JavaScript, C#, Python, Fortran, etc.
-This sub-directory can also be named to reflect the
-['form of artifact'](./multiple-forms-of-artifact.md) being generated in that
-programming language.
+## Generated resources
 
-The following example show generation of Java, JavaScript, and TypeScript
-artifacts, and where we have multiple forms of each artifact in each
-programming language:
+The next sub-directory contains collections of generated resources, such as
+source-code, documentation, and possibly other resources later.
+
+The main sub-directory here is `SourceCodeArtifacts`, which collects all the
+source-code associated with potentially many different programming languages, 
+such as Java, JavaScript, C#, Python, Fortran(!), etc.
+
+## Inside the `./Generated/SourceCodeArtifacts` directory
+
+Inside the `SourceCodeArtifacts` directory are sub-directories named to reflect
+the ['form of artifact'](./multiple-forms-of-artifact.md) being generated,
+typically in specific programming languages.
+
+The following example shows generation of Java, JavaScript, and TypeScript
+artifacts, and where we have multiple [forms](./multiple-forms-of-artifact.md)
+of each artifact in each programming language:
 
 ```bash
 ./Generated/SourceCodeArtifacts/
     Java/
-    Java-StringLiteral/
     Java-CommonsRdf-ServiceLoader/
-    Java-SolidCommonVocab-Rdf4J/
-    JavaScript/
-    JavaScript-StringLiteral/
+    Java-CommonsRdf-SimpleRdf/
+    JavaScript-rdflib/
+    TypeScript/
+    TypeScript-StringLiteral/
     TypeScript-rdfjs-RdfDataFactory/
     TypeScript-VocabTerm/
     TypeScript-VocabTerm-rdfjs-RdfDataFactory/
 ```
 
-In each of these directories we store all the programming-language-specific
-project bundling information and files, and a generated `README.md`. And then
-inside each of these directories we'll have a `/GeneratedVocab` sub-directory
-to contain all the individual generated vocabulary classes that this artifact
-bundles together.
+## Inside each generated source-code artifact directory
 
-So for example, for our JavaScript example above, we may have bundled the
-vocabularies FOAF, vCard and Activity Streams (AS):
+Finally, inside each generated source-code artifact directory we store all the
+programming-language-and-(possibly)-RDF-library-specific project bundling
+information and files, and a generated `README.md`.
+
+## Finally, the `/GeneratedVocab` directory
+
+And finally, inside each of these directories we'll have a
+`/GeneratedVocab` sub-directory to contain all the individual generated
+vocabulary classes that this artifact bundles together.
+
+So for example, for our TypeScript example above, we may have configured the
+bundling of the vocabularies FOAF, vCard and Activity Streams (AS). This would
+result in the generation of a TypeScript source-code file for each vocabulary,
+like this:
 
 ```bash
-./Generated/SourceCodeArtifacts/JavaScript/GeneratedVocab/
-  AS.js
-  FOAF.js
-  VCARD.js
+./Generated/SourceCodeArtifacts/TypeScript/GeneratedVocab/
+  AS.ts
+  FOAF.ts
+  VCARD.ts
 ```
 
 [Back to the homepage](../README.md)

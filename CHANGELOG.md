@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Pull in RDF/JS types from the new types package (not DefinitelyTyped anymore).
 - Removed trailing comma marker from JavaScript/TypeScript templates (not
   needed anymore).
+- README doc links fixed.
 
 ## 1.0.0 2021-08-11
 
