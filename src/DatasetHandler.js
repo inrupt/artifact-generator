@@ -362,60 +362,115 @@ module.exports = class DatasetHandler {
   static buildCompositeTermDescription(labels, comments) {
     let termDescription = undefined;
 
-    // We're only interested in language string translations from English, so filter accordingly.
-    const nonEnglishLabels = labels.filter(
-      (elem) => elem.language && !elem.language.startsWith("en")
-    );
+    const sortedLangTagsLabel = DatasetHandler.sortListOfLangTags(labels);
+    const sortedLangTagsComment = DatasetHandler.sortListOfLangTags(comments);
 
-    // We're only interested in language string translations from English, so filter accordingly.
-    const nonEnglishComments = comments.filter(
-      (elem) => elem.language && !elem.language.startsWith("en")
-    );
+    if (labels.length === 0 && comments.length === 0) {
+      termDescription =
+        "This term has no descriptions at all (i.e., the vocabulary doesn't provide any " +
+        "'rdfs:label', 'rdfs:comment', or 'dcterms:description' meta-data).";
+    } else {
+      if (comments.length === 0) {
+        const singular = labels.length === 1;
+        const labelDescription = singular
+          ? "a label"
+          : `[${labels.length}] labels`;
 
-    const translationsLabel =
-      DatasetHandler.sortedListOfTranslations(nonEnglishLabels);
-    const translationsComment =
-      DatasetHandler.sortedListOfTranslations(nonEnglishComments);
-
-    if (translationsLabel !== undefined || translationsComment !== undefined) {
-      if (translationsLabel === translationsComment) {
-        const singular = nonEnglishLabels.length === 1;
-        termDescription = `This term has [${nonEnglishLabels.length}] label${
+        termDescription = `This term has ${labelDescription} (in language${
           singular ? "" : "s"
-        } and comment${singular ? "" : "s"}, in the language${
-          singular ? "" : "s"
-        } [${translationsLabel}].`;
+        } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' meta-data).`;
       } else {
-        const labelLanguages =
-          translationsLabel === undefined
-            ? ""
-            : ` in ${
-                nonEnglishLabels.length === 1 ? "the language" : "languages"
-              } [${translationsLabel}]`;
-
-        const labelDetails = `[${nonEnglishLabels.length}] label${
-          nonEnglishLabels.length === 1 ? "" : "s"
-        }${labelLanguages}`;
-
-        const commentLanguages =
-          translationsComment === undefined
-            ? ""
-            : ` in ${
-                nonEnglishComments.length === 1 ? "the language" : "languages"
-              } [${translationsComment}]`;
-
-        const commentDetails = `[${nonEnglishComments.length}] comment${
-          nonEnglishComments.length === 1 ? "" : "s"
-        }${commentLanguages}`;
-
-        termDescription = `This term provides non-English descriptions, but a mismatch between labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+        // Common to only have a single label and comment, which will
+        // generally be both in explicit English, of just no language tag at
+        // all - so provide specific messages for each case.
+        if (labels.length === 1 && comments.length === 1) {
+          if (
+            labels[0].language.startsWith("en") &&
+            comments[0].language.startsWith("en")
+          ) {
+            termDescription =
+              "This term provides descriptions only in English.";
+          } else {
+            if (labels[0].language === "" && comments[0].language === "") {
+              termDescription =
+                "This term provides descriptions only with no explicit locale.";
+            } else {
+              // Here we have 1 label and 1 comment, but they're tags don't
+              // match - so describe multilingual situation.
+              termDescription = DatasetHandler.describeMultipleLanguages(
+                labels,
+                sortedLangTagsLabel,
+                comments,
+                sortedLangTagsComment
+              );
+            }
+          }
+        } else {
+          termDescription = DatasetHandler.describeMultipleLanguages(
+            labels,
+            sortedLangTagsLabel,
+            comments,
+            sortedLangTagsComment
+          );
+        }
       }
     }
 
     return termDescription;
   }
 
-  static sortedListOfTranslations(literals) {
+  static describeMultipleLanguages(
+    labels,
+    sortedLangTagsLabel,
+    comments,
+    sortedLangTagsComment
+  ) {
+    let termDescription = undefined;
+
+    if (sortedLangTagsLabel === sortedLangTagsComment) {
+      const singular = labels.length === 1;
+      termDescription = `This term has [${labels.length}] label${
+        singular ? "" : "s"
+      } and comment${singular ? "" : "s"}, in the language${
+        singular ? "" : "s"
+      } [${sortedLangTagsLabel}].`;
+    } else {
+      const labelLanguages =
+        sortedLangTagsLabel === undefined
+          ? ""
+          : ` in ${
+              labels.length === 1 ? "the language" : "languages"
+            } [${sortedLangTagsLabel}]`;
+
+      const labelDetails = `[${labels.length}] label${
+        labels.length === 1 ? "" : "s"
+      }${labelLanguages}`;
+
+      // No need to check for comment languages or not here, as we would have
+      // reporting on no comments beforehand ever being able to get here.
+      const commentLanguages = ` in ${
+        comments.length === 1 ? "the language" : "languages"
+      } [${sortedLangTagsComment}]`;
+
+      const commentDetails = `[${comments.length}] comment${
+        comments.length === 1 ? "" : "s"
+      }${commentLanguages}`;
+
+      termDescription = `This term provides multilingual descriptions, but has a mismatch between its labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+    }
+
+    return termDescription;
+  }
+
+  /**
+   * Extracts the language tags from the array of specified language objects
+   * and returns a sorted list of those languages as a single comma separated
+   * string.
+   *
+   * @param literals Array of objects describing literals (NOT RDF Literal instances)
+   * @returns {string|undefined} Comma separated string of sorted language tags
+   */
+  static sortListOfLangTags(literals) {
     // If we have no literals at, just return.
     if (literals.length === 0) {
       return undefined;
@@ -425,7 +480,11 @@ module.exports = class DatasetHandler {
       .sort((a, b) => a.language.localeCompare(b.language))
       .map((elem) => elem.language);
 
-    return sortedByLang.toString().split(",").join(", ");
+    return sortedByLang
+      .toString()
+      .split(",")
+      .map((elem) => (elem === "" ? "NoLocale" : elem))
+      .join(", ");
   }
 
   isValidIri(str) {

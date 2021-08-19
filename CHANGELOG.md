@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Term description meta-data now always displayed for all terms (regardless of
+  it being non-English or not), and more detailed descriptions provided too
+  (and all with full test coverage).
 - Fix artifact regeneration tests for cases where timestamp based comparison is unreliable
 - Added documentation around the different forms of generated artifacts.
 - Split up the README/introduction documentation to better organize it.
