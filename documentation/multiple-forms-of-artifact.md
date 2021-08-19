@@ -8,12 +8,12 @@ associated with individual vocabulary terms that may have been helpfully
 provided by the vocabulary creator.
 
 In the following sections, we show the Artifact Generator producing constants
-in either JavaScript or Java in each of the various 'forms'.
+in either JavaScript or Java, in each of the various 'forms'.
 
-## Generating simple string constants
+## Generating simple string constants for vocabulary terms
 
 The simplest form of constant to represent a vocabulary term is just a
-standard string constant whose value is the term's full IRI.
+standard string whose value is the term's full IRI.
 
 For example, the `Person` term from the common FOAF vocabulary could be
 represented in JavaScript as follows:
@@ -31,24 +31,26 @@ frowned about when working with RDF, since RDF is very strict about the
 difference between strings and IRIs. This is why most RDF libraries provide
 their own explicit types to represent IRIs, as strings are too 'generic' a
 type, and using them for IRI values can lead to problems that are difficult to
-debug.
+debug later.
 
-We provide these artifacts because they are the simplest form to start
-working with (since the generated artifact has no external dependencies). But
-in general when working with RDF, we recommending using the more correct IRI
-types (such as those defined in the [RDF/JS Data Model types](https://www.npmjs.com/package/@rdfjs/types)
+We only provide these string-literal artifacts because they are the simplest
+form to start working with (since the generated artifacts will have no
+external dependencies). But in general when working with RDF, we highly
+recommend using the more correct IRI types (such as those defined in the
+[RDF/JS Data Model types](https://www.npmjs.com/package/@rdfjs/types)
 when working with TypeScript), which we describe next.
 
 ## Generating RDF-library-specific IRI-type constants
 
 As described above, when working with RDF it's generally preferable to be
 very explicit with your types. IRIs are fundamental to RDF, which is why all
-RDF libraries, regardless of programming language, will always provide
-explicit IRI types.
+RDF libraries, regardless of programming language, will always work with,
+and generally provide their own, explicit IRI types.
 
 Therefore, the Artifact Generator comes with templates to generate source-code
 constants for vocabulary terms using the IRI types of common RDF libraries,
-such as CommonsRDF or RDF4J for Java, or RDF/JS for JavaScript.
+such as CommonsRDF, or RDF4J for Java, or RDF/JS for JavaScript and
+TypeScript.
 
 This example shows a snippet of the Java code generated for the FOAF `Person`
 term using the CommonsRDF `IRI` type:
@@ -60,20 +62,25 @@ import org.apache.commons.rdf.api.IRI;
  * Friend of a friend, v0.99
  */
 public class FOAF implements Vocab {
+    :
+    :
     /**
      * A person.
      *
      * Defined by the vocabulary: http://xmlns.com/foaf/0.1/
      */
     public static final IRI Person = valueFactory.createIRI(FULL_IRI("Person"));
+    :
+    :
 }
 ```
 
 ## Generating constants that provide access to term meta-data
 
-In many User Interface (UI) situations, it can be highly useful if the UI can
-be driven from meta-data described in the RDF vocabularies that describe the
-terms, concepts, and messages related to our specific problem domain.
+In many situations (particularly with User Interfaces (UI)), it can be very
+useful if the UI can be driven from meta-data described in the RDF
+vocabularies that we use to describe the terms, concepts, and messages related
+to our specific problem domain.
 
 For example, if you wanted to develop a web application for managing Pet Rock
 collections, then it could be really useful if you could drive much of your UI
@@ -108,5 +115,9 @@ const PET_ROCK = {
     :
 }
 ```
+
+You'll see further detailed examples of `VocabTerm` usage in it's repository
+for Java [here](https://github.com/inrupt/solid-common-vocab-java), and
+JavaScript [here](https://github.com/inrupt/solid-common-vocab-js). 
 
 [Back to the homepage](../README.md)
