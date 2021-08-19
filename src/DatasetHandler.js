@@ -328,9 +328,6 @@ module.exports = class DatasetHandler {
       labels
     );
 
-    let translationDescription =
-      DatasetHandler.buildCompositeTranslationDescription(labels, comments);
-
     return {
       name,
       nameEscapedForLanguage,
@@ -341,7 +338,10 @@ module.exports = class DatasetHandler {
       definitions,
       seeAlsos,
       isDefinedBy,
-      translationDescription,
+      termDescription: DatasetHandler.buildCompositeTermDescription(
+        labels,
+        comments
+      ),
     };
   }
 
@@ -359,8 +359,8 @@ module.exports = class DatasetHandler {
    * @param comments the collection of comment literals
    * @returns {any}
    */
-  static buildCompositeTranslationDescription(labels, comments) {
-    let translationDescription = undefined;
+  static buildCompositeTermDescription(labels, comments) {
+    let termDescription = undefined;
 
     // We're only interested in language string translations from English, so filter accordingly.
     const nonEnglishLabels = labels.filter(
@@ -380,11 +380,11 @@ module.exports = class DatasetHandler {
     if (translationsLabel !== undefined || translationsComment !== undefined) {
       if (translationsLabel === translationsComment) {
         const singular = nonEnglishLabels.length === 1;
-        translationDescription = `This term has [${
-          nonEnglishLabels.length
-        }] label${singular ? "" : "s"} and comment${
+        termDescription = `This term has [${nonEnglishLabels.length}] label${
           singular ? "" : "s"
-        }, in the language${singular ? "" : "s"} [${translationsLabel}].`;
+        } and comment${singular ? "" : "s"}, in the language${
+          singular ? "" : "s"
+        } [${translationsLabel}].`;
       } else {
         const labelLanguages =
           translationsLabel === undefined
@@ -408,11 +408,11 @@ module.exports = class DatasetHandler {
           nonEnglishComments.length === 1 ? "" : "s"
         }${commentLanguages}`;
 
-        translationDescription = `This term provides non-English descriptions, but a mismatch between labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+        termDescription = `This term provides non-English descriptions, but a mismatch between labels and comments, with ${labelDetails}, but ${commentDetails}.`;
       }
     }
 
-    return translationDescription;
+    return termDescription;
   }
 
   static sortedListOfTranslations(literals) {

@@ -160,7 +160,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      const description = result.classes[0].translationDescription;
+      const description = result.classes[0].termDescription;
       expect(description).toContain("language [ga]");
       expect(description).toContain("[1] label and comment");
     });
@@ -180,7 +180,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      const description = result.classes[0].translationDescription;
+      const description = result.classes[0].termDescription;
       expect(description).toContain("[2] labels and comments");
       expect(description).toContain("languages [fr, ga]");
     });
@@ -198,7 +198,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      expect(result.classes[0].translationDescription).toBeUndefined();
+      expect(result.classes[0].termDescription).toBeUndefined();
     });
 
     it("should provide no translation description if only English or xsd:string", () => {
@@ -214,7 +214,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      expect(result.classes[0].translationDescription).toBeUndefined();
+      expect(result.classes[0].termDescription).toBeUndefined();
     });
 
     it("should describe mismatch label and missing comment", () => {
@@ -229,7 +229,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      const description = result.classes[0].translationDescription;
+      const description = result.classes[0].termDescription;
       expect(description).toContain("mismatch");
       expect(description).toContain("language [ga]");
       expect(description).toContain("[0] comments");
@@ -248,7 +248,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      const description = result.classes[0].translationDescription;
+      const description = result.classes[0].termDescription;
       expect(description).toContain("mismatch");
       expect(description).toContain("languages [fr, ga]");
       expect(description).toContain("[0] comments");
@@ -267,7 +267,7 @@ describe("Dataset Handler", () => {
 
       const result = handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      const description = result.classes[0].translationDescription;
+      const description = result.classes[0].termDescription;
       expect(description).toContain("mismatch");
       expect(description).toContain("[0] labels");
       expect(description).toContain("languages [fr, ga]");
