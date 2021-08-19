@@ -77,10 +77,38 @@ public class FOAF implements Vocab {
 
 ## Generating constants that provide access to term meta-data
 
-In many situations (particularly with User Interfaces (UI)), it can be very
-useful if the UI can be driven from meta-data described in the RDF
-vocabularies that we use to describe the terms, concepts, and messages related
-to our specific problem domain.
+In many situations it can be extremely useful to have programmatic access to
+the meta-data associated with individual vocabulary terms (assuming terms
+**_have_** useful meta-data associated with them in the first place, which is
+most definitely a best practice for any vocabulary creator to adopt!).
+
+For instance, it might be useful to be able to link back to the vocabulary
+within which a term is defined (via `rdfs:isDefinedBy` meta-data), or to
+follow links to concepts that relate to the term (concepts that might be
+defined anywhere else on the web, like Wikipedia (or it's RDF equivalents,
+[DBPedia](https://www.dbpedia.org/) or 
+[Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)) (via
+`rdfs:seeAlso` meta-data), or to see examples of that term's usage (via
+`void:exampleResource`), or to link to equivalent terms from other
+vocabularies (via `owl:sameAs`), etc.
+
+But in particular, it can be extremely useful if a UI can be driven from
+the meta-data intended to describe the terms in a vocabulary to humans (e.g.,
+`rdfs:label`, `rdfs:comment`, `dcterms:description`, etc.). Since we use
+vocabularies to describe the terminology, concepts, and messages related
+to our specific problem domains in the first place, it also makes sense to
+use the meta-data associated directly with those vocabulary terms from the
+'authoritative source' (i.e., the creators and contributors to the vocabulary 
+itself). This means we don't have to duplicate those descriptions in our UI
+labels, error messages, tooltip text, help messages, etc.
+
+Also, the ability for RDF to very easily provide descriptions in multiple
+human languages (like French, German, Spanish, etc., by simply using
+internationally standarized language tags, like "fr", "de" and "es"
+respectively) means when creating our own vocabularies we can easily provide
+all our internationalized UI descriptions directly in our RDF
+vocabularies too - thereby making them directly available not only to all our
+own applications, but also for anyone we share our vocabularies with. 
 
 For example, if you wanted to develop a web application for managing Pet Rock
 collections, then it could be really useful if you could drive much of your UI
