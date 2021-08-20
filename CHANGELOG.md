@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## 1.0.1 2021-08-20
 
+- Note: there was a mistaken v1.1.0 release here in the Git history 
+  (commit: adefc1bae0e3e5b006ed32853d130e3d5a2abf65), but we caught this and
+  cleaned it up before any release to npm. 
 - Term description meta-data now always displayed for all terms (regardless of
   it being non-English or not), and more detailed descriptions provided too
   (and all with full test coverage).
