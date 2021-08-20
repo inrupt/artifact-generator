@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
--
+- Updated to js-yaml v4 (breaking change of `safeLoad()` to just `load()`).
 
 ## 1.0.1 2021-08-20
 

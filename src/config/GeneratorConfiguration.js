@@ -466,7 +466,7 @@ class GeneratorConfiguration {
     let configuration = {};
     try {
       debug(`\nProcessing configuration file [${configFile}]...`);
-      configuration = yaml.safeLoad(fs.readFileSync(configFile, "utf8"));
+      configuration = yaml.load(fs.readFileSync(configFile, "utf8"));
       if (!configuration) {
         throw new Error(`Empty configuration file: [${configFile}]`);
       }
