@@ -175,6 +175,54 @@ describe("Dataset Handler", () => {
       expect(description).toContain("languages [NoLocale, en, fr, ga]");
     });
 
+    it("should report all lang tags, but not report mismatch if only on @en", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench))
+        // Deliberately do not have a label in explicit English.
+        // .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInEnglish))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelNoLocale))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].termDescription;
+      expect(description).toContain("[3] labels");
+      expect(description).toContain("languages [NoLocale, fr, ga]");
+      expect(description).toContain("[4] comments");
+      expect(description).toContain("languages [NoLocale, en, fr, ga]");
+      expect(description).not.toContain("mismatch");
+    });
+
+    it("should report difference is only in @en vs NoLocale", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
+        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
+        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.classes.length).toEqual(1);
+      const description = result.classes[0].termDescription;
+      expect(description).toContain("only in English");
+      expect(description).toContain("language [en]");
+      expect(description).toContain("language [NoLocale]");
+      expect(description).toContain("we consider the same");
+    });
+
     it("should describe single matching non-English label and comment", () => {
       const dataset = rdf
         .dataset()
@@ -326,7 +374,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("descriptions only in English");
     });
 
-    it("should describe single lable and comment in no-locale only", () => {
+    it("should describe single label and comment in no-locale only", () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))

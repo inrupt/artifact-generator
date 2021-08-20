@@ -462,7 +462,38 @@ module.exports = class DatasetHandler {
         comments.length === 1 ? "" : "s"
       }${commentLanguages}`;
 
-      termDescription = `This term provides multilingual descriptions, but has a mismatch between its labels and comments, with ${labelDetails}, but ${commentDetails}.`;
+      // Here we are checking if the mismatch is based purely on a difference
+      // caused by having different @en vs NoLocale values (since we treat
+      // NoLocale values as implicitly 'English').
+      const removeEnglishLabel =
+        DatasetHandler.filterOutEnglishAnNoLocale(labels);
+      const removeEnglishComments =
+        DatasetHandler.filterOutEnglishAnNoLocale(comments);
+
+      // Here we check if there is a difference in non-English/NoLocale values
+      // (if so, it's a definite mismatch), but we also have to check that if
+      // one has English and/or NoLocale, then the other side must have at
+      // least one of those two too.
+      const mismatch =
+        removeEnglishLabel !== removeEnglishComments ||
+        DatasetHandler.countEnglishAnNoLocale(labels) === 0 ||
+        DatasetHandler.countEnglishAnNoLocale(comments) === 0;
+
+      const onlyEnglish =
+        removeEnglishLabel === "" && removeEnglishComments === "";
+
+      const descriptionIntro = onlyEnglish
+        ? `The term has a description only in English`
+        : `This term provides multilingual descriptions`;
+
+      termDescription = `${descriptionIntro}, ${
+        mismatch ? "but has a mismatch between its labels and comments, " : ""
+      }with ${labelDetails}, but ${commentDetails}${
+        mismatch
+          ? ""
+          : " (so the difference is only" +
+            " between English and NoLocale, which we consider the same)"
+      }.`;
     }
 
     return termDescription;
@@ -491,6 +522,23 @@ module.exports = class DatasetHandler {
       .split(",")
       .map((elem) => (elem === "" ? "NoLocale" : elem))
       .join(", ");
+  }
+
+  static filterOutEnglishAnNoLocale(literals) {
+    return literals
+      .filter(
+        (elem) => !(elem.language === "" || elem.language.startsWith("en"))
+      )
+      .map((elem) => elem.language)
+      .toString()
+      .split(",")
+      .join(", ");
+  }
+
+  static countEnglishAnNoLocale(literals) {
+    return literals.filter(
+      (elem) => elem.language === "" || elem.language.startsWith("en")
+    ).length;
   }
 
   isValidIri(str) {
