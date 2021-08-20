@@ -4,17 +4,24 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+-
+
+## 1.0.1 2021-08-20
+
 - Term description meta-data now always displayed for all terms (regardless of
   it being non-English or not), and more detailed descriptions provided too
   (and all with full test coverage).
-- Fix artifact regeneration tests for cases where timestamp based comparison is unreliable
+- Fix artifact regeneration tests for cases where timestamp based comparison
+  is unreliable.
 - Added documentation around the different forms of generated artifacts.
 - Split up the README/introduction documentation to better organize it.
 - Added description of the generated directory structure to the docs.
 - Removed unused Whitesource resources.
-- Always try and use the English description for a vocab (instead of just the first one).
+- Always try and use the English description for a vocab (instead of just the
+  first one).
 - Update version of rdf-datafactory.
-- Pull in RDF/JS types from the new types package (not DefinitelyTyped anymore).
+- Pull in RDF/JS types from the new types package (not DefinitelyTyped
+  anymore).
 - Removed trailing comma marker from JavaScript/TypeScript templates (not
   needed anymore).
 - README doc links fixed.
