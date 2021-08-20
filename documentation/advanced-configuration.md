@@ -37,7 +37,7 @@ Here we provide the full Schema.org vocab as input, but we only want constants f
 node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --termSelectionResource ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
-Enhance selected terms with multi-lingual translations.
+Enhance selected terms with multilingual translations.
 ```shell
 node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/our-translations-for-schema-dot-org.ttl --noprompt
 ```
