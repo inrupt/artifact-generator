@@ -19,6 +19,7 @@ module.exports.RDFS_NAMESPACE = RDFS_NAMESPACE;
 module.exports.RDFS = {
   label: rdf.namedNode(`${RDFS_NAMESPACE}label`),
   comment: rdf.namedNode(`${RDFS_NAMESPACE}comment`),
+  Resource: rdf.namedNode(`${RDFS_NAMESPACE}Resource`),
   Class: rdf.namedNode(`${RDFS_NAMESPACE}Class`),
   Datatype: rdf.namedNode(`${RDFS_NAMESPACE}Datatype`),
   Literal: rdf.namedNode(`${RDFS_NAMESPACE}Literal`),

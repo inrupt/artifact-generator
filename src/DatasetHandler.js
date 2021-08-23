@@ -41,6 +41,14 @@ const SUPPORTED_CLASSES = [
 ];
 
 const SUPPORTED_PROPERTIES = [
+  // We find the use of rdfs:Resource in the wild very rare, and would
+  // question it's utility generally, since it's semantics are so extremely
+  // generic.
+  // But since we largely treat the various 'types' of vocabulary terms (i.e.,
+  // Classes, Properties, Constants) the same anyway, in that we look for the
+  // same meta-data and generate much the same output, we treat instances of
+  // 'rdfs:Resource' as if they were just 'rdf:Property'.
+  RDFS.Resource,
   RDF.Property,
   RDF.List,
   RDFS.Datatype,
