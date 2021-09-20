@@ -9,6 +9,7 @@ const {
   OWL,
   OWL_NAMESPACE,
   XSD,
+  SKOSXL,
   VANN,
   DCTERMS,
   SKOS,
@@ -33,14 +34,14 @@ const KNOWN_DOMAINS = new Map([
 // TODO: Special case here for Schema.org. The proper way to address this I
 //  think is to allow use of inference, which would find automatically that
 //  'PaymentStatusType' is actually an RDFS:Class - SCHEMA.PaymentStatusType.
-const SUPPORTED_CLASSES = [
+const SUPPORTED_CLASS_TYPES = [
   RDFS.Class,
   OWL.Class,
   SKOS.Concept,
   SCHEMA_DOT_ORG.PaymentStatusType,
 ];
 
-const SUPPORTED_PROPERTIES = [
+const SUPPORTED_PROPERTY_TYPES = [
   // We find the use of rdfs:Resource in the wild very rare, and would
   // question it's utility generally, since it's semantics are so extremely
   // generic.
@@ -56,6 +57,13 @@ const SUPPORTED_PROPERTIES = [
   OWL.NamedIndividual,
   OWL.AnnotationProperty,
   OWL.DatatypeProperty,
+
+  // We could treat SKOS-XL Labels as String Constants too, since that more
+  // accurately reflects what they are, but by treating them as Properties we
+  // can generate full VocabTerm instances too, thereby giving full
+  // programmatic access to all the associated meta-data (whereas constants
+  // would just give us the value.
+  SKOSXL.Label,
 ];
 
 // The original intent of using this Class was for constants, but in fact in
@@ -63,12 +71,12 @@ const SUPPORTED_PROPERTIES = [
 // language tag or datatype). This is extremely useful for defining application
 // message strings, such as error messages, or informational text in multiple
 // languages.
-const SUPPORTED_LITERALS = [RDFS.Literal];
+const SUPPORTED_LITERAL_TYPES = [RDFS.Literal];
 
 // Useful for defining constant strings. We specifically prevent having multiple
 // values for these constants, since the whole point is that the value is a
 // 'constant'.
-const SUPPORTED_CONSTANT_STRINGS = [ARTIFACT_GENERATOR.ConstantString];
+const SUPPORTED_CONSTANT_STRING_TYPES = [ARTIFACT_GENERATOR.ConstantString];
 
 // Useful for defining constant IRIs that are not intended to be related to the
 // vocabulary itself - for example, the Inrupt test vocabulary defines a number
@@ -77,7 +85,7 @@ const SUPPORTED_CONSTANT_STRINGS = [ARTIFACT_GENERATOR.ConstantString];
 // related to the IRI of the test vocabulary itself. We specifically prevent
 // having multiple values for these constants, since the whole point is that the
 // value is a 'constant'.
-const SUPPORTED_CONSTANT_IRIS = [ARTIFACT_GENERATOR.ConstantIri];
+const SUPPORTED_CONSTANT_IRI_TYPES = [ARTIFACT_GENERATOR.ConstantIri];
 
 module.exports = class DatasetHandler {
   /**
@@ -231,6 +239,12 @@ module.exports = class DatasetHandler {
 
     this.fullDataset
       .match(quad.subject, RDFS.label, null)
+      .forEach((subQuad) => {
+        DatasetHandler.add(labels, subQuad);
+      });
+
+    this.fullDataset
+      .match(quad.subject, SKOSXL.literalForm, null)
       .forEach((subQuad) => {
         DatasetHandler.add(labels, subQuad);
       });
@@ -715,7 +729,7 @@ module.exports = class DatasetHandler {
   }
 
   handleClass(subject, result) {
-    SUPPORTED_CLASSES.forEach((classType) => {
+    SUPPORTED_CLASS_TYPES.forEach((classType) => {
       this.fullDataset.match(subject, RDF.type, classType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           const termDetails = this.handleTerm(
@@ -749,7 +763,7 @@ module.exports = class DatasetHandler {
   }
 
   handleProperty(subject, result) {
-    SUPPORTED_PROPERTIES.forEach((propertyType) => {
+    SUPPORTED_PROPERTY_TYPES.forEach((propertyType) => {
       this.fullDataset
         .match(subject, RDF.type, propertyType)
         .forEach((quad) => {
@@ -787,7 +801,7 @@ module.exports = class DatasetHandler {
   }
 
   handleLiteral(subject, result) {
-    SUPPORTED_LITERALS.forEach((literalType) => {
+    SUPPORTED_LITERAL_TYPES.forEach((literalType) => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.literals.push(
@@ -799,7 +813,7 @@ module.exports = class DatasetHandler {
   }
 
   handleConstantString(subject, result) {
-    SUPPORTED_CONSTANT_STRINGS.forEach((literalType) => {
+    SUPPORTED_CONSTANT_STRING_TYPES.forEach((literalType) => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantStrings.push(
@@ -811,7 +825,7 @@ module.exports = class DatasetHandler {
   }
 
   handleConstantIri(subject, result) {
-    SUPPORTED_CONSTANT_IRIS.forEach((literalType) => {
+    SUPPORTED_CONSTANT_IRI_TYPES.forEach((literalType) => {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantIris.push(
@@ -845,9 +859,9 @@ module.exports = class DatasetHandler {
    * @returns {*}
    */
   findNamespace() {
-    // First see if we have an explicitly defined ontology (i.e. an entity
-    // with RDF.type of 'owl:Ontology' or 'LIT:Ontology') that explicitly
-    // provides its namespace IRI.
+    // First see if we have an explicitly defined ontology (e.g., an entity
+    // with RDF.type of 'owl:Ontology') that explicitly provides its namespace
+    // IRI.
     let ontologyIri;
 
     let namespace = this.findOwlOntology((owlOntologyTerms) => {

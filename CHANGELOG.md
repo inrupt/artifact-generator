@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Updated to js-yaml v4 (breaking change of `safeLoad()` to just `load()`).
 - Include 'rdfs:Resource' as a vocab term property (should be rarely, if ever,
   needed, but no harm in adding).
+- Added SKOS-XL support (for glossaries, acronyms, etc.).
+- Improved error reporting for missing template files.
+- Added support for running Widoco for each vocabulary in a configuration file.
 
 ## 1.0.1 2021-08-20
 

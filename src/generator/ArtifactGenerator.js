@@ -9,6 +9,7 @@ const ChildProcess = require("child_process");
 const FileGenerator = require("./FileGenerator");
 const VocabGenerator = require("./VocabGenerator");
 const Resource = require("../Resource");
+const CommandLine = require("../CommandLine");
 const { describeInput } = require("../Util");
 const { DEFAULT_PUBLISH_KEY } = require("../config/GeneratorConfiguration");
 
@@ -99,6 +100,10 @@ class ArtifactGenerator {
             )
           );
         }
+
+        this.artifactData = CommandLine.runWidocoForAllVocabs(
+          this.artifactData
+        );
       })
       .then(() => this.artifactData)
       .catch((error) => {

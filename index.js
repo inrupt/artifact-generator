@@ -280,11 +280,11 @@ function runInitialization(argv) {
   new App(argv)
     .init()
     .then((data) => {
-      debug(`\nSuccessfully initialized config file [${data}]`);
+      debug(`\nSuccessfully initialized configuration file [${data}]`);
       process.exit(0);
     })
     .catch((error) => {
-      debug(`Generation process failed: [${error}]`);
+      debug(`Configuration file initialization process failed: [${error}]`);
       process.exit(-1);
     });
 }

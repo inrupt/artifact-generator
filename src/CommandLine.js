@@ -26,14 +26,6 @@ module.exports = class CommandLine {
     return path.dirname(directory);
   }
 
-  static async askForSolidCommonVocabVersion() {
-    return inquirer.prompt({
-      type: "input",
-      name: "solidCommonVocabVersion",
-      message: "Version string for Vocab Term dependency ...",
-    });
-  }
-
   static findPublishedVersionOfModule(data) {
     const cloneData = { ...data };
     if (data.runNpmPublish) {
@@ -115,7 +107,8 @@ module.exports = class CommandLine {
 
   static async askForArtifactToBeDocumented(data) {
     if (data.runWidoco) {
-      return { ...data, ...CommandLine.runWidoco(data) }; // Merge the answers in with the data and return
+      // Merge the answers in with the data and return.
+      return { ...data, ...CommandLine.runWidocoForAllVocabs(data) };
     }
 
     let answer = {};
@@ -132,11 +125,16 @@ module.exports = class CommandLine {
       answer = await inquirer.prompt(runWidocoQuestion);
 
       if (answer.runWidoco) {
-        answer = { ...answer, ...CommandLine.runWidoco(data) };
+        // Merge into our answer the result of attempting to generate documentation.
+        answer = CommandLine.runWidocoForAllVocabs({
+          ...data,
+          runWidoco: true,
+        });
       }
     }
 
-    return { ...data, ...answer }; // Merge the answers in with the data and return
+    // Assume we did NOT run the documentation, but overwrite that assumption if we did!
+    return { ranWidoco: false, ...data, ...answer }; // Merge the answers in with the data and return
   }
 
   static runNpmInstall(data) {
@@ -207,44 +205,54 @@ module.exports = class CommandLine {
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
   }
 
-  static runWidoco(data) {
-    // Run Widoco using environment variable (since putting the JAR in a local
-    // 'lib' directory doesn't work with NPM publish, as it's too big at
-    // 46MB!).
-    // If running on the command line, and Node is not picking up a
-    // system-defined env var, then you can set this manually before running
-    // node itself, e.g.:
-    //   WIDOCO_JAR=$WIDOCO_JAR node index.js ...
-    // ...or if no system-wide env var, just:
-    //   WIDOCO_JAR=/path/to/jar/widoco-1.4.15-jar-with-dependencies.jar node index.js ...
-    const widocoJar = "$WIDOCO_JAR";
+  static runWidocoForAllVocabs(data) {
+    const documentationDirectories = [];
 
-    const inputResource = data.inputResources[0];
-    const inputSwitch = inputResource.startsWith("http") ? "ontURI" : "ontFile";
-    const destDirectory = `${data.outputDirectory}${getArtifactDirectoryRoot(
-      data
-    )}/Widoco`;
-    const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
+    if (data.runWidoco) {
+      const widocoJar = "$WIDOCO_JAR";
+      const artifactDirectoryRoot = getArtifactDirectoryRoot(data);
 
-    debug(
-      `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
-    );
+      data.vocabList.forEach((vocab) => {
+        const inputResource = vocab.inputResources[0];
 
-    ChildProcess.execSync(
-      `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius`
-    );
+        let vocabDirectory = inputResource.substring(
+          inputResource.lastIndexOf("/") + 1
+        );
 
-    debug(
-      `Widoco documentation generated for [${
-        data.artifactName
-      }] in directory [${CommandLine.getParentFolder(
-        data.outputDirectory
-      )}/Widoco].`
-    );
+        const extensionPos = vocabDirectory.lastIndexOf(".");
+        if (extensionPos > 0) {
+          vocabDirectory = vocabDirectory.substring(0, extensionPos);
+        }
+
+        const inputSwitch = inputResource.startsWith("http")
+          ? "ontURI"
+          : "ontFile";
+        const destDirectory = `${data.outputDirectory}${artifactDirectoryRoot}/Widoco/${vocabDirectory}`;
+        documentationDirectories.push(destDirectory);
+
+        const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
+
+        debug(
+          `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
+        );
+
+        const command = `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius`;
+        debug(`Executing comand: [${command}]`);
+        ChildProcess.execSync(command);
+
+        debug(
+          `Widoco documentation generated for [${
+            data.artifactName
+          }] in directory [${CommandLine.getParentFolder(
+            data.outputDirectory
+          )}/Widoco].`
+        );
+      });
+    }
 
     return {
       ...data,
-      ...{ ranWidoco: true, documentationDirectory: destDirectory },
+      ...{ ranWidoco: data.runWidoco, documentationDirectories },
     }; // Merge the answers in with the data and return
   }
 };

@@ -11,7 +11,7 @@ const DEFAULT_TEMPLATE = path.join(
 );
 const DEFAULT_EXTENSION = "java";
 const LANGUAGE = "Java";
-const DEFAULT_LIT_VOCAB_TERM_VERSION = "0.1.0-SNAPSHOT";
+const DEFAULT_VOCAB_TERM_DEPENDENCY_VERSION = "0.1.0-SNAPSHOT";
 
 const MAVEN_ARTIFACT_PROMPT = [
   {
@@ -69,7 +69,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
   constructor() {
     super();
     this.language = LANGUAGE;
-    this.solidCommonVocabVersion = DEFAULT_LIT_VOCAB_TERM_VERSION;
+    this.solidCommonVocabVersion = DEFAULT_VOCAB_TERM_DEPENDENCY_VERSION;
     this.questions.push(
       {
         type: "input",

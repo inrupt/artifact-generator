@@ -23,7 +23,14 @@ class FileGenerator {
    * @param {*} outputFile
    */
   static createFileFromTemplate(templateFile, templateData, outputFile) {
-    const data = fs.readFileSync(templateFile);
+    let data;
+    try {
+      data = fs.readFileSync(templateFile);
+    } catch (error) {
+      throw new Error(
+        `Failed to read template file [${templateFile}] trying to generate output file [${outputFile}]. Error: ${error}`
+      );
+    }
 
     const template = Handlebars.compile(data.toString());
 
@@ -98,19 +105,26 @@ class FileGenerator {
     const outputDirectoryForSourceCode =
       FileGenerator.buildTargetSourceCodeFolder(artifactDetails);
     FileGenerator.createDirectoryIfNotExist(outputDirectoryForSourceCode);
-    FileGenerator.createFileFromTemplate(
-      `${artifactDetails.sourceCodeTemplate}`,
-      // Some artifact-specific info may be required in the template (e.g. the java package name)
-      FileGenerator.formatTemplateData(
-        { ...argv, ...templateData, ...artifactDetails },
-        artifactDetails.sourceFileExtension
-      ),
-      FileGenerator.buildTargetSourceCodeFilePath(
-        outputDirectoryForSourceCode,
-        artifactDetails,
-        templateData
-      )
-    );
+
+    try {
+      FileGenerator.createFileFromTemplate(
+        `${artifactDetails.sourceCodeTemplate}`,
+        // Some artifact-specific info may be required in the template (e.g. the java package name)
+        FileGenerator.formatTemplateData(
+          { ...argv, ...templateData, ...artifactDetails },
+          artifactDetails.sourceFileExtension
+        ),
+        FileGenerator.buildTargetSourceCodeFilePath(
+          outputDirectoryForSourceCode,
+          artifactDetails,
+          templateData
+        )
+      );
+    } catch (error) {
+      throw new Error(
+        `Failed to generate [${artifactDetails.programmingLanguage}] source-code file in artifact directory [${artifactDetails.outputDirectoryForArtifact}]. Error: ${error}`
+      );
+    }
   }
 
   static createPackagingFiles(generalInfo, artifactInfo, packagingInfo) {

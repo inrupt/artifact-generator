@@ -282,6 +282,7 @@ describe("Generator configuration", () => {
         configPath,
         "missing-programming-language-template.yml"
       );
+
       expect(
         () =>
           new GeneratorConfiguration(

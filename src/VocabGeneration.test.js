@@ -9,7 +9,7 @@ const { DEFAULT_PUBLISH_KEY } = require("./config/GeneratorConfiguration");
 // This version number is only useful if attempting to build from a single RDF
 // vocabulary, and not using a vocab list file (since the vocab list files would
 // be expected to provide this value).
-const VERSION_SOLID_COMMON_VOCAB = "^0.5.3";
+const VERSION_SOLID_COMMON_VOCAB = "^1.0.0";
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime command-line arguments.
@@ -46,6 +46,19 @@ const ConfigCommonRdf = {
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
 };
 
+const ConfigInruptAll = {
+  _: "generate",
+  force: true,
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/All",
+  vocabListFile: "../solid-common-vocab-rdf/inrupt-rdf/**/*.yml",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+};
+
 const ConfigInruptCore = {
   _: "generate",
   force: true,
@@ -53,6 +66,20 @@ const ConfigInruptCore = {
   outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Core",
   vocabListFile:
     "../solid-common-vocab-rdf/inrupt-rdf/Core/vocab-inrupt-core.yml",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+};
+
+const ConfigInruptGlossary = {
+  _: "generate",
+  force: true,
+  clearOutputDirectory: true,
+  outputDirectory: "./test/Generated/GENERATE_SOURCE/SINGLE/Inrupt/Glossary",
+  vocabListFile:
+    "../solid-common-vocab-rdf/inrupt-rdf/Glossary/vocab-inrupt-glossary.yml",
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
@@ -101,15 +128,15 @@ const ConfigSolid = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs recursively", async () => {
-  it.skip("Generate ALL vocabs recursively", async () => {
+  // it("Generate ALL vocabs", async () => {
+  it.skip("Generate ALL vocabs", async () => {
     jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
   });
 
-  // it("Generate ALL vocabs", async () => {
-  it.skip("Generate ALL vocabs", async () => {
-    jest.setTimeout(120000);
+  // it("Generate ALL specific vocabs", async () => {
+  it.skip("Generate ALL specific vocabs", async () => {
+    jest.setTimeout(1200000);
     await generateVocabArtifact(ConfigCommonRdf);
 
     await generateVocabArtifact(ConfigSolid);
@@ -121,7 +148,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 
   // it("Common RDF vocabs", async () => {
   it.skip("Common RDF vocabs", async () => {
-    jest.setTimeout(60000);
+    jest.setTimeout(600000);
     await generateVocabArtifact(ConfigCommonRdf);
   });
 
@@ -131,12 +158,19 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigSolid);
   });
 
-  // it("Inrupt vocab", async () => {
-  it.skip("Inrupt vocabs", async () => {
-    jest.setTimeout(30000);
-    await generateVocabArtifact(ConfigInruptCore);
-    await generateVocabArtifact(ConfigInruptUi);
-    await generateVocabArtifact(ConfigInruptService);
+  // it("Inrupt All vocabs", async () => {
+  it.skip("Inrupt All vocabs", async () => {
+    jest.setTimeout(1200000);
+    await generateVocabArtifact(ConfigInruptAll);
+  });
+
+  // it("Inrupt specific vocabs", async () => {
+  it.skip("Inrupt specific vocabs", async () => {
+    jest.setTimeout(120000);
+    // await generateVocabArtifact(ConfigInruptCore);
+    // await generateVocabArtifact(ConfigInruptUi);
+    // await generateVocabArtifact(ConfigInruptService);
+    await generateVocabArtifact(ConfigInruptGlossary);
   });
 
   // it("tests a single vocab config file", async () => {
@@ -313,9 +347,10 @@ async function generateVocabArtifact(argv) {
   if (result.runWidoco) {
     // Check if our documentation is in the root output directory (not the
     // artifact directory!).
-    expect(result.documentationDirectory).toMatch(/Widoco/);
+    expect(result.documentationDirectories).toHaveLength(1);
+    expect(result.documentationDirectories[0]).toMatch(/Widoco/);
     expect(
-      fs.existsSync(`${result.documentationDirectory}/index-en.html`)
+      fs.existsSync(`${result.documentationDirectory[0]}/index-en.html`)
     ).toBe(true);
   }
 
