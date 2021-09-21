@@ -306,8 +306,6 @@ describe("Command Line unit tests", () => {
         jest.fn().mockReturnValue({ runWidoco: true })
       );
 
-      // childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
-
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
         vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
