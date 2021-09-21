@@ -5,6 +5,7 @@ const path = require("path");
 const del = require("del");
 
 jest.mock("inquirer");
+
 const inquirer = require("inquirer");
 
 const ArtifactGenerator = require("./ArtifactGenerator");
@@ -32,8 +33,8 @@ beforeEach(() => {
 
 describe("Artifact Generator", () => {
   it("should provide a default output directory", () => {
-    const generator = new ArtifactGenerator({ configuration: {} });
-    expect(generator.artifactData.outputDirectory).toEqual(".");
+    const artifactGenerator = new ArtifactGenerator({ configuration: {} });
+    expect(artifactGenerator.artifactData.outputDirectory).toEqual(".");
   });
 
   describe("Processing vocab list file.", () => {
@@ -186,28 +187,6 @@ describe("Artifact Generator", () => {
       expect(
         artifactGenerator.artifactData.solidCommonVocabVersion
       ).not.toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
-    });
-
-    it("should ask for user input when version information missing", async () => {
-      const outputDirectory =
-        "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
-      // There are side-effects from test to test in the mocked functions, so we only count the new calls
-      const before = inquirer.prompt.mock.calls.length;
-      const config = new GeneratorConfiguration({
-        _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
-        outputDirectory,
-        force: true,
-      });
-      config.completeInitialConfiguration();
-      const artifactGenerator = new ArtifactGenerator(config);
-
-      await artifactGenerator.generate();
-      expect(inquirer.prompt.mock.calls.length - before).toEqual(1);
-      expect(
-        artifactGenerator.artifactData.artifactToGenerate[0]
-          .solidCommonVocabVersion
-      ).toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
     it("Should generate artifact with bundling", async () => {
@@ -770,7 +749,8 @@ describe("Artifact Generator", () => {
         artifactGenerator.runPublish("local");
       });
 
-      // In the config file, the publication command has been replaced by a command creating a file in the artifact root folder
+      // In the config file, the publication command has been replaced by a command creating a
+      // file in the artifact root folder.
       expect(
         fs.existsSync(
           `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishLocal`

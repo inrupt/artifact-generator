@@ -12,6 +12,7 @@ const {
   OWL,
   OWL_NAMESPACE,
   SKOS,
+  SKOSXL,
   VANN,
   ARTIFACT_GENERATOR,
 } = require("./CommonTerms");
@@ -173,6 +174,27 @@ describe("Dataset Handler", () => {
       const description = result.classes[0].termDescription;
       expect(description).toContain("[4] labels and comments");
       expect(description).toContain("languages [NoLocale, en, fr, ga]");
+    });
+
+    it("should treat 'skosxl:literalForm' as labels in all languages", () => {
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(OWL.Ontology, RDF.type, SKOSXL.Label))
+        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInIrish))
+        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInFrench))
+        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInEnglish))
+        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelNoLocale));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = handler.buildTemplateInput();
+      expect(result.properties.length).toEqual(1);
+      const description = result.properties[0].termDescription;
+      expect(description).toContain("[4] labels (");
+      expect(description).toContain("languages [NoLocale, en, fr, ga]");
+      expect(description).toContain("but no long-form descriptions");
     });
 
     it("should report all lang tags, but not report mismatch if only on @en", () => {

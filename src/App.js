@@ -173,7 +173,7 @@ module.exports = class App {
         let result = undefined;
         // The following loop enforces sequential execution on purpose, because
         // there are possibilities that the generator requires user interaction,
-        // in which cases parallel execution is not acceptable.
+        // in which case parallel execution is not acceptable.
         for (let configFile of matchingConfigFile) {
           const configDirectory = path.dirname(configFile);
 

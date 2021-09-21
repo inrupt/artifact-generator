@@ -207,24 +207,49 @@ describe("Command Line unit tests", () => {
   });
 
   describe("Running Widoco...", () => {
-    it("Should run Widoco", () => {
-      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
-
-      const result = CommandLine.runWidoco({
-        ...defaultInputs,
-        inputResources: ["Dummy_vocab_file"],
-        outputDirectory: "needs/a/parent/directory",
+    it("should produce empty documentation directory list if not running Widoco", () => {
+      const config = CommandLine.runWidocoForAllVocabs({
+        runWidoco: false,
       });
 
-      expect(result.ranWidoco).toBe(true);
+      expect(config.ranWidoco).toBe(false);
+      expect(config.documentationDirectories).toHaveLength(0);
     });
 
-    it("Should generate documentation if user explicitly told to", async () => {
+    it("should produce documentation directory list", async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
+      const firstVocab = "dummy-vocab-first.ttl";
+      const secondVocab = "dummy-vocab-second.ttl";
+      const dummyDir = "/dummy-output-dir/";
+
+      const config = CommandLine.runWidocoForAllVocabs({
+        outputDirectory: dummyDir,
+        runWidoco: true,
+        vocabList: [
+          { inputResources: [firstVocab] },
+          { inputResources: [secondVocab] },
+        ],
+      });
+
+      expect(config.outputDirectory).toEqual(dummyDir);
+      expect(config.documentationDirectories).toHaveLength(2);
+      expect(config.documentationDirectories[0]).toContain(
+        firstVocab.substring(0, firstVocab.lastIndexOf("."))
+      );
+      expect(config.documentationDirectories[0]).not.toContain(".ttl");
+      expect(config.documentationDirectories[1]).toContain(
+        secondVocab.substring(0, secondVocab.lastIndexOf("."))
+      );
+      expect(config.documentationDirectories[1]).not.toContain(".ttl");
+    });
+
+    it("Should generate documentation if config says to", async () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputResources: ["Dummy_vocab_file"],
+        vocabList: [
+          { inputResources: ["https://example.com/Dummy_http_vocab"] },
+        ],
         outputDirectory: "needs/a/parent/directory",
         runWidoco: true,
       });
@@ -232,12 +257,43 @@ describe("Command Line unit tests", () => {
       expect(result.ranWidoco).toBe(true);
     });
 
+    it("Should generate documentation if user explicitly anwsers yes", async () => {
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue({ runWidoco: true })
+      );
+
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        vocabList: [
+          { inputResources: ["https://example.com/Dummy_http_vocab"] },
+        ],
+        outputDirectory: "needs/a/parent/directory",
+      });
+
+      expect(result.ranWidoco).toBe(true);
+    });
+
+    it("Should not generate documentation if user says not to", async () => {
+      inquirer.prompt.mockImplementation(
+        jest.fn().mockReturnValue({ runWidoco: false })
+      );
+
+      const result = await CommandLine.askForArtifactToBeDocumented({
+        ...defaultInputs,
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
+        outputDirectory: "needs/a/parent/directory",
+        runWidoco: false,
+      });
+
+      expect(result.ranWidoco).toBe(false);
+    });
+
     it("Should generate documentation (from HTTP vocab) if user explicitly told to", async () => {
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputResources: ["http://Dummy_vocab_file"],
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
         runWidoco: true,
       });
@@ -250,12 +306,11 @@ describe("Command Line unit tests", () => {
         jest.fn().mockReturnValue({ runWidoco: true })
       );
 
-      childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
-
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputResources: ["Dummy_vocab_file"],
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
+        runWidoco: true,
       });
 
       expect(result.ranWidoco).toBe(true);
@@ -268,11 +323,11 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        inputResources: ["Dummy_vocab_file"],
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
       });
 
-      expect(result.ranWidoco).toBeUndefined();
+      expect(result.ranWidoco).toBe(false);
     });
 
     it("Should not generate documentation if user did not specify, and also set no prompting", async () => {
@@ -281,7 +336,7 @@ describe("Command Line unit tests", () => {
         noprompt: true,
       });
 
-      expect(result.ranWidoco).toBeUndefined();
+      expect(result.ranWidoco).toBe(false);
     });
   });
 });

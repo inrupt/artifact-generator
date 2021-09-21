@@ -41,6 +41,16 @@ module.exports.SKOS = {
   definition: rdf.namedNode(`${SKOS_NAMESPACE}definition`),
 };
 
+const SKOSXL_NAMESPACE = "http://www.w3.org/2008/05/skos-xl#";
+module.exports.SKOSXL = {
+  Label: rdf.namedNode(`${SKOSXL_NAMESPACE}Label`),
+  literalForm: rdf.namedNode(`${SKOSXL_NAMESPACE}literalForm`),
+  prefLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}prefLabel`),
+  altLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}altLabel`),
+  hiddenLabel: rdf.namedNode(`${SKOSXL_NAMESPACE}hiddenLabel`),
+  labelRelation: rdf.namedNode(`${SKOSXL_NAMESPACE}labelRelation`),
+};
+
 const OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
 module.exports.OWL_NAMESPACE = OWL_NAMESPACE;
 module.exports.OWL = {
