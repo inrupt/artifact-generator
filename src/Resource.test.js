@@ -183,6 +183,8 @@ describe("Touching a file", () => {
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
 
+    // Force a deliberate short time interval here to give our timestamps a
+    // chance to differ.
     await new Promise((resolve) => {
       setTimeout(resolve, 100);
     });

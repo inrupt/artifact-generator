@@ -133,7 +133,7 @@ class GeneratorConfiguration {
       };
 
       // Currently we don't have command-line switches to set artifact name prefixes and suffixes,
-      // so set them to empty.
+      // so set them to empty (we expect all configuration files to explicitly set these).
       this.configuration.artifactPrefix = "";
       this.configuration.artifactSuffix = "";
     }
@@ -149,8 +149,9 @@ class GeneratorConfiguration {
 
     // Although our configuration may stipulate a specific version of the Artifact Generator to use,
     // we use our actual version when reporting in all generated artifacts (but we'll produce a
-    // warning to alert the developer of any discrepancy (the configuration file version number is
-    // really for CI to download that specific version of the AG).
+    // warning to alert the developer of any discrepancy).
+    //  Note: the version number provided in configuration files is really for CI to download that
+    // specific version of the AG.
     this.configuration.artifactGeneratorVersion = packageDotJson.version;
   }
 

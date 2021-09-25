@@ -116,7 +116,8 @@ class FileGenerator {
     try {
       FileGenerator.createFileFromTemplate(
         `${artifactDetails.sourceCodeTemplate}`,
-        // Some artifact-specific info may be required in the template (e.g. the java package name)
+        // Some artifact-specific info may be required in the template (e.g., the Java package
+        // name).
         FileGenerator.formatTemplateData(
           { ...argv, ...templateData, ...artifactDetails },
           artifactDetails.sourceFileExtension
