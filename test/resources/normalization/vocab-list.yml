@@ -4,6 +4,9 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 3.2.1-SNAPSHOT
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     javaPackageName: com.inrupt.testing
     artifactDirectoryName: Java
     #

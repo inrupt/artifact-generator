@@ -9,6 +9,9 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 3.2.1-SNAPSHOT
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     javaPackageName: com.inrupt.testing
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: Java
@@ -28,12 +31,18 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     npmModuleScope: "@inrupt/"
-    solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
-    packaging: 
+
+    rdfjsImplVersion: "^1.1.0"
+    solidCommonVocabVersion: "^1.0.10"
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
+
+    packaging:
       - packagingTool: npm 
         npmModuleScope: "@inrupt/"
         packagingTemplates: 

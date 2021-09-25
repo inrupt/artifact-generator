@@ -8,12 +8,18 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     npmModuleScope: "@inrupt/"
-    solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
-    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
-    packaging: 
+
+    rdfjsImplVersion: "^1.1.0"
+    solidCommonVocabVersion: "^1.0.10"
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
+
+    packaging:
       - packagingTool: npm 
         npmModuleScope: "@inrupt/"
         packagingTemplates: 

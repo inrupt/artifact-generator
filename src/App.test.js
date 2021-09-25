@@ -90,14 +90,24 @@ ConfigFileGenerator.mockImplementation(() => {
     generateDefaultConfigFile: (targetPath) => {
       FileGenerator.createFileFromTemplate(
         DEFAULT_CONFIG_TEMPLATE_PATH,
-        {},
+        // Provide variables expected by template(s).
+        {
+          generatorName: "TestGenerator",
+          artifactGeneratorVersion: "^7.8.9",
+          generatedTimestamp: "1999/12/31 23:59",
+        },
         targetPath
       );
     },
     generateConfigFile: (targetPath) => {
       FileGenerator.createFileFromTemplate(
         DEFAULT_CONFIG_TEMPLATE_PATH,
-        {},
+        // Provide variables expected by template(s).
+        {
+          generatorName: "TestGenerator",
+          artifactGeneratorVersion: "^7.8.9",
+          generatedTimestamp: "1999/12/31 23:59",
+        },
         targetPath
       );
     },
@@ -106,7 +116,7 @@ ConfigFileGenerator.mockImplementation(() => {
 
 describe("App tests", () => {
   it("should fail to even construct", () => {
-    expect(() => new App()).toThrow("must be initialised with a configuration");
+    expect(() => new App()).toThrow("must be initialized with a configuration");
   });
 
   describe("Testing mocked generator...", () => {

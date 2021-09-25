@@ -1,15 +1,22 @@
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.0-SNAPSHOT
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     javaPackageName: com.example.java.packagename
-    solidCommonVocabVersion: 0.1.0-SNAPSHOT
     artifactDirectoryName: Java
-    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
     sourceFileExtension: java
+
+    rdf4jVersion: 3.4.2
+    solidCommonVocabVersion: 0.1.0-SNAPSHOT
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
       - class     # Defined in VCard.
       - abstract  # Defined in DCTerms.
+
 #    repository:
 #      - type: repository
 #        id: nexus-releases

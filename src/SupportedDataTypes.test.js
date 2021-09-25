@@ -16,6 +16,10 @@ describe("Supported Data Type", () => {
 
     const generator = new VocabGenerator(
       {
+        generatorName: "TestGenerator",
+        artifactGeneratorVersion: "^7.8.9",
+        generatedTimestamp: "1999/12/31 23:59",
+
         inputResources: [
           "./test/resources/vocabs/special-case-owl-snippet.ttl",
         ],
@@ -70,6 +74,10 @@ describe("Supported Data Type", () => {
 
     const generator = new VocabGenerator(
       {
+        generatorName: "TestGenerator",
+        artifactGeneratorVersion: "^7.8.9",
+        generatedTimestamp: "1999/12/31 23:59",
+
         inputResources: [
           "./test/resources/vocabs/special-case-http-snippet.ttl",
         ],
@@ -260,6 +268,10 @@ describe("Supported Data Type", () => {
 
     const generator = new VocabGenerator(
       {
+        generatorName: "TestGenerator",
+        artifactGeneratorVersion: "^7.8.9",
+        generatedTimestamp: "1999/12/31 23:59",
+
         inputResources: ["./test/resources/vocabs/supported-data-types.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",

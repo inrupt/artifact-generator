@@ -18,7 +18,7 @@ module.exports = class App {
   constructor(argv) {
     if (!argv) {
       throw new Error(
-        "Application must be initialised with a configuration - none was provided."
+        "Application must be initialized with a configuration - none was provided."
       );
     }
 

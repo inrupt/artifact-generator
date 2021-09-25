@@ -28,12 +28,14 @@ function validateCommandLine(argv, options) {
   if (argv._.length !== 1) {
     // Only one command is expected
     throw new Error(
-      `Exactly one command is expected, one of [${SUPPORTED_COMMANDS}].`
+      `Exactly one command is expected (got [${
+        argv._.length
+      }], [${argv._.toString()}]), one of [${SUPPORTED_COMMANDS}].`
     );
   }
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
-      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of ${SUPPORTED_COMMANDS}.`
+      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of [${SUPPORTED_COMMANDS}].`
     );
   }
   return true;
@@ -308,8 +310,13 @@ async function runWatcher(argv) {
 
   const app = new App(argv);
   const watcherCount = await app.watch();
+  const plural = watcherCount != 1;
   debug(
-    `\nSuccessfully initialized file watchers on [${watcherCount}] vocabulary bundle config files...`
+    `\nSuccessfully initialized file watcher${
+      plural ? "s" : ""
+    } on [${watcherCount}] vocabulary bundle configuration file${
+      plural ? "s" : ""
+    }...`
   );
 
   // Use console to communicate with the user - we can't rely on 'debug' since

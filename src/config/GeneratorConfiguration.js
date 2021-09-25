@@ -131,6 +131,11 @@ class GeneratorConfiguration {
         ...GeneratorConfiguration.normalizeCliOptions(initialConfig),
         ...GeneratorConfiguration.fromCommandLine(initialConfig),
       };
+
+      // Currently we don't have command-line switches to set artifact name prefixes and suffixes,
+      // so set them to empty.
+      this.configuration.artifactPrefix = "";
+      this.configuration.artifactSuffix = "";
     }
 
     GeneratorConfiguration.normalizeConfigPaths(
@@ -141,6 +146,11 @@ class GeneratorConfiguration {
     // Extend the received arguments with contextual data.
     this.configuration.generatedTimestamp = moment().format("LLLL");
     this.configuration.generatorName = packageDotJson.name;
+
+    // Although our configuration may stipulate a specific version of the Artifact Generator to use,
+    // we use our actual version when reporting in all generated artifacts (but we'll produce a
+    // warning to alert the developer of any discrepancy (the configuration file version number is
+    // really for CI to download that specific version of the AG).
     this.configuration.artifactGeneratorVersion = packageDotJson.version;
   }
 
