@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+## 1.0.2 2021-09-27
+
 - Updated to js-yaml v4 (breaking change of `safeLoad()` to just `load()`).
 - Include 'rdfs:Resource' as a vocab term property (should be rarely, if ever,
   needed, but no harm in adding).
