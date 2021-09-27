@@ -62,7 +62,7 @@ const SUPPORTED_PROPERTY_TYPES = [
   // accurately reflects what they are, but by treating them as Properties we
   // can generate full VocabTerm instances too, thereby giving full
   // programmatic access to all the associated meta-data (whereas constants
-  // would just give us the value.
+  // would just give us the value).
   SKOSXL.Label,
 ];
 

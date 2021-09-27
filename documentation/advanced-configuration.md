@@ -124,6 +124,12 @@ artifactToGenerate:
     # The version of the generated artifact. This is used for packaging.  Be aware that versioning policies differ
     # depending on the package manager (e.g., NPM does not allow re-publication of the same version, while Maven does)
     artifactVersion: 3.2.1-SNAPSHOT
+    # Required to provide these values, even if no value, so that we explicitly stipulate 
+    # differentiated names in the expected case of multiple 'forms' of artifact being generated per
+    # vocabulary (e.g., an artifact with string literal constants, an artifact with RDF/JS IRI 
+    # types, VocabTerm types, etc.)
+    artifactPrefix: ""
+    artifactSuffix: ""
     # The version of the Vocab Term library (e.g., https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
     # https://github.com/inrupt/solid-cpommon-vocab-java for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.

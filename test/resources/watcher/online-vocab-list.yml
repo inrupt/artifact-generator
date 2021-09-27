@@ -4,6 +4,9 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: "Java"
     artifactVersion: "0.1.0"
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: "Java"
     templateInternal: "solidCommonVocabDependent/java/rdf4j/vocab.hbs"

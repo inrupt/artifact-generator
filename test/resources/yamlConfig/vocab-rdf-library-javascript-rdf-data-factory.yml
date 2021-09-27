@@ -8,10 +8,18 @@ artifactGeneratorVersion: 0.4.2
 artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     npmModuleScope: "@inrupt/"
     solidCommonVocabVersion: "^1.0.10"
     artifactDirectoryName: JavaScript
 
+    babelCoreVersion: "^1.2.3"
+    rollupVersion: "^4.5.6"
+    rollupBabelPluginVersion: "^7.8.9"
+    rollupCommonjsPluginVersion: "^10.11.12"
+    rollupNodeResolveVersion: "^13.14.15"
     templateInternal: rdfLibraryDependent/javascript/rdfjsRdfDataFactory/vocab.hbs
     sourceFileExtension: js
 

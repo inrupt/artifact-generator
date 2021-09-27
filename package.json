@@ -33,13 +33,13 @@
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/serializer-ntriples": "^1.0.3",
     "@rdfjs/sink-map": "^1.0.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "chokidar": "3.5.2",
     "debug": "^4.3.2",
     "del": "^6.0.0",
-    "glob": "^7.1.7",
+    "glob": "^7.2.0",
     "handlebars": "^4.7.7",
-    "inquirer": "^8.1.2",
+    "inquirer": "^8.1.5",
     "js-yaml": "^4.1.0",
     "mock-local-storage": "^1.1.17",
     "moment": "^2.29.1",
@@ -48,14 +48,14 @@
     "rdfxml-streaming-parser": "^1.5.0",
     "rimraf": "^3.0.2",
     "string-to-stream": "^3.0.1",
-    "yargs": "^17.1.0"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.1.1",
-    "prettier": "^2.3.2"
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.2.2",
+    "prettier": "^2.4.1"
   },
   "jest": {
     "modulePathIgnorePatterns": [

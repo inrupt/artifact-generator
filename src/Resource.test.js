@@ -179,9 +179,17 @@ describe("Touching a file", () => {
       "test",
       "resources",
       "expectedOutputs",
-      "sample-vocab-git.yml"
+      "sample-vocab.yml"
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
+
+    // Force a deliberate short time interval here to give our timestamps a
+    // chance to differ.
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
+
+    // Deliberately pass an empty fileSystem.
     Resource.touchFile(file, {});
     const newModifiedTime = fs.statSync(file).mtimeMs;
     expect(newModifiedTime).toBeGreaterThan(origModifiedTime);

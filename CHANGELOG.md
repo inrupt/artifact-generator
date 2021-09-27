@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Added SKOS-XL support (for glossaries, acronyms, etc.).
 - Improved error reporting for missing template files.
 - Added support for running Widoco for each vocabulary in a configuration file.
+- Changed missing template variables from a warning to an exception (that
+  forced a lot of test clean-up!).
+- Effectively `artifactPrefix` and `artifactSuffix` are now mandatory, as they
+  are referenced in all templates (this always makes it explicit how artifacts
+  will be named now).
 
 ## 1.0.1 2021-08-20
 

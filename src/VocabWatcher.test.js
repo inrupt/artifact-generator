@@ -13,15 +13,11 @@ const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
 const VOCAB_LIST_PATH_ALTERNATE = "./test/resources/watcher/vocab-list.yaml";
 const VOCAB_LIST_PATH_ONLINE_ONLY =
   "./test/resources/watcher/vocab-list-online-only.yml";
-const VOCAB_LIST_PATH_GLOB = "./test/resources/glob/**/*.yml";
 const OUTPUT_DIRECTORY = "./test/Generated/UNIT_TEST/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
-const SLEEP_TIME = 200;
-
-// const MOCKED_ONLINE_RESOURCE_PATH = './test/resources/watcher/another-schema-snippet.ttl';
-// const MOCKED_ONLINE_RESOURCE_BODY = fs.readFileSync(MOCKED_ONLINE_RESOURCE_PATH).toString();
+const SLEEP_TIME = 100;
 
 function sleep(ms) {
   return new Promise((resolve) => {

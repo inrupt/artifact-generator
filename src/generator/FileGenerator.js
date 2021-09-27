@@ -10,9 +10,12 @@ const {
 
 Handlebars.registerHelper("helperMissing", function (/* dynamic arguments */) {
   const options = arguments[arguments.length - 1];
-  debug(
-    `Undefined template variable: [${options.name}] was used in a template, but was not defined`
-  );
+  const configuration =
+    options.data.root.vocabListFile || options.data.root.inputResources;
+
+  const message = `Undefined template variable: [${options.name}] was used in template [${options.data.root.templateFile}], but was not defined. Configuration from: [${configuration}].`;
+  debug(message);
+  throw new Error(message);
 });
 
 class FileGenerator {
@@ -33,6 +36,10 @@ class FileGenerator {
     }
 
     const template = Handlebars.compile(data.toString());
+
+    // Overwrite any previous template file with our current one (useful for debugging if
+    // there's a problem with a template, such as a variable needed that isn't provided).
+    templateData.templateFile = templateFile;
 
     const contents = template(templateData);
 
@@ -109,7 +116,8 @@ class FileGenerator {
     try {
       FileGenerator.createFileFromTemplate(
         `${artifactDetails.sourceCodeTemplate}`,
-        // Some artifact-specific info may be required in the template (e.g. the java package name)
+        // Some artifact-specific info may be required in the template (e.g., the Java package
+        // name).
         FileGenerator.formatTemplateData(
           { ...argv, ...templateData, ...artifactDetails },
           artifactDetails.sourceFileExtension

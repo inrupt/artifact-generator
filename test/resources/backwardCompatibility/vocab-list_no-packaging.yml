@@ -23,6 +23,9 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.0-SNAPSHOT
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     javaPackageName: com.inrupt.lit.generated.vocab.common
     solidCommonVocabVersion: 0.1.0-SNAPSHOT
     artifactDirectoryName: Java
@@ -46,8 +49,13 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 0.1.0
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     gitRepository: git@github.com:inrupt/generated-vocab-common-js.git
     npmModuleScope: "@inrupt/"
+
+    rdfjsImplVersion: "^1.1.0"
     solidCommonVocabVersion: "^0.1.0"
     artifactDirectoryName: JavaScript
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
@@ -56,10 +64,16 @@ artifactToGenerate:
   #  This is a dummy artifact that cannot be packaged
   ##
   - programmingLanguage: Ook
+    artifactVersion: 0.1.0
+    artifactPrefix: ""
+    artifactSuffix: ""
+
     artifactDirectoryName: Ook
     sourceFileExtension: ook
+
+    rdfjsImplVersion: "^1.1.0"
+    solidCommonVocabVersion: "^0.1.0"
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
-    artifactVersion: 0.1.0
 
 vocabList:
   - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex

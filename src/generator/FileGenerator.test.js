@@ -1,6 +1,15 @@
 require("mock-local-storage");
 
 const FileGenerator = require("./FileGenerator");
+const path = require("path");
+
+const ARTIFACTS_INFO_TEMPLATE = path.join(
+  __dirname,
+  "..",
+  "..",
+  "templates",
+  "artifacts-info.hbs"
+);
 
 describe("File Generator", () => {
   it("should throw if source code template file not found", () => {
@@ -49,6 +58,42 @@ describe("File Generator", () => {
     expect(errorMessage).toContain("Failed to read template file");
     expect(errorMessage).toContain(doesNotExistTemplateFile);
     expect(errorMessage).toContain(outputFile);
+  });
+
+  it("should throw if template refers to missing variable (from input resource)", () => {
+    const inputTurtle = "SomeVocab.ttl";
+    let errorMessage;
+    try {
+      FileGenerator.createFileFromTemplate(
+        ARTIFACTS_INFO_TEMPLATE,
+        { inputResources: inputTurtle, templateFile: ARTIFACTS_INFO_TEMPLATE },
+        "SomeOutputFile.js"
+      );
+    } catch (error) {
+      errorMessage = error.message;
+    }
+
+    expect(errorMessage).toContain("Undefined template variable");
+    expect(errorMessage).toContain(inputTurtle);
+    expect(errorMessage).toContain(ARTIFACTS_INFO_TEMPLATE);
+  });
+
+  it("should throw if template refers to missing variable (from configuration file)", () => {
+    const configFile = "someConfigFile.yml";
+    let errorMessage;
+    try {
+      FileGenerator.createFileFromTemplate(
+        ARTIFACTS_INFO_TEMPLATE,
+        { vocabListFile: configFile, templateFile: ARTIFACTS_INFO_TEMPLATE },
+        "SomeOutputFile.js"
+      );
+    } catch (error) {
+      errorMessage = error.message;
+    }
+
+    expect(errorMessage).toContain("Undefined template variable");
+    expect(errorMessage).toContain(configFile);
+    expect(errorMessage).toContain(ARTIFACTS_INFO_TEMPLATE);
   });
 
   it("should escape all characters in JavaScript", () => {

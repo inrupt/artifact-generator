@@ -12,6 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "@inrupt/solid-common-vocab": "99.999.01",
-    "@rdfjs/data-model": ""
+    "@rdfjs/data-model": "^1.1.0"
   }
 }

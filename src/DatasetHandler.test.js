@@ -715,7 +715,7 @@ describe("Dataset Handler", () => {
   });
 
   describe("storing local copy of vocab", () => {
-    it("should store local copy", () => {
+    it("should store local copy", async () => {
       const dataset = rdf
         .dataset()
         .addAll(vocabMetadata)
@@ -737,6 +737,14 @@ describe("Dataset Handler", () => {
       });
 
       handler.buildTemplateInput();
+
+      // TODO: Look into refactoring this to work with async N3 Writer...
+      //  Specifically `static Resource.storeLocalCopyOfResource()`
+      // Force a deliberate short time interval here to give our writer time
+      // to generate the local file.
+      await new Promise((resolve) => {
+        setTimeout(resolve, 100);
+      });
 
       const matches = fs
         .readdirSync(testLocalCopyDirectory)

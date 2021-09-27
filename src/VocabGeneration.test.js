@@ -167,9 +167,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Inrupt specific vocabs", async () => {
   it.skip("Inrupt specific vocabs", async () => {
     jest.setTimeout(120000);
-    // await generateVocabArtifact(ConfigInruptCore);
-    // await generateVocabArtifact(ConfigInruptUi);
-    // await generateVocabArtifact(ConfigInruptService);
+    await generateVocabArtifact(ConfigInruptCore);
+    await generateVocabArtifact(ConfigInruptUi);
+    await generateVocabArtifact(ConfigInruptService);
     await generateVocabArtifact(ConfigInruptGlossary);
   });
 
@@ -183,9 +183,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       force: true,
       clearOutputDirectory: true,
       outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM_CONFIG_FILE",
-      // artifactVersion: "1.0.0",
-      // solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
-      // moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       // npmRegistry: NPM_REGISTRY,
       // runWidoco: false,
       // runNpmInstall: RUN_NPM_INSTALL,
