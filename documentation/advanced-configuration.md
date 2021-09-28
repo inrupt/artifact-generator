@@ -128,8 +128,8 @@ artifactToGenerate:
     # differentiated names in the expected case of multiple 'forms' of artifact being generated per
     # vocabulary (e.g., an artifact with string literal constants, an artifact with RDF/JS IRI 
     # types, VocabTerm types, etc.)
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
     # The version of the Vocab Term library (e.g., https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
     # https://github.com/inrupt/solid-cpommon-vocab-java for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.

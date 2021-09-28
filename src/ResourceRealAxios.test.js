@@ -16,5 +16,5 @@ describe("Resources last modification", () => {
     // leeway for the function to return(!), we just assert on our version of
     // 'now' minus 100 milliseconds.
     expect(modified.getTime()).toBeGreaterThan(new Date().getTime() - 100);
-  });
+  }, 10000);
 });

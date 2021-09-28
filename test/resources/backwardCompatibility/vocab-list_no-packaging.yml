@@ -23,8 +23,8 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.0-SNAPSHOT
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     javaPackageName: com.inrupt.lit.generated.vocab.common
     solidCommonVocabVersion: 0.1.0-SNAPSHOT
@@ -49,8 +49,8 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 0.1.0
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     gitRepository: git@github.com:inrupt/generated-vocab-common-js.git
     npmModuleScope: "@inrupt/"
@@ -65,8 +65,8 @@ artifactToGenerate:
   ##
   - programmingLanguage: Ook
     artifactVersion: 0.1.0
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     artifactDirectoryName: Ook
     sourceFileExtension: ook

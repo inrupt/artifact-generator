@@ -352,11 +352,11 @@ class ArtifactGenerator {
                   ),
                   packagingInfo.npmModuleScope
                 ),
-                artifactInfo.artifactPrefix
+                artifactInfo.artifactNamePrefix
               ),
               this.artifactData.artifactName
             ),
-            artifactInfo.artifactSuffix
+            artifactInfo.artifactNameSuffix
           );
 
           artifactInfo.suggestedFullArtifactName = suggestedFullArtifactName;

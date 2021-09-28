@@ -9,8 +9,8 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt/"
     artifactDirectoryName: JavaScript

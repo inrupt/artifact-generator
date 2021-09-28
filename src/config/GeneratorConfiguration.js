@@ -134,8 +134,8 @@ class GeneratorConfiguration {
 
       // Currently we don't have command-line switches to set artifact name prefixes and suffixes,
       // so set them to empty (we expect all configuration files to explicitly set these).
-      this.configuration.artifactPrefix = "";
-      this.configuration.artifactSuffix = "";
+      this.configuration.artifactNamePrefix = "";
+      this.configuration.artifactNameSuffix = "";
     }
 
     GeneratorConfiguration.normalizeConfigPaths(
