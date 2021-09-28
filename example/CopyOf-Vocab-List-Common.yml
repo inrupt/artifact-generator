@@ -23,8 +23,8 @@ artifactGeneratorVersion: 1.0.1
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.0
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     artifactDirectoryName: Java
     sourceFileExtension: java
@@ -54,8 +54,8 @@ artifactToGenerate:
 
   - programmingLanguage: TypeScript
     artifactVersion: 0.1.0
-    artifactPrefix: ""
-    artifactSuffix: -rdfjs-rdfdatafactory
+    artifactNamePrefix: ""
+    artifactNameSuffix: -rdfjs-rdfdatafactory
 
     artifactDirectoryName: TypeScript-rdfjs-RdfDataFactory
     sourceFileExtension: ts

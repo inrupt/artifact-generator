@@ -8,8 +8,8 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    artifactPrefix: test-prefix-
-    artifactSuffix: ""
+    artifactNamePrefix: test-prefix-
+    artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt-test/"
     artifactDirectoryName: JavaScript

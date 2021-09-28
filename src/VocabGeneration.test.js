@@ -130,13 +130,11 @@ const ConfigSolid = {
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
-    jest.setTimeout(6000000);
     await generateVocabArtifact(ConfigAll);
-  });
+  }, 6000000);
 
   // it("Generate ALL specific vocabs", async () => {
   it.skip("Generate ALL specific vocabs", async () => {
-    jest.setTimeout(1200000);
     await generateVocabArtifact(ConfigCommonRdf);
 
     await generateVocabArtifact(ConfigSolid);
@@ -144,38 +142,33 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigInruptCore);
     await generateVocabArtifact(ConfigInruptUi);
     await generateVocabArtifact(ConfigInruptService);
-  });
+  }, 1200000);
 
   // it("Common RDF vocabs", async () => {
   it.skip("Common RDF vocabs", async () => {
-    jest.setTimeout(600000);
     await generateVocabArtifact(ConfigCommonRdf);
-  });
+  }, 600000);
 
   // it('Solid vocabs', async () => {
   it.skip("Solid vocabs", async () => {
-    jest.setTimeout(1200000);
     await generateVocabArtifact(ConfigSolid);
-  });
+  }, 1200000);
 
   // it("Inrupt All vocabs", async () => {
   it.skip("Inrupt All vocabs", async () => {
-    jest.setTimeout(1200000);
     await generateVocabArtifact(ConfigInruptAll);
-  });
+  }, 1200000);
 
   // it("Inrupt specific vocabs", async () => {
   it.skip("Inrupt specific vocabs", async () => {
-    jest.setTimeout(120000);
     await generateVocabArtifact(ConfigInruptCore);
     await generateVocabArtifact(ConfigInruptUi);
     await generateVocabArtifact(ConfigInruptService);
     await generateVocabArtifact(ConfigInruptGlossary);
-  });
+  }, 1200000);
 
   // it("tests a single vocab config file", async () => {
   it.skip("tests a single vocab config file", async () => {
-    jest.setTimeout(10000);
     await generateVocabArtifact({
       vocabListFile: "./example/CopyOf-Vocab-List-Common.yml",
 
@@ -190,11 +183,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // publish: [DEFAULT_PUBLISH_KEY],
       // storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
     });
-  });
+  }, 10000);
 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
-    jest.setTimeout(10000);
     await generateVocabArtifact({
       // inputResources: ["http://rdfs.org/resume-rdf/cv.rdfs#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
@@ -314,7 +306,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       publish: [DEFAULT_PUBLISH_KEY],
       storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
     });
-  });
+  }, 10000);
 });
 
 async function generateVocabArtifact(argv) {

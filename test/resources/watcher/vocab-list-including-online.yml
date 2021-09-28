@@ -11,8 +11,8 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: "Java"
     artifactVersion: "0.1.0"
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     artifactDirectoryName: "Java"

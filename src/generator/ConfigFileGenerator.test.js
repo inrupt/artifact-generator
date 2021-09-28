@@ -35,8 +35,8 @@ const REFERENCE_YAML_SVN =
 const ARTIFACT_NAME = "myNewArtifact";
 const PROMPTED_JAVA_ARTIFACT = {
   artifactVersion: "0.1.0",
-  artifactPrefix: "",
-  artifactSuffix: "",
+  artifactNamePrefix: "",
+  artifactNameSuffix: "",
   solidCommonVocabVersion: "0.1.0-SNAPSHOT",
   javaPackageName: "com.example.java.packagename",
 };

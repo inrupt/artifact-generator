@@ -13,8 +13,8 @@ license:
 artifactToGenerate:
   - programmingLanguage: TypeScript
     artifactVersion: 99.99.99
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt/"
     artifactDirectoryName: TypeScript

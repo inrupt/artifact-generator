@@ -8,8 +8,8 @@ artifactGeneratorVersion: 0.4.2
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 0.1.5-SNAPSHOT
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     javaPackageName: com.inrupt.generated.vocab.lit.test
     artifactDirectoryName: Java

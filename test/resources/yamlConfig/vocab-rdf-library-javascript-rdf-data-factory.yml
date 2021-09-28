@@ -8,8 +8,8 @@ artifactGeneratorVersion: 0.4.2
 artifactToGenerate:
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt/"
     solidCommonVocabVersion: "^1.0.10"

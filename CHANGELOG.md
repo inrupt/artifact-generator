@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Updated configuration field names from `artifactPrefix` and `artifactSuffix`
+  to `artifactNamePrefix` and `artifactNameSuffix` respectively, to better
+  convey their intent, and to align them better with the `artifactName` field
+  that they both apply to.
+- Updating Jest to v27 necessitated new test-specific timeout syntax in
+  `VocabGeneration.test.js`.
+
 ## 1.0.2 2021-09-27
 
 - Updated to js-yaml v4 (breaking change of `safeLoad()` to just `load()`).

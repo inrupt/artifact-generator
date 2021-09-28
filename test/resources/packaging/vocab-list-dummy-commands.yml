@@ -8,8 +8,8 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
   - programmingLanguage: Java
     artifactVersion: 3.2.1-SNAPSHOT
-    artifactPrefix: ""
-    artifactSuffix: ""
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
 
     javaPackageName: com.inrupt.testing
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
@@ -43,8 +43,8 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    artifactPrefix: test-prefix-
-    artifactSuffix: ""
+    artifactNamePrefix: test-prefix-
+    artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt-test/"
     artifactDirectoryName: JavaScript
@@ -69,7 +69,7 @@ artifactToGenerate:
         # the command to be run to be templated, allowing us to be very specific
         # and dynamic about the commands we run.
         - key: "templatedCommand"
-          command: "touch templated-${npmModuleScope}-${artifactPrefix}-${artifactName}@${artifactVersion}-file"
+          command: "touch templated-${npmModuleScope}-${artifactNamePrefix}-${artifactName}@${artifactVersion}-file"
         packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
