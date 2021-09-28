@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+## 1.0.3 2021-09-28
+
 - Updated configuration field names from `artifactPrefix` and `artifactSuffix`
   to `artifactNamePrefix` and `artifactNameSuffix` respectively, to better
   convey their intent, and to align them better with the `artifactName` field
