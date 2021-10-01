@@ -8,13 +8,13 @@
 require("mock-local-storage");
 
 const path = require("path");
-const debugInstance = require("debug");
+const debugModule = require("debug");
 const yargs = require("yargs");
 const App = require("./src/App");
 const { getArtifactDirectoryRoot } = require("./src/Util");
 const CommandLine = require("./src/CommandLine");
 
-const debug = debugInstance("artifact-generator:index");
+const debug = debugModule("artifact-generator:index");
 
 const SUPPORTED_COMMANDS = [
   CommandLine.COMMAND_GENERATE(),
@@ -30,9 +30,16 @@ function validateCommandLine(argv, options) {
     throw new Error(
       `Exactly one command is expected (got [${
         argv._.length
-      }], [${argv._.toString()}]), one of [${SUPPORTED_COMMANDS}].`
+      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}].`
     );
   }
+
+  if (typeof argv._[0] === "number") {
+    throw new Error(
+      `Invalid command: command must be a string, but we got the number [${argv._[0]}]. Expected one of [${SUPPORTED_COMMANDS}].`
+    );
+  }
+
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
       `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of [${SUPPORTED_COMMANDS}].`
@@ -162,8 +169,8 @@ yargs
         .strict(),
     (argv) => {
       if (!argv.inputResources && !argv.vocabListFile) {
-        debugInstance(argv.help);
-        debugInstance.enable("artifact-generator:*");
+        debugModule(argv.help);
+        debugModule.enable("artifact-generator:*");
         throw new Error(
           "You must provide input, either a single vocabulary using '--inputResources' (e.g. a local RDF file, or a URL that resolves to an RDF vocabulary), or a YAML file using '--vocabListFile' listing multiple vocabularies."
         );
@@ -197,7 +204,7 @@ yargs
   )
   .command(
     CommandLine.COMMAND_WATCH(),
-    "Starts a daemon process watching the configured vocabulary" +
+    "Starts a process watching the configured vocabulary" +
       " resources, and automatically re-generates artifacts whenever it detects" +
       " a vocabulary change.",
     (yargs) =>
@@ -218,7 +225,7 @@ yargs
   .boolean("quiet")
   .describe(
     "quiet",
-    `If set will not display logging output to console (but you can still use DEBUG environment variable, set to 'artifact-generator:*').`
+    `If set will not display logging output to console (but you can still use the DEBUG environment variable, set to 'artifact-generator:*').`
   )
   .default("quiet", false)
 
@@ -243,17 +250,17 @@ yargs
 function configureLog(argv) {
   // Unless specifically told to be quiet (i.e. no logging output, although that
   // will still be overridden by the DEBUG environment variable!), then
-  // determine if any generator-specific namespaces have been enabled. If they
-  // haven't been, then turn them all on,
+  // determine if any application-specific namespaces have been enabled. If they
+  // haven't been, then turn them all on.
   if (!argv.quiet) {
     // Retrieve all currently enabled debug namespaces (and then restore them!).
-    const namespaces = debugInstance.disable();
-    debugInstance.enable(namespaces);
+    const namespaces = debugModule.disable();
+    debugModule.enable(namespaces);
 
-    // Unless our generator's debug logging has been explicitly configured, turn
-    // all debugging on.
+    // Unless our debug logging has been explicitly configured, turn all
+    // debugging on.
     if (namespaces.indexOf("artifact-generator") === -1) {
-      debugInstance.enable("artifact-generator:*");
+      debugModule.enable("artifact-generator:*");
     }
   }
 }

@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Added an optional `widocoLanguages` configuration option for each vocabulary
+  to stipulate that Widoco (if it's configured to run at all) should attempt
+  to generate documentation in multiple languages (which assumes the vocab
+  contains labels in those specified languages, but falls back to English).
+
 ## 1.0.3 2021-09-28
 
 - Updated configuration field names from `artifactPrefix` and `artifactSuffix`

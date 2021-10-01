@@ -236,16 +236,22 @@ module.exports = class CommandLine {
           `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
         );
 
-        const command = `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius`;
+        const languageSwitch = vocab.widocoLanguages
+          ? ` -lang ${vocab.widocoLanguages}`
+          : ``;
+
+        const command = `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius${languageSwitch}`;
         debug(`Executing comand: [${command}]`);
         ChildProcess.execSync(command);
 
         debug(
-          `Widoco documentation generated for [${
-            data.artifactName
-          }] in directory [${CommandLine.getParentFolder(
+          `Widoco documentation generated for [${inputResource}] in directory [${CommandLine.getParentFolder(
             data.outputDirectory
-          )}/Widoco].`
+          )}/Widoco]${
+            vocab.widocoLanguages
+              ? " in languages [" + vocab.widocoLanguages + "]"
+              : ""
+          }.`
         );
       });
     }
