@@ -196,10 +196,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // solidCommonVocabVersion: "^4.5.6",
       // widocoLanguages: "en-es",
       // inputResources: [
-      //   "/home/pmcb55/Work/Projects/Customer/Lowes/cust-lowes-homestead-etl-poc/resources/Vocab/ThirdParty/CopyOfVocab/lowes-3rd-party-insidemaps.ttl",
+      //   "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/ThirdParty/CopyOfVocab/3rd-party-supplier.ttl",
       // ],
       vocabListFile:
-        "/home/pmcb55/Work/Projects/Customer/Lowes/cust-lowes-homestead-etl-poc/resources/Vocab/vocab-lowes-bundle-all.yml",
+        "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/vocab-bundle-all.yml",
 
       // inputResources: ["http://rdfs.org/resume-rdf/base.rdfs#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
