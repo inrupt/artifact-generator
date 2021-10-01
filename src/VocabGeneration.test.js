@@ -192,9 +192,18 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
       // nameAndPrefixOverride: "cv",
 
-      inputResources: ["http://rdfs.org/resume-rdf/base.rdfs#"],
-      vocabContentTypeHeaderOverride: "application/rdf+xml",
-      nameAndPrefixOverride: "cv-base",
+      // rdfjsImplVersion: "^1.2.3",
+      // solidCommonVocabVersion: "^4.5.6",
+      // widocoLanguages: "en-es",
+      // inputResources: [
+      //   "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/ThirdParty/CopyOfVocab/3rd-party-supplier.ttl",
+      // ],
+      vocabListFile:
+        "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/vocab-bundle-all.yml",
+
+      // inputResources: ["http://rdfs.org/resume-rdf/base.rdfs#"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // nameAndPrefixOverride: "cv-base",
 
       // inputResources: ["http://usefulinc.com/ns/doap#"],
       // nameAndPrefixOverride: "doap",
@@ -300,9 +309,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       npmRegistry: NPM_REGISTRY,
-      runWidoco: false,
+      runWidoco: true,
       runNpmInstall: RUN_NPM_INSTALL,
-      supportBundling: SUPPORT_BUNDLING,
+      supportBundling: false, //SUPPORT_BUNDLING,
       publish: [DEFAULT_PUBLISH_KEY],
       storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
     });

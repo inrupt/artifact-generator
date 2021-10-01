@@ -228,7 +228,7 @@ describe("Command Line unit tests", () => {
         runWidoco: true,
         vocabList: [
           { inputResources: [firstVocab] },
-          { inputResources: [secondVocab] },
+          { inputResources: [secondVocab], widocoLanguages: "en-ga" },
         ],
       });
 
