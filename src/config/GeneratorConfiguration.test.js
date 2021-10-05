@@ -335,6 +335,12 @@ describe("Generator configuration", () => {
   });
 
   describe("Processing command line.", () => {
+    it("should fail with no parameters passed", async () => {
+      await expect(() => {
+        GeneratorConfiguration.fromCommandLine({});
+      }).toThrow("Missing input resource");
+    });
+
     it("should fail with non-existent input resource for generation", async () => {
       await expect(() => {
         GeneratorConfiguration.fromCommandLine({ _: ["generate"] });
