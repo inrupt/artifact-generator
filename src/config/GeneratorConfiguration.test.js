@@ -442,22 +442,6 @@ describe("Generator configuration", () => {
     });
   });
 
-  describe("Additional questions.", () => {
-    it("should fail when not providing info and preventing prompt", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
-
-      const generatorConfiguration = new GeneratorConfiguration({
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-        noprompt: true,
-      });
-      expect(
-        generatorConfiguration.completeInitialConfiguration()
-      ).rejects.toThrow("Missing Solid Common Vocab version");
-    });
-  });
-
   describe("License", () => {
     it("should collect the license text from header if provided", () => {
       const generatorConfiguration = GeneratorConfiguration.fromConfigFile(
