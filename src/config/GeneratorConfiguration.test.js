@@ -335,6 +335,12 @@ describe("Generator configuration", () => {
   });
 
   describe("Processing command line.", () => {
+    it("should fail with no parameters passed", async () => {
+      await expect(() => {
+        GeneratorConfiguration.fromCommandLine({});
+      }).toThrow("Missing input resource");
+    });
+
     it("should fail with non-existent input resource for generation", async () => {
       await expect(() => {
         GeneratorConfiguration.fromCommandLine({ _: ["generate"] });
@@ -439,22 +445,6 @@ describe("Generator configuration", () => {
       ).toEqual(
         `npm unpublish --force --registry ${registry} && npm install --registry ${registry} && npm publish --registry ${registry}`
       );
-    });
-  });
-
-  describe("Additional questions.", () => {
-    it("should fail when not providing info and preventing prompt", async () => {
-      inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
-      );
-
-      const generatorConfiguration = new GeneratorConfiguration({
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-        noprompt: true,
-      });
-      expect(
-        generatorConfiguration.completeInitialConfiguration()
-      ).rejects.toThrow("Missing Solid Common Vocab version");
     });
   });
 
