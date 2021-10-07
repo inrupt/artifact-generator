@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Moved all the command-line processing code to be now under code coverage.
+
 ## 1.0.4 2021-10-01
 
 - Added an optional `widocoLanguages` configuration option for each vocabulary

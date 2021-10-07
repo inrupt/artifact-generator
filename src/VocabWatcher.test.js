@@ -89,7 +89,7 @@ describe("Vocabulary watcher", () => {
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
     watcher.unwatch();
-  });
+  }, 10000);
 
   it("should not generate an initial artifact without changes", async () => {
     const watcher = new VocabWatcher(
