@@ -14,5 +14,6 @@ try {
 
   return 0;
 } catch (error) {
+  console.log(`Error running Artifact Generator: [${error.toString()}]`);
   return -2;
 }
