@@ -630,7 +630,7 @@ module.exports = class DatasetHandler {
     return result;
   }
 
-  buildTemplateInput() {
+  async buildTemplateInput() {
     const result = {};
 
     result.rollupVersion = this.vocabData.rollupVersion;
@@ -701,7 +701,7 @@ module.exports = class DatasetHandler {
       result.storeLocalCopyOfVocabDirectory =
         this.vocabData.storeLocalCopyOfVocabDirectory;
 
-      Resource.storeLocalCopyOfResource(
+      await Resource.storeLocalCopyOfResource(
         result.storeLocalCopyOfVocabDirectory,
         result.vocabName,
         result.namespace,

@@ -45,7 +45,7 @@ describe("Dataset Handler", () => {
   });
 
   describe("Ontology description ", () => {
-    it("should use English description if multiple", () => {
+    it("should use English description if multiple", async () => {
       const commentInEnglish = rdf.literal("Some comment in English", "en");
       const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
       const commentInFrench = rdf.literal(
@@ -65,11 +65,11 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.description).toContain(commentInEnglish.value);
     });
 
-    it("should use description that starts with explicit English tag", () => {
+    it("should use description that starts with explicit English tag", async () => {
       const commentInUsEnglish = rdf.literal(
         "Some comment in US English",
         "en-US"
@@ -92,11 +92,11 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.description).toContain(commentInUsEnglish.value);
     });
 
-    it("should fallback to no language tag if no explicit English", () => {
+    it("should fallback to no language tag if no explicit English", async () => {
       const commentWithNoLocale = rdf.literal(
         "Some comment with no language tag"
       );
@@ -118,13 +118,13 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.description).toContain(commentWithNoLocale.value);
     });
   });
 
   describe("Edge-case vocabulary cases ", () => {
-    it("should ignore properties defined on the namespace IRI", () => {
+    it("should ignore properties defined on the namespace IRI", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(rdf.namedNode(OWL_NAMESPACE), RDF.type, RDF.Property))
@@ -134,7 +134,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.properties.length).toBe(0);
     });
   });
@@ -152,7 +152,7 @@ describe("Dataset Handler", () => {
       "fr"
     );
 
-    it("should give full description of matching labels and comments in all languages", () => {
+    it("should give full description of matching labels and comments in all languages", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -169,14 +169,14 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("[4] labels and comments");
       expect(description).toContain("languages [NoLocale, en, fr, ga]");
     });
 
-    it("should treat 'skosxl:literalForm' as labels in all languages", () => {
+    it("should treat 'skosxl:literalForm' as labels in all languages", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, SKOSXL.Label))
@@ -189,7 +189,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.properties.length).toEqual(1);
       const description = result.properties[0].termDescription;
       expect(description).toContain("[4] labels (");
@@ -197,7 +197,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("but no long-form descriptions");
     });
 
-    it("should report all lang tags, but not report mismatch if only on @en", () => {
+    it("should report all lang tags, but not report mismatch if only on @en", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -215,7 +215,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("[3] labels");
@@ -225,7 +225,7 @@ describe("Dataset Handler", () => {
       expect(description).not.toContain("mismatch");
     });
 
-    it("should report difference is only in @en vs NoLocale", () => {
+    it("should report difference is only in @en vs NoLocale", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -236,7 +236,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("only in English");
@@ -245,7 +245,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("we consider the same");
     });
 
-    it("should describe single matching non-English label and comment", () => {
+    it("should describe single matching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -256,14 +256,14 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("language [ga]");
       expect(description).toContain("[1] label and comment");
     });
 
-    it("should describe single mismatching non-English label and comment", () => {
+    it("should describe single mismatching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -274,7 +274,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("has a mismatch");
@@ -283,7 +283,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("language [fr]");
     });
 
-    it("should describe multiple matching non-English label and comment", () => {
+    it("should describe multiple matching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -296,14 +296,14 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("[2] labels and comments");
       expect(description).toContain("languages [fr, ga]");
     });
 
-    it("should say no long-form description if no comment at all", () => {
+    it("should say no long-form description if no comment at all", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -314,14 +314,14 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       expect(result.classes[0].termDescription).toContain(
         "no long-form descriptions at all"
       );
     });
 
-    it("should describe mismatch label and missing comment", () => {
+    it("should describe mismatch label and missing comment", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -333,7 +333,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("mismatch");
@@ -341,7 +341,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("language [en]");
     });
 
-    it("should describe single label and no comments", () => {
+    it("should describe single label and no comments", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -351,7 +351,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("term has a label");
@@ -359,7 +359,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("no long-form descriptions at all");
     });
 
-    it("should describe multiple labels and no comments", () => {
+    it("should describe multiple labels and no comments", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -371,7 +371,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("term has [3] labels");
@@ -379,7 +379,7 @@ describe("Dataset Handler", () => {
       expect(description).toContain("no long-form descriptions at all");
     });
 
-    it("should describe single label and comment in English only", () => {
+    it("should describe single label and comment in English only", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -390,13 +390,13 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("descriptions only in English");
     });
 
-    it("should describe single label and comment in no-locale only", () => {
+    it("should describe single label and comment in no-locale only", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -407,7 +407,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain(
@@ -415,7 +415,7 @@ describe("Dataset Handler", () => {
       );
     });
 
-    it("should describe mismatch comment and multiple missing label", () => {
+    it("should describe mismatch comment and multiple missing label", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
@@ -426,7 +426,7 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain("mismatch");
@@ -436,7 +436,7 @@ describe("Dataset Handler", () => {
   });
 
   describe("handle sub-classes or sub-properties", () => {
-    it("should handle sub-classes", () => {
+    it("should handle sub-classes", async () => {
       const dataset = rdf
         .dataset()
         .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
@@ -445,12 +445,12 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       expect(result.classes[0].name).toEqual("Ontology");
     });
 
-    it("should handle sub-properties", () => {
+    it("should handle sub-properties", async () => {
       const dataset = rdf
         .dataset()
         .add(
@@ -468,13 +468,13 @@ describe("Dataset Handler", () => {
         inputResources: ["does not matter"],
       });
 
-      const result = handler.buildTemplateInput();
+      const result = await handler.buildTemplateInput();
       expect(result.properties.length).toEqual(1);
       expect(result.properties[0].name).toEqual("label");
     });
   });
 
-  it("should ignore vocab terms not in our namespace, if configured to do so", () => {
+  it("should ignore vocab terms not in our namespace, if configured to do so", async () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
@@ -490,11 +490,11 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
       ignoreNonVocabTerms: true,
     });
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.classes.length).toEqual(0);
   });
 
-  it("should makes exceptions for vocab terms found in common vocabs - RDF:langString", () => {
+  it("should makes exceptions for vocab terms found in common vocabs - RDF:langString", async () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
@@ -503,11 +503,11 @@ describe("Dataset Handler", () => {
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"],
     });
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
   });
 
-  it("should makes exceptions for vocab terms found in common vocabs - XSD:duration", () => {
+  it("should makes exceptions for vocab terms found in common vocabs - XSD:duration", async () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
@@ -523,11 +523,11 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.properties.length).toEqual(0);
   });
 
-  it("should de-duplicate terms defined with multiple predicates we look for", () => {
+  it("should de-duplicate terms defined with multiple predicates we look for", async () => {
     // Note: This test relies on the order different predicates are processing
     // in the implementation - i.e. if a subject matches multiple RDF types,
     // then only the first one will be used.
@@ -573,7 +573,7 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.classes.length).toEqual(1);
     expect(result.classes[0].name).toEqual("testTermClass");
 
@@ -589,7 +589,7 @@ describe("Dataset Handler", () => {
     expect(result.constantStrings.length).toEqual(0);
   });
 
-  it("should skip classes and sub-classes from other, but well-known, vocabs", () => {
+  it("should skip classes and sub-classes from other, but well-known, vocabs", async () => {
     // Create terms that look they come from a well-known vocab.
     const testTermClass = rdf.namedNode(`${RDF_NAMESPACE}testTermClass`);
     const testTermSubClass = rdf.namedNode(`${RDF_NAMESPACE}testTermSubClass`);
@@ -607,7 +607,7 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.classes.length).toEqual(0);
   });
 
@@ -649,7 +649,7 @@ describe("Dataset Handler", () => {
     expect(handler.findPreferredNamespacePrefix(NS)).toEqual("foaf");
   });
 
-  it("should throw an error if the vocabulary does not define any term", () => {
+  it("should throw an error if the vocabulary does not define any term", async () => {
     const NS = "http://xmlns.com/foaf/0.1/";
     const NS_IRI = rdf.namedNode(NS);
 
@@ -664,12 +664,12 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    expect(() => {
-      handler.buildTemplateInput();
-    }).toThrow(`[${NS}] does not contain any terms.`);
+    await expect(handler.buildTemplateInput()).rejects.toThrow(
+      `[${NS}] does not contain any terms.`
+    );
   });
 
-  it("should override the namespace of the terms", () => {
+  it("should override the namespace of the terms", async () => {
     const namespaceOverride = "https://override.namespace.org";
     const testTermClass = `${NAMESPACE}testTermClass`;
     const dataset = rdf
@@ -683,11 +683,11 @@ describe("Dataset Handler", () => {
       nameAndPrefixOverride: "does not matter",
     });
 
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
   });
 
-  it("should override the namespace of the terms if the heuristic namespace determination fails.", () => {
+  it("should override the namespace of the terms if the heuristic namespace determination fails.", async () => {
     const namespaceOverride = "http://rdf-extension.com#";
     const otherNamespace = "https://another.long.namespace.org#";
     const testTermClass = `${NAMESPACE}testTermClass`;
@@ -710,7 +710,7 @@ describe("Dataset Handler", () => {
       nameAndPrefixOverride: "does not matter",
     });
 
-    const result = handler.buildTemplateInput();
+    const result = await handler.buildTemplateInput();
     expect(result.namespace).toEqual(namespaceOverride);
   });
 
@@ -736,15 +736,7 @@ describe("Dataset Handler", () => {
         storeLocalCopyOfVocabDirectory: testLocalCopyDirectory,
       });
 
-      handler.buildTemplateInput();
-
-      // TODO: Look into refactoring this to work with async N3 Writer...
-      //  Specifically `static Resource.storeLocalCopyOfResource()`
-      // Force a deliberate short time interval here to give our writer time
-      // to generate the local file.
-      await new Promise((resolve) => {
-        setTimeout(resolve, 100);
-      });
+      await handler.buildTemplateInput();
 
       const matches = fs
         .readdirSync(testLocalCopyDirectory)
