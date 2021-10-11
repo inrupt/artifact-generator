@@ -19,8 +19,6 @@ describe("Command line argument handling", () => {
   it("should fail validation", async () => {
     const nonExistFile = "should-not-exist.yml";
     const invalidArguments = ["validate", "--vocabListFile", nonExistFile];
-    // const x = await processCommandLine(false, invalidArguments);
-    // console.log(x);
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
       nonExistFile
     );

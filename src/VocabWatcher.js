@@ -51,11 +51,13 @@ class VocabWatcher {
         );
       })
       .catch((error) => {
-        debug(`Problem generating when initializing watcher: ${error}`);
+        const message = `Problem generating when initializing watcher: ${error}`;
+        debug(message);
+        throw new Error(message);
       });
 
     // Add event listeners.
-    this.watcher.on("change", (eventPath) => {
+    this.watcher.on("change", async (eventPath) => {
       // Triggers the generation when the file changes
       const now = moment();
       debug(`*****************************************************`);
@@ -76,7 +78,7 @@ class VocabWatcher {
         this.generator.configuration.configuration.force = true;
       }
 
-      this.generator
+      await this.generator
         .generate()
         .then((result) => {
           debug(

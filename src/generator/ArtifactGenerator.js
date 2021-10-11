@@ -249,7 +249,12 @@ class ArtifactGenerator {
               return new VocabGenerator(
                 this.artifactData,
                 artifactDetails
-              ).generate();
+              ).generate()
+                .catch((error) => {
+                  const message = `Failed generation: [${error.message}]`;
+                  debug(message);
+                  throw new Error(message);
+                });
             }
           );
 
