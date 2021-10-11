@@ -17,6 +17,7 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
 schema:Thing a rdfs:Class ;
     rdfs:label "Thing" ;
     rdfs:comment "Anything" ;

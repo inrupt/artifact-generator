@@ -54,11 +54,12 @@ describe("Command line argument handling", () => {
     result.unwatchFunction();
   });
 
-  it("should succeed watching multiple resource", async () => {
-    const filename = "test/resources/watcher/vocab-list-*.yml";
+  it("should succeed watching multiple resource configuration files", async () => {
+    const filename = "test/resources/watcher/vocab-list-watch*.yml";
     const validArguments = ["watch", "--vocabListFile", filename];
 
     const result = await processCommandLine(false, validArguments);
+    expect(result.globMatchTotal).toBe(2);
     expect(result.unwatchFunction).toBeDefined();
     result.unwatchFunction();
   });

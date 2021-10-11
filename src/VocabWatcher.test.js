@@ -9,7 +9,7 @@ const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
-const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
+const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list-watch.yml";
 const VOCAB_LIST_PATH_ALTERNATE = "./test/resources/watcher/vocab-list.yaml";
 const VOCAB_LIST_PATH_ONLINE_ONLY =
   "./test/resources/watcher/vocab-list-online-only.yml";
@@ -175,7 +175,7 @@ describe("Vocabulary watcher", () => {
     vocabWatcher.unwatch();
   }
 
-  it("should not throw when the vocabulary is initially malformed RDF", async () => {
+  it("should throw when the vocabulary is initially malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -189,13 +189,10 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
-    // Starting the watcher is not a blocking call, so we need to add a delay
-    // to verify if generation was successful.
-    await sleep(SLEEP_TIME);
-
-    // If the watcher process throws, this will fail
-    watcher.unwatch();
+    await expect(watcher.watch()).rejects.toThrow(
+      // Note: the exact error message to expect here is parser-specific...
+      "Expected dot to follow quad"
+    );
   });
 
   it("should not throw when the vocabulary is changed to malformed RDF", async () => {

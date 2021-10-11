@@ -270,7 +270,7 @@ describe("App tests", () => {
     it("should be possible to watch and unwatch vocabularies", async () => {
       const argv = {
         _: ["watch"],
-        vocabListFile: "./test/resources/watcher/vocab-list.yml",
+        vocabListFile: "./test/resources/watcher/vocab-list-watch.yml",
       };
 
       // init will call the prompt, which is mocked here
