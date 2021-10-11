@@ -30,7 +30,7 @@ function validateCommandLine(argv, options) {
     throw new Error(
       `Exactly one command is expected (got [${
         argv._.length
-      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}].`
+      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}]. (Ensure wildcard file patterns are enclosed in double-quotes!)`
     );
   }
 
