@@ -313,7 +313,7 @@ async function runValidation(argv) {
       debug(`\nThe provided configuration is valid`);
     })
     .catch((error) => {
-      const message = `Invalid configuration: [${error}]`;
+      const message = `Configuration validation failed: [${error}]`;
       debug(message);
       throw new Error(message);
     });
