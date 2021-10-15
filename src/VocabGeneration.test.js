@@ -129,8 +129,8 @@ const ConfigSolid = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  it("Generate ALL vocabs", async () => {
-  // it.skip("Generate ALL vocabs", async () => {
+  // it("Generate ALL vocabs", async () => {
+  it.skip("Generate ALL vocabs", async () => {
     await generateVocabArtifact(ConfigAll);
   }, 6000000);
 
