@@ -171,7 +171,7 @@ module.exports = class DatasetHandler {
       throw new Error(
         `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
           this.vocabData
-        )} - currently this is disallowed (as it indicates a probable typo!)`
+        )} - currently this is disallowed (as it indicates a probable typo!), but you can override this error and ignore non-vocabulary terms by setting the 'ignoreNonVocabTerms' option to 'true'`
       );
     }
 
