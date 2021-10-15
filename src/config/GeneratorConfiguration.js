@@ -448,6 +448,19 @@ class GeneratorConfiguration {
           `Please edit the YAML configuration file [${configSource}] to provide vocabularies to generate from.`
       );
     }
+
+    // Ensure each input resource is a string (YAML can configure objects, so
+    // a mistaken trailing colon at the end of a resource name would produce a
+    // very confusing error message).
+    config.vocabList.forEach((list) => {
+      list.inputResources.forEach((resource, i) => {
+        if (typeof resource !== "string") {
+          throw new Error(
+            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in position [${i}]) - check if you mistakenly have a trailing colon ':' character.`
+          );
+        }
+      });
+    });
   }
 
   static validateCommandline(args) {

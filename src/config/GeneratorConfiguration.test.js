@@ -84,7 +84,7 @@ describe("Generator configuration", () => {
 
       await expect(() => {
         GeneratorConfiguration.fromConfigFile(configPath);
-      }).toThrow("Empty configuration file", configFile);
+      }).toThrow("Empty configuration file");
     });
 
     it("should throw an error trying to parse a syntactically incorrect YAML file", async () => {
@@ -93,7 +93,7 @@ describe("Generator configuration", () => {
 
       await expect(() => {
         GeneratorConfiguration.fromConfigFile(configPath);
-      }).toThrow(/^Failed to read configuration file/, configFile);
+      }).toThrow(/^Failed to read configuration file/);
     });
 
     it("should throw an error trying to generate from an empty vocab list", async () => {
@@ -103,7 +103,17 @@ describe("Generator configuration", () => {
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
         GeneratorConfiguration.fromConfigFile(configPath);
-      }).toThrow(/No vocabularies found/, configFile);
+      }).toThrow(/No vocabularies found/);
+    });
+
+    it("should throw an error if vocab list input resources are not all simple strings", async () => {
+      const configFile = "invalid-vocab-list.yml";
+      const configPath = `./test/resources/yamlConfig/${configFile}`;
+
+      // Test that the error message contains the expected explanation and file name
+      await expect(() => {
+        GeneratorConfiguration.fromConfigFile(configPath);
+      }).toThrow("(in position [2])");
     });
 
     it("should throw an error trying to generate from an empty artifact list", async () => {
@@ -113,7 +123,7 @@ describe("Generator configuration", () => {
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
         GeneratorConfiguration.fromConfigFile(configPath);
-      }).toThrow(/No artifacts found/, configFile);
+      }).toThrow(/No artifacts found/);
     });
 
     it("should fail if a packaging system does not provide any templates", async () => {

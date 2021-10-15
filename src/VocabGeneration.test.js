@@ -186,12 +186,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   }, 10000);
 
-  // it("tests a single custom vocab", async () => {
-  it.skip("tests a single custom vocab", async () => {
+  it("tests a single custom vocab", async () => {
+    // it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://rdfs.org/sioc/ns#"],
-      nameAndPrefixOverride: "sioc",
-      ignoreNonVocabTerms: true,
+      vocabListFile:
+        "/home/pmcb55/Work/Projects/Customer/Lowes/cust-lowes-homestead-etl-poc/resources/Vocab/vocab-lowes-bundle-all.yml",
+
+      // inputResources: ["http://rdfs.org/sioc/ns#"],
+      // nameAndPrefixOverride: "sioc",
+      // ignoreNonVocabTerms: true,
 
       // inputResources: ["http://rdfs.org/resume-rdf/cv.rdfs#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",

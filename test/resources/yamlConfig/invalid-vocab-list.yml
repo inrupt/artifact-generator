@@ -1,0 +1,41 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    javaPackageName: com.inrupt.testing
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: Java
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class     # Defined in VCard.
+      - abstract  # Defined in DCTerms.
+
+  - programmingLanguage: JavaScript
+    artifactVersion: 10.11.12
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    npmModuleScope: "@inrupt/"
+    artifactDirectoryName: JavaScript
+    sourceFileExtension: js
+
+    rdfjsImplVersion: "^1.1.0"
+    solidCommonVocabVersion: "^1.0.10"
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
+
+vocabList:
+  - inputResources:
+      - ./This/Is/fine.ttl
+      - ./This/Is/Fine/too.ttl
+      - ./File/With/Mistaken/Trailing/Colon/Creates/YAML/Object/Not/a-string.ttl:
