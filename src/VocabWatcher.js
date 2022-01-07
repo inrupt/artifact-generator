@@ -4,6 +4,8 @@ const debug = require("debug")("artifact-generator:VocabWatcher");
 
 class VocabWatcher {
   constructor(generator) {
+    this.countFailedGeneration = 0;
+
     this.generator = generator;
     // The watcher overrides the configuration to be no prompt by default
     this.generator.configuration.configuration.noprompt = true;
@@ -88,6 +90,8 @@ class VocabWatcher {
           );
         })
         .catch((error) => {
+          this.countFailedGeneration += 1;
+          const message = `Failed generation (possibly due to a typo or RDF syntax error when editing) for file [${eventPath}]. Generation fail count [${this.countFailedGeneration}]. Error: ${error}`;
           debug(error);
         })
         .finally(() => {

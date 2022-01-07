@@ -84,7 +84,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    await watcher.watch();
+    watcher.watch();
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
@@ -120,8 +120,8 @@ describe("Vocabulary watcher", () => {
     });
     await config.completeInitialConfiguration();
 
-    const vocabWatcher = new VocabWatcher(new ArtifactGenerator(config));
-    vocabWatcher.watch();
+    const watcher = new VocabWatcher(new ArtifactGenerator(config));
+    watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
     await sleep(SLEEP_TIME);
@@ -138,7 +138,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    vocabWatcher.unwatch();
+    watcher.unwatch();
   });
 
   it("should trigger artifact generation on config file change", async () => {
@@ -153,8 +153,8 @@ describe("Vocabulary watcher", () => {
     });
     await config.completeInitialConfiguration();
 
-    const vocabWatcher = new VocabWatcher(new ArtifactGenerator(config));
-    vocabWatcher.watch();
+    const watcher = new VocabWatcher(new ArtifactGenerator(config));
+    watcher.watch();
 
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
@@ -172,7 +172,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    vocabWatcher.unwatch();
+    watcher.unwatch();
   }
 
   it("should throw when the vocabulary is initially malformed RDF", async () => {
@@ -219,6 +219,8 @@ describe("Vocabulary watcher", () => {
       "schema:Person a rdfs:Class ;",
       "schema:Person a rdfs:Class"
     );
+
+    expect(watcher.countFailedGeneration).toBe(1);
 
     // If the watcher process throws, this will fail
     watcher.unwatch();
