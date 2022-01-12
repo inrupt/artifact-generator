@@ -246,10 +246,13 @@ class ArtifactGenerator {
           // Generate this vocab for each artifact we are generating for.
           const artifactPromises = this.artifactData.artifactToGenerate.map(
             (artifactDetails) => {
-              return new VocabGenerator(
-                this.artifactData,
-                artifactDetails
-              ).generate();
+              return new VocabGenerator(this.artifactData, artifactDetails)
+                .generate()
+                .catch((error) => {
+                  const message = `Failed generation: [${error.message}]`;
+                  debug(message);
+                  throw new Error(message);
+                });
             }
           );
 

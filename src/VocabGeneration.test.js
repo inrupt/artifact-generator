@@ -6,10 +6,11 @@ const debug = require("debug")("artifact-generator:VocabGenerator");
 const App = require("./App");
 const { DEFAULT_PUBLISH_KEY } = require("./config/GeneratorConfiguration");
 
-// This version number is only useful if attempting to build from a single RDF
-// vocabulary, and not using a vocab list file (since the vocab list files would
-// be expected to provide this value).
+// These version numbers are only useful if attempting to build from a single
+// RDF vocabulary, and not using a vocab list file (since the vocab list files
+// would be expected to provide these values).
 const VERSION_SOLID_COMMON_VOCAB = "^1.0.0";
+const VERSION_RDFJS_IMPL = "^1.2.3";
 
 // These values are not expected to be specified in vocab list files - they
 // are expected to be provided as runtime command-line arguments.
@@ -188,6 +189,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // inputResources: ["http://rdfs.org/sioc/ns#"],
+      // nameAndPrefixOverride: "sioc",
+      // ignoreNonVocabTerms: true,
+
       // inputResources: ["http://rdfs.org/resume-rdf/cv.rdfs#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
       // nameAndPrefixOverride: "cv",
@@ -198,8 +203,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: [
       //   "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/ThirdParty/CopyOfVocab/3rd-party-supplier.ttl",
       // ],
-      vocabListFile:
-        "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/vocab-bundle-all.yml",
+      // vocabListFile:
+      //   "/home/pmcb55/Work/Projects/Customer/XXXX/resources/Vocab/vocab-bundle-all.yml",
 
       // inputResources: ["http://rdfs.org/resume-rdf/base.rdfs#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
@@ -306,10 +311,11 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       clearOutputDirectory: true,
       outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM",
       artifactVersion: "1.0.0",
+      rdfjsImplVersion: VERSION_RDFJS_IMPL,
       solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       npmRegistry: NPM_REGISTRY,
-      runWidoco: true,
+      runWidoco: false,
       runNpmInstall: RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,
       publish: [DEFAULT_PUBLISH_KEY],

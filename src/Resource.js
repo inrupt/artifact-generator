@@ -95,13 +95,13 @@ module.exports = class Resource {
         this.vocabAcceptHeaderOverride,
         this.vocabContentTypeHeaderOverride,
         this.vocabContentTypeHeaderFallback
-      ).catch((rootCause) =>
-        Resource.attemptToReadGeneratedResource(
+      ).catch((rootCause) => {
+        return Resource.attemptToReadGeneratedResource(
           config,
           inputResource,
           rootCause
-        )
-      );
+        );
+      });
     });
 
     const datasets = await Promise.all(datasetsPromises);

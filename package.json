@@ -7,7 +7,7 @@
     "artifact-generator": "src/index.js"
   },
   "scripts": {
-    "test": "npm run format && npm run lint && jest",
+    "test": "npm run format && npm run lint && jest --forceExit --detectOpenHandles",
     "start": "node src/index.js",
     "format": "prettier --write \"src/**/*.js\"",
     "lint": "eslint src --ext js,jsx",

@@ -202,7 +202,12 @@ module.exports = class App {
 
   unwatch() {
     const watcherCount = this.watcherList.length;
-    debug(`Stopping all [${watcherCount}] watchers...`);
+    const plural = watcherCount != 1;
+    debug(
+      `Stopping ${plural ? "all " : ""}[${watcherCount}] watcher${
+        plural ? "s" : ""
+      }...`
+    );
     this.watcherList.forEach(async (watcher) => await watcher.unwatch());
     this.watcherList = [];
   }

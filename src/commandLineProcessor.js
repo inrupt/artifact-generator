@@ -30,7 +30,7 @@ function validateCommandLine(argv, options) {
     throw new Error(
       `Exactly one command is expected (got [${
         argv._.length
-      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}].`
+      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}]. (Ensure wildcard file patterns are enclosed in double-quotes!)`
     );
   }
 
@@ -313,7 +313,7 @@ async function runValidation(argv) {
       debug(`\nThe provided configuration is valid`);
     })
     .catch((error) => {
-      const message = `Invalid configuration: [${error}]`;
+      const message = `Configuration validation failed: [${error}]`;
       debug(message);
       throw new Error(message);
     });
@@ -322,23 +322,29 @@ async function runValidation(argv) {
 async function runWatcher(argv) {
   configureLog(argv);
 
-  const app = new App(argv);
-  const watcherCount = await app.watch();
-  const plural = watcherCount != 1;
-  debug(
-    `\nSuccessfully initialized file watcher${
-      plural ? "s" : ""
-    } on [${watcherCount}] vocabulary bundle configuration file${
-      plural ? "s" : ""
-    }.`
-  );
+  try {
+    const app = new App(argv);
+    const watcherCount = await app.watch();
+    const plural = watcherCount != 1;
+    debug(
+      `\nSuccessfully initialized file watcher${
+        plural ? "s" : ""
+      } on [${watcherCount}] vocabulary bundle configuration file${
+        plural ? "s" : ""
+      }.`
+    );
 
-  debug("Press Enter to terminate");
+    debug("Press Enter to terminate");
 
-  // Pass back our cleanup function.
-  argv.unwatchFunction = () => {
-    app.unwatch();
-  };
+    // Pass back our cleanup function.
+    argv.unwatchFunction = () => {
+      app.unwatch();
+    };
+  } catch (error) {
+    const message = `Failed to initialise watcher: [${error.message}]`;
+    debug(message);
+    throw new Error(message);
+  }
 }
 
 module.exports = processCommandLine;

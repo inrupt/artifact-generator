@@ -19,8 +19,6 @@ describe("Command line argument handling", () => {
   it("should fail validation", async () => {
     const nonExistFile = "should-not-exist.yml";
     const invalidArguments = ["validate", "--vocabListFile", nonExistFile];
-    // const x = await processCommandLine(false, invalidArguments);
-    // console.log(x);
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
       nonExistFile
     );
@@ -56,11 +54,12 @@ describe("Command line argument handling", () => {
     result.unwatchFunction();
   });
 
-  it("should succeed watching multiple resource", async () => {
-    const filename = "test/resources/watcher/vocab-list-*.yml";
+  it("should succeed watching multiple resource configuration files", async () => {
+    const filename = "test/resources/watcher/vocab-list-watch*.yml";
     const validArguments = ["watch", "--vocabListFile", filename];
 
     const result = await processCommandLine(false, validArguments);
+    expect(result.globMatchTotal).toBe(2);
     expect(result.unwatchFunction).toBeDefined();
     result.unwatchFunction();
   });

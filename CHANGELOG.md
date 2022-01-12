@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## Unreleased
 
 - Moved all the command-line processing code to be now under code coverage.
+- Report mistaken trailing colons for input resources in YAML. 
 
 ## 1.0.4 2021-10-01
 

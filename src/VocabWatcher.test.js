@@ -9,7 +9,7 @@ const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
-const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list.yml";
+const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list-watch.yml";
 const VOCAB_LIST_PATH_ALTERNATE = "./test/resources/watcher/vocab-list.yaml";
 const VOCAB_LIST_PATH_ONLINE_ONLY =
   "./test/resources/watcher/vocab-list-online-only.yml";
@@ -84,7 +84,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    await watcher.watch();
+    watcher.watch();
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
@@ -120,8 +120,8 @@ describe("Vocabulary watcher", () => {
     });
     await config.completeInitialConfiguration();
 
-    const vocabWatcher = new VocabWatcher(new ArtifactGenerator(config));
-    vocabWatcher.watch();
+    const watcher = new VocabWatcher(new ArtifactGenerator(config));
+    watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
     await sleep(SLEEP_TIME);
@@ -138,7 +138,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    vocabWatcher.unwatch();
+    watcher.unwatch();
   });
 
   it("should trigger artifact generation on config file change", async () => {
@@ -153,8 +153,8 @@ describe("Vocabulary watcher", () => {
     });
     await config.completeInitialConfiguration();
 
-    const vocabWatcher = new VocabWatcher(new ArtifactGenerator(config));
-    vocabWatcher.watch();
+    const watcher = new VocabWatcher(new ArtifactGenerator(config));
+    watcher.watch();
 
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
@@ -172,10 +172,10 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    vocabWatcher.unwatch();
+    watcher.unwatch();
   }
 
-  it("should not throw when the vocabulary is initially malformed RDF", async () => {
+  it("should throw when the vocabulary is initially malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration(
@@ -189,13 +189,10 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
-    // Starting the watcher is not a blocking call, so we need to add a delay
-    // to verify if generation was successful.
-    await sleep(SLEEP_TIME);
-
-    // If the watcher process throws, this will fail
-    watcher.unwatch();
+    await expect(watcher.watch()).rejects.toThrow(
+      // Note: the exact error message to expect here is parser-specific...
+      "Expected dot to follow quad"
+    );
   });
 
   it("should not throw when the vocabulary is changed to malformed RDF", async () => {
@@ -223,7 +220,11 @@ describe("Vocabulary watcher", () => {
       "schema:Person a rdfs:Class"
     );
 
-    // If the watcher process throws, this will fail
+    // We expect our 'changed file parsing failure' to have been reported, but
+    // not to prevent our watcher from continuing to run.
+    expect(watcher.countFailedGeneration).toBe(1);
+
+    // If the watcher process throws, this should fail...
     watcher.unwatch();
   });
 
