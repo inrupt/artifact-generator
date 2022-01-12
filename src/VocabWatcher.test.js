@@ -220,9 +220,11 @@ describe("Vocabulary watcher", () => {
       "schema:Person a rdfs:Class"
     );
 
+    // We expect our 'changed file parsing failure' to have been reported, but
+    // not to prevent our watcher from continuing to run.
     expect(watcher.countFailedGeneration).toBe(1);
 
-    // If the watcher process throws, this will fail
+    // If the watcher process throws, this should fail...
     watcher.unwatch();
   });
 
