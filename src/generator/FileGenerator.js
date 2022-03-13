@@ -44,7 +44,7 @@ class FileGenerator {
     const contents = template(templateData);
 
     fs.writeFileSync(outputFile, contents);
-    debug(`Created file: [${outputFile}]`);
+    debug(`Generated: [${outputFile}]`);
   }
 
   static createDirectoryIfNotExist(directory) {

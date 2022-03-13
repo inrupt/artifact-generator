@@ -39,7 +39,7 @@ node index.js generate --inputResources https://schema.org/version/latest/schema
 
 Enhance selected terms with multilingual translations.
 ```shell
-node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/our-translations-for-schema-dot-org.ttl --noprompt
+node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/our-translations-for-schema-dot-org.ttl --noPrompt
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:

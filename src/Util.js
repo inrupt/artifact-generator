@@ -20,6 +20,14 @@ function getArtifactDirectorySourceCode(options) {
   );
 }
 
+// We don't assume input will always be a file location, so we explicitly try
+// to ignore HTTP URLs.
+function normalizePath(resource) {
+  return resource && !resource.startsWith("http")
+    ? path.normalize(resource)
+    : resource;
+}
+
 function describeInput(artifactInfo) {
   return artifactInfo.vocabListFile
     ? `vocab list file: [${artifactInfo.vocabListFile}]`
@@ -32,4 +40,5 @@ module.exports.DEFAULT_DIRECTORY_ROOT = DEFAULT_DIRECTORY_ROOT;
 module.exports.DEFAULT_DIRECTORY_SOURCE_CODE = DEFAULT_DIRECTORY_SOURCE_CODE;
 module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
 module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
+module.exports.normalizePath = normalizePath;
 module.exports.describeInput = describeInput;

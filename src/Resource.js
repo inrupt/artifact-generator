@@ -18,7 +18,20 @@ const SinkMap = require("@rdfjs/sink-map");
 
 const debug = require("debug")("artifact-generator:Resources");
 
+const Util = require("./Util");
 const FileGenerator = require("./generator/FileGenerator");
+
+// Our generation process can produce multiple artifacts per vocabulary, so we
+// cache vocab resources to prevent reading them repeatedly.
+let cachedResources = new Map();
+// But we also need the ability to remove cached resources, since our vocab
+// watcher is used to detect vocab changes, in which case we specifically want
+// to re-read the changed resource.
+function clearResourceFromCache(resource) {
+  const normalizedResource = Util.normalizePath(resource);
+  debug(`Clear resource [${normalizedResource}] from cache.`);
+  cachedResources.delete(normalizedResource);
+}
 
 // In January 1991, the first Web browser was released, so it's unlikely that
 // the resource has been modified earlier. This default is used as a generation
@@ -87,28 +100,34 @@ module.exports = class Resource {
     this.vocabContentTypeHeaderFallback = vocabContentTypeHeaderFallback;
   }
 
-  async processInputs(config, processInputsCallback) {
-    debug(`Processing input resources: [${this.inputResources}]...`);
-    const datasetsPromises = this.inputResources.map((inputResource) => {
-      return Resource.readResource(
-        inputResource,
-        this.vocabAcceptHeaderOverride,
-        this.vocabContentTypeHeaderOverride,
-        this.vocabContentTypeHeaderFallback
-      ).catch((rootCause) => {
-        return Resource.attemptToReadGeneratedResource(
-          config,
-          inputResource,
-          rootCause
-        );
-      });
-    });
+  async processInputs(config) {
+    const datasets = [];
 
-    const datasets = await Promise.all(datasetsPromises);
+    for (let i = 0; i < this.inputResources.length; i++) {
+      const inputResource = this.inputResources[i];
+      try {
+        const resource = await Resource.readResourceViaCache(
+          inputResource,
+          this.vocabAcceptHeaderOverride,
+          this.vocabContentTypeHeaderOverride,
+          this.vocabContentTypeHeaderFallback
+        );
+
+        datasets.push(resource);
+      } catch (rootCause) {
+        datasets.push(
+          await Resource.attemptToReadGeneratedResource(
+            config,
+            inputResource,
+            rootCause
+          )
+        );
+      }
+    }
 
     let termsSelectionDataset;
     if (this.termSelectionResource) {
-      termsSelectionDataset = await Resource.readResource(
+      termsSelectionDataset = await Resource.readResourceViaCache(
         this.termSelectionResource
       );
 
@@ -119,7 +138,8 @@ module.exports = class Resource {
       datasets.push(termsSelectionDataset);
     }
 
-    processInputsCallback(datasets, termsSelectionDataset);
+    // processInputsCallback(datasets, termsSelectionDataset);
+    return { datasets, termsSelectionDataset };
   }
 
   // WIP - commenting out for now...
@@ -188,6 +208,29 @@ module.exports = class Resource {
     }
   }
 
+  static async readResourceViaCache(
+    inputResource,
+    vocabAcceptHeaderOverride,
+    vocabContentTypeHeaderOverride,
+    vocabContentTypeHeaderFallback
+  ) {
+    const cacheLookup = cachedResources.get(inputResource);
+    if (cacheLookup) {
+      debug(`Loading resource from cache: [${inputResource}]`);
+      return cacheLookup;
+    }
+
+    const resource = await Resource.readResource(
+      inputResource,
+      vocabAcceptHeaderOverride,
+      vocabContentTypeHeaderOverride,
+      vocabContentTypeHeaderFallback
+    );
+    debug(`Storing resource in cache: [${inputResource}]`);
+    cachedResources.set(inputResource, resource);
+    return resource;
+  }
+
   /**
    * Reads resources, either from a local file or a remote IRI.
    * @param {string} inputResource path to the file, or IRI.
@@ -209,7 +252,7 @@ module.exports = class Resource {
     vocabContentTypeHeaderOverride,
     vocabContentTypeHeaderFallback
   ) {
-    debug(`Loading resource: [${inputResource}]...`);
+    debug(`Loading resource from source: [${inputResource}]`);
     if (Resource.isOnline(inputResource)) {
       const formats = this.createParserFormats(inputResource);
 
@@ -521,3 +564,4 @@ module.exports = class Resource {
 };
 
 module.exports.DEFAULT_MODIFICATION_DATE = DEFAULT_MODIFICATION_DATE;
+module.exports.clearResourceFromCache = clearResourceFromCache;

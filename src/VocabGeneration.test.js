@@ -189,6 +189,17 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: ["http://www.w3.org/ns/dpv#"],
+      namespaceOverride: "https://w3id.org/dpv#",
+
+      // inputResources: [
+      //   // "http://purl.org/oslo/ns/localgov/",
+      //   "https://raw.githubusercontent.com/rafbuyle/oslo_xml_schemas/master/oslo-v1_1_0.rdf",
+      // ],
+      // nameAndPrefixOverride: "oslo",
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+      //
       // inputResources: ["http://rdfs.org/sioc/ns#"],
       // nameAndPrefixOverride: "sioc",
       // ignoreNonVocabTerms: true,
@@ -325,7 +336,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 });
 
 async function generateVocabArtifact(argv) {
-  const app = new App({ ...argv, noprompt: true });
+  const app = new App({ ...argv, noPrompt: true });
   const result = await app.run();
 
   const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(

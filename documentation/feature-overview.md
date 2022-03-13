@@ -27,7 +27,7 @@ programming language, a YAML configuration file must be used (see below).
 
 For example:
 ```shell
-node index.js generate --inputResources ./demo/vocab/PetRock.ttl --noprompt
+node index.js generate --inputResources ./demo/vocab/PetRock.ttl --noPrompt
 ```
 This will generate a JavaScript artifact in the default `./Generated`
 directory.
@@ -97,7 +97,7 @@ vocabulary to see the re-generation again (due to the generator
 detecting the file change):
 
 ```
-node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt
+node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noPrompt
 ```
 
 
@@ -127,7 +127,7 @@ To generate a Widoco documentation website in the default `./Generated/Widoco`
 directory, run:
 
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl --runWidoco --noprompt
+node index.js generate --inputResources ./example/PetRock.ttl --runWidoco --noPrompt
 ```
 
 -    **Note:** If you have trouble with Node picking up your environment

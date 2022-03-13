@@ -9,6 +9,7 @@ const VocabWatcher = require("./VocabWatcher");
 const CommandLine = require("./CommandLine");
 const FileGenerator = require("./generator/FileGenerator");
 const Resource = require("./Resource");
+const Util = require("./Util");
 
 // Just a sample configuration file name to use when initialising a YAML file
 // for a user who wants a boilerplate YAML generated for them.
@@ -23,20 +24,12 @@ module.exports = class App {
     }
 
     // Normalize our inputs to remove single or double dots in file paths.
-    argv.outputDirectory = App.normalizePath(argv.outputDirectory);
-    argv.vocabListFile = App.normalizePath(argv.vocabListFile);
-    argv.vocabListFileIgnore = App.normalizePath(argv.vocabListFileIgnore);
+    argv.outputDirectory = Util.normalizePath(argv.outputDirectory);
+    argv.vocabListFile = Util.normalizePath(argv.vocabListFile);
+    argv.vocabListFileIgnore = Util.normalizePath(argv.vocabListFileIgnore);
     this.argv = argv;
 
     this.watcherList = [];
-  }
-
-  // We don't assume input will always be a file location, so we explicitly try
-  // to ignore HTTP URLs.
-  static normalizePath(resource) {
-    return resource && !resource.startsWith("http")
-      ? path.normalize(resource)
-      : resource;
   }
 
   async configure() {
@@ -76,7 +69,7 @@ module.exports = class App {
     const targetPath = path.join(this.argv.outputDirectory, SAMPLE_CONFIG_NAME);
 
     const configGen = new ConfigFileGenerator(this.argv);
-    if (this.argv.noprompt) {
+    if (this.argv.noPrompt) {
       configGen.generateDefaultConfigFile(targetPath);
     } else {
       // By default, the user will be asked info about the artifacts to generate
@@ -102,7 +95,7 @@ module.exports = class App {
     for (let i = 0; i < vocabList.length; i += 1) {
       for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
         vocabsToValidate.push(
-          Resource.readResource(vocabList[i].inputResources[j])
+          Resource.readResourceViaCache(vocabList[i].inputResources[j])
         );
       }
     }

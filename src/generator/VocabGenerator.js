@@ -7,19 +7,21 @@ const DatasetHandler = require("../DatasetHandler");
 
 module.exports = class VocabGenerator {
   constructor(artifactData, artifactDetails) {
-    // Make sure we clone our input data (to keep it specific to our instance!).
+    // Make sure we clone our input data (to keep it specific to our
+    // instance!).
     this.vocabData = { ...artifactData };
     this.artifactDetails = artifactDetails;
   }
 
-  async generateFiles(vocabGenerationData) {
+  generateFiles(vocabGenerationData) {
     debug(
-      `Generating vocabulary source code file [${
+      `Generating source code for vocabulary: [${
         vocabGenerationData.vocabName
-      }]${this.vocabData.nameAndPrefixOverride ? " (from override)" : ""}...`
-    );
-    debug(
-      `Input vocabulary resource(s) [${this.vocabData.inputResources.toString()}]...`
+      }]${
+        this.vocabData.nameAndPrefixOverride
+          ? " (from name and prefix override)"
+          : ""
+      }...`
     );
 
     if (
@@ -29,45 +31,44 @@ module.exports = class VocabGenerator {
       vocabGenerationData.constantIris.length === 0 &&
       vocabGenerationData.constantStrings.length === 0
     ) {
-      // In this case, the resource was unreachable, and the source file cannot
-      // be generated.
-      return new Promise((resolve, reject) => {
-        if (
-          FileGenerator.previouslyGeneratedFileExists(
-            this.artifactDetails,
-            vocabGenerationData
-          )
-        ) {
-          debug(
-            `A previously generated source file is being reused for resource [${this.vocabData.inputResources.toString()}], as its currently either unreachable or empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
-              vocabGenerationData.namespace
-            }].`
-          );
-          resolve(vocabGenerationData);
-        }
-
-        reject(
-          new Error(
-            `Resource [${this.vocabData.inputResources.toString()}] is unreachable or is empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
-              vocabGenerationData.namespace
-            }], and no previously generated file is available.`
-          )
+      // In this case, the resource was unreachable, and the source file
+      // cannot be generated.
+      if (
+        FileGenerator.previouslyGeneratedFileExists(
+          this.artifactDetails,
+          vocabGenerationData
+        )
+      ) {
+        debug(
+          `A previously generated source file is being reused for resource [${this.vocabData.inputResources.toString()}], as its currently either unreachable or empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
+            vocabGenerationData.namespace
+          }].`
         );
-      });
+
+        return vocabGenerationData;
+      }
+
+      throw new Error(
+        `Resource [${this.vocabData.inputResources.toString()}] is unreachable or is empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
+          vocabGenerationData.namespace
+        }], and no previously generated file is available.`
+      );
     }
 
-    return new Promise((resolve) => {
-      FileGenerator.createSourceCodeFile(
-        this.vocabData,
-        this.artifactDetails,
-        vocabGenerationData
-      );
-      resolve(vocabGenerationData);
-    });
+    FileGenerator.createSourceCodeFile(
+      this.vocabData,
+      this.artifactDetails,
+      vocabGenerationData
+    );
+
+    return vocabGenerationData;
   }
 
-  generate() {
-    this.resources = new Resource(
+  async generateVocab() {
+    // A 'complete resource' can be made up from multiple input vocabularies,
+    // with terms selectively chosen, and with various other configuration
+    // settings.
+    this.completeResource = new Resource(
       this.vocabData.inputResources,
       this.vocabData.termSelectionResource,
       this.vocabData.vocabAcceptHeaderOverride,
@@ -75,41 +76,53 @@ module.exports = class VocabGenerator {
       this.vocabData.vocabContentTypeHeaderFallback
     );
 
-    return this.generateData()
-      .then((vocabGenerationData) => {
-        return this.generateFiles(vocabGenerationData);
-      })
-      .catch((error) => {
-        const message = `Data generation for vocabs failed: [${error}].`;
-        debug(message);
-        throw new Error(message);
-      });
+    try {
+      const plural = this.vocabData.inputResources.length !== 1;
+      debug(
+        `Create [${
+          this.artifactDetails.programmingLanguage
+        }] resource using template [${
+          this.artifactDetails.sourceCodeTemplate
+        }] from input${
+          plural ? "s" : ""
+        }: [${this.vocabData.inputResources.join(", ")}]${
+          this.vocabData.termSelectionResource
+            ? " (with term selection from [" +
+              this.vocabData.termSelectionResource +
+              "])"
+            : ""
+        }`
+      );
+
+      const vocabGenerationData = await this.generateData();
+      this.generateFiles(vocabGenerationData);
+
+      return vocabGenerationData;
+    } catch (error) {
+      const message = `Data generation for vocabs failed: [${error}].`;
+      debug(message);
+      throw new Error(message);
+    }
   }
 
-  generateData() {
+  async generateData() {
     // Need to pull this member variable into a local variable to access it from
     // the arrow function later...
     const inputResources = this.vocabData.inputResources;
 
-    return new Promise(async (resolve, reject) => {
-      this.resources
-        .processInputs(
-          this.vocabData,
-          (fullDatasetsArray, vocabTermsOnlyDataset) => {
-            const parsed = this.parseDatasets(
-              fullDatasetsArray,
-              vocabTermsOnlyDataset
-            );
-            resolve(parsed);
-          }
-        )
-        .catch((error) => {
-          const result = `Failed to generate from input [${inputResources}]: [${
-            error.message
-          }].\n\nStack: ${error.stack.toString()}`;
-          reject(new Error(result));
-        });
-    });
+    try {
+      const { datasets, termsSelectionDataset } =
+        await this.completeResource.processInputs(this.vocabData);
+
+      const parsed = await this.parseDatasets(datasets, termsSelectionDataset);
+
+      return parsed;
+    } catch (error) {
+      const result = `Failed to generate from input [${inputResources}]: [${
+        error.message
+      }].\n\nStack: ${error.stack.toString()}`;
+      throw new Error(result);
+    }
   }
 
   parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset) {

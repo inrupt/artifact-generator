@@ -59,7 +59,7 @@ module.exports = class CommandLine {
     }
 
     let answer = {};
-    if (!data.noprompt) {
+    if (!data.noPrompt) {
       const npmInstallQuestion = [
         {
           type: "confirm",
@@ -85,7 +85,7 @@ module.exports = class CommandLine {
     }
 
     let answer = {};
-    if (!data.noprompt && data.npmRegistry) {
+    if (!data.noPrompt && data.npmRegistry) {
       const npmPublishQuestion = [
         {
           type: "confirm",
@@ -112,7 +112,7 @@ module.exports = class CommandLine {
     }
 
     let answer = {};
-    if (!data.noprompt) {
+    if (!data.noPrompt) {
       const runWidocoQuestion = [
         {
           type: "confirm",

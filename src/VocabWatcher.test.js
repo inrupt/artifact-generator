@@ -7,6 +7,7 @@ const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
+const Resource = require("./Resource");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
 const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list-watch.yml";
@@ -209,6 +210,7 @@ describe("Vocabulary watcher", () => {
     );
 
     watcher.watch();
+
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);

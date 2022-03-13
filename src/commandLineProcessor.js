@@ -23,7 +23,7 @@ const SUPPORTED_COMMANDS = [
   CommandLine.COMMAND_VALIDATE(),
 ];
 
-function validateCommandLine(argv, options) {
+function validateCommandLine(argv) {
   // argv._ contains the commands passed to the program
   if (argv._.length !== 1) {
     // Only one command is expected
@@ -238,13 +238,13 @@ function processCommandLine(exitOnFail, commandLineArgs) {
       )
       .default("quiet", false)
 
-      .alias("np", "noprompt")
-      .boolean("noprompt")
+      .alias("np", "noPrompt")
+      .boolean("noPrompt")
       .describe(
-        "noprompt",
+        "noPrompt",
         "If set will not ask any interactive questions and will attempt to perform artifact generation automatically."
       )
-      .default("noprompt", false)
+      .default("noPrompt", false)
 
       .alias("o", "outputDirectory")
       .describe(
@@ -309,7 +309,7 @@ async function runValidation(argv) {
   configureLog(argv);
   return await new App(argv)
     .validate()
-    .then((data) => {
+    .then(() => {
       debug(`\nThe provided configuration is valid`);
     })
     .catch((error) => {
@@ -325,7 +325,7 @@ async function runWatcher(argv) {
   try {
     const app = new App(argv);
     const watcherCount = await app.watch();
-    const plural = watcherCount != 1;
+    const plural = watcherCount !== 1;
     debug(
       `\nSuccessfully initialized file watcher${
         plural ? "s" : ""
@@ -347,4 +347,5 @@ async function runWatcher(argv) {
   }
 }
 
-module.exports = processCommandLine;
+module.exports.processCommandLine = processCommandLine;
+module.exports.configureLog = configureLog;

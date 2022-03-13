@@ -1,5 +1,6 @@
 const moment = require("moment");
 const chokidar = require("chokidar");
+const { clearResourceFromCache } = require("./Resource");
 const debug = require("debug")("artifact-generator:VocabWatcher");
 
 class VocabWatcher {
@@ -8,7 +9,7 @@ class VocabWatcher {
 
     this.generator = generator;
     // The watcher overrides the configuration to be no prompt by default
-    this.generator.configuration.configuration.noprompt = true;
+    this.generator.configuration.configuration.noPrompt = true;
 
     this.configFile = this.generator.configuration.configuration.vocabListFile;
     debug(`Watching local resources from [${this.configFile}]:`);
@@ -79,6 +80,10 @@ class VocabWatcher {
       ) {
         this.generator.configuration.configuration.force = true;
       }
+
+      // We know this resource has changed, so make sure we remove it from our
+      // cache first...
+      clearResourceFromCache(eventPath);
 
       await this.generator
         .generate()
