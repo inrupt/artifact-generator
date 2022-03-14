@@ -193,7 +193,7 @@ module.exports = class App {
     return await funcToCall(this, await this.configure());
   }
 
-  unwatch() {
+  async unwatch() {
     const watcherCount = this.watcherList.length;
     const plural = watcherCount != 1;
     debug(
@@ -201,7 +201,9 @@ module.exports = class App {
         plural ? "s" : ""
       }...`
     );
-    this.watcherList.forEach(async (watcher) => await watcher.unwatch());
+    for (let i = 0; i < this.watcherList.length; i++) {
+      await this.watcherList[i].unwatch();
+    }
     this.watcherList = [];
   }
 };

@@ -69,7 +69,7 @@ describe("Vocabulary watcher", () => {
     await sleep(SLEEP_TIME);
 
     expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
-    watcher.unwatch();
+    await await watcher.unwatch();
   });
 
   it("should ignore online resources", async () => {
@@ -89,7 +89,7 @@ describe("Vocabulary watcher", () => {
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
-    watcher.unwatch();
+    await watcher.unwatch();
   }, 10000);
 
   it("should not generate an initial artifact without changes", async () => {
@@ -111,7 +111,7 @@ describe("Vocabulary watcher", () => {
     await sleep(SLEEP_TIME);
 
     expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should trigger artifact generation on change", async () => {
@@ -139,7 +139,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should trigger artifact generation on config file change", async () => {
@@ -173,7 +173,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    watcher.unwatch();
+    await watcher.unwatch();
   }
 
   it("should throw when the vocabulary is initially malformed RDF", async () => {
@@ -227,7 +227,7 @@ describe("Vocabulary watcher", () => {
     expect(watcher.countFailedGeneration).toBe(1);
 
     // If the watcher process throws, this should fail...
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should not trigger artifact generation after the watcher stopped", async () => {
@@ -260,7 +260,7 @@ describe("Vocabulary watcher", () => {
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).not.toEqual(initialModifiedTime);
 
-    watcher.unwatch();
+    await watcher.unwatch();
 
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
@@ -298,7 +298,7 @@ describe("Vocabulary watcher", () => {
 
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).toEqual(firstModifiedTime);
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should generate an artifact on startup when the output directory is outdated", async () => {
@@ -333,6 +333,6 @@ describe("Vocabulary watcher", () => {
 
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).not.toEqual(firstModifiedTime);
-    watcher.unwatch();
+    await await watcher.unwatch();
   });
 });

@@ -337,8 +337,8 @@ async function runWatcher(argv) {
     debug("Press Enter to terminate");
 
     // Pass back our cleanup function.
-    argv.unwatchFunction = () => {
-      app.unwatch();
+    argv.unwatchFunction = async () => {
+      await app.unwatch();
     };
   } catch (error) {
     const message = `Failed to initialise watcher: [${error.message}]`;

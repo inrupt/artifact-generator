@@ -107,7 +107,7 @@ class VocabWatcher {
   }
 
   async unwatch() {
-    this.watcher.close();
+    await this.watcher.close();
   }
 }
 
