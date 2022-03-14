@@ -63,7 +63,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
@@ -85,7 +85,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
@@ -105,7 +105,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
@@ -122,7 +122,7 @@ describe("Vocabulary watcher", () => {
     await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
     await sleep(SLEEP_TIME);
@@ -155,7 +155,7 @@ describe("Vocabulary watcher", () => {
     await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
-    watcher.watch();
+    await watcher.watch();
 
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
@@ -209,7 +209,7 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
 
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
@@ -242,7 +242,7 @@ describe("Vocabulary watcher", () => {
         )
       )
     );
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
@@ -291,7 +291,7 @@ describe("Vocabulary watcher", () => {
 
     const watcher = new VocabWatcher(generator);
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);

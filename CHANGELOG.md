@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   the long-standing problem of blowing up when processing more than ~43 vocabs
   (since we had too many concurrent (and duplicated) connections). This also
   makes the code far more readable and debuggable.
+- Renamed the command-line option of 'noprompt' to be 'noPrompt' to have
+  a consistent naming convention across all options.
+- Bumped major version number, due to command-line switch change being a
+  breaking change.
 
 ## 1.0.4 2021-10-01
 
