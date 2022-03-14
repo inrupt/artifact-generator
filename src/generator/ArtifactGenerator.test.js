@@ -104,7 +104,7 @@ describe("Artifact Generator", () => {
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
-      const x = await artifactGenerator.generate();
+      await artifactGenerator.generate();
       verifyVocabList(outputDirectory);
     });
 
