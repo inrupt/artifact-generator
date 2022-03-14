@@ -18,7 +18,7 @@ const OUTPUT_DIRECTORY = "./test/Generated/UNIT_TEST/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
-const SLEEP_TIME = 100;
+const SLEEP_TIME = 200;
 
 function sleep(ms) {
   return new Promise((resolve) => {
@@ -69,7 +69,7 @@ describe("Vocabulary watcher", () => {
     await sleep(SLEEP_TIME);
 
     expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
-    await await watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should ignore online resources", async () => {

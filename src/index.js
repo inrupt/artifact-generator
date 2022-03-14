@@ -8,8 +8,8 @@ try {
     //  itself, but for that we need to mock `process.stdin` (to emulate the
     //  developer hitting the 'Enter' key), so just do it here for now!
     if (argv._[0] === "watch") {
-      process.stdin.on("data", () => {
-        argv.unwatchFunction();
+      process.stdin.on("data", async () => {
+        await argv.unwatchFunction();
         process.exit(0);
       });
     }
