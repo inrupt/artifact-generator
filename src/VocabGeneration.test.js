@@ -189,8 +189,22 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://www.w3.org/ns/dpv#"],
-      namespaceOverride: "https://w3id.org/dpv#",
+      // inputResources: ["http://www.w3.org/ns/locn"],
+
+      // Typo in the Turtle (trailing full stop inside a BNode on line 22!
+      // inputResources: ["http://purl.org/vocab/cpsv#"],
+
+      // inputResources: ["http://www.w3.org/ns/adms#"],
+      // inputResources: ["http://www.w3.org/ns/org#"],
+      // inputResources: ["http://www.w3.org/ns/person#"],
+      // inputResources: ["http://www.w3.org/ns/regorg#"],
+
+      // inputResources: ["https://purl.org/oslo/ns/localgov#"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/ns/dpv#"],
+      // namespaceOverride: "https://w3id.org/dpv#",
 
       // inputResources: [
       //   // "http://purl.org/oslo/ns/localgov/",
@@ -281,14 +295,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
 
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore9.5.0"],
-      // nameAndPrefixOverride: "gistCore",
-      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      inputResources: ["https://ontologies.semanticarts.com/o/gistCore10.0.0"],
+      nameAndPrefixOverride: "gistCore",
+      namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      vocabContentTypeHeaderOverride: "application/rdf+xml",
 
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
-      // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      // // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
       // nameAndPrefixOverride: "inrupt-schema",
       //
       // inputResources: [
