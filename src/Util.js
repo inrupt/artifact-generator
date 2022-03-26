@@ -20,9 +20,10 @@ function getArtifactDirectorySourceCode(options) {
   );
 }
 
-// We don't assume input will always be a file location, so we explicitly try
-// to ignore HTTP URLs.
-function normalizePath(resource) {
+// Normalizes the specified resource location if it's a file path (e.g.,
+// '/a/b/c/../../d' would be normalized to '/a/d'), but if it refers to an
+// HTTP resource, we just return the value as-is.
+function normalizeIfFilePath(resource) {
   return resource && !resource.startsWith("http")
     ? path.normalize(resource)
     : resource;
@@ -40,5 +41,5 @@ module.exports.DEFAULT_DIRECTORY_ROOT = DEFAULT_DIRECTORY_ROOT;
 module.exports.DEFAULT_DIRECTORY_SOURCE_CODE = DEFAULT_DIRECTORY_SOURCE_CODE;
 module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
 module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
-module.exports.normalizePath = normalizePath;
+module.exports.normalizePath = normalizeIfFilePath;
 module.exports.describeInput = describeInput;

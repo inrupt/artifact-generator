@@ -19,17 +19,17 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publish: 
-        - key: "local"
-          command: "touch npm-publishLocal"
-        - key: "remote"
-          command: "touch npm-publishRemote"
-        packagingTemplates: 
+        publish:
+          - key: "local"
+            command: "touch npm-publishLocal"
+          - key: "remote"
+            command: "touch npm-publishRemote"
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

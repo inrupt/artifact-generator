@@ -53,7 +53,7 @@ class ArtifactGenerator {
   }
 
   async generate() {
-    return await this.generateVocabs()
+    return this.generateVocabs()
       .then((vocabDatasets) => {
         if (this.resourceGeneration()) {
           return this.collectGeneratedVocabDetails(vocabDatasets);

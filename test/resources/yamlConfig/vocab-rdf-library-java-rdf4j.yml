@@ -23,8 +23,8 @@ artifactToGenerate:
 
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test

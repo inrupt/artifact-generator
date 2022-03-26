@@ -18,8 +18,8 @@ artifactToGenerate:
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
 
     packaging:
       - packagingTool: maven
@@ -28,18 +28,18 @@ artifactToGenerate:
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publish: 
-        - key: "local"
-          command: "touch mvn-publishLocal"
-        - key: "remote"
-          command: "touch mvn-publishRemote"
-        packagingTemplates: 
-        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
-          fileName: pom.xml
-#      - packagingTool: gradle
-#        groupId: com.inrupt.test
-#        packagingFileName: build.gradle
-#        packagingTemplate: gradle.hbs
+        publish:
+          - key: "local"
+            command: "touch mvn-publishLocal"
+          - key: "remote"
+            command: "touch mvn-publishRemote"
+        packagingTemplates:
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
+  #      - packagingTool: gradle
+  #        groupId: com.inrupt.test
+  #        packagingFileName: build.gradle
+  #        packagingTemplate: gradle.hbs
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
@@ -55,21 +55,21 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
         ##
         # To prevent the tests from relying on external tools, we just create a file to verify that the command is properly run
         ##
-        publish: 
-        - key: "local"
-          command: "touch npm-publishLocal"
-        - key: "remote"
-          command: "touch npm-publishRemote"
-        # This is just an idea (not implemented yet) - might be nice to allow
-        # the command to be run to be templated, allowing us to be very specific
-        # and dynamic about the commands we run.
-        - key: "templatedCommand"
-          command: "touch templated-${npmModuleScope}-${artifactNamePrefix}-${artifactName}@${artifactVersion}-file"
+        publish:
+          - key: "local"
+            command: "touch npm-publishLocal"
+          - key: "remote"
+            command: "touch npm-publishRemote"
+          # This is just an idea (not implemented yet) - might be nice to allow
+          # the command to be run to be templated, allowing us to be very specific
+          # and dynamic about the commands we run.
+          - key: "templatedCommand"
+            command: "touch templated-${npmModuleScope}-${artifactNamePrefix}-${artifactName}@${artifactVersion}-file"
         packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json

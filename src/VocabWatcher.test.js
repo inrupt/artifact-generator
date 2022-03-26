@@ -18,7 +18,11 @@ const OUTPUT_DIRECTORY = "./test/Generated/UNIT_TEST/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
-const SLEEP_TIME = 200;
+
+// Starting the watcher is not a blocking call, so we need to add a delay
+// to verify file-change-detection, and subsequent file-regeneration was
+// successful.in our tests.
+const SLEEP_TIME = 100;
 
 function sleep(ms) {
   return new Promise((resolve) => {

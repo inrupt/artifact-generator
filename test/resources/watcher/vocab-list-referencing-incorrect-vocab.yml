@@ -16,12 +16,11 @@ artifactToGenerate:
       - "abstract"
     javaPackageName: "com.example.java.packagename"
 
-
 vocabList:
   - inputResources:
-    ###
-    #  This resource is malformed
-    ###
+      ###
+      #  This resource is malformed
+      ###
       - "schema-snippet-missing-semicolon.ttl"
     nameAndPrefixOverride: "schema"
     description: "A schema snippet"

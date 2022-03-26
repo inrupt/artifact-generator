@@ -201,9 +201,11 @@ module.exports = class App {
         plural ? "s" : ""
       }...`
     );
+
     for (let i = 0; i < this.watcherList.length; i++) {
-      await this.watcherList[i].unwatch();
+      await Promise.all(this.watcherList.map((watcher) => watcher.unwatch()));
     }
+
     this.watcherList = [];
   }
 };

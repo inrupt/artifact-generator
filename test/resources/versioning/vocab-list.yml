@@ -4,7 +4,7 @@ artifactGeneratorVersion: 0.1.0
 versioning:
   type: git
   url: https://repository.git
-  versioningTemplates: 
+  versioningTemplates:
     - templateInternal: ".gitignore.hbs"
       fileName: ".gitignore"
 

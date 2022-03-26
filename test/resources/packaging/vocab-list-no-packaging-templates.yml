@@ -19,7 +19,7 @@ artifactToGenerate:
         ##
         #  These templates should be present
         ##
-#       packagingTemplates: 
+#       packagingTemplates:
 #       - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
 #         fileName: pom.xml
 

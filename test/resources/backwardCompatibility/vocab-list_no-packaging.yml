@@ -3,9 +3,9 @@
 # form the collective set of 'Common' vocabularies.
 #
 # These are the vocabs that we feel will be the most commonly used across
-# general RDF development efforts, and so we list them here to allow our 
+# general RDF development efforts, and so we list them here to allow our
 # artifact generators to create programming-language-specific bundles
-# providing convenient constants representing the terms from these 
+# providing convenient constants representing the terms from these
 # vocabularies.
 #
 # For example, for Java developers we can generate a single JAR, or for
@@ -33,8 +33,8 @@ artifactToGenerate:
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
     ##
     # No packaging options are explicitly set, as the generator initially generated Maven
     # artifacts only for Java code.

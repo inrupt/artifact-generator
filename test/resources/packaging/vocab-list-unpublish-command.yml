@@ -19,12 +19,12 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        publish: 
-        - key: "local"
-          command: "npm unpublish --want-to-fail-regardless-so-make-sure-command-is-nonsense!"
-        packagingTemplates: 
+        publish:
+          - key: "local"
+            command: "npm unpublish --want-to-fail-regardless-so-make-sure-command-is-nonsense!"
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

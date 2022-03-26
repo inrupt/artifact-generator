@@ -5,7 +5,7 @@
 artifactName: generated-vocab-TEST
 artifactGeneratorVersion: 0.4.2
 
-license: 
+license:
   path: "../licenses/license"
   fileName: "LICENSE"
   header: "../licenses/licenseHeader"
