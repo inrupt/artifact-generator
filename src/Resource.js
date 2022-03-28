@@ -1,6 +1,5 @@
 const rdf = require("rdf-ext");
 const rdfFetch = require("@rdfjs/fetch-lite");
-const rdfFormats = require("@rdfjs/formats-common");
 const stringToStream = require("string-to-stream");
 const axios = require("axios");
 const fs = require("fs");
@@ -20,6 +19,12 @@ const debug = require("debug")("artifact-generator:Resources");
 
 const Util = require("./Util");
 const FileGenerator = require("./generator/FileGenerator");
+
+// We only need to instantiate these parsers once (whereas some parsers we
+// need to instantiate per-vocab to allow us set the 'baseIri').
+// const parserN3 = new N3.Parser();
+const parserN3 = new ParserN3();
+const parserJsonld = new ParserJsonld();
 
 // Our generation process can produce multiple artifacts per vocabulary, so we
 // cache vocab resources to prevent reading them repeatedly.
@@ -318,19 +323,19 @@ module.exports = class Resource {
   // We need to create instances of some parsers per vocab due to the need to
   // set a base IRI for certain vocabs, which we can only do in the constructor.
   static createParserFormats(inputResource) {
-    const parserN3 = new ParserN3();
-
     const formats = {
       parsers: new SinkMap([
         ["text/turtle", parserN3],
         ["text/n3", parserN3], // The iCal vocab requires this content type, and the OLO vocab returns it.
         ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
-        ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
+        ["application/ld+json", parserJsonld], // Activity streams only supports JSON-LD and HTML.
         ["application/rdf+xml", new ParserRdfXml({ baseIRI: inputResource })],
         ["text/html", new ParserRdfa({ baseIRI: inputResource })],
+
         // The vocab
         // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
-        // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
+        // returns a 'Content-Type' header of 'text/plain' even though we
+        // request and receive Turtle!
         ["text/plain", parserN3],
       ]),
     };
@@ -500,11 +505,9 @@ module.exports = class Resource {
   }
 
   static loadTurtleFileIntoDatasetPromise(filename) {
-    const mimeType = "text/turtle";
     const data = fs.readFileSync(filename, "utf8");
+    const quadStream = parserN3.import(stringToStream(data));
 
-    const rdfParser = rdfFormats.parsers.get(mimeType);
-    const quadStream = rdfParser.import(stringToStream(data));
     return rdf.dataset().import(quadStream);
   }
 
