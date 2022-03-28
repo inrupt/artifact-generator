@@ -158,12 +158,12 @@ describe("Generator configuration", () => {
           _: ["generate"],
           vocabListFile:
             "./test/resources/vocabs/vocab-list-including-online.yml",
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
 
-      expect(generatorConfiguration.configuration.noprompt).toBe(true);
+      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(
         EXPECTED_VOCAB_LIST_FROM_YAML
       );
@@ -175,7 +175,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           vocabListFile:
             "./test/resources/yamlConfig/vocab-list-version-mismatch.yml",
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
@@ -202,7 +202,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           vocabListFile: configPath,
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
@@ -218,7 +218,7 @@ describe("Generator configuration", () => {
         {
           _: ["generate"],
           vocabListFile: path.join(configPath, "vocab-list.yml"),
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
@@ -257,7 +257,7 @@ describe("Generator configuration", () => {
         path.join(configPath, "../anotherTemplateDirectory/javascript.hbs")
       );
 
-      expect(generatorConfiguration.configuration.noprompt).toBe(true);
+      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
     });
   });
 
@@ -299,7 +299,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: programmingLanguage,
-              noprompt: true,
+              noPrompt: true,
             },
             undefined
           )
@@ -316,7 +316,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: packaging,
-              noprompt: true,
+              noPrompt: true,
             },
             undefined
           )
@@ -336,7 +336,7 @@ describe("Generator configuration", () => {
             {
               _: ["generate"],
               vocabListFile: versioning,
-              noprompt: true,
+              noPrompt: true,
             },
             undefined
           )
@@ -394,12 +394,12 @@ describe("Generator configuration", () => {
           nameAndPrefixOverride: "dummy-test",
           namespaceOverride: argNamespaceOverride,
           ignoreNonVocabTerms: true,
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
 
-      expect(generatorConfiguration.configuration.noprompt).toBe(true);
+      expect(generatorConfiguration.configuration.noPrompt).toBe(true);
 
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
@@ -425,7 +425,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           inputResources: [absolutePath],
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         },
         undefined
       );
@@ -443,7 +443,7 @@ describe("Generator configuration", () => {
           _: ["generate"],
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
           npmRegistry: "http://my.registry.ninja",
         },
         undefined

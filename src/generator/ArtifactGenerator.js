@@ -171,105 +171,113 @@ class ArtifactGenerator {
     return modifiedResourceList.length > 0;
   }
 
-  async generateVocabs() {
-    // The outputDirectoryForArtifact attribute is useful for publication,
-    // and should be set even if generation is not necessary.
-    this.artifactData.artifactToGenerate =
-      this.artifactData.artifactToGenerate.map((artifactDetails) => {
-        const result = artifactDetails;
+  /**
+   * If configured, delete the root output directory for all artifacts (as
+   * opposed to deleting each artifact's output directory individually).
+   */
+  deleteRootArtifactOutputDirectory() {
+    if (this.artifactData.clearOutputDirectory) {
+      const rootDir = path.join(
+        this.artifactData.outputDirectory,
+        getArtifactDirectoryRoot(this.artifactData)
+      );
 
-        if (this.artifactData.clearOutputDirectory) {
-          const rootDir = path.join(
-            this.artifactData.outputDirectory,
-            getArtifactDirectoryRoot(this.artifactData)
+      rimraf.sync(rootDir);
+    }
+  }
+
+  async generateNecessaryVocabs() {
+    this.artifactData.generated = true;
+
+    // Determine just the changed vocabs (if 'force' is set, then consider
+    // all vocabs as 'changed'), else only consider vocabs that appear to
+    // have been modified.
+    const changedVocabList = this.artifactData.force
+      ? this.artifactData.vocabList
+      : this.artifactData.vocabList.filter((vocabDetails) => {
+          return vocabDetails.inputResources.some((r) =>
+            this.configuration.modifiedResourceList.includes(r)
           );
+        });
 
-          rimraf.sync(rootDir);
+    const result = [];
+
+    for (let i = 0; i < changedVocabList.length; i++) {
+      const vocabDetails = changedVocabList[i];
+
+      // Override our vocab inputs using this vocab list entry.
+      this.artifactData.inputResources = vocabDetails.inputResources;
+      this.artifactData.termSelectionResource =
+        vocabDetails.termSelectionResource;
+
+      this.artifactData.vocabAcceptHeaderOverride =
+        vocabDetails.vocabAcceptHeaderOverride;
+
+      this.artifactData.vocabContentTypeHeaderOverride =
+        vocabDetails.vocabContentTypeHeaderOverride;
+
+      this.artifactData.vocabContentTypeHeaderFallback =
+        vocabDetails.vocabContentTypeHeaderFallback;
+
+      this.artifactData.nameAndPrefixOverride =
+        vocabDetails.nameAndPrefixOverride;
+      this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
+
+      this.artifactData.ignoreNonVocabTerms = vocabDetails.ignoreNonVocabTerms;
+
+      // Just in case the vocabulary itself does not provide a description
+      // of itself, we pass down the description from our configuration as
+      // a fallback (and prefix that description with some text to denote
+      // that it's not coming from the original vocabulary itself).
+      this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+
+      const generatedArtifacts = [];
+      // Generate this vocab for each artifact we are generating for.
+      for (let i = 0; i < this.artifactData.artifactToGenerate.length; i++) {
+        const artifactDetails = this.artifactData.artifactToGenerate[i];
+
+        try {
+          generatedArtifacts.push(
+            await new VocabGenerator(
+              this.artifactData,
+              artifactDetails
+            ).generateVocab()
+          );
+        } catch (error) {
+          const message = `Failed generation: [${error.message}]`;
+          debug(message);
+          throw new Error(message);
         }
+      }
 
-        result.outputDirectoryForArtifact = path.join(
+      // Only return the first one, as we don't want duplicate info.
+      result.push(generatedArtifacts[0]);
+    }
+
+    return result;
+  }
+
+  async generateVocabs() {
+    this.deleteRootArtifactOutputDirectory();
+
+    // Setting the output directory for each artifact is useful for
+    // publication, and should be set even if generation is not necessary.
+    this.artifactData.artifactToGenerate.forEach(
+      (artifactDetails) =>
+        (artifactDetails.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
           getArtifactDirectorySourceCode(this.artifactData),
           artifactDetails.artifactDirectoryName
-        );
+        ))
+    );
 
-        return result;
-      });
-
-    // TODO: This code evolved from where we originally only had a list of
-    //  vocabs to generate from. But now we can create artifacts for multiple
-    //  programming languages. But this code was extended to provide the
-    //  language-specific details within this original vocab-iterating loop.
     if (await this.isGenerationNecessary()) {
-      this.artifactData.generated = true;
-
-      // Determine just the changed vocabs (if 'force' is set, then consider
-      // all vocabs as 'changed'), else only consider vocabs that appear to have
-      // been modified.
-      const changedVocabList = this.artifactData.force
-        ? this.artifactData.vocabList
-        : this.artifactData.vocabList.filter((vocabDetails) => {
-            return vocabDetails.inputResources.some((r) =>
-              this.configuration.modifiedResourceList.includes(r)
-            );
-          });
-
-      return Promise.all(
-        changedVocabList.map(async (vocabDetails) => {
-          // Override our vocab inputs using this vocab list entry.
-          this.artifactData.inputResources = vocabDetails.inputResources;
-          this.artifactData.termSelectionResource =
-            vocabDetails.termSelectionResource;
-
-          this.artifactData.vocabAcceptHeaderOverride =
-            vocabDetails.vocabAcceptHeaderOverride;
-
-          this.artifactData.vocabContentTypeHeaderOverride =
-            vocabDetails.vocabContentTypeHeaderOverride;
-
-          this.artifactData.vocabContentTypeHeaderFallback =
-            vocabDetails.vocabContentTypeHeaderFallback;
-
-          this.artifactData.nameAndPrefixOverride =
-            vocabDetails.nameAndPrefixOverride;
-          this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
-
-          this.artifactData.ignoreNonVocabTerms =
-            vocabDetails.ignoreNonVocabTerms;
-
-          // Just in case the vocabulary itself does not provide a description
-          // of itself, we pass down the description from our configuration as
-          // a fallback (and prefix that description with some text to denote
-          // that it's not coming from the original vocabulary itself).
-          this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
-
-          // Generate this vocab for each artifact we are generating for.
-          const artifactPromises = this.artifactData.artifactToGenerate.map(
-            (artifactDetails) => {
-              return new VocabGenerator(this.artifactData, artifactDetails)
-                .generate()
-                .catch((error) => {
-                  const message = `Failed generation: [${error.message}]`;
-                  debug(message);
-                  throw new Error(message);
-                });
-            }
-          );
-
-          // Wait for all our artifacts to be generated.
-          await Promise.all(artifactPromises);
-
-          // Only return the first one, as we don't want duplicate info.
-          return artifactPromises[0];
-        })
-      );
+      return await this.generateNecessaryVocabs();
     }
-
-    // In this case, the generation is not necessary.
-    this.artifactData.generated = false;
 
     // If the generation is not necessary, we just return the initial
     // configuration object.
+    this.artifactData.generated = false;
     return this.artifactData;
   }
 

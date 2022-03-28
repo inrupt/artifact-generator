@@ -693,7 +693,7 @@ module.exports = class DatasetHandler {
     result.runMavenInstall = this.vocabData.runMavenInstall;
     result.runNpmPublish = this.vocabData.runNpmPublish;
     result.runWidoco = this.vocabData.runWidoco;
-    result.noprompt = this.vocabData.noprompt;
+    result.noPrompt = this.vocabData.noPrompt;
     result.supportBundling = this.vocabData.supportBundling;
     result.supportBundling = this.vocabData.supportBundling;
 

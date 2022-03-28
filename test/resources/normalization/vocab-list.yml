@@ -19,13 +19,13 @@ artifactToGenerate:
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates:
-        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
-          fileName: pom.xml
-        #
-        # This is a dummy file path, just here to test normalization.
-        #
-        - templateCustom: ../../readme.hbs
-          fileName: pom.xml
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
+          #
+          # This is a dummy file path, just here to test normalization.
+          #
+          - templateCustom: ../../readme.hbs
+            fileName: pom.xml
 
   - programmingLanguage: JavaScript
     artifactDirectoryName: JavaScript

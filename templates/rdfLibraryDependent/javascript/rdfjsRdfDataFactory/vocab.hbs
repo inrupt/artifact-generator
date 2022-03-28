@@ -8,6 +8,12 @@
  * on '{{generatedTimestamp}}'.
  *
  * {{sourceRdfResources}}
+ * The generator detected the following terms in the source vocabulary:
+ *  - Classes: [{{classes.length}}]
+ *  - Properties: [{{properties.length}}]
+ *  - Literals: [{{literals.length}}]
+ *  - Constant IRIs: [{{constantIris.length}}]
+ *  - Constant strings: [{{constantStrings.length}}]
 {{#if description}}
  *
  * {{{description}}}
@@ -36,7 +42,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}{{#if termDescription}}
    *
-   * {{termDescription}}{{/if}}{{#if seeAlsos}}
+   * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -55,7 +61,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}{{#if termDescription}}
    *
-   * {{termDescription}}{{/if}}{{#if seeAlsos}}
+   * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -74,7 +80,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}{{#if termDescription}}
    *
-   * {{termDescription}}{{/if}}{{#if seeAlsos}}
+   * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -93,7 +99,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}{{#if termDescription}}
    *
-   * {{termDescription}}{{/if}}{{#if seeAlsos}}
+   * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
@@ -111,7 +117,7 @@ const {{vocabNameUpperCase}} = {
   /**
    *{{#if comment}} {{{comment}}}{{/if}}{{#if termDescription}}
    *
-   * {{termDescription}}{{/if}}{{#if seeAlsos}}
+   * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
    *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}

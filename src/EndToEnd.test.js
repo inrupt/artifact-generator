@@ -39,7 +39,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [errorFilename],
           outputDirectory,
-          noprompt: true,
+          noPrompt: true,
         }),
         doNothingPromise
       );
@@ -60,7 +60,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [errorFilename],
           outputDirectory,
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -83,7 +83,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             inputResources: [errorFilename],
             outputDirectory,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -115,7 +115,7 @@ describe("End-to-end tests", () => {
             rdfjsImplVersion: "^1.1.0",
             solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
             moduleNamePrefix: "@inrupt/generated-vocab-",
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -169,7 +169,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-rdflib.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -211,7 +211,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -258,7 +258,7 @@ describe("End-to-end tests", () => {
               "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-data-factory.yml",
             outputDirectory,
             supportBundling: true,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -304,7 +304,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -352,7 +352,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -423,7 +423,7 @@ describe("End-to-end tests", () => {
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -470,7 +470,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -540,7 +540,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -596,7 +596,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -628,7 +628,7 @@ describe("End-to-end tests", () => {
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -657,7 +657,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -683,7 +683,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -717,7 +717,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -751,7 +751,7 @@ describe("End-to-end tests", () => {
           rdfjsImplVersion: "^1.1.0",
           solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
-          noprompt: true,
+          noPrompt: true,
         })
       );
 
@@ -778,7 +778,7 @@ describe("End-to-end tests", () => {
             _: ["generate"],
             vocabListFile: "./test/resources/vocabs/vocab-list.yml",
             outputDirectory,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -825,7 +825,7 @@ describe("End-to-end tests", () => {
             vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
             // The output directory must be set, because a default value is set by yargs in a regular use case
             outputDirectory,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -861,7 +861,7 @@ describe("End-to-end tests", () => {
             // The output directory must be set, because a default value is set by yargs in the
             // regular use case.
             outputDirectory,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )
@@ -894,7 +894,7 @@ describe("End-to-end tests", () => {
             solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
             // The output directory must be set, because a default value is set by yargs in a regular use case
             outputDirectory,
-            noprompt: true,
+            noPrompt: true,
           },
           doNothingPromise
         )

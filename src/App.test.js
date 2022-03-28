@@ -23,7 +23,7 @@ const locallyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noprompt: true,
+        noPrompt: true,
         publish: ["local"],
       });
     },
@@ -38,7 +38,7 @@ const remotelyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noprompt: true,
+        noPrompt: true,
         publish: ["remote"],
       });
     },
@@ -53,7 +53,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
       // but here it must be set explicitly.
       return Promise.resolve({
         stubbed: true,
-        noprompt: true,
+        noPrompt: true,
         publish: ["local", "remote"],
       });
     },
@@ -64,7 +64,7 @@ const locallyAndRemotelyPublishingGenerator = () => {
 const nonPublishingGenerator = () => {
   return {
     generate: async () => {
-      return Promise.resolve({ stubbed: true, noprompt: true });
+      return Promise.resolve({ stubbed: true, noPrompt: true });
     },
     runPublish: UNCALLED_PUBLISH_FUNCTION,
   };
@@ -128,11 +128,11 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noprompt).toBe(true);
+      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -144,11 +144,11 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noprompt).toBe(true);
+      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -162,7 +162,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
         publish: ["local"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -180,7 +180,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
         publish: ["remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -201,7 +201,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
         publish: ["local", "remote"],
       };
       const before = CALLED_PUBLISH_FUNCTION.mock.calls.length;
@@ -218,7 +218,7 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
@@ -231,11 +231,11 @@ describe("App tests", () => {
         inputResources: ["some_file.ttl"],
         solidCommonVocabVersion: "1.1.1",
         quiet: true,
-        noprompt: true,
+        noPrompt: true,
       };
 
       const mockedResponse = await new App(config).run();
-      expect(mockedResponse.noprompt).toBe(true);
+      expect(mockedResponse.noPrompt).toBe(true);
       expect(mockedResponse.stubbed).toBe(true);
     });
 
@@ -246,7 +246,7 @@ describe("App tests", () => {
         _: ["init"],
         outputDirectory: directoryPath,
         quiet: false,
-        noprompt: true,
+        noPrompt: true,
       };
       await new App(argv).init();
       expect(fs.existsSync(filePath)).toBe(true);

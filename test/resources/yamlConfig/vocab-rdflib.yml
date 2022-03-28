@@ -26,10 +26,10 @@ artifactToGenerate:
     templateInternal: rdfLibraryDependent/javascript/rdflib/vocab.hbs
     sourceFileExtension: js
 
-    packaging: 
-      - packagingTool: npm 
+    packaging:
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        packagingTemplates: 
+        packagingTemplates:
           - templateInternal: rdfLibraryDependent/javascript/rdflib/package.hbs
             fileName: package.json
           - templateInternal: rdfLibraryDependent/javascript/index.hbs

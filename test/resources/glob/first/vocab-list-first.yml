@@ -17,10 +17,10 @@ artifactToGenerate:
     artifactDirectoryName: JavaScript
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js
-    packaging: 
-      - packagingTool: npm 
+    packaging:
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        packagingTemplates: 
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

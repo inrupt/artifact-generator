@@ -7,6 +7,7 @@ const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
+const Resource = require("./Resource");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
 const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list-watch.yml";
@@ -17,6 +18,10 @@ const OUTPUT_DIRECTORY = "./test/Generated/UNIT_TEST/watcher/initial/";
 const OUTPUT_DIRECTORY_JAVA = `${OUTPUT_DIRECTORY}${getArtifactDirectorySourceCode()}/Java`;
 const JAVA_PACKAGE_HIERARCHY = "src/main/java/com/example/java/packagename";
 const GENERATED_FILEPATH = `${OUTPUT_DIRECTORY_JAVA}/${JAVA_PACKAGE_HIERARCHY}/SCHEMA.java`;
+
+// Starting the watcher is not a blocking call, so we need to add a delay
+// to verify file-change-detection, and subsequent file-regeneration was
+// successful.in our tests.
 const SLEEP_TIME = 100;
 
 function sleep(ms) {
@@ -62,13 +67,13 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
 
     expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should ignore online resources", async () => {
@@ -84,11 +89,11 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
-    watcher.unwatch();
+    await watcher.unwatch();
   }, 10000);
 
   it("should not generate an initial artifact without changes", async () => {
@@ -104,13 +109,13 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
 
     expect(fs.existsSync(GENERATED_FILEPATH)).toBe(true);
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should trigger artifact generation on change", async () => {
@@ -121,7 +126,7 @@ describe("Vocabulary watcher", () => {
     await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
     await sleep(SLEEP_TIME);
@@ -138,7 +143,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should trigger artifact generation on config file change", async () => {
@@ -154,7 +159,7 @@ describe("Vocabulary watcher", () => {
     await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
-    watcher.watch();
+    await watcher.watch();
 
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if the generation was successful.
@@ -172,7 +177,7 @@ describe("Vocabulary watcher", () => {
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
       initialModifiedTime
     );
-    watcher.unwatch();
+    await watcher.unwatch();
   }
 
   it("should throw when the vocabulary is initially malformed RDF", async () => {
@@ -208,7 +213,8 @@ describe("Vocabulary watcher", () => {
       )
     );
 
-    watcher.watch();
+    await watcher.watch();
+
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
@@ -225,7 +231,7 @@ describe("Vocabulary watcher", () => {
     expect(watcher.countFailedGeneration).toBe(1);
 
     // If the watcher process throws, this should fail...
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should not trigger artifact generation after the watcher stopped", async () => {
@@ -240,7 +246,7 @@ describe("Vocabulary watcher", () => {
         )
       )
     );
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
@@ -258,7 +264,7 @@ describe("Vocabulary watcher", () => {
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).not.toEqual(initialModifiedTime);
 
-    watcher.unwatch();
+    await watcher.unwatch();
 
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
@@ -289,14 +295,14 @@ describe("Vocabulary watcher", () => {
 
     const watcher = new VocabWatcher(generator);
 
-    watcher.watch();
+    await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
     // to verify if generation was successful.
     await sleep(SLEEP_TIME);
 
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).toEqual(firstModifiedTime);
-    watcher.unwatch();
+    await watcher.unwatch();
   });
 
   it("should generate an artifact on startup when the output directory is outdated", async () => {
@@ -331,6 +337,6 @@ describe("Vocabulary watcher", () => {
 
     const newerModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
     expect(newerModifiedTime).not.toEqual(firstModifiedTime);
-    watcher.unwatch();
+    await await watcher.unwatch();
   });
 });

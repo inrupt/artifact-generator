@@ -18,8 +18,8 @@ artifactToGenerate:
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12

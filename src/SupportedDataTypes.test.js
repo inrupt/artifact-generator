@@ -47,7 +47,7 @@ describe("Supported Data Type", () => {
       }
     );
 
-    await generator.generate();
+    await generator.generateVocab();
 
     const indexOutput = fs
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/OWL.js`)
@@ -105,7 +105,7 @@ describe("Supported Data Type", () => {
       }
     );
 
-    await generator.generate();
+    await generator.generateVocab();
 
     const indexOutput = fs
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/HTTP.js`)
@@ -153,9 +153,7 @@ describe("Supported Data Type", () => {
       }
     );
 
-    expect(async () => {
-      await generator.generate();
-    }).rejects.toThrow("not a valid IRI!");
+    await expect(generator.generateVocab()).rejects.toThrow("not a valid IRI!");
   });
 
   it("should fail with too many constant IRI values", async () => {
@@ -187,9 +185,9 @@ describe("Supported Data Type", () => {
       }
     );
 
-    expect(async () => {
-      await generator.generate();
-    }).rejects.toThrow("constantIriTooMany");
+    await expect(generator.generateVocab()).rejects.toThrow(
+      "constantIriTooMany"
+    );
   });
 
   it("should fail with too many constant string values", async () => {
@@ -221,9 +219,9 @@ describe("Supported Data Type", () => {
       }
     );
 
-    expect(async () => {
-      await generator.generate();
-    }).rejects.toThrow("constantStringTooMany", "2");
+    await expect(generator.generateVocab()).rejects.toThrow(
+      "constantStringTooMany"
+    );
   });
 
   it("should fail if many constant string values of different languages", async () => {
@@ -255,9 +253,9 @@ describe("Supported Data Type", () => {
       }
     );
 
-    expect(async () => {
-      await generator.generate();
-    }).rejects.toThrow("constantStringDifferentLanguages");
+    await expect(generator.generateVocab()).rejects.toThrow(
+      "constantStringDifferentLanguages"
+    );
   });
 
   it("should be able to generate vocabs for all the supported class data types", async () => {
@@ -296,7 +294,7 @@ describe("Supported Data Type", () => {
       }
     );
 
-    await generator.generate();
+    await generator.generateVocab();
 
     const indexOutput = fs
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/TEST.js`)

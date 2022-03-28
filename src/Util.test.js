@@ -4,6 +4,7 @@ const {
   DEFAULT_DIRECTORY_SOURCE_CODE,
   getArtifactDirectoryRoot,
   getArtifactDirectorySourceCode,
+  normalizePath,
 } = require("./Util");
 
 describe("Test override root", () => {
@@ -20,6 +21,22 @@ describe("Test override root", () => {
     expect(
       getArtifactDirectoryRoot({ artifactDirectoryRootOverride: override })
     ).toEqual(override);
+  });
+});
+
+describe("Normalize paths", () => {
+  it("should return normalized data", () => {
+    expect(normalizePath("./test")).toEqual("test");
+  });
+
+  it("should return nothing if given nothing", () => {
+    expect(normalizePath()).toBeUndefined();
+    expect(normalizePath(null)).toBeNull();
+  });
+
+  it("should ignore HTTP resources", () => {
+    const httpResource = "http-ignore this.././whatever";
+    expect(normalizePath(httpResource)).toEqual(httpResource);
   });
 });
 

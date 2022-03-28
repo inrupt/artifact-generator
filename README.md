@@ -11,8 +11,8 @@ production with production data.
 This tool automatically generates deployable artifacts for various programming
 languages (e.g., npm Node.js modules for JavaScript, JARs for Java, assemblies
 for C#, etc.). These artifacts contain source-code files defining
-programming-language constants for the terms (e.g., the Classes, Properties and
-Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
+programming-language constants for the terms (e.g., the Classes, Properties,
+and Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
 Streams, Solid vocabularies, or your own custom vocabularies).
 
 # Prerequisites
@@ -146,10 +146,10 @@ vocabulary.
 
 In this example we'll use a simple Pet Rock vocabulary provided publicly by
 Inrupt, asking the generator not to prompt us for any manual input during the
-generation process (i.e., by using the `--noprompt` option):
+generation process (i.e., by using the `--noPrompt` option):
 
 ```shell
-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt
+artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noPrompt
 ```
 
 This should generate a JavaScript artifact inside the default `Generated`
@@ -179,7 +179,7 @@ If you'd prefer not to produce a bundled artifact, you can run the
 `generate` command with the `--supportBundling` option set to `false`:
 
 ```shell
-artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noprompt --supportBundling=false
+artifact-generator generate --inputResources https://team.inrupt.net/public/vocab/PetRock.ttl --noPrompt --supportBundling=false
 ```
 
 We can now use this JavaScript artifact directly in our applications, both

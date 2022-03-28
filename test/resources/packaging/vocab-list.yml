@@ -18,22 +18,22 @@ artifactToGenerate:
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         publish:
-        - key: "local"
-          command: "mvn install"
-        packagingTemplates: 
-        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
-          fileName: pom.xml
-#      - packagingTool: gradle
-#        groupId: com.inrupt.test
-#        packagingFileName: build.gradle
-#        packagingTemplate: gradle.hbs
+          - key: "local"
+            command: "mvn install"
+        packagingTemplates:
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
+  #      - packagingTool: gradle
+  #        groupId: com.inrupt.test
+  #        packagingFileName: build.gradle
+  #        packagingTemplate: gradle.hbs
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
@@ -48,12 +48,12 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        publish: 
-        - key: "local"
-          command: "npm publish --registry http://localhost:4873/"
-        packagingTemplates: 
+        publish:
+          - key: "local"
+            command: "npm publish --registry http://localhost:4873/"
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

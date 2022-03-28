@@ -4,8 +4,18 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-- Moved all the command-line processing code to be now under code coverage.
-- Report mistaken trailing colons for input resources in YAML. 
+- Moved all the command-line processing code to also now be included in code
+  coverage statistics.
+- Report mistaken trailing colons for input resources in YAML.
+- Major refactor to use synchronous processing, which allows us to cache
+  fetched resources, resulting in a drastic reduction of fetches. This fixes
+  the long-standing problem of blowing up when processing more than ~43 vocabs
+  (since we had too many concurrent (and duplicated) connections). This also
+  makes the code far more readable and debuggable.
+- Renamed the command-line option of 'noprompt' to be 'noPrompt' to have
+  a consistent naming convention across all options.
+- Bumped major version number, due to command-line switch change being a
+  breaking change.
 
 ## 1.0.4 2021-10-01
 
@@ -88,7 +98,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   ...or run this multiple times to see re-generation ignored after first time,
   but then edit YAML file and re-run to see re-generation again (due to the
   generator detecting the config file change):
-    `node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noprompt`
+    `node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noPrompt`
 - Add artifactName to required properties in YAML validation
 - Add ES module support to generated JavaScript artifacts:
   - Adds sideEffects: false to package templates

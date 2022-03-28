@@ -186,9 +186,54 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     });
   }, 10000);
 
+  /**
+   * The ever-growing list of vocabs in this particular test has been handy
+   * lots of times, as if I want to rerun the AG for just a single vocab, I
+   * can just pop in here, uncomment it, and rerun this test.
+   * It's handy 'cos almost all vocabs our there in the wild need something
+   * overridden (e.g., vocabContentTypeHeaderOverride:,
+   * or ignoreNonVocabTerms:, or namespaceOverride:), so having them recorded
+   * here has been really handy sometimes.
+   */
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // inputResources: ["http://www.w3.org/ns/sosa/"],
+      // ignoreNonVocabTerms: true,
+      //
+      inputResources: ["http://www.w3.org/ns/ssn/"],
+      ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore10.0.0"],
+      // nameAndPrefixOverride: "gistCore",
+      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+
+      // inputResources: ["http://www.w3.org/ns/locn"],
+
+      // Typo in the Turtle (trailing full stop inside a BNode on line 22!
+      // inputResources: ["http://purl.org/vocab/cpsv#"],
+
+      // inputResources: ["http://www.w3.org/ns/adms#"],
+      // inputResources: ["http://www.w3.org/ns/org#"],
+      // inputResources: ["http://www.w3.org/ns/person#"],
+      // inputResources: ["http://www.w3.org/ns/regorg#"],
+
+      // inputResources: ["https://purl.org/oslo/ns/localgov#"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/ns/dpv#"],
+      // namespaceOverride: "https://w3id.org/dpv#",
+
+      // inputResources: [
+      //   // "http://purl.org/oslo/ns/localgov/",
+      //   "https://raw.githubusercontent.com/rafbuyle/oslo_xml_schemas/master/oslo-v1_1_0.rdf",
+      // ],
+      // nameAndPrefixOverride: "oslo",
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+      //
       // inputResources: ["http://rdfs.org/sioc/ns#"],
       // nameAndPrefixOverride: "sioc",
       // ignoreNonVocabTerms: true,
@@ -270,14 +315,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
 
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore9.5.0"],
-      // nameAndPrefixOverride: "gistCore",
-      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
-
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
-      // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      // // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
       // nameAndPrefixOverride: "inrupt-schema",
       //
       // inputResources: [
@@ -325,7 +366,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
 });
 
 async function generateVocabArtifact(argv) {
-  const app = new App({ ...argv, noprompt: true });
+  const app = new App({ ...argv, noPrompt: true });
   const result = await app.run();
 
   const directoryForJavaScriptArtifact = result.artifactToGenerate.filter(

@@ -99,7 +99,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: "./test/resources/vocabs/vocab-list.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -117,7 +117,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: "./test/resources/versioning/vocab-list.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -144,7 +144,7 @@ describe("Artifact Generator", () => {
         rdfjsImplVersion: "^7.8.9",
         solidCommonVocabVersion: "^1.0.10",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
         supportBundling: false,
       });
       config.completeInitialConfiguration();
@@ -213,7 +213,7 @@ describe("Artifact Generator", () => {
         rollupNodeResolveVersion: "^13.14.15",
 
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
         supportBundling: true,
       });
       config.completeInitialConfiguration();
@@ -252,7 +252,7 @@ describe("Artifact Generator", () => {
         rdfjsImplVersion: "^7.8.9",
         solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
@@ -312,7 +312,7 @@ describe("Artifact Generator", () => {
         rdfjsImplVersion: "^7.8.9",
         solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
       });
 
       config.completeInitialConfiguration();
@@ -399,7 +399,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
 
       config.completeInitialConfiguration();
@@ -488,7 +488,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
 
       config.completeInitialConfiguration();
@@ -598,7 +598,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: testConfigFile,
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
 
       config.completeInitialConfiguration();
@@ -651,7 +651,7 @@ describe("Artifact Generator", () => {
         rdfjsImplVersion: "^7.8.9",
         solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
         force: true,
       });
       config.completeInitialConfiguration();
@@ -703,7 +703,7 @@ describe("Artifact Generator", () => {
         rdfjsImplVersion: "^7.8.9",
         solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
-        noprompt: true,
+        noPrompt: true,
         clearOutputDirectory: true,
       });
       config.completeInitialConfiguration();
@@ -725,7 +725,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
@@ -755,7 +755,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
@@ -799,7 +799,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
       config.completeInitialConfiguration();
 
@@ -815,7 +815,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-dummy-commands.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
       rerunConfig.completeInitialConfiguration();
 
@@ -835,7 +835,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-invalid-non-unpublish-command.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
@@ -863,7 +863,7 @@ describe("Artifact Generator", () => {
         vocabListFile:
           "./test/resources/packaging/vocab-list-unpublish-command.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
       config.completeInitialConfiguration();
@@ -888,7 +888,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: yamlFile,
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
 
       config.completeInitialConfiguration();
@@ -907,7 +907,7 @@ describe("Artifact Generator", () => {
         _: "generate",
         vocabListFile: "./test/resources/yamlConfig/vocab-license.yml",
         outputDirectory,
-        noprompt: true,
+        noPrompt: true,
       });
       config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);

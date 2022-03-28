@@ -1,8 +1,17 @@
 const fs = require("fs");
 
-const processCommandLine = require("./commandLineProcessor");
+const debugModule = require("debug");
+const { processCommandLine, configureLog } = require("./commandLineProcessor");
 
 describe("Command line argument handling", () => {
+  it("should default to logging all", () => {
+    debugModule.enable("artifact-generator:*");
+    configureLog({});
+    const previouslyEnabled = debugModule.disable();
+    configureLog({});
+    expect(previouslyEnabled).toContain("artifact-generator:*");
+  });
+
   it("should succeed validation", async () => {
     const filename = "test/resources/yamlConfig/namespace-override.yml";
     const validArguments = ["validate", "--vocabListFile", filename];
@@ -31,7 +40,7 @@ describe("Command line argument handling", () => {
       "init",
       "--outputDirectory",
       outputDirectory,
-      "--noprompt",
+      "--noPrompt",
     ];
 
     const filename = `${outputDirectory}/sample-vocab.yml`;
@@ -70,7 +79,7 @@ describe("Command line argument handling", () => {
       "watch",
       "--vocabListFile",
       nonExistFile,
-      "--noprompt",
+      "--noPrompt",
     ];
 
     // Deliberately provide non-existent file...
@@ -85,7 +94,7 @@ describe("Command line argument handling", () => {
       "generate",
       "--vocabListFile",
       filename,
-      "--noprompt",
+      "--noPrompt",
     ];
 
     const response = await processCommandLine(false, validArguments);
@@ -94,7 +103,7 @@ describe("Command line argument handling", () => {
   });
 
   it("should fail generation if no input files", () => {
-    const invalidArguments = ["generate", "--noprompt"];
+    const invalidArguments = ["generate", "--noPrompt"];
     expect(() => processCommandLine(false, invalidArguments)).toThrow(
       "You must provide input"
     );
@@ -106,7 +115,7 @@ describe("Command line argument handling", () => {
       "generate",
       "--vocabListFile",
       nonExistFile,
-      "--noprompt",
+      "--noPrompt",
     ];
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
       "Generation process failed"
@@ -120,7 +129,7 @@ describe("Command line argument handling", () => {
       "--vocabListFile",
       filename,
       "--quiet",
-      "--noprompt",
+      "--noPrompt",
     ]);
     expect(response._).toHaveLength(1);
     expect(response.vocabListFile).toEqual(filename);

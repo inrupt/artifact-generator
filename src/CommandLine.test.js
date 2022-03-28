@@ -93,7 +93,7 @@ describe("Command Line unit tests", () => {
     it("Should not publish artifact if user did not specify publish, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeNpmPublished({
         ...defaultInputs,
-        noprompt: true,
+        noPrompt: true,
       });
 
       expect(result.ranNpmPublish).toBeUndefined();
@@ -160,7 +160,7 @@ describe("Command Line unit tests", () => {
     it("Should not install artifact if user did not specify install, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeNpmInstalled({
         ...defaultInputs,
-        noprompt: true,
+        noPrompt: true,
       });
 
       expect(result.ranNpmInstall).toBeUndefined();
@@ -333,7 +333,7 @@ describe("Command Line unit tests", () => {
     it("Should not generate documentation if user did not specify, and also set no prompting", async () => {
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        noprompt: true,
+        noPrompt: true,
       });
 
       expect(result.ranWidoco).toBe(false);

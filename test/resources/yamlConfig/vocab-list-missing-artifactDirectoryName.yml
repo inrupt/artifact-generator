@@ -18,15 +18,15 @@ artifactToGenerate:
     sourceFileExtension: java
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:
-      - class     # Defined in VCard.
-      - abstract  # Defined in DCTerms.
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
         rdf4jVersion: 2.5.3
         packagingTemplates:
-        - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
-          fileName: pom.xml
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
@@ -41,9 +41,9 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        packagingTemplates: 
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

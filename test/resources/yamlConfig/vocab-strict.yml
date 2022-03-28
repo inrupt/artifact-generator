@@ -6,7 +6,6 @@ artifactName: generated-vocab-common-TEST
 artifactGeneratorVersion: 0.1.0
 
 artifactToGenerate:
-
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
     artifactNamePrefix: ""
@@ -25,9 +24,9 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:
-      - packagingTool: npm 
+      - packagingTool: npm
         npmModuleScope: "@inrupt/"
-        packagingTemplates: 
+        packagingTemplates:
           - templateInternal: solidCommonVocabDependent/javascript/package.hbs
             fileName: package.json
           - templateInternal: solidCommonVocabDependent/javascript/index.hbs

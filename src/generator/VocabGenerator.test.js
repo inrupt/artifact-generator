@@ -935,7 +935,7 @@ describe("Managing remote vocabularies failures", () => {
     );
   });
 
-  it("should fail to generate if the associated vocabulary is unreachable and no previous file exists", async () => {
+  it("should fail to generate if the associated vocabulary is unreachable and no previous file exists", () => {
     const generator = new VocabGenerator(
       {
         inputResources: ["http://some.online.resource"],
@@ -973,7 +973,7 @@ describe("Managing remote vocabularies failures", () => {
       constantIris: [],
       vocabNameUpperCase: "TEST",
     };
-    expect(generator.generateFiles(vocabGenerationData)).rejects.toThrow(
+    expect(() => generator.generateFiles(vocabGenerationData)).toThrow(
       "unreachable or is empty of recognisable terms"
     );
   });
