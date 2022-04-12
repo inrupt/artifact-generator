@@ -34,7 +34,7 @@
     "@rdfjs/serializer-ntriples": "^1.0.3",
     "@rdfjs/sink-map": "^1.0.1",
     "axios": "^0.26.1",
-    "chokidar": "3.5.2",
+    "chokidar": "3.5.3",
     "debug": "^4.3.3",
     "del": "^6.0.0",
     "glob": "^7.2.0",
