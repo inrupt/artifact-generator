@@ -55,8 +55,8 @@ describe("Command line argument handling", () => {
   });
 
   it("should succeed watching one resource", async () => {
-    const filename = "test/resources/yamlConfig/namespace-override.yml";
-    const validArguments = ["watch", "--vocabListFile", filename];
+    const filename = "test/resources/yamlConfig/vocab-valid.yml";
+    const validArguments = ["watch", "--vocabListFile", filename, "--force"];
 
     const result = await processCommandLine(false, validArguments);
     expect(result.unwatchFunction).toBeDefined();
@@ -65,7 +65,7 @@ describe("Command line argument handling", () => {
 
   it("should succeed watching multiple resource configuration files", async () => {
     const filename = "test/resources/watcher/vocab-list-watch*.yml";
-    const validArguments = ["watch", "--vocabListFile", filename];
+    const validArguments = ["watch", "--vocabListFile", filename, "--force"];
 
     const result = await processCommandLine(false, validArguments);
     expect(result.globMatchTotal).toBe(2);
@@ -89,12 +89,13 @@ describe("Command line argument handling", () => {
   });
 
   it("should succeed generation", async () => {
-    const filename = "test/resources/yamlConfig/namespace-override.yml";
+    const filename = "test/resources/yamlConfig/vocab-valid.yml";
     const validArguments = [
       "generate",
       "--vocabListFile",
       filename,
       "--noPrompt",
+      "--force",
     ];
 
     const response = await processCommandLine(false, validArguments);

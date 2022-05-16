@@ -1,0 +1,33 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+artifactName: generated-vocab-common-TEST
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+  - programmingLanguage: JavaScript
+    artifactVersion: 10.11.12
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    npmModuleScope: "@inrupt/"
+    artifactDirectoryName: JavaScript
+    sourceFileExtension: js
+
+    templateInternal: stringLiteral/javascript/vocab.hbs
+
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@inrupt/"
+        packagingTemplates:
+          - templateInternal: stringLiteral/javascript/package.hbs
+            fileName: package.json
+          - templateInternal: generic/javascript/index.hbs
+            fileName: index.js
+
+vocabList:
+  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex.
+    inputResources:
+      - ../vocabs/schema-snippet.ttl
+    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl

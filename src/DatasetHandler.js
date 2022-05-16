@@ -372,9 +372,9 @@ module.exports = class DatasetHandler {
     const override =
       namespaceOverride === undefined
         ? ""
-        : ` (but using namespace override [${namespaceOverride}])`;
+        : `, but we're using namespace OVERRIDE [${namespaceOverride}])`;
 
-    return `detected namespace [${namespace}]${override}`;
+    return `we detected namespace [${namespace}]${override}`;
   }
 
   /**
