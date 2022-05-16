@@ -201,9 +201,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
       // nameAndPrefixOverride: "inrupt-schema",
 
-      inputResources: ["http://qudt.org/schema/qudt/"],
-      nameAndPrefixOverride: "qudt",
-      ignoreNonVocabTerms: true,
+      inputResources: ["https://w3id.org/dpv/dpv-pd#"],
+      namespaceOverride: "https://w3id.org/dpv/dpv-pd#",
+      // nameAndPrefixOverride: "qudt",
+      // ignoreNonVocabTerms: true,
 
       // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
       // nameAndPrefixOverride: "person",

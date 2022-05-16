@@ -127,11 +127,11 @@ module.exports = class DatasetHandler {
     // having terms from two (or more!) vocabularies means we won't know what
     // to name our artifact).
 
-    // The namespace can manually be overridden in the configuration file.
-    if (
-      !fullName.startsWith(namespace) &&
-      !fullName.startsWith(this.vocabData.namespaceOverride)
-    ) {
+    // The namespace can manually be overridden in the configuration file, so
+    // use the namespace override if we have one.
+    const namespaceToUse = this.vocabData.namespaceOverride || namespace;
+
+    if (!fullName.startsWith(namespaceToUse)) {
       // Some vocabs define terms that are not actually defined in the
       // vocabulary itself. For instance the vocabulary defined as part of the
       // W3C Content Negotiation by Profile work
@@ -162,19 +162,34 @@ module.exports = class DatasetHandler {
         fullName.startsWith("http://www.w3.org/2001/XMLSchema#")
       ) {
         debug(
-          `Ignoring common RDF vocabulary term [${fullName}], as it's not in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
-            this.vocabData
+          `Ignoring common RDF vocabulary term [${fullName}], as it's not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
+            namespace,
+            this.vocabData.namespaceOverride
           )}`
         );
         return null;
       }
 
       throw new Error(
-        `Vocabulary term [${fullName}] found that is not in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
-          this.vocabData
+        `Vocabulary term [${fullName}] found that is not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
+          namespace,
+          this.vocabData.namespaceOverride
         )} - currently this is disallowed (as it indicates a probable typo!), but you can override this error and ignore non-vocabulary terms by setting the 'ignoreNonVocabTerms' option to 'true'`
       );
     }
+
+    // It is possible for a vocabulary to type itself as a type we treat as a
+    // term (e.g., as a property, or Classm or NamedIndividual, etc.), e.g.:
+    //   <https://ex.com/myVocab#> a owl:NamedIndividual ...
+    // ...in which we want to simply ignore these properties instances (as
+    // they aren't properties defined by the vocab itself, but metadata about
+    // the vocab instead).
+    if (fullName === namespaceToUse) {
+      return null;
+    }
+    // const splitIri = fullName.split(namespaceToUse);
+    // const name = splitIri[1];
+    const name = fullName.substring(namespaceToUse.length);
 
     // We need to have the term name, but also that name escaped to be a valid
     // variable name in our target programming languages. For example, DCTERMS
@@ -183,23 +198,6 @@ module.exports = class DatasetHandler {
     // but also have access (in our templates) to the actual term for use in
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
-
-    let splitIri = fullName.split(namespace);
-    // If the split failed (i.e. the term IRI is not in our namespace), then
-    // try again with the overriding namespace (we already ensured that the
-    // IRI was in one of them!).
-    if (splitIri.length === 1) {
-      splitIri = fullName.split(this.vocabData.namespaceOverride);
-    }
-    const name = splitIri[1];
-
-    // A vocab may define the vocabulary itself using a predicate we use for
-    // properties, for example the Survey ontology
-    // (https://w3id.org/survey-ontology#) defines itself as an
-    // `owl:NamedIndividual`.
-    if (name.length === 0) {
-      return null;
-    }
     const nameEscapedForLanguage = name.replace(/-/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
@@ -290,8 +288,9 @@ module.exports = class DatasetHandler {
     ) {
       if (skosMatches.length > 1) {
         throw new Error(
-          `Vocabulary term [${fullName}] in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
-            this.vocabData
+          `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
+            namespace,
+            this.vocabData.namespaceOverride
           )} - found [${skosMatches.length}] values for constant of type [${
             rdfType.value
           }] when one, and only one, value is required`
@@ -302,8 +301,9 @@ module.exports = class DatasetHandler {
         skosMatches.forEach((quad) => {
           if (!this.isValidIri(quad.object.value)) {
             throw new Error(
-              `Vocabulary term [${fullName}] in our namespace [${namespace}]${DatasetHandler.mentionNamespaceOverrideIfPresent(
-                this.vocabData
+              `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
+                namespace,
+                this.vocabData.namespaceOverride
               )} - constant IRI value [${
                 quad.object.value
               }] does not appear to be a valid IRI`
@@ -368,10 +368,13 @@ module.exports = class DatasetHandler {
     };
   }
 
-  static mentionNamespaceOverrideIfPresent(vocabData) {
-    return vocabData.namespaceOverride === undefined
-      ? ""
-      : ` or in the namespace override [${vocabData.namespaceOverride}]`;
+  static describeNamespaceInUse(namespace, namespaceOverride) {
+    const override =
+      namespaceOverride === undefined
+        ? ""
+        : ` (but using namespace override [${namespaceOverride}])`;
+
+    return `detected namespace [${namespace}]${override}`;
   }
 
   /**

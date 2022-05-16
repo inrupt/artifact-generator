@@ -38,14 +38,12 @@ const vocabMetadata = rdf
 describe("Dataset Handler", () => {
   describe("Static reporting helpers", () => {
     it("should report override only if one provided", () => {
-      expect(DatasetHandler.mentionNamespaceOverrideIfPresent({})).toBe("");
+      expect(DatasetHandler.describeNamespaceInUse("X")).toContain("X");
 
       const override = "test override";
-      expect(
-        DatasetHandler.mentionNamespaceOverrideIfPresent({
-          namespaceOverride: override,
-        })
-      ).toContain(override);
+      expect(DatasetHandler.describeNamespaceInUse("X", override)).toContain(
+        override
+      );
     });
   });
 
@@ -163,14 +161,22 @@ describe("Dataset Handler", () => {
 
   describe("Edge-case vocabulary cases ", () => {
     it("should ignore properties defined on the namespace IRI", async () => {
+      const vocabNamespace = "https://test.ex.com/vocab#";
+
       const dataset = rdf
         .dataset()
         // Define our vocab as a 'type' that we treat as a vocab property -
         // this should be ignored as being a property from the vocab itself!
-        .add(rdf.quad(rdf.namedNode(OWL_NAMESPACE), RDF.type, RDF.Property))
-        // We need to define at least one term in our vocab, otherwise we'll
+        .add(rdf.quad(rdf.namedNode(vocabNamespace), RDF.type, RDF.Property))
+        // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
-        .add(rdf.quad(OWL.Ontology, RDF.type, rdf.namedNode(OWL_NAMESPACE)));
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${vocabNamespace}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         // We need to inject a vocab description, even though we didn't add
@@ -179,6 +185,7 @@ describe("Dataset Handler", () => {
         // check.
         descriptionFallback: DEFAULT_DESCRIPTION.value,
         inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
       });
 
       const result = await handler.buildTemplateInput();
@@ -767,7 +774,7 @@ describe("Dataset Handler", () => {
 
   it("should override the namespace of the terms", async () => {
     const namespaceOverride = "https://override.namespace.org#";
-    const testTermClass = `${NAMESPACE}testTermClass`;
+    const testTermClass = `${namespaceOverride}testTermClass`;
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)

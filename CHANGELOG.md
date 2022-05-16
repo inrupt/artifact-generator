@@ -24,6 +24,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Include DCELEMENTS.title (RDF and RDFS) and RDFS.label (QUDT) as allowable
   predicates for vocabulary descriptions. 
 - Throws now if no vocab description found, or specified in config.
+- Cleaned up use of vocab namespace IRI override - if one is specified, it's
+  used, full stop (previous behaviour was a confused mixture of trying to
+  support both the detected namespace IRI and the override).
 
 ## 1.0.4 2021-10-01
 
