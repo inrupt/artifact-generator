@@ -22,8 +22,6 @@ const FileGenerator = require("./generator/FileGenerator");
 
 // We only need to instantiate these parsers once (whereas some parsers we
 // need to instantiate per-vocab to allow us set the 'baseIri').
-// const parserN3 = new N3.Parser();
-// const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
 
 // Our generation process can produce multiple artifacts per vocabulary, so we
