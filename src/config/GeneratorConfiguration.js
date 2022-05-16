@@ -446,7 +446,7 @@ class GeneratorConfiguration {
       list.inputResources.forEach((resource, inputIndex) => {
         if (typeof resource !== "string") {
           throw new Error(
-            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in vocba position [${vocabIndex}] and input resource position [${inputIndex}]) - check if you mistakenly have a trailing colon ':' character.`
+            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in vocab position [${vocabIndex}] and input resource position [${inputIndex}]) - check if you mistakenly have a trailing colon ':' character.`
           );
         }
       });
