@@ -16,27 +16,22 @@
   "author": {
     "name": "{{generatorName}}",
     "url": "https://github.com/inrupt/artifact-generator"
-  },
-{{#if contributors}}
+  }{{#if contributors}},
   "contributors": [
     {{#each contributors}}
     {"name": "{{this}}"}{{#unless @last}},{{/unless}}
     {{/each}}
-  ],
-{{/if}}
-{{#if license}}
-  "license": "{{license/name}}",{{/if}}{{#if versioning}}{{#if versioning.url}}
+  ]{{/if}}{{#if license}},
+  "license": "{{license/name}}"{{/if}}{{#if versioning}}{{#if versioning.url}},
   "repository": {
     "type": "{{versioning.type}}",
     "url": "{{versioning.url}}"
-  },{{/if}}{{/if}}
-  "dependencies": {
-  },
+  }{{/if}}{{/if}}{{#if supportBundling}},
   "devDependencies": {
-    {{#if supportBundling}}"@babel/core": "{{babelCoreVersion}}",
+    "@babel/core": "{{babelCoreVersion}}",
     "rollup": "{{rollupVersion}}",
     "@rollup/plugin-babel": "{{rollupBabelPluginVersion}}",
     "@rollup/plugin-commonjs": "{{rollupCommonjsPluginVersion}}",
-    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"{{/if}}
-  }
+    "@rollup/plugin-node-resolve": "{{rollupNodeResolveVersion}}"
+  }{{/if}}
 }

@@ -229,7 +229,9 @@ class ArtifactGenerator {
       // of itself, we pass down the description from our configuration as
       // a fallback (and prefix that description with some text to denote
       // that it's not coming from the original vocabulary itself).
-      this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+      if (vocabDetails.description) {
+        this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+      }
 
       const generatedArtifacts = [];
       // Generate this vocab for each artifact we are generating for.

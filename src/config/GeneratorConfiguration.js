@@ -52,32 +52,19 @@ const NPM_DEFAULT = {
   ],
   packagingTemplates: [
     {
-      templateInternal: path.join(
-        "solidCommonVocabDependent",
-        "javascript",
-        "package.hbs"
-      ),
+      templateInternal: path.join("stringLiteral", "javascript", "package.hbs"),
       fileName: "package.json",
       template: path.join(
         "templates",
-        "solidCommonVocabDependent",
+        "stringLiteral",
         "javascript",
         "package.hbs"
       ),
     },
     {
-      templateInternal: path.join(
-        "solidCommonVocabDependent",
-        "javascript",
-        "index.hbs"
-      ),
+      templateInternal: path.join("generic", "javascript", "index.hbs"),
       fileName: "index.js",
-      template: path.join(
-        "templates",
-        "solidCommonVocabDependent",
-        "javascript",
-        "index.hbs"
-      ),
+      template: path.join("templates", "generic", "javascript", "index.hbs"),
     },
   ],
 };
@@ -86,12 +73,9 @@ const DEFAULT_CLI_ARTIFACT = [
   {
     programmingLanguage: "JavaScript",
     artifactDirectoryName: "JavaScript",
-    templateInternal: path.join(
-      "solidCommonVocabDependent",
-      "javascript",
-      "vocab.hbs"
-    ),
+    templateInternal: path.join("stringLiteral", "javascript", "vocab.hbs"),
     sourceFileExtension: "js",
+    supportBundling: false,
     packaging: [
       {
         ...NPM_DEFAULT,
@@ -103,7 +87,7 @@ const DEFAULT_CLI_ARTIFACT = [
     ],
     sourceCodeTemplate: path.join(
       "templates",
-      "solidCommonVocabDependent",
+      "stringLiteral",
       "javascript",
       "vocab.hbs"
     ),
@@ -452,11 +436,17 @@ class GeneratorConfiguration {
     // Ensure each input resource is a string (YAML can configure objects, so
     // a mistaken trailing colon at the end of a resource name would produce a
     // very confusing error message).
-    config.vocabList.forEach((list) => {
-      list.inputResources.forEach((resource, i) => {
+    config.vocabList.forEach((list, vocabIndex) => {
+      if (list.inputResources === undefined) {
+        throw new Error(
+          `The YAML configuration file [${configSource}] has no input resources (in vocab position [${vocabIndex}]) - check if you have a typo in your intended 'inputResources' fieldname.`
+        );
+      }
+
+      list.inputResources.forEach((resource, inputIndex) => {
         if (typeof resource !== "string") {
           throw new Error(
-            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in position [${i}]) - check if you mistakenly have a trailing colon ':' character.`
+            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in vocba position [${vocabIndex}] and input resource position [${inputIndex}]) - check if you mistakenly have a trailing colon ':' character.`
           );
         }
       });
@@ -561,7 +551,7 @@ class GeneratorConfiguration {
 
     // It is assumed that by default, all vocabularies are resources for the
     // same artifact. The most common case for using the command line is
-    // providing a single vocab anyways.
+    // providing a single vocab anyway.
     cliConfig.vocabList = [GeneratorConfiguration.collectVocabFromCLI(args)];
 
     cliConfig.outputDirectoryForArtifact = `${
@@ -602,17 +592,14 @@ class GeneratorConfiguration {
       {
         programmingLanguage: "JavaScript",
         artifactDirectoryName: "JavaScript",
-        templateInternal: path.join(
-          "solidCommonVocabDependent",
-          "javascript",
-          "vocab.hbs"
-        ),
+        templateInternal: path.join("stringLiteral", "javascript", "vocab.hbs"),
         sourceFileExtension: "js",
+        supportBundling: args.supportBundling || false,
         packaging: [packagingInfo],
       },
     ];
 
-    if (args.supportBundling) {
+    if (cliConfig.artifactToGenerate[0].supportBundling) {
       cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
     } else {
       cliConfig.artifactToGenerate[0].packaging[0].packagingTemplates.push(
@@ -655,7 +642,6 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].vocabContentTypeHeaderFallback =
         args.vocabContentTypeHeaderFallback;
     }
-
     return cliConfig;
   }
 
@@ -669,18 +655,6 @@ class GeneratorConfiguration {
     this.configuration = CommandLine.findPublishedVersionOfModule(
       this.configuration
     );
-  }
-
-  /**
-   * If receiving the config from the command line, some information may be
-   * missing that we know the vocabulary generation will not provide. These
-   * must be provided by the user (e.g., via an interactive prompt).
-   */
-  async completeInitialConfiguration() {
-    // We've deprecating much of the interactive prompt functionality (e.g.,
-    // asking for the version number of the VocabTerm library to use), so not
-    // much going on in here anymore...
-    return this;
   }
 
   /**

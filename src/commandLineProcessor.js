@@ -153,7 +153,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
               "supportBundling",
               "If set will use bundling support within generated artifact (currently supports Rollup only)."
             )
-            .default("supportBundling", true)
+            .default("supportBundling", false)
 
             .boolean("force")
             .describe(

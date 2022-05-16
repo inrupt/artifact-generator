@@ -101,7 +101,6 @@ describe("Artifact Generator", () => {
         outputDirectory,
         noPrompt: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
@@ -119,7 +118,6 @@ describe("Artifact Generator", () => {
         outputDirectory,
         noPrompt: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
@@ -141,13 +139,10 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^1.0.10",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         supportBundling: false,
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -175,7 +170,6 @@ describe("Artifact Generator", () => {
         artifactName: "someName",
         solidCommonVocabVersion: "^1.0.10",
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
@@ -204,8 +198,7 @@ describe("Artifact Generator", () => {
         artifactNamePrefix: "",
         artifactNameSuffix: "",
 
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^0.1.0",
+        supportBundling: true,
         babelCoreVersion: "^1.2.3",
         rollupVersion: "^4.5.6",
         rollupBabelPluginVersion: "^7.8.9",
@@ -214,9 +207,7 @@ describe("Artifact Generator", () => {
 
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
-        supportBundling: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
@@ -249,12 +240,9 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create
@@ -309,13 +297,10 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
       });
 
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create
@@ -402,7 +387,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
       });
 
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create
@@ -491,7 +475,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
       });
 
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create
@@ -601,7 +584,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
       });
 
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create
@@ -648,13 +630,10 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         force: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       // Initially, the directory is empty, so this generation should create target source files
@@ -700,13 +679,10 @@ describe("Artifact Generator", () => {
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
-        rdfjsImplVersion: "^7.8.9",
-        solidCommonVocabVersion: "^0.1.0",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         clearOutputDirectory: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();
@@ -728,7 +704,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
@@ -758,7 +733,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate().then(() => {
@@ -801,7 +775,6 @@ describe("Artifact Generator", () => {
         outputDirectory,
         noPrompt: true,
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       const result = await artifactGenerator.generate().then(() => {
@@ -817,7 +790,6 @@ describe("Artifact Generator", () => {
         outputDirectory,
         noPrompt: true,
       });
-      rerunConfig.completeInitialConfiguration();
 
       const rerunArtifactGenerator = new ArtifactGenerator(rerunConfig);
       const rerunResult = await rerunArtifactGenerator.generate().then(() => {
@@ -838,7 +810,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
@@ -866,7 +837,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
         force: true, // We need to FORCE generation to ensure publication.
       });
-      config.completeInitialConfiguration();
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
@@ -891,7 +861,6 @@ describe("Artifact Generator", () => {
         noPrompt: true,
       });
 
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
       await expect(artifactGenerator.generate()).rejects.toThrowError(yamlFile);
     });
@@ -909,7 +878,6 @@ describe("Artifact Generator", () => {
         outputDirectory,
         noPrompt: true,
       });
-      config.completeInitialConfiguration();
       const artifactGenerator = new ArtifactGenerator(config);
 
       await artifactGenerator.generate();

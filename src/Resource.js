@@ -23,7 +23,7 @@ const FileGenerator = require("./generator/FileGenerator");
 // We only need to instantiate these parsers once (whereas some parsers we
 // need to instantiate per-vocab to allow us set the 'baseIri').
 // const parserN3 = new N3.Parser();
-const parserN3 = new ParserN3();
+// const parserN3 = new ParserN3();
 const parserJsonld = new ParserJsonld();
 
 // Our generation process can produce multiple artifacts per vocabulary, so we
@@ -323,6 +323,8 @@ module.exports = class Resource {
   // We need to create instances of some parsers per vocab due to the need to
   // set a base IRI for certain vocabs, which we can only do in the constructor.
   static createParserFormats(inputResource) {
+    const parserN3 = new ParserN3();
+
     const formats = {
       parsers: new SinkMap([
         ["text/turtle", parserN3],
@@ -505,6 +507,10 @@ module.exports = class Resource {
   }
 
   static loadTurtleFileIntoDatasetPromise(filename) {
+    // The N3 parser is, apparently, a one-time use parser, so we should
+    // instantiate a new one for each file we process.
+    const parserN3 = new ParserN3();
+
     const data = fs.readFileSync(filename, "utf8");
     const quadStream = parserN3.import(stringToStream(data));
 

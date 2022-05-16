@@ -8,7 +8,6 @@ prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
 prefix skydive: <https://inrupt.com/vocab/demo/skydiving#>
 
-
 skydive:
     a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "0.0.1" ;
@@ -17,7 +16,7 @@ skydive:
     dcterms:title "Skydiving vocabulary" ;
     dcterms:description "Vocabulary for the sport of skydiving." ;
     vann:preferredNamespacePrefix "skydive" ;
-    vann:preferredNamespaceUri "http://inrupt.com/vocab/demo/skydiving#" ;
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/demo/skydiving#" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
@@ -32,7 +31,7 @@ skydive:ranking a owl:ObjectProperty ;
   rdfs:label "Clasificación"@es ;
   rdfs:comment "A ranking denoting a skydivers proficiency in the sport."@en .
 
-skydive:eight-way a owl:ObjectProperty ;
+skydive:eightWay a owl:ObjectProperty ;
   rdfs:label "Eight-Way"@en ;
   rdfs:label "Ocho vías"@es ;
   rdfs:comment "Freefall formation with 8 skydivers arranging into geometric patterns."@en ;

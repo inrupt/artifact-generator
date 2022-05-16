@@ -129,8 +129,8 @@ const ConfigSolid = {
 };
 
 describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
-  // it("Generate ALL vocabs", async () => {
-  it.skip("Generate ALL vocabs", async () => {
+  it("Generate ALL vocabs", async () => {
+  // it.skip("Generate ALL vocabs", async () => {
     await generateVocabArtifact(ConfigAll);
   }, 6000000);
 
@@ -198,12 +198,34 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      // nameAndPrefixOverride: "inrupt-schema",
+
+      inputResources: ["http://qudt.org/schema/qudt/"],
+      nameAndPrefixOverride: "qudt",
+      ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
+      // nameAndPrefixOverride: "person",
+      // vocabAcceptHeaderOverride: "application/vnd.github.v3.raw",
+      // vocabContentTypeHeaderOverride: "text/turtle",
+      //
+      // inputResources: ["http://stko-kwg.geog.ucsb.edu/lod/ontology"],
+      // nameAndPrefixOverride: "kwg-ont",
+      // ignoreNonVocabTerms: true,
+      //
+      // inputResources: ["http://geovocab.org/spatial"],
+      // nameAndPrefixOverride: "neogeo",
+
+      // inputResources: ["https://www.geonames.org/ontology#"],
+      // ignoreNonVocabTerms: true,
+      //
       // inputResources: ["http://www.w3.org/ns/sosa/"],
       // ignoreNonVocabTerms: true,
       //
-      inputResources: ["http://www.w3.org/ns/ssn/"],
-      ignoreNonVocabTerms: true,
-
+      // inputResources: ["http://www.w3.org/ns/ssn/"],
+      // ignoreNonVocabTerms: true,
+      //
       // inputResources: ["https://ontologies.semanticarts.com/o/gistCore10.0.0"],
       // nameAndPrefixOverride: "gistCore",
       // namespaceOverride: "https://ontologies.semanticarts.com/gist/",

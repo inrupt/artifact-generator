@@ -1,13 +1,13 @@
-@prefix schema: <http://schema.org/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
+prefix test: <https://ex.com/vocab/test#>
 
-schema:Person a rdfs:Class ;
-    rdfs:label "Person" ;
-    rdfs:seeAlso schema: ;
+#
+# Note: To keep our tests isolated from each, when
+#
+test:SomeClass a rdfs:Class ;
+    rdfs:label "Some test class" ;
+    rdfs:seeAlso test: ;
     rdfs:seeAlso rdf: ;
     rdfs:seeAlso rdfs: .

@@ -165,7 +165,7 @@ and `build` commands from inside the `Generated/SourceCodeArtifacts/JavaScript/`
 directory:
 
 ```shell
-npm i
+npm install
 ```
 
 ```shell
@@ -175,7 +175,7 @@ npm run build
 The output will be bundled into the `Generated/SourceCodeArtifacts/JavaScript/dist`
 directory.
 
-If you'd prefer not to produce a bundled artifact, you can run the
+If you'd prefer not to produce a bundled JavaScript artifact, you can run the
 `generate` command with the `--supportBundling` option set to `false`:
 
 ```shell
@@ -183,7 +183,7 @@ artifact-generator generate --inputResources https://team.inrupt.net/public/voca
 ```
 
 We can now use this JavaScript artifact directly in our applications, both
-Node.js and browser based. For example, for Node.js manually create a new 
+Node.js and browser-based. For example, for Node.js manually create a new 
 `package.json` file using the following content that references the Pet Rock
 artifact we just generated:
 
@@ -225,7 +225,7 @@ npm install
 node index.js 
 ```
 
-...we should see the following output:
+...and you should see the following output:
 ```
 [demo]$ node index.js 
 What is Pet Rock 'shininess'?
@@ -269,3 +269,10 @@ within it)...
 My Pet Rock shininess is defined as: "How wonderfully shiny a rock is."
 in vocab [https://team.inrupt.net/public/vocab/PetRock.ttl#].
 ```
+
+# There's more!
+
+Don't forget, there's a **_lot_** more documentation related to the Artifact
+Generator, all contained under the `/documentation' directory of this
+repository, but also linked to from the [Table of Contents](#table-of-contents)
+section above!

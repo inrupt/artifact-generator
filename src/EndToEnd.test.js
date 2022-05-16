@@ -5,7 +5,6 @@ const rdfFetch = require("@rdfjs/fetch-lite");
 jest.mock("@rdfjs/fetch-lite");
 
 const fs = require("fs");
-const path = require("path");
 const del = require("del");
 const Resource = require("./Resource");
 
@@ -18,14 +17,6 @@ const {
 const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const { getArtifactDirectorySourceCode } = require("./Util");
-
-const SOLID_COMMON_VOCAB_VERSION = "99.999.01";
-
-const doNothingPromise = (data) => {
-  return new Promise((resolve) => {
-    resolve(data);
-  });
-};
 
 describe("End-to-end tests", () => {
   describe("Build node module artifacts", () => {
@@ -40,8 +31,7 @@ describe("End-to-end tests", () => {
           inputResources: [errorFilename],
           outputDirectory,
           noPrompt: true,
-        }),
-        doNothingPromise
+        })
       );
 
       await expect(artifactGenerator.generate()).rejects.toThrow(
@@ -78,15 +68,12 @@ describe("End-to-end tests", () => {
       const errorFilename = "./test/resources/vocabs/mismatched-namespaces.ttl";
 
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            inputResources: [errorFilename],
-            outputDirectory,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          inputResources: [errorFilename],
+          outputDirectory,
+          noPrompt: true,
+        })
       );
 
       await expect(artifactGenerator.generate()).rejects.toThrow(
@@ -103,22 +90,17 @@ describe("End-to-end tests", () => {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
-            outputDirectory,
-            artifactVersion: "1.0.0",
-            artifactNamePrefix: "",
-            artifactNameSuffix: "",
-            license: { name: "MIT" },
-            rdfjsImplVersion: "^1.1.0",
-            solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-            moduleNamePrefix: "@inrupt/generated-vocab-",
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          outputDirectory,
+          artifactVersion: "1.0.0",
+          artifactNamePrefix: "",
+          artifactNameSuffix: "",
+          license: { name: "MIT" },
+          moduleNamePrefix: "@inrupt/generated-vocab-",
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -134,11 +116,13 @@ describe("End-to-end tests", () => {
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+        )
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA.js"
+          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(
@@ -163,16 +147,13 @@ describe("End-to-end tests", () => {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            vocabListFile: "./test/resources/yamlConfig/vocab-rdflib.yml",
-            outputDirectory,
-            supportBundling: true,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile: "./test/resources/yamlConfig/vocab-rdflib.yml",
+          outputDirectory,
+          supportBundling: true,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -201,20 +182,17 @@ describe("End-to-end tests", () => {
       const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            artifactVersion: "1.0.0",
-            artifactNamePrefix: "",
-            artifactNameSuffix: "",
-            vocabListFile:
-              "./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml",
-            outputDirectory,
-            supportBundling: true,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          artifactVersion: "1.0.0",
+          artifactNamePrefix: "",
+          artifactNameSuffix: "",
+          vocabListFile:
+            "./test/resources/yamlConfig/vocab-rdf-library-java-rdf4j.yml",
+          outputDirectory,
+          supportBundling: true,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -251,17 +229,14 @@ describe("End-to-end tests", () => {
       const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            vocabListFile:
-              "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-data-factory.yml",
-            outputDirectory,
-            supportBundling: true,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile:
+            "./test/resources/yamlConfig/vocab-rdf-library-javascript-rdf-data-factory.yml",
+          outputDirectory,
+          supportBundling: true,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -301,8 +276,6 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -311,15 +284,19 @@ describe("End-to-end tests", () => {
       await artifactGenerator.generate();
 
       expect(
-        fs.existsSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
+        fs.existsSync(
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+        )
       ).toBe(true);
 
       const generated = fs
-        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
+        )
         .toString();
 
       expect(generated).toEqual(
-        expect.stringContaining("Person: new _VocabTerm(")
+        expect.stringContaining('Person: _NS("Person"),')
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -328,7 +305,9 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining('"name": "@inrupt/generated-vocab-schema"')
+        expect.stringContaining(
+          '"name": "@inrupt/generated-vocab-schema-inrupt-ext"'
+        )
       );
     });
 
@@ -349,8 +328,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -419,8 +396,6 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
@@ -438,16 +413,13 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new _VocabTerm(")
+        expect.stringContaining('Person: _NS("Person"),')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("address: new _VocabTerm(")
+        expect.stringContaining('address: _NS("address"),')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("additionalName: new _VocabTerm(")
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`Nombre adicional`, "es")')
+        expect.stringContaining('additionalName: _NS("additionalName"),')
       );
     });
 
@@ -467,8 +439,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -483,27 +453,13 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new _VocabTerm(")
+        expect.stringContaining('Person: _NS("Person"),')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`La personne`, "fr")')
-      );
-
-      expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new _VocabTerm(")
+        expect.stringContaining('familyName: _NS("familyName"),')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new _VocabTerm(")
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`Nome di battesimo`, "it")')
-      );
-
-      expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new _VocabTerm(")
+        expect.stringContaining('givenName: _NS("givenName"),')
       );
     });
 
@@ -537,8 +493,6 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -553,28 +507,16 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(indexOutput).toEqual(
-        expect.stringContaining("Person: new _VocabTerm(")
+        expect.stringContaining('Person: _NS("Person"),')
       );
       expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`La personne`, "fr")')
+        expect.stringContaining('familyName: _NS("familyName"),')
+      );
+      expect(indexOutput).toEqual(
+        expect.stringContaining('givenName: _NS("givenName"),')
       );
 
-      expect(indexOutput).toEqual(
-        expect.stringContaining("familyName: new _VocabTerm(")
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining("givenName: new _VocabTerm(")
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`Nombre de pila`, "es")')
-      );
-      expect(indexOutput).toEqual(
-        expect.stringContaining('.addLabel(`Nome di battesimo`, "it")')
-      );
-
-      expect(indexOutput).toEqual(
-        expect.not.stringContaining("address: new _VocabTerm(")
-      );
+      expect(indexOutput).toEqual(expect.not.stringContaining("address: "));
     });
 
     it("should take in a version for the output module", async () => {
@@ -593,8 +535,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -624,8 +564,6 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
@@ -654,8 +592,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -666,7 +602,9 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining('"name": "@inrupt/generated-vocab-schema",')
+        expect.stringContaining(
+          '"name": "@inrupt/generated-vocab-schema-inrupt-ext",'
+        )
       );
 
       del.sync([`${outputDirectory}/*`]);
@@ -680,8 +618,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -714,8 +650,6 @@ describe("End-to-end tests", () => {
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -748,8 +682,6 @@ describe("End-to-end tests", () => {
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
-          rdfjsImplVersion: "^1.1.0",
-          solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
         })
@@ -773,15 +705,12 @@ describe("End-to-end tests", () => {
       const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            vocabListFile: "./test/resources/vocabs/vocab-list.yml",
-            outputDirectory,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile: "./test/resources/vocabs/vocab-list.yml",
+          outputDirectory,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -819,16 +748,13 @@ describe("End-to-end tests", () => {
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-            // The output directory must be set, because a default value is set by yargs in a regular use case
-            outputDirectory,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
+          // The output directory must be set, because a default value is set by yargs in a regular use case
+          outputDirectory,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
@@ -848,29 +774,21 @@ describe("End-to-end tests", () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/seeAlso/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
+
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            inputResources: [
-              path.join(".", "test", "resources", "vocabs", "seeAlso.ttl"),
-            ],
-            artifactVersion: "^1.2.3",
-            rdfjsImplVersion: "^1.1.0",
-            solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-            // The output directory must be set, because a default value is set by yargs in the
-            // regular use case.
-            outputDirectory,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
+          // The output directory must be set, because a default value is set by yargs in a regular use case
+          outputDirectory,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
 
       const output = fs
-        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/TEST_SEEALSO.js`)
         .toString();
 
       expect(output).toEqual(expect.stringContaining(".addSeeAlso("));
@@ -882,28 +800,21 @@ describe("End-to-end tests", () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/isDefinedBy/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
+
       const artifactGenerator = new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            _: ["generate"],
-            inputResources: [
-              path.join(".", "test", "resources", "vocabs", "isDefinedBy.ttl"),
-            ],
-            artifactVersion: "^1.2.3",
-            rdfjsImplVersion: "^1.1.0",
-            solidCommonVocabVersion: SOLID_COMMON_VOCAB_VERSION,
-            // The output directory must be set, because a default value is set by yargs in a regular use case
-            outputDirectory,
-            noPrompt: true,
-          },
-          doNothingPromise
-        )
+        new GeneratorConfiguration({
+          _: ["generate"],
+          vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
+          // The output directory must be set, because a default value is set by yargs in a regular use case
+          outputDirectory,
+          noPrompt: true,
+        })
       );
 
       await artifactGenerator.generate();
 
       const output = fs
-        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SCHEMA.js`)
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/TEST_ISDEFINEDBY.js`)
         .toString();
 
       expect(output).toEqual(expect.stringContaining(".addIsDefinedBy("));

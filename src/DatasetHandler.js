@@ -11,6 +11,7 @@ const {
   XSD,
   SKOSXL,
   VANN,
+  DCELEMENTS,
   DCTERMS,
   SKOS,
   ARTIFACT_GENERATOR,
@@ -683,6 +684,15 @@ module.exports = class DatasetHandler {
     result.description = this.findDescription(
       this.vocabData.descriptionFallback
     );
+    if (
+      !result.description ||
+      result.description === "[Generator provided] - undefined"
+    ) {
+      throw new Error(
+        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms.description', 'rdfs:comment', 'rdfs:label', or 'dcelements:title'), and our configuration doesn't provide one.`
+      );
+    }
+
     result.artifactVersion = this.vocabData.artifactVersion;
     result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
     result.npmRegistry = this.vocabData.npmRegistry;
@@ -947,12 +957,6 @@ module.exports = class DatasetHandler {
       });
 
     if (!prefix) {
-      if (!namespace) {
-        debug(
-          `Namespace for input resource [${this.vocabData.inputResources[0]}] is empty.`
-        );
-        return "";
-      }
       prefix = DatasetHandler.getKnownPrefix(namespace);
     }
 
@@ -985,11 +989,29 @@ module.exports = class DatasetHandler {
         null
       );
 
-      // Check fallback description predicate...
+      // Fallback to rdfs:comment...
       if (onologyComments.size === 0) {
         onologyComments = this.fullDataset.match(
           owlOntologyTerms.subject,
           RDFS.comment,
+          null
+        );
+      }
+
+      // Fallback to legacy description...
+      if (onologyComments.size === 0) {
+        onologyComments = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          DCELEMENTS.title,
+          null
+        );
+      }
+
+      // Fallback to rdfs:label (QUDT uses this!)...
+      if (onologyComments.size === 0) {
+        onologyComments = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          RDFS.label,
           null
         );
       }

@@ -115,4 +115,10 @@ describe("File Generator", () => {
 " new lines in \\n" +
 "here!`);
   });
+
+  // Test slash encoding.
+  const exampleQudtComment = `<p class=\"lm-para\">A  <em>Quantity Kind Dimension Vector</em> describes the dimensionality of a quantity kind in the context of a system of units. In the SI system of units, the dimensions of a quantity kind are expressed as a product of the basic physical dimensions mass (\\(M\\)), length (\\(L\\)), time (\\(T\\)) current (\\(I\\)), amount of substance (\\(N\\)), luminous intensity (\\(J\\)) and absolute temperature (\\(\\theta\\)) as \\(dim \\, Q = L^{\\alpha} \\, M^{\\beta} \\, T^{\\gamma} \\, I ^{\\delta} \\, \\theta ^{\\epsilon} \\, N^{\\eta} \\, J ^{\\nu}\\).</p>`;
+  expect(FileGenerator.escapeStringForJava(exampleQudtComment)).toEqual(
+    `<p class=\\"lm-para\\">A  <em>Quantity Kind Dimension Vector</em> describes the dimensionality of a quantity kind in the context of a system of units. In the SI system of units, the dimensions of a quantity kind are expressed as a product of the basic physical dimensions mass (\\\\\\\\(M\\\\\\\\)), length (\\\\\\\\(L\\\\\\\\)), time (\\\\\\\\(T\\\\\\\\)) current (\\\\\\\\(I\\\\\\\\)), amount of substance (\\\\\\\\(N\\\\\\\\)), luminous intensity (\\\\\\\\(J\\\\\\\\)) and absolute temperature (\\\\\\\\(\\\\\\\\theta\\\\\\\\)) as \\\\\\\\(dim \\\\\\\\, Q = L^{\\\\\\\\alpha} \\\\\\\\, M^{\\\\\\\\beta} \\\\\\\\, T^{\\\\\\\\gamma} \\\\\\\\, I ^{\\\\\\\\delta} \\\\\\\\, \\\\\\\\theta ^{\\\\\\\\epsilon} \\\\\\\\, N^{\\\\\\\\eta} \\\\\\\\, J ^{\\\\\\\\nu}\\\\\\\\).</p>`
+  );
 });

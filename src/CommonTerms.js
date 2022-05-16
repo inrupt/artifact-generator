@@ -35,6 +35,13 @@ module.exports.DCTERMS = {
   creator: rdf.namedNode(`${DCTERMS_NAMESPACE}creator`),
 };
 
+// For purely legacy reasons (specifically 'cos the core RDF and RDFS vocabs
+// use terms from this 'old' vocab to describe themselves)!
+const DCELEMENTS_NAMESPACE = "http://purl.org/dc/elements/1.1/";
+module.exports.DCELEMENTS = {
+  title: rdf.namedNode(`${DCELEMENTS_NAMESPACE}title`),
+};
+
 const SKOS_NAMESPACE = "http://www.w3.org/2004/02/skos/core#";
 module.exports.SKOS = {
   Concept: rdf.namedNode(`${SKOS_NAMESPACE}Concept`),
