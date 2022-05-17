@@ -1,21 +1,14 @@
-#
-# Note: This vocabulary is actually published at it's namespace URI which is
-# hosted as a resource within a Solid Pod at `team.inrupt.net`. We provide a
-# copy of that vocab here too, but just as a convenience and to allow us
-# demonstrate generating artifacts from vocabularies that are local RDF files
-# and from remotely published RDF vocabularies.
-#
-# Note: NSS doesn't support the newer Turtle syntax for PREFIX.
-#
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix vann: <http://purl.org/vocab/vann/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#> .
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix schema: <http://schema.org/>
 
-@prefix pet_rock: <https://team.inrupt.net/public/vocab/PetRock.ttl#> .
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
 
+prefix hobby: <https://inrupt.com/ns/vocab/hobby/>
+prefix pet_rock: <https://team.inrupt.net/public/vocab/PetRock.ttl#>
 
 pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "0.0.1" ;
@@ -29,7 +22,8 @@ pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
-pet_rock:PetRock a rdfs:Class ;
+pet_rock:PetRock a rdfs:Class, hobby:Hobby ;
+  hobby:kind "collecting" ;
   rdfs:isDefinedBy pet_rock: ;
   rdfs:label "Pet Rock"@en ;
   rdfs:label "Pierre de compagnie"@fr ;
@@ -38,14 +32,16 @@ pet_rock:PetRock a rdfs:Class ;
   rdfs:comment "La clase de todas las rocas que esta aplicación considera excelentes mascotas."@es .
 
 pet_rock:shininess a rdf:Property ;
-  rdfs:domain pet_rock:PetRock ;
+  rdfs:isDefinedBy pet_rock: ;
+  schema:domainIncludes pet_rock:PetRock ;
   rdfs:label "Shininess"@en ;
   rdfs:label "Brillo"@es ;
   rdfs:comment "How wonderfully shiny a rock is."@en ;
   rdfs:comment "Qué maravillosamente brillante es una roca."@es .
 
 pet_rock:rarity a rdf:Property ;
-  rdfs:domain pet_rock:PetRock ;
+  rdfs:isDefinedBy pet_rock: ;
+  schema:domainIncludes pet_rock:PetRock ;
   rdfs:label "Rarity"@en ;
   rdfs:label "Rareté"@fr ;
   rdfs:label "Rareza"@es ;
