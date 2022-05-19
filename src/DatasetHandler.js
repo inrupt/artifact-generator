@@ -198,7 +198,7 @@ module.exports = class DatasetHandler {
     // but also have access (in our templates) to the actual term for use in
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
     // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
-    const nameEscapedForLanguage = name.replace(/-/g, "_");
+    const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
     //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the

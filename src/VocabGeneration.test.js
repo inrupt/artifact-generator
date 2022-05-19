@@ -198,11 +198,13 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
-      // nameAndPrefixOverride: "inrupt-schema",
+      inputResources: ["http://purl.org/ontology/bibo/"],
+      vocabContentTypeHeaderOverride: "application/rdf+xml",
+      nameAndPrefixOverride: "bibo",
+      ignoreNonVocabTerms: true,
 
-      inputResources: ["https://w3id.org/dpv/dpv-pd#"],
-      namespaceOverride: "https://w3id.org/dpv/dpv-pd#",
+      // inputResources: ["https://w3id.org/dpv/dpv-pd#"],
+      // namespaceOverride: "https://w3id.org/dpv/dpv-pd#",
       // nameAndPrefixOverride: "qudt",
       // ignoreNonVocabTerms: true,
 
