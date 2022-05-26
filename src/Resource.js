@@ -304,10 +304,13 @@ module.exports = class Resource {
             }
           }
 
+          debug(
+            `About to process fetched input resource [${inputResource}] as a dataset...`
+          );
           return rdfResponse.dataset();
         })
         .catch((error) => {
-          const message = `Encountered error while attempting to fetch resource [${inputResource}]: ${error}`;
+          const message = `Encountered error while attempting to fetch or process resource [${inputResource}]: ${error}`;
           debug(message);
           throw new Error(message);
         });

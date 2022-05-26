@@ -198,10 +198,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://purl.org/ontology/bibo/"],
-      vocabContentTypeHeaderOverride: "application/rdf+xml",
-      nameAndPrefixOverride: "bibo",
-      ignoreNonVocabTerms: true,
+      // inputResources: ["http://purl.org/ontology/bibo/"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // nameAndPrefixOverride: "bibo",
+      // ignoreNonVocabTerms: true,
 
       // inputResources: ["https://w3id.org/dpv/dpv-pd#"],
       // namespaceOverride: "https://w3id.org/dpv/dpv-pd#",
@@ -229,9 +229,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["http://www.w3.org/ns/ssn/"],
       // ignoreNonVocabTerms: true,
       //
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore10.0.0"],
-      // nameAndPrefixOverride: "gistCore",
-      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
+      nameAndPrefixOverride: "gist",
+      namespaceOverride: "https://ontologies.semanticarts.com/gist/",
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
 
       // inputResources: ["http://www.w3.org/ns/locn"],

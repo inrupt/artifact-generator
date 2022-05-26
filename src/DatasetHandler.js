@@ -1010,7 +1010,16 @@ module.exports = class DatasetHandler {
         );
       }
 
-      // Fallback to rdfs:label (QUDT uses this!)...
+      // Fallback to SKOS definition (Gist uses this)...
+      if (onologyComments.size === 0) {
+        onologyComments = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          SKOS.definition,
+          null
+        );
+      }
+
+      // Fallback to rdfs:label (QUDT uses this)...
       if (onologyComments.size === 0) {
         onologyComments = this.fullDataset.match(
           owlOntologyTerms.subject,

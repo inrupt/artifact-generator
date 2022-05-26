@@ -30,6 +30,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Convert the slash '/' character in vocab term names to underscore '_' in
   generated source-code constant names (example thrown up by the BIBO ontology
   that defines terms named 'degrees/phd' and 'degrees/ma').
+- Added SKOS:definition to allowable vocab description predicates (Gist uses
+  it). 
 
 ## 1.0.4 2021-10-01
 
