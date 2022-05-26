@@ -198,6 +198,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: ["https://w3id.org/dpv#"],
+      // inputResources: ["http://www.w3.org/ns/dpv-pd#"],
+
       // inputResources: ["http://purl.org/ontology/bibo/"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
       // nameAndPrefixOverride: "bibo",
@@ -241,10 +244,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["https://purl.org/oslo/ns/localgov#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
       // ignoreNonVocabTerms: true,
-
-      // inputResources: ["http://www.w3.org/ns/dpv#"],
-
-      inputResources: ["http://www.w3.org/ns/dpv-pd#"],
 
       // inputResources: [
       //   // "http://purl.org/oslo/ns/localgov/",
