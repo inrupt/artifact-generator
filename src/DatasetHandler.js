@@ -363,7 +363,8 @@ module.exports = class DatasetHandler {
       isDefinedBy,
       termDescription: DatasetHandler.buildCompositeTermDescription(
         labels,
-        comments
+        comments,
+        definitions
       ),
     };
   }
@@ -381,28 +382,33 @@ module.exports = class DatasetHandler {
    * This function builds a single string description of the translation values provided for the
    * specified term metadata.
    *
+   * @param comment the single 'comment' we determined for this term
    * @param labels the collection of label literals
    * @param comments the collection of comment literals
    * @returns {any}
    */
-  static buildCompositeTermDescription(labels, comments) {
+  static buildCompositeTermDescription(labels, comments, definitions) {
     let termDescription = undefined;
+
+    // We treat definitions as comments, so merge those two into one array.
+    const allComments = [...comments, ...definitions];
 
     // Create simple strings to represent the sorted list of language tags we
     // have for both our term's labels and comments (can be 'undefined' if
     // nothing there at all).
     const sortedLangTagsLabel = DatasetHandler.sortListOfLangTags(labels);
-    const sortedLangTagsComment = DatasetHandler.sortListOfLangTags(comments);
+    const sortedLangTagsComment =
+      DatasetHandler.sortListOfLangTags(allComments);
 
-    // If we have no labels or comments, report that explicitly.
+    // If we have no comment at all, report that explicitly.
     if (labels.length === 0 && comments.length === 0) {
       termDescription =
         "This term has no descriptions at all (i.e., the vocabulary doesn't provide any " +
-        "'rdfs:label', 'rdfs:comment', or 'dcterms:description' meta-data).";
+        "'rdfs:label', 'rdfs:comment', or 'dcterms:description', or 'skos:definition' meta-data).";
     } else {
       // Having no comments is bad - so report that omission (but at least
       // describe the labels we do have).
-      if (comments.length === 0) {
+      if (allComments.length === 0) {
         const singular = labels.length === 1;
         const labelDescription = singular
           ? "a label"
@@ -415,15 +421,15 @@ module.exports = class DatasetHandler {
         // Common to only have a single label and comment, which will
         // generally be both in explicit English, or just no language tag at
         // all - so provide specific messages for each case.
-        if (labels.length === 1 && comments.length === 1) {
+        if (labels.length === 1 && allComments.length === 1) {
           if (
             labels[0].language.startsWith("en") &&
-            comments[0].language.startsWith("en")
+            allComments[0].language.startsWith("en")
           ) {
             termDescription =
               "This term provides descriptions only in English.";
           } else {
-            if (labels[0].language === "" && comments[0].language === "") {
+            if (labels[0].language === "" && allComments[0].language === "") {
               termDescription =
                 "This term provides descriptions only with no explicit locale.";
             } else {
@@ -432,7 +438,7 @@ module.exports = class DatasetHandler {
               termDescription = DatasetHandler.describeMultipleLanguages(
                 labels,
                 sortedLangTagsLabel,
-                comments,
+                allComments,
                 sortedLangTagsComment
               );
             }
@@ -441,7 +447,7 @@ module.exports = class DatasetHandler {
           termDescription = DatasetHandler.describeMultipleLanguages(
             labels,
             sortedLangTagsLabel,
-            comments,
+            allComments,
             sortedLangTagsComment
           );
         }

@@ -203,11 +203,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // nameAndPrefixOverride: "bibo",
       // ignoreNonVocabTerms: true,
 
-      // inputResources: ["https://w3id.org/dpv/dpv-pd#"],
-      // namespaceOverride: "https://w3id.org/dpv/dpv-pd#",
-      // nameAndPrefixOverride: "qudt",
-      // ignoreNonVocabTerms: true,
-
       // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
       // nameAndPrefixOverride: "person",
       // vocabAcceptHeaderOverride: "application/vnd.github.v3.raw",
@@ -229,10 +224,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["http://www.w3.org/ns/ssn/"],
       // ignoreNonVocabTerms: true,
       //
-      inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
-      nameAndPrefixOverride: "gist",
-      namespaceOverride: "https://ontologies.semanticarts.com/gist/",
-      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
+      // nameAndPrefixOverride: "gist",
+      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
 
       // inputResources: ["http://www.w3.org/ns/locn"],
 
@@ -249,7 +243,8 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // ignoreNonVocabTerms: true,
 
       // inputResources: ["http://www.w3.org/ns/dpv#"],
-      // namespaceOverride: "https://w3id.org/dpv#",
+
+      inputResources: ["http://www.w3.org/ns/dpv-pd#"],
 
       // inputResources: [
       //   // "http://purl.org/oslo/ns/localgov/",
