@@ -864,4 +864,27 @@ describe("Dataset Handler", () => {
       expect(matches.length).toBe(1);
     });
   });
+
+  describe("transform term names that would be invalid in programming languages", () => {
+    it("should prefix leading digit", async () => {
+      const testTerm = "0To60Mph";
+      const testTermProperty = rdf.namedNode(`${NAMESPACE}${testTerm}`);
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(testTermProperty, RDF.type, RDF.Property));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.properties.length).toEqual(1);
+      expect(result.properties[0].nameEscapedForLanguage).toEqual(
+        `_${testTerm}`
+      );
+    });
+  });
 });

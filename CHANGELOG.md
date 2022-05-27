@@ -31,7 +31,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   generated source-code constant names (example thrown up by the BIBO ontology
   that defines terms named 'degrees/phd' and 'degrees/ma').
 - Added SKOS:definition to allowable vocab description predicates (Gist uses
-  it). 
+  it).
+- Prefix terms with leading digits (like '0To60Mph' from the Auto vocab) with
+  underscores, so that they are legal programming language variable names. 
 
 ## 1.0.4 2021-10-01
 

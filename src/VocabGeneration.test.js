@@ -198,7 +198,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["https://w3id.org/dpv#"],
+      // inputResources: ["https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/"],
+      // nameAndPrefixOverride: "auto_vc",
+      inputResources: [
+        "https://spec.edmcouncil.org/auto/ontology/VS/VehicleSignals/",
+      ],
+      nameAndPrefixOverride: "auto_vs",
+      vocabAcceptHeaderOverride: "text/turtle",
+      ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://w3id.org/dpv#"],
       // inputResources: ["http://www.w3.org/ns/dpv-pd#"],
 
       // inputResources: ["http://purl.org/ontology/bibo/"],

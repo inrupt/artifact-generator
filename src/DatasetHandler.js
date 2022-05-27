@@ -187,8 +187,6 @@ module.exports = class DatasetHandler {
     if (fullName === namespaceToUse) {
       return null;
     }
-    // const splitIri = fullName.split(namespaceToUse);
-    // const name = splitIri[1];
     const name = fullName.substring(namespaceToUse.length);
 
     // We need to have the term name, but also that name escaped to be a valid
@@ -197,8 +195,16 @@ module.exports = class DatasetHandler {
     // an invalid variable name. So we need to 'escape' it to be 'ISO639_2',
     // but also have access (in our templates) to the actual term for use in
     // the actual IRI. (We also have to 'replaceAll' for examples like VCARD's
-    // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!)
-    const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
+    // term 'http://www.w3.org/2006/vcard/ns#post-office-box'!).
+    //  We also need to handle leading characters that are digits (e.g., the
+    //  Auto Core vocab here:
+    //    https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/
+    //  ...has terms like '0to100KMH' and '0to60MPH').
+    const firstCharacter = name.charAt(0);
+    const nameEscapedForLanguage = (
+      firstCharacter >= "0" && firstCharacter <= "9" ? `_${name}` : name
+    ).replace(/[-\/]/g, "_");
+    // const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
     //  keywords (i.e. VCard defines a term 'class', and DCTERMS defines the
@@ -698,7 +704,7 @@ module.exports = class DatasetHandler {
       result.description === "[Generator provided] - undefined"
     ) {
       throw new Error(
-        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms.description', 'rdfs:comment', 'rdfs:label', or 'dcelements:title'), and our configuration doesn't provide one.`
+        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:description', 'rdfs:comment', 'rdfs:label', or 'dcelements:title'), and our configuration doesn't provide one.`
       );
     }
 
