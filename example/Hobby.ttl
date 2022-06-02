@@ -31,8 +31,8 @@ hobby:hasHobby a rdf:Property ;
   rdfs:isDefinedBy hobby: ;
   rdfs:label "Hobby"@en ;
   rdfs:label "Hobby"@es ;
-  rdfs:comment "How wonderfully shiny a rock is."@en ;
-  rdfs:comment "Qué maravillosamente brillante es una roca."@es .
+  rdfs:comment "An activity done regularly in one's leisure time for pleasure."@en ;
+  rdfs:comment "Una actividad realizada regularmente en el tiempo libre por placer."@es .
 
 hobby:kind a rdf:Property ;
   rdfs:isDefinedBy hobby: ;
