@@ -23,7 +23,7 @@ skydive:
 
 skydive:Skydiving a owl:Class, hobby:Hobby ;
   rdfs:isDefinedBy skydive: ;
-  hobby:kind "Skydiving" ;
+  hobby:kind "Skydiving"@en ;
   rdfs:label "Paracaidismo"@en ;
   rdfs:label "Paracaidista"@es ;
   rdfs:comment "The sport or activity of jumping from an aircraft and performing acrobatic manoeuvres in the air under free fall before landing by parachute."@en ;
