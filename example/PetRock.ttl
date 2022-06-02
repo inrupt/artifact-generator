@@ -23,7 +23,7 @@ pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
 
 
 pet_rock:PetRock a rdfs:Class, hobby:Hobby ;
-  hobby:kind "collecting" ;
+  hobby:kind "collecting"@en ;
   rdfs:isDefinedBy pet_rock: ;
   rdfs:label "Pet Rock"@en ;
   rdfs:label "Pierre de compagnie"@fr ;
