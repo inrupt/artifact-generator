@@ -16,6 +16,24 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   a consistent naming convention across all options.
 - Bumped major version number, due to command-line switch change being a
   breaking change.
+- Added test for missing 'inputResources' field in vocab list entry.
+- Switched default generation from command-line to be just StringLiteral to
+  remove dependencies on any other libraries (default was using VocabTerm).
+- Fix slash encoding for Java (detected by QUDT comments).
+- Typo and tweaks to Skydiving example Turtle.
+- Include DCELEMENTS.title (RDF and RDFS) and RDFS.label (QUDT) as allowable
+  predicates for vocabulary descriptions. 
+- Throws now if no vocab description found, or specified in config.
+- Cleaned up use of vocab namespace IRI override - if one is specified, it's
+  used, full stop (previous behaviour was a confused mixture of trying to
+  support both the detected namespace IRI and the override).
+- Convert the slash '/' character in vocab term names to underscore '_' in
+  generated source-code constant names (example thrown up by the BIBO ontology
+  that defines terms named 'degrees/phd' and 'degrees/ma').
+- Added SKOS:definition to allowable vocab description predicates (Gist uses
+  it).
+- Prefix terms with leading digits (like '0To60Mph' from the Auto vocab) with
+  underscores, so that they are legal programming language variable names. 
 
 ## 1.0.4 2021-10-01
 

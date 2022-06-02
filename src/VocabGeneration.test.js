@@ -198,16 +198,47 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // inputResources: ["https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/"],
+      // nameAndPrefixOverride: "auto_vc",
+      inputResources: [
+        "https://spec.edmcouncil.org/auto/ontology/VS/VehicleSignals/",
+      ],
+      nameAndPrefixOverride: "auto_vs",
+      vocabAcceptHeaderOverride: "text/turtle",
+      ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://w3id.org/dpv#"],
+      // inputResources: ["http://www.w3.org/ns/dpv-pd#"],
+
+      // inputResources: ["http://purl.org/ontology/bibo/"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // nameAndPrefixOverride: "bibo",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
+      // nameAndPrefixOverride: "person",
+      // vocabAcceptHeaderOverride: "application/vnd.github.v3.raw",
+      // vocabContentTypeHeaderOverride: "text/turtle",
+      //
+      // inputResources: ["http://stko-kwg.geog.ucsb.edu/lod/ontology"],
+      // nameAndPrefixOverride: "kwg-ont",
+      // ignoreNonVocabTerms: true,
+      //
+      // inputResources: ["http://geovocab.org/spatial"],
+      // nameAndPrefixOverride: "neogeo",
+
+      // inputResources: ["https://www.geonames.org/ontology#"],
+      // ignoreNonVocabTerms: true,
+      //
       // inputResources: ["http://www.w3.org/ns/sosa/"],
       // ignoreNonVocabTerms: true,
       //
-      inputResources: ["http://www.w3.org/ns/ssn/"],
-      ignoreNonVocabTerms: true,
-
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore10.0.0"],
-      // nameAndPrefixOverride: "gistCore",
+      // inputResources: ["http://www.w3.org/ns/ssn/"],
+      // ignoreNonVocabTerms: true,
+      //
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
+      // nameAndPrefixOverride: "gist",
       // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
-      // vocabContentTypeHeaderOverride: "application/rdf+xml",
 
       // inputResources: ["http://www.w3.org/ns/locn"],
 
@@ -222,9 +253,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["https://purl.org/oslo/ns/localgov#"],
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
       // ignoreNonVocabTerms: true,
-
-      // inputResources: ["http://www.w3.org/ns/dpv#"],
-      // namespaceOverride: "https://w3id.org/dpv#",
 
       // inputResources: [
       //   // "http://purl.org/oslo/ns/localgov/",

@@ -25,15 +25,12 @@
     {"name": "{{this}}"}{{#unless @last}},{{/unless}}
     {{/each}}
   ],
-{{/if}}
-{{#if license}}
+{{/if}}{{#if license}}
   "license": "{{license/name}}",{{/if}}{{#if versioning}}{{#if versioning.url}}
   "repository": {
     "type": "{{versioning.type}}",
     "url": "{{versioning.url}}"
   },{{/if}}{{/if}}
-  "dependencies": {
-  },
   "devDependencies": {
     "typescript": "{{typescriptVersion}}"{{#if supportBundling}},
     "rollup": "{{rollupVersion}}",

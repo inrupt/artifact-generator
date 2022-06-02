@@ -33,8 +33,7 @@ module.exports = class App {
   }
 
   async configure() {
-    const configuration = new GeneratorConfiguration(this.argv);
-    return configuration.completeInitialConfiguration();
+    return new GeneratorConfiguration(this.argv);
   }
 
   async run() {

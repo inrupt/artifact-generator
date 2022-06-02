@@ -17,8 +17,30 @@ prefix snomed: <http://purl.bioontology.org/ontology/SNOMEDCT/>
 prefix void: <http://rdfs.org/ns/void#>
 prefix xml: <http://www.w3.org/XML/1998/namespace>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix vann: <http://purl.org/vocab/vann/>
 
 prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
+
+prefix schema-inrupt-ext: <https://w3id.org/inrupt/vocab/extension/schema#>
+
+#
+# Extensions deliberately add (i.e. extend) existing terms in existing
+# vocabularies, specifically to add extra features, such as multilingual
+# values for labels and comments.
+#
+# So we very deliberately re-use the underlying vocab's namespace, but use our
+# own prefix to try and differentiate.
+#
+schema-inrupt-ext:
+    a owl:Ontology;
+    owl:versionInfo "0.1" ;
+    dcterms:creator <https://inrupt.com/profile/card/#us> ;
+    dcterms:issued "2019/06/18"^^xsd:date ;
+    dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
+    dcterms:description "Inrupt extension to Schema.org terms." ;
+    vann:preferredNamespacePrefix "schema-inrupt-ext" ;
+    vann:preferredNamespaceUri "http://schema.org/" ;
+    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
 schema:Person a rdfs:Class ;

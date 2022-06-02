@@ -3,6 +3,15 @@
 // generator to generate that bundled vocab artifact in the first place!
 // So we just create the specific terms we need manually here instead
 // (which is fine, as these vocabs, and their terms, are all extremely stable!).
+//
+// Note: in general, it's bad practice to use simple string concatenation to
+// ever construct IRIs (due to potential normalization issues with double
+// '/' characters, or '..' appearing in paths, etc.). Instead we can use the
+// 'URL' class to construct our IRIs, such as this example for RDF.type:
+//   type: rdf.namedNode(new URL("type", RDF_NAMESPACE).href),
+// ..but this does result in less-readable code! So in the case of this
+// particular code we favour readability (since these vocab terms are so
+// stable).
 const rdf = require("rdf-ext");
 
 const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -33,6 +42,13 @@ const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";
 module.exports.DCTERMS = {
   description: rdf.namedNode(`${DCTERMS_NAMESPACE}description`),
   creator: rdf.namedNode(`${DCTERMS_NAMESPACE}creator`),
+};
+
+// For purely legacy reasons (specifically 'cos the core RDF and RDFS vocabs
+// use terms from this 'old' vocab to describe themselves)!
+const DCELEMENTS_NAMESPACE = "http://purl.org/dc/elements/1.1/";
+module.exports.DCELEMENTS = {
+  title: rdf.namedNode(`${DCELEMENTS_NAMESPACE}title`),
 };
 
 const SKOS_NAMESPACE = "http://www.w3.org/2004/02/skos/core#";

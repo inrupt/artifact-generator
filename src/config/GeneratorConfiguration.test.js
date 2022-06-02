@@ -113,7 +113,17 @@ describe("Generator configuration", () => {
       // Test that the error message contains the expected explanation and file name
       await expect(() => {
         GeneratorConfiguration.fromConfigFile(configPath);
-      }).toThrow("(in position [2])");
+      }).toThrow("input resource position [2])");
+    });
+
+    it("should throw an error if vocab list entry has no input resources", async () => {
+      const configFile = "invalid-vocab-list-no-input-resources.yml";
+      const configPath = `./test/resources/yamlConfig/${configFile}`;
+
+      // Test that the error message contains the expected explanation and file name
+      await expect(() => {
+        GeneratorConfiguration.fromConfigFile(configPath);
+      }).toThrow("has no input resources (in vocab position [0])");
     });
 
     it("should throw an error trying to generate from an empty artifact list", async () => {
@@ -153,15 +163,12 @@ describe("Generator configuration", () => {
 
     // SUCCESS CASE
     it("should generate collected configuration from vocab list file", async () => {
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          vocabListFile:
-            "./test/resources/vocabs/vocab-list-including-online.yml",
-          noPrompt: true,
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        vocabListFile:
+          "./test/resources/vocabs/vocab-list-including-online.yml",
+        noPrompt: true,
+      });
 
       expect(generatorConfiguration.configuration.noPrompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(
@@ -170,15 +177,12 @@ describe("Generator configuration", () => {
     });
 
     it("should produce warning because our Artifact Generator version mismatches the version in the specified config file", async () => {
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          vocabListFile:
-            "./test/resources/yamlConfig/vocab-list-version-mismatch.yml",
-          noPrompt: true,
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        vocabListFile:
+          "./test/resources/yamlConfig/vocab-list-version-mismatch.yml",
+        noPrompt: true,
+      });
 
       // We expect the Artifact Generator version number in the generated
       // artifacts to be our actual version number, and not the version number
@@ -214,14 +218,11 @@ describe("Generator configuration", () => {
 
     it("should normalize paths relative to the configuration file", async () => {
       const configPath = "./test/resources/normalization/";
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          vocabListFile: path.join(configPath, "vocab-list.yml"),
-          noPrompt: true,
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        vocabListFile: path.join(configPath, "vocab-list.yml"),
+        noPrompt: true,
+      });
 
       const normalizedConfig = generatorConfiguration.configuration;
 
@@ -295,14 +296,11 @@ describe("Generator configuration", () => {
 
       expect(
         () =>
-          new GeneratorConfiguration(
-            {
-              _: ["generate"],
-              vocabListFile: programmingLanguage,
-              noPrompt: true,
-            },
-            undefined
-          )
+          new GeneratorConfiguration({
+            _: ["generate"],
+            vocabListFile: programmingLanguage,
+            noPrompt: true,
+          })
       ).toThrow("but neither was provided", programmingLanguage);
     });
 
@@ -312,14 +310,11 @@ describe("Generator configuration", () => {
       const packaging = path.join(configPath, "missing-packaging-template.yml");
       expect(
         () =>
-          new GeneratorConfiguration(
-            {
-              _: ["generate"],
-              vocabListFile: packaging,
-              noPrompt: true,
-            },
-            undefined
-          )
+          new GeneratorConfiguration({
+            _: ["generate"],
+            vocabListFile: packaging,
+            noPrompt: true,
+          })
       ).toThrow("but neither was provided", packaging);
     });
 
@@ -332,14 +327,11 @@ describe("Generator configuration", () => {
       );
       expect(
         () =>
-          new GeneratorConfiguration(
-            {
-              _: ["generate"],
-              vocabListFile: versioning,
-              noPrompt: true,
-            },
-            undefined
-          )
+          new GeneratorConfiguration({
+            _: ["generate"],
+            vocabListFile: versioning,
+            noPrompt: true,
+          })
       ).toThrow("but neither was provided", versioning);
     });
   });
@@ -386,18 +378,15 @@ describe("Generator configuration", () => {
     it("should generate collected configuration from command line", async () => {
       const argNamespaceOverride =
         "override namespace (should be an IRI really!)";
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-          moduleNamePrefix: "@inrupt/generated-vocab-",
-          nameAndPrefixOverride: "dummy-test",
-          namespaceOverride: argNamespaceOverride,
-          ignoreNonVocabTerms: true,
-          noPrompt: true,
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        moduleNamePrefix: "@inrupt/generated-vocab-",
+        nameAndPrefixOverride: "dummy-test",
+        namespaceOverride: argNamespaceOverride,
+        ignoreNonVocabTerms: true,
+        noPrompt: true,
+      });
 
       expect(generatorConfiguration.configuration.noPrompt).toBe(true);
 
@@ -420,15 +409,12 @@ describe("Generator configuration", () => {
         `${process.cwd()}`,
         "test/resources/vocabs/schema-snippet.ttl"
       );
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          inputResources: [absolutePath],
-          moduleNamePrefix: "@inrupt/generated-vocab-",
-          noPrompt: true,
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        inputResources: [absolutePath],
+        moduleNamePrefix: "@inrupt/generated-vocab-",
+        noPrompt: true,
+      });
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
@@ -438,16 +424,13 @@ describe("Generator configuration", () => {
 
     it("should modify the default publication command if a registry is set", async () => {
       const registry = "http://my.registry.ninja";
-      const generatorConfiguration = new GeneratorConfiguration(
-        {
-          _: ["generate"],
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-          moduleNamePrefix: "@inrupt/generated-vocab-",
-          noPrompt: true,
-          npmRegistry: "http://my.registry.ninja",
-        },
-        undefined
-      );
+      const generatorConfiguration = new GeneratorConfiguration({
+        _: ["generate"],
+        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        moduleNamePrefix: "@inrupt/generated-vocab-",
+        noPrompt: true,
+        npmRegistry: "http://my.registry.ninja",
+      });
 
       expect(
         generatorConfiguration.configuration.artifactToGenerate[0].packaging[0]

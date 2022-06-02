@@ -256,23 +256,42 @@ const overrideAtlNameTerms = rdf
     ),
   ]);
 
-const message = rdf.namedNode("http://schema.org/hello");
+const NAMESPACE = "http://schema.org/";
+const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
+const DEFAULT_DESCRIPTION = rdf.literal("Default vocab description...", "en");
+const DEFAULT_PREFIX = rdf.literal("schema");
 
+const vocabMetadata = rdf
+  .dataset()
+  .addAll([
+    rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+    rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, DEFAULT_PREFIX),
+  ]);
+
+const messageTerm = rdf.namedNode(`${NAMESPACE}hello`);
 const literalDataset = rdf
   .dataset()
   .addAll([
-    rdf.quad(message, RDF.type, RDFS.Literal),
-    rdf.quad(message, RDFS.label, rdf.literal("Hello", "en")),
-    rdf.quad(message, RDFS.label, rdf.literal("Hola", "es")),
-    rdf.quad(message, RDFS.label, rdf.literal("Bonjour", "fr")),
-    rdf.quad(message, RDFS.comment, rdf.literal("Hello there", "en")),
-    rdf.quad(message, RDFS.comment, rdf.literal("Hola", "es")),
-    rdf.quad(message, RDFS.comment, rdf.literal("Bonjour", "fr")),
-    rdf.quad(message, SKOS.definition, rdf.literal("Welcome", "en")),
-    rdf.quad(message, SKOS.definition, rdf.literal("Bienvenido", "es")),
-    rdf.quad(message, SKOS.definition, rdf.literal("Bienvenue", "fr")),
-    rdf.quad(message, RDFS.seeAlso, rdf.namedNode(OWL_NAMESPACE)),
-    rdf.quad(message, SKOS.isDefinedBy, rdf.namedNode(OWL_NAMESPACE)),
+    rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+    rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, "vocab_gen"),
+  ])
+  .addAll([
+    rdf.quad(messageTerm, RDF.type, RDFS.Literal),
+    rdf.quad(messageTerm, RDFS.label, rdf.literal("Hello", "en")),
+    rdf.quad(messageTerm, RDFS.label, rdf.literal("Hola", "es")),
+    rdf.quad(messageTerm, RDFS.label, rdf.literal("Bonjour", "fr")),
+    rdf.quad(messageTerm, RDFS.comment, rdf.literal("Hello there", "en")),
+    rdf.quad(messageTerm, RDFS.comment, rdf.literal("Hola", "es")),
+    rdf.quad(messageTerm, RDFS.comment, rdf.literal("Bonjour", "fr")),
+    rdf.quad(messageTerm, SKOS.definition, rdf.literal("Welcome", "en")),
+    rdf.quad(messageTerm, SKOS.definition, rdf.literal("Bienvenido", "es")),
+    rdf.quad(messageTerm, SKOS.definition, rdf.literal("Bienvenue", "fr")),
+    rdf.quad(messageTerm, RDFS.seeAlso, rdf.namedNode(OWL_NAMESPACE)),
+    rdf.quad(messageTerm, SKOS.isDefinedBy, NAMESPACE_IRI),
   ]);
 
 describe("Artifact generator unit tests", () => {
@@ -284,7 +303,7 @@ describe("Artifact generator unit tests", () => {
   describe("Building the Template input", () => {
     it("should create a simple JSON object with all the fields", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataset, datasetExtension]),
+        VocabGenerator.merge([vocabMetadata, dataset, datasetExtension]),
         VocabGenerator.merge([datasetExtension])
       );
       expect(result.namespace).toBe("http://schema.org/");
@@ -386,7 +405,7 @@ describe("Artifact generator unit tests", () => {
 
     it("Should merge A and B, and generate code from A and B", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetA, dataSetB])
       );
 
@@ -396,7 +415,7 @@ describe("Artifact generator unit tests", () => {
 
     it("Should merge A and B, and generate code from A (not B)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetA])
       );
 
@@ -406,7 +425,7 @@ describe("Artifact generator unit tests", () => {
 
     it("Should merge A and B, and generate code from B (not A)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetB])
       );
 
@@ -416,7 +435,7 @@ describe("Artifact generator unit tests", () => {
 
     it("Should merge A B and C, and generate code from A and B (not C)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetB, dataSetC]),
+        VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB, dataSetC]),
         VocabGenerator.merge([dataSetA, dataSetB])
       );
 
@@ -425,22 +444,18 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties.length).toBe(1);
     });
 
-    it("Should handle empty datasets", async () => {
-      const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([emptyDataSet]),
-        VocabGenerator.merge([emptyDataSet])
-      );
-
-      expect(result.namespace).toBe("");
-      expect(result.artifactName).toBe("generated-vocab-");
-      expect(result.vocabNameUpperCase).toBe("");
-      expect(result.classes.length).toBe(0);
-      expect(result.properties.length).toBe(0);
+    it("Should throw for empty datasets", async () => {
+      await expect(
+        vocabGenerator.buildTemplateInput(
+          VocabGenerator.merge([vocabMetadata, emptyDataSet]),
+          VocabGenerator.merge([emptyDataSet])
+        )
+      ).rejects.toThrow("does not contain any terms");
     });
 
     it("Should use the label value if no comment and no definition", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetB]),
+        VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetB])
       );
 
@@ -451,7 +466,7 @@ describe("Artifact generator unit tests", () => {
 
     it("Should use the definition value if no comment", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        dataSetD,
+        VocabGenerator.merge([vocabMetadata, dataSetD]),
         VocabGenerator.merge([emptyDataSet])
       );
 
@@ -473,7 +488,11 @@ describe("Artifact generator unit tests", () => {
         ]);
 
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, dataSetFrenchOnlyComment]),
+        VocabGenerator.merge([
+          vocabMetadata,
+          dataSetA,
+          dataSetFrenchOnlyComment,
+        ]),
         VocabGenerator.merge([dataSetFrenchOnlyComment])
       );
 
@@ -488,7 +507,11 @@ describe("Artifact generator unit tests", () => {
         .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
 
       const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataSetA, noDescriptivePredicates]),
+        VocabGenerator.merge([
+          vocabMetadata,
+          dataSetA,
+          noDescriptivePredicates,
+        ]),
         VocabGenerator.merge([noDescriptivePredicates])
       );
 
@@ -505,7 +528,7 @@ describe("Artifact generator unit tests", () => {
       });
 
       const result = await generator.buildTemplateInput(
-        VocabGenerator.merge([dataset]),
+        VocabGenerator.merge([vocabMetadata, dataset]),
         VocabGenerator.merge([])
       );
 
@@ -661,6 +684,7 @@ describe("Artifact generator unit tests", () => {
     it("should override label terms of the main datasets", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([
+          vocabMetadata,
           dataSetA,
           dataSetB,
           dataSetC,
@@ -691,6 +715,7 @@ describe("Artifact generator unit tests", () => {
     it("should override comment terms of the main datasets", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([
+          vocabMetadata,
           dataSetA,
           dataSetB,
           dataSetC,
@@ -725,6 +750,7 @@ describe("Artifact generator unit tests", () => {
     it("should override label with alternativeNames from the vocab terms", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([
+          vocabMetadata,
           dataSetA,
           dataSetB,
           dataSetC,
@@ -814,38 +840,24 @@ describe("Artifact generator unit tests", () => {
       );
     });
 
-    it("should default description to empty string if rdfs:comment of an owl:Ontology term is not found", async () => {
-      const owlOntologyDatasetWithNoComment = rdf.dataset().addAll([
-        rdf.quad(extSubject, RDF.type, OWL.Ontology),
-        rdf.quad(extSubject, RDFS.label, rdf.literal("Extension label")),
-        rdf.quad(
-          extSubject,
-          VANN.preferredNamespacePrefix,
-          rdf.literal("ext-prefix")
-        ),
-        rdf.quad(
-          extSubject,
-          VANN.preferredNamespaceUri,
-          rdf.literal("http://rdf-extension.com")
-        ),
-        // This triple prevents the dataset from not defining any terms
-        rdf.quad(
-          rdf.namedNode("http://rdf-extension.com/dummyClass"),
-          RDF.type,
-          OWL.Class
-        ),
-      ]);
+    it("should throw if description of an owl:Ontology term is not found", async () => {
+      const owlOntologyDatasetWithNoDescription = rdf
+        .dataset()
+        .addAll([
+          rdf.quad(extSubject, RDF.type, OWL.Ontology),
+          rdf.quad(
+            extSubject,
+            VANN.preferredNamespacePrefix,
+            rdf.literal("test_prefix")
+          ),
+        ]);
 
-      const result = await vocabGenerator.buildTemplateInput(
-        VocabGenerator.merge([dataset, owlOntologyDatasetWithNoComment]),
-        VocabGenerator.merge([owlOntologyDatasetWithNoComment])
-      );
-
-      expect(result.artifactName).toBe("generated-vocab-ext-prefix");
-      expect(result.namespace).toBe("http://rdf-extension.com");
-      expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
-      expect(result.description).toBeUndefined();
-      expect(result.descriptionFallback).toBeUndefined();
+      await expect(
+        vocabGenerator.buildTemplateInput(
+          VocabGenerator.merge([dataset, owlOntologyDatasetWithNoDescription]),
+          VocabGenerator.merge([owlOntologyDatasetWithNoDescription])
+        )
+      ).rejects.toThrow(`Cannot find a description`);
     });
 
     it("should read authors from owl:Ontology terms", async () => {

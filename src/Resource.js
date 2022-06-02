@@ -1,6 +1,5 @@
 const rdf = require("rdf-ext");
 const rdfFetch = require("@rdfjs/fetch-lite");
-const rdfFormats = require("@rdfjs/formats-common");
 const stringToStream = require("string-to-stream");
 const axios = require("axios");
 const fs = require("fs");
@@ -20,6 +19,10 @@ const debug = require("debug")("artifact-generator:Resources");
 
 const Util = require("./Util");
 const FileGenerator = require("./generator/FileGenerator");
+
+// We only need to instantiate these parsers once (whereas some parsers we
+// need to instantiate per-vocab to allow us set the 'baseIri').
+const parserJsonld = new ParserJsonld();
 
 // Our generation process can produce multiple artifacts per vocabulary, so we
 // cache vocab resources to prevent reading them repeatedly.
@@ -301,10 +304,13 @@ module.exports = class Resource {
             }
           }
 
+          debug(
+            `About to process fetched input resource [${inputResource}] as a dataset...`
+          );
           return rdfResponse.dataset();
         })
         .catch((error) => {
-          const message = `Encountered error while attempting to fetch resource [${inputResource}]: ${error}`;
+          const message = `Encountered error while attempting to fetch or process resource [${inputResource}]: ${error}`;
           debug(message);
           throw new Error(message);
         });
@@ -325,12 +331,14 @@ module.exports = class Resource {
         ["text/turtle", parserN3],
         ["text/n3", parserN3], // The iCal vocab requires this content type, and the OLO vocab returns it.
         ["application/x-turtle", parserN3], // This is needed as schema.org returns this as the content type.
-        ["application/ld+json", new ParserJsonld()], // Activity streams only supports JSON-LD and HTML.
+        ["application/ld+json", parserJsonld], // Activity streams only supports JSON-LD and HTML.
         ["application/rdf+xml", new ParserRdfXml({ baseIRI: inputResource })],
         ["text/html", new ParserRdfa({ baseIRI: inputResource })],
+
         // The vocab
         // 'https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl'
-        // returns a 'Content-Type' header of 'text/plain' even though we request Turtle!
+        // returns a 'Content-Type' header of 'text/plain' even though we
+        // request and receive Turtle!
         ["text/plain", parserN3],
       ]),
     };
@@ -500,11 +508,13 @@ module.exports = class Resource {
   }
 
   static loadTurtleFileIntoDatasetPromise(filename) {
-    const mimeType = "text/turtle";
-    const data = fs.readFileSync(filename, "utf8");
+    // The N3 parser is, apparently, a one-time use parser, so we should
+    // instantiate a new one for each file we process.
+    const parserN3 = new ParserN3();
 
-    const rdfParser = rdfFormats.parsers.get(mimeType);
-    const quadStream = rdfParser.import(stringToStream(data));
+    const data = fs.readFileSync(filename, "utf8");
+    const quadStream = parserN3.import(stringToStream(data));
+
     return rdf.dataset().import(quadStream);
   }
 

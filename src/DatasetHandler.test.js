@@ -15,36 +15,72 @@ const {
   SKOSXL,
   VANN,
   ARTIFACT_GENERATOR,
+  DCTERMS,
 } = require("./CommonTerms");
 
 const DatasetHandler = require("./DatasetHandler");
 
-const NAMESPACE = "http://rdf-extension.com#";
+const NAMESPACE = "https://rdf-extension.com#";
 const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
+const DEFAULT_DESCRIPTION = rdf.literal("Default vocab description...", "en");
+const DEFAULT_PREFIX = rdf.literal("rdf-ext");
+
+const NAMESPACE_TEST_TERM = rdf.namedNode(NAMESPACE + "testTerm");
 
 const vocabMetadata = rdf
   .dataset()
   .addAll([
     rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
     rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
-    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, "rdf-ext"),
+    rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, DEFAULT_PREFIX),
   ]);
 
 describe("Dataset Handler", () => {
   describe("Static reporting helpers", () => {
     it("should report override only if one provided", () => {
-      expect(DatasetHandler.mentionNamespaceOverrideIfPresent({})).toBe("");
+      expect(DatasetHandler.describeNamespaceInUse("X")).toContain("X");
 
       const override = "test override";
-      expect(
-        DatasetHandler.mentionNamespaceOverrideIfPresent({
-          namespaceOverride: override,
-        })
-      ).toContain(override);
+      expect(DatasetHandler.describeNamespaceInUse("X", override)).toContain(
+        override
+      );
     });
   });
 
   describe("Ontology description ", () => {
+    it("should pick up alternative vocab description predicates", async () => {
+      const datasetRdfsLabel = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class));
+
+      const handler = new DatasetHandler(datasetRdfsLabel, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+      const result = await handler.buildTemplateInput();
+      expect(result.description).toContain(DEFAULT_DESCRIPTION.value);
+    });
+
+    it("should pick up vocab description when non-English", async () => {
+      const description = rdf.literal(
+        "Some description with non-English locale...",
+        "es"
+      );
+
+      const datasetRdfsLabel = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, description))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class));
+
+      const handler = new DatasetHandler(datasetRdfsLabel, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+      const result = await handler.buildTemplateInput();
+      expect(result.description).toContain(description.value);
+    });
+
     it("should use English description if multiple", async () => {
       const commentInEnglish = rdf.literal("Some comment in English", "en");
       const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
@@ -59,7 +95,7 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -86,7 +122,7 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInUsEnglish))
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -112,7 +148,7 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInIrish))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentInFrench))
         .add(rdf.quad(NAMESPACE_IRI, RDFS.comment, commentWithNoLocale))
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class));
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -125,13 +161,31 @@ describe("Dataset Handler", () => {
 
   describe("Edge-case vocabulary cases ", () => {
     it("should ignore properties defined on the namespace IRI", async () => {
+      const vocabNamespace = "https://test.ex.com/vocab#";
+
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(rdf.namedNode(OWL_NAMESPACE), RDF.type, RDF.Property))
-        .add(rdf.quad(OWL.Ontology, RDF.type, rdf.namedNode(OWL_NAMESPACE)));
+        // Define our vocab as a 'type' that we treat as a vocab property -
+        // this should be ignored as being a property from the vocab itself!
+        .add(rdf.quad(rdf.namedNode(vocabNamespace), RDF.type, RDF.Property))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${vocabNamespace}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
         inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
       });
 
       const result = await handler.buildTemplateInput();
@@ -155,15 +209,17 @@ describe("Dataset Handler", () => {
     it("should give full description of matching labels and comments in all languages", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelNoLocale))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelNoLocale))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -179,11 +235,13 @@ describe("Dataset Handler", () => {
     it("should treat 'skosxl:literalForm' as labels in all languages", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, SKOSXL.Label))
-        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInFrench))
-        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, SKOSXL.literalForm, labelNoLocale));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, SKOSXL.Label))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, SKOSXL.literalForm, labelNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -200,16 +258,18 @@ describe("Dataset Handler", () => {
     it("should report all lang tags, but not report mismatch if only on @en", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench))
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInFrench))
         // Deliberately do not have a label in explicit English.
-        // .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelNoLocale))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+        // .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelNoLocale))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -228,9 +288,11 @@ describe("Dataset Handler", () => {
     it("should report difference is only in @en vs NoLocale", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -248,9 +310,11 @@ describe("Dataset Handler", () => {
     it("should describe single matching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInIrish));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -266,9 +330,11 @@ describe("Dataset Handler", () => {
     it("should describe single mismatching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInFrench));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -286,11 +352,13 @@ describe("Dataset Handler", () => {
     it("should describe multiple matching non-English label and comment", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInFrench))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInFrench));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -306,9 +374,19 @@ describe("Dataset Handler", () => {
     it("should say no long-form description if no comment at all", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, rdf.literal("label", "en")))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, rdf.literal("label no lang")));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(
+          rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, rdf.literal("label", "en"))
+        )
+        .add(
+          rdf.quad(
+            NAMESPACE_TEST_TERM,
+            RDFS.label,
+            rdf.literal("label no lang")
+          )
+        );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -324,10 +402,12 @@ describe("Dataset Handler", () => {
     it("should describe mismatch label and missing comment", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -344,8 +424,10 @@ describe("Dataset Handler", () => {
     it("should describe single label and no comments", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -362,10 +444,12 @@ describe("Dataset Handler", () => {
     it("should describe multiple labels and no comments", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelNoLocale))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInFrench));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelNoLocale))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInFrench));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -382,9 +466,11 @@ describe("Dataset Handler", () => {
     it("should describe single label and comment in English only", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelInEnglish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInEnglish));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelInEnglish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInEnglish));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -399,9 +485,11 @@ describe("Dataset Handler", () => {
     it("should describe single label and comment in no-locale only", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.label, labelNoLocale))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentNoLocale));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, labelNoLocale))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentNoLocale));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -418,9 +506,11 @@ describe("Dataset Handler", () => {
     it("should describe mismatch comment and multiple missing label", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDF.type, RDFS.Class))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInIrish))
-        .add(rdf.quad(OWL.Ontology, RDFS.comment, commentInFrench));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInIrish))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.comment, commentInFrench));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -439,7 +529,9 @@ describe("Dataset Handler", () => {
     it("should handle sub-classes", async () => {
       const dataset = rdf
         .dataset()
-        .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.subClassOf, SKOS.Concept));
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -447,12 +539,14 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
-      expect(result.classes[0].name).toEqual("Ontology");
+      expect(result.classes[0].value).toEqual(NAMESPACE_TEST_TERM.name);
     });
 
     it("should handle sub-properties", async () => {
       const dataset = rdf
         .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
         .add(
           rdf.quad(
             rdf.namedNode("http://www.w3.org/2001/XMLSchema#float"),
@@ -462,7 +556,9 @@ describe("Dataset Handler", () => {
             )
           )
         )
-        .add(rdf.quad(RDFS.label, RDFS.subPropertyOf, SKOS.definition));
+        .add(
+          rdf.quad(NAMESPACE_TEST_TERM, RDFS.subPropertyOf, SKOS.definition)
+        );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
         inputResources: ["does not matter"],
@@ -470,7 +566,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.properties.length).toEqual(1);
-      expect(result.properties[0].name).toEqual("label");
+      expect(result.properties[0].value).toEqual(NAMESPACE_TEST_TERM.name);
     });
   });
 
@@ -478,6 +574,7 @@ describe("Dataset Handler", () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
+      .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
       .add(
         rdf.quad(
           rdf.namedNode("https://ex.com/different-namespace#term"),
@@ -498,6 +595,7 @@ describe("Dataset Handler", () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
+      .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
       .add(rdf.quad(RDF.langString, RDF.type, RDFS.Datatype));
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -511,6 +609,7 @@ describe("Dataset Handler", () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
+      .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
       .add(
         rdf.quad(
           rdf.namedNode("http://www.w3.org/2001/XMLSchema#duration"),
@@ -544,6 +643,7 @@ describe("Dataset Handler", () => {
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
+      .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
       .addAll([
         rdf.quad(testTermClass, RDF.type, RDFS.Class),
         rdf.quad(testTermClass, RDF.type, OWL.Class),
@@ -597,6 +697,8 @@ describe("Dataset Handler", () => {
     const dataset = rdf.dataset().addAll([
       // Define this ontology as having it's own namespace...
       rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+      rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
+      rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, DEFAULT_PREFIX),
 
       // ...now add terms from different, but **well-known**, namespaces:
       rdf.quad(testTermClass, RDF.type, RDFS.Class),
@@ -657,6 +759,7 @@ describe("Dataset Handler", () => {
       .dataset()
       .addAll([
         rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
+        rdf.quad(NS_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
         rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI),
       ]);
 
@@ -670,12 +773,15 @@ describe("Dataset Handler", () => {
   });
 
   it("should override the namespace of the terms", async () => {
-    const namespaceOverride = "https://override.namespace.org";
-    const testTermClass = `${NAMESPACE}testTermClass`;
+    const namespaceOverride = "https://override.namespace.org#";
+    const testTermClass = `${namespaceOverride}testTermClass`;
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
-      .addAll([rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class)]);
+      .addAll([
+        rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
+        rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class),
+      ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"],
@@ -688,12 +794,16 @@ describe("Dataset Handler", () => {
   });
 
   it("should override the namespace of the terms if the heuristic namespace determination fails.", async () => {
-    const namespaceOverride = "http://rdf-extension.com#";
-    const otherNamespace = "https://another.long.namespace.org#";
+    const namespaceOverride = NAMESPACE;
     const testTermClass = `${NAMESPACE}testTermClass`;
+
+    const otherNamespace = "https://another.long.namespace.org#";
     const longestTerm = `${otherNamespace}thisIsAVeryLongTermThatBreaksOurHeuristic`;
+
     const dataset = rdf
       .dataset()
+      // Don't add the VANN.preferredNamespacePrefix, so that we invoke our
+      // heuristic to guess it instead.
       // .addAll(vocabMetadata)
       .addAll([rdf.quad(rdf.namedNode(testTermClass), RDF.type, RDFS.Class)])
       .addAll([
@@ -705,6 +815,11 @@ describe("Dataset Handler", () => {
       ]);
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
+      // We need to inject a vocab description, even though we didn't add
+      // ontology triples, since we want to invoke our heuristic to determine
+      // the vocab IRI, and we don't want to blow up on that description
+      // check.
+      descriptionFallback: DEFAULT_DESCRIPTION.value,
       inputResources: ["does not matter"],
       namespaceOverride,
       nameAndPrefixOverride: "does not matter",
@@ -719,7 +834,8 @@ describe("Dataset Handler", () => {
       const dataset = rdf
         .dataset()
         .addAll(vocabMetadata)
-        .add(rdf.quad(OWL.Ontology, RDFS.subClassOf, SKOS.Concept));
+        .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_TEST_TERM, RDFS.subClassOf, SKOS.Concept));
 
       const testLocalCopyDirectory = path.join(
         ".",
@@ -738,15 +854,37 @@ describe("Dataset Handler", () => {
 
       await handler.buildTemplateInput();
 
-      const matches = fs
-        .readdirSync(testLocalCopyDirectory)
-        .filter(
-          (filename) =>
-            filename.startsWith(`rdf-ext-`) &&
-            filename.endsWith(`--152985056__http---rdf-extension.com#.ttl`)
-        );
-
+      const matches = fs.readdirSync(testLocalCopyDirectory).filter(
+        (filename) =>
+          // Here we are testing for the file, but also the hash of its
+          // contents...
+          filename.startsWith(`rdf-ext-`) &&
+          filename.endsWith(`--808724509__https---rdf-extension.com#.ttl`)
+      );
       expect(matches.length).toBe(1);
+    });
+  });
+
+  describe("transform term names that would be invalid in programming languages", () => {
+    it("should prefix leading digit", async () => {
+      const testTerm = "0To60Mph";
+      const testTermProperty = rdf.namedNode(`${NAMESPACE}${testTerm}`);
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(testTermProperty, RDF.type, RDF.Property));
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.properties.length).toEqual(1);
+      expect(result.properties[0].nameEscapedForLanguage).toEqual(
+        `_${testTerm}`
+      );
     });
   });
 });

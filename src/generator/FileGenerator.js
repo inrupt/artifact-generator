@@ -253,11 +253,14 @@ class FileGenerator {
   }
 
   static escapeStringForJava(value) {
-    return value.replace(/"/g, '\\"').replace(
-      /\n/g,
-      `\\n" +
+    return value
+      .replace(/\\/g, "\\\\\\\\")
+      .replace(/"/g, '\\"')
+      .replace(
+        /\n/g,
+        `\\n" +
 "`
-    );
+      );
   }
 }
 

@@ -24,15 +24,7 @@ schema-inrupt-ext:
     dcterms:creator <https://inrupt.com/profile/card/#us> ;
     dcterms:issued "2019/06/18"^^xsd:date ;
     dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
-    dcterms:description """Inrupt extension to Schema.org terms providing
- multilingual alternative names (i.e. labels) and translations for comments
- (e.g. for use directly as labels or tool-tips in user interfaces or error
- messages). This extension very deliberately cherry-picks the individual terms
- from Schema.org that Inrupt currently deem generally useful for Solid and Solid
- applications (meaning we can provide a much cleaner, less noisy and smaller
- bundle size when generating programming language artifacts that provide
- convenient constants for just these selected terms, rather than including the
- over 2,500 terms currently defined in Schema.org).""" ;
+    dcterms:description "Inrupt extension to Schema.org terms." ;
     vann:preferredNamespacePrefix "schema-inrupt-ext" ;
     vann:preferredNamespaceUri "http://schema.org/" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .

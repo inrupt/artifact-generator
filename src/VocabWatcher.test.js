@@ -60,10 +60,10 @@ describe("Vocabulary watcher", () => {
   it("should generate an initial artifact when the output directory is empty", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          { vocabListFile: VOCAB_LIST_PATH, outputDirectory: OUTPUT_DIRECTORY },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
 
@@ -79,13 +79,10 @@ describe("Vocabulary watcher", () => {
   it("should ignore online resources", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: VOCAB_LIST_PATH_ONLINE_ONLY,
-            outputDirectory: OUTPUT_DIRECTORY,
-          },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile: VOCAB_LIST_PATH_ONLINE_ONLY,
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
 
@@ -99,13 +96,10 @@ describe("Vocabulary watcher", () => {
   it("should not generate an initial artifact without changes", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
-          },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
 
@@ -123,7 +117,6 @@ describe("Vocabulary watcher", () => {
       vocabListFile: VOCAB_LIST_PATH,
       outputDirectory: OUTPUT_DIRECTORY,
     });
-    await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
     await watcher.watch();
@@ -156,7 +149,6 @@ describe("Vocabulary watcher", () => {
       vocabListFile: VOCAB_LIST_PATH,
       outputDirectory: OUTPUT_DIRECTORY,
     });
-    await config.completeInitialConfiguration();
 
     const watcher = new VocabWatcher(new ArtifactGenerator(config));
     await watcher.watch();
@@ -183,14 +175,11 @@ describe("Vocabulary watcher", () => {
   it("should throw when the vocabulary is initially malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile:
-              "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
-            outputDirectory: OUTPUT_DIRECTORY,
-          },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile:
+            "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
 
@@ -203,13 +192,10 @@ describe("Vocabulary watcher", () => {
   it("should not throw when the vocabulary is changed to malformed RDF", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
-          },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
 
@@ -237,13 +223,10 @@ describe("Vocabulary watcher", () => {
   it("should not trigger artifact generation after the watcher stopped", async () => {
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
-        new GeneratorConfiguration(
-          {
-            vocabListFile: VOCAB_LIST_PATH,
-            outputDirectory: OUTPUT_DIRECTORY,
-          },
-          undefined
-        )
+        new GeneratorConfiguration({
+          vocabListFile: VOCAB_LIST_PATH,
+          outputDirectory: OUTPUT_DIRECTORY,
+        })
       )
     );
     await watcher.watch();
@@ -278,14 +261,11 @@ describe("Vocabulary watcher", () => {
 
   it("should not generate an artifact on startup when the output directory is up-to-date", async () => {
     const generator = new ArtifactGenerator(
-      new GeneratorConfiguration(
-        {
-          _: "generate",
-          vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY,
-        },
-        undefined
-      )
+      new GeneratorConfiguration({
+        _: "generate",
+        vocabListFile: VOCAB_LIST_PATH,
+        outputDirectory: OUTPUT_DIRECTORY,
+      })
     );
 
     // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
@@ -307,13 +287,10 @@ describe("Vocabulary watcher", () => {
 
   it("should generate an artifact on startup when the output directory is outdated", async () => {
     const generator = new ArtifactGenerator(
-      new GeneratorConfiguration(
-        {
-          vocabListFile: VOCAB_LIST_PATH,
-          outputDirectory: OUTPUT_DIRECTORY,
-        },
-        undefined
-      )
+      new GeneratorConfiguration({
+        vocabListFile: VOCAB_LIST_PATH,
+        outputDirectory: OUTPUT_DIRECTORY,
+      })
     );
 
     // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
