@@ -3,6 +3,15 @@
 // generator to generate that bundled vocab artifact in the first place!
 // So we just create the specific terms we need manually here instead
 // (which is fine, as these vocabs, and their terms, are all extremely stable!).
+//
+// Note: in general, it's bad practice to use simple string concatenation to
+// ever construct IRIs (due to potential normalization issues with double
+// '/' characters, or '..' appearing in paths, etc.). Instead we can use the
+// 'URL' class to construct our IRIs, such as this example for RDF.type:
+//   type: rdf.namedNode(new URL("type", RDF_NAMESPACE).href),
+// ..but this does result in less-readable code! So in the case of this
+// particular code we favour readability (since these vocab terms are so
+// stable).
 const rdf = require("rdf-ext");
 
 const RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
