@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+## 2.0.0 2022-06-03
+
 - Moved all the command-line processing code to also now be included in code
   coverage statistics.
 - Report mistaken trailing colons for input resources in YAML.
