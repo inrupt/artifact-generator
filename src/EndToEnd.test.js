@@ -661,7 +661,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '"description": "Bundle of vocabularies that includes the following:\\n\\n - schema-inrupt-ext: '
+          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema-inrupt-ext: '
         )
       );
     });

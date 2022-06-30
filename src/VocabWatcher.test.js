@@ -85,11 +85,13 @@ describe("Vocabulary watcher", () => {
         })
       )
     );
-
+    console.log(`About to watch...`);
     await watcher.watch();
     // Expect to just be watching the config file itself, not any of the
     // online resources it references.
+    console.log(`Check expectations...`);
     expect(watcher.getWatchedResourceList().length).toBe(1);
+    console.log(`...unwatch`);
     await watcher.unwatch();
   }, 10000);
 

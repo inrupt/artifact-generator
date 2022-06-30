@@ -28,5 +28,4 @@ vocabList:
   # The following is the list of IRI and/or paths to read when building the artifact.
   - inputResources:
       # Watcher should ignore this resource, as it's online...
-      - "http://xmlns.com/foaf/0.1/"
-    nameAndPrefixOverride: "foaf"
+      - http://www.w3.org/2000/01/rdf-schema#

@@ -973,6 +973,11 @@ module.exports = class DatasetHandler {
 
     if (!prefix) {
       prefix = DatasetHandler.getKnownPrefix(namespace);
+      if (prefix) {
+        debug(
+          `Determined vocabulary prefix [${prefix}] from hard-coded list of well known vocabularies.`
+        );
+      }
     }
 
     if (!prefix) {
