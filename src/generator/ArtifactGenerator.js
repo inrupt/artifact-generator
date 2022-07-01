@@ -284,7 +284,7 @@ class ArtifactGenerator {
   }
 
   async collectGeneratedVocabDetails(vocabDatasets) {
-    this.artifactData.description = `Bundle of vocabularies that includes the following:`;
+    this.artifactData.description = `Bundle of [${vocabDatasets.length}] vocabularies that includes the following:`;
     await Promise.all(
       [...vocabDatasets]
         .sort((vocabDataA, vocabDataB) =>

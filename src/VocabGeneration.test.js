@@ -18,7 +18,8 @@ const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
 const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
-const LOCAL_COPY_OF_VOCAB_DIRECTORY = "./test/Generated/LOCAL_COPY_OF_VOCAB/";
+const LOCAL_COPY_OF_VOCAB_DIRECTORY =
+  "./test/Generated/LOCAL_COPY_OF_VOCAB_AS_TURTLE/";
 
 const ConfigAll = {
   _: "generate",
@@ -198,14 +199,62 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: ["http://www.w3.org/2000/01/rdf-schema#"],
+
+      // inputResources: ["https://www.w3.org/ns/spec#"],
+      // descriptionFallback: "Sarvens spec vocab",
+
+      // inputResources: ["http://www.omg.org/techprocess/ab/SpecificationMetadata/"],
+      // nameAndPrefixOverride: "sm",
+      // ignoreNonVocabTerms: true,
+      //
+      // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
+      // nameAndPrefixOverride: "person",
+      // vocabAcceptHeaderOverride: "application/vnd.github.v3.raw",
+      // vocabContentTypeHeaderOverride: "text/turtle",
+      //
+      // inputResources: ["http://www.w3.org/ns/adms#"],
+      // inputResources: ["http://www.w3.org/ns/org#"],
+      // inputResources: ["http://www.w3.org/ns/person#"],
+      // nameAndPrefixOverride: "w3c_person",
+      // inputResources: ["http://www.w3.org/ns/regorg#"],
+
+      // inputResources: ["https://purl.org/oslo/ns/localgov#"],
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: [
+      //   // "http://purl.org/oslo/ns/localgov/",
+      //   "https://raw.githubusercontent.com/rafbuyle/oslo_xml_schemas/master/oslo-v1_1_0.rdf",
+      // ],
+      // nameAndPrefixOverride: "oslo",
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // ignoreNonVocabTerms: true,
+
+      // // SEMIC Core Person:
+      // inputResources: ["https://semiceu.github.io/Core-Person-Vocabulary/releases/2.00/voc/core-person-ap.ttl"],
+      // nameAndPrefixOverride: "semic_core_person",
+      // // Defines terms like: http://www.w3.org/ns/person#Person
+      // ignoreNonVocabTerms: true,
+      // // Yes, this vocabulary (although named as an application profile) uses
+      // // the 'incorrect' HTTP scheme.
+      // namespaceOverride: "http://data.europa.eu/m8g/",
+
+      // // OSLO extension to SEMIC Core Person:
+      // inputResources: ["https://data.vlaanderen.be/ns/persoon"],
+      // nameAndPrefixOverride: "oslo_person",
+      // ignoreNonVocabTerms: true,
+      // BUG: vann:preferredNamespaceURI seems to be missing trailing '#'!
+      // namespaceOverride: "https://data.vlaanderen.be/ns/persoon#",
+
       // inputResources: ["https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/"],
       // nameAndPrefixOverride: "auto_vc",
-      inputResources: [
-        "https://spec.edmcouncil.org/auto/ontology/VS/VehicleSignals/",
-      ],
-      nameAndPrefixOverride: "auto_vs",
-      vocabAcceptHeaderOverride: "text/turtle",
-      ignoreNonVocabTerms: true,
+      // inputResources: [
+      //   "https://spec.edmcouncil.org/auto/ontology/VS/VehicleSignals/",
+      // ],
+      // nameAndPrefixOverride: "auto_vs",
+      // vocabAcceptHeaderOverride: "text/turtle",
+      // ignoreNonVocabTerms: true,
 
       // inputResources: ["https://w3id.org/dpv#"],
       // inputResources: ["http://www.w3.org/ns/dpv-pd#"],
@@ -215,11 +264,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // nameAndPrefixOverride: "bibo",
       // ignoreNonVocabTerms: true,
 
-      // inputResources: ["https://github.com/SEMICeu/Core-Person-Vocabulary/blob/master/releases/2.00/voc/core-person-ap.ttl"],
-      // nameAndPrefixOverride: "person",
-      // vocabAcceptHeaderOverride: "application/vnd.github.v3.raw",
-      // vocabContentTypeHeaderOverride: "text/turtle",
-      //
       // inputResources: ["http://stko-kwg.geog.ucsb.edu/lod/ontology"],
       // nameAndPrefixOverride: "kwg-ont",
       // ignoreNonVocabTerms: true,
@@ -245,22 +289,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // Typo in the Turtle (trailing full stop inside a BNode on line 22!
       // inputResources: ["http://purl.org/vocab/cpsv#"],
 
-      // inputResources: ["http://www.w3.org/ns/adms#"],
-      // inputResources: ["http://www.w3.org/ns/org#"],
-      // inputResources: ["http://www.w3.org/ns/person#"],
-      // inputResources: ["http://www.w3.org/ns/regorg#"],
-
-      // inputResources: ["https://purl.org/oslo/ns/localgov#"],
-      // vocabContentTypeHeaderOverride: "application/rdf+xml",
-      // ignoreNonVocabTerms: true,
-
-      // inputResources: [
-      //   // "http://purl.org/oslo/ns/localgov/",
-      //   "https://raw.githubusercontent.com/rafbuyle/oslo_xml_schemas/master/oslo-v1_1_0.rdf",
-      // ],
-      // nameAndPrefixOverride: "oslo",
-      // vocabContentTypeHeaderOverride: "application/rdf+xml",
-      // ignoreNonVocabTerms: true,
       //
       // inputResources: ["http://rdfs.org/sioc/ns#"],
       // nameAndPrefixOverride: "sioc",

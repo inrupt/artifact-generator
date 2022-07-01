@@ -104,6 +104,10 @@ class GeneratorConfiguration {
    * @param {Object} initialConfig the command line options
    */
   constructor(initialConfig) {
+    debug(
+      `You are running version [${packageDotJson.version}] of the Artifact Generator.`
+    );
+
     if (initialConfig.vocabListFile) {
       // The command-line references a vocab list configuration file.
       this.configuration = {
@@ -409,7 +413,7 @@ class GeneratorConfiguration {
     }
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
       debug(
-        `You are running version [${packageDotJson.version}] of the Artifact Generator, and reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/artifact-generator/releases to verify compatibility.`
+        `You are running version [${packageDotJson.version}] of the Artifact Generator, but reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/artifact-generator/releases to verify compatibility.`
       );
     }
 

@@ -973,14 +973,18 @@ module.exports = class DatasetHandler {
 
     if (!prefix) {
       prefix = DatasetHandler.getKnownPrefix(namespace);
-    }
-
-    if (!prefix) {
-      throw new Error(`No vocabulary prefix defined for [${namespace}]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
+      if (prefix) {
+        debug(
+          `Determined vocabulary prefix [${prefix}] from hard-coded list of well known vocabularies.`
+        );
+      } else {
+        throw new Error(`No vocabulary prefix defined for [${namespace}]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
       - If you control the vocabulary, we strongly recommend that you add a triple explicitly providing a preferred prefix (e.g., [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix" .]).
       - If you do not control the vocabulary but you use a configuration file, then you can set the 'nameAndPrefixOverride' option for this vocabulary.
       - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes the preferred prefix triple described above.`);
+      }
     }
+
     return prefix;
   }
 
