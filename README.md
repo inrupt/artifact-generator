@@ -15,6 +15,13 @@ programming-language constants for the terms (e.g., the Classes, Properties,
 and Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
 Streams, Solid vocabularies, or your own custom vocabularies).
 
+## Quick start demo
+
+To immediately appreciate some of the major features of the Artifact Generator,
+you can easily run our very simple 
+[RunnableDemo](./example/RunnableDemo/README.md), which demonstrates the utility
+of the Artifact Generator very intuitively.
+
 # Prerequisites
 
 ## npm
@@ -37,6 +44,7 @@ on how to set your permissions correctly.
 
 # Table of contents
 
+- [RunnableDemo](./example/RunnableDemo/README.md)
 - [Quickstart](#quickstart)
 - [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
@@ -59,8 +67,7 @@ There are a number of options for running the Artifact Generator:
 3. Clone the repo and execute it from the install directory (slightly less
    convenient than a global install, but still useful if you plan to use it
    often).
-4. Use `npx` (very convenient for single time use, or just to try it out, but
-   much slower to execute if using often).
+4. Use `npx` (very convenient for single time use, or just to try it out).
 
 ### 1. Global install
 

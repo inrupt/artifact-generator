@@ -1,0 +1,12 @@
+{
+  "name": "ag-demo",
+  "version": "1.0.0",
+  "description": "Demo project for the Artifact Generator",
+  "main": "index.js",
+  "author": "Andy Davidson",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "file:debug-NoTiming",
+    "my-generated-vocab-bundle": "file:Generated/SourceCodeArtifacts/JavaScript"
+  }
+}

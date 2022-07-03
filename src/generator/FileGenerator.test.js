@@ -16,7 +16,7 @@ describe("File Generator", () => {
     const doesNotExistTemplateFile = "not exist template file";
     const progLanguage = "Some programming language";
     const fileExtension = "file.extension";
-    const outputDirectory = "./Generated/someOutputDirectory";
+    const outputDirectory = "./Generated/SomeOutputDirectory";
 
     let errorMessage;
     try {
