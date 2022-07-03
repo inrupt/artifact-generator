@@ -345,11 +345,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        vocabList: [
-          {
-            inputResources: ["Dummy_vocab_file"],
-          },
-        ],
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
         runWidoco: true,
       });
