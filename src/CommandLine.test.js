@@ -264,15 +264,8 @@ describe("Command Line unit tests", () => {
         outputDirectory: dummyDir,
         runWidoco: true,
         vocabList: [
-          {
-            inputResources: [firstVocab],
-            nameAndPrefixOverride: "dummy-vocab-first",
-          },
-          {
-            inputResources: [secondVocab],
-            nameAndPrefixOverride: "dummy-vocab-second",
-            widocoLanguages: "en-ga",
-          },
+          { inputResources: [firstVocab] },
+          { inputResources: [secondVocab], widocoLanguages: "en-ga" },
         ],
       });
 
@@ -341,11 +334,7 @@ describe("Command Line unit tests", () => {
 
       const result = await CommandLine.askForArtifactToBeDocumented({
         ...defaultInputs,
-        vocabList: [
-          {
-            inputResources: ["Dummy_vocab_file"],
-          },
-        ],
+        vocabList: [{ inputResources: ["Dummy_vocab_file"] }],
         outputDirectory: "needs/a/parent/directory",
         runWidoco: true,
       });

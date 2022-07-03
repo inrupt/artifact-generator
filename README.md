@@ -17,10 +17,10 @@ Streams, Solid vocabularies, or your own custom vocabularies).
 
 ## Quick start demo
 
-To immediately appreciate some of the major features of the Artifact Generator,
-you can easily run our very simple 
-[RunnableDemo](./example/RunnableDemo/README.md), which demonstrates the utility
-of the Artifact Generator very intuitively.
+To immediately appreciate some of the major capabilities enabled by the Artifact
+Generator, you can easily run our very simple 
+[RunnableDemo](./example/RunnableDemo/README.md), which simply outputs very
+intuitive questions, with the answers coming directly from vocabulary metadata.
 
 # Prerequisites
 
