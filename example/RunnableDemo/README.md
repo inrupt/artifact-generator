@@ -28,9 +28,13 @@ will generate JavaScript using defaults.
       need to run any `build` commands).
     - `--runNpmInstall` install our generated package locally.
     - `--force` to ensure re-generation with each example.
-
+    - `--clearOutputDirectory ` to clear out the target output directory (in
+      case we ran the Quick Setup steps above). Generally we very rarely need to
+      use this option, but here it's just to ensure we start these instructions
+      with a clear output directory!).
+    
 ```
-npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --supportBundling=false --runNpmInstall --force
+npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --supportBundling=false --runNpmInstall --force --clearOutputDirectory
 ```
 
 - See the generated code in `./Generated`.
@@ -44,7 +48,14 @@ npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPromp
   non-default templates/options, you'll need a YAML configuration file.
 - Example YAML file [./Vocab/sample-vocab-bundle.yml](Vocab/sample-vocab-bundle.yml):
   - Generates both Java and JavaScript artifacts.
-  - Bundles a remote vocab with our local Pet Rock vocab (in this case vCard).
+  - Bundles a real remote vocab with our local Pet Rock vocab (in this case the
+    W3C standard Time vocabulary that defines (as of mid-2022) 20 Classes and 61
+    Properties related to 'time').
+  - We also show an example of using an Inrupt-defined extension resource to
+    cherry-pick popular terms from the Schema.org vocabulary (which contains (as
+    of mid-2022) about 2,500 terms), and that also extends those chosen 
+    Schema.org terms with translations of their labels and comments into
+    multiple other languages (e.g., French, Spanish, German, etc.).
 
 ```
 npx @inrupt/artifact-generator generate --vocabListFile ./Vocab/sample-vocab-bundle.yml --noPrompt --force
