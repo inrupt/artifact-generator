@@ -1,3 +1,7 @@
+# Unfortunately, Widoco seems to sometimes leave behind these ./tmp999999
+# directories.
+./tmp*/
+
 .DS_Store
 node_modules/
 

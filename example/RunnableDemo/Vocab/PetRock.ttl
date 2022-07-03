@@ -36,7 +36,8 @@ pet_rock:PetRock a rdfs:Class ;
     rdfs:label "Pet Rock"@es ;
     rdfs:comment "The class of all rocks considered to be excellent Pets."@en ;
     rdfs:comment "La clase de todas las rocas consideradas excelentes mascotas."@es ;
-    rdfs:seeAlso <https://en.wikipedia.org/wiki/Pet_Rock> .
+    rdfs:seeAlso
+      <https://en.wikipedia.org/wiki/Pet_Rock> .
 
 
 pet_rock:shininess a rdf:Property ;
@@ -46,7 +47,9 @@ pet_rock:shininess a rdf:Property ;
     rdfs:label "Brillo"@es ;
     rdfs:comment "How wonderfully shiny a rock is."@en ;
     rdfs:comment "Qué maravillosamente brillante es una roca."@es ;
-    rdfs:seeAlso <https://www.moneymorning.com.au/20160516/is-gold-a-pet-rock-or-shiny-saviour.html> .
+    rdfs:seeAlso
+      <https://www.moneymorning.com.au/20160516/is-gold-a-pet-rock-or-shiny-saviour.html> ,
+      <https://qudt.org/vocab/unit/LUX> .
 
 pet_rock:rarity a rdf:Property ;
     rdfs:isDefinedBy pet_rock: ;
