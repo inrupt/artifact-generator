@@ -213,18 +213,52 @@ module.exports = class CommandLine {
       const artifactDirectoryRoot = getArtifactDirectoryRoot(data);
 
       data.vocabList.forEach((vocab) => {
+        // In both these cases (i.e., multiple input resources, or using a
+        // term selection resource), we first need to write the 'augmented'
+        // vocabulary to a local Linked Data resource (such as a local Turtle
+        // file), so that Widoco would be able to pick that up and process it
+        // accordingly. So until we have that capability, just ignore these
+        // use-cases, and output an explanation for why.
+        if (vocab.inputResources.length !== 1) {
+          debug(
+            `We don't yet support generating Widoco output for vocabularies constructed from multiple input resources [${vocab.inputResources.join(
+              ", "
+            )}].`
+          );
+          return;
+        }
+
+        if (vocab.termSelectionResource) {
+          debug(
+            `Cannot generate Widoco output for vocabulary [${vocab.inputResources[0]}], as we don't yet support term selection (we're configured to select terms from [${vocab.termSelectionResource}]).`
+          );
+          return;
+        }
+
         const inputResource = vocab.inputResources[0];
 
-        let vocabDirectory = inputResource.substring(
-          inputResource.lastIndexOf("/") + 1
+        // Use our input resource's final local name as the output directory,
+        // so first strip off any trialing '/' or '#' (i.e., if input was a
+        // namespace IRI, which typically end in either of those).
+        let vocabDirectory = inputResource.replace(/[/#]+$/, "");
+
+        // Now ignore everything up to the last remaining '/' or '#' (for
+        // local file resources).
+        vocabDirectory = vocabDirectory.substring(
+          Math.max(
+            vocabDirectory.lastIndexOf("/"),
+            vocabDirectory.lastIndexOf("#")
+          ) + 1
         );
 
+        // Now strip off any file extensions (if input was a local file
+        // resource).
         const extensionPos = vocabDirectory.lastIndexOf(".");
         if (extensionPos > 0) {
           vocabDirectory = vocabDirectory.substring(0, extensionPos);
         }
 
-        const inputSwitch = inputResource.startsWith("http")
+        const widocoInputSwitch = inputResource.startsWith("http")
           ? "ontURI"
           : "ontFile";
         const destDirectory = `${data.outputDirectory}${artifactDirectoryRoot}/Widoco/${vocabDirectory}`;
@@ -233,14 +267,14 @@ module.exports = class CommandLine {
         const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
         debug(
-          `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}]...`
+          `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}], and using Log4J configuration [${log4jPropertyFile}]...`
         );
 
         const languageSwitch = vocab.widocoLanguages
           ? ` -lang ${vocab.widocoLanguages}`
           : ``;
 
-        const command = `java ${log4jPropertyFile} -jar ${widocoJar} -${inputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius${languageSwitch}`;
+        const command = `java ${log4jPropertyFile} -jar ${widocoJar} -${widocoInputSwitch} ${inputResource} -outFolder ${destDirectory} -rewriteAll -getOntologyMetadata -oops -webVowl -htaccess -licensius${languageSwitch}`;
         debug(`Executing comand: [${command}]`);
         ChildProcess.execSync(command);
 

@@ -74,15 +74,18 @@ artifactToGenerate:
 vocabList:
   - inputResources:
       - ./PetRock.ttl
+    widocoLanguages: en-es
 
   - inputResources:
       - http://www.w3.org/2006/time#
     # The W3C Time vocabulary pre-dates VANN, so it doesn't provide a
     # preferred namespace prefix itself, so we provide one here:
     nameAndPrefixOverride: time
+    widocoLanguages: en-es
 
   - description: Inrupt-determined cherry-picked Schema.org terms (that include label and comment translations)
     nameAndPrefixOverride: schema_inrupt
+    widocoLanguages: en-es-de-it-fr
     # So here we are pulling in the entire Schema.org vocabulary...
     inputResources:
       - https://schema.org/version/latest/schemaorg-current-http.ttl

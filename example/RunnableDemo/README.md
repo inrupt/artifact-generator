@@ -61,8 +61,9 @@ npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPromp
 npx @inrupt/artifact-generator generate --vocabListFile ./Vocab/sample-vocab-bundle.yml --noPrompt --force
 ```
 
-- See the newly generated Java folder, and extra source-code files for new
-  remote vocab.
+- See the newly generated Java folder, and extra source-code files for the new
+  remote vocab (W3C's Time), and our cherry-picked Schema.org terms, as choosen
+  by Inrupt.
 
 
 # Watcher mode
@@ -75,16 +76,36 @@ npx @inrupt/artifact-generator watch --vocabListFile ./Vocab/sample-vocab-bundle
 ```
 
 - Change something, e.g., add how very expensive Pet Rocks have become!
-- Watcher detects vocabulary change...
+- The Watcher will automatically detect the vocabulary file change...
 - ...re-run `node index.js`, or see real-time updates in your IDE!
 
 # Generate HTML documentation
 
-If you have the open-source Java tool [Widoco](../../documentation/feature-overview.md#to-generate-human-readable-documentation-for-a-vocabulary-using-widoco) installed locally, we can use it
-here by simply adding the `--runWidoco` command line option:
+If you have the open-source Java tool
+[Widoco](../../documentation/feature-overview.md#to-generate-human-readable-documentation-for-a-vocabulary-using-widoco)
+installed locally, we can use it here by simply adding the `--runWidoco` command
+line option to ask the Artifact Generator to automatically generate HTML
+documentation for each of the vocabularies we specified:
 
 ```
 npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --supportBundling=false --runWidoco --force
 ```
 
-Browse to [./Generated/Widoco/index-en.html](./Generated/Widoco/index-en.html).
+Browse to 
+[./Generated/Widoco/PetRock/index-en.html](./Generated/Widoco/PetRock/index-en.html)
+to see the generated documentation for the Pet Rock vocbaulary (in both English
+and Spanish), and
+[./Generated/Widoco/time/index-en.html](./Generated/Widoco/time/index-en.html)
+to see the generated documentation for the W3C's Time vocabulary (which also
+just happens to provide term metadata in English and Spanish).
+
+---
+
+**Note**: The Artifact Generator doesn't yet support generation using Widoco for
+vocabularies built from multiple input resources, or when using term selection
+resources (as in both cases we first need to write the 'augmented' vocabulary to
+a local Linked Data resource (such as a local Turtle file), so that Widoco can
+pick that temporary file up), so we don't yet expect to see any Widoco output
+for our Inrupt-chosen Schema.org terms. 
+
+---

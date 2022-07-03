@@ -403,7 +403,7 @@ describe("Artifact generator unit tests", () => {
       );
     });
 
-    it("Should merge A and B, and generate code from A and B", async () => {
+    it("should merge A and B, and generate code from A and B", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetA, dataSetB])
@@ -413,7 +413,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].name).toBe("givenName");
     });
 
-    it("Should merge A and B, and generate code from A (not B)", async () => {
+    it("should merge A and B, and generate code from A (not B)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetA])
@@ -423,7 +423,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties.length).toBe(0);
     });
 
-    it("Should merge A and B, and generate code from B (not A)", async () => {
+    it("should merge A and B, and generate code from B (not A)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetB])
@@ -433,7 +433,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].name).toBe("givenName");
     });
 
-    it("Should merge A B and C, and generate code from A and B (not C)", async () => {
+    it("should merge A B and C, and generate code from A and B (not C)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB, dataSetC]),
         VocabGenerator.merge([dataSetA, dataSetB])
@@ -444,7 +444,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties.length).toBe(1);
     });
 
-    it("Should throw for empty datasets", async () => {
+    it("should throw for empty datasets", async () => {
       await expect(
         vocabGenerator.buildTemplateInput(
           VocabGenerator.merge([vocabMetadata, emptyDataSet]),
@@ -453,7 +453,7 @@ describe("Artifact generator unit tests", () => {
       ).rejects.toThrow("does not contain any terms");
     });
 
-    it("Should use the label value if no comment and no definition", async () => {
+    it("should use the label value if no comment and no definition", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetA, dataSetB]),
         VocabGenerator.merge([dataSetB])
@@ -464,7 +464,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].comment).toBe("Given Name");
     });
 
-    it("Should use the definition value if no comment", async () => {
+    it("should use the definition value if no comment", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         VocabGenerator.merge([vocabMetadata, dataSetD]),
         VocabGenerator.merge([emptyDataSet])
@@ -475,7 +475,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].comment).toBe("Family Name");
     });
 
-    it("Should take any comment for the class or property if english or default cant be found", async () => {
+    it("should take any comment for the class or property if english or default cant be found", async () => {
       const dataSetFrenchOnlyComment = rdf
         .dataset()
         .addAll([
@@ -501,7 +501,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].comment).toBe("Given Name comment in french");
     });
 
-    it("Should return empty comment if nothing found at all", async () => {
+    it("should return empty comment if nothing found at all", async () => {
       const noDescriptivePredicates = rdf
         .dataset()
         .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
@@ -520,7 +520,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.properties[0].comment).toBe("");
     });
 
-    it("Should allow the prefix for the name of the module can be configured", async () => {
+    it("should allow the prefix for the name of the module can be configured", async () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
@@ -535,7 +535,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.artifactName).toBe("my-company-prefix-schema");
     });
 
-    it("Should create label vocab terms for literals", async () => {
+    it("should create label vocab terms for literals", async () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
@@ -583,7 +583,7 @@ describe("Artifact generator unit tests", () => {
       );
     });
 
-    it("Should create comments vocab terms for literals", async () => {
+    it("should create comments vocab terms for literals", async () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
@@ -631,7 +631,7 @@ describe("Artifact generator unit tests", () => {
       );
     });
 
-    it("Should create defination vocab terms for literals", async () => {
+    it("should create defination vocab terms for literals", async () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
@@ -778,7 +778,7 @@ describe("Artifact generator unit tests", () => {
       expect(familyName.labels[0].value).toBe("Alt Family Name");
     });
 
-    it("Should create definition vocab terms for literals from extensions", async () => {
+    it("should create definition vocab terms for literals from extensions", async () => {
       const generator = new VocabGenerator({
         inputResources: [],
         artifactVersion: "1.0.0",
