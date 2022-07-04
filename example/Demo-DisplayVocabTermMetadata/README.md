@@ -43,6 +43,11 @@ npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPromp
   `my-generated-vocab`.
 - Run `node index.js`.
 
+## Options for running the Artifact Generator
+
+If we want more options for running the Artifact Generator (beyond using `npx`),
+see the [Quick Start](../../README.md#quick-start) section of the main README.
+
 # YAML example
 
 - If you want generation for other, or multiple, programming languages, or

@@ -33,9 +33,10 @@ generation of source-code for _multiple_ programming languages in a single run,
 where one of those languages is being generated from local custom templates
 (i.e., Elixir), and the other from internal templates (i.e., TypeScript).
 
-## Running the Artifact Generator
+## Options for running the Artifact Generator
 
-
+If we want more options for running the Artifact Generator (beyond using `npx`),
+see the [Quick Start](../../README.md#quick-start) section of the main README.
 
 ## Running with a local YAML configuration file
 
