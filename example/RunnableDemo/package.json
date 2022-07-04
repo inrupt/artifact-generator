@@ -4,7 +4,7 @@
   "description": "Demo project for the Artifact Generator",
   "main": "index.js",
   "author": "Andy Davidson",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "debug": "file:debug-NoTiming",
     "my-generated-vocab-bundle": "file:Generated/SourceCodeArtifacts/JavaScript"
