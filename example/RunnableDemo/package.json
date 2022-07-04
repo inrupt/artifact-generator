@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Runnable demo project for the Artifact Generator",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "dependencies": {
     "debug": "file:debug-NoTiming",
