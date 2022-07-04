@@ -1,9 +1,8 @@
 {
-  "name": "ag-demo",
+  "name": "@inrupt/artifact-generator-runnable-demo",
   "version": "1.0.0",
-  "description": "Demo project for the Artifact Generator",
+  "description": "Runnable demo project for the Artifact Generator",
   "main": "index.js",
-  "author": "Andy Davidson",
   "license": "MIT",
   "dependencies": {
     "debug": "file:debug-NoTiming",
