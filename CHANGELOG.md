@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Add vocab counts to generated comments.
 - Add debug message when prefix is found from hard-coded internal vocab list.
 - Replaced FOAF with RDFS for unit test for online vocabs (FOAF has gone down).
+- Added intuitive RunnableDemo example - to highlight many of the benefits of
+  the AG very quickly and easily.
+- Improved handling of Widoco HTML generation (skipping use-cases needing
+  multiple input resources, or a term selection resource).
 
 ## 2.0.0 2022-06-03
 

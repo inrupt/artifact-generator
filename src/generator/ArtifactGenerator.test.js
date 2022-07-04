@@ -128,7 +128,7 @@ describe("Artifact Generator", () => {
   });
 
   describe("Processing command line vocab.", () => {
-    it("Should generate artifact without bundling", async () => {
+    it("should generate artifact without bundling", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/no-bundling";
       del.sync([`${outputDirectory}/*`]);
@@ -186,7 +186,7 @@ describe("Artifact Generator", () => {
       ).not.toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
-    it("Should generate artifact with bundling", async () => {
+    it("should generate artifact with bundling", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/bundling";
       del.sync([`${outputDirectory}/*`]);
@@ -223,7 +223,7 @@ describe("Artifact Generator", () => {
       expect(packageOutput.indexOf('"devDependencies":')).toBeGreaterThan(-1);
     });
 
-    it("Should not generate artifacts if the target directory is up-to-date", async () => {
+    it("should not generate artifacts if the target directory is up-to-date", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
@@ -256,7 +256,7 @@ describe("Artifact Generator", () => {
       expect(fs.statSync(generatedFile).mtimeMs).toEqual(initialGenerationTime);
     });
 
-    it("Should regenerate if input modified", async () => {
+    it("should regenerate if input modified", async () => {
       const outputDirectory = path.join(
         ".",
         "test",
@@ -321,7 +321,7 @@ describe("Artifact Generator", () => {
       );
     });
 
-    it("Should regenerate if extension input modified", async () => {
+    it("should regenerate if extension input modified", async () => {
       const outputDirectory = path.join(
         ".",
         "test",
@@ -414,7 +414,7 @@ describe("Artifact Generator", () => {
       );
     });
 
-    it("Should regenerate *only* based on modified input, not all input", async () => {
+    it("should regenerate *only* based on modified input, not all input", async () => {
       const outputDirectory = path.join(
         ".",
         "test",
@@ -523,7 +523,7 @@ describe("Artifact Generator", () => {
       );
     });
 
-    it("Should regenerate all when config file modified", async () => {
+    it("should regenerate all when config file modified", async () => {
       const outputDirectory = path.join(
         ".",
         "test",
@@ -613,7 +613,7 @@ describe("Artifact Generator", () => {
       );
     });
 
-    it("Should generate when forced, even if the target directory is up-to-date", async () => {
+    it("should generate when forced, even if the target directory is up-to-date", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/if-necessary";
       const generatedFile = path.join(
@@ -648,7 +648,7 @@ describe("Artifact Generator", () => {
       );
     });
 
-    it("Should clear the target directory if the option is set", async () => {
+    it("should clear the target directory if the option is set", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/clear";
       del.sync([`${outputDirectory}/*`]);

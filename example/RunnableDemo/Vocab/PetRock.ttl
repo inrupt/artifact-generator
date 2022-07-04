@@ -1,0 +1,62 @@
+#
+# Note: NSS doesn't support the newer Turtle syntax for PREFIX.
+#
+prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:     <http://www.w3.org/2002/07/owl#>
+prefix vann:    <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix sm:       <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
+
+prefix pet_rock:   <https://inrupt.com/vocab/demo/PetRock.ttl#>
+
+#
+# Describe our vocabulary - i.e., an English description, its version, who created it, its
+# suggested prefix, its license, etc.
+#
+pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    owl:versionIRI <https://inrupt.com/vocab/demo/PetRock.ttl/0.0.1> ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/07/28" ;
+    dcterms:title "Pet Rock vocabulary"@en ;
+    dcterms:description "Vocabulary for Pet Rock collectors, including terms for describing the characteristics of Pet Rocks..."@en ;
+    dcterms:description "Vocabulario para coleccionistas de Pet Rocks, incluidos términos para describir las características de Pet Rocks..."@es ;
+    vann:preferredNamespacePrefix "pet_rock" ;
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/demo/PetRock.ttl#" ;
+    dcterms:license sm:MITLicense .
+
+
+pet_rock:PetRock a rdfs:Class ;
+    rdfs:isDefinedBy pet_rock: ;
+    rdfs:label "Pet Rock"@en ;
+    rdfs:label "Pierre de compagnie"@fr ;
+    rdfs:label "Pet Rock"@es ;
+    rdfs:comment "The class of all rocks considered to be excellent Pets."@en ;
+    rdfs:comment "La clase de todas las rocas consideradas excelentes mascotas."@es ;
+    rdfs:seeAlso
+      <https://en.wikipedia.org/wiki/Pet_Rock> .
+
+
+pet_rock:shininess a rdf:Property ;
+    rdfs:isDefinedBy pet_rock: ;
+    rdfs:domain pet_rock:PetRock ;
+    rdfs:label "Shininess"@en ;
+    rdfs:label "Brillo"@es ;
+    rdfs:comment "How wonderfully shiny a rock is."@en ;
+    rdfs:comment "Qué maravillosamente brillante es una roca."@es ;
+    rdfs:seeAlso
+      <https://www.moneymorning.com.au/20160516/is-gold-a-pet-rock-or-shiny-saviour.html> ,
+      <https://qudt.org/vocab/unit/LUX> .
+
+pet_rock:rarity a rdf:Property ;
+    rdfs:isDefinedBy pet_rock: ;
+    rdfs:domain pet_rock:PetRock ;
+    rdfs:label "Rarity"@en ;
+    rdfs:label "Rareté"@fr ;
+    rdfs:label "Rareza"@es ;
+    rdfs:comment "How rare this rock is (related to it's value on the lucrative Pet Rock market)."@en ;
+    rdfs:comment "Cuán rara es esta roca (relacionada con su valor en el lucrativo mercado de Pet Rock)."@es ;
+    rdfs:seeAlso <https://www.bcbusiness.ca/9-dumbest-fads-ever-to-make-money> .

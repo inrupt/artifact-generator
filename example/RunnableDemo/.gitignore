@@ -1,0 +1,24 @@
+# Unfortunately, Widoco seems to sometimes leave behind these ./tmp999999
+# directories.
+./tmp*/
+
+.DS_Store
+node_modules/
+
+coverage/
+
+Generated/
+
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+vscode_wspace.code-workspace
+
+## VSCode Java extension
+.classpath
+.project
+.settings/
+target/
+
