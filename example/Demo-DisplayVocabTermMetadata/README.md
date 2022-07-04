@@ -11,9 +11,13 @@ JavaScript, generated from a demo [Pet Rock](Vocab/PetRock.ttl) vocabulary.
 ## Quick Setup
 
 - Run `npm ci` in this demo folder.
-- Run `npx @inrupt/artifact-generator generate --vocabListFile ./Vocab/sample-vocab-bundle.yml --noPrompt --force`
-- Run `node index.js`...
-- ...you should see a set of self-explanatory questions and answers.
+- Run:
+  ```
+  npx @inrupt/artifact-generator generate --vocabListFile ./Vocab/sample-vocab-bundle.yml --noPrompt --force
+  ```
+- Run `node index.js` and ...
+- ...you should see a set of self-explanatory questions and answers output to
+  the console.
 
 ## Command Line Interface (CLI)
 
@@ -24,9 +28,6 @@ will generate JavaScript using defaults.
 - Generate JavaScript artifact from this vocabulary: 
   - Using the command-line options: 
     - `--noPrompt` no interactive prompting (we're happy with defaults).
-    - `--supportBundling=false` no bundling (keep it simple during this demo, no
-      need to run any `build` commands).
-    - `--runNpmInstall` install our generated package locally.
     - `--force` to ensure re-generation with each example.
     - `--clearOutputDirectory ` to clear out the target output directory (in
       case we ran the Quick Setup steps above). Generally we very rarely need to
@@ -34,7 +35,7 @@ will generate JavaScript using defaults.
       with a clear output directory!).
     
 ```
-npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --supportBundling=false --runNpmInstall --force --clearOutputDirectory
+npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --force --clearOutputDirectory
 ```
 
 - See the generated code in `./Generated`.
@@ -88,7 +89,7 @@ line option to ask the Artifact Generator to automatically generate HTML
 documentation for each of the vocabularies we specified:
 
 ```
-npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --supportBundling=false --runWidoco --force
+npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --runWidoco --force
 ```
 
 Browse to 

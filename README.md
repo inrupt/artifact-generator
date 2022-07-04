@@ -19,8 +19,9 @@ Streams, Solid vocabularies, or your own custom vocabularies).
 
 To immediately appreciate some of the major capabilities enabled by the Artifact
 Generator, you can easily run our very simple 
-[RunnableDemo](./example/RunnableDemo/README.md), which simply outputs very
-intuitive questions, with the answers coming directly from vocabulary metadata.
+[Runnable Demo](example/Demo-DisplayVocabTermMetadata/README.md), which simply
+displays some very intuitive questions, with the answers coming directly from
+vocabulary metadata.
 
 # Prerequisites
 
@@ -44,7 +45,7 @@ on how to set your permissions correctly.
 
 # Table of contents
 
-- [RunnableDemo](./example/RunnableDemo/README.md)
+- [RunnableDemo](example/Demo-DisplayVocabTermMetadata/README.md)
 - [Quickstart](#quickstart)
 - [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
