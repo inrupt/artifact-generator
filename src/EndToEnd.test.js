@@ -125,8 +125,10 @@ describe("End-to-end tests", () => {
           "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
         )
         .toString();
-      expect(output.substring(output.indexOf(" */"))).toBe(
-        expected.substring(expected.indexOf(" */"))
+      expect(
+        output.substring(output.indexOf(" */")).replace(/[\n\r]/g, "")
+      ).toBe(
+        expected.substring(expected.indexOf(" */")).replace(/[\n\r]/g, "")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -348,8 +350,10 @@ describe("End-to-end tests", () => {
         )
         .toString();
 
-      expect(output.substring(output.indexOf(" */"))).toBe(
-        expected.substring(expected.indexOf(" */"))
+      expect(
+        output.substring(output.indexOf(" */")).replace(/[\n\r]/g, "")
+      ).toBe(
+        expected.substring(expected.indexOf(" */")).replace(/[\n\r]/g, "")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(

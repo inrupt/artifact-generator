@@ -199,7 +199,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://www.w3.org/2000/01/rdf-schema#"],
+      inputResources: ["http://purl.org/dc/terms/"],
+      nameAndPrefixOverride: "dcterms",
+
+      // inputResources: ["http://www.w3.org/ns/shacl#"],
+      // nameAndPrefixOverride: "sh",
+
+      // inputResources: ["https://saref.etsi.org/core/"],
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/ns/adms#"],
 
       // inputResources: ["https://www.w3.org/ns/spec#"],
       // descriptionFallback: "Sarvens spec vocab",

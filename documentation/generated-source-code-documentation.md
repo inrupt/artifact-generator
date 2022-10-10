@@ -9,10 +9,10 @@ vocabularies, as by simply importing an artifact, the developer's IDE will
 automatically provide helpful auto-completion and documentation.
 
 The Artifact Generator generates this documentation by looking for specific
-RDF meta-data that is commonly associated with vocabulary terms. For example,
-it's generally considered best practice to always provide human-readable
-labels and comments for terms, using the RDF properties `rdfs:label` and
-`rdfs:comment` respectively.
+Linked Data metadata that is commonly associated with vocabulary terms. For
+example, it's generally considered best practice to always provide
+human-readable labels and comments for terms, using the properties `rdfs:label`
+and `rdfs:comment` respectively.
 
 Often it's even more helpful to provide these labels and comments in multiple
 languages (like French, Spanish, or German), and so the Artifact Generator
@@ -34,9 +34,9 @@ vocabulary terms are described in multiple languages):
   Catalog: _NS("Catalog"),
 ```
 
-## Other useful meta-data
+## Other useful metadata
 
-The Artifact Generator can look for other common vocabulary term meta-data,
+The Artifact Generator can look for other common vocabulary term metadata,
 such as `rdfs:seeAlso` to indicate something of interest that is related to
 this term, or `rdfs:isDefinedBy` to indicate the vocabulary within which this
 term is defined (which can be useful, as individual vocabulary terms may be

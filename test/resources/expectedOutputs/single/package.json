@@ -1,7 +1,7 @@
 {
   "name": "@inrupt/generated-vocab-schema-inrupt-ext",
   "version": "1.0.0",
-  "description": "Bundle of [1] vocabularies that includes the following:\n\n - schema-inrupt-ext: Inrupt extension to Schema.org terms.",
+  "description": "Bundle of [1] vocabularies that includes the following:\n\n - schema-inrupt-ext: Inrupt extension to Schema.org terms.\n   Namespace IRI: [http://schema.org/]",
   "sideEffects": false,
   "main": "index.js",
   "module": "wrapper.js",

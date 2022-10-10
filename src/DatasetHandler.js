@@ -48,7 +48,7 @@ const SUPPORTED_PROPERTY_TYPES = [
   // generic.
   // But since we largely treat the various 'types' of vocabulary terms (i.e.,
   // Classes, Properties, Constants) the same anyway, in that we look for the
-  // same meta-data and generate much the same output, we treat instances of
+  // same metadata and generate much the same output, we treat instances of
   // 'rdfs:Resource' as if they were just 'rdf:Property'.
   RDFS.Resource,
   RDF.Property,
@@ -62,7 +62,7 @@ const SUPPORTED_PROPERTY_TYPES = [
   // We could treat SKOS-XL Labels as String Constants too, since that more
   // accurately reflects what they are, but by treating them as Properties we
   // can generate full VocabTerm instances too, thereby giving full
-  // programmatic access to all the associated meta-data (whereas constants
+  // programmatic access to all the associated metadata (whereas constants
   // would just give us the value).
   SKOSXL.Label,
 ];
@@ -92,7 +92,7 @@ module.exports = class DatasetHandler {
   /**
    * Note: The term selection dataset we provide is used to selectively choose terms to generate
    * from a source vocabulary (for instance to cherry-pick specific terms from the huge
-   * collection of terms in Schema.org). But the extension can can also add more meta-data for
+   * collection of terms in Schema.org). But the extension can can also add more metadata for
    * those selected terms (for example, to add missing labels or comments, or translations for
    * existing labels and comments, see-also links, etc.)
    *
@@ -228,7 +228,8 @@ module.exports = class DatasetHandler {
       .replace(/^default$/, "default_")
       .replace(/^protected$/, "protected_") // From the JSON-LD vocab.
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
-      .replace(/^implements$/, "implements_"); // From the DOAP vocab.
+      .replace(/^implements$/, "implements_") // From the DOAP vocab.
+      .replace(/^this$/, "this_"); // From the SHACL vocab.
 
     this.termSelectionDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
@@ -410,7 +411,7 @@ module.exports = class DatasetHandler {
     if (labels.length === 0 && comments.length === 0) {
       termDescription =
         "This term has no descriptions at all (i.e., the vocabulary doesn't provide any " +
-        "'rdfs:label', 'rdfs:comment', or 'dcterms:description', or 'skos:definition' meta-data).";
+        "'rdfs:label', 'rdfs:comment', or 'dcterms:description', or 'skos:definition' metadata).";
     } else {
       // Having no comments is bad - so report that omission (but at least
       // describe the labels we do have).
@@ -422,7 +423,7 @@ module.exports = class DatasetHandler {
 
         termDescription = `This term has ${labelDescription} (in language${
           singular ? "" : "s"
-        } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' meta-data).`;
+        } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' metadata).`;
       } else {
         // Common to only have a single label and comment, which will
         // generally be both in explicit English, or just no language tag at
@@ -678,7 +679,7 @@ module.exports = class DatasetHandler {
     result.vocabListFileIgnore = this.vocabData.vocabListFileIgnore;
     // Useful when overriding the local namespace, because this is the namespace
     // that is actually used in the terms from the vocab, and that is used
-    // when splitting the IRI to get the local part for instance.
+    // when splitting the IRI to get a term's local part, for instance.
     result.localNamespace = this.findNamespace();
     result.namespace =
       this.vocabData.namespaceOverride || result.localNamespace;
@@ -697,6 +698,7 @@ module.exports = class DatasetHandler {
       result.vocabName
     );
     result.description = this.findDescription(
+      result.namespace,
       this.vocabData.descriptionFallback
     );
     if (
@@ -704,15 +706,16 @@ module.exports = class DatasetHandler {
       result.description === "[Generator provided] - undefined"
     ) {
       throw new Error(
-        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:description', 'rdfs:comment', 'rdfs:label', or 'dcelements:title'), and our configuration doesn't provide one.`
+        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
       );
     }
+    result.description = `${result.description}\n   Namespace IRI: [${result.namespace}]`;
 
     result.artifactVersion = this.vocabData.artifactVersion;
     result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
     result.npmRegistry = this.vocabData.npmRegistry;
     result.outputDirectory = this.vocabData.outputDirectory;
-    result.authorSet = this.findAuthors();
+    result.authorSet = this.findAuthors(result.namespace);
     result.authorSetFormatted = Array.from(result.authorSet).join(", ");
     result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runMavenInstall = this.vocabData.runMavenInstall;
@@ -889,7 +892,7 @@ module.exports = class DatasetHandler {
     // IRI.
     let ontologyIri;
 
-    let namespace = this.findOwlOntology((owlOntologyTerms) => {
+    let namespace = this.findOwlOntology(null, (owlOntologyTerms) => {
       const ontologyNamespaces = this.fullDataset.match(
         owlOntologyTerms.subject,
         VANN.preferredNamespaceUri,
@@ -961,7 +964,7 @@ module.exports = class DatasetHandler {
   findPreferredNamespacePrefix(namespace) {
     let prefix =
       this.vocabData.nameAndPrefixOverride ||
-      this.findOwlOntology((owlOntologyTerms) => {
+      this.findOwlOntology(namespace, (owlOntologyTerms) => {
         const ontologyPrefixes = this.fullDataset.match(
           owlOntologyTerms.subject,
           VANN.preferredNamespacePrefix,
@@ -1000,78 +1003,108 @@ module.exports = class DatasetHandler {
     return name.toUpperCase().replace(/-/g, "_");
   }
 
-  findDescription(descriptionFallback) {
-    return this.findOwlOntology((owlOntologyTerms) => {
-      let onologyComments = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        DCTERMS.description,
-        null
-      );
-
-      // Fallback to rdfs:comment...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
+  findDescription(namespace, descriptionFallback) {
+    return this.findOwlOntology(
+      namespace,
+      (owlOntologyTerms) => {
+        let onologyComments = this.fullDataset.match(
           owlOntologyTerms.subject,
-          RDFS.comment,
+          DCTERMS.description,
           null
         );
-      }
 
-      // Fallback to legacy description...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          DCELEMENTS.title,
-          null
+        // Fallback to dcterms:title...
+        if (onologyComments.size === 0) {
+          onologyComments = this.fullDataset.match(
+            owlOntologyTerms.subject,
+            DCTERMS.title,
+            null
+          );
+        }
+
+        // Fallback to rdfs:comment...
+        if (onologyComments.size === 0) {
+          onologyComments = this.fullDataset.match(
+            owlOntologyTerms.subject,
+            RDFS.comment,
+            null
+          );
+        }
+
+        // Fallback to legacy description...
+        if (onologyComments.size === 0) {
+          onologyComments = this.fullDataset.match(
+            owlOntologyTerms.subject,
+            DCELEMENTS.title,
+            null
+          );
+        }
+
+        // Fallback to SKOS definition (Gist uses this)...
+        if (onologyComments.size === 0) {
+          onologyComments = this.fullDataset.match(
+            owlOntologyTerms.subject,
+            SKOS.definition,
+            null
+          );
+        }
+
+        // Fallback to rdfs:label (QUDT uses this)...
+        if (onologyComments.size === 0) {
+          onologyComments = this.fullDataset.match(
+            owlOntologyTerms.subject,
+            RDFS.label,
+            null
+          );
+        }
+
+        // Find the first match, preferably in English.
+        return DatasetHandler.firstDatasetValue(
+          onologyComments,
+          "en",
+          descriptionFallback
         );
-      }
-
-      // Fallback to SKOS definition (Gist uses this)...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          SKOS.definition,
-          null
-        );
-      }
-
-      // Fallback to rdfs:label (QUDT uses this)...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          RDFS.label,
-          null
-        );
-      }
-
-      // Find the first match, preferably in English.
-      return DatasetHandler.firstDatasetValue(
-        onologyComments,
-        "en",
-        descriptionFallback
-      );
-    }, descriptionFallback);
+      },
+      descriptionFallback
+    );
   }
 
-  findAuthors() {
-    return this.findOwlOntology((owlOntologyTerms) => {
-      const onologyAuthors = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        DCTERMS.creator,
-        null
-      );
+  findAuthors(namespace) {
+    return this.findOwlOntology(
+      namespace,
+      (owlOntologyTerms) => {
+        const onologyAuthors = this.fullDataset.match(
+          owlOntologyTerms.subject,
+          DCTERMS.creator,
+          null
+        );
 
-      return new Set(
-        onologyAuthors.size === 0
-          ? []
-          : onologyAuthors
-              .toArray()
-              .map((authorQuad) => authorQuad.object.value)
-      );
-    }, new Set());
+        return new Set(
+          onologyAuthors.size === 0
+            ? []
+            : onologyAuthors
+                .toArray()
+                .map((authorQuad) => authorQuad.object.value)
+        );
+      },
+      new Set()
+    );
   }
 
-  findOwlOntology(callback, defaultResult) {
+  /**
+   * Attempts to find the namespace IRI. Starts by looking for an explicit
+   * triple of type 'owl:Ontology', but if none found (e.g., the DCTerms
+   * vocab), then it can query for the provided namespace (if any, as it can
+   * be NULL too).
+   * If we find an RDF Subject, then we call the provided callback function
+   * and pass all matching triples for that Subject.
+   *
+   * @param namespace if not NULL will be used as a fallback Subject if no 'owl:Ontology' triple found
+   * @param callback the function to call with matching triples
+   * @param defaultResult default value to return if no ontology found
+   * @returns {string|*}
+   */
+  findOwlOntology(namespace, callback, defaultResult) {
     const owlOntologyTerms = this.fullDataset
       .match(null, RDF.type, OWL.Ontology)
       .toArray()
@@ -1079,9 +1112,20 @@ module.exports = class DatasetHandler {
 
     if (owlOntologyTerms) {
       return callback(owlOntologyTerms);
+    } else {
+      if (namespace) {
+        const namespaceTerms = this.fullDataset
+          .match(namespace, null, null)
+          .toArray()
+          .shift();
+
+        if (namespaceTerms) {
+          return callback(namespaceTerms);
+        }
+      }
     }
 
-    return defaultResult || ""; // Default to return empty string
+    return defaultResult || ""; // If no default provided, return empty string.
   }
 
   static subjectsOnly(dataset) {

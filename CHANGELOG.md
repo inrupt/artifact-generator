@@ -13,6 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   multiple input resources, or a term selection resource).
 - Added simple demo of using Custom Templates for a different programming
   language (using Elixir as the example).
+- Added vocab namespace IRI to descriptions.
+- Added keyword 'this' to reserved keyword handling for Java (defined in SHACL).
+- Look for vocab description even if no explicit 'owl:Ontology' triple given, by
+  using the determined namespace IRI (even if determined heuristically) as the
+  Subject.
+- Added 'dcterms:title' as predicate to look for as vocab description (DCTerms
+  itself uses this predicate (but doesn't provide an 'a owl:Ontology' triple)).
 
 ## 2.0.0 2022-06-03
 
@@ -83,7 +90,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Note: there was a mistaken v1.1.0 release here in the Git history 
   (commit: adefc1bae0e3e5b006ed32853d130e3d5a2abf65), but we caught this and
   cleaned it up before any release to npm. 
-- Term description meta-data now always displayed for all terms (regardless of
+- Term description metadata now always displayed for all terms (regardless of
   it being non-English or not), and more detailed descriptions provided too
   (and all with full test coverage).
 - Fix artifact regeneration tests for cases where timestamp based comparison

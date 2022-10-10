@@ -352,7 +352,7 @@ module.exports = class Resource {
    *
    * Note: this saves the union of all input resources and also unions in
    * any term selection resources that may apply (since those term selection
-   * resources can also add extra meta-data (e.g., label or comment
+   * resources can also add extra metadata (e.g., label or comment
    * translations, see-also links, etc.)). So do not expect the local copy
    * to be an exact representation of just a single source vocabulary.
    * A consequence of this is that our local copy can represent many remote

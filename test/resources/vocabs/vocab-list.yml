@@ -22,6 +22,8 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - class # Defined in VCard.
       - abstract # Defined in DCTerms.
+      - this # Defined in SHACL.
+
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test

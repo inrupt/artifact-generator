@@ -281,6 +281,6 @@ in vocab [https://team.inrupt.net/public/vocab/PetRock.ttl#].
 # There's more!
 
 Don't forget, there's a **_lot_** more documentation related to the Artifact
-Generator, all contained under the `/documentation' directory of this
+Generator, all contained under the `/documentation` directory of this
 repository, but also linked to from the [Table of Contents](#table-of-contents)
 section above!

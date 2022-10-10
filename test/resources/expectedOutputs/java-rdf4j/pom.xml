@@ -12,8 +12,10 @@
     <description>Bundle of [2] vocabularies that includes the following:
 
  - override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.
+   Namespace IRI: [https://ex.com/vocab/test#]
 
- - schema-inrupt-ext: Inrupt extension to Schema.org terms.</description>
+ - schema-inrupt-ext: Inrupt extension to Schema.org terms.
+   Namespace IRI: [http://schema.org/]</description>
 
     <developers>
         <developer>

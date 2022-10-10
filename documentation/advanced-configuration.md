@@ -151,6 +151,7 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - class     
       - abstract
+      - this
     # Package name. This is a Java-specific option. More generally, each 'artifactToGenerate' object is used to define
     # environment variables that are used to instantiate the template. Without changing the core code, it is therefore
     # possible to use language-specific options in the YAML file and to use them in the templates.

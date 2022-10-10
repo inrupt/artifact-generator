@@ -23,6 +23,8 @@ artifactToGenerate:
       - "class"
       - "abstract"
       - "default"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
     packaging:
       - packagingTool: maven

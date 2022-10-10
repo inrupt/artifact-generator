@@ -35,6 +35,8 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - class # Defined in VCard.
       - abstract # Defined in DCTerms.
+      - this # Defined in SHACL.
+
     ##
     # No packaging options are explicitly set, as the generator initially generated Maven
     # artifacts only for Java code.

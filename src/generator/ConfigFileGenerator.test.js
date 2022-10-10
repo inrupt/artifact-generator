@@ -42,7 +42,7 @@ const PROMPTED_JAVA_ARTIFACT = {
 };
 
 const COMPLETE_JAVA_ARTIFACT = {
-  languageKeywordsToUnderscore: ["class", "abstract", "default"],
+  languageKeywordsToUnderscore: ["class", "abstract", "default", "this"],
   templateInternal: path.join(
     "solidCommonVocabDependent",
     "java",

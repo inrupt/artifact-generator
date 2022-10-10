@@ -10,7 +10,6 @@ const {
   RDF_NAMESPACE,
   RDFS,
   OWL,
-  OWL_NAMESPACE,
   SKOS,
   SKOSXL,
   VANN,
@@ -190,6 +189,39 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.properties.length).toBe(0);
+    });
+
+    it("should find vocab description in heuristically determined namespace", async () => {
+      const vocabNamespace = "https://test.ex.com/vocab#";
+      const description = "Test description...";
+
+      const dataset = rdf
+        .dataset()
+        // Describe our vocab directly (no 'owl:Ontology' triple).
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabNamespace),
+            DCTERMS.title,
+            rdf.literal(description)
+          )
+        )
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${vocabNamespace}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.description).toContain(description);
     });
   });
 

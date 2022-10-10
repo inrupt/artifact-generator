@@ -42,6 +42,7 @@ const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";
 module.exports.DCTERMS = {
   description: rdf.namedNode(`${DCTERMS_NAMESPACE}description`),
   creator: rdf.namedNode(`${DCTERMS_NAMESPACE}creator`),
+  title: rdf.namedNode(`${DCTERMS_NAMESPACE}title`),
 };
 
 // For purely legacy reasons (specifically 'cos the core RDF and RDFS vocabs

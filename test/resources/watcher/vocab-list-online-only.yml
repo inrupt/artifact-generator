@@ -22,6 +22,8 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - "class"
       - "abstract"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
 
 vocabList:
