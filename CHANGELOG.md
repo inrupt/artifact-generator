@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Fix tests so that we still get 100% even if running online.
 - Provide set of 'rdfs:isDefinedBy' values now (to properly document vocabs like
   QUDT that provide multiple version IRIs for the defining vocab).
+- Tidied up template reporting of vocab namespace IRI.
 
 ## 2.0.0 2022-06-03
 

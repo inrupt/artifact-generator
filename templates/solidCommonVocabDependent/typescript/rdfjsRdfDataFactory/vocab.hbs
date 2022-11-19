@@ -16,8 +16,9 @@
  *  - Constant strings: [{{constantStrings.length}}]
 {{#if description}}
  *
- * {{{description}}}
-{{/if}}
+ * {{{description}}}{{/if}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */
 
 // We prefix our local variables with underscores to (hopefully!) prevent
@@ -35,7 +36,9 @@ function _NS(localName: string): _NamedNode {
 
 {{#if description}}
 /**
- * {{{description}}}
+ * {{{description}}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",

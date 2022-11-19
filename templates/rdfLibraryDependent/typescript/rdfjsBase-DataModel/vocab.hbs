@@ -30,7 +30,9 @@ function _NS (localName: string) {
 
 {{#if description}}
 /**
- * {{{description}}}
+ * {{{description}}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",

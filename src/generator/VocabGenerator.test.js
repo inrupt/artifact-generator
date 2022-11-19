@@ -836,7 +836,7 @@ describe("Artifact generator unit tests", () => {
       expect(result.namespace).toBe("http://rdf-extension.com");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
       expect(result.description).toBe(
-        "Extension comment with special ' character!\n   Namespace IRI: [http://rdf-extension.com]"
+        "Extension comment with special ' character!"
       );
     });
 

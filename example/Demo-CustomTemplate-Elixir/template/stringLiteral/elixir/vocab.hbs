@@ -14,12 +14,19 @@
  *  - Literals: [{{literals.length}}]
  *  - Constant IRIs: [{{constantIris.length}}]
  *  - Constant strings: [{{constantStrings.length}}]
+{{#if description}}
+ *
+ * {{{description}}}{{/if}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */
 package {{elixirPackageName}};
 
 {{#if description}}
 /**
- * {{{description}}}
+ * {{{description}}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */{{/if}}
 public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";

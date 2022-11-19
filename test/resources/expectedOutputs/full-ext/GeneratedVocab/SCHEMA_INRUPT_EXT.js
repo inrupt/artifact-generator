@@ -24,7 +24,8 @@ function _NS (localName) {
 
 /**
  * Inrupt extension to Schema.org terms.
-   Namespace IRI: [http://schema.org/]
+ *
+ * Namespace IRI: [http://schema.org/]
  */
 const SCHEMA_INRUPT_EXT = {
   PREFIX: "schema-inrupt-ext",

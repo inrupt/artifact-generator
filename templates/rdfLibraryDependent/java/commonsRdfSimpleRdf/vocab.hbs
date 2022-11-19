@@ -14,6 +14,11 @@
  *  - Literals: [{{literals.length}}]
  *  - Constant IRIs: [{{constantIris.length}}]
  *  - Constant strings: [{{constantStrings.length}}]
+{{#if description}}
+ *
+ * {{{description}}}{{/if}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */
 package {{javaPackageName}};
 
@@ -21,11 +26,12 @@ import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.simple.SimpleRDF;
 
-/**
 {{#if description}}
- * {{{description}}}
-{{/if}}
- */
+/**
+ * {{{description}}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
+ */{{/if}}
 public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";
     public static final String NAMESPACE = "{{namespace}}";

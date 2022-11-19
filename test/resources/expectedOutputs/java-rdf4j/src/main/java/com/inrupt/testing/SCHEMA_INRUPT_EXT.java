@@ -24,7 +24,8 @@ import com.inrupt.solid.common.vocab.VocabTermImpl;
 
 /**
  * Inrupt extension to Schema.org terms.
-   Namespace IRI: [http://schema.org/]
+ *
+ * Namespace IRI: [http://schema.org/]
  */
 public class SCHEMA_INRUPT_EXT implements Vocab {
     public static final String PREFIX = "schema-inrupt-ext";

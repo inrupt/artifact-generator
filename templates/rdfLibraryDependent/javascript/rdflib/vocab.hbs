@@ -18,8 +18,9 @@ const $rdf = require("rdflib");
  *  - Constant strings: [{{constantStrings.length}}]
 {{#if description}}
  *
- * {{{description}}}
-{{/if}}
+ * {{{description}}}{{/if}}{{#if namespace}}
+ *
+ * Namespace IRI: [{{namespace}}]{{/if}}
  */
 
 const RDFLIB_NAMESPACE = new $rdf.Namespace("{{namespace}}");

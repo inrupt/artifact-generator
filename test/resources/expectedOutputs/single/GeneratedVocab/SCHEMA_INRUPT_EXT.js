@@ -12,7 +12,8 @@
  *  - Constant strings: [0]
  *
  * Inrupt extension to Schema.org terms.
-   Namespace IRI: [http://schema.org/]
+ *
+ *  Namespace IRI: [http://schema.org/]
  */
 
 // We prefix our local variables with underscores to (hopefully!) prevent
@@ -24,7 +25,8 @@ function _NS (localName) {
 
 /**
  * Inrupt extension to Schema.org terms.
-   Namespace IRI: [http://schema.org/]
+ *
+ * Namespace IRI: [http://schema.org/]
  */
 const SCHEMA_INRUPT_EXT = {
   PREFIX: "schema-inrupt-ext",

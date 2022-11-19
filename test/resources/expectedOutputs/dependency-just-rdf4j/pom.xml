@@ -11,8 +11,7 @@
     <name>generated-vocab-TEST</name>
     <description>Bundle of [1] vocabularies that includes the following:
 
- - schema-inrupt-ext: Inrupt extension to Schema.org terms.
-   Namespace IRI: [http://schema.org/]</description>
+ - schema-inrupt-ext: Inrupt extension to Schema.org terms.</description>
 
     <developers>
         <developer>

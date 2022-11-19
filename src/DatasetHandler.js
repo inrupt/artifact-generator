@@ -741,7 +741,8 @@ module.exports = class DatasetHandler {
         `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
       );
     }
-    result.description = `${result.description}\n   Namespace IRI: [${result.namespace}]`;
+    // result.description = `${result.description}\n   Namespace IRI: [${result.namespace}]`;
+    result.description = `${result.description}`;
 
     result.artifactVersion = this.vocabData.artifactVersion;
     result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
