@@ -7,7 +7,11 @@ const ArtifactGenerator = require("./generator/ArtifactGenerator");
 const GeneratorConfiguration = require("./config/GeneratorConfiguration");
 const { getArtifactDirectorySourceCode } = require("./Util");
 const VocabWatcher = require("./VocabWatcher");
-const Resource = require("./Resource");
+
+const rdf = require("rdf-ext");
+const rdfFetch = require("@rdfjs/fetch-lite");
+jest.mock("@rdfjs/fetch-lite");
+const { RDF_NAMESPACE, RDF, OWL } = require("./CommonTerms");
 
 const WATCHED_VOCAB_PATH = "./test/resources/watcher/schema-snippet.ttl";
 const VOCAB_LIST_PATH = "./test/resources/watcher/vocab-list-watch.yml";
@@ -76,7 +80,27 @@ describe("Vocabulary watcher", () => {
     await watcher.unwatch();
   });
 
-  it("should ignore online resources", async () => {
+  it("should attempt to check online resources too (hoping for a 'time last modified' header)", async () => {
+    // Make sure our mocked vocab has at least one term.
+    const mockedDataset = rdf
+      .dataset()
+      .add(
+        rdf.quad(
+          rdf.namedNode(RDF_NAMESPACE + "dummyTerm"),
+          RDF.type,
+          RDF.Property
+        )
+      );
+    const rdfFetchMock = {
+      dataset: () => {
+        return mockedDataset;
+      },
+      headers: { get: function () {}, set: function () {} },
+    };
+    rdfFetch.mockImplementation(() => {
+      return Promise.resolve(rdfFetchMock);
+    });
+
     const watcher = new VocabWatcher(
       new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -91,7 +115,7 @@ describe("Vocabulary watcher", () => {
     // online resources it references.
     expect(watcher.getWatchedResourceList().length).toBe(1);
     await watcher.unwatch();
-  }, 10000);
+  });
 
   it("should not generate an initial artifact without changes", async () => {
     const watcher = new VocabWatcher(

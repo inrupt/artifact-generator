@@ -143,7 +143,7 @@ module.exports = class DatasetHandler {
       // if needed.
       if (this.vocabData.ignoreNonVocabTerms) {
         debug(
-          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespace}] (perhaps you need to provide to the 'namespaceOverride' option to detect terms from the correct namespace).`
+          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespaceToUse}] (perhaps you need to provide to the 'namespaceOverride' option to detect terms from the correct namespace).`
         );
         return null;
       }
@@ -741,6 +741,9 @@ module.exports = class DatasetHandler {
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }
+
+    // Check we have at least one vocab term (ignoring the vocab itself (i.e.,
+    // '<vocab-iri> a owl:Ontology' triples)).
     if (subjectSet.length === 1 && subjectSet[0] === result.namespace) {
       throw new Error(`[${result.namespace}] does not contain any terms.`);
     }

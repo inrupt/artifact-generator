@@ -229,7 +229,9 @@ module.exports = class Resource {
       vocabContentTypeHeaderOverride,
       vocabContentTypeHeaderFallback
     );
-    debug(`Storing resource in cache: [${inputResource}]`);
+    debug(
+      `Storing resource in cache: [${inputResource}] (has [${resource.size}] triples)`
+    );
     cachedResources.set(inputResource, resource);
     return resource;
   }
@@ -271,6 +273,12 @@ module.exports = class Resource {
         factory: rdf,
         headers: {
           accept: acceptHeader,
+          // In Oct-2022, suddenly the OMG vocab
+          // (http://www.omg.org/techprocess/ab/SpecificationMetadata/)
+          // started to fail with a "403: Forbidden" error. Investigating with
+          // Postman showed that this was due to missing the 'User-Agent' HTTP
+          // header, so including one now.
+          "User-Agent": "Inrupt Artifact Generator",
         },
         formats,
       })

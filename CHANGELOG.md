@@ -20,6 +20,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   Subject.
 - Added 'dcterms:title' as predicate to look for as vocab description (DCTerms
   itself uses this predicate (but doesn't provide an 'a owl:Ontology' triple)).
+- Added 'User-Agent' HTTP header (Object Management Group (OMG) vocab started
+  failing with '403: Forbidden' without it!).
+- Fix tests so that we still get 100% even if running online. 
 
 ## 2.0.0 2022-06-03
 

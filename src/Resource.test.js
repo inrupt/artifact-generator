@@ -19,9 +19,9 @@ const Resource = require("./Resource");
 const MOCKED_LAST_MODIFIED = 64060588859000;
 const VALID_LAST_MODIF_HTTP_RESOURCE = {
   headers: {
-    // This date should alway be more recent than the considered artifacts
-    // (unless you are running this test 2000 years in the future and are trying
-    // to figure out what stopped working)
+    // This date should always be more recent than the considered artifacts
+    // (unless you are running this test 2,000 years in the future and are
+    // trying to figure out what stopped working!).
     "last-modified": "Mon, 01 Jan 4000 00:00:59 GMT",
   },
 };

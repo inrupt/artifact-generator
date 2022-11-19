@@ -46,6 +46,34 @@ describe("Dataset Handler", () => {
     });
   });
 
+  describe("Find longest term name", () => {
+    it("should find longest from collection", () => {
+      const ontologyIri = "https://ex.com/vocab/";
+      const nonOntologyTermButVeryLong =
+        "https://NOT-ex.com/vocab/nonOntologyTermButVeryLongIndeed";
+      const termShort = `${ontologyIri}short`;
+      const termLong = `${ontologyIri}longer-than-short`;
+      expect(
+        DatasetHandler.findLongestTermName([termShort, termLong], ontologyIri)
+      ).toEqual(termLong);
+      expect(
+        DatasetHandler.findLongestTermName([termLong, termShort], ontologyIri)
+      ).toEqual(termLong);
+      expect(
+        DatasetHandler.findLongestTermName(
+          [nonOntologyTermButVeryLong, termShort, termLong],
+          ontologyIri
+        )
+      ).toEqual(termLong);
+      expect(
+        DatasetHandler.findLongestTermName(
+          [termLong, termShort, nonOntologyTermButVeryLong],
+          ontologyIri
+        )
+      ).toEqual(termLong);
+    });
+  });
+
   describe("Ontology description ", () => {
     it("should pick up alternative vocab description predicates", async () => {
       const datasetRdfsLabel = rdf

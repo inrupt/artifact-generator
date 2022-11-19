@@ -199,8 +199,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://purl.org/dc/terms/"],
-      nameAndPrefixOverride: "dcterms",
+      inputResources: ["https://w3id.org/security#"],
+      nameAndPrefixOverride: "sec",
+
+      // inputResources: ["http://xmlns.com/foaf/0.1/"],
+      // nameAndPrefixOverride: "foaf",
+      // descriptionFallback: "Friend Of A Friend",
+
+      // inputResources: ["http://purl.org/dc/terms/"],
+      // nameAndPrefixOverride: "dcterms",
 
       // inputResources: ["http://www.w3.org/ns/shacl#"],
       // nameAndPrefixOverride: "sh",
