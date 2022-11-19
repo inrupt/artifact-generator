@@ -63,12 +63,12 @@ public class {{vocabNameUpperCase}} implements Vocab {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
-    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
-        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#each isDefinedBys}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -88,12 +88,12 @@ public class {{vocabNameUpperCase}} implements Vocab {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
-    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
-        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#each isDefinedBys}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -113,12 +113,12 @@ public class {{vocabNameUpperCase}} implements Vocab {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
-    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#if isDefinedBy}}
-        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+    public static final VocabTerm {{nameEscapedForJava}} = new VocabTermImpl(FULL_IRI("{{{name}}}"), true){{#each isDefinedBys}}
+        .addIsDefinedBy(SimpleValueFactory.getInstance().createIRI("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
         .addSeeAlso(SimpleValueFactory.getInstance().createIRI("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
         .addLabel("{{{valueEscapedForJava}}}", "{{language}}"){{else}}
         .addLabelNoLanguage("{{{valueEscapedForJava}}}"){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -140,9 +140,9 @@ public class {{vocabNameUpperCase}} implements Vocab {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final String {{nameEscapedForJava}} = "{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}";
 {{/each}}
@@ -159,9 +159,9 @@ public class {{vocabNameUpperCase}} implements Vocab {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final IRI {{nameEscapedForJava}} = SimpleValueFactory.getInstance().createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
 {{/each}}{{/if}} }

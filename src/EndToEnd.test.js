@@ -755,7 +755,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -774,7 +775,7 @@ describe("End-to-end tests", () => {
   });
 
   describe("Term metadata", () => {
-    it("should provide mutliple 'seeAlso' values", async () => {
+    it("should provide multiple 'seeAlso' values", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/seeAlso/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -783,7 +784,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -800,7 +802,7 @@ describe("End-to-end tests", () => {
       expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
     });
 
-    it("should provide only the last 'isDefinedBy' value", async () => {
+    it("should provide all 'isDefinedBy' values", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/isDefinedBy/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -809,7 +811,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -822,7 +825,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(output).toEqual(expect.stringContaining(".addIsDefinedBy("));
-      expect(output).not.toEqual(expect.stringContaining(OWL_NAMESPACE));
+      expect(output).toEqual(expect.stringContaining(OWL_NAMESPACE));
       expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
     });
   });

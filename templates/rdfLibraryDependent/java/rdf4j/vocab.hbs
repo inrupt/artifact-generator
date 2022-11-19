@@ -56,9 +56,9 @@ public class {{vocabNameUpperCase}} {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
@@ -75,9 +75,9 @@ public class {{vocabNameUpperCase}} {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
@@ -94,9 +94,9 @@ public class {{vocabNameUpperCase}} {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI(FULL_IRI("{{{name}}}"));
 {{/each}}
@@ -113,9 +113,9 @@ public class {{vocabNameUpperCase}} {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final String {{nameEscapedForJava}} = "{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}";
 {{/each}}
@@ -132,9 +132,9 @@ public class {{vocabNameUpperCase}} {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     public static final IRI {{nameEscapedForJava}} = valueFactory.createIRI("{{#each definitions}}{{{valueEscapedForJava}}}{{/each}}");
 {{/each}}{{/if}} }

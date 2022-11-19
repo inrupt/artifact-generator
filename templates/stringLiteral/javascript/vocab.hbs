@@ -48,9 +48,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -67,9 +67,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -86,9 +86,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{{name}}}"),
 {{/each}}
@@ -105,9 +105,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: "{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}",
 {{/each}}{{/if}}{{#if constantIris}}
@@ -123,9 +123,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _NS("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),{{/each}}{{/if}}
 }

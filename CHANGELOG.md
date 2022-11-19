@@ -22,7 +22,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   itself uses this predicate (but doesn't provide an 'a owl:Ontology' triple)).
 - Added 'User-Agent' HTTP header (Object Management Group (OMG) vocab started
   failing with '403: Forbidden' without it!).
-- Fix tests so that we still get 100% even if running online. 
+- Fix tests so that we still get 100% even if running online.
+- Provide set of 'rdfs:isDefinedBy' values now (to properly document vocabs like
+  QUDT that provide multiple version IRIs for the defining vocab).
 
 ## 2.0.0 2022-06-03
 

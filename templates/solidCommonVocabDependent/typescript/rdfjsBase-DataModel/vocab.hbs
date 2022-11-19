@@ -52,17 +52,17 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
     _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#if isDefinedBy}}
-    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+  ){{#each isDefinedBys}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
     .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -82,17 +82,17 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
     _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#if isDefinedBy}}
-    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+  ){{#each isDefinedBys}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
     .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -112,17 +112,17 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: new _VocabTerm(
     _NS("{{{name}}}"),
     _rdfFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#if isDefinedBy}}
-    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/if}}{{#each seeAlsos}}
+  ){{#each isDefinedBys}}
+    .addIsDefinedBy(_rdfFactory.namedNode("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
     .addSeeAlso(_rdfFactory.namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
@@ -144,9 +144,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: "{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}",
 {{/each}}{{/if}}{{#if constantIris}}
@@ -162,9 +162,9 @@ const {{vocabNameUpperCase}} = {
    * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
    *
    * See also:{{#each seeAlsos}}
-   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+   *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
    *
-   * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+   * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
    */
   {{nameEscapedForLanguage}}: _rdfFactory.namedNode("{{#each definitions}}{{{valueEscapedForJavaScript}}}{{/each}}"),{{/each}}{{/if}}
 };

@@ -324,33 +324,25 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    const seeAlsoValues = new Set();
-    this.termSelectionDataset
-      .match(quad.subject, RDFS.seeAlso, null)
-      .forEach((subQuad) => {
-        seeAlsoValues.add(subQuad.object.value);
-      });
+    const seeAlsos = this.getSetOfPredicateObjects(
+      quad.subject,
+      RDFS.seeAlso,
+      "seeAlso"
+    );
 
-    this.fullDataset
-      .match(quad.subject, RDFS.seeAlso, null)
-      .forEach((subQuad) => {
-        seeAlsoValues.add(subQuad.object.value);
-      });
+    const isDefinedBys = this.getSetOfPredicateObjects(
+      quad.subject,
+      RDFS.isDefinedBy,
+      "isDefinedBy"
+    );
 
-    // Copy our set of strings into a set of objects.
-    let seeAlsos;
-    if (seeAlsoValues.size > 0) {
-      seeAlsos = new Set();
-      seeAlsoValues.forEach((value) => seeAlsos.add({ seeAlso: value }));
-    }
-
-    let isDefinedBy = undefined;
-    this.fullDataset
-      .match(quad.subject, RDFS.isDefinedBy, null)
-      .forEach((subQuad) => {
-        // Even if we have multiple values, just keep overwriting.
-        isDefinedBy = subQuad.object.value;
-      });
+    // let isDefinedBy = undefined;
+    // this.fullDataset
+    //   .match(quad.subject, RDFS.isDefinedBy, null)
+    //   .forEach((subQuad) => {
+    //     // Even if we have multiple values, just keep overwriting.
+    //     isDefinedBy = subQuad.object.value;
+    //   });
 
     const comment = DatasetHandler.getTermDescription(
       comments,
@@ -367,13 +359,53 @@ module.exports = class DatasetHandler {
       comments,
       definitions,
       seeAlsos,
-      isDefinedBy,
+      isDefinedBys,
       termDescription: DatasetHandler.buildCompositeTermDescription(
         labels,
         comments,
         definitions
       ),
     };
+  }
+
+  /**
+   * Within both our full and term selection datasets, for the specified
+   * subject and predicate, returns 'undefined' if no triples with that
+   * predicate, or else a set of objects where each object has the specified
+   * property name and corresponding triple value.
+   *  Note: We need a Set of objects, because that's what Handlebar templates
+   * need to work with, and we need to access these values in those templates.
+   *
+   * @param subject the term's subject IRI
+   * @param predicate the predicate to search for
+   * @param propertyNameInObject the property name to use for each object in our result Set
+   * @returns {Set<any>} undefined if none, else a Set of objects
+   */
+  getSetOfPredicateObjects(subject, predicate, propertyNameInObject) {
+    // We have to check across multiple datasets, so just create add results
+    // to a simple Set first...
+    const valueSet = new Set();
+    this.termSelectionDataset
+      .match(subject, predicate, null)
+      .forEach((subQuad) => {
+        valueSet.add(subQuad.object.value);
+      });
+
+    this.fullDataset.match(subject, predicate, null).forEach((subQuad) => {
+      valueSet.add(subQuad.object.value);
+    });
+
+    // Copy our result strings into a set of objects.
+    let result;
+    if (valueSet.size > 0) {
+      result = new Set();
+
+      valueSet.forEach((value) =>
+        result.add({ [`${propertyNameInObject}`]: value })
+      );
+    }
+
+    return result;
   }
 
   static describeNamespaceInUse(namespace, namespaceOverride) {

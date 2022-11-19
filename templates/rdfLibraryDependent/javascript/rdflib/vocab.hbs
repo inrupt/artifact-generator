@@ -46,9 +46,9 @@ const {{vocabNameUpperCase}} = {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),
 {{/each}}
@@ -65,9 +65,9 @@ const {{vocabNameUpperCase}} = {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),
 {{/each}}
@@ -84,9 +84,9 @@ const {{vocabNameUpperCase}} = {
      * {{{termDescription}}}{{/if}}{{#if seeAlsos}}
      *
      * See also:{{#each seeAlsos}}
-     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBy}}
+     *  - {{seeAlso}}{{/each}}{{/if}}{{#if isDefinedBys}}
      *
-     * Defined by the vocabulary: {{isDefinedBy}}{{/if}}
+     * Defined by the vocabulary: {{#each isDefinedBys}}{{isDefinedBy}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
      */
     {{nameEscapedForLanguage}}: $rdf.sym(_NS("{{{name}}}")),{{/each}}{{/if}}
 }
