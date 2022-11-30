@@ -31,8 +31,9 @@ const ConfigAll = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: PUBLISH_TO_REPO_LIST,
+  // publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigCommonRdf = {
@@ -46,6 +47,7 @@ const ConfigCommonRdf = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptAll = {
@@ -59,6 +61,7 @@ const ConfigInruptAll = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptCore = {
@@ -73,6 +76,7 @@ const ConfigInruptCore = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptGlossary = {
@@ -87,6 +91,7 @@ const ConfigInruptGlossary = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptUi = {
@@ -100,6 +105,7 @@ const ConfigInruptUi = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptService = {
@@ -114,6 +120,7 @@ const ConfigInruptService = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigSolid = {
@@ -127,9 +134,10 @@ const ConfigSolid = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
-describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
+describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution)", () => {
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
     await generateVocabArtifact(ConfigAll);
@@ -193,14 +201,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
    * can just pop in here, uncomment it, and rerun this test.
    * It's handy 'cos almost all vocabs our there in the wild need something
    * overridden (e.g., vocabContentTypeHeaderOverride:,
-   * or ignoreNonVocabTerms:, or namespaceOverride:), so having them recorded
+   * or ignoreNonVocabTerms:, or namespaceIriOverride:), so having them recorded
    * here has been really handy sometimes.
    */
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["https://w3id.org/security#"],
-      nameAndPrefixOverride: "sec",
+      // inputResources: ["https://w3id.org/security#"],
+      // nameAndPrefixOverride: "sec",
+
+      // inputResources: ["http://www.w3.org/ns/solid/oidc#"],
 
       // inputResources: ["http://xmlns.com/foaf/0.1/"],
       // nameAndPrefixOverride: "foaf",
@@ -254,14 +264,14 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // ignoreNonVocabTerms: true,
       // // Yes, this vocabulary (although named as an application profile) uses
       // // the 'incorrect' HTTP scheme.
-      // namespaceOverride: "http://data.europa.eu/m8g/",
+      // namespaceIriOverride: "http://data.europa.eu/m8g/",
 
       // // OSLO extension to SEMIC Core Person:
       // inputResources: ["https://data.vlaanderen.be/ns/persoon"],
       // nameAndPrefixOverride: "oslo_person",
       // ignoreNonVocabTerms: true,
       // BUG: vann:preferredNamespaceURI seems to be missing trailing '#'!
-      // namespaceOverride: "https://data.vlaanderen.be/ns/persoon#",
+      // namespaceIriOverride: "https://data.vlaanderen.be/ns/persoon#",
 
       // inputResources: ["https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/"],
       // nameAndPrefixOverride: "auto_vc",
@@ -296,9 +306,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["http://www.w3.org/ns/ssn/"],
       // ignoreNonVocabTerms: true,
       //
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.1.0"],
       // nameAndPrefixOverride: "gist",
-      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      // namespaceIriOverride: "https://ontologies.semanticarts.com/gist/",
 
       // inputResources: ["http://www.w3.org/ns/locn"],
 
@@ -351,7 +361,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       //
       //
       // inputResources: ["http://www.w3.org/ns/odrl/2/"],
-      // namespaceOverride: "http://www.w3.org/ns/odrl/2/",
+      // namespaceIriOverride: "http://www.w3.org/ns/odrl/2/",
       // nameAndPrefixOverride: "odrl",
       // ignoreNonVocabTerms: true,
 
@@ -381,11 +391,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // // the namespace IRI, so use this (referenced from the working draft itself) instead
       // inputResources: ["https://www.w3.org/TR/dx-prof-conneg/altr.ttl"],
       // nameAndPrefixOverride: "altr",
-      // namespaceOverride: "http://www.w3.org/ns/dx/conneg/altr#",
+      // namespaceIriOverride: "http://www.w3.org/ns/dx/conneg/altr#",
       // ignoreNonVocabTerms: true,
 
-      // inputResources: ["https://www.w3.org/ns/prov-o#"],
-      // nameAndPrefixOverride: "prov-o",
+      inputResources: ["https://www.w3.org/ns/prov-o#"],
+      nameAndPrefixOverride: "prov-o",
+      namespaceIriOverride: "http://www.w3.org/ns/prov#",
+      vocabularyIriOverride: "http://www.w3.org/ns/prov-o#",
+      descriptionFallback:
+        "Needs a description - see Common RDF YAML for why...",
 
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
@@ -433,6 +447,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       supportBundling: false, //SUPPORT_BUNDLING,
       publish: [DEFAULT_PUBLISH_KEY],
       storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+      reportBestPracticeCompliance: true,
     });
   }, 10000);
 });

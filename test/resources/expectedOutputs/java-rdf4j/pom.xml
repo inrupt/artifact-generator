@@ -13,7 +13,7 @@
 
  - override-name: Vocabulary for terms used during Source Code Generation from RDF vocabularies.
 
- - schema-inrupt-ext: Inrupt extension to Schema.org terms.</description>
+ - schema_inrupt_ext: Inrupt extension to Schema.org terms.</description>
 
     <developers>
         <developer>

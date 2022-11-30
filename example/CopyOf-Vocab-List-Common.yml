@@ -91,21 +91,21 @@ artifactToGenerate:
             fileName: rollup.config.js
 
 vocabList:
-  - description: The sample Pet Rock vocabulary
+  - descriptionFallback: The sample Pet Rock vocabulary
     inputResources:
       - ./PetRock.ttl
 
-  - description: RDF (the full vocabulary)
+  - descriptionFallback: RDF (the full vocabulary)
     nameAndPrefixOverride: rdf
     inputResources:
       - http://www.w3.org/1999/02/22-rdf-syntax-ns#
 
-  - description: rdfs
+  - descriptionFallback: rdfs
     nameAndPrefixOverride: rdfs
     inputResources:
       - http://www.w3.org/2000/01/rdf-schema#
 
-  - description: The Ordered List Ontology
+  - descriptionFallback: The Ordered List Ontology
     nameAndPrefixOverride: olo
     inputResources:
       - http://svn.code.sf.net/p/smiy/code/orderedlistonto/trunk/rdf/orderedlistontology.n3

@@ -54,11 +54,11 @@ artifactToGenerate:
             fileName: index.js
 
 vocabList:
-  - description: Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext-no-author.ttl
-  - description: Vocab for testing predicate types...
+  - descriptionFallback: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
       - ./supported-data-types-no-author.ttl

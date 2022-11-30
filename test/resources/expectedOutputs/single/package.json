@@ -1,7 +1,7 @@
 {
-  "name": "@inrupt/generated-vocab-schema-inrupt-ext",
+  "name": "@inrupt/generated-vocab-schema",
   "version": "1.0.0",
-  "description": "Bundle of [1] vocabularies that includes the following:\n\n - schema-inrupt-ext: Inrupt extension to Schema.org terms.",
+  "description": "Bundle of [1] vocabularies that includes the following:\n\n - schema: Vocab needs a description.",
   "sideEffects": false,
   "main": "index.js",
   "module": "wrapper.js",
@@ -9,8 +9,5 @@
     "name": "@inrupt/artifact-generator",
     "url": "https://github.com/inrupt/artifact-generator"
   },
-  "contributors": [
-    {"name": "https://inrupt.com/profile/card/#us"}
-  ],
   "license": "MIT"
 }

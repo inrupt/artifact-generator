@@ -34,4 +34,4 @@ vocabList:
     # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
     # and otherwise will propose a default based on the domain name.
     nameAndPrefixOverride: "schema"
-    description: "A schema snippet"
+    descriptionFallback: "A schema snippet"

@@ -28,11 +28,14 @@ will generate JavaScript using defaults.
 - Generate JavaScript artifact from this vocabulary: 
   - Using the command-line options: 
     - `--noPrompt` no interactive prompting (we're happy with defaults).
-    - `--force` to ensure re-generation with each example.
-    - `--clearOutputDirectory ` to clear out the target output directory (in
-      case we ran the Quick Setup steps above). Generally we very rarely need to
-      use this option, but here it's just to ensure we start these instructions
-      with a clear output directory!).
+    - `--clearOutputDirectory`, or '-c' to clear out the target output directory
+      (in case we ran the Quick Setup steps above). Generally we very rarely
+      need to use this option, but here it's just to ensure we start these
+      instructions with a clear output directory!).
+    - `--force`, or '-f' to ensure re-generation with each example.
+    - '--reportBestPracticeCompliance', or  '--bp': for each vocabulary, add a
+      report on its compliance to the Inrupt vocabulary Best Practice guidelines
+      (added to the file's comment header)
     
 ```
 npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --force --clearOutputDirectory
@@ -41,7 +44,7 @@ npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPromp
 - See the generated code in `./Generated`.
 - See our `./package.json` - which depends on the local generated folder as 
   `my-generated-vocab`.
-- Run `node index.js`.
+- Run `node src/index.js`.
 
 ## Options for running the Artifact Generator
 
@@ -83,7 +86,7 @@ npx @inrupt/artifact-generator watch --vocabListFile ./Vocab/sample-vocab-bundle
 
 - Change something, e.g., add how very expensive Pet Rocks have become!
 - The Watcher will automatically detect the vocabulary file change...
-- ...re-run `node index.js`, or see real-time updates in your IDE!
+- ...re-run `node src/index.js`, or see real-time updates in your IDE!
 
 # Generate HTML documentation
 

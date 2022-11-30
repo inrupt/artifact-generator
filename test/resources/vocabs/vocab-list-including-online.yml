@@ -36,12 +36,12 @@ artifactToGenerate:
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext.ttl
 
-  - description: Some dummy online vocabulary
+  - descriptionFallback: Some dummy online vocabulary
     nameAndPrefixOverride: dummy
     inputResources:
       # In this test suite, the vocabulary is never actually dereferenced, so any IRI can be used

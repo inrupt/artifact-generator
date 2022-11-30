@@ -55,13 +55,13 @@ class ArtifactGenerator {
   async generate() {
     return this.generateVocabs()
       .then((vocabDatasets) => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           return this.collectGeneratedVocabDetails(vocabDatasets);
         }
         return vocabDatasets;
       })
       .then(async (vocabDatasets) => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           if (!this.artifactData.artifactName) {
             this.artifactData.artifactName = vocabDatasets[0].artifactName;
           }
@@ -76,7 +76,7 @@ class ArtifactGenerator {
       })
       .then(() => this.generatePackaging())
       .then(() => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           FileGenerator.createVersioningFiles(this.artifactData);
         }
       })
@@ -176,14 +176,12 @@ class ArtifactGenerator {
    * opposed to deleting each artifact's output directory individually).
    */
   deleteRootArtifactOutputDirectory() {
-    if (this.artifactData.clearOutputDirectory) {
-      const rootDir = path.join(
-        this.artifactData.outputDirectory,
-        getArtifactDirectoryRoot(this.artifactData)
-      );
+    const rootDir = path.join(
+      this.artifactData.outputDirectory,
+      getArtifactDirectoryRoot(this.artifactData)
+    );
 
-      rimraf.sync(rootDir);
-    }
+    rimraf.sync(rootDir);
   }
 
   async generateNecessaryVocabs() {
@@ -221,7 +219,13 @@ class ArtifactGenerator {
 
       this.artifactData.nameAndPrefixOverride =
         vocabDetails.nameAndPrefixOverride;
-      this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
+      this.artifactData.namespaceIriOverride =
+        vocabDetails.namespaceIriOverride;
+
+      if (!this.artifactData.vocabularyIriOverride) {
+        this.artifactData.vocabularyIriOverride =
+          vocabDetails.vocabularyIriOverride;
+      }
 
       this.artifactData.ignoreNonVocabTerms = vocabDetails.ignoreNonVocabTerms;
 
@@ -229,8 +233,8 @@ class ArtifactGenerator {
       // of itself, we pass down the description from our configuration as
       // a fallback (and prefix that description with some text to denote
       // that it's not coming from the original vocabulary itself).
-      if (vocabDetails.description) {
-        this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+      if (vocabDetails.descriptionFallback) {
+        this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.descriptionFallback}`;
       }
 
       const generatedArtifacts = [];
@@ -260,7 +264,9 @@ class ArtifactGenerator {
   }
 
   async generateVocabs() {
-    this.deleteRootArtifactOutputDirectory();
+    if (this.artifactData.clearOutputDirectory) {
+      this.deleteRootArtifactOutputDirectory();
+    }
 
     // Setting the output directory for each artifact is useful for
     // publication, and should be set even if generation is not necessary.
@@ -309,7 +315,7 @@ class ArtifactGenerator {
    * resources, or initializing, etc.).
    * @returns {*}
    */
-  resourceGeneration() {
+  areWeConfiguredToGenerateResources() {
     return (
       this.artifactData.generated &&
       // Our command-line processor (YARGS) places commands (e.g. 'generate',
@@ -326,7 +332,7 @@ class ArtifactGenerator {
   async generatePackaging() {
     // If the artifacts have not been generated, it's not necessary to
     // re-package them, but also only generate if we are configured to generate.
-    if (this.resourceGeneration()) {
+    if (this.areWeConfiguredToGenerateResources()) {
       // Collect info on all generated artifacts (using their full suggested
       // names).
       const generatedFullArtifactList = [];
@@ -407,7 +413,7 @@ class ArtifactGenerator {
 
   generateLicense() {
     if (
-      this.resourceGeneration() &&
+      this.areWeConfiguredToGenerateResources() &&
       this.artifactData.license &&
       this.artifactData.license.path
     ) {

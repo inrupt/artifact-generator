@@ -4,6 +4,7 @@ const rdf = require("rdf-ext");
 const FileGenerator = require("./FileGenerator");
 const Resource = require("../Resource");
 const DatasetHandler = require("../DatasetHandler");
+const { merge } = require("../Util");
 
 module.exports = class VocabGenerator {
   constructor(artifactData, artifactDetails) {
@@ -95,6 +96,7 @@ module.exports = class VocabGenerator {
       );
 
       const vocabGenerationData = await this.generateData();
+
       this.generateFiles(vocabGenerationData);
 
       return vocabGenerationData;
@@ -106,29 +108,29 @@ module.exports = class VocabGenerator {
   }
 
   async generateData() {
-    // Need to pull this member variable into a local variable to access it from
-    // the arrow function later...
-    const inputResources = this.vocabData.inputResources;
-
     try {
       const { datasets, termsSelectionDataset } =
         await this.completeResource.processInputs(this.vocabData);
 
-      const parsed = await this.parseDatasets(datasets, termsSelectionDataset);
-
-      return parsed;
+      return await this.parseDatasets(datasets, termsSelectionDataset);
     } catch (error) {
-      const result = `Failed to generate from input [${inputResources}]: [${
+      const termSelection = this.vocabData.termSelectionResource
+        ? ` and term selection input [${this.vocabData.termSelectionResource}]`
+        : "";
+
+      const result = `Failed to generate from input [${
+        this.vocabData.inputResources
+      }]${termSelection}: [${
         error.message
       }].\n\nStack: ${error.stack.toString()}`;
       throw new Error(result);
     }
   }
 
-  parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset) {
+  parseDatasets(fullDatasetsArray, termSelectionDataset) {
     return this.buildTemplateInput(
-      VocabGenerator.merge(fullDatasetsArray),
-      VocabGenerator.merge([vocabTermsOnlyDataset])
+      merge(fullDatasetsArray),
+      termSelectionDataset || rdf.dataset()
     );
   }
 
@@ -140,16 +142,5 @@ module.exports = class VocabGenerator {
     );
 
     return datasetHandler.buildTemplateInput();
-  }
-
-  static merge(dataSets) {
-    let fullData = rdf.dataset();
-    dataSets.forEach((dataset) => {
-      if (dataset) {
-        fullData = fullData.merge(dataset);
-      }
-    });
-
-    return fullData;
   }
 };

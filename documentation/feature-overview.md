@@ -27,7 +27,7 @@ programming language, a YAML configuration file must be used (see below).
 
 For example:
 ```shell
-node index.js generate --inputResources ./demo/vocab/PetRock.ttl --noPrompt
+node index.js generate --inputResources ./example/PetRock.ttl --noPrompt
 ```
 This will generate a JavaScript artifact in the default `./Generated`
 directory.

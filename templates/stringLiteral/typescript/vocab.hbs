@@ -18,7 +18,12 @@
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}
+ * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ *
+ * Inrupt Best Practice Compliance Report:
+ *  - BP-0: {{{complianceReport.bpReport_0}}}
+ *  - BP-1: {{{complianceReport.bpReport_1}}}
+ *  - BP-2: {{{complianceReport.bpReport_2}}}{{/if}}
  */
 
 // We prefix our local variables with underscores to (hopefully!) prevent

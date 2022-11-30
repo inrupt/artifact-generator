@@ -41,10 +41,10 @@ artifactToGenerate:
             fileName: rollup.config.js
 
 vocabList:
-  - description: Testing static file won't cause re-generation.
+  - descriptionFallback: Testing static file won't cause re-generation.
     inputResources:
       - ./static-first.ttl
 
-  - description: Testing static file won't cause re-generation.
+  - descriptionFallback: Testing static file won't cause re-generation.
     inputResources:
       - ./static-second.ttl

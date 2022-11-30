@@ -2,27 +2,34 @@
 
 ## CLI options
 
-- `--clearOutputDirectory`, or `-c`: clears the output directory before generating.
-- `--force`, or `-f`: forces the generation even if the output directory contains artifacts that seem up-to-date.
-Note that this will only overwrite existing artifacts - any additional files not re-generated from templates (e.g.
-a `package-lock.json`) will not be affected by this option.
+- `--clearOutputDirectory`, or `-c`: clears the output directory before
+  generating.
+- `--force`, or `-f`: forces the generation even if the output directory
+  contains artifacts that seem up-to-date.
+  Note that this will only overwrite existing artifacts - any additional files
+  not re-generated from templates (e.g., a `package-lock.json`) will not be
+  affected by this option.
+- '--reportBestPracticeCompliance', or  '--bp': for each vocabulary, add a report
+  on it's compliance to the Inrupt vocabulary Best Practice guidelines (added to
+  the file's comment header)
 
 ## Generation configuration
 
 ### CLI Examples
 
-Here are some examples of running the tool using Command Line Interface (CLI) options:
+Here are some examples of running the tool using Command Line Interface (CLI)
+options from the project root directory:
 
-Local vocabulary file
+Local vocabulary file:
 
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl
+node src/index.js generate --inputResources ./example/PetRock.ttl --noPrompt
 ```
 
-Remote vocabulary file
+Remote vocabulary file:
 
 ```shell
-node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl
+node src/index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --noPrompt
 ```
 
 Multiple local vocabulary files:
@@ -32,19 +39,25 @@ node index.js generate --inputResources ./example/Skydiving.ttl ./example/PetRoc
 ```
 
 Selecting only specific terms from a vocabulary.
-Here we provide the full Schema.org vocab as input, but we only want constants for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl' vocab):
+Here we provide the full Schema.org vocab as input, but we only want constants
+for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl'
+vocab):
+
 ```shell
 node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --termSelectionResource ./example/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
-Enhance selected terms with multilingual translations.
+Enhance selected terms with multilingual translations:
+
 ```shell
 node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/our-translations-for-schema-dot-org.ttl --noPrompt
 ```
 
-Collecting multiple (remote in this example) vocabularies into one bundled vocab artifact:
+Collecting multiple (remote in this example) vocabularies into one bundled vocab
+artifact:
+
 ```shell
-node index.js generate --inputResources http://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
+node index.js generate --inputResources https://schema.org/Person.ttl https://schema.org/Restaurant.ttl https://schema.org/Review.ttl
 ```
 
 Providing the version for the output module:
@@ -67,25 +80,41 @@ Using short-form aliases for the command-line flags:
 node index.js generate --i https://schema.org/version/latest/schema.ttl --tsr ./example/just-the-terms-we-want-from-schema-dot-org.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
-Providing the version for the Vocab Term dependency (this is the library that provides a simple class to represent a vocabulary term (such as a Class, a Property or a Text string)):
+Providing the version for the Vocab Term dependency (this is the library that
+provides a simple class to represent a vocabulary term (such as a Class, a
+Property or a Text string)):
 
-*Note:* If you're using a local copy of this library, you can also use the form `file:/my_local_copy/vocab-term` to pick up that local copy.
+*Note:* If you're using a local copy of this library, you can also use the form
+`file:/my_local_copy/vocab-term` to pick up that local copy.
+
 ```shell
 node index.js generate --i ./example/PetRock.ttl --solidCommonVocabVersion ^1.0.10
 ```
 
 For help run:
+
 ```shell
 node index.js --help
 ```
 
-**Note**: By default this will *only* publish to the NPM registry at http://localhost:4873 (which is the default address for Verdaccio when running it on your local machine). You can configure the registry on the command line arguments `--npmRegistry`.
+**Note**: By default this will *only* publish to the NPM registry at 
+`http://localhost:4873` (which is the default address for Verdaccio when running
+it on your local machine). You can configure the registry on the command line
+arguments `--npmRegistry`.
 
-**Note**: The public NPM registry prohibits re-publication of an artifact under a version number that has been released previously. Before publishing an artifact, make sure that you have incremented the version of the module so that there is no conflict. Please note that it is actually a feature of Verdaccio to support `npm --force unpublish`, which makes it possible to override a previously published artifact. 
+**Note**: The public NPM registry prohibits re-publication of an artifact under
+a version number that has been released previously. Before publishing an
+artifact, make sure that you have incremented the version of the module so that
+there is no conflict. Please note that it is actually a feature of Verdaccio to
+support `npm --force unpublish`, which makes it possible to override a
+previously published artifact. 
 
 ### <a id="yaml"/> Configuring options using the YAML file
 
-Creating a YAML configuration file (simply using `node index.js init`) provides you much greater control over the artifacts you'd like to generate, and the vocabularies you want to work with. The following example YAML file shows the available configuration options.
+Creating a YAML configuration file (simply using `node index.js init`) provides
+you much greater control over the artifacts you'd like to generate, and the
+vocabularies you want to work with. The following example YAML file shows the
+available configuration options.
 
 ```yaml
 ##
@@ -206,7 +235,7 @@ artifactToGenerate:
 ##
 vocabList:
     # Description of the vocabulary, that will be used as a comment describing the generated class
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex with selective terms having translations
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex with selective terms having translations
     # MANDATORY A list of resources, which can be any mixture of local RDF
     # files (whose path may be absolute, or relative to the YAML file itself)
     # or remote IRI's, from which a single vocabulary source file will be

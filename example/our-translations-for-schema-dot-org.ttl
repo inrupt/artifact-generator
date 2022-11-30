@@ -1,10 +1,10 @@
 prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
-prefix schema: <http://schema.org/>
+prefix schema: <https://schema.org/>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
-prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
 
 prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation/schema#>
 
@@ -24,7 +24,7 @@ our-translations-for-schema-dot-org:
     dcterms:title "Inrupt extension adding multilingual metadata for Schema.org terms" ;
     dcterms:description "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
     vann:preferredNamespacePrefix "our-translations-for-schema-dot-org" ;
-    vann:preferredNamespaceUri "http://schema.org/" ;
+    vann:preferredNamespaceUri "https://schema.org/" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 
@@ -226,11 +226,11 @@ schema:gender a rdf:Property ;
     schema:alternateName "Geschlecht"@de ;
     schema:alternateName "Género"@es ;
     schema:alternateName "Genere"@it ;
-    rdfs:comment "Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender."@en ;
-    rdfs:comment "Sexe de la personne. Bien que http://schema.org/Male et http://schema.org/Female puissent être utilisés, les chaînes de texte sont également acceptables pour les personnes qui ne s'identifient pas en tant que genre binaire."@fr ;
-    rdfs:comment "Geschlecht der Person. Während http://schema.org/Male und http://schema.org/Female verwendet werden können, sind Textzeichenfolgen auch für Personen zulässig, die sich nicht als binäres Geschlecht identifizieren."@de ;
-    rdfs:comment "Género de la persona. Si bien pueden utilizarse http://schema.org/Male y http://schema.org/Female, las cadenas de texto también son aceptables para las personas que no se identifican como un género binario."@es ;
-    rdfs:comment "Sesso della persona. Mentre http://schema.org/Male e http://schema.org/Female possono essere utilizzati, le stringhe di testo sono accettabili anche per le persone che non si identificano come un genere binario."@it .
+    rdfs:comment "Gender of the person. While https://schema.org/Male and https://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender."@en ;
+    rdfs:comment "Sexe de la personne. Bien que https://schema.org/Male et https://schema.org/Female puissent être utilisés, les chaînes de texte sont également acceptables pour les personnes qui ne s'identifient pas en tant que genre binaire."@fr ;
+    rdfs:comment "Geschlecht der Person. Während https://schema.org/Male und https://schema.org/Female verwendet werden können, sind Textzeichenfolgen auch für Personen zulässig, die sich nicht als binäres Geschlecht identifizieren."@de ;
+    rdfs:comment "Género de la persona. Si bien pueden utilizarse https://schema.org/Male y https://schema.org/Female, las cadenas de texto también son aceptables para las personas que no se identifican como un género binario."@es ;
+    rdfs:comment "Sesso della persona. Mentre https://schema.org/Male e https://schema.org/Female possono essere utilizzati, le stringhe di testo sono accettabili anche per le persone che non si identificano come un genere binario."@it .
 
 schema:nationality a rdf:Property ;
     schema:alternateName "Nationality"@en ;

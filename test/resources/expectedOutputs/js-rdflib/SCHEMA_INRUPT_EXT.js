@@ -10,13 +10,13 @@ const {VocabTermRdflib} = require('@inrupt/solid-common-vocab-rdflib')
   Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)
  */
 
-const _NAMESPACE = "http://schema.org/";
+const _NAMESPACE = "https://schema.org/";
 function _NS (localName) { return (_NAMESPACE + localName) }
 
 const SCHEMA_INRUPT_EXT = {
   PREFIX: 'schema-inrupt-ext',
   NAMESPACE: _NAMESPACE,
-  PREFIX_AND_NAMESPACE: { "schema": "http://schema.org/" },
+  PREFIX_AND_NAMESPACE: { "schema": "https://schema.org/" },
   NS: _NS,
 
     // *****************

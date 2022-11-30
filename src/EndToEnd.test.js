@@ -93,6 +93,7 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          descriptionFallback: "Vocab needs a description.",
           outputDirectory,
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
@@ -116,13 +117,11 @@ describe("End-to-end tests", () => {
 
       // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
       const output = fs
-        .readFileSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
+          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA.js"
         )
         .toString();
       expect(
@@ -280,21 +279,19 @@ describe("End-to-end tests", () => {
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
       await artifactGenerator.generate();
 
       expect(
-        fs.existsSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        fs.existsSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
       ).toBe(true);
 
       const generated = fs
-        .readFileSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
 
       expect(generated).toEqual(
@@ -307,9 +304,7 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining(
-          '"name": "@inrupt/generated-vocab-schema-inrupt-ext"'
-        )
+        expect.stringContaining('"name": "@inrupt/generated-vocab-schema"')
       );
     });
 
@@ -332,6 +327,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -346,7 +343,7 @@ describe("End-to-end tests", () => {
 
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/full-ext/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
+          "test/resources/expectedOutputs/full-ext/GeneratedVocab/SCHEMA.js"
         )
         .toString();
 
@@ -403,6 +400,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -445,6 +444,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -499,6 +500,8 @@ describe("End-to-end tests", () => {
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -541,6 +544,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -571,6 +576,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -598,6 +605,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -606,9 +615,7 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining(
-          '"name": "@inrupt/generated-vocab-schema-inrupt-ext",'
-        )
+        expect.stringContaining('"name": "@inrupt/generated-vocab-schema",')
       );
 
       del.sync([`${outputDirectory}/*`]);
@@ -624,6 +631,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -656,6 +665,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -665,7 +676,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema-inrupt-ext: '
+          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema_inrupt_ext: Inrupt extension to Schema.org terms.'
         )
       );
     });
@@ -688,6 +699,8 @@ describe("End-to-end tests", () => {
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -697,7 +710,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '{"name": "https://inrupt.com/profile/card/#us"}'
+          "schema_inrupt_ext: Inrupt extension to Schema.org terms."
         )
       );
     });
@@ -764,13 +777,25 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      const output = fs
+      const outputSchemaExtension = fs
         .readFileSync(
           `${outputDirectoryJS}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
-      expect(output).toEqual(expect.stringContaining("new _VocabTerm("));
+      expect(outputSchemaExtension).toEqual(
+        expect.stringContaining("new _VocabTerm(")
+      );
+
+      // Should also generate a pure snippet of Schema.org, with its own
+      // prefix.
+      const outputSchemaSnippet = fs
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SNIPPET.js`)
+        .toString();
+
+      expect(outputSchemaSnippet).toEqual(
+        expect.stringContaining("new _VocabTerm(")
+      );
     });
   });
 

@@ -83,11 +83,11 @@ artifactToGenerate:
             fileName: rollup.config.js
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ../vocabs/schema-snippet.ttl
 
-  - description: Vocab for testing predicate types...
+  - descriptionFallback: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
       - ../vocabs/supported-data-types.ttl

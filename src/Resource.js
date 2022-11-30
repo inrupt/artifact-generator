@@ -67,7 +67,7 @@ const prefixes = {
   void: "http://rdfs.org/ns/void#",
   vann: "http://purl.org/vocab/vann/",
   xsd: "http://www.w3.org/2001/XMLSchema#",
-  schema: "http://schema.org/",
+  schema: "https://schema.org/",
   dcterms: "http://purl.org/dc/terms/",
   time: "http://www.w3.org/2006/time#",
 };
@@ -141,7 +141,6 @@ module.exports = class Resource {
       datasets.push(termsSelectionDataset);
     }
 
-    // processInputsCallback(datasets, termsSelectionDataset);
     return { datasets, termsSelectionDataset };
   }
 
@@ -230,7 +229,7 @@ module.exports = class Resource {
       vocabContentTypeHeaderFallback
     );
     debug(
-      `Storing resource in cache: [${inputResource}] (has [${resource.size}] triples)`
+      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size}] triples)`
     );
     cachedResources.set(inputResource, resource);
     return resource;

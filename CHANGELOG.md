@@ -26,6 +26,23 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Provide set of 'rdfs:isDefinedBy' values now (to properly document vocabs like
   QUDT that provide multiple version IRIs for the defining vocab).
 - Tidied up template reporting of vocab namespace IRI.
+- Major tidy up and simplification of code to determine a vocab's namespace IRI.
+- Started to add completely new capability to report on Best Practices
+  guidelines compliance (similar in intent to OOPS! and FOOPS!).
+- Add support for SHACL PrefixDeclarations for namespace details (e.g., a
+  vocab's namespace IRI and prefix), as used now by 'gist'.
+- Encoded clear distinction between the Vocabulary/Ontology IRI and the
+  namespace IRI.
+- **BREAKING CHANGE** Renamed the configuration parameter of 'namespaceOverride'
+  to be 'namespaceIriOverride', to better align with the new 
+  'vocabularyIriOverride' parameter, and also to distinguish it more clearly
+  from other namespace details (such as the namespace prefix).
+- **BREAKING CHANGE** Renamed the configuration parameter of 'description' to be
+  consistent with internal code use of 'descriptionFallback' (which better
+  communicates its intent as a fallback in case the vocab itself does not
+  explicitly provide its own description). 
+- **BREAKING CHANGE** Changed Inrupt Artifact Generator vocab namespace IRI to
+  use a trailing slash instead of a trailing hash.
 
 ## 2.0.0 2022-06-03
 

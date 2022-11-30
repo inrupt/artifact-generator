@@ -9,9 +9,9 @@ prefix ldp: <http://www.w3.org/ns/ldp#>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
 
-prefix schema: <http://schema.org/>
+prefix schema: <https://schema.org/>
 
-prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
 prefix schema_inrupt_ext: <https://w3id.org/inrupt/vocab/extension/schema#>
 
 #
@@ -22,7 +22,7 @@ prefix schema_inrupt_ext: <https://w3id.org/inrupt/vocab/extension/schema#>
 # So we very deliberately re-use the underlying vocab's namespace, but use our
 # own prefix to try and differentiate.
 #
-schema_inrupt_ext: a owl:Ontology, inrupt_gen:Ontology ;
+schema_inrupt_ext: a owl:Ontology, inrupt_gen:OntologyExtension ;
     owl:versionInfo "0.0.1" ;
     owl:versionIRI <https://inrupt.com/vocab/extension/schema/0.0.1> ;
     dcterms:creator <https://inrupt.com/profile/card/#us> ;
@@ -38,7 +38,7 @@ schema_inrupt_ext: a owl:Ontology, inrupt_gen:Ontology ;
  convenient constants for just these selected terms, rather than including the
  over 2,500 terms currently defined in Schema.org).""" ;
     vann:preferredNamespacePrefix "schema_inrupt_ext" ;
-    vann:preferredNamespaceUri "http://schema.org/" ;
+    vann:preferredNamespaceUri "https://w3id.org/inrupt/vocab/extension/schema#" ;
     dcterms:license sm:MITLicense .
 
 

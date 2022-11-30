@@ -38,4 +38,4 @@ vocabList:
   - inputResources:
       - "../vocabs/schema-snippet.ttl"
     nameAndPrefixOverride: "schema"
-    description: "An example vocabulary"
+    descriptionFallback: "An example vocabulary"

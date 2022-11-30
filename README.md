@@ -128,15 +128,15 @@ You can now run the Artifact Generator from the root of the cloned directory by
 simply executing:
 
 ```script
-> node index.js <Normal Command-Line Options>
+> node src/index.js <Normal Command-Line Options>
 >
-> node index.js --version
-0.13.3
+> node src/index.js --version
+2.0.0
 >
 ```
 
 You can now replace all the example references below that begin with
-`artifact-generator ...` with `node index.js ...` instead.
+`artifact-generator ...` with `node src/index.js ...` instead.
 
 ### 4. Use `npx`
 

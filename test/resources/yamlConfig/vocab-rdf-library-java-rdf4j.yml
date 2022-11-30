@@ -41,7 +41,10 @@ artifactToGenerate:
             fileName: pom.xml
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org with Inrupt extensions...
     inputResources:
       - ../vocabs/schema-snippet.ttl
     termSelectionResource: ../vocabs/schema-inrupt-ext.ttl
+    # This is needed because Schema.org doesn't provide explicit vocab
+    # metadata.
+    namespaceIriOverride: https://schema.org/

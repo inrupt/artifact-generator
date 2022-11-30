@@ -25,4 +25,4 @@ vocabList:
       ###
       - "schema-snippet-missing-semicolon.ttl"
     nameAndPrefixOverride: "schema"
-    description: "A schema snippet"
+    descriptionFallback: "A schema snippet"

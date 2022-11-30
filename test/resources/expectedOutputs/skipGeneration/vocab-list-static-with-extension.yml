@@ -41,7 +41,10 @@ artifactToGenerate:
             fileName: rollup.config.js
 
 vocabList:
-  - description: Testing static file won't cause re-generation.
+  - descriptionFallback: Testing static file won't cause re-generation.
     inputResources:
       - ./static-first.ttl
     termSelectionResource: ./static-first-extension.ttl
+    # Because both inputs define their own (and different) vocabulary IRIs, we
+    # need to stipulate which one to use for the combined output vocab...
+    vocabularyIriOverride: https://inrupt.com/vocab/static-test-1/

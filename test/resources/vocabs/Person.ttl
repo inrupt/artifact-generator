@@ -1,22 +1,12 @@
-@prefix schema: <http://schema.org/> .
-@prefix bibo: <http://purl.org/ontology/bibo/> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix dctype: <http://purl.org/dc/dcmitype/> .
-@prefix eli: <http://data.europa.eu/eli/ontology#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix schema: <http://schema.org/> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix snomed: <http://purl.bioontology.org/ontology/SNOMEDCT/> .
-@prefix void: <http://rdfs.org/ns/void#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+prefix schema: <https://schema.org/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <https://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
 schema:Person a rdfs:Class ;
     rdfs:label "Person" ;
@@ -297,7 +287,7 @@ schema:gender a rdf:Property ;
     schema:isPartOf <http://pending.schema.org> ;
     schema:rangeIncludes schema:GenderType,
         schema:Text ;
-    rdfs:comment "Gender of something, typically a <a class=\"localLink\" href=\"http://schema.org/Person\">Person</a>, but possibly also fictional characters, animals, etc. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The <a class=\"localLink\" href=\"http://schema.org/gender\">gender</a> property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender <a class=\"localLink\" href=\"http://schema.org/SportsTeam\">SportsTeam</a> can be indicated with a text value of \"Mixed\"." .
+    rdfs:comment "Gender of something, typically a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, but possibly also fictional characters, animals, etc. While https://schema.org/Male and https://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The <a class=\"localLink\" href=\"https://schema.org/gender\">gender</a> property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender <a class=\"localLink\" href=\"https://schema.org/SportsTeam\">SportsTeam</a> can be indicated with a text value of \"Mixed\"." .
 
 schema:givenName a rdf:Property ;
     rdfs:label "givenName" ;
@@ -390,7 +380,7 @@ schema:image a rdf:Property ;
     schema:domainIncludes schema:Thing ;
     schema:rangeIncludes schema:ImageObject,
         schema:URL ;
-    rdfs:comment "An image of the item. This can be a <a class=\"localLink\" href=\"http://schema.org/URL\">URL</a> or a fully described <a class=\"localLink\" href=\"http://schema.org/ImageObject\">ImageObject</a>." .
+    rdfs:comment "An image of the item. This can be a <a class=\"localLink\" href=\"https://schema.org/URL\">URL</a> or a fully described <a class=\"localLink\" href=\"https://schema.org/ImageObject\">ImageObject</a>." .
 
 schema:inker schema:rangeIncludes schema:Person .
 
@@ -432,7 +422,7 @@ schema:knowsAbout a rdf:Property ;
     schema:rangeIncludes schema:Text,
         schema:Thing,
         schema:URL ;
-    rdfs:comment "Of a <a class=\"localLink\" href=\"http://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"http://schema.org/Organization\">Organization</a>, to indicate a topic that is known about - suggesting possible expertise but not implying it. We do not distinguish skill levels here, or relate this to educational content, events, objectives or <a class=\"localLink\" href=\"http://schema.org/JobPosting\">JobPosting</a> descriptions." .
+    rdfs:comment "Of a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"https://schema.org/Organization\">Organization</a>, to indicate a topic that is known about - suggesting possible expertise but not implying it. We do not distinguish skill levels here, or relate this to educational content, events, objectives or <a class=\"localLink\" href=\"https://schema.org/JobPosting\">JobPosting</a> descriptions." .
 
 schema:knowsLanguage a rdf:Property ;
     rdfs:label "knowsLanguage" ;
@@ -444,7 +434,7 @@ schema:knowsLanguage a rdf:Property ;
     schema:isPartOf <http://pending.schema.org> ;
     schema:rangeIncludes schema:Language,
         schema:Text ;
-    rdfs:comment "Of a <a class=\"localLink\" href=\"http://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"http://schema.org/Organization\">Organization</a>, to indicate a known language. We do not distinguish skill levels or reading/writing/speaking/signing here. Use language codes from the <a href=\"http://tools.ietf.org/html/bcp47\">IETF BCP 47 standard</a>." .
+    rdfs:comment "Of a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"https://schema.org/Organization\">Organization</a>, to indicate a known language. We do not distinguish skill levels or reading/writing/speaking/signing here. Use language codes from the <a href=\"http://tools.ietf.org/html/bcp47\">IETF BCP 47 standard</a>." .
 
 schema:landlord schema:rangeIncludes schema:Person .
 
@@ -569,9 +559,9 @@ schema:publishingPrinciples a rdf:Property ;
         schema:Person ;
     schema:rangeIncludes schema:CreativeWork,
         schema:URL ;
-    rdfs:comment """The publishingPrinciples property indicates (typically via <a class="localLink" href="http://schema.org/URL">URL</a>) a document describing the editorial principles of an <a class="localLink" href="http://schema.org/Organization">Organization</a> (or individual e.g. a <a class="localLink" href="http://schema.org/Person">Person</a> writing a blog) that relate to their activities as a publisher, e.g. ethics or diversity policies. When applied to a <a class="localLink" href="http://schema.org/CreativeWork">CreativeWork</a> (e.g. <a class="localLink" href="http://schema.org/NewsArticle">NewsArticle</a>) the principles are those of the party primarily responsible for the creation of the <a class="localLink" href="http://schema.org/CreativeWork">CreativeWork</a>.<br/><br/>
+    rdfs:comment """The publishingPrinciples property indicates (typically via <a class="localLink" href="https://schema.org/URL">URL</a>) a document describing the editorial principles of an <a class="localLink" href="https://schema.org/Organization">Organization</a> (or individual e.g. a <a class="localLink" href="https://schema.org/Person">Person</a> writing a blog) that relate to their activities as a publisher, e.g. ethics or diversity policies. When applied to a <a class="localLink" href="https://schema.org/CreativeWork">CreativeWork</a> (e.g. <a class="localLink" href="https://schema.org/NewsArticle">NewsArticle</a>) the principles are those of the party primarily responsible for the creation of the <a class="localLink" href="https://schema.org/CreativeWork">CreativeWork</a>.<br/><br/>
 
-While such policies are most typically expressed in natural language, sometimes related information (e.g. indicating a <a class="localLink" href="http://schema.org/funder">funder</a>) can be expressed using schema.org terminology.""" .
+While such policies are most typically expressed in natural language, sometimes related information (e.g. indicating a <a class="localLink" href="https://schema.org/funder">funder</a>) can be expressed using schema.org terminology.""" .
 
 schema:readBy schema:rangeIncludes schema:Person .
 
@@ -771,6 +761,6 @@ schema:identifier a rdf:Property ;
     schema:rangeIncludes schema:PropertyValue,
         schema:Text,
         schema:URL ;
-    rdfs:comment "The identifier property represents any kind of identifier for any kind of <a class=\"localLink\" href=\"http://schema.org/Thing\">Thing</a>, such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See <a href=\"/docs/datamodel.html#identifierBg\">background notes</a> for more details." ;
+    rdfs:comment "The identifier property represents any kind of identifier for any kind of <a class=\"localLink\" href=\"https://schema.org/Thing\">Thing</a>, such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See <a href=\"/docs/datamodel.html#identifierBg\">background notes</a> for more details." ;
     owl:equivalentProperty dcterms:identifier .
 

@@ -624,8 +624,8 @@ class GeneratorConfiguration {
       cliConfig.vocabList[0].nameAndPrefixOverride = args.nameAndPrefixOverride;
     }
 
-    if (args.namespaceOverride) {
-      cliConfig.vocabList[0].namespaceOverride = args.namespaceOverride;
+    if (args.namespaceIriOverride) {
+      cliConfig.vocabList[0].namespaceIriOverride = args.namespaceIriOverride;
     }
 
     if (args.ignoreNonVocabTerms) {

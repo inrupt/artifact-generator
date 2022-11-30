@@ -37,4 +37,4 @@ vocabList:
   - inputResources:
       - "./schema-snippet.ttl"
     nameAndPrefixOverride: "schema"
-    description: "A schema snippet"
+    descriptionFallback: "A schema snippet"

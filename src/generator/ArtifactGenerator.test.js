@@ -31,7 +31,7 @@ beforeEach(() => {
   );
 });
 
-describe("Artifact Generator", () => {
+describe("Artifact Generator unit tests", () => {
   it("should provide a default output directory", () => {
     const artifactGenerator = new ArtifactGenerator({ configuration: {} });
     expect(artifactGenerator.artifactData.outputDirectory).toEqual(".");
@@ -142,6 +142,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         supportBundling: false,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -169,6 +171,8 @@ describe("Artifact Generator", () => {
         outputDirectory,
         artifactName: "someName",
         solidCommonVocabVersion: "^1.0.10",
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -207,6 +211,8 @@ describe("Artifact Generator", () => {
 
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -242,6 +248,8 @@ describe("Artifact Generator", () => {
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -633,6 +641,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         force: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -682,6 +692,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         clearOutputDirectory: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 

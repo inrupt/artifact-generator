@@ -1,14 +1,13 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix grddl: <http://www.w3.org/2003/g/data-view#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix vann: <http://purl.org/vocab/vann/> .
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix dcterms: <http://purl.org/dc/elements/1.1/>
+prefix grddl: <http://www.w3.org/2003/g/data-view#>
+prefix vann: <http://purl.org/vocab/vann/>
 
 <http://www.w3.org/2002/07/owl> a owl:Ontology ;
-     dc:title "The OWL 2 Schema vocabulary (OWL 2)" ;
+     dcterms:title "The OWL 2 Schema vocabulary (OWL 2)" ;
      rdfs:comment """
   This ontology partially describes the built-in classes and
   properties that together form the basis of the RDF/XML syntax of OWL 2.

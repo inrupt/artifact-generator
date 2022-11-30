@@ -8,7 +8,7 @@ prefix vann:    <http://purl.org/vocab/vann/>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix sm:       <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
 
-prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator#>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
 
 prefix pet_rock:   <https://inrupt.com/vocab/demo/PetRock.ttl#>
 

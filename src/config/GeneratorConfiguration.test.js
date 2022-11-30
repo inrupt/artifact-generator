@@ -15,13 +15,13 @@ const {
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
-    description:
+    descriptionFallback:
       "Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex",
     inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
     termSelectionResource: "test/resources/vocabs/schema-inrupt-ext.ttl",
   },
   {
-    description: "Some dummy online vocabulary",
+    descriptionFallback: "Some dummy online vocabulary",
     nameAndPrefixOverride: "dummy",
     inputResources: ["http://some.vocabulary.online/dummy"],
   },
@@ -45,7 +45,7 @@ artifactToGenerate:
     sourceFileExtension: java
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext.ttl
@@ -376,14 +376,14 @@ describe("Generator configuration", () => {
 
     // SUCCESS CASE
     it("should generate collected configuration from command line", async () => {
-      const argNamespaceOverride =
+      const argnamespaceIriOverride =
         "override namespace (should be an IRI really!)";
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
         inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
         nameAndPrefixOverride: "dummy-test",
-        namespaceOverride: argNamespaceOverride,
+        namespaceIriOverride: argnamespaceIriOverride,
         ignoreNonVocabTerms: true,
         noPrompt: true,
       });
@@ -394,7 +394,7 @@ describe("Generator configuration", () => {
         {
           inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
           nameAndPrefixOverride: "dummy-test",
-          namespaceOverride: argNamespaceOverride,
+          namespaceIriOverride: argnamespaceIriOverride,
           ignoreNonVocabTerms: true,
         },
       ]);

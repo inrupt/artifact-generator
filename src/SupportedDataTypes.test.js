@@ -26,8 +26,6 @@ describe("Supported Data Type", () => {
         outputDirectory,
         artifactVersion: "1.0.0",
         moduleNamePrefix: "generated-vocab-",
-        nameAndPrefixOverride: "owl",
-
         generatedVocabs: [],
         authorSet: new Set(),
       },
@@ -110,6 +108,9 @@ describe("Supported Data Type", () => {
     const indexOutput = fs
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/HTTP.js`)
       .toString();
+
+    // EXPECTS TO GET THE NAMEPSACE IRI FROM A VOCAB TERM, SINCE VOCAB DOESN'T EXPLICITLY GIVE IT VIA VANN....
+    // HENCE WE SEE THE TRAILING HASH, BUT IN FACT THE ONTOLOGY 'a owl:Ontology' DOESN'T HAVE THAT HASH!!!???
 
     expect(indexOutput).toEqual(
       expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"')

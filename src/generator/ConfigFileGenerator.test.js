@@ -58,7 +58,7 @@ const COMPLETE_JAVA_ARTIFACT = {
 const COMPLETE_VOCAB = {
   inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
   nameAndPrefixOverride: "schema",
-  description: "An example vocabulary",
+  descriptionFallback: "An example vocabulary",
   termSelectionFile: "",
 };
 

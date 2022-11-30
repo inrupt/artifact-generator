@@ -133,6 +133,6 @@ vocabList:
   - inputResources:
       - http://www.w3.org/2000/01/rdf-schema#
 
-  - description: OWL (Web Ontology Language) - a Semantic Web language designed to represent rich and complex knowledge about things, groups of things, and relations between things
+  - descriptionFallback: OWL (Web Ontology Language) - a Semantic Web language designed to represent rich and complex knowledge about things, groups of things, and relations between things
     inputResources:
       - http://www.w3.org/2002/07/owl#

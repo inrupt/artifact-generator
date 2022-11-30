@@ -38,7 +38,7 @@ vocabList:
 #  # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
 #  # and otherwise will propose a default based on the domain name.
 #  - nameAndPrefixOverride: example
-#    description: Some vocabulary
+#    descriptionFallback: Some vocabulary
 #  # The following is the list of IRI to read when building the artifact.
 #    inputResources:
 #      - https://example.org/ns
@@ -48,7 +48,7 @@ vocabList:
 #    termSelectionFile: /path/to/file
 
 #  # Example of a local vocabulary.
-#  - description: A vocabulary stored in a local file
+#  - descriptionFallback: A vocabulary stored in a local file
 #    nameAndPrefixOverride: anotherExample
 #    inputResources:
 #      - /path/to/vocabulary

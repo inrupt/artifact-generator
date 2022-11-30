@@ -34,12 +34,12 @@ artifactToGenerate:
             fileName: pom.xml
 
 vocabList:
-  - description: "A schema snippet"
+  - descriptionFallback: "A schema snippet"
     nameAndPrefixOverride: "schema"
     inputResources:
       - "./schema-snippet.ttl"
 
-  - description: "Another schema snippet"
+  - descriptionFallback: "Another schema snippet"
     nameAndPrefixOverride: "schema2"
     inputResources:
       - "./another-schema-snippet.ttl"

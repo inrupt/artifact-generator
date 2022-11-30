@@ -83,7 +83,7 @@ vocabList:
     nameAndPrefixOverride: time
     widocoLanguages: en-es
 
-  - description: Inrupt-determined cherry-picked Schema.org terms (that include label and comment translations)
+  - descriptionFallback: Inrupt-determined cherry-picked Schema.org terms (that include label and comment translations)
     nameAndPrefixOverride: schema_inrupt
     widocoLanguages: en-es-de-it-fr
     # So here we are pulling in the entire Schema.org vocabulary...
@@ -93,7 +93,7 @@ vocabList:
     # optionally adding more metadata for each of those chosen terms).
     termSelectionResource: ./Extension/schema-inrupt-ext.ttl
 
-#  - description: Example of options - such as this description if the vocab itself doesn't provide one!
+#  - descriptionFallback: Example of options - such as this description if the vocab itself doesn't provide one!
 #    # What inputs to use - all terms from all input resources will be merged.
 #    inputResources:
 #      - http://usefulinc.com/ns/vocab1#
@@ -116,7 +116,7 @@ vocabList:
 #    # was causing our simple heuristic that guesses the namespace of a vocab
 #    # that doesn't explicitly state its namespace (which is bad form!) to
 #    # blow up - so we just provide the correct one manually here now instead.
-#    namespaceOverride: https://w3id.org/security#
+#    namespaceIriOverride: https://w3id.org/security#
 #    # This vocab also declares a number of annotation properties (e.g., for DCTERMS
 #    # and SKOS terms) to keep the ontology within OWL DL, so we want to ignore
 #    # those.

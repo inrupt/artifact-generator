@@ -1,4 +1,5 @@
 const path = require("path");
+const rdf = require("rdf-ext");
 
 // TODO: Consider moving these functions into 'GeneratorConfiguration.js'
 //  instead. The code was put here due to cyclic dependency problems when it was
@@ -37,9 +38,19 @@ function describeInput(artifactInfo) {
       }: [${artifactInfo.inputResources.join(", ")}]`;
 }
 
+function mergeDatasets(dataSetArray) {
+  let fullData = rdf.dataset();
+  dataSetArray.forEach((dataset) => {
+    fullData = fullData.merge(dataset);
+  });
+
+  return fullData;
+}
+
 module.exports.DEFAULT_DIRECTORY_ROOT = DEFAULT_DIRECTORY_ROOT;
 module.exports.DEFAULT_DIRECTORY_SOURCE_CODE = DEFAULT_DIRECTORY_SOURCE_CODE;
 module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
 module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
 module.exports.normalizePath = normalizeIfFilePath;
 module.exports.describeInput = describeInput;
+module.exports.merge = mergeDatasets;

@@ -4,11 +4,12 @@ prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
-prefix ldp: <http://www.w3.org/ns/ldp#>
 prefix vann: <http://purl.org/vocab/vann/>
 
-prefix schema: <http://schema.org/>
-prefix schema-inrupt-ext: <https://w3id.org/inrupt/vocab/extension/schema#>
+prefix schema: <https://schema.org/>
+prefix schema_inrupt_ext: <https://w3id.org/inrupt/vocab/extension/schema#>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
 
 #
 # Extensions deliberately add (i.e. extend) existing terms in existing
@@ -18,22 +19,20 @@ prefix schema-inrupt-ext: <https://w3id.org/inrupt/vocab/extension/schema#>
 # So we very deliberately re-use the underlying vocab's namespace, but use our
 # own prefix to try and differentiate.
 #
-schema-inrupt-ext:
-    a owl:Ontology;
-    owl:versionInfo "0.1" ;
+schema_inrupt_ext: a owl:Ontology, inrupt_gen:OntologyExtension ;
+    owl:versionInfo "0.0.1" ;
     dcterms:creator <https://inrupt.com/profile/card/#us> ;
     dcterms:issued "2019/06/18"^^xsd:date ;
     dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
     dcterms:description "Inrupt extension to Schema.org terms." ;
-    vann:preferredNamespacePrefix "schema-inrupt-ext" ;
-    vann:preferredNamespaceUri "http://schema.org/" ;
+    vann:preferredNamespacePrefix "schema_inrupt_ext" ;
+    vann:preferredNamespaceUri "https://schema.org/" ;
     dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
 
 #
 # We need this term internally when generating source-code artifacts from vocabularies.
 #
 schema:alternateName
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Alternate Name"@en ;
     schema:alternateName "Nom alternatif"@fr ;
     schema:alternateName "Anderer Name"@de ;
@@ -47,7 +46,6 @@ schema:alternateName
 
 
 schema:Person
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Person"@en ;
     schema:alternateName "La personne"@fr ;
     schema:alternateName "Person"@de ;
@@ -60,7 +58,6 @@ schema:Person
 
 
 schema:givenName
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Given Name"@en ;
     schema:alternateName "Prénom"@fr ;
     schema:alternateName "Vorname"@de ;
@@ -72,7 +69,6 @@ schema:givenName
     rdfs:comment "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it .
 
 schema:familyName a rdf:Property ;
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Family Name"@en ;
     schema:alternateName "Nom de famille"@fr ;
     schema:alternateName "Nachname"@de ;
@@ -84,7 +80,6 @@ schema:familyName a rdf:Property ;
     rdfs:comment "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it .
 
 schema:additionalName
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Additional Name"@en ;
     schema:alternateName "Nom additionnel"@fr ;
     schema:alternateName "Zusätzlicher Name"@de ;
@@ -96,7 +91,6 @@ schema:additionalName
     rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
 
 schema:license
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "License"@en ;
     schema:alternateName "License"@fr ;
     schema:alternateName "Lizenz"@de ;
@@ -108,7 +102,6 @@ schema:license
     rdfs:comment "Un documento di licenza che si applica a questo contenuto, generalmente indicato dall'URL."@it .
 
 schema:name
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Name"@en ;
     schema:alternateName "Nom"@fr ;
     schema:alternateName "Name"@de ;
@@ -120,7 +113,6 @@ schema:name
     rdfs:comment "Il nome dell'articolo."@it .
 
 schema:text
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Text"@en ;
     schema:alternateName "Texte"@fr ;
     schema:alternateName "Text"@de ;
@@ -132,7 +124,6 @@ schema:text
     rdfs:comment "Il contenuto testuale di questo CreativeWork."@it .
 
 schema:identifier
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     rdfs:seeAlso <https://schema.org/docs/datamodel.html#identifierBg> ;
     schema:alternateName "Identifer"@en ;
     schema:alternateName "Identifiant"@fr ;
@@ -145,7 +136,6 @@ schema:identifier
     rdfs:comment "La proprietà identificatore rappresenta qualsiasi tipo di identificatore per qualsiasi tipo di Cosa, come ISBN, codici GTIN, UUID ecc. Schema.org fornisce proprietà dedicate per rappresentare molti di questi, sia come stringhe di testo o come collegamenti URL (URI). Vedere le note di fondo per maggiori dettagli."@it .
 
 schema:description
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Description"@en ;
     schema:alternateName "Description"@fr ;
     schema:alternateName "Beschreibung"@de ;
@@ -157,7 +147,6 @@ schema:description
     rdfs:comment "Una descrizione dell'articolo."@it .
 
 schema:image
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     rdfs:seeAlso <https://schema.org/ImageObject> ;
     rdfs:seeAlso <https://schema.org/URL> ;
     schema:alternateName "Image"@en ;
@@ -171,7 +160,6 @@ schema:image
     rdfs:comment "Un'immagine dell'articolo. Può essere un URL o un ImageObject completamente descritto."@it .
 
 schema:url
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "URL"@en ;
     schema:alternateName "URL"@fr ;
     schema:alternateName "URL"@de ;
@@ -183,7 +171,6 @@ schema:url
     rdfs:comment "URL dell'articolo."@it .
 
 schema:URL
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Datatype URL"@en ;
     schema:alternateName "URL du type de données"@fr ;
     schema:alternateName "Datentyp-URL"@de ;
@@ -195,7 +182,6 @@ schema:URL
     rdfs:comment "URL del tipo di dati."@it .
 
 schema:startTime
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "Start time"@en ;
     schema:alternateName "Heure de début"@fr ;
     schema:alternateName "Startzeit"@de ;
@@ -215,7 +201,6 @@ Tenga en cuenta que Event usa startDate / endDate en lugar de startTime / endTim
 Nota che Event utilizza startDate / endDate invece di startTime / endTime, anche quando descrive le date con gli orari. Questa situazione potrebbe essere chiarita in future revisioni."""@it .
 
 schema:endTime
-    rdfs:isDefinedBy schema-inrupt-ext: ;
     schema:alternateName "End time"@en ;
     schema:alternateName "Heure de fin"@fr ;
     schema:alternateName "Endzeit"@de ;

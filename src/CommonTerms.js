@@ -95,7 +95,15 @@ module.exports.VANN = {
   ),
 };
 
-const SCHEMA_DOT_ORG_NAMESPACE = "http://schema.org/";
+const SHACL_NAMESPACE = "http://www.w3.org/ns/shacl#";
+module.exports.SHACL = {
+  PrefixDeclaration: rdf.namedNode(`${SHACL_NAMESPACE}PrefixDeclaration`),
+  declare: rdf.namedNode(`${SHACL_NAMESPACE}declare`),
+  namespace: rdf.namedNode(`${SHACL_NAMESPACE}namespace`),
+  prefix: rdf.namedNode(`${SHACL_NAMESPACE}prefix`),
+};
+
+const SCHEMA_DOT_ORG_NAMESPACE = "https://schema.org/";
 module.exports.SCHEMA_DOT_ORG = {
   alternateName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}alternateName`),
   givenName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}givenName`),
@@ -107,7 +115,7 @@ module.exports.SCHEMA_DOT_ORG = {
 };
 
 const ARTIFACT_GENERATOR_NAMESPACE =
-  "https://inrupt.com/vocab/tool/artifact_generator#";
+  "https://inrupt.com/vocab/tool/artifact_generator/";
 module.exports.ARTIFACT_GENERATOR = {
   ConstantString: rdf.namedNode(
     `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`

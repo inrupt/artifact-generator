@@ -55,12 +55,15 @@ artifactToGenerate:
             fileName: index.js
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext.ttl
+    # This is needed because Schema.org doesn't provide explicit vocab
+    # metadata.
+    namespaceIriOverride: https://schema.org/
 
-  - description: Vocab for testing predicate types...
+  - descriptionFallback: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
       - ./supported-data-types.ttl
