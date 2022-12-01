@@ -109,9 +109,10 @@ describe("Supported Data Type", () => {
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/HTTP.js`)
       .toString();
 
-    // EXPECTS TO GET THE NAMEPSACE IRI FROM A VOCAB TERM, SINCE VOCAB DOESN'T EXPLICITLY GIVE IT VIA VANN....
-    // HENCE WE SEE THE TRAILING HASH, BUT IN FACT THE ONTOLOGY 'a owl:Ontology' DOESN'T HAVE THAT HASH!!!???
-
+    // We expect to get the namespace IRI from a vocab term, since the vocab
+    // itself doesn't explicitly provide one via VANN or SHACL:declare, hence
+    // we see the trailing hash when the 'a owl:Ontology' triple doesn't have
+    // that hash.
     expect(indexOutput).toEqual(
       expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"')
     );

@@ -4,7 +4,7 @@ const rdf = require("rdf-ext");
 const FileGenerator = require("./FileGenerator");
 const Resource = require("../Resource");
 const DatasetHandler = require("../DatasetHandler");
-const { merge } = require("../Util");
+const { mergeDatasets } = require("../Util");
 
 module.exports = class VocabGenerator {
   constructor(artifactData, artifactDetails) {
@@ -129,7 +129,7 @@ module.exports = class VocabGenerator {
 
   parseDatasets(fullDatasetsArray, termSelectionDataset) {
     return this.buildTemplateInput(
-      merge(fullDatasetsArray),
+      mergeDatasets(fullDatasetsArray),
       termSelectionDataset || rdf.dataset()
     );
   }

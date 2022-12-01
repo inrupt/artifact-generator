@@ -53,4 +53,4 @@ module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
 module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
 module.exports.normalizePath = normalizeIfFilePath;
 module.exports.describeInput = describeInput;
-module.exports.merge = mergeDatasets;
+module.exports.mergeDatasets = mergeDatasets;

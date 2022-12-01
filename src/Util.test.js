@@ -5,7 +5,10 @@ const {
   getArtifactDirectoryRoot,
   getArtifactDirectorySourceCode,
   normalizePath,
+  mergeDatasets,
 } = require("./Util");
+const rdf = require("rdf-ext");
+const { SCHEMA_DOT_ORG, RDF, RDFS } = require("./CommonTerms");
 
 describe("Test override root", () => {
   it("should return default if no input data", async () => {
@@ -21,6 +24,26 @@ describe("Test override root", () => {
     expect(
       getArtifactDirectoryRoot({ artifactDirectoryRootOverride: override })
     ).toEqual(override);
+  });
+});
+
+describe("Merge datasets", () => {
+  it("should merge all triples", () => {
+    const dataSetA = rdf
+      .dataset()
+      .add(rdf.quad(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class));
+
+    const dataSetB = rdf
+      .dataset()
+      .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
+
+    const merged = mergeDatasets([dataSetA, dataSetB]);
+    expect(
+      merged.match(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class)
+    ).not.toBeNull();
+    expect(
+      merged.match(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property)
+    ).not.toBeNull();
   });
 });
 

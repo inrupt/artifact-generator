@@ -15,7 +15,7 @@ const {
   SKOS,
 } = require("../CommonTerms");
 const VocabGenerator = require("./VocabGenerator");
-const { merge } = require("../Util");
+const { mergeDatasets } = require("../Util");
 
 const testDataset = rdf
   .dataset()
@@ -325,7 +325,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should create a simple JSON object with all the fields", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, testDataset]),
+        mergeDatasets([vocabMetadata, testDataset]),
         testDatasetExtension
       );
       expect(result.namespaceIri).toBe("https://schema.org/");
@@ -427,8 +427,8 @@ describe("Vocab generator unit tests", () => {
 
     it("should merge A and B, and generate code from A and B", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetB]),
-        merge([dataSetA, dataSetB])
+        mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
+        mergeDatasets([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).toBe("Person");
@@ -437,7 +437,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should merge A and B, and generate code from A (not B)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetB]),
+        mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
         dataSetA
       );
 
@@ -447,7 +447,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should merge A and B, and generate code from B (not A)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetB]),
+        mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
         dataSetB
       );
 
@@ -457,8 +457,8 @@ describe("Vocab generator unit tests", () => {
 
     it("should merge A B and C, and generate code from A and B (not C)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetB, dataSetC]),
-        merge([dataSetA, dataSetB])
+        mergeDatasets([vocabMetadata, dataSetA, dataSetB, dataSetC]),
+        mergeDatasets([dataSetA, dataSetB])
       );
 
       expect(result.classes[0].name).toBe("Person");
@@ -471,7 +471,7 @@ describe("Vocab generator unit tests", () => {
 
       await expect(
         vocabGenerator.buildTemplateInput(
-          merge([vocabMetadata, emptyDataSet]),
+          mergeDatasets([vocabMetadata, emptyDataSet]),
           emptyDataSet
         )
       ).rejects.toThrow("does not contain any terms");
@@ -479,7 +479,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should use the label value if no comment and no definition", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetB]),
+        mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
         dataSetB
       );
 
@@ -490,7 +490,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should use the definition value if no comment", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetD]),
+        mergeDatasets([vocabMetadata, dataSetD]),
         rdf.dataset()
       );
 
@@ -512,7 +512,7 @@ describe("Vocab generator unit tests", () => {
         ]);
 
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, dataSetFrenchOnlyComment]),
+        mergeDatasets([vocabMetadata, dataSetA, dataSetFrenchOnlyComment]),
         dataSetFrenchOnlyComment
       );
 
@@ -527,7 +527,7 @@ describe("Vocab generator unit tests", () => {
         .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
 
       const result = await vocabGenerator.buildTemplateInput(
-        merge([vocabMetadata, dataSetA, noDescriptivePredicates]),
+        mergeDatasets([vocabMetadata, dataSetA, noDescriptivePredicates]),
         noDescriptivePredicates
       );
 
@@ -544,7 +544,7 @@ describe("Vocab generator unit tests", () => {
       });
 
       const result = await overridePrefixGenerator.buildTemplateInput(
-        merge([vocabMetadata, testDataset]),
+        mergeDatasets([vocabMetadata, testDataset]),
         rdf.dataset()
       );
 
@@ -553,7 +553,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should create label vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([literalDataset]),
+        mergeDatasets([literalDataset]),
         rdf.dataset()
       );
 
@@ -595,7 +595,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should create comments vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([literalDataset]),
+        mergeDatasets([literalDataset]),
         rdf.dataset()
       );
 
@@ -637,7 +637,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should create defination vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([literalDataset]),
+        mergeDatasets([literalDataset]),
         rdf.dataset()
       );
 
@@ -687,7 +687,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should override label terms of the main datasets", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([
+        mergeDatasets([
           vocabMetadata,
           dataSetA,
           dataSetB,
@@ -718,7 +718,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should override comment terms of the main datasets", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([
+        mergeDatasets([
           vocabMetadata,
           dataSetA,
           dataSetB,
@@ -753,7 +753,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should override label with alternativeNames from the vocab terms", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([
+        mergeDatasets([
           vocabMetadata,
           dataSetA,
           dataSetB,
@@ -790,7 +790,7 @@ describe("Vocab generator unit tests", () => {
       });
 
       const result = await generator.buildTemplateInput(
-        merge([testDataset, literalDataset]),
+        mergeDatasets([testDataset, literalDataset]),
         literalDataset
       );
 
@@ -832,7 +832,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should take description from the rdfs:comment of an owl:Ontology term", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([testDataset, owlOntologyDataset]),
+        mergeDatasets([testDataset, owlOntologyDataset]),
         owlOntologyDataset
       );
 
@@ -858,7 +858,7 @@ describe("Vocab generator unit tests", () => {
 
       await expect(
         vocabGenerator.buildTemplateInput(
-          merge([testDataset, owlOntologyDatasetWithNoDescription]),
+          mergeDatasets([testDataset, owlOntologyDatasetWithNoDescription]),
           owlOntologyDatasetWithNoDescription
         )
       ).rejects.toThrow(`Cannot find a description`);
@@ -866,7 +866,7 @@ describe("Vocab generator unit tests", () => {
 
     it("should read authors from owl:Ontology terms", async () => {
       const result = await vocabGenerator.buildTemplateInput(
-        merge([testDataset, owlOntologyDataset]),
+        mergeDatasets([testDataset, owlOntologyDataset]),
         owlOntologyDataset
       );
 
@@ -896,7 +896,7 @@ describe("Vocab generator unit tests", () => {
         ),
       ]);
       const result = await vocabGenerator.buildTemplateInput(
-        merge([testDataset, owlOntologyDatasetWithNoAuthor]),
+        mergeDatasets([testDataset, owlOntologyDatasetWithNoAuthor]),
         owlOntologyDatasetWithNoAuthor
       );
 
