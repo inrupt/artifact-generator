@@ -328,7 +328,7 @@ describe("Vocab generator unit tests", () => {
         merge([vocabMetadata, testDataset]),
         testDatasetExtension
       );
-      expect(result.namespace).toBe("https://schema.org/");
+      expect(result.namespaceIri).toBe("https://schema.org/");
       expect(result.artifactName).toBe("generated-vocab-schema");
       expect(result.vocabNameUpperCase).toBe("SCHEMA");
       expect(result.classes[0].name).toBe("Person");
@@ -837,7 +837,7 @@ describe("Vocab generator unit tests", () => {
       );
 
       expect(result.artifactName).toBe("generated-vocab-ext-prefix");
-      expect(result.namespace).toBe("http://rdf-extension.com/");
+      expect(result.namespaceIri).toBe("http://rdf-extension.com/");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
       expect(result.description).toBe(
         "Extension comment with special ' character!"

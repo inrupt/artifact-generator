@@ -39,12 +39,12 @@ class BestPracticeReportGenerator {
       report = `Local namespace IRI [${vocabInfo.localNamespaceIri}] was specifically overridden with [${vocabInfo.namespaceIriOverride}] (either it wasn't explicitly stated by the vocab itself via VANN, or SHACL predicates. or there were multiple ontologies in the input, or it couldn't be correctly determined heuristically).`;
     } else {
       if (
-        vocabInfo.namespace &&
-        vocabInfo.namespace === vocabInfo.localNamespaceIri
+        vocabInfo.namespaceIri &&
+        vocabInfo.namespaceIri === vocabInfo.localNamespaceIri
       ) {
-        report = `Namespace IRI [${vocabInfo.namespace}] matches the vocab Subject IRI too.`;
+        report = `Namespace IRI [${vocabInfo.namespaceIri}] matches the vocab Subject IRI too.`;
       } else {
-        report = `Namespace IRI [${vocabInfo.namespace}] has to be determined by heuristic (instead of being explicitly stated by the vocab itself via VANN, or SHACL predicates).`;
+        report = `Namespace IRI [${vocabInfo.namespaceIri}] has to be determined by heuristic (instead of being explicitly stated by the vocab itself via VANN, or SHACL predicates).`;
       }
     }
 
@@ -98,27 +98,27 @@ class BestPracticeReportGenerator {
     } else {
       const matchNamespace = BestPracticeReportGenerator.isDefinedByIri(
         reportSoFar.termsWithIsDefinedBy,
-        vocabInfo.namespace
+        vocabInfo.namespaceIri
       );
 
       if (matchNamespace.length === reportSoFar.termsWithIsDefinedBy.length) {
-        report = `All [${reportSoFar.termsWithIsDefinedBy.length}] terms that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespace}].`;
+        report = `All [${reportSoFar.termsWithIsDefinedBy.length}] terms that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespaceIri}].`;
       } else {
         if (matchNamespace.length === 0) {
-          report = `None of the [${reportSoFar.termsWithIsDefinedBy.length}] terms that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespace}].`;
+          report = `None of the [${reportSoFar.termsWithIsDefinedBy.length}] terms that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespaceIri}].`;
         } else {
-          report = `Only [${matchNamespace.length}] terms of the total [${reportSoFar.termsWithIsDefinedBy.length}] that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespace}].`;
+          report = `Only [${matchNamespace.length}] terms of the total [${reportSoFar.termsWithIsDefinedBy.length}] that have 'rdfs:isDefinedBy' triples (of the [${reportSoFar.totalTermCount}] total terms) are defined by the vocab namespace IRI of [${vocabInfo.namespaceIri}].`;
         }
 
         const matchStrippedNamespace =
           BestPracticeReportGenerator.isDefinedByIri(
             reportSoFar.termsWithIsDefinedBy,
-            vocabInfo.namespace.slice(0, -1)
+            vocabInfo.namespaceIri.slice(0, -1)
           );
         if (matchStrippedNamespace.length > 0) {
           report += ` But [${
             matchStrippedNamespace.length
-          }] terms match the stripped namespace IRI of [${vocabInfo.namespace.slice(
+          }] terms match the stripped namespace IRI of [${vocabInfo.namespaceIri.slice(
             0,
             -1
           )}]...`;
@@ -127,7 +127,7 @@ class BestPracticeReportGenerator {
         const { termsDefinedByOtherIri, otherIris } =
           BestPracticeReportGenerator.isDefinedByOtherIri(
             reportSoFar.termsWithIsDefinedBy,
-            [vocabInfo.namespace, vocabInfo.namespace.slice(0, -1)]
+            [vocabInfo.namespaceIri, vocabInfo.namespaceIri.slice(0, -1)]
           );
 
         // Check first for what we expect to be the most common case of terms

@@ -751,7 +751,8 @@ module.exports = class DatasetHandler {
     );
 
     result.namespaceIriOverride = this.vocabData.namespaceIriOverride;
-    result.namespace = result.namespaceIriOverride || result.localNamespaceIri;
+    result.namespaceIri =
+      result.namespaceIriOverride || result.localNamespaceIri;
     result.gitRepository = this.vocabData.gitRepository;
     result.repository = this.vocabData.repository;
 
@@ -766,7 +767,7 @@ module.exports = class DatasetHandler {
       result.description === "[Generator provided] - undefined"
     ) {
       throw new Error(
-        `Cannot find a description of this vocabulary [${result.vocabName}] with IRI [${result.vocabularyIri}] and namespace IRI [${result.namespace}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
+        `Cannot find a description of this vocabulary [${result.vocabName}] with IRI [${result.vocabularyIri}] and namespace IRI [${result.namespaceIri}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
       );
     }
     result.description = `${result.description}`;
@@ -792,7 +793,7 @@ module.exports = class DatasetHandler {
       await Resource.storeLocalCopyOfResource(
         result.storeLocalCopyOfVocabDirectory,
         result.vocabName,
-        result.namespace,
+        result.namespaceIri,
         this.fullDataset
       );
     }
@@ -804,8 +805,8 @@ module.exports = class DatasetHandler {
 
     // Check we have at least one vocab term (ignoring the vocab itself (i.e.,
     // '<vocab-iri> a owl:Ontology' triples)).
-    if (subjectSet.length === 1 && subjectSet[0] === result.namespace) {
-      throw new Error(`[${result.namespace}] does not contain any terms.`);
+    if (subjectSet.length === 1 && subjectSet[0] === result.namespaceIri) {
+      throw new Error(`[${result.namespaceIri}] does not contain any terms.`);
     }
 
     subjectSet.forEach((subject) => {

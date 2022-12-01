@@ -145,7 +145,7 @@ function useColors() {
 
 function formatArgs(args) {
 	args[0] = (this.useColors ? '%c' : '') +
-		this.namespace +
+		this.namespaceIri +
 		(this.useColors ? ' %c' : ' ') +
 		args[0] +
 		(this.useColors ? '%c ' : ' ') +

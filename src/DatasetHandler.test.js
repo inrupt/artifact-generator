@@ -86,7 +86,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(overrideOntology);
-      expect(result.namespace).toEqual(NAMESPACE);
+      expect(result.namespaceIri).toEqual(NAMESPACE);
     });
   });
 
@@ -336,7 +336,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri);
-      expect(result.namespace).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
     });
 
     it("should use vocabulary IRI override if none found", async () => {
@@ -364,7 +364,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri);
-      expect(result.namespace).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
     });
 
     it("should fail if multiple vocabulary IRIs and no override", async () => {
@@ -421,7 +421,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri);
-      expect(result.namespace).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
     });
 
     it("should fail if multiple namespace IRIs and no namespace override", async () => {
@@ -524,7 +524,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri);
-      expect(result.namespace).toEqual(namespaceIri2);
+      expect(result.namespaceIri).toEqual(namespaceIri2);
     });
 
     it("should use override if multiple vocabulary IRIs, but given vocabulary override", async () => {
@@ -557,7 +557,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri2);
-      expect(result.namespace).toEqual(vocabIri2);
+      expect(result.namespaceIri).toEqual(vocabIri2);
     });
 
     it("should report if namespace IRI and override are the same", async () => {
@@ -599,7 +599,7 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.vocabularyIri).toEqual(vocabIri);
-      expect(result.namespace).toEqual(namespaceIri);
+      expect(result.namespaceIri).toEqual(namespaceIri);
     });
   });
 
@@ -1203,7 +1203,7 @@ describe("Dataset Handler", () => {
     });
 
     const result = await handler.buildTemplateInput();
-    expect(result.namespace).toEqual(namespaceIriOverride);
+    expect(result.namespaceIri).toEqual(namespaceIriOverride);
   });
 
   it("should override the namespace of the terms if the heuristic namespace determination fails.", async () => {
@@ -1239,7 +1239,7 @@ describe("Dataset Handler", () => {
     });
 
     const result = await handler.buildTemplateInput();
-    expect(result.namespace).toEqual(namespaceIriOverride);
+    expect(result.namespaceIri).toEqual(namespaceIriOverride);
   });
 
   describe("Handle SHACL prefix declarations", () => {

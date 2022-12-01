@@ -18,7 +18,7 @@
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}{{#if reportBestPracticeCompliance}}
  *
  * Inrupt Best Practice Compliance Report:
  *  - BP-0: {{{complianceReport.bpReport_0}}}
@@ -28,21 +28,21 @@
 
 // We prefix our local variables with underscores to (hopefully!) prevent
 // potential names clashes with terms from vocabularies.
-const _NAMESPACE = "{{namespace}}";
+const _NAMESPACE = "{{namespaceIri}}";
 function _NS (localName: string): string {
   return (_NAMESPACE + localName);
 }
 
 {{#if description}}
 /**
- * {{{description}}}{{#if namespace}}
+ * {{{description}}}{{#if namespaceIri}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}
  */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: _NAMESPACE,
-  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespaceIri}}" },
   NS: _NS,{{#if classes}}
 
   // *****************

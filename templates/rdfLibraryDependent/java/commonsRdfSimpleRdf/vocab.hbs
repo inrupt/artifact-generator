@@ -18,7 +18,7 @@
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}{{#if reportBestPracticeCompliance}}
  *
  * Inrupt Best Practice Compliance Report:
  *  - BP-0: {{{complianceReport.bpReport_0}}}
@@ -33,16 +33,16 @@ import org.apache.commons.rdf.simple.SimpleRDF;
 
 {{#if description}}
 /**
- * {{{description}}}{{#if namespace}}
+ * {{{description}}}{{#if namespaceIri}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}
  */{{/if}}
 public class {{vocabNameUpperCase}} {
     public static final String PREFIX = "{{vocabPrefix}}";
-    public static final String NAMESPACE = "{{namespace}}";
+    public static final String NAMESPACE = "{{namespaceIri}}";
 
     public static final RDF valueFactory = new SimpleRDF();
-    public static final IRI NAMESPACE_IRI = valueFactory.createIRI("{{namespace}}");
+    public static final IRI NAMESPACE_IRI = valueFactory.createIRI("{{namespaceIri}}");
 
     public final IRI getNamespaceIri() {
         return NAMESPACE_IRI;

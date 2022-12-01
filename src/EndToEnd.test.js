@@ -115,7 +115,8 @@ describe("End-to-end tests", () => {
           .toString()
       );
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
@@ -166,7 +167,8 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(expect.stringContaining("99.999.9999"));
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
@@ -255,7 +257,8 @@ describe("End-to-end tests", () => {
 
       expect(packageDotJson).toEqual(expect.stringContaining("^9.8.7"));
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
@@ -334,7 +337,8 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`

@@ -45,7 +45,7 @@ describe("Best practices report generator", () => {
       expect(
         BestPracticeReportGenerator.complianceBp_0(
           {
-            namespace: someOverride,
+            namespaceIri: someOverride,
             localNamespaceIri: someOverride,
           },
           {}
@@ -166,7 +166,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },
@@ -193,7 +193,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },
@@ -223,7 +223,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },
@@ -254,7 +254,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },
@@ -289,7 +289,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },
@@ -320,7 +320,7 @@ describe("Best practices report generator", () => {
 
       const report = BestPracticeReportGenerator.complianceBp_2(
         {
-          namespace: NAMESPACE_IRI_1,
+          namespaceIri: NAMESPACE_IRI_1,
           classes: [],
           properties: props,
         },

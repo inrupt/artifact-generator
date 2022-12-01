@@ -18,7 +18,7 @@
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}{{#if reportBestPracticeCompliance}}
  *
  * Inrupt Best Practice Compliance Report:
  *  - BP-0: {{{complianceReport.bpReport_0}}}
@@ -34,19 +34,19 @@ const _DataFactory = require("@rdfjs/data-model");
 const { namedNode: _namedNode } = _DataFactory;
 
 function _NS(localName) {
-  return _namedNode(`{{namespace}}${localName}`);
+  return _namedNode(`{{namespaceIri}}${localName}`);
 }
 
 {{#if description}}
 /**
- * {{{description}}}{{#if namespace}}
+ * {{{description}}}{{#if namespaceIri}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}
  */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
-  NAMESPACE: "{{namespace}}",
-  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
+  NAMESPACE: "{{namespaceIri}}",
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespaceIri}}" },
   NS: _NS,{{#if classes}}
 
   // *****************

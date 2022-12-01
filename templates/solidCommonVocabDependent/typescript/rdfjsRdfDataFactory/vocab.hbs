@@ -18,7 +18,7 @@
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}{{#if reportBestPracticeCompliance}}
  *
  * Inrupt Best Practice Compliance Report:
  *  - BP-0: {{{complianceReport.bpReport_0}}}
@@ -36,19 +36,19 @@ import { DataFactory as _DataFactoryImpl } from 'rdf-data-factory';
 const _rdfFactory: _DataFactoryType = new _DataFactoryImpl();
 
 function _NS(localName: string): _NamedNode {
-  return _rdfFactory.namedNode(`{{namespace}}${localName}`);
+  return _rdfFactory.namedNode(`{{namespaceIri}}${localName}`);
 }
 
 {{#if description}}
 /**
- * {{{description}}}{{#if namespace}}
+ * {{{description}}}{{#if namespaceIri}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}
  */{{/if}}
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
-  NAMESPACE: "{{namespace}}",
-  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
+  NAMESPACE: "{{namespaceIri}}",
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespaceIri}}" },
   NS: _NS,{{#if classes}}
 
   // *****************

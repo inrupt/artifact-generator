@@ -20,7 +20,7 @@ const $rdf = require("rdflib");
  *
  * {{{description}}}{{/if}}{{#if namespace}}
  *
- * Namespace IRI: [{{namespace}}]{{/if}}{{#if reportBestPracticeCompliance}}
+ * Namespace IRI: [{{namespaceIri}}]{{/if}}{{#if reportBestPracticeCompliance}}
  *
  * Inrupt Best Practice Compliance Report:
  *  - BP-0: {{{complianceReport.bpReport_0}}}
@@ -28,9 +28,9 @@ const $rdf = require("rdflib");
  *  - BP-2: {{{complianceReport.bpReport_2}}}{{/if}}
  */
 
-const RDFLIB_NAMESPACE = new $rdf.Namespace("{{namespace}}");
+const RDFLIB_NAMESPACE = new $rdf.Namespace("{{namespaceIri}}");
 
-const _NAMESPACE = "{{namespace}}";
+const _NAMESPACE = "{{namespaceIri}}";
 function _NS (localName) {
   return (_NAMESPACE + localName);
 }
@@ -38,7 +38,7 @@ function _NS (localName) {
 const {{vocabNameUpperCase}} = {
   PREFIX: "{{vocabPrefix}}",
   NAMESPACE: _NAMESPACE,
-  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespace}}" },
+  PREFIX_AND_NAMESPACE: { "{{vocabPrefix}}": "{{namespaceIri}}" },
   NS: _NS,{{#if classes}}
 
     // *****************
