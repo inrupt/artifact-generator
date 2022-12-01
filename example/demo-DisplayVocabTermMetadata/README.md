@@ -6,7 +6,7 @@ from Linked Data vocabularies (and optionally the _meta-data_ associated with
 those terms).
 
 Here we'll demonstrate generating and using a vocabulary artifact with
-JavaScript, generated from a demo [Pet Rock](Vocab/PetRock.ttl) vocabulary.
+JavaScript, generated from a demo [Pet Rock](../vocab/PetRock.ttl) vocabulary.
 
 ## Quick Setup
 
@@ -24,7 +24,7 @@ JavaScript, generated from a demo [Pet Rock](Vocab/PetRock.ttl) vocabulary.
 The easiest way to get started is with the Command-Line Interface (CLI), which
 will generate JavaScript using defaults.
 
-- We start with a local RDF vocabulary: [./PetRock.ttl](Vocab/PetRock.ttl).
+- We start with a local RDF vocabulary: [PetRock.ttl](../vocab/PetRock.ttl).
 - Generate JavaScript artifact from this vocabulary: 
   - Using the command-line options: 
     - `--noPrompt` no interactive prompting (we're happy with defaults).
@@ -38,7 +38,7 @@ will generate JavaScript using defaults.
       (added to the file's comment header)
     
 ```
-npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --force --clearOutputDirectory
+npx @inrupt/artifact-generator generate --inputResources ./vocab/PetRock.ttl --noPrompt --force --clearOutputDirectory
 ```
 
 - See the generated code in `./Generated`.
@@ -97,7 +97,7 @@ line option to ask the Artifact Generator to automatically generate HTML
 documentation for each of the vocabularies we specified:
 
 ```
-npx @inrupt/artifact-generator generate --inputResources ./PetRock.ttl --noPrompt --runWidoco --force
+npx @inrupt/artifact-generator generate --inputResources ./vocab/PetRock.ttl --noPrompt --runWidoco --force
 ```
 
 Browse to 

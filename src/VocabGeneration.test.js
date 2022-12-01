@@ -180,7 +180,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single vocab config file", async () => {
   it.skip("tests a single vocab config file", async () => {
     await generateVocabArtifact({
-      vocabListFile: "./example/CopyOf-Vocab-List-Common.yml",
+      vocabListFile: "./example/vocab/CopyOf-Vocab-List-Common.yml",
 
       _: "generate",
       force: true,

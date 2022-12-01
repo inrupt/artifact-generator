@@ -11,7 +11,7 @@ const DUMMY_VOCAB = {
   inputResources: ["test", "anotherTest"],
 };
 
-describe("VocabuaryConfig Generator", () => {
+describe("VocabularyConfig Generator", () => {
   it("should split input resources according to the separator", () => {
     expect(splitInputResources("a,b,c")).toEqual(["a", "b", "c"]);
   });

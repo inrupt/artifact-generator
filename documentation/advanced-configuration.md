@@ -23,7 +23,7 @@ options from the project root directory:
 Local vocabulary file:
 
 ```shell
-node src/index.js generate --inputResources ./example/PetRock.ttl --noPrompt
+node src/index.js generate --inputResources ./example/vocab/PetRock.ttl --noPrompt
 ```
 
 Remote vocabulary file:
@@ -35,7 +35,7 @@ node src/index.js generate --inputResources https://schema.org/version/latest/sc
 Multiple local vocabulary files:
 
 ```shell
-node index.js generate --inputResources ./example/Skydiving.ttl ./example/PetRock.ttl
+node index.js generate --inputResources ./example/vocab/Skydiving.ttl ./example/vocab/PetRock.ttl
 ```
 
 Selecting only specific terms from a vocabulary.
@@ -44,13 +44,13 @@ for the handful of terms in the 'just-the-terms-we-want-from-schema-dot-org.ttl'
 vocab):
 
 ```shell
-node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --termSelectionResource ./example/just-the-terms-we-want-from-schema-dot-org.ttl
+node index.js generate --inputResources https://schema.org/version/latest/schema-snippet.ttl --termSelectionResource ./example/vocab/just-the-terms-we-want-from-schema-dot-org.ttl
 ```
 
 Enhance selected terms with multilingual translations:
 
 ```shell
-node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/our-translations-for-schema-dot-org.ttl --noPrompt
+node index.js generate --inputResources https://schema.org/version/latest/schema.ttl --termSelectionResource ./example/vocab/our-translations-for-schema-dot-org.ttl --noPrompt
 ```
 
 Collecting multiple (remote in this example) vocabularies into one bundled vocab
@@ -62,22 +62,22 @@ node index.js generate --inputResources https://schema.org/Person.ttl https://sc
 
 Providing the version for the output module:
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl --artifactVersion 1.0.1
+node index.js generate --inputResources ./example/vocab/PetRock.ttl --artifactVersion 1.0.1
 ```
 
 Specifing a custom prefix for the output module name:
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl --moduleNamePrefix my-company-prefix-
+node index.js generate --inputResources ./example/vocab/PetRock.ttl --moduleNamePrefix my-company-prefix-
 ```
 
 Specifing a custom NPM registry where the generated artifact will be published:
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl --npmRegistry http://my.company.registry/npm/
+node index.js generate --inputResources ./example/vocab/PetRock.ttl --npmRegistry http://my.company.registry/npm/
 ```
 
 Using short-form aliases for the command-line flags:
 ```shell
-node index.js generate --i https://schema.org/version/latest/schema.ttl --tsr ./example/just-the-terms-we-want-from-schema-dot-org.ttl --av 1.0.6 --mnp my-company-prefix-
+node index.js generate --i https://schema.org/version/latest/schema.ttl --tsr ./example/vocab/just-the-terms-we-want-from-schema-dot-org.ttl --av 1.0.6 --mnp my-company-prefix-
 ```
 
 Providing the version for the Vocab Term dependency (this is the library that
@@ -88,7 +88,7 @@ Property or a Text string)):
 `file:/my_local_copy/vocab-term` to pick up that local copy.
 
 ```shell
-node index.js generate --i ./example/PetRock.ttl --solidCommonVocabVersion ^1.0.10
+node index.js generate --i ./example/vocab/PetRock.ttl --solidCommonVocabVersion ^1.0.10
 ```
 
 For help run:
