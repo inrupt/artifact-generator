@@ -97,7 +97,7 @@ describe("Artifact Generator unit tests", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        vocabListFile: "./test/resources/vocabs/vocab-list.yml",
+        vocabListFile: "./test/resources/vocab/vocab-list.yml",
         outputDirectory,
         noPrompt: true,
       });
@@ -134,7 +134,7 @@ describe("Artifact Generator unit tests", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -167,7 +167,7 @@ describe("Artifact Generator unit tests", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
         solidCommonVocabVersion: "^1.0.10",
@@ -196,7 +196,7 @@ describe("Artifact Generator unit tests", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -241,7 +241,7 @@ describe("Artifact Generator unit tests", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -633,7 +633,7 @@ describe("Artifact Generator unit tests", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -684,7 +684,7 @@ describe("Artifact Generator unit tests", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",

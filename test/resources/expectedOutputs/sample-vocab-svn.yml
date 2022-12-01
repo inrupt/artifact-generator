@@ -22,7 +22,7 @@ artifactToGenerate:
 vocabList:
   # The following is the list of IRI and/or paths to read when building the artifact.
   - inputResources:
-      - "./test/resources/vocabs/schema-snippet.ttl"
+      - "./test/resources/vocab/schema-snippet.ttl"
     # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
     # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
     # and otherwise will propose a default based on the domain name.

@@ -404,7 +404,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
-      // // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
+      // // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
       // nameAndPrefixOverride: "inrupt-schema",
       //
       // inputResources: [

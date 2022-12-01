@@ -42,4 +42,4 @@ artifactToGenerate:
 vocabList:
   - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../vocabs/schema-snippet.ttl
+      - ../vocab/schema-snippet.ttl

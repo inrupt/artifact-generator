@@ -3,7 +3,7 @@
  * as part of artifact: [@inrupt/generated-vocab-schema-inrupt-ext], version: [1.0.0]
  * on 'Monday, November 28, 2022 9:56 AM'.
  *
- * Vocabulary built from inputs: [./test/resources/vocabs/schema-snippet.ttl, ./test/resources/vocabs/schema-inrupt-ext.ttl].
+ * Vocabulary built from inputs: [./test/resources/vocab/schema-snippet.ttl, ./test/resources/vocab/schema-inrupt-ext.ttl].
  * The generator detected the following terms in the source vocabulary:
  *  - Classes: [1]
  *  - Properties: [3]

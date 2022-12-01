@@ -55,6 +55,6 @@ artifactToGenerate:
 vocabList:
   - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../vocabs/schema-snippet.ttl
-    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl
+      - ../vocab/schema-snippet.ttl
+    termSelectionResource: ../vocab/schema-inrupt-ext.ttl
     namespaceIriOverride: https://override.schema.org/

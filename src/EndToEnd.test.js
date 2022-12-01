@@ -23,7 +23,7 @@ describe("End-to-end tests", () => {
     it("should fail if no ontology file", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/no-ontology";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/does.not.exist.ttl";
+      const errorFilename = "./test/resources/vocab/does.not.exist.ttl";
 
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -44,7 +44,7 @@ describe("End-to-end tests", () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/EndToEnd/invalid-ontology";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/invalid-turtle.ttl";
+      const errorFilename = "./test/resources/vocab/invalid-turtle.ttl";
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
@@ -65,7 +65,7 @@ describe("End-to-end tests", () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/EndToEnd/different-namespace";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/mismatched-namespaces.ttl";
+      const errorFilename = "./test/resources/vocab/mismatched-namespaces.ttl";
 
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -92,7 +92,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           descriptionFallback: "Vocab needs a description.",
           outputDirectory,
           artifactVersion: "1.0.0",
@@ -275,7 +275,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
@@ -320,8 +320,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           inputResources: [
-            "./test/resources/vocabs/schema-snippet.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+            "./test/resources/vocab/schema-snippet.ttl",
+            "./test/resources/vocab/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
@@ -373,7 +373,7 @@ describe("End-to-end tests", () => {
       const rdfFetchMock = {
         dataset: () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
-            "./test/resources/vocabs/Person.ttl"
+            "./test/resources/vocab/Person.ttl"
           );
         },
         headers: {
@@ -395,7 +395,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [
             "https://schema.org/Person.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+            "./test/resources/vocab/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
@@ -438,10 +438,9 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
@@ -476,7 +475,7 @@ describe("End-to-end tests", () => {
       const rdfFetchMock = {
         dataset: () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocab/schema-inrupt-ext.ttl"
           );
         },
         headers: {
@@ -496,7 +495,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           termSelectionResource: "https://does-not-matter-mocked-anyway.com",
           artifactVersion: "1.0.0",
@@ -538,10 +537,9 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
@@ -572,7 +570,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -601,7 +599,7 @@ describe("End-to-end tests", () => {
       let artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -627,7 +625,7 @@ describe("End-to-end tests", () => {
       artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
+          inputResources: ["./test/resources/vocab/schema-inrupt-ext.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -659,10 +657,9 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
@@ -694,10 +691,9 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
@@ -728,7 +724,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          vocabListFile: "./test/resources/vocabs/vocab-list.yml",
+          vocabListFile: "./test/resources/vocab/vocab-list.yml",
           outputDirectory,
           noPrompt: true,
         })

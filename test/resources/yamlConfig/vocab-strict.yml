@@ -35,8 +35,8 @@ artifactToGenerate:
 vocabList:
   - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex.
     inputResources:
-      - ../vocabs/schema-snippet.ttl
-    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl
+      - ../vocab/schema-snippet.ttl
+    termSelectionResource: ../vocab/schema-inrupt-ext.ttl
     # This is needed because Schema.org doesn't provide explicit vocab
     # metadata.
     namespaceIriOverride: https://schema.org/
@@ -44,14 +44,14 @@ vocabList:
   - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex.
     nameAndPrefixOverride: snippet
     inputResources:
-      - ../vocabs/schema-snippet.ttl
+      - ../vocab/schema-snippet.ttl
 
   - descriptionFallback: Test generated VocabTerm handling of rdfs:isDefinedBy.
     nameAndPrefixOverride: test_isDefinedBy
     inputResources:
-      - ../vocabs/isDefinedBy.ttl
+      - ../vocab/isDefinedBy.ttl
 
   - descriptionFallback: Test generated VocabTerm handling of rdfs:seeAlso.
     nameAndPrefixOverride: test_seeAlso
     inputResources:
-      - ../vocabs/seeAlso.ttl
+      - ../vocab/seeAlso.ttl

@@ -17,8 +17,8 @@ const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
     descriptionFallback:
       "Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex",
-    inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-    termSelectionResource: "test/resources/vocabs/schema-inrupt-ext.ttl",
+    inputResources: ["test/resources/vocab/schema-snippet.ttl"],
+    termSelectionResource: "test/resources/vocab/schema-inrupt-ext.ttl",
   },
   {
     descriptionFallback: "Some dummy online vocabulary",
@@ -165,8 +165,7 @@ describe("Generator configuration", () => {
     it("should generate collected configuration from vocab list file", async () => {
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        vocabListFile:
-          "./test/resources/vocabs/vocab-list-including-online.yml",
+        vocabListFile: "./test/resources/vocab/vocab-list-including-online.yml",
         noPrompt: true,
       });
 
@@ -353,7 +352,7 @@ describe("Generator configuration", () => {
     it("should fail with non-existent input resource for generation", async () => {
       const config = GeneratorConfiguration.fromCommandLine({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         vocabAcceptHeaderOverride: "text/turtle",
         vocabContentTypeHeaderOverride: "text/trig",
         vocabContentTypeHeaderFallback: "text/trig-star",
@@ -380,7 +379,7 @@ describe("Generator configuration", () => {
         "override namespace (should be an IRI really!)";
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
         nameAndPrefixOverride: "dummy-test",
         namespaceIriOverride: argnamespaceIriOverride,
@@ -392,7 +391,7 @@ describe("Generator configuration", () => {
 
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["test/resources/vocab/schema-snippet.ttl"],
           nameAndPrefixOverride: "dummy-test",
           namespaceIriOverride: argnamespaceIriOverride,
           ignoreNonVocabTerms: true,
@@ -407,7 +406,7 @@ describe("Generator configuration", () => {
     it("should normalize absolute paths", async () => {
       const absolutePath = path.join(
         `${process.cwd()}`,
-        "test/resources/vocabs/schema-snippet.ttl"
+        "test/resources/vocab/schema-snippet.ttl"
       );
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
@@ -417,7 +416,7 @@ describe("Generator configuration", () => {
       });
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         },
       ]);
     });
@@ -426,7 +425,7 @@ describe("Generator configuration", () => {
       const registry = "http://my.registry.ninja";
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         npmRegistry: "http://my.registry.ninja",
@@ -479,7 +478,7 @@ describe("Generator configuration", () => {
       const termSelectionResource = path.join(
         "test",
         "resources",
-        "vocabs",
+        "vocab",
         "schema-inrupt-ext.ttl"
       );
 

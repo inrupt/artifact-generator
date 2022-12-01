@@ -3,7 +3,7 @@
  * as part of artifact: [generated-vocab-common-TEST], version: [3.2.1-SNAPSHOT]
  * on 'Monday, November 28, 2022 10:05 AM'.
  *
- * Vocabulary built from vocab list file: [./test/resources/vocabs/vocab-list.yml].
+ * Vocabulary built from vocab list file: [./test/resources/vocab/vocab-list.yml].
  * The generator detected the following terms in the source vocabulary:
  *  - Classes: [1]
  *  - Properties: [2]

@@ -254,8 +254,8 @@ vocabList:
     # custom information to a vocabulary you don't have control over (e.g.,
     # adding translations for existing labels or comments, or overriding
     # existing values, or adding completely new terms, etc.). For an example,
-    # see https://github.com/inrupt/artifact-generator/blob/develop/test/resources/vocabs/schema-inrupt-ext.ttl.
-    termSelectionResource: ../test/resources/vocabs/schema-inrupt-ext.ttl
+    # see https://github.com/inrupt/artifact-generator/blob/develop/test/resources/vocab/schema-inrupt-ext.ttl.
+    termSelectionResource: ../test/resources/vocab/schema-inrupt-ext.ttl
 ```
 
 [Back to the homepage](../README.md)

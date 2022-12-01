@@ -31,7 +31,7 @@ artifactToGenerate:
 vocabList:
   - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../../vocabs/schema-snippet.ttl
+      - ../../vocab/schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext.ttl
     # This is needed because Schema.org doesn't provide explicit vocab
     # metadata.

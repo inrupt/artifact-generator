@@ -36,6 +36,6 @@ artifactToGenerate:
 
 vocabList:
   - inputResources:
-      - "../vocabs/schema-snippet.ttl"
+      - "../vocab/schema-snippet.ttl"
     nameAndPrefixOverride: "schema"
     descriptionFallback: "An example vocabulary"
