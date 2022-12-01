@@ -19,7 +19,7 @@ just-the-terms-we-want-from-schema-org:
     dcterms:description "Inrupt example showing how to select specific terms from Schema.org." ;
     vann:preferredNamespacePrefix "just-the-terms-we-want-from-schema-org" ;
     vann:preferredNamespaceUri "https://schema.org/" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 
 schema:Person a rdfs:Class .

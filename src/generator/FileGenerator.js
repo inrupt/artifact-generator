@@ -223,7 +223,7 @@ class FileGenerator {
 
     // Generate README in source code root directory.
     FileGenerator.createFileFromTemplate(
-      `${__dirname}/../../templates/README-package.hbs`,
+      `${__dirname}/../../template/README-package.hbs`,
       generalAndArtifactInfo,
       path.join(
         generalInfo.outputDirectory,

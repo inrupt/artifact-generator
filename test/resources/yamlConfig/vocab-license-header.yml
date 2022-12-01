@@ -6,9 +6,9 @@ artifactName: generated-vocab-TEST
 artifactGeneratorVersion: 0.4.2
 
 license:
-  path: "../licenses/license"
+  path: "../license/license"
   fileName: "LICENSE"
-  header: "../licenses/licenseHeader"
+  header: "../license/licenseHeader"
 
 artifactToGenerate:
   - programmingLanguage: TypeScript

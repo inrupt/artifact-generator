@@ -27,7 +27,7 @@ schema_inrupt_ext: a owl:Ontology, inrupt_gen:OntologyExtension ;
     dcterms:description "Inrupt extension to Schema.org terms." ;
     vann:preferredNamespacePrefix "schema_inrupt_ext" ;
     vann:preferredNamespaceUri "https://schema.org/" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 #
 # We need this term internally when generating source-code artifacts from vocabularies.

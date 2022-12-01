@@ -26,7 +26,7 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
   __dirname,
   "..",
   "..",
-  "templates",
+  "template",
   "artifacts-info.hbs"
 );
 const ARTIFACTS_INFO_FILENAME = ".artifacts-info.txt";
@@ -400,7 +400,7 @@ class ArtifactGenerator {
       };
 
       FileGenerator.createFileFromTemplate(
-        `${__dirname}/../../templates/README-artifactBundle.hbs`,
+        `${__dirname}/../../template/README-artifactBundle.hbs`,
         dataWithMarkdownDescription,
         path.join(
           this.artifactData.outputDirectory,

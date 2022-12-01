@@ -6,7 +6,7 @@ artifactName: generated-vocab-TEST
 artifactGeneratorVersion: 0.4.2
 
 license:
-  path: "../licenses/license"
+  path: "../license/license"
   fileName: "LICENSE"
   name: "mockPL"
 

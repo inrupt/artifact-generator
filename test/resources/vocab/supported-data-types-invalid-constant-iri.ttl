@@ -18,7 +18,7 @@ test: a owl:Ontology, inrupt_gen:Ontology ;
     dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
     vann:preferredNamespacePrefix "test" ;
     vann:preferredNamespaceUri "http://inrupt.com/vocab/test-namespace#" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 
 test:constantIriInvalid a inrupt_gen:ConstantIri ;

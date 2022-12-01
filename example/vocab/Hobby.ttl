@@ -17,7 +17,7 @@ hobby: a owl:Ontology, inrupt_gen:Ontology ;
     dcterms:description "Vocabulary for Hobbies."@en ;
     vann:preferredNamespacePrefix "hobby" ;
     vann:preferredNamespaceUri "https://inrupt.com/ns/vocab/hobby/" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 
 hobby:Hobby a rdfs:Class ;

@@ -4,7 +4,7 @@ const path = require("path");
 const inquirer = require("inquirer");
 const {
   LANGUAGE: JAVA,
-} = require("../config/artifacts/JavaArtifactConfigurator");
+} = require("../config/artifact/JavaArtifactConfigurator");
 
 jest.mock("inquirer");
 
@@ -23,13 +23,13 @@ const UNSUPPORTED_LANGUAGE = "Ook";
 
 const OUTPUT_DIR = "test/Generated/UNIT_TEST/ConfigFileGenerator/";
 const REFERENCE_YAML_PROMPTED =
-  "./test/resources/expectedOutputs/sample-vocab.yml";
+  "./test/resources/expectedOutput/sample-vocab.yml";
 const REFERENCE_YAML_DEFAULT =
-  "./test/resources/expectedOutputs/default-sample-vocab.yml";
+  "./test/resources/expectedOutput/default-sample-vocab.yml";
 const REFERENCE_YAML_GIT =
-  "./test/resources/expectedOutputs/sample-vocab-git.yml";
+  "./test/resources/expectedOutput/sample-vocab-git.yml";
 const REFERENCE_YAML_SVN =
-  "./test/resources/expectedOutputs/sample-vocab-svn.yml";
+  "./test/resources/expectedOutput/sample-vocab-svn.yml";
 
 // Config components
 const ARTIFACT_NAME = "myNewArtifact";
@@ -81,7 +81,7 @@ const REPOSITORY_GIT = {
     {
       templateInternal: GITIGNORE_TEMPLATE,
       fileName: ".gitignore",
-      template: path.join("templates", GITIGNORE_TEMPLATE),
+      template: path.join("template", GITIGNORE_TEMPLATE),
     },
   ],
 };

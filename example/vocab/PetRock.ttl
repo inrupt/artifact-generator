@@ -19,7 +19,7 @@ pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
     dcterms:description "Vocabulary for Pet Rock collectors, including terms for describing the characteristics of Pet Rocks..."@en ;
     vann:preferredNamespacePrefix "pet_rock" ;
     vann:preferredNamespaceUri "https://team.inrupt.net/public/vocab/PetRock.ttl#" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 
 pet_rock:PetRock a rdfs:Class, hobby:Hobby ;

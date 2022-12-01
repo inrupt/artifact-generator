@@ -19,7 +19,7 @@ artifactToGenerate:
     # file), but in fact we're accessing a template in our internal 'templates'
     # directory, so we need to provide the full path to it relative to where we
     # are!
-    templateCustom: ../../../templates/rdfLibraryDependent/java/rdf4j/vocab.hbs
+    templateCustom: ../../../template/rdfLibraryDependent/java/rdf4j/vocab.hbs
 
     # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
     languageKeywordsToUnderscore:

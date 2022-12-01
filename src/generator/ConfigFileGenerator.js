@@ -8,12 +8,12 @@ const packageDotJson = require("../../package.json");
 const {
   JavaArtifactConfigurator,
   LANGUAGE: JAVA,
-} = require("../config/artifacts/JavaArtifactConfigurator");
+} = require("../config/artifact/JavaArtifactConfigurator");
 
 const {
   NodeArtifactConfigurator,
   LANGUAGE: JAVASCRIPT,
-} = require("../config/artifacts/NodeArtifactConfigurator");
+} = require("../config/artifact/NodeArtifactConfigurator");
 
 const { VocabularyConfigurator } = require("../config/VocabularyConfigurator");
 
@@ -29,14 +29,14 @@ const CONFIG_TEMPLATE_PATH = path.join(
   __dirname,
   "..",
   "..",
-  "templates",
+  "template",
   "empty-config.hbs"
 );
 const DEFAULT_CONFIG_TEMPLATE_PATH = path.join(
   __dirname,
   "..",
   "..",
-  "templates",
+  "template",
   "initial-config.hbs"
 );
 
@@ -157,7 +157,7 @@ class ConfigFileGenerator {
           {
             templateInternal: template,
             fileName: ".gitignore",
-            template: path.join("templates", template),
+            template: path.join("template", template),
           },
         ];
       }

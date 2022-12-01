@@ -165,7 +165,7 @@ describe("Touching a file", () => {
     const file = path.join(
       "test",
       "resources",
-      "expectedOutputs",
+      "expectedOutput",
       "sample-vocab.yml"
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
@@ -178,7 +178,7 @@ describe("Touching a file", () => {
     const file = path.join(
       "test",
       "resources",
-      "expectedOutputs",
+      "expectedOutput",
       "sample-vocab.yml"
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;

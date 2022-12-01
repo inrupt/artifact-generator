@@ -168,7 +168,7 @@ artifactToGenerate:
     # MANDATORY - Must be one (and only one) of either:
     #  - templateInternal References a Handlebars template internally
     #  provided by the Artifact Generator, and relative to it's internal
-    #  "templates" directory.
+    #  "template" directory.
     #  - templateCustom References a Handlebars template relative to
     #  the configuration file.
     templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs

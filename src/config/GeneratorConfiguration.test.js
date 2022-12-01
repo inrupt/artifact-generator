@@ -228,7 +228,7 @@ describe("Generator configuration", () => {
       // Templates paths should be normalized wrt the module root
       expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
         path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
@@ -240,7 +240,7 @@ describe("Generator configuration", () => {
           .packagingTemplates[0].template
       ).toEqual(
         path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
@@ -279,7 +279,7 @@ describe("Generator configuration", () => {
       );
 
       expect(config.versioning.versioningTemplates[0].template).toEqual(
-        "templates/templateXXXXInternal"
+        "template/templateXXXXInternal"
       );
     });
   });
@@ -455,7 +455,7 @@ describe("Generator configuration", () => {
         "test/resources/yamlConfig/vocab-license.yml"
       );
       expect(generatorConfiguration.license.path).toEqual(
-        "test/resources/licenses/license"
+        "test/resources/license/license"
       );
       expect(generatorConfiguration.license.fileName).toEqual("LICENSE");
     });

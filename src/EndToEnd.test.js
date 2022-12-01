@@ -111,7 +111,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/index.js`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/single/index.js")
+          .readFileSync("test/resources/expectedOutput/single/index.js")
           .toString()
       );
 
@@ -122,7 +122,7 @@ describe("End-to-end tests", () => {
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA.js"
+          "test/resources/expectedOutput/single/GeneratedVocab/SCHEMA.js"
         )
         .toString();
       expect(
@@ -138,7 +138,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/single/package.json")
+          .readFileSync("test/resources/expectedOutput/single/package.json")
           .toString()
       );
     });
@@ -204,7 +204,7 @@ describe("End-to-end tests", () => {
       expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
         fs
           .readFileSync(
-            "test/resources/expectedOutputs/dependency-just-rdf4j/pom.xml"
+            "test/resources/expectedOutput/dependency-just-rdf4j/pom.xml"
           )
           .toString()
       );
@@ -218,7 +218,7 @@ describe("End-to-end tests", () => {
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/dependency-just-rdf4j/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
+          "test/resources/expectedOutput/dependency-just-rdf4j/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(
@@ -347,7 +347,7 @@ describe("End-to-end tests", () => {
 
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/full-ext/GeneratedVocab/SCHEMA.js"
+          "test/resources/expectedOutput/full-ext/GeneratedVocab/SCHEMA.js"
         )
         .toString();
 
@@ -364,7 +364,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/full-ext/package.json")
+          .readFileSync("test/resources/expectedOutput/full-ext/package.json")
           .toString()
       );
     });
@@ -736,7 +736,7 @@ describe("End-to-end tests", () => {
 
       expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/java-rdf4j/pom.xml")
+          .readFileSync("test/resources/expectedOutput/java-rdf4j/pom.xml")
           .toString()
       );
 
@@ -749,7 +749,7 @@ describe("End-to-end tests", () => {
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/java-rdf4j/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java"
+          "test/resources/expectedOutput/java-rdf4j/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(

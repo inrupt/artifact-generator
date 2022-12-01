@@ -18,7 +18,7 @@ skydive:
     dcterms:description "Vocabulary for the sport of skydiving." ;
     vann:preferredNamespacePrefix "skydive" ;
     vann:preferredNamespaceUri "https://inrupt.com/vocab/demo/skydiving#" ;
-    dcterms:license "http://www.opendatacommons.org/licenses/pddl/" .
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
 
 
 skydive:Skydiving a owl:Class, hobby:Hobby ;

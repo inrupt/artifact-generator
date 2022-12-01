@@ -288,7 +288,7 @@ describe("Artifact Generator unit tests", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testFile = path.join(outputDirectory, "static-first.ttl");
@@ -361,7 +361,7 @@ describe("Artifact Generator unit tests", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
 
@@ -454,7 +454,7 @@ describe("Artifact Generator unit tests", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testConfigFile = path.join(
@@ -563,7 +563,7 @@ describe("Artifact Generator unit tests", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testConfigFile = path.join(

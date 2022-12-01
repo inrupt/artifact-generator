@@ -14,7 +14,7 @@ const DEFAULT_PUBLISH_KEY = "_default";
 const CONFIG_SOURCE_COMMAND_LINE = "<Command Line Config>";
 
 // This is the path to the template directory
-const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "templates");
+const RELATIVE_TEMPLATE_DIRECTORY = path.join("..", "..", "template");
 
 const ROLLUP_DEFAULT = {
   packagingTool: "rollup",
@@ -24,7 +24,7 @@ const ROLLUP_DEFAULT = {
       templateInternal: path.join("generic", "javascript", "rollup.config.hbs"),
       fileName: "rollup.config.js",
       template: path.join(
-        "templates",
+        "template",
         "generic",
         "javascript",
         "rollup.config.hbs"
@@ -36,7 +36,7 @@ const ROLLUP_DEFAULT = {
 const WRAPPER_DEFAULT = {
   templateInternal: path.join("generic", "javascript", "wrapper.hbs"),
   fileName: "wrapper.js",
-  template: path.join("templates", "generic", "javascript", "wrapper.hbs"),
+  template: path.join("template", "generic", "javascript", "wrapper.hbs"),
 };
 
 const NPM_DEFAULT_REPO = "http://localhost:4873/";
@@ -55,7 +55,7 @@ const NPM_DEFAULT = {
       templateInternal: path.join("stringLiteral", "javascript", "package.hbs"),
       fileName: "package.json",
       template: path.join(
-        "templates",
+        "template",
         "stringLiteral",
         "javascript",
         "package.hbs"
@@ -64,7 +64,7 @@ const NPM_DEFAULT = {
     {
       templateInternal: path.join("generic", "javascript", "index.hbs"),
       fileName: "index.js",
-      template: path.join("templates", "generic", "javascript", "index.hbs"),
+      template: path.join("template", "generic", "javascript", "index.hbs"),
     },
   ],
 };
@@ -86,7 +86,7 @@ const DEFAULT_CLI_ARTIFACT = [
       },
     ],
     sourceCodeTemplate: path.join(
-      "templates",
+      "template",
       "stringLiteral",
       "javascript",
       "vocab.hbs"
@@ -305,7 +305,7 @@ class GeneratorConfiguration {
               // Make sure we clone the original structure (rather than just
               // refer to it directly), as otherwise running tests in parallel
               // will result in corrupted data (e.g. filenames like
-              // 'templates/templates/templates/templates/<FILENAME>')
+              // 'template/template/template/template/<FILENAME>')
               const normalizedPackagingTemplate = { ...packagingTemplate };
 
               normalizedPackagingTemplate.template =
