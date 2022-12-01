@@ -471,14 +471,22 @@ class ArtifactGenerator {
                   try {
                     response = ChildProcess.execSync(command).toString();
                   } catch (error) {
-                    // This handling was added due to intermittent, but regular,
-                    // failures when trying to unpublish packages from a local
-                    // Verdaccio instance when running tests to generate all
-                    // vocabs found within a directory - i.e. simply 'trying
-                    // again immediately' seems to just work!
+                    // This handling was added due to intermittent, but
+                    // regular, failures when trying to unpublish packages
+                    // from a local Verdaccio instance when running tests to
+                    // generate all vocabs found within a directory - i.e.,
+                    // simply 'trying again immediately' seems to just work!
                     if (command.startsWith("npm unpublish")) {
-                      debug(`Re-running sub-command [${command}]...`);
-                      response = ChildProcess.execSync(command).toString();
+                      // Even re-running the 'unpublish' now fails too, so now
+                      // we ignore failures on this retry, but only for
+                      // 'npm unpublish' commands!
+                      const commandIgnoringFailure = `(${command} || true)`;
+                      debug(
+                        `Re-running sub-command ignoring failure this time [${commandIgnoringFailure}]...`
+                      );
+                      response = ChildProcess.execSync(
+                        commandIgnoringFailure
+                      ).toString();
                     } else {
                       const message = `Error executing sub-command [${command}], details (stdout): [${error.stdout.toString()}], stderr: [${error.stderr.toString()}]`;
                       debug(message);

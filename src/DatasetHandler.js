@@ -232,6 +232,7 @@ module.exports = class DatasetHandler {
       .replace(/^protected$/, "protected_") // From the JSON-LD vocab.
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
       .replace(/^implements$/, "implements_") // From the DOAP vocab.
+      .replace(/^extends$/, "extends_") // From the ShEx vocab.
       .replace(/^this$/, "this_"); // From the SHACL vocab.
 
     this.termSelectionDataset

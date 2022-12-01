@@ -43,6 +43,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
   explicitly provide its own description). 
 - **BREAKING CHANGE** Changed Inrupt Artifact Generator vocab namespace IRI to
   use a trailing slash instead of a trailing hash.
+- Ignore Verdaccio 'npm unpublish' errors on retry now (useful for local
+  testing, but was hitting intermittent E404 errors, even on retry).
 
 ## 2.0.0 2022-06-03
 

@@ -31,7 +31,7 @@ const ConfigAll = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  // publish: PUBLISH_TO_REPO_LIST,
+  publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };

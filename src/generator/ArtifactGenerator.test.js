@@ -852,9 +852,7 @@ describe("Artifact Generator unit tests", () => {
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
-      expect(() => artifactGenerator.runPublish("local")).toThrowError(
-        "--want-to-fail-regardless-so-make-sure-command-is-nonsense!"
-      );
+      expect(() => artifactGenerator.runPublish("local")).not.toThrow();
     });
   });
 
