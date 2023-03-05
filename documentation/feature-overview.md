@@ -27,7 +27,7 @@ programming language, a YAML configuration file must be used (see below).
 
 For example:
 ```shell
-node index.js generate --inputResources ./demo/vocab/PetRock.ttl --noPrompt
+node index.js generate --inputResources ./example/vocab/PetRock.ttl --noPrompt
 ```
 This will generate a JavaScript artifact in the default `./Generated`
 directory.
@@ -83,21 +83,21 @@ will be kept up-to-date with vocabularies as long as the generator is running.
 ## To see detection of configuration file changes causing re-generation
 
 Run this command from the repository root, and then edit the local 
-`./example/PetRock.ttl` vocabulary, or the YAML configuration file to see
-the real-time re-generation of the bundle each time you save a change:
+`./example/vocab/PetRock.ttl` vocabulary, or the YAML configuration file to
+see the real-time re-generation of the bundle each time you save a change:
 
 ```
-node index.js watch --vocabListFile ./example/CopyOf-Vocab-List-Common.yml
+node index.js watch --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml
 ```
 
 Run this command multiple times to see re-generation ignored after
 the first time (since no vocabulary files nor the YAML file where changed),
-but then edit either the YAML file or the local `./example/PetRock.ttl`
+but then edit either the YAML file or the local `./example/vocab/PetRock.ttl`
 vocabulary to see the re-generation again (due to the generator
 detecting the file change):
 
 ```
-node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noPrompt
+node index.js generate --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml --noPrompt
 ```
 
 
@@ -127,7 +127,7 @@ To generate a Widoco documentation website in the default `./Generated/Widoco`
 directory, run:
 
 ```shell
-node index.js generate --inputResources ./example/PetRock.ttl --runWidoco --noPrompt
+node index.js generate --inputResources ./example/vocab/PetRock.ttl --runWidoco --noPrompt
 ```
 
 -    **Note:** If you have trouble with Node picking up your environment

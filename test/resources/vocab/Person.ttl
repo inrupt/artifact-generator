@@ -1,0 +1,766 @@
+prefix schema: <https://schema.org/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <https://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+schema:Person a rdfs:Class ;
+    rdfs:label "Person" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_rNews> ;
+    rdfs:comment "A person (alive, dead, undead, or fictional)." ;
+    rdfs:subClassOf schema:Thing ;
+    owl:equivalentClass foaf:Person .
+
+schema:Thing a rdfs:Class ;
+    rdfs:label "Thing" ;
+    rdfs:comment "The most generic type of item." .
+
+schema:Patient rdfs:subClassOf schema:Person .
+
+schema:accountablePerson schema:rangeIncludes schema:Person .
+
+schema:acquiredFrom schema:rangeIncludes schema:Person .
+
+schema:actor schema:rangeIncludes schema:Person .
+
+schema:actors schema:rangeIncludes schema:Person .
+
+schema:additionalName a rdf:Property ;
+    rdfs:label "additionalName" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "An additional name for a Person, can be used for a middle name." .
+
+schema:additionalType a rdf:Property ;
+    rdfs:label "additionalType" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:URL ;
+    rdfs:comment "An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally." ;
+    rdfs:subPropertyOf rdf:type .
+
+schema:address a rdf:Property ;
+    rdfs:label "address" ;
+    schema:domainIncludes schema:GeoCoordinates,
+        schema:GeoShape,
+        schema:Organization,
+        schema:Person,
+        schema:Place ;
+    schema:rangeIncludes schema:PostalAddress,
+        schema:Text ;
+    rdfs:comment "Physical address of the item." .
+
+schema:affiliation a rdf:Property ;
+    rdfs:label "affiliation" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Organization ;
+    rdfs:comment "An organization that this person is affiliated with. For example, a school/university, a club, or a team." ;
+    rdfs:subPropertyOf schema:memberOf .
+
+schema:agent schema:rangeIncludes schema:Person .
+
+schema:alternateName a rdf:Property ;
+    rdfs:label "alternateName" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "An alias for the item." .
+
+schema:alumniOf a rdf:Property ;
+    rdfs:label "alumniOf" ;
+    schema:domainIncludes schema:Person ;
+    schema:inverseOf schema:alumni ;
+    schema:rangeIncludes schema:EducationalOrganization,
+        schema:Organization ;
+    rdfs:comment "An organization that the person is an alumni of." .
+
+schema:artist schema:rangeIncludes schema:Person .
+
+schema:athlete schema:rangeIncludes schema:Person .
+
+schema:attendee schema:rangeIncludes schema:Person .
+
+schema:attendees schema:rangeIncludes schema:Person .
+
+schema:author schema:rangeIncludes schema:Person .
+
+schema:awards a rdf:Property ;
+    rdfs:label "awards" ;
+    schema:domainIncludes schema:CreativeWork,
+        schema:Organization,
+        schema:Person,
+        schema:Product ;
+    schema:rangeIncludes schema:Text ;
+    schema:supersededBy schema:award ;
+    rdfs:comment "Awards won by or for this item." .
+
+schema:awayTeam schema:rangeIncludes schema:Person .
+
+schema:bccRecipient schema:rangeIncludes schema:Person .
+
+schema:birthDate a rdf:Property ;
+    rdfs:label "birthDate" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Date ;
+    rdfs:comment "Date of birth." .
+
+schema:birthPlace a rdf:Property ;
+    rdfs:label "birthPlace" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Place ;
+    rdfs:comment "The place where the person was born." .
+
+schema:bookingAgent schema:rangeIncludes schema:Person .
+
+schema:borrower schema:rangeIncludes schema:Person .
+
+schema:brand a rdf:Property ;
+    rdfs:label "brand" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person,
+        schema:Product,
+        schema:Service ;
+    schema:rangeIncludes schema:Brand,
+        schema:Organization ;
+    rdfs:comment "The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person." .
+
+schema:broker schema:rangeIncludes schema:Person .
+
+schema:buyer schema:rangeIncludes schema:Person .
+
+schema:byArtist schema:rangeIncludes schema:Person .
+
+schema:callSign a rdf:Property ;
+    rdfs:label "callSign" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/2109> ;
+    schema:category "issue-2109" ;
+    schema:domainIncludes schema:BroadcastService,
+        schema:Person,
+        schema:Vehicle ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "A <a href=\"https://en.wikipedia.org/wiki/Call_sign\">callsign</a>, as used in broadcasting and radio communications to identify people, radio and TV stations, or vehicles." ;
+    rdfs:subPropertyOf schema:identifier .
+
+schema:candidate schema:rangeIncludes schema:Person .
+
+schema:ccRecipient schema:rangeIncludes schema:Person .
+
+schema:character schema:rangeIncludes schema:Person .
+
+schema:children a rdf:Property ;
+    rdfs:label "children" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "A child of the person." .
+
+schema:coach schema:rangeIncludes schema:Person .
+
+schema:colleagues a rdf:Property ;
+    rdfs:label "colleagues" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    schema:supersededBy schema:colleague ;
+    rdfs:comment "A colleague of the person." .
+
+schema:colorist schema:rangeIncludes schema:Person .
+
+schema:competitor schema:rangeIncludes schema:Person .
+
+schema:composer schema:rangeIncludes schema:Person .
+
+schema:contactPoints a rdf:Property ;
+    rdfs:label "contactPoints" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:ContactPoint ;
+    schema:supersededBy schema:contactPoint ;
+    rdfs:comment "A contact point for a person or organization." .
+
+schema:contributor schema:rangeIncludes schema:Person .
+
+schema:copyrightHolder schema:rangeIncludes schema:Person .
+
+schema:creator schema:rangeIncludes schema:Person .
+
+schema:creditedTo schema:rangeIncludes schema:Person .
+
+schema:customer schema:rangeIncludes schema:Person .
+
+schema:deathDate a rdf:Property ;
+    rdfs:label "deathDate" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Date ;
+    rdfs:comment "Date of death." .
+
+schema:deathPlace a rdf:Property ;
+    rdfs:label "deathPlace" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Place ;
+    rdfs:comment "The place where the person died." .
+
+schema:director schema:rangeIncludes schema:Person .
+
+schema:directors schema:rangeIncludes schema:Person .
+
+schema:disambiguatingDescription a rdf:Property ;
+    rdfs:label "disambiguatingDescription" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation." ;
+    rdfs:subPropertyOf schema:description .
+
+schema:duns a rdf:Property ;
+    rdfs:label "duns" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The Dun &amp; Bradstreet DUNS number for identifying an organization or business person." ;
+    rdfs:subPropertyOf schema:identifier .
+
+schema:editor schema:rangeIncludes schema:Person .
+
+schema:email a rdf:Property ;
+    rdfs:label "email" ;
+    schema:domainIncludes schema:ContactPoint,
+        schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "Email address." .
+
+schema:employee schema:rangeIncludes schema:Person .
+
+schema:employees schema:rangeIncludes schema:Person .
+
+schema:endorsee schema:rangeIncludes schema:Person .
+
+schema:endorsers schema:rangeIncludes schema:Person .
+
+schema:familyName a rdf:Property ;
+    rdfs:label "familyName" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property." .
+
+schema:faxNumber a rdf:Property ;
+    rdfs:label "faxNumber" ;
+    schema:domainIncludes schema:ContactPoint,
+        schema:Organization,
+        schema:Person,
+        schema:Place ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The fax number." .
+
+schema:followee schema:rangeIncludes schema:Person .
+
+schema:follows a rdf:Property ;
+    rdfs:label "follows" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "The most generic uni-directional social relation." .
+
+schema:founder schema:rangeIncludes schema:Person .
+
+schema:founders schema:rangeIncludes schema:Person .
+
+schema:funder a rdf:Property ;
+    rdfs:label "funder" ;
+    schema:domainIncludes schema:CreativeWork,
+        schema:Event,
+        schema:MonetaryGrant,
+        schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Organization,
+        schema:Person ;
+    rdfs:comment "A person or organization that supports (sponsors) something through some kind of financial contribution." ;
+    rdfs:subPropertyOf schema:sponsor .
+
+schema:gender a rdf:Property ;
+    rdfs:label "gender" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/2341> ;
+    schema:category "issue-2341" ;
+    schema:domainIncludes schema:Person,
+        schema:SportsTeam ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:GenderType,
+        schema:Text ;
+    rdfs:comment "Gender of something, typically a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, but possibly also fictional characters, animals, etc. While https://schema.org/Male and https://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The <a class=\"localLink\" href=\"https://schema.org/gender\">gender</a> property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender <a class=\"localLink\" href=\"https://schema.org/SportsTeam\">SportsTeam</a> can be indicated with a text value of \"Mixed\"." .
+
+schema:givenName a rdf:Property ;
+    rdfs:label "givenName" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property." .
+
+schema:globalLocationNumber a rdf:Property ;
+    rdfs:label "globalLocationNumber" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person,
+        schema:Place ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The <a href=\"http://www.gs1.org/gln\">Global Location Number</a> (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations." ;
+    rdfs:subPropertyOf schema:identifier .
+
+schema:grantee schema:rangeIncludes schema:Person .
+
+schema:hasCredential a rdf:Property ;
+    rdfs:label "hasCredential" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/2289> ;
+    schema:category "issue-2289" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:EducationalOccupationalCredential ;
+    rdfs:comment "A credential awarded to the Person or Organization." .
+
+schema:hasOccupation a rdf:Property ;
+    rdfs:label "hasOccupation" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/1698> ;
+    schema:category "issue-1698" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Occupation ;
+    rdfs:comment "The Person's occupation. For past professions, use Role for expressing dates." .
+
+schema:hasOfferCatalog a rdf:Property ;
+    rdfs:label "hasOfferCatalog" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person,
+        schema:Service ;
+    schema:rangeIncludes schema:OfferCatalog ;
+    rdfs:comment "Indicates an OfferCatalog listing for this Organization, Person, or Service." .
+
+schema:hasPOS a rdf:Property ;
+    rdfs:label "hasPOS" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Place ;
+    rdfs:comment "Points-of-Sales operated by the organization or person." .
+
+schema:height a rdf:Property ;
+    rdfs:label "height" ;
+    schema:domainIncludes schema:MediaObject,
+        schema:Person,
+        schema:Product,
+        schema:VisualArtwork ;
+    schema:rangeIncludes schema:Distance,
+        schema:QuantitativeValue ;
+    rdfs:comment "The height of the item." .
+
+schema:homeLocation a rdf:Property ;
+    rdfs:label "homeLocation" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:ContactPoint,
+        schema:Place ;
+    rdfs:comment "A contact location for a person's residence." ;
+    rdfs:subPropertyOf schema:location .
+
+schema:homeTeam schema:rangeIncludes schema:Person .
+
+schema:honorificPrefix a rdf:Property ;
+    rdfs:label "honorificPrefix" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "An honorific prefix preceding a Person's name such as Dr/Mrs/Mr." .
+
+schema:honorificSuffix a rdf:Property ;
+    rdfs:label "honorificSuffix" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "An honorific suffix preceding a Person's name such as M.D. /PhD/MSCSW." .
+
+schema:illustrator schema:rangeIncludes schema:Person .
+
+schema:image a rdf:Property ;
+    rdfs:label "image" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:ImageObject,
+        schema:URL ;
+    rdfs:comment "An image of the item. This can be a <a class=\"localLink\" href=\"https://schema.org/URL\">URL</a> or a fully described <a class=\"localLink\" href=\"https://schema.org/ImageObject\">ImageObject</a>." .
+
+schema:inker schema:rangeIncludes schema:Person .
+
+schema:instructor schema:rangeIncludes schema:Person .
+
+schema:isicV4 a rdf:Property ;
+    rdfs:label "isicV4" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person,
+        schema:Place ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place." .
+
+schema:jobTitle a rdf:Property ;
+    rdfs:label "jobTitle" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/2192> ;
+    schema:category "issue-2192" ;
+    schema:domainIncludes schema:Person ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:DefinedTerm,
+        schema:Text ;
+    rdfs:comment "The job title of the person (for example, Financial Manager)." .
+
+schema:knows a rdf:Property ;
+    rdfs:label "knows" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "The most generic bi-directional social/work relation." .
+
+schema:knowsAbout a rdf:Property ;
+    rdfs:label "knowsAbout" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/1688>,
+        <https://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#TP> ;
+    schema:category "issue-1688" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:Text,
+        schema:Thing,
+        schema:URL ;
+    rdfs:comment "Of a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"https://schema.org/Organization\">Organization</a>, to indicate a topic that is known about - suggesting possible expertise but not implying it. We do not distinguish skill levels here, or relate this to educational content, events, objectives or <a class=\"localLink\" href=\"https://schema.org/JobPosting\">JobPosting</a> descriptions." .
+
+schema:knowsLanguage a rdf:Property ;
+    rdfs:label "knowsLanguage" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/1688>,
+        <https://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#TP> ;
+    schema:category "issue-1688" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:isPartOf <http://pending.schema.org> ;
+    schema:rangeIncludes schema:Language,
+        schema:Text ;
+    rdfs:comment "Of a <a class=\"localLink\" href=\"https://schema.org/Person\">Person</a>, and less typically of an <a class=\"localLink\" href=\"https://schema.org/Organization\">Organization</a>, to indicate a known language. We do not distinguish skill levels or reading/writing/speaking/signing here. Use language codes from the <a href=\"http://tools.ietf.org/html/bcp47\">IETF BCP 47 standard</a>." .
+
+schema:landlord schema:rangeIncludes schema:Person .
+
+schema:legislationPassedBy schema:rangeIncludes schema:Person .
+
+schema:legislationResponsible schema:rangeIncludes schema:Person .
+
+schema:lender schema:rangeIncludes schema:Person .
+
+schema:letterer schema:rangeIncludes schema:Person .
+
+schema:loser schema:rangeIncludes schema:Person .
+
+schema:lyricist schema:rangeIncludes schema:Person .
+
+schema:mainEntityOfPage a rdf:Property ;
+    rdfs:label "mainEntityOfPage" ;
+    schema:domainIncludes schema:Thing ;
+    schema:inverseOf schema:mainEntity ;
+    schema:rangeIncludes schema:CreativeWork,
+        schema:URL ;
+    rdfs:comment "Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See <a href=\"/docs/datamodel.html#mainEntityBackground\">background notes</a> for details." .
+
+schema:makesOffer a rdf:Property ;
+    rdfs:label "makesOffer" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:inverseOf schema:offeredBy ;
+    schema:rangeIncludes schema:Offer ;
+    rdfs:comment "A pointer to products or services offered by the organization or person." .
+
+schema:members schema:rangeIncludes schema:Person .
+
+schema:merchant schema:rangeIncludes schema:Person .
+
+schema:musicBy schema:rangeIncludes schema:Person .
+
+schema:musicGroupMember schema:rangeIncludes schema:Person .
+
+schema:naics a rdf:Property ;
+    rdfs:label "naics" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The North American Industry Classification System (NAICS) code for a particular organization or business person." .
+
+schema:name a rdf:Property ;
+    rdfs:label "name" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The name of the item." ;
+    rdfs:subPropertyOf rdfs:label ;
+    owl:equivalentProperty dcterms:title .
+
+schema:nationality a rdf:Property ;
+    rdfs:label "nationality" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Country ;
+    rdfs:comment "Nationality of the person." .
+
+schema:netWorth a rdf:Property ;
+    rdfs:label "netWorth" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:MonetaryAmount,
+        schema:PriceSpecification ;
+    rdfs:comment "The total financial value of the person as calculated by subtracting assets from liabilities." .
+
+schema:opponent schema:rangeIncludes schema:Person .
+
+schema:organizer schema:rangeIncludes schema:Person .
+
+schema:owns a rdf:Property ;
+    rdfs:label "owns" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:OwnershipInfo,
+        schema:Product ;
+    rdfs:comment "Products owned by the organization or person." .
+
+schema:parents a rdf:Property ;
+    rdfs:label "parents" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    schema:supersededBy schema:parent ;
+    rdfs:comment "A parents of the person." .
+
+schema:participant schema:rangeIncludes schema:Person .
+
+schema:penciler schema:rangeIncludes schema:Person .
+
+schema:performer schema:rangeIncludes schema:Person .
+
+schema:performerIn a rdf:Property ;
+    rdfs:label "performerIn" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Event ;
+    rdfs:comment "Event that this person is a performer or participant in." .
+
+schema:performers schema:rangeIncludes schema:Person .
+
+schema:potentialAction a rdf:Property ;
+    rdfs:label "potentialAction" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:Action ;
+    rdfs:comment "Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role." .
+
+schema:producer schema:rangeIncludes schema:Person .
+
+schema:provider schema:rangeIncludes schema:Person .
+
+schema:publishedBy schema:rangeIncludes schema:Person .
+
+schema:publisher schema:rangeIncludes schema:Person .
+
+schema:publishingPrinciples a rdf:Property ;
+    rdfs:label "publishingPrinciples" ;
+    schema:domainIncludes schema:CreativeWork,
+        schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:CreativeWork,
+        schema:URL ;
+    rdfs:comment """The publishingPrinciples property indicates (typically via <a class="localLink" href="https://schema.org/URL">URL</a>) a document describing the editorial principles of an <a class="localLink" href="https://schema.org/Organization">Organization</a> (or individual e.g. a <a class="localLink" href="https://schema.org/Person">Person</a> writing a blog) that relate to their activities as a publisher, e.g. ethics or diversity policies. When applied to a <a class="localLink" href="https://schema.org/CreativeWork">CreativeWork</a> (e.g. <a class="localLink" href="https://schema.org/NewsArticle">NewsArticle</a>) the principles are those of the party primarily responsible for the creation of the <a class="localLink" href="https://schema.org/CreativeWork">CreativeWork</a>.<br/><br/>
+
+While such policies are most typically expressed in natural language, sometimes related information (e.g. indicating a <a class="localLink" href="https://schema.org/funder">funder</a>) can be expressed using schema.org terminology.""" .
+
+schema:readBy schema:rangeIncludes schema:Person .
+
+schema:recipient schema:rangeIncludes schema:Person .
+
+schema:relatedTo a rdf:Property ;
+    rdfs:label "relatedTo" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "The most generic familial relation." .
+
+schema:reviewedBy schema:rangeIncludes schema:Person .
+
+schema:sameAs a rdf:Property ;
+    rdfs:label "sameAs" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:URL ;
+    rdfs:comment "URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website." .
+
+schema:sdPublisher schema:rangeIncludes schema:Person .
+
+schema:seeks a rdf:Property ;
+    rdfs:label "seeks" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Demand ;
+    rdfs:comment "A pointer to products or services sought by the organization or person (demand)." .
+
+schema:seller schema:rangeIncludes schema:Person .
+
+schema:sender schema:rangeIncludes schema:Person .
+
+schema:siblings a rdf:Property ;
+    rdfs:label "siblings" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    schema:supersededBy schema:sibling ;
+    rdfs:comment "A sibling of the person." .
+
+schema:spokenByCharacter schema:rangeIncludes schema:Person .
+
+schema:spouse a rdf:Property ;
+    rdfs:label "spouse" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "The person's spouse." .
+
+schema:subjectOf a rdf:Property ;
+    rdfs:label "subjectOf" ;
+    dcterms:source <https://github.com/schemaorg/schemaorg/issues/1670> ;
+    schema:category "issue-1670" ;
+    schema:domainIncludes schema:Thing ;
+    schema:inverseOf schema:about ;
+    schema:rangeIncludes schema:CreativeWork,
+        schema:Event ;
+    rdfs:comment "A CreativeWork or Event about this Thing." .
+
+schema:taxID a rdf:Property ;
+    rdfs:label "taxID" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain." ;
+    rdfs:subPropertyOf schema:identifier .
+
+schema:telephone a rdf:Property ;
+    rdfs:label "telephone" ;
+    schema:domainIncludes schema:ContactPoint,
+        schema:Organization,
+        schema:Person,
+        schema:Place ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The telephone number." .
+
+schema:toRecipient schema:rangeIncludes schema:Person .
+
+schema:translator schema:rangeIncludes schema:Person .
+
+schema:underName schema:rangeIncludes schema:Person .
+
+schema:url a rdf:Property ;
+    rdfs:label "url" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:URL ;
+    rdfs:comment "URL of the item." .
+
+schema:vatID a rdf:Property ;
+    rdfs:label "vatID" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The Value-added Tax ID of the organization or person." .
+
+schema:vendor schema:rangeIncludes schema:Person .
+
+schema:weight a rdf:Property ;
+    rdfs:label "weight" ;
+    dcterms:source <http://www.w3.org/wiki/WebSchemas/SchemaDotOrgSources#source_GoodRelationsTerms> ;
+    schema:domainIncludes schema:Person,
+        schema:Product ;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The weight of the product or person." .
+
+schema:winner schema:rangeIncludes schema:Person .
+
+schema:workLocation a rdf:Property ;
+    rdfs:label "workLocation" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:ContactPoint,
+        schema:Place ;
+    rdfs:comment "A contact location for a person's place of work." ;
+    rdfs:subPropertyOf schema:location .
+
+schema:worksFor a rdf:Property ;
+    rdfs:label "worksFor" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Organization ;
+    rdfs:comment "Organizations that the person works for." .
+
+schema:alumni schema:rangeIncludes schema:Person .
+
+schema:award a rdf:Property ;
+    rdfs:label "award" ;
+    schema:domainIncludes schema:CreativeWork,
+        schema:Organization,
+        schema:Person,
+        schema:Product,
+        schema:Service ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "An award won by or for this item." .
+
+schema:colleague a rdf:Property ;
+    rdfs:label "colleague" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person,
+        schema:URL ;
+    rdfs:comment "A colleague of the person." .
+
+schema:contactPoint a rdf:Property ;
+    rdfs:label "contactPoint" ;
+    schema:domainIncludes schema:HealthInsurancePlan,
+        schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:ContactPoint ;
+    rdfs:comment "A contact point for a person or organization." .
+
+schema:description a rdf:Property ;
+    rdfs:label "description" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "A description of the item." ;
+    owl:equivalentProperty dcterms:description .
+
+schema:member schema:rangeIncludes schema:Person .
+
+schema:memberOf a rdf:Property ;
+    rdfs:label "memberOf" ;
+    schema:domainIncludes schema:Organization,
+        schema:Person ;
+    schema:inverseOf schema:member ;
+    schema:rangeIncludes schema:Organization,
+        schema:ProgramMembership ;
+    rdfs:comment "An Organization (or ProgramMembership) to which this Person or Organization belongs." .
+
+schema:offeredBy schema:rangeIncludes schema:Person .
+
+schema:parent a rdf:Property ;
+    rdfs:label "parent" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "A parent of this person." .
+
+schema:sibling a rdf:Property ;
+    rdfs:label "sibling" ;
+    schema:domainIncludes schema:Person ;
+    schema:rangeIncludes schema:Person ;
+    rdfs:comment "A sibling of the person." .
+
+schema:sponsor a rdf:Property ;
+    rdfs:label "sponsor" ;
+    schema:domainIncludes schema:CreativeWork,
+        schema:Event,
+        schema:Grant,
+        schema:MedicalStudy,
+        schema:Organization,
+        schema:Person ;
+    schema:rangeIncludes schema:Organization,
+        schema:Person ;
+    rdfs:comment "A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event." .
+
+schema:identifier a rdf:Property ;
+    rdfs:label "identifier" ;
+    schema:domainIncludes schema:Thing ;
+    schema:rangeIncludes schema:PropertyValue,
+        schema:Text,
+        schema:URL ;
+    rdfs:comment "The identifier property represents any kind of identifier for any kind of <a class=\"localLink\" href=\"https://schema.org/Thing\">Thing</a>, such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See <a href=\"/docs/datamodel.html#identifierBg\">background notes</a> for more details." ;
+    owl:equivalentProperty dcterms:identifier .
+

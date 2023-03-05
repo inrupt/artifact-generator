@@ -1,0 +1,88 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix schema: <https://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+prefix test: <https://ex.com/vocab/test/>
+
+test: a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "1" ;
+    dcterms:date "2019/06/18" ;
+    dcterms:title "Code Generator vocabulary" ;
+    dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
+    vann:preferredNamespacePrefix "test" ;
+    vann:preferredNamespaceUri "https://ex.com/vocab/test/" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+########### The Classes ###########
+
+test:class1 a rdfs:Class ;
+    rdfs:label "A rdfs class" ;
+    rdfs:comment "This is a rdfs class." .
+
+test:class2 a owl:Class ;
+    rdfs:label "An owl class" ;
+    rdfs:comment "This is an owl class." .
+
+test:class3 a skos:Concept ;
+    rdfs:label "A skos concept class" ;
+    rdfs:comment "This is a skos concept class." .
+
+test:class4 a schema:PaymentStatusType ;
+        rdfs:label "A schema payment status type class" ;
+        rdfs:comment "This is a schema payment status type class." .
+
+test:class4 a schema:NotSupportedClass ;
+        rdfs:label "Not supported class" ;
+        rdfs:comment "This class is not supported." .
+
+########### The Properties ###########
+
+test:property1 a rdf:Property ;
+    rdfs:label "A rdf property" ;
+    rdfs:comment "This is a rdf property." .
+
+
+test:property2 a rdfs:Datatype ;
+    rdfs:label "A rdfs data type property" ;
+    rdfs:comment "This is a data type property." .
+
+test:property3 a owl:ObjectProperty ;
+    rdfs:label "An owl object property" ;
+    rdfs:comment "This is an owl object property." .
+
+
+test:property4 a owl:NamedIndividual ;
+    rdfs:label "An owl named individual property" ;
+    rdfs:comment "This is an owl named individual property." .
+
+test:property5 a owl:AnnotationProperty ;
+    rdfs:label "An owl annotation property" ;
+    rdfs:comment "This is an owl annotation property." .
+
+test:property6 a owl:DatatypeProperty ;
+   rdfs:label "An owl datatype property" ;
+   rdfs:comment "This is an owl datatype property." .
+
+test:property7 a owl:NotSupportedProperty ;
+   rdfs:label "Not supported property" ;
+   rdfs:comment "This property is not supported." .
+
+########### The Literals ###########
+
+test:literal1 a rdfs:Literal ;
+    rdfs:label "A rdfs literal" ;
+    rdfs:comment "This is a rdfs literal." .
+
+test:literal2 a rdfs:Literal ;
+    skos:definition "Welcome"@en ;
+    skos:definition "Bienvenido"@es ;
+    skos:definition "Bienvenue"@fr .
+
+test:literal3 a rdfs:NotSupportedLiteral ;
+    rdfs:label "Not supported literal" ;
+    rdfs:comment "This literal is not supported." .

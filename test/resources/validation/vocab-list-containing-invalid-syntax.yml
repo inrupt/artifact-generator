@@ -22,14 +22,16 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - "class"
       - "abstract"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
 
 vocabList:
   # The following is the list of IRI and/or paths to read when building the artifact.
   - inputResources:
-      - "../vocabs/invalid-turtle.ttl"
+      - "../vocab/invalid-turtle.ttl"
     # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
     # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
     # and otherwise will propose a default based on the domain name.
     nameAndPrefixOverride: "schema"
-    description: "A schema snippet"
+    descriptionFallback: "A schema snippet"

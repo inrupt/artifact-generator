@@ -1,0 +1,22 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix vann: <http://purl.org/vocab/vann/>
+
+<http://www.w3.org/2011/http>
+  a owl:Ontology ;
+  rdfs:label "HTTP in RDF"@en ;
+  rdfs:comment "A namespace for describing HTTP messages (http://www.w3.org/Protocols/rfc2616/rfc2616.html)"@en ;
+  owl:versionInfo "Working Draft 29 April 2011"@en ;
+  rdfs:isDefinedBy <http://www.w3.org/TR/HTTP-in-RDF/> ;
+  rdfs:seeAlso <http://www.w3.org/WAI/intro/earl>, <http://www.w3.org/TR/Content-in-RDF/> ;
+  owl:imports dcterms:, <http://www.w3.org/2011/content#> ;
+  vann:preferredNamespacePrefix "http".
+
+<http://www.w3.org/2011/http#Connection>
+  a rdfs:Class, owl:Class ;
+  rdfs:label "Connection"@en ;
+  rdfs:comment "A connection used for HTTP transfer."@en ;
+  rdfs:isDefinedBy <http://www.ietf.org/rfc/rfc2616.txt> .

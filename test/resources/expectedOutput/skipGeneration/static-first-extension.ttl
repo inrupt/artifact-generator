@@ -1,0 +1,27 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix vann: <http://purl.org/vocab/vann/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+# We very deliberately use the namespace of the vocab we want to extend.
+prefix test_vocab_1: <https://inrupt.com/vocab/static-test-1/>
+prefix test_vocab_1_extension: <https://inrupt.com/vocab/static-test-1/extension/>
+
+
+test_vocab_1_extension:
+	a owl:Ontology, inrupt_gen:OntologyExtension ;
+	owl:versionInfo "1" ;
+	dcterms:creator "PatMcB" ;
+	dcterms:date "2019/01/01" ;
+ 	dcterms:title "Demo Vocab" ;
+	dcterms:description "Testing static file that references an extension file." ;
+	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
+	vann:preferredNamespacePrefix "test_vocab_1_extension" ;
+	vann:preferredNamespaceUri "https://inrupt.com/vocab/static-test-1/" .
+
+# Add an Irish label to an existing vocab term.
+test_vocab_1:sampleTerm
+  rdfs:label "lipéad i nGaeilge"@ga .

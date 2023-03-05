@@ -1,0 +1,220 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix vann: <http://purl.org/vocab/vann/>
+
+prefix schema: <https://schema.org/>
+prefix schema_inrupt_ext: <https://w3id.org/inrupt/vocab/extension/schema#>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+#
+# Extensions deliberately add (i.e. extend) existing terms in existing
+# vocabularies, specifically to add extra features, such as multilingual
+# values for labels and comments.
+#
+# So we very deliberately re-use the underlying vocab's namespace, but use our
+# own prefix to try and differentiate.
+#
+schema_inrupt_ext: a owl:Ontology, inrupt_gen:OntologyExtension ;
+    owl:versionInfo "0.0.1" ;
+    dcterms:creator <https://inrupt.com/profile/card/#us> ;
+    dcterms:issued "2019/06/18"^^xsd:date ;
+    dcterms:title "Inrupt extension adding multilingual meta-data for Schema.org terms" ;
+    dcterms:description "Inrupt extension to Schema.org terms." ;
+    vann:preferredNamespacePrefix "schema_inrupt_ext" ;
+    vann:preferredNamespaceUri "https://schema.org/" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+#
+# We need this term internally when generating source-code artifacts from vocabularies.
+#
+schema:alternateName
+    schema:alternateName "Alternate Name"@en ;
+    schema:alternateName "Nom alternatif"@fr ;
+    schema:alternateName "Anderer Name"@de ;
+    schema:alternateName "Nombre alternativo"@es ;
+    schema:alternateName "Nome alternativo"@it ;
+    rdfs:comment "An alias for the item."@en ;
+    rdfs:comment "Un alias pour l'article."@fr ;
+    rdfs:comment "Ein Alias für den Artikel."@de ;
+    rdfs:comment "Un alias para el elemento."@es ;
+    rdfs:comment "Un alias per l'elemento."@it .
+
+
+schema:Person
+    schema:alternateName "Person"@en ;
+    schema:alternateName "La personne"@fr ;
+    schema:alternateName "Person"@de ;
+    schema:alternateName "Persona"@es ;
+    schema:alternateName "Persona"@it ;
+    rdfs:comment "Une personne (vivante, morte, mort-vivant ou fictive)."@fr ;
+    rdfs:comment "Eine Person (lebendig, tot, untot oder fiktiv)."@de ;
+    rdfs:comment "Una persona (viva, muerta, no muerta o ficticia)."@es ;
+    rdfs:comment "Una persona (viva, morta, non morta o immaginaria)."@it .
+
+
+schema:givenName
+    schema:alternateName "Given Name"@en ;
+    schema:alternateName "Prénom"@fr ;
+    schema:alternateName "Vorname"@de ;
+    schema:alternateName "Nombre de pila"@es ;
+    schema:alternateName "Nome di battesimo"@it ;
+    rdfs:comment "Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name."@fr ;
+    rdfs:comment "Vorname. In den USA der Vorname einer Person. Dies kann zusammen mit familyName anstelle der Eigenschaft name verwendet werden."@de ;
+    rdfs:comment "Nombre de pila. En los EE. UU., El primer nombre de una persona. Esto se puede usar junto con familyName en lugar de la propiedad name."@es ;
+    rdfs:comment "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it .
+
+schema:familyName a rdf:Property ;
+    schema:alternateName "Family Name"@en ;
+    schema:alternateName "Nom de famille"@fr ;
+    schema:alternateName "Nachname"@de ;
+    schema:alternateName "Apellido"@es ;
+    schema:alternateName "Cognome"@it ;
+    rdfs:comment "Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name."@fr ;
+    rdfs:comment "Nachname. In den USA der Nachname einer Person. Dies kann zusammen mit givenName anstelle der Eigenschaft name verwendet werden."@de ;
+    rdfs:comment "Apellido. En los EE.UU., el apellido de una persona. Esto se puede usar junto con givenName en lugar de la propiedad name."@es ;
+    rdfs:comment "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it .
+
+schema:additionalName
+    schema:alternateName "Additional Name"@en ;
+    schema:alternateName "Nom additionnel"@fr ;
+    schema:alternateName "Zusätzlicher Name"@de ;
+    schema:alternateName "Nombre adicional"@es ;
+    schema:alternateName "Nome aggiuntivo"@it ;
+    rdfs:comment "Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom."@fr ;
+    rdfs:comment "Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden."@de ;
+    rdfs:comment "Un nombre adicional para una persona, se puede utilizar para un segundo nombre."@es ;
+    rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
+
+schema:license
+    schema:alternateName "License"@en ;
+    schema:alternateName "License"@fr ;
+    schema:alternateName "Lizenz"@de ;
+    schema:alternateName "Licencia"@es ;
+    schema:alternateName "Licenza"@it ;
+    rdfs:comment "Un document de licence qui s'applique à ce contenu, généralement indiqué par une URL."@fr ;
+    rdfs:comment "Ein Lizenzdokument, das für diesen Inhalt gilt und in der Regel durch eine URL angegeben wird."@de ;
+    rdfs:comment "Un documento de licencia que se aplica a este contenido, normalmente indicado por URL."@es ;
+    rdfs:comment "Un documento di licenza che si applica a questo contenuto, generalmente indicato dall'URL."@it .
+
+schema:name
+    schema:alternateName "Name"@en ;
+    schema:alternateName "Nom"@fr ;
+    schema:alternateName "Name"@de ;
+    schema:alternateName "Nombre"@es ;
+    schema:alternateName "Nome"@it ;
+    rdfs:comment "Le nom de l'objet."@fr ;
+    rdfs:comment "Der Name des Artikels."@de ;
+    rdfs:comment "El nombre del artículo."@es ;
+    rdfs:comment "Il nome dell'articolo."@it .
+
+schema:text
+    schema:alternateName "Text"@en ;
+    schema:alternateName "Texte"@fr ;
+    schema:alternateName "Text"@de ;
+    schema:alternateName "Texto"@es ;
+    schema:alternateName "Testo"@it ;
+    rdfs:comment "Le contenu textuel de ce CreativeWork."@fr ;
+    rdfs:comment "Der Textinhalt dieses CreativeWork."@de ;
+    rdfs:comment "El contenido textual de este CreativeWork."@es ;
+    rdfs:comment "Il contenuto testuale di questo CreativeWork."@it .
+
+schema:identifier
+    rdfs:seeAlso <https://schema.org/docs/datamodel.html#identifierBg> ;
+    schema:alternateName "Identifer"@en ;
+    schema:alternateName "Identifiant"@fr ;
+    schema:alternateName "Kennung"@de ;
+    schema:alternateName "Identificador"@es ;
+    schema:alternateName "Identificatore"@it ;
+    rdfs:comment "La propriété identifier représente tout type d'identifiant pour tout type de chose, comme les ISBN, les codes GTIN, les UUID, etc. Schema.org fournit des propriétés dédiées pour représenter beaucoup d'entre elles, soit sous forme de chaînes textuelles, soit sous forme de liens URL (URI). Voir les notes de fond pour plus de détails."@fr ;
+    rdfs:comment "Die Bezeichner-Eigenschaft stellt jede Art von Bezeichner für jede Art von Sache dar, z. B. ISBNs, GTIN-Codes, UUIDs usw. Schema.org bietet dedizierte Eigenschaften für die Darstellung vieler dieser Elemente, entweder als Textzeichenfolgen oder als URL-Links (URI). Weitere Informationen finden Sie in den Hintergrundinformationen."@de ;
+    rdfs:comment "La propiedad del identificador representa cualquier tipo de identificador para cualquier tipo de cosa, como ISBN, códigos GTIN, UUID, etc. Schema.org proporciona propiedades dedicadas para representar muchos de estos, ya sea como cadenas textuales o como enlaces URL (URI). Consulte las notas de antecedentes para obtener más detalles."@es ;
+    rdfs:comment "La proprietà identificatore rappresenta qualsiasi tipo di identificatore per qualsiasi tipo di Cosa, come ISBN, codici GTIN, UUID ecc. Schema.org fornisce proprietà dedicate per rappresentare molti di questi, sia come stringhe di testo o come collegamenti URL (URI). Vedere le note di fondo per maggiori dettagli."@it .
+
+schema:description
+    schema:alternateName "Description"@en ;
+    schema:alternateName "Description"@fr ;
+    schema:alternateName "Beschreibung"@de ;
+    schema:alternateName "Descripción"@es ;
+    schema:alternateName "Descrizione"@it ;
+    rdfs:comment "Une description de l'article."@fr ;
+    rdfs:comment "Eine Beschreibung des Artikels."@de ;
+    rdfs:comment "Una descripción del artículo."@es ;
+    rdfs:comment "Una descrizione dell'articolo."@it .
+
+schema:image
+    rdfs:seeAlso <https://schema.org/ImageObject> ;
+    rdfs:seeAlso <https://schema.org/URL> ;
+    schema:alternateName "Image"@en ;
+    schema:alternateName "Image"@fr ;
+    schema:alternateName "Bild"@de ;
+    schema:alternateName "Imagen"@es ;
+    schema:alternateName "Immagine"@it ;
+    rdfs:comment "Une image de l'article. Cela peut être une URL ou un ImageObject entièrement décrit."@fr ;
+    rdfs:comment "Ein Bild des Artikels. Dies kann eine URL oder ein vollständig beschriebenes ImageObject sein."@de ;
+    rdfs:comment "Una imagen del artículo. Puede ser una URL o un ImageObject completamente descrito."@es ;
+    rdfs:comment "Un'immagine dell'articolo. Può essere un URL o un ImageObject completamente descritto."@it .
+
+schema:url
+    schema:alternateName "URL"@en ;
+    schema:alternateName "URL"@fr ;
+    schema:alternateName "URL"@de ;
+    schema:alternateName "URL"@es ;
+    schema:alternateName "URL"@it ;
+    rdfs:comment "URL de l'élément."@fr ;
+    rdfs:comment "URL des Artikels."@de ;
+    rdfs:comment "URL del artículo."@es ;
+    rdfs:comment "URL dell'articolo."@it .
+
+schema:URL
+    schema:alternateName "Datatype URL"@en ;
+    schema:alternateName "URL du type de données"@fr ;
+    schema:alternateName "Datentyp-URL"@de ;
+    schema:alternateName "URL de tipo de datos"@es ;
+    schema:alternateName "URL del tipo di dati"@it ;
+    rdfs:comment "URL du type de données."@fr ;
+    rdfs:comment "Datentyp-URL."@de ;
+    rdfs:comment "URL de tipo de datos."@es ;
+    rdfs:comment "URL del tipo di dati."@it .
+
+schema:startTime
+    schema:alternateName "Start time"@en ;
+    schema:alternateName "Heure de début"@fr ;
+    schema:alternateName "Startzeit"@de ;
+    schema:alternateName "Hora de inicio"@es ;
+    schema:alternateName "Ora di inizio"@it ;
+    rdfs:comment """L'heure de début de quelque chose. Pour un événement ou un service réservé (par exemple, FoodEstablishmentReservation), l'heure à laquelle il devrait commencer. Pour les actions qui s'étendent sur une période de temps, lorsque l'action a été effectuée. par exemple. John a écrit un livre de janvier à décembre. Pour les médias, y compris l'audio et la vidéo, il s'agit du décalage temporel du début d'un clip dans un fichier plus volumineux.
+
+Notez que Event utilise startDate / endDate au lieu de startTime / endTime, même lors de la description des dates avec des heures. Cette situation pourra être clarifiée dans de futures révisions."""@fr ;
+    rdfs:comment """Die Startzeit von etwas. Für ein reserviertes Ereignis oder eine reservierte Dienstleistung (z. B. FoodEstablishmentReservation) die Zeit, zu der der Start erwartet wird. Für Aktionen, die sich über einen bestimmten Zeitraum erstrecken, als die Aktion ausgeführt wurde. z.B. John schrieb von Januar bis Dezember ein Buch. Bei Medien, einschließlich Audio und Video, ist dies der Zeitversatz des Starts eines Clips in einer größeren Datei.
+
+Beachten Sie, dass Event startDate / endDate anstelle von startTime / endTime verwendet, auch wenn Datumsangaben mit Zeiten beschrieben werden. Diese Situation kann in zukünftigen Überarbeitungen geklärt werden."""@de ;
+    rdfs:comment """La hora de inicio de algo. Para un evento o servicio reservado (por ejemplo, FoodEstablishmentReservation), la hora a la que se espera que comience. Para acciones que abarcan un período de tiempo, cuando se realizó la acción. p.ej. John escribió un libro de enero a diciembre. Para los medios, incluidos el audio y el video, es la diferencia de tiempo del inicio de un clip dentro de un archivo más grande.
+
+Tenga en cuenta que Event usa startDate / endDate en lugar de startTime / endTime, incluso cuando describe fechas con horas. Esta situación puede aclararse en futuras revisiones."""@es ;
+    rdfs:comment """Il tempo di inizio di qualcosa. Per un evento o un servizio riservato (ad esempio FoodEstablishmentReservation), l'ora in cui dovrebbe iniziare. Per azioni che coprono un periodo di tempo, quando l'azione è stata eseguita. per esempio. John ha scritto un libro da gennaio a dicembre. Per i media, inclusi audio e video, è la differenza di tempo dell'inizio di una clip all'interno di un file più grande.
+
+Nota che Event utilizza startDate / endDate invece di startTime / endTime, anche quando descrive le date con gli orari. Questa situazione potrebbe essere chiarita in future revisioni."""@it .
+
+schema:endTime
+    schema:alternateName "End time"@en ;
+    schema:alternateName "Heure de fin"@fr ;
+    schema:alternateName "Endzeit"@de ;
+    schema:alternateName "Hora de finalización"@es ;
+    schema:alternateName "Tempo scaduto"@it ;
+    rdfs:comment """La fin de quelque chose. Pour un événement ou un service réservé (par exemple, FoodEstablishmentReservation), l'heure à laquelle il devrait se terminer. Pour les actions qui s'étendent sur une période de temps, lorsque l'action a été effectuée. par exemple. John a écrit un livre de janvier à décembre. Pour les médias, y compris l'audio et la vidéo, il s'agit du décalage temporel de la fin d'un clip dans un fichier plus volumineux.
+
+Notez que Event utilise startDate / endDate au lieu de startTime / endTime, même lors de la description des dates avec des heures. Cette situation pourra être clarifiée dans de futures révisions."""@fr ;
+    rdfs:comment """Die Endzeit von etwas. Für ein reserviertes Ereignis oder eine reservierte Dienstleistung (z. B. FoodEstablishmentReservation) die Zeit, die voraussichtlich endet. Für Aktionen, die sich über einen bestimmten Zeitraum erstrecken, als die Aktion ausgeführt wurde. z.B. John schrieb von Januar bis Dezember ein Buch. Bei Medien, einschließlich Audio und Video, ist dies der Zeitversatz des Endes eines Clips in einer größeren Datei.
+
+Beachten Sie, dass Event startDate / endDate anstelle von startTime / endTime verwendet, auch wenn Datumsangaben mit Zeiten beschrieben werden. Diese Situation kann in zukünftigen Überarbeitungen geklärt werden."""@de ;
+    rdfs:comment """El tiempo final de algo. Para un evento o servicio reservado (por ejemplo, FoodEstablishmentReservation), la hora a la que se espera que finalice. Para acciones que abarcan un período de tiempo, cuando se realizó la acción. p.ej. John escribió un libro de enero a diciembre. En el caso de los medios, incluidos el audio y el video, es la diferencia de tiempo del final de un clip dentro de un archivo más grande.
+
+Tenga en cuenta que Event usa startDate / endDate en lugar de startTime / endTime, incluso cuando describe fechas con horas. Esta situación puede aclararse en futuras revisiones."""@es ;
+    rdfs:comment """L'ora della fine di qualcosa. Per un evento o un servizio riservato (ad esempio, FoodEstablishmentReservation), il tempo previsto per la fine. Per azioni che coprono un periodo di tempo, quando l'azione è stata eseguita. per esempio. John ha scritto un libro da gennaio a dicembre. Per i media, inclusi audio e video, è lo sfasamento temporale della fine di una clip all'interno di un file più grande.
+
+Nota che Event utilizza startDate / endDate invece di startTime / endTime, anche quando descrive le date con gli orari. Questa situazione potrebbe essere chiarita in future revisioni."""@it .

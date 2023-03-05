@@ -8,11 +8,11 @@ const ArtifactConfigurator = require("./ArtifactConfigurator");
 const {
   JavaArtifactConfigurator,
   LANGUAGE: JAVA,
-} = require("./artifacts/JavaArtifactConfigurator");
+} = require("./artifact/JavaArtifactConfigurator");
 const {
   NodeArtifactConfigurator,
   LANGUAGE: JAVASCRIPT,
-} = require("./artifacts/NodeArtifactConfigurator");
+} = require("./artifact/NodeArtifactConfigurator");
 
 const DUMMY_JAVA_ARTIFACT = {
   artifactVersion: "0.0.1",
@@ -32,7 +32,7 @@ const DUMMY_MAVEN_ARTIFACT = {
   template: path.join(
     __dirname,
     "..",
-    "templates",
+    "template",
     "solidCommonVocabDependent",
     "java",
     "rdf4j",

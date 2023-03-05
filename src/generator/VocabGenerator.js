@@ -4,6 +4,7 @@ const rdf = require("rdf-ext");
 const FileGenerator = require("./FileGenerator");
 const Resource = require("../Resource");
 const DatasetHandler = require("../DatasetHandler");
+const { mergeDatasets } = require("../Util");
 
 module.exports = class VocabGenerator {
   constructor(artifactData, artifactDetails) {
@@ -41,7 +42,7 @@ module.exports = class VocabGenerator {
       ) {
         debug(
           `A previously generated source file is being reused for resource [${this.vocabData.inputResources.toString()}], as its currently either unreachable or empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
-            vocabGenerationData.namespace
+            vocabGenerationData.namespaceIri
           }].`
         );
 
@@ -50,7 +51,7 @@ module.exports = class VocabGenerator {
 
       throw new Error(
         `Resource [${this.vocabData.inputResources.toString()}] is unreachable or is empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
-          vocabGenerationData.namespace
+          vocabGenerationData.namespaceIri
         }], and no previously generated file is available.`
       );
     }
@@ -95,6 +96,7 @@ module.exports = class VocabGenerator {
       );
 
       const vocabGenerationData = await this.generateData();
+
       this.generateFiles(vocabGenerationData);
 
       return vocabGenerationData;
@@ -106,29 +108,29 @@ module.exports = class VocabGenerator {
   }
 
   async generateData() {
-    // Need to pull this member variable into a local variable to access it from
-    // the arrow function later...
-    const inputResources = this.vocabData.inputResources;
-
     try {
       const { datasets, termsSelectionDataset } =
         await this.completeResource.processInputs(this.vocabData);
 
-      const parsed = await this.parseDatasets(datasets, termsSelectionDataset);
-
-      return parsed;
+      return await this.parseDatasets(datasets, termsSelectionDataset);
     } catch (error) {
-      const result = `Failed to generate from input [${inputResources}]: [${
+      const termSelection = this.vocabData.termSelectionResource
+        ? ` and term selection input [${this.vocabData.termSelectionResource}]`
+        : "";
+
+      const result = `Failed to generate from input [${
+        this.vocabData.inputResources
+      }]${termSelection}: [${
         error.message
       }].\n\nStack: ${error.stack.toString()}`;
       throw new Error(result);
     }
   }
 
-  parseDatasets(fullDatasetsArray, vocabTermsOnlyDataset) {
+  parseDatasets(fullDatasetsArray, termSelectionDataset) {
     return this.buildTemplateInput(
-      VocabGenerator.merge(fullDatasetsArray),
-      VocabGenerator.merge([vocabTermsOnlyDataset])
+      mergeDatasets(fullDatasetsArray),
+      termSelectionDataset || rdf.dataset()
     );
   }
 
@@ -140,16 +142,5 @@ module.exports = class VocabGenerator {
     );
 
     return datasetHandler.buildTemplateInput();
-  }
-
-  static merge(dataSets) {
-    let fullData = rdf.dataset();
-    dataSets.forEach((dataset) => {
-      if (dataset) {
-        fullData = fullData.merge(dataset);
-      }
-    });
-
-    return fullData;
   }
 };

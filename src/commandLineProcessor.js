@@ -85,9 +85,9 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             // This override is really only relevant if we are generating from a
             // single vocabulary - if used with a vocab list file, it only applies
             // to the first vocabulary listed.
-            .alias("no", "namespaceOverride")
+            .alias("no", "namespaceIriOverride")
             .describe(
-              "namespaceOverride",
+              "namespaceIriOverride",
               "Overrides our namespace determination code to provide an explicit namespace IRI."
             )
 
@@ -162,6 +162,14 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             )
             .alias("f", "force")
             .default("force", false)
+
+            .boolean("reportBestPracticeCompliance")
+            .describe(
+              "reportBestPracticeCompliance",
+              "For each vocabulary, add a report on its compliance to the Inrupt vocabulary Best Practice guidelines (added to the file's comment header)"
+            )
+            .alias("bp", "reportBestPracticeCompliance")
+            .default("reportBestPracticeCompliance", true)
 
             .boolean("clearOutputDirectory")
             .describe(

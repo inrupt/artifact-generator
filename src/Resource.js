@@ -67,7 +67,7 @@ const prefixes = {
   void: "http://rdfs.org/ns/void#",
   vann: "http://purl.org/vocab/vann/",
   xsd: "http://www.w3.org/2001/XMLSchema#",
-  schema: "http://schema.org/",
+  schema: "https://schema.org/",
   dcterms: "http://purl.org/dc/terms/",
   time: "http://www.w3.org/2006/time#",
 };
@@ -141,7 +141,6 @@ module.exports = class Resource {
       datasets.push(termsSelectionDataset);
     }
 
-    // processInputsCallback(datasets, termsSelectionDataset);
     return { datasets, termsSelectionDataset };
   }
 
@@ -229,7 +228,9 @@ module.exports = class Resource {
       vocabContentTypeHeaderOverride,
       vocabContentTypeHeaderFallback
     );
-    debug(`Storing resource in cache: [${inputResource}]`);
+    debug(
+      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size.toLocaleString()}] triples)`
+    );
     cachedResources.set(inputResource, resource);
     return resource;
   }
@@ -271,6 +272,12 @@ module.exports = class Resource {
         factory: rdf,
         headers: {
           accept: acceptHeader,
+          // In Oct-2022, suddenly the OMG vocab
+          // (http://www.omg.org/techprocess/ab/SpecificationMetadata/)
+          // started to fail with a "403: Forbidden" error. Investigating with
+          // Postman showed that this was due to missing the 'User-Agent' HTTP
+          // header, so including one now.
+          "User-Agent": "Inrupt Artifact Generator",
         },
         formats,
       })
@@ -352,7 +359,7 @@ module.exports = class Resource {
    *
    * Note: this saves the union of all input resources and also unions in
    * any term selection resources that may apply (since those term selection
-   * resources can also add extra meta-data (e.g., label or comment
+   * resources can also add extra metadata (e.g., label or comment
    * translations, see-also links, etc.)). So do not expect the local copy
    * to be an exact representation of just a single source vocabulary.
    * A consequence of this is that our local copy can represent many remote

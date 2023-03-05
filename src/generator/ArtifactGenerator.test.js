@@ -31,7 +31,7 @@ beforeEach(() => {
   );
 });
 
-describe("Artifact Generator", () => {
+describe("Artifact Generator unit tests", () => {
   it("should provide a default output directory", () => {
     const artifactGenerator = new ArtifactGenerator({ configuration: {} });
     expect(artifactGenerator.artifactData.outputDirectory).toEqual(".");
@@ -97,7 +97,7 @@ describe("Artifact Generator", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        vocabListFile: "./test/resources/vocabs/vocab-list.yml",
+        vocabListFile: "./test/resources/vocab/vocab-list.yml",
         outputDirectory,
         noPrompt: true,
       });
@@ -134,7 +134,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -142,6 +142,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         supportBundling: false,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -165,10 +167,12 @@ describe("Artifact Generator", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
         solidCommonVocabVersion: "^1.0.10",
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
@@ -192,7 +196,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -207,6 +211,8 @@ describe("Artifact Generator", () => {
 
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -235,13 +241,15 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
         artifactNameSuffix: "",
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -280,7 +288,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testFile = path.join(outputDirectory, "static-first.ttl");
@@ -353,7 +361,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
 
@@ -446,7 +454,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testConfigFile = path.join(
@@ -555,7 +563,7 @@ describe("Artifact Generator", () => {
         ".",
         "test",
         "resources",
-        "expectedOutputs",
+        "expectedOutput",
         "skipGeneration"
       );
       const testConfigFile = path.join(
@@ -625,7 +633,7 @@ describe("Artifact Generator", () => {
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -633,6 +641,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         force: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -674,7 +684,7 @@ describe("Artifact Generator", () => {
 
       const config = new GeneratorConfiguration({
         _: "generate",
-        inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         artifactNamePrefix: "",
@@ -682,6 +692,8 @@ describe("Artifact Generator", () => {
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         clearOutputDirectory: true,
+        descriptionFallback: "Needs a description...",
+        namespaceIriOverride: "https://schema.org/",
       });
       const artifactGenerator = new ArtifactGenerator(config);
 
@@ -840,9 +852,7 @@ describe("Artifact Generator", () => {
 
       const artifactGenerator = new ArtifactGenerator(config);
       await artifactGenerator.generate();
-      expect(() => artifactGenerator.runPublish("local")).toThrowError(
-        "--want-to-fail-regardless-so-make-sure-command-is-nonsense!"
-      );
+      expect(() => artifactGenerator.runPublish("local")).not.toThrow();
     });
   });
 

@@ -1,0 +1,15 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <https://schema.org/>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+
+#
+# Define a term with multiple `rdfs:isDefinedBy` (normally it wouldn't make
+# sense for a term to be defined in multiple vocabs, but a term could be
+# defined in multiple versions of the same vocab (see QUDT as an example of a
+# vocab that does this)).
+#
+schema:Person a rdfs:Class ;
+    rdfs:label "Person" ;
+    rdfs:isDefinedBy owl: ;
+    rdfs:isDefinedBy rdfs: .

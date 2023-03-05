@@ -1,0 +1,28 @@
+{
+  "name": "@inrupt/generated-vocab-common-TEST",
+  "version": "10.11.12",
+  "description": "Bundle of vocabularies that includes the following:\n\n - schema_inrupt_ext: Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)",
+  "main": "index.js",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "webpack --config ./config/webpack.dev.config.js",
+    "prod": "webpack --config ./config/webpack.prod.config.js"
+  },
+  "author": {
+    "name": "@inrupt/artifact-generator",
+    "url": "https://github.com/inrupt/artifact-generator"
+  },
+  "contributors": [
+    {"name": "Jarlath Holleran"}
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@solid/solid-common-vocab-rdflib": "^1.0.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
+  }
+}

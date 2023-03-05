@@ -1,0 +1,26 @@
+prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd:      <http://www.w3.org/2001/XMLSchema#>
+prefix owl:      <http://www.w3.org/2002/07/owl#>
+prefix dcterms:  <http://purl.org/dc/terms/>
+prefix schema:   <https://schema.org/>
+prefix vann:     <http://purl.org/vocab/vann/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+prefix test_vocab: <https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#>
+
+
+test_vocab: a owl:Ontology, inrupt_gen:Ontology ;
+	owl:versionInfo "0.0.1" ;
+	dcterms:creator "PatMcB" ;
+	dcterms:date "2019/01/01" ;
+ 	dcterms:title "Demo Vocab" ;
+	dcterms:description """The Demo Vocabulary. This vocab is just to help illustrate how to use the vocabulary support
+ to make it easier for developers to work with vocabulary terms, such as Class, Properties, or Text Strings (such as
+ descriptive messages or display within a UI, or error messages).""" ;
+	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
+	vann:preferredNamespacePrefix "demo" ;
+	vann:preferredNamespaceUri "https://inrupt.net/vocab/not-matching-preferred-namespace-IRI#" .
+
+<https://inrupt.net/vocab/different-IRI#sampleTerm> a rdfs:Class .

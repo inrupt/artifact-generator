@@ -26,7 +26,7 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
   __dirname,
   "..",
   "..",
-  "templates",
+  "template",
   "artifacts-info.hbs"
 );
 const ARTIFACTS_INFO_FILENAME = ".artifacts-info.txt";
@@ -55,13 +55,13 @@ class ArtifactGenerator {
   async generate() {
     return this.generateVocabs()
       .then((vocabDatasets) => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           return this.collectGeneratedVocabDetails(vocabDatasets);
         }
         return vocabDatasets;
       })
       .then(async (vocabDatasets) => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           if (!this.artifactData.artifactName) {
             this.artifactData.artifactName = vocabDatasets[0].artifactName;
           }
@@ -76,7 +76,7 @@ class ArtifactGenerator {
       })
       .then(() => this.generatePackaging())
       .then(() => {
-        if (this.resourceGeneration()) {
+        if (this.areWeConfiguredToGenerateResources()) {
           FileGenerator.createVersioningFiles(this.artifactData);
         }
       })
@@ -176,14 +176,12 @@ class ArtifactGenerator {
    * opposed to deleting each artifact's output directory individually).
    */
   deleteRootArtifactOutputDirectory() {
-    if (this.artifactData.clearOutputDirectory) {
-      const rootDir = path.join(
-        this.artifactData.outputDirectory,
-        getArtifactDirectoryRoot(this.artifactData)
-      );
+    const rootDir = path.join(
+      this.artifactData.outputDirectory,
+      getArtifactDirectoryRoot(this.artifactData)
+    );
 
-      rimraf.sync(rootDir);
-    }
+    rimraf.sync(rootDir);
   }
 
   async generateNecessaryVocabs() {
@@ -221,7 +219,13 @@ class ArtifactGenerator {
 
       this.artifactData.nameAndPrefixOverride =
         vocabDetails.nameAndPrefixOverride;
-      this.artifactData.namespaceOverride = vocabDetails.namespaceOverride;
+      this.artifactData.namespaceIriOverride =
+        vocabDetails.namespaceIriOverride;
+
+      if (!this.artifactData.vocabularyIriOverride) {
+        this.artifactData.vocabularyIriOverride =
+          vocabDetails.vocabularyIriOverride;
+      }
 
       this.artifactData.ignoreNonVocabTerms = vocabDetails.ignoreNonVocabTerms;
 
@@ -229,8 +233,8 @@ class ArtifactGenerator {
       // of itself, we pass down the description from our configuration as
       // a fallback (and prefix that description with some text to denote
       // that it's not coming from the original vocabulary itself).
-      if (vocabDetails.description) {
-        this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.description}`;
+      if (vocabDetails.descriptionFallback) {
+        this.artifactData.descriptionFallback = `[Generator provided] - ${vocabDetails.descriptionFallback}`;
       }
 
       const generatedArtifacts = [];
@@ -260,7 +264,9 @@ class ArtifactGenerator {
   }
 
   async generateVocabs() {
-    this.deleteRootArtifactOutputDirectory();
+    if (this.artifactData.clearOutputDirectory) {
+      this.deleteRootArtifactOutputDirectory();
+    }
 
     // Setting the output directory for each artifact is useful for
     // publication, and should be set even if generation is not necessary.
@@ -309,7 +315,7 @@ class ArtifactGenerator {
    * resources, or initializing, etc.).
    * @returns {*}
    */
-  resourceGeneration() {
+  areWeConfiguredToGenerateResources() {
     return (
       this.artifactData.generated &&
       // Our command-line processor (YARGS) places commands (e.g. 'generate',
@@ -326,7 +332,7 @@ class ArtifactGenerator {
   async generatePackaging() {
     // If the artifacts have not been generated, it's not necessary to
     // re-package them, but also only generate if we are configured to generate.
-    if (this.resourceGeneration()) {
+    if (this.areWeConfiguredToGenerateResources()) {
       // Collect info on all generated artifacts (using their full suggested
       // names).
       const generatedFullArtifactList = [];
@@ -394,7 +400,7 @@ class ArtifactGenerator {
       };
 
       FileGenerator.createFileFromTemplate(
-        `${__dirname}/../../templates/README-artifactBundle.hbs`,
+        `${__dirname}/../../template/README-artifactBundle.hbs`,
         dataWithMarkdownDescription,
         path.join(
           this.artifactData.outputDirectory,
@@ -407,7 +413,7 @@ class ArtifactGenerator {
 
   generateLicense() {
     if (
-      this.resourceGeneration() &&
+      this.areWeConfiguredToGenerateResources() &&
       this.artifactData.license &&
       this.artifactData.license.path
     ) {
@@ -465,14 +471,22 @@ class ArtifactGenerator {
                   try {
                     response = ChildProcess.execSync(command).toString();
                   } catch (error) {
-                    // This handling was added due to intermittent, but regular,
-                    // failures when trying to unpublish packages from a local
-                    // Verdaccio instance when running tests to generate all
-                    // vocabs found within a directory - i.e. simply 'trying
-                    // again immediately' seems to just work!
+                    // This handling was added due to intermittent, but
+                    // regular, failures when trying to unpublish packages
+                    // from a local Verdaccio instance when running tests to
+                    // generate all vocabs found within a directory - i.e.,
+                    // simply 'trying again immediately' seems to just work!
                     if (command.startsWith("npm unpublish")) {
-                      debug(`Re-running sub-command [${command}]...`);
-                      response = ChildProcess.execSync(command).toString();
+                      // Even re-running the 'unpublish' now fails too, so now
+                      // we ignore failures on this retry, but only for
+                      // 'npm unpublish' commands!
+                      const commandIgnoringFailure = `(${command} || true)`;
+                      debug(
+                        `Re-running sub-command ignoring failure this time [${commandIgnoringFailure}]...`
+                      );
+                      response = ChildProcess.execSync(
+                        commandIgnoringFailure
+                      ).toString();
                     } else {
                       const message = `Error executing sub-command [${command}], details (stdout): [${error.stdout.toString()}], stderr: [${error.stderr.toString()}]`;
                       debug(message);

@@ -15,13 +15,13 @@ const {
 
 const EXPECTED_VOCAB_LIST_FROM_YAML = [
   {
-    description:
+    descriptionFallback:
       "Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex",
-    inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
-    termSelectionResource: "test/resources/vocabs/schema-inrupt-ext.ttl",
+    inputResources: ["test/resources/vocab/schema-snippet.ttl"],
+    termSelectionResource: "test/resources/vocab/schema-inrupt-ext.ttl",
   },
   {
-    description: "Some dummy online vocabulary",
+    descriptionFallback: "Some dummy online vocabulary",
     nameAndPrefixOverride: "dummy",
     inputResources: ["http://some.vocabulary.online/dummy"],
   },
@@ -45,7 +45,7 @@ artifactToGenerate:
     sourceFileExtension: java
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionResource: schema-inrupt-ext.ttl
@@ -165,8 +165,7 @@ describe("Generator configuration", () => {
     it("should generate collected configuration from vocab list file", async () => {
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        vocabListFile:
-          "./test/resources/vocabs/vocab-list-including-online.yml",
+        vocabListFile: "./test/resources/vocab/vocab-list-including-online.yml",
         noPrompt: true,
       });
 
@@ -229,7 +228,7 @@ describe("Generator configuration", () => {
       // Templates paths should be normalized wrt the module root
       expect(normalizedConfig.artifactToGenerate[0].sourceCodeTemplate).toEqual(
         path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
@@ -241,7 +240,7 @@ describe("Generator configuration", () => {
           .packagingTemplates[0].template
       ).toEqual(
         path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
@@ -280,7 +279,7 @@ describe("Generator configuration", () => {
       );
 
       expect(config.versioning.versioningTemplates[0].template).toEqual(
-        "templates/templateXXXXInternal"
+        "template/templateXXXXInternal"
       );
     });
   });
@@ -353,7 +352,7 @@ describe("Generator configuration", () => {
     it("should fail with non-existent input resource for generation", async () => {
       const config = GeneratorConfiguration.fromCommandLine({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         vocabAcceptHeaderOverride: "text/turtle",
         vocabContentTypeHeaderOverride: "text/trig",
         vocabContentTypeHeaderFallback: "text/trig-star",
@@ -376,14 +375,14 @@ describe("Generator configuration", () => {
 
     // SUCCESS CASE
     it("should generate collected configuration from command line", async () => {
-      const argNamespaceOverride =
+      const argnamespaceIriOverride =
         "override namespace (should be an IRI really!)";
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
         nameAndPrefixOverride: "dummy-test",
-        namespaceOverride: argNamespaceOverride,
+        namespaceIriOverride: argnamespaceIriOverride,
         ignoreNonVocabTerms: true,
         noPrompt: true,
       });
@@ -392,9 +391,9 @@ describe("Generator configuration", () => {
 
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["test/resources/vocab/schema-snippet.ttl"],
           nameAndPrefixOverride: "dummy-test",
-          namespaceOverride: argNamespaceOverride,
+          namespaceIriOverride: argnamespaceIriOverride,
           ignoreNonVocabTerms: true,
         },
       ]);
@@ -407,7 +406,7 @@ describe("Generator configuration", () => {
     it("should normalize absolute paths", async () => {
       const absolutePath = path.join(
         `${process.cwd()}`,
-        "test/resources/vocabs/schema-snippet.ttl"
+        "test/resources/vocab/schema-snippet.ttl"
       );
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
@@ -417,7 +416,7 @@ describe("Generator configuration", () => {
       });
       expect(generatorConfiguration.configuration.vocabList).toEqual([
         {
-          inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         },
       ]);
     });
@@ -426,7 +425,7 @@ describe("Generator configuration", () => {
       const registry = "http://my.registry.ninja";
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
-        inputResources: ["test/resources/vocabs/schema-snippet.ttl"],
+        inputResources: ["test/resources/vocab/schema-snippet.ttl"],
         moduleNamePrefix: "@inrupt/generated-vocab-",
         noPrompt: true,
         npmRegistry: "http://my.registry.ninja",
@@ -456,7 +455,7 @@ describe("Generator configuration", () => {
         "test/resources/yamlConfig/vocab-license.yml"
       );
       expect(generatorConfiguration.license.path).toEqual(
-        "test/resources/licenses/license"
+        "test/resources/license/license"
       );
       expect(generatorConfiguration.license.fileName).toEqual("LICENSE");
     });
@@ -479,7 +478,7 @@ describe("Generator configuration", () => {
       const termSelectionResource = path.join(
         "test",
         "resources",
-        "vocabs",
+        "vocab",
         "schema-inrupt-ext.ttl"
       );
 

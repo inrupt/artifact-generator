@@ -20,14 +20,10 @@ describe("Supported Data Type", () => {
         artifactGeneratorVersion: "^7.8.9",
         generatedTimestamp: "1999/12/31 23:59",
 
-        inputResources: [
-          "./test/resources/vocabs/special-case-owl-snippet.ttl",
-        ],
+        inputResources: ["./test/resources/vocab/special-case-owl-snippet.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         moduleNamePrefix: "generated-vocab-",
-        nameAndPrefixOverride: "owl",
-
         generatedVocabs: [],
         authorSet: new Set(),
       },
@@ -36,7 +32,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -79,7 +75,7 @@ describe("Supported Data Type", () => {
         generatedTimestamp: "1999/12/31 23:59",
 
         inputResources: [
-          "./test/resources/vocabs/special-case-http-snippet.ttl",
+          "./test/resources/vocab/special-case-http-snippet.ttl",
         ],
         outputDirectory,
         artifactVersion: "1.0.0",
@@ -94,7 +90,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -111,6 +107,10 @@ describe("Supported Data Type", () => {
       .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/HTTP.js`)
       .toString();
 
+    // We expect to get the namespace IRI from a vocab term, since the vocab
+    // itself doesn't explicitly provide one via VANN or SHACL:declare, hence
+    // we see the trailing hash when the 'a owl:Ontology' triple doesn't have
+    // that hash.
     expect(indexOutput).toEqual(
       expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"')
     );
@@ -133,7 +133,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/supported-data-types-invalid-constant-iri.ttl",
+          "./test/resources/vocab/supported-data-types-invalid-constant-iri.ttl",
         ],
         outputDirectory,
       },
@@ -142,7 +142,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -165,7 +165,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/supported-data-types-too-many-constant-iri-values.ttl",
+          "./test/resources/vocab/supported-data-types-too-many-constant-iri-values.ttl",
         ],
         outputDirectory,
       },
@@ -174,7 +174,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -199,7 +199,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/supported-data-types-too-many-constant-string-values.ttl",
+          "./test/resources/vocab/supported-data-types-too-many-constant-string-values.ttl",
         ],
         outputDirectory,
       },
@@ -208,7 +208,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -233,7 +233,7 @@ describe("Supported Data Type", () => {
     const generator = new VocabGenerator(
       {
         inputResources: [
-          "./test/resources/vocabs/supported-data-types-many-constant-string-values-but-different-languages.ttl",
+          "./test/resources/vocab/supported-data-types-many-constant-string-values-but-different-languages.ttl",
         ],
         outputDirectory,
       },
@@ -242,7 +242,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"
@@ -270,7 +270,7 @@ describe("Supported Data Type", () => {
         artifactGeneratorVersion: "^7.8.9",
         generatedTimestamp: "1999/12/31 23:59",
 
-        inputResources: ["./test/resources/vocabs/supported-data-types.ttl"],
+        inputResources: ["./test/resources/vocab/supported-data-types.ttl"],
         outputDirectory,
         artifactVersion: "1.0.0",
         moduleNamePrefix: "generated-vocab-",
@@ -283,7 +283,7 @@ describe("Supported Data Type", () => {
         artifactDirectoryName: "JavaScript",
         // We assume normalization has resolved this template location.
         sourceCodeTemplate: path.join(
-          "templates",
+          "template",
           "solidCommonVocabDependent",
           "javascript",
           "vocab.hbs"

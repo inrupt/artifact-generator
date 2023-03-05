@@ -20,6 +20,8 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - class # Defined in VCard.
       - abstract # Defined in DCTerms.
+      - this # Defined in SHACL.
+
     packaging:
       - packagingTool: maven
         groupId: com.inrupt.test
@@ -50,12 +52,12 @@ artifactToGenerate:
             fileName: index.js
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
-  - description: Vocab for testing predicate types...
+  - descriptionFallback: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
       - ./supported-data-types.ttl

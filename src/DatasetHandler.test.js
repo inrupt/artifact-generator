@@ -10,7 +10,7 @@ const {
   RDF_NAMESPACE,
   RDFS,
   OWL,
-  OWL_NAMESPACE,
+  SHACL,
   SKOS,
   SKOSXL,
   VANN,
@@ -20,7 +20,7 @@ const {
 
 const DatasetHandler = require("./DatasetHandler");
 
-const NAMESPACE = "https://rdf-extension.com#";
+const NAMESPACE = "https://rdf-extension.com/";
 const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
 const DEFAULT_DESCRIPTION = rdf.literal("Default vocab description...", "en");
 const DEFAULT_PREFIX = rdf.literal("rdf-ext");
@@ -36,6 +36,60 @@ const vocabMetadata = rdf
   ]);
 
 describe("Dataset Handler", () => {
+  describe("Handle multiple owl:Ontology triples", () => {
+    it("should bomb out if multiple owl:Ontology triples", async () => {
+      const extraOntology = NAMESPACE + "_AnotherOntology";
+      const NAMESPACE_IRI_2 = rdf.namedNode(extraOntology);
+
+      const datasetMultipleOntologies = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_IRI_2, RDF.type, OWL.Ontology))
+        .add(rdf.quad(NAMESPACE_IRI_2, RDFS.label, DEFAULT_DESCRIPTION));
+
+      const handler = new DatasetHandler(
+        datasetMultipleOntologies,
+        rdf.dataset(),
+        {
+          inputResources: ["does not matter"],
+        }
+      );
+
+      await expect(handler.buildTemplateInput()).rejects.toThrow(extraOntology);
+    });
+
+    it("should warn if multiple owl:Ontology triples, but namespace overridden", async () => {
+      const extraOntology = NAMESPACE + "_ExtraOntology";
+      const NAMESPACE_IRI_2 = rdf.namedNode(extraOntology);
+
+      const overrideOntology = NAMESPACE + "_OverrideOntology";
+      const NAMESPACE_IRI_OVERRIDE = rdf.namedNode(overrideOntology);
+
+      const datasetMultipleOntologies = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_IRI_2, RDF.type, OWL.Ontology))
+        .add(rdf.quad(NAMESPACE_IRI_2, RDFS.label, DEFAULT_DESCRIPTION))
+        .add(rdf.quad(NAMESPACE_IRI_OVERRIDE, RDFS.label, DEFAULT_DESCRIPTION));
+
+      const handler = new DatasetHandler(
+        datasetMultipleOntologies,
+        rdf.dataset(),
+        {
+          inputResources: ["does not matter"],
+          vocabularyIriOverride: overrideOntology,
+          nameAndPrefixOverride: "does_not_matter",
+        }
+      );
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(overrideOntology);
+      expect(result.namespaceIri).toEqual(NAMESPACE);
+    });
+  });
+
   describe("Static reporting helpers", () => {
     it("should report override only if one provided", () => {
       expect(DatasetHandler.describeNamespaceInUse("X")).toContain("X");
@@ -44,6 +98,37 @@ describe("Dataset Handler", () => {
       expect(DatasetHandler.describeNamespaceInUse("X", override)).toContain(
         override
       );
+    });
+  });
+
+  describe("Find longest term name", () => {
+    it("should find longest from collection", () => {
+      const ontologyIri = "https://ex.com/vocab/";
+      const nonOntologyTermButVeryLong =
+        "https://NOT-ex.com/vocab/nonOntologyTermButVeryLongIndeed";
+      const termShort = `${ontologyIri}short`;
+      const termLong = `${ontologyIri}longer-than-short`;
+
+      expect(DatasetHandler.findLongestTermName([termShort, termLong])).toEqual(
+        termLong
+      );
+      expect(DatasetHandler.findLongestTermName([termLong, termShort])).toEqual(
+        termLong
+      );
+      expect(
+        DatasetHandler.findLongestTermName([
+          nonOntologyTermButVeryLong,
+          termShort,
+          termLong,
+        ])
+      ).toEqual(nonOntologyTermButVeryLong);
+      expect(
+        DatasetHandler.findLongestTermName([
+          termLong,
+          termShort,
+          nonOntologyTermButVeryLong,
+        ])
+      ).toEqual(nonOntologyTermButVeryLong);
     });
   });
 
@@ -161,18 +246,18 @@ describe("Dataset Handler", () => {
 
   describe("Edge-case vocabulary cases ", () => {
     it("should ignore properties defined on the namespace IRI", async () => {
-      const vocabNamespace = "https://test.ex.com/vocab#";
+      const namespaceIri = "https://test.ex.com/vocab/";
 
       const dataset = rdf
         .dataset()
         // Define our vocab as a 'type' that we treat as a vocab property -
         // this should be ignored as being a property from the vocab itself!
-        .add(rdf.quad(rdf.namedNode(vocabNamespace), RDF.type, RDF.Property))
+        .add(rdf.quad(rdf.namedNode(namespaceIri), RDF.type, RDF.Property))
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
           rdf.quad(
-            rdf.namedNode(`${vocabNamespace}MyClass`),
+            rdf.namedNode(`${namespaceIri}MyClass`),
             RDF.type,
             RDFS.Class
           )
@@ -190,6 +275,331 @@ describe("Dataset Handler", () => {
 
       const result = await handler.buildTemplateInput();
       expect(result.properties.length).toBe(0);
+    });
+
+    it("should find vocab description in heuristically determined namespace", async () => {
+      const namespaceIri = "https://test.ex.com/vocab/";
+      const description = "Test description...";
+
+      const dataset = rdf
+        .dataset()
+        // Describe our vocab directly (no 'owl:Ontology' triple).
+        .add(
+          rdf.quad(
+            rdf.namedNode(namespaceIri),
+            DCTERMS.title,
+            rdf.literal(description)
+          )
+        )
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${namespaceIri}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.description).toContain(description);
+    });
+  });
+
+  describe("handling vocabulary IRI as separate from namespace IRI", () => {
+    it("should treat vocabulary IRI as namespace IRI", async () => {
+      const vocabIri = "https://test.ex.com/vocab-not-namespace/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri), RDF.type, OWL.Ontology))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
+    });
+
+    it("should use vocabulary IRI override if none found", async () => {
+      const vocabIri = "https://test.ex.com/vocab-not-namespace/";
+
+      const dataset = rdf
+        .dataset()
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+
+        vocabularyIriOverride: vocabIri,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
+    });
+
+    it("should fail if multiple vocabulary IRIs and no override", async () => {
+      const vocabIri1 = "https://test.ex.com/vocab-1/";
+      const vocabIri2 = "https://test.ex.com/vocab-2/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri1), RDF.type, OWL.Ontology))
+        .add(rdf.quad(rdf.namedNode(vocabIri2), RDF.type, OWL.Ontology))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(rdf.namedNode(`${vocabIri1}MyClass`), RDF.type, RDFS.Class)
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+      });
+
+      await expect(handler.buildTemplateInput()).rejects.toThrow(vocabIri2);
+    });
+
+    it("should report if vocabulary IRI and override are the same", async () => {
+      const vocabIri = "https://test.ex.com/vocab/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri), RDF.type, OWL.Ontology))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+
+        // Override the same as the vocab IRI itself.
+        vocabularyIriOverride: vocabIri,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(vocabIri);
+    });
+
+    it("should fail if multiple namespace IRIs and no namespace override", async () => {
+      const vocabIri = "https://test.ex.com/vocab/";
+      const namespaceIri1 = "https://test.ex.com/namespace-1/";
+      const namespaceIri2 = "https://test.ex.com/namespace-2/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri), RDF.type, OWL.Ontology))
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri1)
+          )
+        )
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri2)
+          )
+        )
+        // We need to define at least one term, in a namespace, otherwise
+        // we'll blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${namespaceIri1}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+      });
+
+      await expect(handler.buildTemplateInput()).rejects.toThrow(namespaceIri2);
+    });
+
+    it("should use namespace IRI override if multiple namespace IRIs, but given namespace override", async () => {
+      const vocabIri = "https://test.ex.com/vocab/";
+      const namespaceIri1 = "https://test.ex.com/vocab/1/";
+      const namespaceIri2 = "https://test.ex.com/vocab/2/";
+      const namespaceIri3 = "https://test.ex.com/vocab/3/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri), RDF.type, OWL.Ontology))
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri1)
+          )
+        )
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri2)
+          )
+        )
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri3)
+          )
+        )
+        // We need to define at least one term, in a namespace, otherwise
+        // we'll blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${namespaceIri2}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+
+        // Override the same as the vocab IRI itself.
+        namespaceIriOverride: namespaceIri2,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(namespaceIri2);
+    });
+
+    it("should use override if multiple vocabulary IRIs, but given vocabulary override", async () => {
+      const vocabIri1 = "https://test.ex.com/vocab-1/";
+      const vocabIri2 = "https://test.ex.com/vocab-2/";
+      const vocabIri3 = "https://test.ex.com/vocab-3/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri1), RDF.type, OWL.Ontology))
+        .add(rdf.quad(rdf.namedNode(vocabIri2), RDF.type, OWL.Ontology))
+        .add(rdf.quad(rdf.namedNode(vocabIri3), RDF.type, OWL.Ontology))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(rdf.namedNode(`${vocabIri2}MyClass`), RDF.type, RDFS.Class)
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+
+        vocabularyIriOverride: vocabIri2,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri2);
+      expect(result.namespaceIri).toEqual(vocabIri2);
+    });
+
+    it("should report if namespace IRI and override are the same", async () => {
+      const vocabIri = "https://test.ex.com/vocab/";
+      const namespaceIri = "https://test.ex.com/namespace/";
+
+      const dataset = rdf
+        .dataset()
+        .add(rdf.quad(rdf.namedNode(vocabIri), RDF.type, OWL.Ontology))
+        // We need to define at least one term, in our vocab, otherwise we'll
+        // blow up with an 'empty vocab' error.
+        .add(
+          rdf.quad(
+            rdf.namedNode(vocabIri),
+            VANN.preferredNamespaceUri,
+            rdf.namedNode(namespaceIri)
+          )
+        )
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${namespaceIri}MyClass`),
+            RDF.type,
+            RDFS.Class
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        // We need to inject a vocab description, even though we didn't add
+        // ontology triples, since we want to invoke our heuristic to determine
+        // the vocab IRI, and we don't want to blow up on that description
+        // check.
+        descriptionFallback: DEFAULT_DESCRIPTION.value,
+        inputResources: ["does not matter"],
+        nameAndPrefixOverride: "test",
+
+        // Override the same as the namespace IRI itself.
+        namespaceIriOverride: namespaceIri,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.vocabularyIri).toEqual(vocabIri);
+      expect(result.namespaceIri).toEqual(namespaceIri);
     });
   });
 
@@ -698,6 +1108,7 @@ describe("Dataset Handler", () => {
       // Define this ontology as having it's own namespace...
       rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
       rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION),
+      rdf.quad(NAMESPACE_IRI, VANN.preferredNamespaceUri, NAMESPACE_IRI),
       rdf.quad(NAMESPACE_IRI, VANN.preferredNamespacePrefix, DEFAULT_PREFIX),
 
       // ...now add terms from different, but **well-known**, namespaces:
@@ -714,7 +1125,7 @@ describe("Dataset Handler", () => {
   });
 
   it("should fail if no prefix is defined in the vocabulary", () => {
-    const NS = "http://some.namespace.com#";
+    const NS = "https://some.namespace.com/";
     const NS_IRI = rdf.namedNode(NS);
 
     const vocab = rdf
@@ -729,8 +1140,25 @@ describe("Dataset Handler", () => {
     });
 
     expect(() => {
-      handler.findPreferredNamespacePrefix(NS);
-    }).toThrow("No vocabulary prefix defined");
+      handler.lookupNamespaceDetails(NS);
+    }).toThrow("No prefix defined for vocabulary");
+  });
+
+  it("should fail if no prefix is defined *and* no vocabulary IRI", () => {
+    const NS = "https://some.namespace.com/";
+    const NS_IRI = rdf.namedNode(NS);
+
+    const vocab = rdf
+      .dataset()
+      .addAll([rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)]);
+
+    const handler = new DatasetHandler(vocab, rdf.dataset(), {
+      inputResources: ["does not matter"],
+    });
+
+    expect(() => {
+      handler.lookupNamespaceDetails(undefined);
+    }).toThrow("Could not be determined");
   });
 
   it("should not fail for known namespaces without prefix", () => {
@@ -748,7 +1176,8 @@ describe("Dataset Handler", () => {
       inputResources: ["does not matter"],
     });
 
-    expect(handler.findPreferredNamespacePrefix(NS)).toEqual("foaf");
+    const namespaceDetails = handler.lookupNamespaceDetails(NS);
+    expect(namespaceDetails.namespacePrefix).toEqual("foaf");
   });
 
   it("should throw an error if the vocabulary does not define any term", async () => {
@@ -773,8 +1202,8 @@ describe("Dataset Handler", () => {
   });
 
   it("should override the namespace of the terms", async () => {
-    const namespaceOverride = "https://override.namespace.org#";
-    const testTermClass = `${namespaceOverride}testTermClass`;
+    const namespaceIriOverride = "https://override.namespace.org/";
+    const testTermClass = `${namespaceIriOverride}testTermClass`;
     const dataset = rdf
       .dataset()
       .addAll(vocabMetadata)
@@ -785,19 +1214,20 @@ describe("Dataset Handler", () => {
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
       inputResources: ["does not matter"],
-      namespaceOverride,
       nameAndPrefixOverride: "does not matter",
+      namespaceIriOverride,
+      descriptionFallback: "Overridden namespace needs a description too...",
     });
 
     const result = await handler.buildTemplateInput();
-    expect(result.namespace).toEqual(namespaceOverride);
+    expect(result.namespaceIri).toEqual(namespaceIriOverride);
   });
 
   it("should override the namespace of the terms if the heuristic namespace determination fails.", async () => {
-    const namespaceOverride = NAMESPACE;
+    const namespaceIriOverride = NAMESPACE;
     const testTermClass = `${NAMESPACE}testTermClass`;
 
-    const otherNamespace = "https://another.long.namespace.org#";
+    const otherNamespace = "https://another.long.namespace.org/";
     const longestTerm = `${otherNamespace}thisIsAVeryLongTermThatBreaksOurHeuristic`;
 
     const dataset = rdf
@@ -821,12 +1251,44 @@ describe("Dataset Handler", () => {
       // check.
       descriptionFallback: DEFAULT_DESCRIPTION.value,
       inputResources: ["does not matter"],
-      namespaceOverride,
+      namespaceIriOverride,
       nameAndPrefixOverride: "does not matter",
     });
 
     const result = await handler.buildTemplateInput();
-    expect(result.namespace).toEqual(namespaceOverride);
+    expect(result.namespaceIri).toEqual(namespaceIriOverride);
+  });
+
+  describe("Handle SHACL prefix declarations", () => {
+    it("should pick up namespace details from vocab SHACL declaration", () => {
+      const NS = "https://some.namespace.com/";
+      const NS_IRI = rdf.namedNode(NS);
+      const PREFIX_DELCARATION =
+        "https://some.namespace.com/vocab_prefix_declaration/";
+      const PREFIX_DELCARATION_IRI = rdf.namedNode(PREFIX_DELCARATION);
+      const TEST_PREFIX = "test_prefix";
+
+      const vocab = rdf
+        .dataset()
+        .addAll([
+          rdf.quad(NS_IRI, RDF.type, OWL.Ontology),
+          rdf.quad(NS_IRI, SHACL.declare, PREFIX_DELCARATION_IRI),
+          rdf.quad(PREFIX_DELCARATION_IRI, RDF.type, SHACL.PrefixDeclaration),
+          rdf.quad(PREFIX_DELCARATION_IRI, SHACL.namespace, NS_IRI),
+          rdf.quad(
+            PREFIX_DELCARATION_IRI,
+            SHACL.prefix,
+            rdf.literal(TEST_PREFIX)
+          ),
+        ]);
+
+      const handler = new DatasetHandler(vocab, rdf.dataset(), {
+        inputResources: ["does not matter"],
+      });
+
+      const namespaceDetails = handler.lookupNamespaceDetails(NS);
+      expect(namespaceDetails.namespacePrefix).toEqual(TEST_PREFIX);
+    });
   });
 
   describe("storing local copy of vocab", () => {
@@ -859,7 +1321,7 @@ describe("Dataset Handler", () => {
           // Here we are testing for the file, but also the hash of its
           // contents...
           filename.startsWith(`rdf-ext-`) &&
-          filename.endsWith(`--808724509__https---rdf-extension.com#.ttl`)
+          filename.endsWith(`--745960813__https---rdf-extension.com-.ttl`)
       );
       expect(matches.length).toBe(1);
     });
@@ -885,6 +1347,71 @@ describe("Dataset Handler", () => {
       expect(result.properties[0].nameEscapedForLanguage).toEqual(
         `_${testTerm}`
       );
+    });
+  });
+
+  describe("Best Practice compliance report", () => {
+    it("should generate Best Practice compliance report if configured", async () => {
+      const testTerm = "0To60Mph";
+      const testTermProperty = rdf.namedNode(`${NAMESPACE}${testTerm}`);
+
+      const dataset = rdf
+        .dataset()
+        .addAll(vocabMetadata)
+        .add(rdf.quad(NAMESPACE_IRI, DCTERMS.description, DEFAULT_DESCRIPTION))
+        .add(
+          rdf.quad(
+            rdf.namedNode(`${NAMESPACE}testTerm`),
+            RDF.type,
+            RDF.Property
+          )
+        );
+
+      const handler = new DatasetHandler(dataset, rdf.dataset(), {
+        inputResources: ["does not matter"],
+        reportBestPracticeCompliance: true,
+      });
+
+      const result = await handler.buildTemplateInput();
+      expect(result.complianceReport).not.toBeUndefined();
+      expect(result.complianceReport.totalTermCount).toEqual(1);
+    });
+  });
+
+  describe("first dataset value", () => {
+    it("should return default if no quads", () => {
+      const testDefaultValue = "test default value";
+      expect(
+        DatasetHandler.firstDatasetValue(rdf.dataset(), "ga", testDefaultValue)
+      ).toEqual(testDefaultValue);
+    });
+
+    it("should return value with no language tag", () => {
+      const realValue = "real value";
+      const testDefaultValue = "test default value";
+      expect(
+        DatasetHandler.firstDatasetValue(
+          rdf
+            .dataset()
+            .add(rdf.quad(OWL.Class, RDFS.label, rdf.literal(realValue))),
+          undefined,
+          testDefaultValue
+        )
+      ).toEqual(realValue);
+    });
+
+    it("should return value with language tag", () => {
+      const realValue = "luach fíor, as Gaeilge";
+      const testDefaultValue = "test default value";
+      expect(
+        DatasetHandler.firstDatasetValue(
+          rdf
+            .dataset()
+            .add(rdf.quad(OWL.Class, RDFS.label, rdf.literal(realValue, "ga"))),
+          "ga",
+          testDefaultValue
+        )
+      ).toEqual(realValue);
     });
   });
 });

@@ -7,7 +7,7 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
   __dirname,
   "..",
   "..",
-  "templates",
+  "template",
   "artifacts-info.hbs"
 );
 

@@ -305,7 +305,7 @@ describe("App tests", () => {
       const filePath = path.join(
         "test",
         "resources",
-        "vocabs",
+        "vocab",
         "no-artifacts.yml"
       );
       const argv = {

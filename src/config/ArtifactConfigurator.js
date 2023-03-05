@@ -2,7 +2,7 @@ const debug = require("debug")("artifact-generator:ArtifactConfigurator");
 const inquirer = require("inquirer");
 
 const DEFAULT_ARTIFACT_VERSION = "0.1.0";
-const DEFAULT_KEYWORDS_TO_UNDERSCORE = ["class", "abstract", "default"];
+const DEFAULT_KEYWORDS_TO_UNDERSCORE = ["class", "abstract", "default", "this"];
 
 const ADD_REPOSITORY_CONFIRMATION = {
   type: "confirm",

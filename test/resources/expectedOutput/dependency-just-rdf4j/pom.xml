@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.inrupt.test</groupId>
+    <artifactId>generated-vocab-TEST</artifactId>
+    <version>0.1.5-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>generated-vocab-TEST</name>
+    <description>Bundle of [1] vocabularies that includes the following:
+
+ - schema_inrupt_ext: Inrupt extension to Schema.org terms.</description>
+
+    <developers>
+        <developer>
+            <name>@inrupt/artifact-generator</name>
+            <url>https://github.com/inrupt/artifact-generator</url>
+        </developer>
+    </developers>
+
+    <contributors>
+        <!-- The contributors listed here are the authors of the vocabularies
+        on which these artifacts are based. -->
+        <contributor>
+            <name>https://inrupt.com/profile/card/#us</name>
+        </contributor>
+    </contributors>
+
+    <properties>
+        <slf4j.version>1.7.26</slf4j.version>
+
+        <!-- RDF4J defines a BOM that we can depend on below in our 'dependenciesManagement' section, specifying the
+    exact RDF4J version there. This means Maven child modules can pull in individual RDF4J jars without
+        needing to also specify a version (see https://rdf4j.org/download section 'Using Maven Dependencies'). -->
+        <rdf4j.version>2.5.3</rdf4j.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-model</artifactId>
+            <version>${rdf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

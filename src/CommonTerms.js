@@ -42,6 +42,7 @@ const DCTERMS_NAMESPACE = "http://purl.org/dc/terms/";
 module.exports.DCTERMS = {
   description: rdf.namedNode(`${DCTERMS_NAMESPACE}description`),
   creator: rdf.namedNode(`${DCTERMS_NAMESPACE}creator`),
+  title: rdf.namedNode(`${DCTERMS_NAMESPACE}title`),
 };
 
 // For purely legacy reasons (specifically 'cos the core RDF and RDFS vocabs
@@ -94,7 +95,15 @@ module.exports.VANN = {
   ),
 };
 
-const SCHEMA_DOT_ORG_NAMESPACE = "http://schema.org/";
+const SHACL_NAMESPACE = "http://www.w3.org/ns/shacl#";
+module.exports.SHACL = {
+  PrefixDeclaration: rdf.namedNode(`${SHACL_NAMESPACE}PrefixDeclaration`),
+  declare: rdf.namedNode(`${SHACL_NAMESPACE}declare`),
+  namespace: rdf.namedNode(`${SHACL_NAMESPACE}namespace`),
+  prefix: rdf.namedNode(`${SHACL_NAMESPACE}prefix`),
+};
+
+const SCHEMA_DOT_ORG_NAMESPACE = "https://schema.org/";
 module.exports.SCHEMA_DOT_ORG = {
   alternateName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}alternateName`),
   givenName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}givenName`),
@@ -106,10 +115,18 @@ module.exports.SCHEMA_DOT_ORG = {
 };
 
 const ARTIFACT_GENERATOR_NAMESPACE =
-  "https://inrupt.com/vocab/tool/artifact_generator#";
+  "https://inrupt.com/vocab/tool/artifact_generator/";
 module.exports.ARTIFACT_GENERATOR = {
   ConstantString: rdf.namedNode(
     `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`
   ),
   ConstantIri: rdf.namedNode(`${ARTIFACT_GENERATOR_NAMESPACE}ConstantIri`),
 };
+
+const INRUPT_BEST_PRACTICE_NAMESPACE =
+  "https://w3id.org/inrupt/vocab/bestPractice/";
+module.exports.INRUPT_BEST_PRACTICE_NAMESPACE = INRUPT_BEST_PRACTICE_NAMESPACE;
+module.exports.INRUPT_BEST_PRACTICE = {};
+const INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX = "inrupt_bp";
+module.exports.INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX =
+  INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX;

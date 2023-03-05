@@ -23,6 +23,8 @@ artifactToGenerate:
       - "class"
       - "abstract"
       - "default"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
     packaging:
       - packagingTool: maven
@@ -34,6 +36,6 @@ artifactToGenerate:
 
 vocabList:
   - inputResources:
-      - "../vocabs/schema-snippet.ttl"
+      - "../vocab/schema-snippet.ttl"
     nameAndPrefixOverride: "schema"
-    description: "An example vocabulary"
+    descriptionFallback: "An example vocabulary"

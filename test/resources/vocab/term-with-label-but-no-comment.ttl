@@ -1,0 +1,18 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+
+test_vocab: a owl:Ontology, inrupt_gen:Ontology ;
+	owl:versionInfo "1" ;
+	dcterms:creator "PatMcB" ;
+	dcterms:date "2019/01/01" ;
+ 	dcterms:title "Demo Vocab" ;
+	dcterms:description "Testing that terms in LIT-specific ontologies have both labels and comments." ;
+	dcterms:license "http://purl.org/NET/rdflicense/MIT1.0.ttl" ;
+	vann:preferredNamespacePrefix "test_vocab" ;
+	vann:preferredNamespaceUri "https://exmamp.com/vocab#" .
+
+test_vocab:sampleTerm a rdfs:Class ;
+  rdfs:label "We have a label, but no comment!" .

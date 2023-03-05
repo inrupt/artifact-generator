@@ -36,7 +36,8 @@ artifactToGenerate:
             fileName: index.js
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
-      - ../vocabs/schema-snippet.ttl
-    termSelectionResource: ../vocabs/schema-inrupt-ext.ttl
+      - ../vocab/schema-snippet.ttl
+    termSelectionResource: ../vocab/schema-inrupt-ext.ttl
+    namespaceIriOverride: https://schema.org/

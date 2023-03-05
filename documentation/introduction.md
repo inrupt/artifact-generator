@@ -20,10 +20,10 @@ we want, and specify that when running our generator using the
 `--termSelectionResource` command-line argument (see examples below).
 
 Putting this all together, we can very easily create our own vocabularies in
-any standard W3C serialization of RDF (e.g., Turtle, JSON-LD, N-Triples, etc.),
-and immediately allow our developers use the terms in those vocabularies
-directly in their development IDE's (with full code-completion and live
-JSDoc/JavaDoc).
+any standard W3C serialization of Linked Data (e.g., Turtle, JSON-LD,
+N-Triples, etc.), and immediately allow our developers use the terms in those
+vocabularies directly in their development IDE's (with full code-completion
+and live JSDoc/JavaDoc).
 
 And we can easily reuse existing vocabularies, or just the parts of those
 vocabularies we wish to use, while also being able to easily extend them, for
@@ -32,7 +32,8 @@ existing `labels` or `comments`.
 
 Ultimately, perhaps the biggest benefit of the Artifact Generator is that it
 allows us easily define our own vocabularies in W3C standardized,
-interoperable RDF that can be easily used, shared and evolved by multiple
-development teams often working in completely different programming languages.
+interoperable Linked Data that can be easily used, shared, and evolved by
+multiple development teams, often working in completely different programming
+languages.
 
 [Back to the homepage](../README.md)

@@ -1,0 +1,49 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix schema: <https://schema.org/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+prefix hobby: <https://inrupt.com/ns/vocab/hobby/>
+prefix pet_rock: <https://team.inrupt.net/public/vocab/PetRock.ttl#>
+
+pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    owl:versionIRI <https://team.inrupt.net/public/vocab/PetRock.ttl/0.0.1> ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/07/28" ;
+    dcterms:title "Pet Rock vocabulary"@en ;
+    dcterms:description "Vocabulary for Pet Rock collectors, including terms for describing the characteristics of Pet Rocks..."@en ;
+    vann:preferredNamespacePrefix "pet_rock" ;
+    vann:preferredNamespaceUri "https://team.inrupt.net/public/vocab/PetRock.ttl#" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+
+pet_rock:PetRock a rdfs:Class, hobby:Hobby ;
+  hobby:kind "collecting"@en ;
+  rdfs:isDefinedBy pet_rock: ;
+  rdfs:label "Pet Rock"@en ;
+  rdfs:label "Pierre de compagnie"@fr ;
+  rdfs:label "Pet Rock"@es ;
+  rdfs:comment "The class of all rocks that this app considers excellent Pets."@en ;
+  rdfs:comment "La clase de todas las rocas que esta aplicación considera excelentes mascotas."@es .
+
+pet_rock:shininess a rdf:Property ;
+  rdfs:isDefinedBy pet_rock: ;
+  schema:domainIncludes pet_rock:PetRock ;
+  rdfs:label "Shininess"@en ;
+  rdfs:label "Brillo"@es ;
+  rdfs:comment "How wonderfully shiny a rock is."@en ;
+  rdfs:comment "Qué maravillosamente brillante es una roca."@es .
+
+pet_rock:rarity a rdf:Property ;
+  rdfs:isDefinedBy pet_rock: ;
+  schema:domainIncludes pet_rock:PetRock ;
+  rdfs:label "Rarity"@en ;
+  rdfs:label "Rareté"@fr ;
+  rdfs:label "Rareza"@es ;
+  rdfs:comment "How rare this rock is (related to it's value on the lucrative Pet Rock market)."@en ;
+  rdfs:comment "Cuán rara es esta roca (relacionada con su valor en el lucrativo mercado de Pet Rock)."@es .

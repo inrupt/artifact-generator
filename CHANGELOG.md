@@ -7,10 +7,50 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Add vocab counts to generated comments.
 - Add debug message when prefix is found from hard-coded internal vocab list.
 - Replaced FOAF with RDFS for unit test for online vocabs (FOAF has gone down).
-- Added intuitive RunnableDemo example - to highlight many of the benefits of
-  the AG very quickly and easily.
+- Added intuitive Demo example - to highlight many of the benefits of the AG
+  very quickly and easily.
 - Improved handling of Widoco HTML generation (skipping use-cases needing
   multiple input resources, or a term selection resource).
+- Added simple demo of using Custom Templates for a different programming
+  language (using Elixir as the example).
+- Added vocab namespace IRI to descriptions.
+- Added keyword 'this' to reserved keyword handling for Java (defined in SHACL).
+- Look for vocab description even if no explicit 'owl:Ontology' triple given, by
+  using the determined namespace IRI (even if determined heuristically) as the
+  Subject.
+- Added 'dcterms:title' as predicate to look for as vocab description (DCTerms
+  itself uses this predicate (but doesn't provide an 'a owl:Ontology' triple)).
+- Added 'User-Agent' HTTP header (Object Management Group (OMG) vocab started
+  failing with '403: Forbidden' without it!).
+- Fix tests so that we still get 100% even if running online.
+- Provide set of 'rdfs:isDefinedBy' values now (to properly document vocabs like
+  QUDT that provide multiple version IRIs for the defining vocab).
+- Tidied up template reporting of vocab namespace IRI.
+- Major tidy up and simplification of code to determine a vocab's namespace IRI.
+- Started to add completely new capability to report on Best Practices
+  guidelines compliance (similar in intent to OOPS! and FOOPS!).
+- Add support for SHACL PrefixDeclarations for namespace details (e.g., a
+  vocab's namespace IRI and prefix), as used now by 'gist'.
+- Encoded clear distinction between the Vocabulary/Ontology IRI and the
+  namespace IRI.
+- **BREAKING CHANGE** Renamed the configuration parameter of 'namespaceOverride'
+  to be 'namespaceIriOverride', to better align with the new 
+  'vocabularyIriOverride' parameter, and also to distinguish it more clearly
+  from other namespace details (such as the namespace prefix).
+- **BREAKING CHANGE** Renamed the configuration parameter of 'description' to be
+  consistent with internal code use of 'descriptionFallback' (which better
+  communicates its intent as a fallback in case the vocab itself does not
+  explicitly provide its own description). 
+- **BREAKING CHANGE** Changed Inrupt Artifact Generator vocab namespace IRI to
+  use a trailing slash instead of a trailing hash.
+- Ignore Verdaccio 'npm unpublish' errors on retry now (useful for local
+  testing, where I was hitting intermittent E404 errors, even on retry).
+- The FAIR vocab has term IRIs with dots/full-stops, so replace those dots with
+  underscores for programming language constant names.
+- NOTE: temporarily excluding the Best Practice reporting code from test
+  coverage for the moment, as it's very much a work-in-progress (and should
+  affect the overall generation process at all (apart from the report output at
+  the top of generated source files, of course!).
 
 ## 2.0.0 2022-06-03
 
@@ -81,7 +121,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Note: there was a mistaken v1.1.0 release here in the Git history 
   (commit: adefc1bae0e3e5b006ed32853d130e3d5a2abf65), but we caught this and
   cleaned it up before any release to npm. 
-- Term description meta-data now always displayed for all terms (regardless of
+- Term description metadata now always displayed for all terms (regardless of
   it being non-English or not), and more detailed descriptions provided too
   (and all with full test coverage).
 - Fix artifact regeneration tests for cases where timestamp based comparison
@@ -122,11 +162,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Added local vocabulary (PetRock.ttl) to example vocab list. Useful for testing
   watcher detecting changes in YAML file (i.e., just run from the repo root and
   edit that vocab to see real-time re-generation:
-    `node index.js watch --vocabListFile ./example/CopyOf-Vocab-List-Common.yml`
+    `node index.js watch --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml`
   ...or run this multiple times to see re-generation ignored after first time,
   but then edit YAML file and re-run to see re-generation again (due to the
   generator detecting the config file change):
-    `node index.js generate --vocabListFile ./example/CopyOf-Vocab-List-Common.yml --noPrompt`
+    `node index.js generate --vocabListFile ./example/vocab/CopyOf-Vocab-List-Common.yml --noPrompt`
 - Add artifactName to required properties in YAML validation
 - Add ES module support to generated JavaScript artifacts:
   - Adds sideEffects: false to package templates

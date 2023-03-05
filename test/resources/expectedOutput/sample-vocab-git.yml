@@ -1,0 +1,6 @@
+versioning:
+  type: git
+  url: https://repository.git
+  versioningTemplates:
+    - template: "template/.gitignore.hbs"
+      fileName: ".gitignore"

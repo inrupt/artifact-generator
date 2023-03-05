@@ -1,0 +1,58 @@
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 0.1.0-SNAPSHOT
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    javaPackageName: com.example.java.packagename
+    artifactDirectoryName: Java
+    sourceFileExtension: java
+
+    rdf4jVersion: 3.4.2
+    solidCommonVocabVersion: 0.1.0-SNAPSHOT
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
+      - this # Defined in SHACL.
+
+  #    repository:
+  #      - type: repository
+  #        id: nexus-releases
+  #        url: https://nexus.mycompany.com/repository/maven-releases/
+
+  - programmingLanguage: JavaScript
+    artifactVersion: 0.1.0
+    #    gitRepository: git@github.com:some_user/some_project.git
+    npmModuleScope: "@exampleScope/"
+    solidCommonVocabVersion: "^0.5.3"
+    artifactDirectoryName: JavaScript
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
+    sourceFileExtension: js
+
+vocabList:
+#  # Example of an online vocabulary.
+#  # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
+#  # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
+#  # and otherwise will propose a default based on the domain name.
+#  - nameAndPrefixOverride: example
+#    descriptionFallback: Some vocabulary
+#  # The following is the list of IRI to read when building the artifact.
+#    inputResources:
+#      - https://example.org/ns
+#  # This option allow us provide a second vocabulary that can add new terms, provide translations
+#  # for existing terms' labels or comments, and that also only generates output for terms explicitly
+#  # defined in this vocabulary (i.e. to selectively choose terms from the input resource(s))
+#    termSelectionFile: /path/to/file
+
+#  # Example of a local vocabulary.
+#  - descriptionFallback: A vocabulary stored in a local file
+#    nameAndPrefixOverride: anotherExample
+#    inputResources:
+#      - /path/to/vocabulary
+#  # This option allow us provide a second vocabulary that can add new terms, provide translations
+#  # for existing terms' labels or comments, and that also only generates output for terms explicitly
+#  # defined in this vocabulary (i.e. to selectively choose terms from the input resource(s))
+#    termSelectionFile: /path/to/file

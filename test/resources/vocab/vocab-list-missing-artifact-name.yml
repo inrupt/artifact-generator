@@ -1,0 +1,64 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set vocabularies within a single artifact.
+#
+
+# NOTE: No artifact name is set, so additional information will be asked to the user
+artifactGeneratorVersion: 0.1.0
+
+artifactToGenerate:
+  - programmingLanguage: Java
+    artifactVersion: 3.2.1-SNAPSHOT
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    javaPackageName: com.inrupt.testing
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: Java
+    templateInternal: solidCommonVocabDependent/java/rdf4j/vocab.hbs
+    sourceFileExtension: java
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - class # Defined in VCard.
+      - abstract # Defined in DCTerms.
+      - this # Defined in SHACL.
+
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt.test
+        rdf4jVersion: 2.5.3
+        packagingTemplates:
+          - templateInternal: solidCommonVocabDependent/java/rdf4j/pom.hbs
+            fileName: pom.xml
+
+  - programmingLanguage: JavaScript
+    artifactVersion: 10.11.12
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    npmModuleScope: "@inrupt/"
+    artifactDirectoryName: JavaScript
+    sourceFileExtension: js
+
+    rdfjsImplVersion: "^1.1.0"
+    solidCommonVocabVersion: "^1.0.10"
+    templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
+
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@inrupt/"
+        packagingTemplates:
+          - templateInternal: solidCommonVocabDependent/javascript/package.hbs
+            fileName: package.json
+          - templateInternal: solidCommonVocabDependent/javascript/index.hbs
+            fileName: index.js
+
+vocabList:
+  - descriptionFallback: Schema.org from Google, Microsoft, Yahoo and Yandex
+    inputResources:
+      - schema-snippet.ttl
+    termSelectionResource: schema-inrupt-ext-no-author.ttl
+  - descriptionFallback: Vocab for testing predicate types...
+    nameAndPrefixOverride: override-name
+    inputResources:
+      - ./supported-data-types-no-author.ttl

@@ -33,6 +33,7 @@ const ConfigAll = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigCommonRdf = {
@@ -46,6 +47,26 @@ const ConfigCommonRdf = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
+};
+
+const ConfigCommonRdfNoExtensions = {
+  _: "generate",
+  force: true,
+  clearOutputDirectory: true,
+  outputDirectory:
+    "./test/Generated/GENERATE_SOURCE/SINGLE/RdfCommonNoExtension",
+  vocabListFile:
+    "../solid-common-vocab-rdf/common-rdf/vocab-common-rdf-no-extension.yml",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  // This configuration is only a subset (i.e., no Inrupt extensions), so
+  // because it's not the most comprehensive test, don't bother testing the
+  // publication process for the generated artifacts.
+  // publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptAll = {
@@ -59,6 +80,7 @@ const ConfigInruptAll = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptCore = {
@@ -71,8 +93,9 @@ const ConfigInruptCore = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: PUBLISH_TO_REPO_LIST,
+  // publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptGlossary = {
@@ -87,6 +110,7 @@ const ConfigInruptGlossary = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptUi = {
@@ -100,6 +124,7 @@ const ConfigInruptUi = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigInruptService = {
@@ -114,6 +139,7 @@ const ConfigInruptService = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
 const ConfigSolid = {
@@ -127,9 +153,10 @@ const ConfigSolid = {
   supportBundling: SUPPORT_BUNDLING,
   publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
 };
 
-describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution", () => {
+describe("Suite for generating common vocabularies (marked as [skip] to prevent non-manual execution)", () => {
   // it("Generate ALL vocabs", async () => {
   it.skip("Generate ALL vocabs", async () => {
     await generateVocabArtifact(ConfigAll);
@@ -151,7 +178,12 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigCommonRdf);
   }, 600000);
 
-  // it('Solid vocabs', async () => {
+  // it("Common RDF vocabs (with no Inrupt extensions)", async () => {
+  it.skip("Common RDF vocabs (with no Inrupt extensions)", async () => {
+    await generateVocabArtifact(ConfigCommonRdfNoExtensions);
+  }, 600000);
+
+  // it("Solid vocabs", async () => {
   it.skip("Solid vocabs", async () => {
     await generateVocabArtifact(ConfigSolid);
   }, 1200000);
@@ -164,15 +196,15 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Inrupt specific vocabs", async () => {
   it.skip("Inrupt specific vocabs", async () => {
     await generateVocabArtifact(ConfigInruptCore);
-    await generateVocabArtifact(ConfigInruptUi);
-    await generateVocabArtifact(ConfigInruptService);
-    await generateVocabArtifact(ConfigInruptGlossary);
+    // await generateVocabArtifact(ConfigInruptUi);
+    // await generateVocabArtifact(ConfigInruptService);
+    // await generateVocabArtifact(ConfigInruptGlossary);
   }, 1200000);
 
   // it("tests a single vocab config file", async () => {
   it.skip("tests a single vocab config file", async () => {
     await generateVocabArtifact({
-      vocabListFile: "./example/CopyOf-Vocab-List-Common.yml",
+      vocabListFile: "./example/vocab/CopyOf-Vocab-List-Common.yml",
 
       _: "generate",
       force: true,
@@ -193,16 +225,53 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
    * can just pop in here, uncomment it, and rerun this test.
    * It's handy 'cos almost all vocabs our there in the wild need something
    * overridden (e.g., vocabContentTypeHeaderOverride:,
-   * or ignoreNonVocabTerms:, or namespaceOverride:), so having them recorded
+   * or ignoreNonVocabTerms:, or namespaceIriOverride:), so having them recorded
    * here has been really handy sometimes.
    */
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://www.w3.org/2000/01/rdf-schema#"],
+      // inputResources: ["http://build.fhir.org/fhir.ttl"],
+      // nameAndPrefixOverride: "fhir",
 
-      // inputResources: ["https://www.w3.org/ns/spec#"],
-      // descriptionFallback: "Sarvens spec vocab",
+      inputResources: ["http://www.w3.org/ns/spec#"],
+      descriptionFallback: "Sarvens spec vocab",
+      namespaceIriOverride: "http://www.w3.org/ns/spec#",
+
+      //
+      // inputResources: ["http://purl.org/fair-ontology#"],
+      // vocabularyIriOverride: "https://w3id.org/fair/principles/terms/",
+      // namespaceIriOverride: "https://w3id.org/fair/principles/terms/",
+      // nameAndPrefixOverride: "fair",
+      // descriptionFallback: "whatever",
+
+      // http://purl.org/np/RAscnEDxqhJys07l4mKeNsbkwG-C_5RL_17GQRLRGu5Uo
+      // https://w3id.org/fair/principles/latest/FAIR-Vocabulary
+
+      // inputResources: ["https://peta-pico.github.io/FAIR-nanopubs/principles/ontology.ttl"],
+      // // inputResources: ["https://w3id.org/fair/principles/terms/FAIR-Vocabulary"],
+      // // inputResources: ["https://w3id.org/fair/principles/latest/FAIR-Vocabulary"],
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["https://w3id.org/security#"],
+      // nameAndPrefixOverride: "sec",
+
+      // inputResources: ["http://www.w3.org/ns/solid/oidc#"],
+
+      // inputResources: ["http://xmlns.com/foaf/0.1/"],
+      // nameAndPrefixOverride: "foaf",
+      // descriptionFallback: "Friend Of A Friend",
+
+      // inputResources: ["http://purl.org/dc/terms/"],
+      // nameAndPrefixOverride: "dcterms",
+
+      // inputResources: ["http://www.w3.org/ns/shacl#"],
+      // nameAndPrefixOverride: "sh",
+
+      // inputResources: ["https://saref.etsi.org/core/"],
+      // ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/ns/adms#"],
 
       // inputResources: ["http://www.omg.org/techprocess/ab/SpecificationMetadata/"],
       // nameAndPrefixOverride: "sm",
@@ -238,14 +307,14 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // ignoreNonVocabTerms: true,
       // // Yes, this vocabulary (although named as an application profile) uses
       // // the 'incorrect' HTTP scheme.
-      // namespaceOverride: "http://data.europa.eu/m8g/",
+      // namespaceIriOverride: "http://data.europa.eu/m8g/",
 
       // // OSLO extension to SEMIC Core Person:
       // inputResources: ["https://data.vlaanderen.be/ns/persoon"],
       // nameAndPrefixOverride: "oslo_person",
       // ignoreNonVocabTerms: true,
       // BUG: vann:preferredNamespaceURI seems to be missing trailing '#'!
-      // namespaceOverride: "https://data.vlaanderen.be/ns/persoon#",
+      // namespaceIriOverride: "https://data.vlaanderen.be/ns/persoon#",
 
       // inputResources: ["https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/"],
       // nameAndPrefixOverride: "auto_vc",
@@ -280,9 +349,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["http://www.w3.org/ns/ssn/"],
       // ignoreNonVocabTerms: true,
       //
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.0.0"],
-      // nameAndPrefixOverride: "gist",
-      // namespaceOverride: "https://ontologies.semanticarts.com/gist/",
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.1.0"],
 
       // inputResources: ["http://www.w3.org/ns/locn"],
 
@@ -335,7 +402,7 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       //
       //
       // inputResources: ["http://www.w3.org/ns/odrl/2/"],
-      // namespaceOverride: "http://www.w3.org/ns/odrl/2/",
+      // namespaceIriOverride: "http://www.w3.org/ns/odrl/2/",
       // nameAndPrefixOverride: "odrl",
       // ignoreNonVocabTerms: true,
 
@@ -365,17 +432,23 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // // the namespace IRI, so use this (referenced from the working draft itself) instead
       // inputResources: ["https://www.w3.org/TR/dx-prof-conneg/altr.ttl"],
       // nameAndPrefixOverride: "altr",
-      // namespaceOverride: "http://www.w3.org/ns/dx/conneg/altr#",
+      // namespaceIriOverride: "http://www.w3.org/ns/dx/conneg/altr#",
       // ignoreNonVocabTerms: true,
 
       // inputResources: ["https://www.w3.org/ns/prov-o#"],
       // nameAndPrefixOverride: "prov-o",
+      // namespaceIriOverride: "http://www.w3.org/ns/prov#",
+      // vocabularyIriOverride: "http://www.w3.org/ns/prov-o#",
+      // descriptionFallback:
+      //   "Needs a description - see Common RDF YAML for why...",
 
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
-      // // termSelectionResource: "./test/resources/vocabs/schema-inrupt-ext.ttl",
-      // nameAndPrefixOverride: "inrupt-schema",
+      // // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
+      // nameAndPrefixOverride: "schema",
+      // descriptionFallback: "Needs a description...",
+
       //
       // inputResources: [
       //   "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl"
@@ -408,17 +481,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       clearOutputDirectory: true,
       outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM",
       artifactVersion: "1.0.0",
-      rdfjsImplVersion: VERSION_RDFJS_IMPL,
-      solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       npmRegistry: NPM_REGISTRY,
       runWidoco: false,
       runNpmInstall: RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,
-      publish: [DEFAULT_PUBLISH_KEY],
+      // publish: [DEFAULT_PUBLISH_KEY],
       storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+      reportBestPracticeCompliance: true,
     });
-  }, 10000);
+  }, 30000);
 });
 
 async function generateVocabArtifact(argv) {

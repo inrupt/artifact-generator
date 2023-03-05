@@ -1,0 +1,58 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+prefix hobby: <https://inrupt.com/ns/vocab/hobby/>
+prefix skydive: <https://inrupt.com/vocab/demo/skydiving#>
+
+skydive:
+    a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/07/28" ;
+    dcterms:title "Skydiving vocabulary" ;
+    dcterms:description "Vocabulary for the sport of skydiving." ;
+    vann:preferredNamespacePrefix "skydive" ;
+    vann:preferredNamespaceUri "https://inrupt.com/vocab/demo/skydiving#" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+
+skydive:Skydiving a owl:Class, hobby:Hobby ;
+  rdfs:isDefinedBy skydive: ;
+  hobby:kind "Skydiving"@en ;
+  rdfs:label "Paracaidismo"@en ;
+  rdfs:label "Paracaidista"@es ;
+  rdfs:comment "The sport or activity of jumping from an aircraft and performing acrobatic manoeuvres in the air under free fall before landing by parachute."@en ;
+  rdfs:comment "El deporte o actividad de saltar desde un avión y realizar maniobras acrobáticas en el aire en caída libre antes de aterrizar en paracaídas."@es .
+
+skydive:Skydiver a owl:Class ;
+  rdfs:isDefinedBy skydive: ;
+  rdfs:label "Skydiver"@en ;
+  rdfs:label "Paracaidista"@es ;
+  rdfs:comment "A person who enjoys jumping out of a perfectly good aeroplane."@en ;
+  rdfs:comment "Una persona que disfruta saltando de un avión en perfecto estado."@es .
+
+skydive:DropZone a owl:Class ;
+  rdfs:isDefinedBy skydive: ;
+  rdfs:label "Drop Zone"@en ;
+  rdfs:label "Zona de descenso"@es ;
+  rdfs:comment "Location designated as the landing zone for skydivers."@en ;
+  rdfs:comment "Lugar designado como zona de aterrizaje para paracaidistas."@es .
+
+skydive:ranking a rdf:Property, owl:ObjectProperty ;
+  rdfs:isDefinedBy skydive: ;
+  rdfs:label "Ranking"@en ;
+  rdfs:label "Clasificación"@es ;
+  rdfs:comment "A ranking denoting a skydivers proficiency in the sport."@en ;
+  rdfs:comment "Una clasificación que denota la competencia de los paracaidistas en el deporte."@es .
+
+skydive:eightWay a owl:ObjectProperty ;
+  rdfs:isDefinedBy skydive: ;
+  rdfs:label "Eight-Way"@en ;
+  rdfs:label "Ocho vías"@es ;
+  rdfs:comment "Freefall formation with 8 skydivers arranging into geometric patterns."@en ;
+  rdfs:comment "Formación de caída libre con 8 paracaidistas organizados en patrones geométricos."@es .

@@ -1,0 +1,23 @@
+{{#if license/header}}
+{{license/header}}
+
+{{/if}}
+{{#if supportBundling}}
+{{#each generatedVocabs}}
+export { default as {{vocabNameUpperCase}} } from "./GeneratedVocab/{{vocabNameUpperCase}}";
+{{/each}}
+{{else}}
+{{#each generatedVocabs}}
+module.exports.{{vocabNameUpperCase}} = require("./GeneratedVocab/{{vocabNameUpperCase}}");
+{{/each}}{{/if}}
+
+// Re-export some underlying exports to provide developers more control.
+module.exports.getLocalStore = require("@inrupt/solid-common-vocab");
+module.exports.CONTEXT_KEY_LOCALE = require("@inrupt/solid-common-vocab");
+module.exports.CONTEXT_KEY_PREFERRED_FALLBACK_LANGUAGE = require("@inrupt/solid-common-vocab");
+
+//module {
+//  getLocalStore,
+//  CONTEXT_KEY_LOCALE,
+//  CONTEXT_KEY_PREFERRED_FALLBACK_LANGUAGE
+//} from "@inrupt/solid-common-vocab";

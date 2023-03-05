@@ -22,6 +22,8 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - "class"
       - "abstract"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
 
 vocabList:
@@ -32,7 +34,7 @@ vocabList:
     # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
     # and otherwise will propose a default based on the domain name.
     nameAndPrefixOverride: "schema"
-    description: "A schema snippet"
+    descriptionFallback: "A schema snippet"
 
   - inputResources:
       # The tests will mock HTTP requests, so this IRI does not need to actually exist.

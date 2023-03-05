@@ -1,5 +1,6 @@
 const debug = require("debug")("artifact-generator:DatasetHandler");
 
+const rdf = require("rdf-ext");
 const {
   RDF_NAMESPACE,
   RDF,
@@ -9,6 +10,7 @@ const {
   OWL,
   OWL_NAMESPACE,
   XSD,
+  SHACL,
   SKOSXL,
   VANN,
   DCELEMENTS,
@@ -19,7 +21,8 @@ const {
 
 const Resource = require("./Resource");
 const FileGenerator = require("./generator/FileGenerator");
-const { describeInput } = require("./Util");
+const BestPracticeReportGenerator = require("./generator/BestPracticeReportGenerator");
+const { describeInput, merge } = require("./Util");
 
 const KNOWN_DOMAINS = new Map([
   ["http://xmlns.com/foaf/0.1", "foaf"],
@@ -48,7 +51,7 @@ const SUPPORTED_PROPERTY_TYPES = [
   // generic.
   // But since we largely treat the various 'types' of vocabulary terms (i.e.,
   // Classes, Properties, Constants) the same anyway, in that we look for the
-  // same meta-data and generate much the same output, we treat instances of
+  // same metadata and generate much the same output, we treat instances of
   // 'rdfs:Resource' as if they were just 'rdf:Property'.
   RDFS.Resource,
   RDF.Property,
@@ -62,7 +65,7 @@ const SUPPORTED_PROPERTY_TYPES = [
   // We could treat SKOS-XL Labels as String Constants too, since that more
   // accurately reflects what they are, but by treating them as Properties we
   // can generate full VocabTerm instances too, thereby giving full
-  // programmatic access to all the associated meta-data (whereas constants
+  // programmatic access to all the associated metadata (whereas constants
   // would just give us the value).
   SKOSXL.Label,
 ];
@@ -92,7 +95,7 @@ module.exports = class DatasetHandler {
   /**
    * Note: The term selection dataset we provide is used to selectively choose terms to generate
    * from a source vocabulary (for instance to cherry-pick specific terms from the huge
-   * collection of terms in Schema.org). But the extension can can also add more meta-data for
+   * collection of terms in Schema.org). But the extension can can also add more metadata for
    * those selected terms (for example, to add missing labels or comments, or translations for
    * existing labels and comments, see-also links, etc.)
    *
@@ -129,9 +132,9 @@ module.exports = class DatasetHandler {
 
     // The namespace can manually be overridden in the configuration file, so
     // use the namespace override if we have one.
-    const namespaceToUse = this.vocabData.namespaceOverride || namespace;
+    const namespaceIriToUse = this.vocabData.namespaceIriOverride || namespace;
 
-    if (!fullName.startsWith(namespaceToUse)) {
+    if (!fullName.startsWith(namespaceIriToUse)) {
       // Some vocabs define terms that are not actually defined in the
       // vocabulary itself. For instance the vocabulary defined as part of the
       // W3C Content Negotiation by Profile work
@@ -143,7 +146,7 @@ module.exports = class DatasetHandler {
       // if needed.
       if (this.vocabData.ignoreNonVocabTerms) {
         debug(
-          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespace}] (perhaps you need to provide to the 'namespaceOverride' option to detect terms from the correct namespace).`
+          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespaceIriToUse}] (perhaps you need to provide to the 'namespaceIriOverride' option to detect terms from the correct namespace).`
         );
         return null;
       }
@@ -164,7 +167,7 @@ module.exports = class DatasetHandler {
         debug(
           `Ignoring common RDF vocabulary term [${fullName}], as it's not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
             namespace,
-            this.vocabData.namespaceOverride
+            this.vocabData.namespaceIriOverride
           )}`
         );
         return null;
@@ -173,7 +176,7 @@ module.exports = class DatasetHandler {
       throw new Error(
         `Vocabulary term [${fullName}] found that is not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
           namespace,
-          this.vocabData.namespaceOverride
+          this.vocabData.namespaceIriOverride
         )} - currently this is disallowed (as it indicates a probable typo!), but you can override this error and ignore non-vocabulary terms by setting the 'ignoreNonVocabTerms' option to 'true'`
       );
     }
@@ -184,10 +187,10 @@ module.exports = class DatasetHandler {
     // ...in which we want to simply ignore these properties instances (as
     // they aren't properties defined by the vocab itself, but metadata about
     // the vocab instead).
-    if (fullName === namespaceToUse) {
+    if (fullName === namespaceIriToUse) {
       return null;
     }
-    const name = fullName.substring(namespaceToUse.length);
+    const name = fullName.substring(namespaceIriToUse.length);
 
     // We need to have the term name, but also that name escaped to be a valid
     // variable name in our target programming languages. For example, DCTERMS
@@ -200,10 +203,14 @@ module.exports = class DatasetHandler {
     //  Auto Core vocab here:
     //    https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/
     //  ...has terms like '0to100KMH' and '0to60MPH').
+    // The FAIR vocabulary uses dots/full-stops '.' to name some of its
+    // sub-principle term IRIs (such as
+    // "https://w3id.org/fair/principles/terms/A1.1", so explicitly replace
+    // those dots with '_' too.
     const firstCharacter = name.charAt(0);
     const nameEscapedForLanguage = (
       firstCharacter >= "0" && firstCharacter <= "9" ? `_${name}` : name
-    ).replace(/[-\/]/g, "_");
+    ).replace(/[-\/.]/g, "_");
     // const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
@@ -228,7 +235,9 @@ module.exports = class DatasetHandler {
       .replace(/^default$/, "default_")
       .replace(/^protected$/, "protected_") // From the JSON-LD vocab.
       .replace(/^import$/, "import_") // From the JSON-LD vocab.
-      .replace(/^implements$/, "implements_"); // From the DOAP vocab.
+      .replace(/^implements$/, "implements_") // From the DOAP vocab.
+      .replace(/^extends$/, "extends_") // From the ShEx vocab.
+      .replace(/^this$/, "this_"); // From the SHACL vocab.
 
     this.termSelectionDataset
       .match(quad.subject, SCHEMA_DOT_ORG.alternateName, null)
@@ -296,7 +305,7 @@ module.exports = class DatasetHandler {
         throw new Error(
           `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
             namespace,
-            this.vocabData.namespaceOverride
+            this.vocabData.namespaceIriOverride
           )} - found [${skosMatches.length}] values for constant of type [${
             rdfType.value
           }] when one, and only one, value is required`
@@ -309,7 +318,7 @@ module.exports = class DatasetHandler {
             throw new Error(
               `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
                 namespace,
-                this.vocabData.namespaceOverride
+                this.vocabData.namespaceIriOverride
               )} - constant IRI value [${
                 quad.object.value
               }] does not appear to be a valid IRI`
@@ -323,35 +332,19 @@ module.exports = class DatasetHandler {
       DatasetHandler.add(definitions, subQuad);
     });
 
-    const seeAlsoValues = new Set();
-    this.termSelectionDataset
-      .match(quad.subject, RDFS.seeAlso, null)
-      .forEach((subQuad) => {
-        seeAlsoValues.add(subQuad.object.value);
-      });
+    const seeAlsos = this.getSetOfPredicateObjects(
+      quad.subject,
+      RDFS.seeAlso,
+      "seeAlso"
+    );
 
-    this.fullDataset
-      .match(quad.subject, RDFS.seeAlso, null)
-      .forEach((subQuad) => {
-        seeAlsoValues.add(subQuad.object.value);
-      });
+    const isDefinedBys = this.getSetOfPredicateObjects(
+      quad.subject,
+      RDFS.isDefinedBy,
+      "isDefinedBy"
+    );
 
-    // Copy our set of strings into a set of objects.
-    let seeAlsos;
-    if (seeAlsoValues.size > 0) {
-      seeAlsos = new Set();
-      seeAlsoValues.forEach((value) => seeAlsos.add({ seeAlso: value }));
-    }
-
-    let isDefinedBy = undefined;
-    this.fullDataset
-      .match(quad.subject, RDFS.isDefinedBy, null)
-      .forEach((subQuad) => {
-        // Even if we have multiple values, just keep overwriting.
-        isDefinedBy = subQuad.object.value;
-      });
-
-    const comment = DatasetHandler.getTermDescription(
+    const termDescription = DatasetHandler.getTermDescription(
       comments,
       definitions,
       labels
@@ -361,12 +354,12 @@ module.exports = class DatasetHandler {
       name,
       nameEscapedForLanguage,
       nameEscapedForJava,
-      comment,
+      comment: termDescription,
       labels,
       comments,
       definitions,
       seeAlsos,
-      isDefinedBy,
+      isDefinedBys,
       termDescription: DatasetHandler.buildCompositeTermDescription(
         labels,
         comments,
@@ -375,11 +368,50 @@ module.exports = class DatasetHandler {
     };
   }
 
-  static describeNamespaceInUse(namespace, namespaceOverride) {
-    const override =
-      namespaceOverride === undefined
-        ? ""
-        : `, but we're using namespace OVERRIDE [${namespaceOverride}])`;
+  /**
+   * Within both our full and term selection datasets, for the specified
+   * subject and predicate, returns 'undefined' if no triples with that
+   * predicate, or else a set of objects where each object has the specified
+   * property name and corresponding triple value.
+   *  Note: We need a Set of objects, because that's what Handlebar templates
+   * need to work with, and we need to access these values in those templates.
+   *
+   * @param subject the term's subject IRI
+   * @param predicate the predicate to search for
+   * @param propertyNameInObject the property name to use for each object in our result Set
+   * @returns {Set<any>} undefined if none, else a Set of objects
+   */
+  getSetOfPredicateObjects(subject, predicate, propertyNameInObject) {
+    // We have to check across multiple datasets, so just create add results
+    // to a simple Set first...
+    const valueSet = new Set();
+    this.termSelectionDataset
+      .match(subject, predicate, null)
+      .forEach((subQuad) => {
+        valueSet.add(subQuad.object.value);
+      });
+
+    this.fullDataset.match(subject, predicate, null).forEach((subQuad) => {
+      valueSet.add(subQuad.object.value);
+    });
+
+    // Copy our result strings into a set of objects.
+    let result;
+    if (valueSet.size > 0) {
+      result = new Set();
+
+      valueSet.forEach((value) =>
+        result.add({ [`${propertyNameInObject}`]: value })
+      );
+    }
+
+    return result;
+  }
+
+  static describeNamespaceInUse(namespace, namespaceIriOverride) {
+    const override = namespaceIriOverride
+      ? `, but we're using namespace OVERRIDE [${namespaceIriOverride}])`
+      : "";
 
     return `we detected namespace [${namespace}]${override}`;
   }
@@ -410,7 +442,7 @@ module.exports = class DatasetHandler {
     if (labels.length === 0 && comments.length === 0) {
       termDescription =
         "This term has no descriptions at all (i.e., the vocabulary doesn't provide any " +
-        "'rdfs:label', 'rdfs:comment', or 'dcterms:description', or 'skos:definition' meta-data).";
+        "'rdfs:label', 'rdfs:comment', or 'dcterms:description', or 'skos:definition' metadata).";
     } else {
       // Having no comments is bad - so report that omission (but at least
       // describe the labels we do have).
@@ -422,7 +454,7 @@ module.exports = class DatasetHandler {
 
         termDescription = `This term has ${labelDescription} (in language${
           singular ? "" : "s"
-        } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' meta-data).`;
+        } [${sortedLangTagsLabel}]), but no long-form descriptions at all (i.e., the vocabulary doesn't provide any 'rdfs:comment' or 'dcterms:description' metadata).`;
       } else {
         // Common to only have a single label and comment, which will
         // generally be both in explicit English, or just no language tag at
@@ -676,27 +708,64 @@ module.exports = class DatasetHandler {
     result.inputResources = this.vocabData.inputResources;
     result.vocabListFile = this.vocabData.vocabListFile;
     result.vocabListFileIgnore = this.vocabData.vocabListFileIgnore;
-    // Useful when overriding the local namespace, because this is the namespace
-    // that is actually used in the terms from the vocab, and that is used
-    // when splitting the IRI to get the local part for instance.
-    result.localNamespace = this.findNamespace();
-    result.namespace =
-      this.vocabData.namespaceOverride || result.localNamespace;
-    result.gitRepository = this.vocabData.gitRepository;
-    result.repository = this.vocabData.repository;
 
-    // Note: for these values we must have already determined the vocab
-    // namespace we are going to use, as that can determine the vocabulary name
-    // we use, and that in turn can determine the name of the artifact we use.
-    result.vocabName =
-      this.vocabData.nameAndPrefixOverride ||
-      this.findPreferredNamespacePrefix(result.namespace);
-    result.artifactName = this.artifactName(result.vocabName);
+    // It's important to note here that there is a very distinct difference
+    // between the IRI used to identify the 'ontology' (or 'vocab') and the
+    // IRI used to identify the 'namespace' within which terms are defined.
+    //  Generally they are one-and-the-same (e.g. RDF, RDFS), but this is not
+    // always the case (e.g. OWL, HTTP 2011, or SKOS), and we can't assume it
+    // is. Every ontology/vocabulary should define a 'namespace', which is
+    // effectively the IRI 'within which' all the terms defined within that
+    // vocab are defined (and whose term-identifying IRIs all start with),
+    // but this need *NOT NECESSARILY BE* the IRI that identifies the
+    // 'ontology/vocab' itself.
+    //  So a vocab can have a completely different IRI (although if it is
+    // different, it is often only different in that it removes the trailing
+    // slash '/' or hash '#' symbol (e.g. OWL or SKOS) - but in fact, the W3C
+    // PROV vocabulary is a great example of a single namespace (i.e.,
+    // http://www.w3.org/ns/prov#) that defines terms from multiple different
+    // PROV-related vocabs (i.e., PROV, PROV-O, PROV-LINKS, PROV-DQ,
+    // PROV-DICTIONARY, PROV_O_INVERSES, etc.).
+    //  So first see if we have any explicitly defined ontologies (e.g.,
+    // entities with RDF.type of 'owl:Ontology') that may then explicitly
+    // provide namespace details (like the namespace IRI and/or prefix).
+    const vocabularyIri = this.lookupVocabularyIri(
+      this.vocabData.vocabularyIriOverride
+    );
 
+    const namespaceDetails = this.lookupNamespaceDetails(
+      vocabularyIri,
+      this.vocabData.namespaceIriOverride,
+      this.vocabData.nameAndPrefixOverride
+    );
+
+    // Big assumption here, but we're saying that a vocab with no
+    // 'a owl:Ontology' triple at all can assume a vocab IRI of the namespace
+    // IRI (when perhaps we should be forcing the use of a
+    // 'vocabularyIriOverride' instead - let's see)...
+    result.vocabularyIri = vocabularyIri || namespaceDetails.namespaceIri;
+
+    // Useful when overriding the local namespace, because this is the
+    // namespace that is actually used in the terms from the vocab, and that
+    // is used when splitting the IRI to get a term's local part, for
+    // instance.
+    result.localNamespaceIri = namespaceDetails.detectedNamespaceIri;
+
+    result.vocabName = namespaceDetails.namespacePrefix;
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
       result.vocabName
     );
+
+    result.namespaceIriOverride = this.vocabData.namespaceIriOverride;
+    result.namespaceIri =
+      result.namespaceIriOverride || result.localNamespaceIri;
+    result.gitRepository = this.vocabData.gitRepository;
+    result.repository = this.vocabData.repository;
+
+    result.artifactName = this.artifactName(result.vocabName);
+
     result.description = this.findDescription(
+      result.vocabularyIri,
       this.vocabData.descriptionFallback
     );
     if (
@@ -704,15 +773,16 @@ module.exports = class DatasetHandler {
       result.description === "[Generator provided] - undefined"
     ) {
       throw new Error(
-        `Cannot find a description of this vocabulary [${result.vocabName}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:description', 'rdfs:comment', 'rdfs:label', or 'dcelements:title'), and our configuration doesn't provide one.`
+        `Cannot find a description of this vocabulary [${result.vocabName}] with IRI [${result.vocabularyIri}] and namespace IRI [${result.namespaceIri}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
       );
     }
+    result.description = `${result.description}`;
 
     result.artifactVersion = this.vocabData.artifactVersion;
     result.solidCommonVocabVersion = this.vocabData.solidCommonVocabVersion;
     result.npmRegistry = this.vocabData.npmRegistry;
     result.outputDirectory = this.vocabData.outputDirectory;
-    result.authorSet = this.findAuthors();
+    result.authorSet = this.findAuthors(result.vocabularyIri);
     result.authorSetFormatted = Array.from(result.authorSet).join(", ");
     result.runNpmInstall = this.vocabData.runNpmInstall;
     result.runMavenInstall = this.vocabData.runMavenInstall;
@@ -729,7 +799,7 @@ module.exports = class DatasetHandler {
       await Resource.storeLocalCopyOfResource(
         result.storeLocalCopyOfVocabDirectory,
         result.vocabName,
-        result.namespace,
+        result.namespaceIri,
         this.fullDataset
       );
     }
@@ -738,8 +808,11 @@ module.exports = class DatasetHandler {
     if (subjectSet.length === 0) {
       subjectSet = DatasetHandler.subjectsOnly(this.fullDataset);
     }
-    if (subjectSet.length === 1 && subjectSet[0] === result.namespace) {
-      throw new Error(`[${result.namespace}] does not contain any terms.`);
+
+    // Check we have at least one vocab term (ignoring the vocab itself (i.e.,
+    // '<vocab-iri> a owl:Ontology' triples)).
+    if (subjectSet.length === 1 && subjectSet[0] === result.namespaceIri) {
+      throw new Error(`[${result.namespaceIri}] does not contain any terms.`);
     }
 
     subjectSet.forEach((subject) => {
@@ -750,6 +823,11 @@ module.exports = class DatasetHandler {
       this.handleConstantString(subject, result);
     });
 
+    if (this.vocabData.reportBestPracticeCompliance) {
+      result.complianceReport =
+        BestPracticeReportGenerator.buildComplianceReport(result);
+    }
+
     return result;
   }
 
@@ -759,7 +837,7 @@ module.exports = class DatasetHandler {
         if (this.isNewTerm(quad.subject.value)) {
           const termDetails = this.handleTerm(
             quad,
-            result.localNamespace,
+            result.localNamespaceIri,
             classType
           );
 
@@ -776,7 +854,7 @@ module.exports = class DatasetHandler {
       if (this.isNewTerm(quad.subject.value)) {
         const termDetails = this.handleTerm(
           quad,
-          result.localNamespace,
+          result.localNamespaceIri,
           quad.object
         );
 
@@ -794,7 +872,7 @@ module.exports = class DatasetHandler {
         .forEach((quad) => {
           const termDetails = this.handleTerm(
             quad,
-            result.localNamespace,
+            result.localNamespaceIri,
             propertyType
           );
 
@@ -813,7 +891,7 @@ module.exports = class DatasetHandler {
       .forEach((quad) => {
         const termDetails = this.handleTerm(
           quad,
-          result.localNamespace,
+          result.localNamespaceIri,
           quad.object
         );
 
@@ -830,7 +908,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.literals.push(
-            this.handleTerm(quad, result.localNamespace, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType)
           );
         }
       });
@@ -842,7 +920,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantStrings.push(
-            this.handleTerm(quad, result.localNamespace, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType)
           );
         }
       });
@@ -854,7 +932,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantIris.push(
-            this.handleTerm(quad, result.localNamespace, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType)
           );
         }
       });
@@ -870,120 +948,21 @@ module.exports = class DatasetHandler {
     return !result;
   }
 
-  /**
-   * Important to note here that there is a very distinct difference between
-   * the 'ontology' and the 'namespace' for any given vocabulary. Generally
-   * they are one-and-the-same (e.g. RDF, RDFS), but this is not always the
-   * case (e.g. OWL, HTTP 2011, or SKOS), and we can't assume it is. Every
-   * vocabulary/namespace will define a 'namespace', which is effectively the
-   * prefix for all the terms defined within that vocab, but the 'ontology'
-   * document itself, that describes those terms, can have a completely
-   * different IRI (although if it is different, it is typically only
-   * different in that it removes the trailing hash '#' symbol).
-   *
-   * @returns {*}
-   */
-  findNamespace() {
-    // First see if we have an explicitly defined ontology (e.g., an entity
-    // with RDF.type of 'owl:Ontology') that explicitly provides its namespace
-    // IRI.
-    let ontologyIri;
-
-    let namespace = this.findOwlOntology((owlOntologyTerms) => {
-      const ontologyNamespaces = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        VANN.preferredNamespaceUri,
-        null
-      );
-
-      // Store the ontology name if we got one.
-      ontologyIri = owlOntologyTerms.subject.value;
-      return DatasetHandler.firstDatasetValue(ontologyNamespaces);
-    });
-
-    // If no explicitly provided namespace IRI, try and determine the
-    // namespace from the term names themselves.
-    if (!namespace) {
-      // We arbitrarily pick the term with the longest name, simply to prevent
-      // cases (like OWL, HTTP 2011, VANN, HTTPH) where the ontology itself
-      // uses the namespace IRI, but without the trailing hash or slash.
-      // We also provide the ontology IRI (if there was one), to only include
-      // terms that start with that IRI (this was added specifically for the
-      // strange HTTPH namespace document, that defines a term for the author
-      // which is actually longer than the IRI of the only other term defined
-      // (i.e. the HTTP Content-Type header).
-      //
-      // But note: as described above, the ontology IRI and the actual
-      // namespace for terms can be completely different, but how else can we
-      // accurately determine the namespace in cases like HTTPH above!?
-      const longestTermName = DatasetHandler.findLongestTermName(
-        DatasetHandler.subjectsOnly(this.fullDataset),
-        ontologyIri
-      );
-
-      // The namespace is simply the IRI up to the last hash or slash.
-      namespace = longestTermName.substring(
-        0,
-        Math.max(
-          longestTermName.lastIndexOf("/"),
-          longestTermName.lastIndexOf("#")
-        ) + 1
-      );
-
-      debug(
-        `Used a simple heuristic to determine the namespace of [${namespace}] for input resources [${this.vocabData.inputResources}], using the longest term name of [${longestTermName}].`
-      );
-    }
-
-    return namespace;
-  }
-
-  static findLongestTermName(terms, ontologyIri) {
-    return terms
-      .filter((a) => (ontologyIri ? a.startsWith(ontologyIri) : true))
-      .reduce((a, b) => (a.length > b.length ? a : b), "");
+  static findLongestTermName(terms) {
+    return terms.reduce((a, b) => (a.length > b.length ? a : b), "");
   }
 
   /**
    * Tries to return a prefix for selected namespaces.
-   * @param {*} namespace the IRI of the namespace
+   * @param {*} namespaceIri the IRI of the namespace
    */
-  static getKnownPrefix(namespace) {
+  static lookupKnownNamespacePrefix(namespaceIri) {
     let prefix;
     KNOWN_DOMAINS.forEach((value, key) => {
-      if (namespace.startsWith(key)) {
+      if (namespaceIri.startsWith(key)) {
         prefix = value;
       }
     });
-    return prefix;
-  }
-
-  findPreferredNamespacePrefix(namespace) {
-    let prefix =
-      this.vocabData.nameAndPrefixOverride ||
-      this.findOwlOntology((owlOntologyTerms) => {
-        const ontologyPrefixes = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          VANN.preferredNamespacePrefix,
-          null
-        );
-
-        return DatasetHandler.firstDatasetValue(ontologyPrefixes);
-      });
-
-    if (!prefix) {
-      prefix = DatasetHandler.getKnownPrefix(namespace);
-      if (prefix) {
-        debug(
-          `Determined vocabulary prefix [${prefix}] from hard-coded list of well known vocabularies.`
-        );
-      } else {
-        throw new Error(`No vocabulary prefix defined for [${namespace}]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
-      - If you control the vocabulary, we strongly recommend that you add a triple explicitly providing a preferred prefix (e.g., [${namespace} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix" .]).
-      - If you do not control the vocabulary but you use a configuration file, then you can set the 'nameAndPrefixOverride' option for this vocabulary.
-      - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes the preferred prefix triple described above.`);
-      }
-    }
 
     return prefix;
   }
@@ -1000,93 +979,342 @@ module.exports = class DatasetHandler {
     return name.toUpperCase().replace(/-/g, "_");
   }
 
-  findDescription(descriptionFallback) {
-    return this.findOwlOntology((owlOntologyTerms) => {
-      let onologyComments = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        DCTERMS.description,
+  findDescription(vocabularyIri, descriptionFallback) {
+    const vocabNamedNode = rdf.namedNode(vocabularyIri);
+
+    let ontologyComments = this.fullDataset.match(
+      vocabNamedNode,
+      DCTERMS.description,
+      null
+    );
+
+    // Fallback to dcterms:title...
+    if (ontologyComments.size === 0) {
+      ontologyComments = this.fullDataset.match(
+        vocabNamedNode,
+        DCTERMS.title,
         null
       );
-
-      // Fallback to rdfs:comment...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          RDFS.comment,
-          null
-        );
-      }
-
-      // Fallback to legacy description...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          DCELEMENTS.title,
-          null
-        );
-      }
-
-      // Fallback to SKOS definition (Gist uses this)...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          SKOS.definition,
-          null
-        );
-      }
-
-      // Fallback to rdfs:label (QUDT uses this)...
-      if (onologyComments.size === 0) {
-        onologyComments = this.fullDataset.match(
-          owlOntologyTerms.subject,
-          RDFS.label,
-          null
-        );
-      }
-
-      // Find the first match, preferably in English.
-      return DatasetHandler.firstDatasetValue(
-        onologyComments,
-        "en",
-        descriptionFallback
-      );
-    }, descriptionFallback);
-  }
-
-  findAuthors() {
-    return this.findOwlOntology((owlOntologyTerms) => {
-      const onologyAuthors = this.fullDataset.match(
-        owlOntologyTerms.subject,
-        DCTERMS.creator,
-        null
-      );
-
-      return new Set(
-        onologyAuthors.size === 0
-          ? []
-          : onologyAuthors
-              .toArray()
-              .map((authorQuad) => authorQuad.object.value)
-      );
-    }, new Set());
-  }
-
-  findOwlOntology(callback, defaultResult) {
-    const owlOntologyTerms = this.fullDataset
-      .match(null, RDF.type, OWL.Ontology)
-      .toArray()
-      .shift();
-
-    if (owlOntologyTerms) {
-      return callback(owlOntologyTerms);
     }
 
-    return defaultResult || ""; // Default to return empty string
+    // Fallback to rdfs:comment...
+    if (ontologyComments.size === 0) {
+      ontologyComments = this.fullDataset.match(
+        vocabNamedNode,
+        RDFS.comment,
+        null
+      );
+    }
+
+    // Fallback to legacy description...
+    if (ontologyComments.size === 0) {
+      ontologyComments = this.fullDataset.match(
+        vocabNamedNode,
+        DCELEMENTS.title,
+        null
+      );
+    }
+
+    // Fallback to SKOS definition (Gist uses this)...
+    if (ontologyComments.size === 0) {
+      ontologyComments = this.fullDataset.match(
+        vocabNamedNode,
+        SKOS.definition,
+        null
+      );
+    }
+
+    // Fallback to rdfs:label (QUDT uses this)...
+    if (ontologyComments.size === 0) {
+      ontologyComments = this.fullDataset.match(
+        vocabNamedNode,
+        RDFS.label,
+        null
+      );
+    }
+
+    if (ontologyComments.size === 0) {
+      return descriptionFallback;
+    }
+
+    // Find the first match, preferably in English.
+    return DatasetHandler.firstDatasetValue(
+      ontologyComments,
+      "en",
+      descriptionFallback
+    );
+  }
+
+  findAuthors(vocabularyIri) {
+    const vocabAuthors = this.fullDataset.match(
+      rdf.namedNode(vocabularyIri),
+      DCTERMS.creator,
+      null
+    );
+
+    return new Set(
+      vocabAuthors.size === 0
+        ? []
+        : vocabAuthors.toArray().map((authorQuad) => authorQuad.object.value)
+    );
+  }
+
+  // /**
+  //  * Attempts to find the namespace IRI. Starts by looking for an explicit
+  //  * triple of type 'owl:Ontology', but if none found (e.g., the DCTerms
+  //  * vocab), then it can query for the provided namespace (if any, as it can
+  //  * be NULL too).
+  //  * If we find an RDF Subject, then we call the provided callback function
+  //  * and pass all matching triples for that Subject.
+  //  *
+  //  * @param namespaceIriOverride if not NULL will be used as a fallback Subject if no 'owl:Ontology' triple found
+  //  * @param callback the function to call with matching triples
+  //  * @param defaultResult default value to return if no ontology found
+  //  * @returns {string|*}
+  //  */
+  lookupVocabularyIri(vocabularyIriOverride) {
+    const allOwlOntologies = this.fullDataset
+      .match(null, RDF.type, OWL.Ontology)
+      .toArray();
+
+    if (allOwlOntologies.length === 0) {
+      if (vocabularyIriOverride) {
+        debug(
+          `Found no 'rdf:type owl:Ontology' triples, but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`
+        );
+        return vocabularyIriOverride;
+      }
+
+      debug(
+        `Found no 'rdf:type owl:Ontology' triples, and no 'vocabularyIriOverride' configuration provided.`
+      );
+      return undefined;
+    }
+
+    if (allOwlOntologies.length > 1) {
+      if (vocabularyIriOverride) {
+        debug(
+          `Found [${
+            allOwlOntologies.length
+          }] 'rdf:type owl:Ontology' instances (we can only process 1): [${allOwlOntologies
+            .map((quad) => quad.subject.value)
+            .join(
+              ", "
+            )}], but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`
+        );
+
+        return vocabularyIriOverride;
+      }
+
+      throw new Error(
+        `Found [${
+          allOwlOntologies.length
+        }] 'rdf:type owl:Ontology' instances (we can only process 1): [${allOwlOntologies
+          .map((quad) => quad.subject.value)
+          .join(
+            ", "
+          )}], and we weren't configured with a 'vocabularyIriOverride' so we can't know which one to use.`
+      );
+    }
+
+    const owlOntologyQuad = allOwlOntologies.shift();
+    if (
+      vocabularyIriOverride &&
+      vocabularyIriOverride === owlOntologyQuad.subject.value
+    ) {
+      debug(
+        `Found just the one 'rdf:type owl:Ontology' instance, which our matched 'vocabularyIriOverride' of [${vocabularyIriOverride}], so seems override was superfluous.`
+      );
+    }
+
+    return owlOntologyQuad.subject.value;
+  }
+
+  /**
+   * Attempts to lookup our vocab's namespace details. Even if we are given
+   * overrides, we still perform lookups for reporting purposes (e.g., to
+   * report on the vocab's Best Practice guideline compliance).
+   *
+   * @param vocabularyIri the IRI of our vocabulary itself
+   * @param namespaceIriOverride configured override (optional)
+   * @returns {*}
+   */
+  lookupNamespaceDetails(
+    vocabularyIri,
+    namespaceIriOverride,
+    namespacePrefixOverride
+  ) {
+    const result = {};
+
+    result.vannNamespaceIri = this.lookupOneAndOnlyOnePredicate(
+      vocabularyIri,
+      namespaceIriOverride,
+      VANN.preferredNamespaceUri
+    );
+    result.vannNamespacePrefix = this.lookupOneAndOnlyOnePredicate(
+      vocabularyIri,
+      namespacePrefixOverride,
+      VANN.preferredNamespacePrefix
+    );
+
+    // Check if our vocab has a SHACL 'declare' triple - if so, only then
+    // should we even bother to lookup that declaration for namespace details.
+    result.shaclDeclareIri = this.lookupOneAndOnlyOnePredicate(
+      vocabularyIri,
+      undefined,
+      SHACL.declare
+    );
+    if (result.shaclDeclareIri) {
+      result.shaclNamespaceIri = this.lookupOneAndOnlyOnePredicate(
+        result.shaclDeclareIri,
+        namespaceIriOverride,
+        SHACL.namespace
+      );
+
+      result.shaclNamespacePrefix = this.lookupOneAndOnlyOnePredicate(
+        result.shaclDeclareIri,
+        namespacePrefixOverride,
+        SHACL.prefix
+      );
+    }
+
+    result.heuristicNamespaceIri = this.heuristicForNamespaceIri();
+
+    // Use our arbitrary precedence to determine the detected namespace IRI.
+    result.detectedNamespaceIri =
+      result.vannNamespaceIri ||
+      result.shaclNamespaceIri ||
+      result.heuristicNamespaceIri;
+
+    // If we were given an override, then use it, regardless of any explicit
+    // namespace details from the vocab itself.
+    result.namespaceIri = namespaceIriOverride || result.detectedNamespaceIri;
+
+    result.namespacePrefix =
+      namespacePrefixOverride ||
+      result.vannNamespacePrefix ||
+      result.shaclNamespacePrefix;
+
+    if (!result.namespaceIri) {
+      throw new Error(
+        `Namespace IRI could not be determined for vocabulary with IRI [${
+          vocabularyIri ||
+          "--Could not be determined, as not explicitly provided and not overridden by configuration--"
+        }] and no 'namespaceIriOverride' was configured, so we can't continue.`
+      );
+    }
+
+    if (!result.namespacePrefix) {
+      const knownPrefix = DatasetHandler.lookupKnownNamespacePrefix(
+        result.namespaceIri
+      );
+
+      if (knownPrefix) {
+        result.namespacePrefix = knownPrefix;
+        debug(
+          `Determined vocabulary prefix [${knownPrefix}] from hard-coded list of well known vocabularies.`
+        );
+      } else {
+        throw new Error(`No prefix defined for vocabulary IRI [${
+          vocabularyIri ||
+          "--Could not be determined, as not explicitly provided, not overridden by configuration, and namespace IRI couldn't be 'guessed' either--"
+        }]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
+      - If you control the vocabulary, we strongly recommend that you either:
+        - Add a triple explicitly providing a preferred prefix (e.g., [${vocabularyIri} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix" .]) to your vocabulary.
+        - Add a SHACL:PrefixDeclaration (see [SHACL Prefix Declaration](https://www.w3.org/TR/shacl/#sparql-prefixes)) to your vocabulary. 
+      - If you do not control the vocabulary but you use a configuration file, then you can set the 'nameAndPrefixOverride' option for this vocabulary.
+      - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes a preferred prefix as described above.`);
+      }
+    }
+
+    return result;
+  }
+
+  lookupOneAndOnlyOnePredicate(
+    vocabularyIri,
+    predicateValueOverride,
+    predicate
+  ) {
+    const allPredicateQuads = this.fullDataset
+      .match(rdf.namedNode(vocabularyIri), predicate, null)
+      .toArray();
+
+    if (allPredicateQuads.length === 0) {
+      debug(
+        `Found no [${predicate.value}] triples for our vocabulary IRI [${vocabularyIri}]`
+      );
+      return undefined;
+    }
+
+    if (allPredicateQuads.length > 1) {
+      if (predicateValueOverride) {
+        debug(
+          `Found [${allPredicateQuads.length}] [${
+            predicate.value
+          }] triples for our vocabulary IRI [${vocabularyIri}] (we can only process 1): [${allPredicateQuads
+            .map((quad) => quad.object.value)
+            .join(", ")}].`
+        );
+
+        return undefined;
+      }
+
+      throw new Error(
+        `Found [${allPredicateQuads.length}] [${
+          predicate.value
+        }] triples for our vocabulary IRI [${vocabularyIri}] (we can only process 1): [${allPredicateQuads
+          .map((quad) => quad.object.value)
+          .join(
+            ", "
+          )}], and we weren't configured with an Override, so we can't know which one to use.`
+      );
+    }
+
+    const predicateQuad = allPredicateQuads.shift();
+    if (
+      predicateValueOverride &&
+      predicateValueOverride === predicateQuad.object.value
+    ) {
+      debug(
+        `Found just the one [${predicate.value}] triple for our vocabulary IRI [${vocabularyIri}], which matched our Override of [${predicateValueOverride}], so it seems the override was superfluous.`
+      );
+    }
+
+    return predicateQuad.object.value;
+  }
+
+  /**
+   * We arbitrarily pick the term with the longest name, simply to prevent
+   * cases (like OWL, HTTP 2011, VANN, HTTPH) where the vocabulary itself
+   * uses the namespace IRI, but without the trailing hash or slash.
+   *
+   * @param namespaceIriOverride
+   * @returns {string}
+   */
+  heuristicForNamespaceIri() {
+    const longestTermName = DatasetHandler.findLongestTermName(
+      DatasetHandler.subjectsOnly(this.fullDataset)
+    );
+
+    // The namespace is simply the IRI up to the last hash or slash.
+    const namespaceIri = longestTermName.substring(
+      0,
+      Math.max(
+        longestTermName.lastIndexOf("/"),
+        longestTermName.lastIndexOf("#")
+      ) + 1
+    );
+
+    debug(
+      `Used a simple heuristic to determine the namespace IRI of [${namespaceIri}] for input resources [${this.vocabData.inputResources}], using the longest term name of [${longestTermName}].`
+    );
+
+    return namespaceIri;
   }
 
   static subjectsOnly(dataset) {
     const terms = dataset.filter((quad) => {
-      return quad.subject.value !== OWL.Ontology;
+      return quad.subject.value !== OWL.Ontology.value;
     });
 
     const termSubjects = [];

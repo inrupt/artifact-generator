@@ -1,0 +1,42 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+prefix hobby: <https://inrupt.com/ns/vocab/hobby/>
+
+hobby: a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    owl:versionIRI <https://inrupt.com/ns/vocab/hobby/0.0.1> ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2022/01/01" ;
+    dcterms:title "Hobby vocabulary"@en ;
+    dcterms:description "Vocabulary for Hobbies."@en ;
+    vann:preferredNamespacePrefix "hobby" ;
+    vann:preferredNamespaceUri "https://inrupt.com/ns/vocab/hobby/" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+
+hobby:Hobby a rdfs:Class ;
+  rdfs:isDefinedBy hobby: ;
+  rdfs:label "Hobby"@en ;
+  rdfs:label "Hobby"@es ;
+  rdfs:comment "An activity done regularly in one's leisure time for pleasure."@en ;
+  rdfs:comment "Una actividad realizada regularmente en el tiempo libre por placer."@es .
+
+hobby:hasHobby a rdf:Property ;
+  rdfs:isDefinedBy hobby: ;
+  rdfs:label "Hobby"@en ;
+  rdfs:label "Hobby"@es ;
+  rdfs:comment "An activity done regularly in one's leisure time for pleasure."@en ;
+  rdfs:comment "Una actividad realizada regularmente en el tiempo libre por placer."@es .
+
+hobby:kind a rdf:Property ;
+  rdfs:isDefinedBy hobby: ;
+  rdfs:label "Kind"@en ;
+  rdfs:label "Clase"@es ;
+  rdfs:comment "The kind of hobby (e.g., collecting, sport, artistic, etc.)."@en ;
+  rdfs:comment "El tipo de pasatiempo (por ejemplo, coleccionismo, deporte, artístico, etc.)."@es .

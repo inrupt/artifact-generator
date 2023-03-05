@@ -1,0 +1,138 @@
+#
+# This file contains a simple list of vocabularies that we bundle together to
+# form the collective set of what we consider 'Common' RDF vocabularies.
+#
+# These are the vocabs that we feel will be the most commonly used across
+# general RDF development efforts, and so we list them here to allow our
+# artifact generators to create programming-language-specific bundles
+# providing convenient constants representing the terms from these
+# vocabularies.
+#
+# For example, for Java developers we can generate a single JAR, or for
+# JavaScript we can generate a single npm module, that developers can depend
+# on directly and easily get immediate access to source-code constants for all
+# the terms in all of these vocabularies.
+#
+# Local vocabularies can be provided relative to the location of this resource
+# list file.
+#
+
+artifactName: vocab-common-rdf
+artifactGeneratorVersion: 2.0.0
+
+versioning:
+  type: git
+  url: https://github.com/inrupt/solid-common-vocab-rdf.git
+  versioningTemplates:
+    - templateInternal: ".gitignore.hbs"
+      fileName: ".gitignore"
+
+#license:
+#  path: "../LICENSE"
+#  fileName: "LICENSE"
+#  header: "../LICENSE_HEADER.js"
+#  name: "MIT"
+
+artifactToGenerate:
+  # This is the configuration of the DEFAULT Elixir artifact - i.e., where the
+  # name of the generated JAR does not contain details of its dependencies
+  # (e.g., whether it provides SolidCommonVocab constants or just string
+  # constants, or whether it depends on RDF4J or Jena or RDF Commons, etc.).
+  - programmingLanguage: Elixir
+    artifactVersion: 0.0.1-SNAPSHOT
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    artifactDirectoryName: Elixir
+    sourceFileExtension: exs
+
+    templateCustom: ./template/stringLiteral/elixir/vocab.hbs
+    elixirPackageName: MyTestPackage1
+
+
+    # Currently we're just adding terms as they occur in vocabs, and not all
+    # possible keywords.
+    languageKeywordsToUnderscore:
+      - def
+
+    # Just showing an examples of a publishing mechanism (Maven in this case):
+    packaging:
+      - packagingTool: maven
+        groupId: com.inrupt
+        publish:
+          - key: "mavenLocal"
+            command: "mvn --version && mvn install"
+          - key: "mavenRemote"
+            command: "mvn deploy"
+          - key: "cloudsmith"
+            command: "mvn -s /home/runner/work/solid-common-vocab-rdf/solid-common-vocab-rdf/settings.xml deploy --log-file ../../../mvn-deploy.log"
+
+        packagingTemplates:
+          - templateInternal: stringLiteral/java/pom.hbs
+            fileName: pom.xml
+        repository:
+          - type: repository
+            id: cloudsmith-staging
+            url: https://maven.cloudsmith.io/inrupt/sdk-staging/
+          - type: snapshotRepository
+            id: cloudsmith-development
+            url: https://maven.cloudsmith.io/inrupt/sdk-development/
+
+
+  # This is the configuration of the DEFAULT TypeScript artifact - i.e., where
+  # the name of the generated npm module does not contain details of its
+  # dependencies (e.g., whether it provides SolidCommonVocab constants or just string
+  # literals, or whether it depends on RDF/JS or Jena or RDF Commons, etc.).
+  - programmingLanguage: TypeScript
+    artifactVersion: "1.0.5"
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+
+    artifactDirectoryName: TypeScript
+    sourceFileExtension: ts
+
+    templateInternal: stringLiteral/typescript/vocab.hbs
+
+    packaging:
+      - packagingTool: npm
+        npmModuleScope: "@inrupt/"
+        bundleName: "VocabCommon"
+
+        typescriptVersion: "^4.1.3"
+        rollupVersion: "^2.36.1"
+        rollupTypescriptPluginVersion: "^0.29.0"
+        rollupCommonjsPluginVersion: "^17.0.0"
+        rollupNodeResolveVersion: "^11.0.1"
+
+        publish:
+          - key: "npmLocal"
+            command: "npm unpublish --force --registry http://localhost:4873/ && npm install --registry http://localhost:4873/ && npm run build && npm publish --registry http://localhost:4873/"
+          # The following command should only run in CI.
+          - key: "npmPublic"
+            command: "npm install --registry https://registry.npmjs.org/ && npm run build && npm publish --registry https://registry.npmjs.org/ --access public"
+        packagingTemplates:
+          - templateInternal: stringLiteral/typescript/package.hbs
+            fileName: package.json
+          - templateInternal: generic/typescript/index.hbs
+            fileName: index.ts
+          - templateInternal: generic/typescript/tsconfig.hbs
+            fileName: tsconfig.json
+          - templateInternal: generic/typescript/rollup.config.hbs
+            fileName: rollup.config.js
+
+
+vocabList:
+  - inputResources:
+      - http://www.w3.org/2006/vcard/ns#
+    nameAndPrefixOverride: vcard
+
+  - nameAndPrefixOverride: rdf
+    inputResources:
+      - http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+  - inputResources:
+      - http://www.w3.org/2000/01/rdf-schema#
+
+  - descriptionFallback: OWL (Web Ontology Language) - a Semantic Web language designed to represent rich and complex knowledge about things, groups of things, and relations between things
+    inputResources:
+      - http://www.w3.org/2002/07/owl#

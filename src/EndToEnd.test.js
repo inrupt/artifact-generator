@@ -23,7 +23,7 @@ describe("End-to-end tests", () => {
     it("should fail if no ontology file", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/no-ontology";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/does.not.exist.ttl";
+      const errorFilename = "./test/resources/vocab/does.not.exist.ttl";
 
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -44,7 +44,7 @@ describe("End-to-end tests", () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/EndToEnd/invalid-ontology";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/invalid-turtle.ttl";
+      const errorFilename = "./test/resources/vocab/invalid-turtle.ttl";
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
@@ -65,7 +65,7 @@ describe("End-to-end tests", () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/EndToEnd/different-namespace";
       del.sync([`${outputDirectory}/*`]);
-      const errorFilename = "./test/resources/vocabs/mismatched-namespaces.ttl";
+      const errorFilename = "./test/resources/vocab/mismatched-namespaces.ttl";
 
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
@@ -92,7 +92,8 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
+          descriptionFallback: "Vocab needs a description.",
           outputDirectory,
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
@@ -110,23 +111,24 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/index.js`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/single/index.js")
+          .readFileSync("test/resources/expectedOutput/single/index.js")
           .toString()
       );
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
-        .readFileSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/single/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
+          "test/resources/expectedOutput/single/GeneratedVocab/SCHEMA.js"
         )
         .toString();
-      expect(output.substring(output.indexOf(" */"))).toBe(
-        expected.substring(expected.indexOf(" */"))
+      expect(
+        output.substring(output.indexOf(" */")).replace(/[\n\r]/g, "")
+      ).toBe(
+        expected.substring(expected.indexOf(" */")).replace(/[\n\r]/g, "")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -136,7 +138,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/single/package.json")
+          .readFileSync("test/resources/expectedOutput/single/package.json")
           .toString()
       );
     });
@@ -165,7 +167,8 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(expect.stringContaining("99.999.9999"));
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
@@ -201,7 +204,7 @@ describe("End-to-end tests", () => {
       expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
         fs
           .readFileSync(
-            "test/resources/expectedOutputs/dependency-just-rdf4j/pom.xml"
+            "test/resources/expectedOutput/dependency-just-rdf4j/pom.xml"
           )
           .toString()
       );
@@ -215,7 +218,7 @@ describe("End-to-end tests", () => {
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/dependency-just-rdf4j/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
+          "test/resources/expectedOutput/dependency-just-rdf4j/src/main/java/com/inrupt/generated/vocab/lit/test/SCHEMA_INRUPT_EXT.java"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(
@@ -254,7 +257,8 @@ describe("End-to-end tests", () => {
 
       expect(packageDotJson).toEqual(expect.stringContaining("^9.8.7"));
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
@@ -271,28 +275,26 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
       await artifactGenerator.generate();
 
       expect(
-        fs.existsSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        fs.existsSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
       ).toBe(true);
 
       const generated = fs
-        .readFileSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+        .readFileSync(`${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA.js`)
         .toString();
 
       expect(generated).toEqual(
@@ -305,9 +307,7 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining(
-          '"name": "@inrupt/generated-vocab-schema-inrupt-ext"'
-        )
+        expect.stringContaining('"name": "@inrupt/generated-vocab-schema"')
       );
     });
 
@@ -320,8 +320,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           inputResources: [
-            "./test/resources/vocabs/schema-snippet.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+            "./test/resources/vocab/schema-snippet.ttl",
+            "./test/resources/vocab/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
@@ -330,12 +330,15 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
       await artifactGenerator.generate();
 
-      // Generated code contains timestamp (which will change every time we generate!), so skip the first comment.
+      // Generated code contains timestamp (which will change every time we
+      // generate!), so skip the first comment.
       const output = fs
         .readFileSync(
           `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
@@ -344,12 +347,14 @@ describe("End-to-end tests", () => {
 
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/full-ext/GeneratedVocab/SCHEMA_INRUPT_EXT.js"
+          "test/resources/expectedOutput/full-ext/GeneratedVocab/SCHEMA.js"
         )
         .toString();
 
-      expect(output.substring(output.indexOf(" */"))).toBe(
-        expected.substring(expected.indexOf(" */"))
+      expect(
+        output.substring(output.indexOf(" */")).replace(/[\n\r]/g, "")
+      ).toBe(
+        expected.substring(expected.indexOf(" */")).replace(/[\n\r]/g, "")
       );
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
@@ -359,7 +364,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/full-ext/package.json")
+          .readFileSync("test/resources/expectedOutput/full-ext/package.json")
           .toString()
       );
     });
@@ -368,7 +373,7 @@ describe("End-to-end tests", () => {
       const rdfFetchMock = {
         dataset: () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
-            "./test/resources/vocabs/Person.ttl"
+            "./test/resources/vocab/Person.ttl"
           );
         },
         headers: {
@@ -390,7 +395,7 @@ describe("End-to-end tests", () => {
           _: ["generate"],
           inputResources: [
             "https://schema.org/Person.ttl",
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+            "./test/resources/vocab/schema-inrupt-ext.ttl",
           ],
           outputDirectory,
           artifactVersion: "1.0.0",
@@ -399,6 +404,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -431,16 +438,17 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.0",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -467,7 +475,7 @@ describe("End-to-end tests", () => {
       const rdfFetchMock = {
         dataset: () => {
           return Resource.loadTurtleFileIntoDatasetPromise(
-            "./test/resources/vocabs/schema-inrupt-ext.ttl"
+            "./test/resources/vocab/schema-inrupt-ext.ttl"
           );
         },
         headers: {
@@ -487,7 +495,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           termSelectionResource: "https://does-not-matter-mocked-anyway.com",
           artifactVersion: "1.0.0",
@@ -495,6 +503,8 @@ describe("End-to-end tests", () => {
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -527,16 +537,17 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -559,7 +570,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -567,6 +578,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -586,7 +599,7 @@ describe("End-to-end tests", () => {
       let artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -594,6 +607,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -602,9 +617,7 @@ describe("End-to-end tests", () => {
       expect(
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
-        expect.stringContaining(
-          '"name": "@inrupt/generated-vocab-schema-inrupt-ext",'
-        )
+        expect.stringContaining('"name": "@inrupt/generated-vocab-schema",')
       );
 
       del.sync([`${outputDirectory}/*`]);
@@ -612,7 +625,7 @@ describe("End-to-end tests", () => {
       artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-inrupt-ext.ttl"],
+          inputResources: ["./test/resources/vocab/schema-inrupt-ext.ttl"],
           outputDirectory,
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
@@ -620,6 +633,8 @@ describe("End-to-end tests", () => {
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -642,16 +657,17 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           license: { name: "MIT" },
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -661,7 +677,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema-inrupt-ext: '
+          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema_inrupt_ext: Inrupt extension to Schema.org terms.'
         )
       );
     });
@@ -675,15 +691,16 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          inputResources: ["./test/resources/vocabs/schema-snippet.ttl"],
+          inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
           outputDirectory,
-          termSelectionResource:
-            "./test/resources/vocabs/schema-inrupt-ext.ttl",
+          termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
           artifactVersion: "1.0.5",
           artifactNamePrefix: "",
           artifactNameSuffix: "",
           moduleNamePrefix: "@inrupt/generated-vocab-",
           noPrompt: true,
+          descriptionFallback: "Needs a description...",
+          namespaceIriOverride: "https://schema.org/",
         })
       );
 
@@ -693,7 +710,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString()
       ).toEqual(
         expect.stringContaining(
-          '{"name": "https://inrupt.com/profile/card/#us"}'
+          "schema_inrupt_ext: Inrupt extension to Schema.org terms."
         )
       );
     });
@@ -707,7 +724,7 @@ describe("End-to-end tests", () => {
       const artifactGenerator = new ArtifactGenerator(
         new GeneratorConfiguration({
           _: ["generate"],
-          vocabListFile: "./test/resources/vocabs/vocab-list.yml",
+          vocabListFile: "./test/resources/vocab/vocab-list.yml",
           outputDirectory,
           noPrompt: true,
         })
@@ -719,7 +736,7 @@ describe("End-to-end tests", () => {
 
       expect(fs.readFileSync(`${outputDirectoryJava}/pom.xml`).toString()).toBe(
         fs
-          .readFileSync("test/resources/expectedOutputs/java-rdf4j/pom.xml")
+          .readFileSync("test/resources/expectedOutput/java-rdf4j/pom.xml")
           .toString()
       );
 
@@ -732,7 +749,7 @@ describe("End-to-end tests", () => {
         .toString();
       const expected = fs
         .readFileSync(
-          "test/resources/expectedOutputs/java-rdf4j/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java"
+          "test/resources/expectedOutput/java-rdf4j/src/main/java/com/inrupt/testing/SCHEMA_INRUPT_EXT.java"
         )
         .toString();
       expect(output.substring(output.indexOf(" */"))).toBe(
@@ -751,7 +768,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -759,18 +777,30 @@ describe("End-to-end tests", () => {
 
       await artifactGenerator.generate();
 
-      const output = fs
+      const outputSchemaExtension = fs
         .readFileSync(
           `${outputDirectoryJS}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
         )
         .toString();
 
-      expect(output).toEqual(expect.stringContaining("new _VocabTerm("));
+      expect(outputSchemaExtension).toEqual(
+        expect.stringContaining("new _VocabTerm(")
+      );
+
+      // Should also generate a pure snippet of Schema.org, with its own
+      // prefix.
+      const outputSchemaSnippet = fs
+        .readFileSync(`${outputDirectoryJS}/GeneratedVocab/SNIPPET.js`)
+        .toString();
+
+      expect(outputSchemaSnippet).toEqual(
+        expect.stringContaining("new _VocabTerm(")
+      );
     });
   });
 
   describe("Term metadata", () => {
-    it("should provide mutliple 'seeAlso' values", async () => {
+    it("should provide multiple 'seeAlso' values", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/seeAlso/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -779,7 +809,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -796,7 +827,7 @@ describe("End-to-end tests", () => {
       expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
     });
 
-    it("should provide only the last 'isDefinedBy' value", async () => {
+    it("should provide all 'isDefinedBy' values", async () => {
       const outputDirectory = "test/Generated/UNIT_TEST/EndToEnd/isDefinedBy/";
       const outputDirectoryJS = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript`;
       del.sync([`${outputDirectory}/*`]);
@@ -805,7 +836,8 @@ describe("End-to-end tests", () => {
         new GeneratorConfiguration({
           _: ["generate"],
           vocabListFile: "./test/resources/yamlConfig/vocab-strict.yml",
-          // The output directory must be set, because a default value is set by yargs in a regular use case
+          // The output directory must be set, because a default value will be
+          // set by yargs normally.
           outputDirectory,
           noPrompt: true,
         })
@@ -818,7 +850,7 @@ describe("End-to-end tests", () => {
         .toString();
 
       expect(output).toEqual(expect.stringContaining(".addIsDefinedBy("));
-      expect(output).not.toEqual(expect.stringContaining(OWL_NAMESPACE));
+      expect(output).toEqual(expect.stringContaining(OWL_NAMESPACE));
       expect(output).toEqual(expect.stringContaining(RDFS_NAMESPACE));
     });
   });

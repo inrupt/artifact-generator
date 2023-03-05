@@ -1,0 +1,28 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix schema: <https://schema.org/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+prefix test: <https://ex.com/vocab/test/>
+
+test: a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "1" ;
+    dcterms:creator "Pat McBennett" ;
+    dcterms:date "2019/06/18" ;
+    dcterms:title "Code Generator vocabulary" ;
+    dcterms:description "Vocabulary for terms used during Source Code Generation from RDF vocabularies." ;
+    vann:preferredNamespacePrefix "test" ;
+    vann:preferredNamespaceUri "https://ex.com/vocab/test/" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+
+test:constantStringTooMany a inrupt_gen:ConstantString ;
+    rdfs:label "A constant string"@en ;
+    rdfs:comment "This is an invalid constant string value."@en ;
+    skos:definition "First value..." ;
+    skos:definition "...but we can't have more than one value..." ;
+    skos:definition "...and we've got 3!" .

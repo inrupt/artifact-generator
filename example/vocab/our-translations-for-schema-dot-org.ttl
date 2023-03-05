@@ -1,0 +1,269 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix schema: <https://schema.org/>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
+
+prefix our-translations-for-schema-dot-org: <http://inrupt.com/vocab/translation/schema#>
+
+#
+# Note: This file is just an example. One open question (as of Aug 2019) is do
+# we provide values with explicit 'en' language tags? Schema.org does provide
+# labels and comments in English, but without an explicit language tag. Is it
+# good enough to say we rely on any developers using Schema.org to look for
+# explicit English values, but if not found they should default to looking for
+# 'no lnaguage tag' values?
+#
+our-translations-for-schema-dot-org:
+    a owl:Ontology, inrupt_gen:Ontology ;
+    owl:versionInfo "0.0.1" ;
+    dcterms:creator "Jarlath Holleran" ;
+    dcterms:date "2019/06/18" ;
+    dcterms:title "Inrupt extension adding multilingual metadata for Schema.org terms" ;
+    dcterms:description "Extension to Schema.org terms providing multilingual alternative names and translations for comments (e.g. for use directly as labels or tool-tips in user interfaces or error messages)" ;
+    vann:preferredNamespacePrefix "our-translations-for-schema-dot-org" ;
+    vann:preferredNamespaceUri "https://schema.org/" ;
+    dcterms:license "http://www.opendatacommons.org/license/pddl/" .
+
+
+schema:Person
+    schema:alternateName "La personne"@fr ;
+    schema:alternateName "Person"@de ;
+    schema:alternateName "Persona"@es ;
+    schema:alternateName "Persona"@it ;
+    rdfs:comment "Une personne (vivante, morte, mort-vivant ou fictive)."@fr ;
+    rdfs:comment "Eine Person (lebendig, tot, untot oder fiktiv)."@de ;
+    rdfs:comment "Una persona (viva, muerta, no muerta o ficticia)."@es ;
+    rdfs:comment "Una persona (viva, morta, non morta o immaginaria)."@it .
+
+
+schema:givenName
+    schema:alternateName "Given Name"@en ;
+    schema:alternateName "Prénom"@fr ;
+    schema:alternateName "Vorname"@de ;
+    schema:alternateName "Nombre de pila"@es ;
+    schema:alternateName "Nome di battesimo"@it ;
+    rdfs:comment "Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property."@en ;
+    rdfs:comment "Prénom. Aux États-Unis, le prénom d’une personne. Ceci peut être utilisé avec familyName au lieu de la propriété name."@fr ;
+    rdfs:comment "Vorname. In den USA der Vorname einer Person. Dies kann zusammen mit familyName anstelle der Eigenschaft name verwendet werden."@de ;
+    rdfs:comment "Nombre de pila. En los EE. UU., El primer nombre de una persona. Esto se puede usar junto con familyName en lugar de la propiedad name."@es ;
+    rdfs:comment "Nome di battesimo. Negli Stati Uniti, il primo nome di una persona. Questo può essere usato insieme a familyName al posto della proprietà name."@it .
+
+schema:familyName a rdf:Property ;
+    schema:alternateName "Family Name"@en ;
+    schema:alternateName "Nom de famille"@fr ;
+    schema:alternateName "Nachname"@de ;
+    schema:alternateName "Apellido"@es ;
+    schema:alternateName "Cognome"@it ;
+    rdfs:comment "Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property."@en ;
+    rdfs:comment "Nom de famille. Aux États-Unis, le nom de famille d’une personne. Ceci peut être utilisé avec GivenName au lieu de la propriété name."@fr ;
+    rdfs:comment "Nachname. In den USA der Nachname einer Person. Dies kann zusammen mit givenName anstelle der Eigenschaft name verwendet werden."@de ;
+    rdfs:comment "Apellido. En los EE.UU., el apellido de una persona. Esto se puede usar junto con givenName en lugar de la propiedad name."@es ;
+    rdfs:comment "Cognome. Negli Stati Uniti, il cognome di una persona. Questo può essere usato insieme a givenName al posto della proprietà name."@it .
+
+schema:additionalName a rdf:Property ;
+    schema:alternateName "Additional Name"@en ;
+    schema:alternateName "Nom additionnel"@fr ;
+    schema:alternateName "Zusätzlicher Name"@de ;
+    schema:alternateName "Nombre adicional"@es ;
+    schema:alternateName "Nome aggiuntivo"@it ;
+    rdfs:comment "An additional name for a Person, can be used for a middle name."@en ;
+    rdfs:comment "Un nom supplémentaire pour une personne peut être utilisé pour un deuxième prénom."@fr ;
+    rdfs:comment "Ein zusätzlicher Name für eine Person kann für einen zweiten Vornamen verwendet werden."@de ;
+    rdfs:comment "Un nombre adicional para una persona, se puede utilizar para un segundo nombre."@es ;
+    rdfs:comment "Un nome aggiuntivo per una persona può essere usato per un secondo nome."@it .
+
+schema:address a rdf:Property ;
+    schema:alternateName "Adresse"@fr ;
+    schema:alternateName "Adresse"@de ;
+    schema:alternateName "Dirección"@es ;
+    schema:alternateName "Indirizzo"@it ;
+    rdfs:comment "Physical address of the item."@en ;
+    rdfs:comment "Indirizzo fisico dell'articolo."@fr ;
+    rdfs:comment "Dirección física del artículo."@de ;
+    rdfs:comment "Physische Adresse des Artikels."@es ;
+    rdfs:comment "Adresse physique de l'article."@it .
+
+schema:streetAddress a rdf:Property ;
+    schema:alternateName "Street Address"@en ;
+    schema:alternateName "Adresse de rue"@fr ;
+    schema:alternateName "Adresse"@de ;
+    schema:alternateName "Dirección"@es ;
+    schema:alternateName "Indirizzo"@it ;
+    rdfs:comment "The street address. For example, 1600 Amphitheatre Pkwy."@en ;
+    rdfs:comment "L'adresse de la rue. Par exemple, 1600 Amphitheatre Pkwy."@fr ;
+    rdfs:comment "Die Adresse. Zum Beispiel 1600 Amphitheatre Pkwy."@de ;
+    rdfs:comment "La dirección de la calle. Por ejemplo, 1600 Anfiteatro Pkwy."@es ;
+    rdfs:comment "L'indirizzo Ad esempio, 1600 Amphitheatre Pkwy."@it .
+
+schema:addressLocality a rdf:Property ;
+    schema:alternateName "Locality"@en ;
+    schema:alternateName "Adresse Localité"@fr ;
+    schema:alternateName "Adresse Ort"@de ;
+    schema:alternateName "Dirección Localidad"@es ;
+    schema:alternateName "Località indirizzo"@it ;
+    rdfs:comment "The locality in which the street address is, and which is in the region. For example, Mountain View."@en ;
+    rdfs:comment "La localité dans laquelle l'adresse est, et qui se trouve dans la région. Par exemple, Mountain View."@fr ;
+    rdfs:comment "Der Ort, an dem sich die Adresse befindet und der sich in der Region befindet. Zum Beispiel Mountain View."@de ;
+    rdfs:comment "La localidad en la que se encuentra la dirección, y que se encuentra en la región. Por ejemplo, Mountain View."@es ;
+    rdfs:comment "La località in cui si trova l'indirizzo e che si trova nella regione. Ad esempio, Mountain View."@it .
+
+schema:addressRegion a rdf:Property ;
+    schema:alternateName "Region"@en ;
+    schema:alternateName "Adresse Région"@fr ;
+    schema:alternateName "Adresse Region"@de ;
+    schema:alternateName "Dirección de la región"@es ;
+    schema:alternateName "Indirizzo Regione"@it ;
+    rdfs:comment "The region in which the locality is, and which is in the country. For example, California or another appropriate first-level <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\">Administrative division</a>"@en ;
+    rdfs:comment "La région dans laquelle se trouve la localité et qui se trouve dans le pays. Par exemple, la Californie ou un autre <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\"> division administrative appropriée de premier niveau"@fr ;
+    rdfs:comment "Die Region, in der sich der Ort befindet und die sich auf dem Land befindet. Beispiel: Kalifornien oder eine andere geeignete <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\"> administrative Aufteilung </a>"@de ;
+    rdfs:comment "La región en la que se encuentra la localidad, y que se encuentra en el país. Por ejemplo, California u otro <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\"> división administrativa adecuado de primer nivel </a>"@es ;
+    rdfs:comment "La regione in cui si trova la località e che si trova nel paese. Ad esempio, in California o in un'altra <a href=\"https://en.wikipedia.org/wiki/List_of_administrative_divisions_by_country\"> divisione amministrativa </a> di primo livello di primo livello"@it .
+
+schema:addressCountry a rdf:Property ;
+    schema:alternateName "Address Country"@en ;
+    schema:alternateName "Adresse Pays"@fr ;
+    schema:alternateName "Adresse Land"@de ;
+    schema:alternateName "Dirección País"@es ;
+    schema:alternateName "Indirizzo Paese"@it ;
+    rdfs:comment "The country. For example, USA. You can also provide the two-letter <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\">ISO 3166-1 alpha-2 country code</a>."@en ;
+    rdfs:comment "Le pays. Par exemple, USA. Vous pouvez également fournir le <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\"> code de pays ISO 3166-1 alpha-2 en deux lettres </a>."@fr ;
+    rdfs:comment "Das Land. Zum Beispiel USA. Sie können auch den aus zwei Buchstaben bestehenden <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\"> ISO 3166-1 Alpha-2-Ländercode </a> angeben."@de ;
+    rdfs:comment "El país. Por ejemplo, USA. También puede proporcionar el <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\"> código de país ISO 3166-1 alfa-2 de dos letras </a>."@es ;
+    rdfs:comment "Paese. Ad esempio, USA. Puoi anche fornire il <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1\"> codice paese ISO 3166-1 alfa-2 </a> di due lettere."@it .
+
+schema:postalCode a rdf:Property ;
+    schema:alternateName "Postal Code"@en ;
+    schema:alternateName "code postal"@fr ;
+    schema:alternateName "Postleitzahl"@de ;
+    schema:alternateName "Código postal"@es ;
+    schema:alternateName "codice postale"@it ;
+    rdfs:comment "The postal code. For example, 94043."@en ;
+    rdfs:comment "Le code postal Par exemple, 94043."@fr ;
+    rdfs:comment "Die Postleitzahl. Zum Beispiel 94043."@de ;
+    rdfs:comment "El código postal. Por ejemplo, 94043."@es ;
+    rdfs:comment "Il codice postale Ad esempio, 94043."@it .
+
+
+schema:birthDate a rdf:Property ;
+    schema:alternateName "Date of birth"@en ;
+    schema:alternateName "Date de naissance"@fr ;
+    schema:alternateName "Geburtsdatum"@de ;
+    schema:alternateName "Fecha de nacimiento"@es ;
+    schema:alternateName "Data di nascita"@it ;
+    rdfs:comment "Date of birth."@en ;
+    rdfs:comment "Date de naissance."@fr ;
+    rdfs:comment "Geburtsdatum."@de ;
+    rdfs:comment "Fecha de nacimiento."@es ;
+    rdfs:comment "Data di nascita."@it .
+
+
+schema:birthPlace a rdf:Property ;
+    schema:alternateName "Birth Place"@en ;
+    schema:alternateName "Luogo di nascita"@fr ;
+    schema:alternateName "Geburtsort"@de ;
+    schema:alternateName "Lugar de nacimiento"@es ;
+    schema:alternateName "Luogo di nascita"@it ;
+    rdfs:comment "The place where the person was born."@en ;
+    rdfs:comment "Le lieu où la personne est née."@fr ;
+    rdfs:comment "Der Ort, an dem die Person geboren wurde."@de ;
+    rdfs:comment "El lugar donde nació la persona."@es ;
+    rdfs:comment "Il luogo in cui la persona è nata."@it .
+
+schema:deathDate a rdf:Property ;
+    schema:alternateName "Death Date"@en ;
+    schema:alternateName "Date de mort"@fr ;
+    schema:alternateName "Todesdatum"@de ;
+    schema:alternateName "Fecha de la muerte"@es ;
+    schema:alternateName "Data di morte"@it ;
+    rdfs:comment "Date of death."@en ;
+    rdfs:comment "Date de décès."@fr ;
+    rdfs:comment "Sterbedatum."@de ;
+    rdfs:comment "Fecha de muerte."@es ;
+    rdfs:comment "Data di morte."@it .
+
+schema:deathPlace a rdf:Property ;
+    schema:alternateName "Death Place"@en ;
+    schema:alternateName "Lieu de la mort"@fr ;
+    schema:alternateName "Todesort"@de ;
+    schema:alternateName "Lugar de la muerte"@es ;
+    schema:alternateName "Luogo della morte"@it ;
+    rdfs:comment "The place where the person died."@en ;
+    rdfs:comment "L'endroit où la personne est décédée"@fr ;
+    rdfs:comment "Der Ort, an dem die Person gestorben ist."@de ;
+    rdfs:comment "El lugar donde murió la persona."@es ;
+    rdfs:comment "Il luogo in cui la persona è morta."@it .
+
+schema:email a rdf:Property ;
+    schema:alternateName "Email"@en ;
+    schema:alternateName "Email"@fr ;
+    schema:alternateName "Email"@de ;
+    schema:alternateName "Email"@es ;
+    schema:alternateName "E-mail"@it ;
+    rdfs:comment "Email address."@en ;
+    rdfs:comment "Adresse électronique."@fr ;
+    rdfs:comment "E-Mail-Addresse."@de ;
+    rdfs:comment "Dirección de correo electrónico."@es ;
+    rdfs:comment "Indirizzo email."@it .
+
+schema:telephone a rdf:Property ;
+    schema:alternateName "Telephone"@en ;
+    schema:alternateName "Téléphone"@fr ;
+    schema:alternateName "Telefon"@de ;
+    schema:alternateName "Teléfono"@es ;
+    schema:alternateName "Telefono"@it ;
+    rdfs:comment "The telephone number."@en ;
+    rdfs:comment "Il numero di telefono."@fr ;
+    rdfs:comment "Die Telefonnummer."@de ;
+    rdfs:comment "El numero de telefono."@es ;
+    rdfs:comment "Il numero di telefono."@it .
+
+schema:gender a rdf:Property ;
+    schema:alternateName "Gender"@en ;
+    schema:alternateName "Le sexe"@fr ;
+    schema:alternateName "Geschlecht"@de ;
+    schema:alternateName "Género"@es ;
+    schema:alternateName "Genere"@it ;
+    rdfs:comment "Gender of the person. While https://schema.org/Male and https://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender."@en ;
+    rdfs:comment "Sexe de la personne. Bien que https://schema.org/Male et https://schema.org/Female puissent être utilisés, les chaînes de texte sont également acceptables pour les personnes qui ne s'identifient pas en tant que genre binaire."@fr ;
+    rdfs:comment "Geschlecht der Person. Während https://schema.org/Male und https://schema.org/Female verwendet werden können, sind Textzeichenfolgen auch für Personen zulässig, die sich nicht als binäres Geschlecht identifizieren."@de ;
+    rdfs:comment "Género de la persona. Si bien pueden utilizarse https://schema.org/Male y https://schema.org/Female, las cadenas de texto también son aceptables para las personas que no se identifican como un género binario."@es ;
+    rdfs:comment "Sesso della persona. Mentre https://schema.org/Male e https://schema.org/Female possono essere utilizzati, le stringhe di testo sono accettabili anche per le persone che non si identificano come un genere binario."@it .
+
+schema:nationality a rdf:Property ;
+    schema:alternateName "Nationality"@en ;
+    schema:alternateName "Nationalité"@fr ;
+    schema:alternateName "Staatsangehörigkeit"@de ;
+    schema:alternateName "Nacionalidad"@es ;
+    schema:alternateName "Nazionalità"@it ;
+    rdfs:comment "Nationality of the person."@en ;
+    rdfs:comment "Nationalité de la personne."@fr ;
+    rdfs:comment "Nationalität der Person."@de ;
+    rdfs:comment "Nacionalidad de la persona."@es ;
+    rdfs:comment "Nazionalità della persona."@it .
+
+schema:height a rdf:Property ;
+    schema:alternateName "Height"@en ;
+    schema:alternateName "la taille"@fr ;
+    schema:alternateName "Höhe"@de ;
+    schema:alternateName "Altura"@es ;
+    schema:alternateName "Altezza"@it ;
+    rdfs:comment "The height of the item."@en ;
+    rdfs:comment "La hauteur de l'article."@fr ;
+    rdfs:comment "Die Höhe des Artikels."@de ;
+    rdfs:comment "La altura del artículo."@es ;
+    rdfs:comment "L'altezza dell'oggetto"@it .
+
+schema:weight a rdf:Property ;
+    schema:alternateName "Weight"@en ;
+    schema:alternateName "Poids"@fr ;
+    schema:alternateName "Gewicht"@de ;
+    schema:alternateName "Peso"@es ;
+    schema:alternateName "Peso"@it ;
+    rdfs:comment "The weight of the product or person."@en ;
+    rdfs:comment "Le poids du produit ou de la personne."@fr ;
+    rdfs:comment "Das Gewicht des Produkts oder der Person."@de ;
+    rdfs:comment "El peso del producto o persona."@es ;
+    rdfs:comment "Il peso del prodotto o della persona."@it .

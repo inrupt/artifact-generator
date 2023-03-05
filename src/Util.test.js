@@ -5,7 +5,16 @@ const {
   getArtifactDirectoryRoot,
   getArtifactDirectorySourceCode,
   normalizePath,
+  mergeDatasets,
+  curie,
 } = require("./Util");
+const rdf = require("rdf-ext");
+const {
+  SCHEMA_DOT_ORG,
+  RDF,
+  RDFS,
+  INRUPT_BEST_PRACTICE_NAMESPACE,
+} = require("./CommonTerms");
 
 describe("Test override root", () => {
   it("should return default if no input data", async () => {
@@ -21,6 +30,26 @@ describe("Test override root", () => {
     expect(
       getArtifactDirectoryRoot({ artifactDirectoryRootOverride: override })
     ).toEqual(override);
+  });
+});
+
+describe("Merge datasets", () => {
+  it("should merge all triples", () => {
+    const dataSetA = rdf
+      .dataset()
+      .add(rdf.quad(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class));
+
+    const dataSetB = rdf
+      .dataset()
+      .add(rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property));
+
+    const merged = mergeDatasets([dataSetA, dataSetB]);
+    expect(
+      merged.match(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class)
+    ).not.toBeNull();
+    expect(
+      merged.match(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property)
+    ).not.toBeNull();
   });
 });
 
@@ -60,5 +89,18 @@ describe("Test override source code", () => {
         artifactDirectoryRootOverride: override,
       })
     ).toEqual(path.join(override, DEFAULT_DIRECTORY_SOURCE_CODE));
+  });
+});
+
+describe("CURIE function", () => {
+  it("should return original IRI if not registered", () => {
+    const unknownVocabTerm = "https://never-heard-of-this-vocab.com/test";
+    expect(curie(unknownVocabTerm)).toEqual(unknownVocabTerm);
+  });
+
+  it("should return curie'd IRI", () => {
+    expect(curie(`${INRUPT_BEST_PRACTICE_NAMESPACE}test`)).toEqual(
+      "inrupt_bp:test"
+    );
   });
 });

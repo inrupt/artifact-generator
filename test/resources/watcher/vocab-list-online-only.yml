@@ -22,10 +22,14 @@ artifactToGenerate:
     languageKeywordsToUnderscore:
       - "class"
       - "abstract"
+      - "this"
+
     javaPackageName: "com.example.java.packagename"
 
 vocabList:
   # The following is the list of IRI and/or paths to read when building the artifact.
-  - inputResources:
+  - descriptionFallback: Providing value here means we don't have to mock one...
+    vocabContentTypeHeaderOverride: Providing value here means we don't have to mock a 'Content-Type' header...
+    inputResources:
       # Watcher should ignore this resource, as it's online...
       - http://www.w3.org/2000/01/rdf-schema#

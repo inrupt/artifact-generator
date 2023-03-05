@@ -19,8 +19,9 @@ Streams, Solid vocabularies, or your own custom vocabularies).
 
 To immediately appreciate some of the major capabilities enabled by the Artifact
 Generator, you can easily run our very simple 
-[RunnableDemo](./example/RunnableDemo/README.md), which simply outputs very
-intuitive questions, with the answers coming directly from vocabulary metadata.
+[Runnable Demo](example/demo-DisplayVocabTermMetadata/README.md), which simply
+displays some very intuitive questions, with the answers coming directly from
+vocabulary metadata.
 
 # Prerequisites
 
@@ -44,7 +45,7 @@ on how to set your permissions correctly.
 
 # Table of contents
 
-- [RunnableDemo](./example/RunnableDemo/README.md)
+- [RunnableDemo](example/demo-DisplayVocabTermMetadata/README.md)
 - [Quickstart](#quickstart)
 - [Introduction](./documentation/introduction.md)
 - [Feature overview](./documentation/feature-overview.md)
@@ -127,15 +128,15 @@ You can now run the Artifact Generator from the root of the cloned directory by
 simply executing:
 
 ```script
-> node index.js <Normal Command-Line Options>
+> node src/index.js <Normal Command-Line Options>
 >
-> node index.js --version
-0.13.3
+> node src/index.js --version
+2.0.0
 >
 ```
 
 You can now replace all the example references below that begin with
-`artifact-generator ...` with `node index.js ...` instead.
+`artifact-generator ...` with `node src/index.js ...` instead.
 
 ### 4. Use `npx`
 
@@ -280,6 +281,6 @@ in vocab [https://team.inrupt.net/public/vocab/PetRock.ttl#].
 # There's more!
 
 Don't forget, there's a **_lot_** more documentation related to the Artifact
-Generator, all contained under the `/documentation' directory of this
+Generator, all contained under the `/documentation` directory of this
 repository, but also linked to from the [Table of Contents](#table-of-contents)
 section above!

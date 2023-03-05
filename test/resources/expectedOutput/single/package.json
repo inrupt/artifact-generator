@@ -1,0 +1,13 @@
+{
+  "name": "@inrupt/generated-vocab-schema",
+  "version": "1.0.0",
+  "description": "Bundle of [1] vocabularies that includes the following:\n\n - schema: Vocab needs a description.",
+  "sideEffects": false,
+  "main": "index.js",
+  "module": "wrapper.js",
+  "author": {
+    "name": "@inrupt/artifact-generator",
+    "url": "https://github.com/inrupt/artifact-generator"
+  },
+  "license": "MIT"
+}

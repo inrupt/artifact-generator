@@ -8,12 +8,12 @@ artifactGeneratorVersion: 0.1.0
 artifactToGenerate:
 
 vocabList:
-  - description: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
+  - descriptionFallback: Snippet of Schema.org from Google, Microsoft, Yahoo and Yandex
     inputResources:
       - ./schema-snippet.ttl
     termSelectionFile: schema-inrupt-ext.ttl
 
-  - description: Vocab for testing predicate types...
+  - descriptionFallback: Vocab for testing predicate types...
     nameAndPrefixOverride: override-name
     inputResources:
       - ./supported-data-types.ttl

@@ -1,0 +1,30 @@
+versioning:
+  type: svn
+  url: https://repository.svn
+
+artifactToGenerate:
+  - programmingLanguage: "Java"
+    artifactVersion: "0.1.0"
+    artifactNamePrefix: ""
+    artifactNameSuffix: ""
+    solidCommonVocabVersion: "0.1.0-SNAPSHOT"
+    artifactDirectoryName: "Java"
+    templateInternal: "solidCommonVocabDependent/java/rdf4j/vocab.hbs"
+    sourceFileExtension: "java"
+    # Currently we're just adding terms as they occur in vocabs, and not all possible keywords.
+    languageKeywordsToUnderscore:
+      - "class"
+      - "abstract"
+      - "default"
+      - "this"
+    javaPackageName: "com.example.java.packagename"
+
+vocabList:
+  # The following is the list of IRI and/or paths to read when building the artifact.
+  - inputResources:
+      - "./test/resources/vocab/schema-snippet.ttl"
+    # This option is used as a name for the vocabulary, e.g. EXAMPLE.java or EXAMPLE.js
+    # If not provided, the generator will look for the vann:preferredNamespacePrefix property,
+    # and otherwise will propose a default based on the domain name.
+    nameAndPrefixOverride: "schema"
+    descriptionFallback: "An example vocabulary"
