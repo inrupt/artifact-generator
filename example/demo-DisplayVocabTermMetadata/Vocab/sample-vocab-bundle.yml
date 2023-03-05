@@ -88,7 +88,7 @@ vocabList:
     widocoLanguages: en-es-de-it-fr
     # So here we are pulling in the entire Schema.org vocabulary...
     inputResources:
-      - https://schema.org/version/latest/schemaorg-current-http.ttl
+      - https://schema.org/version/latest/schemaorg-current-https.ttl
     # ...but here we are selectively choosing which terms we want (and
     # optionally adding more metadata for each of those chosen terms).
     termSelectionResource: ./Extension/schema-inrupt-ext.ttl

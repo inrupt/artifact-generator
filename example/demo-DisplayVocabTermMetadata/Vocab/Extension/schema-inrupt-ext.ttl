@@ -7,7 +7,7 @@ prefix dcterms: <http://purl.org/dc/terms/>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix ldp: <http://www.w3.org/ns/ldp#>
 prefix vann: <http://purl.org/vocab/vann/>
-prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dalicc: <http://dalicc.net/licenselibrary/>
 
 prefix schema: <https://schema.org/>
 
@@ -38,8 +38,8 @@ schema_inrupt_ext: a owl:Ontology, inrupt_gen:OntologyExtension ;
  convenient constants for just these selected terms, rather than including the
  over 2,500 terms currently defined in Schema.org).""" ;
     vann:preferredNamespacePrefix "schema_inrupt_ext" ;
-    vann:preferredNamespaceUri "https://w3id.org/inrupt/vocab/extension/schema#" ;
-    dcterms:license sm:MITLicense .
+    vann:preferredNamespaceUri "https://schema.org/" ;
+    dcterms:license dalicc:MIT .
 
 
 #
