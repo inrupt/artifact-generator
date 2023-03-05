@@ -159,8 +159,8 @@ artifactToGenerate:
     # types, VocabTerm types, etc.)
     artifactNamePrefix: ""
     artifactNameSuffix: ""
-    # The version of the Vocab Term library (e.g., https://github.com/inrupt/solid-cpommon-vocab-js for JavaScript, 
-    # https://github.com/inrupt/solid-cpommon-vocab-java for Java) upon which the generated vocabularies 
+    # The version of the Vocab Term library (e.g., https://github.com/inrupt/solid-common-vocab-js for JavaScript, 
+    # https://github.com/inrupt/solid-common-vocab-java for Java) upon which the generated vocabularies 
     # will depend. This is used for packaging.
     solidCommonVocabVersion: "0.1.0-SNAPSHOT"
     # MANDATORY The sub-directory of the output directory in which the current artifact will be generated.
