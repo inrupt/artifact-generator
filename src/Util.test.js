@@ -6,9 +6,15 @@ const {
   getArtifactDirectorySourceCode,
   normalizePath,
   mergeDatasets,
+  curie,
 } = require("./Util");
 const rdf = require("rdf-ext");
-const { SCHEMA_DOT_ORG, RDF, RDFS } = require("./CommonTerms");
+const {
+  SCHEMA_DOT_ORG,
+  RDF,
+  RDFS,
+  INRUPT_BEST_PRACTICE_NAMESPACE,
+} = require("./CommonTerms");
 
 describe("Test override root", () => {
   it("should return default if no input data", async () => {
@@ -83,5 +89,18 @@ describe("Test override source code", () => {
         artifactDirectoryRootOverride: override,
       })
     ).toEqual(path.join(override, DEFAULT_DIRECTORY_SOURCE_CODE));
+  });
+});
+
+describe("CURIE function", () => {
+  it("should return original IRI if not registered", () => {
+    const unknownVocabTerm = "https://never-heard-of-this-vocab.com/test";
+    expect(curie(unknownVocabTerm)).toEqual(unknownVocabTerm);
+  });
+
+  it("should return curie'd IRI", () => {
+    expect(curie(`${INRUPT_BEST_PRACTICE_NAMESPACE}test`)).toEqual(
+      "inrupt_bp:test"
+    );
   });
 });

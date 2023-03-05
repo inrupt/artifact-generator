@@ -203,10 +203,14 @@ module.exports = class DatasetHandler {
     //  Auto Core vocab here:
     //    https://spec.edmcouncil.org/auto/ontology/VC/VehicleCore/
     //  ...has terms like '0to100KMH' and '0to60MPH').
+    // The FAIR vocabulary uses dots/full-stops '.' to name some of its
+    // sub-principle term IRIs (such as
+    // "https://w3id.org/fair/principles/terms/A1.1", so explicitly replace
+    // those dots with '_' too.
     const firstCharacter = name.charAt(0);
     const nameEscapedForLanguage = (
       firstCharacter >= "0" && firstCharacter <= "9" ? `_${name}` : name
-    ).replace(/[-\/]/g, "_");
+    ).replace(/[-\/.]/g, "_");
     // const nameEscapedForLanguage = name.replace(/[-\/]/g, "_");
 
     // TODO: Currently these alterations are required only for Java-specific
@@ -340,7 +344,7 @@ module.exports = class DatasetHandler {
       "isDefinedBy"
     );
 
-    const comment = DatasetHandler.getTermDescription(
+    const termDescription = DatasetHandler.getTermDescription(
       comments,
       definitions,
       labels
@@ -350,7 +354,7 @@ module.exports = class DatasetHandler {
       name,
       nameEscapedForLanguage,
       nameEscapedForJava,
-      comment,
+      comment: termDescription,
       labels,
       comments,
       definitions,
@@ -712,13 +716,13 @@ module.exports = class DatasetHandler {
     // always the case (e.g. OWL, HTTP 2011, or SKOS), and we can't assume it
     // is. Every ontology/vocabulary should define a 'namespace', which is
     // effectively the IRI 'within which' all the terms defined within that
-    // vocab are defined (and whose terms identifying IRIs all start with),
+    // vocab are defined (and whose term-identifying IRIs all start with),
     // but this need *NOT NECESSARILY BE* the IRI that identifies the
     // 'ontology/vocab' itself.
     //  So a vocab can have a completely different IRI (although if it is
-    // different, it is typically only different in that it removes the
-    // trailing slash '/' or hash '#' symbol (e.g. OWL or SKOS) - but in fact,
-    // the W3C PROV vocabulary is a great example of a single namespace (i.e.,
+    // different, it is often only different in that it removes the trailing
+    // slash '/' or hash '#' symbol (e.g. OWL or SKOS) - but in fact, the W3C
+    // PROV vocabulary is a great example of a single namespace (i.e.,
     // http://www.w3.org/ns/prov#) that defines terms from multiple different
     // PROV-related vocabs (i.e., PROV, PROV-O, PROV-LINKS, PROV-DQ,
     // PROV-DICTIONARY, PROV_O_INVERSES, etc.).
@@ -740,11 +744,12 @@ module.exports = class DatasetHandler {
     // IRI (when perhaps we should be forcing the use of a
     // 'vocabularyIriOverride' instead - let's see)...
     result.vocabularyIri = vocabularyIri || namespaceDetails.namespaceIri;
+
     // Useful when overriding the local namespace, because this is the
     // namespace that is actually used in the terms from the vocab, and that
     // is used when splitting the IRI to get a term's local part, for
     // instance.
-    result.localNamespaceIri = namespaceDetails.namespaceIri;
+    result.localNamespaceIri = namespaceDetails.detectedNamespaceIri;
 
     result.vocabName = namespaceDetails.namespacePrefix;
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
@@ -1175,14 +1180,15 @@ module.exports = class DatasetHandler {
 
     result.heuristicNamespaceIri = this.heuristicForNamespaceIri();
 
-    // If we were given an override, then use it, regardless of any explicit
-    // namespace details from the vocab itself, otherwise apply our arbitrary
-    // precedence.
-    result.namespaceIri =
-      namespaceIriOverride ||
+    // Use our arbitrary precedence to determine the detected namespace IRI.
+    result.detectedNamespaceIri =
       result.vannNamespaceIri ||
       result.shaclNamespaceIri ||
       result.heuristicNamespaceIri;
+
+    // If we were given an override, then use it, regardless of any explicit
+    // namespace details from the vocab itself.
+    result.namespaceIri = namespaceIriOverride || result.detectedNamespaceIri;
 
     result.namespacePrefix =
       namespacePrefixOverride ||
@@ -1191,7 +1197,10 @@ module.exports = class DatasetHandler {
 
     if (!result.namespaceIri) {
       throw new Error(
-        `No namespace IRI could be determined for vocabulary [${vocabularyIri}] and no 'namespaceIriOverride' was configured, so we can't continue.`
+        `Namespace IRI could not be determined for vocabulary with IRI [${
+          vocabularyIri ||
+          "--Could not be determined, as not explicitly provided and not overridden by configuration--"
+        }] and no 'namespaceIriOverride' was configured, so we can't continue.`
       );
     }
 
@@ -1206,12 +1215,15 @@ module.exports = class DatasetHandler {
           `Determined vocabulary prefix [${knownPrefix}] from hard-coded list of well known vocabularies.`
         );
       } else {
-        throw new Error(`No vocabulary prefix defined for [${vocabularyIri}]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
+        throw new Error(`No prefix defined for vocabulary IRI [${
+          vocabularyIri ||
+          "--Could not be determined, as not explicitly provided, not overridden by configuration, and namespace IRI couldn't be 'guessed' either--"
+        }]. Trying to guess a prefix is very error-prone, so we suggest three options to resolve this:
       - If you control the vocabulary, we strongly recommend that you either:
         - Add a triple explicitly providing a preferred prefix (e.g., [${vocabularyIri} http://purl.org/vocab/vann/preferredNamespacePrefix "prefix" .]) to your vocabulary.
         - Add a SHACL:PrefixDeclaration (see [SHACL Prefix Declaration](https://www.w3.org/TR/shacl/#sparql-prefixes)) to your vocabulary. 
       - If you do not control the vocabulary but you use a configuration file, then you can set the 'nameAndPrefixOverride' option for this vocabulary.
-      - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes the preferred prefix triple described above.`);
+      - If you do not control the vocabulary, you can use the 'termSelectionResource' option to point to an extension file that includes a preferred prefix as described above.`);
       }
     }
 

@@ -1141,7 +1141,24 @@ describe("Dataset Handler", () => {
 
     expect(() => {
       handler.lookupNamespaceDetails(NS);
-    }).toThrow("No vocabulary prefix defined");
+    }).toThrow("No prefix defined for vocabulary");
+  });
+
+  it("should fail if no prefix is defined *and* no vocabulary IRI", () => {
+    const NS = "https://some.namespace.com/";
+    const NS_IRI = rdf.namedNode(NS);
+
+    const vocab = rdf
+      .dataset()
+      .addAll([rdf.quad(NS_IRI, VANN.preferredNamespaceUri, NS_IRI)]);
+
+    const handler = new DatasetHandler(vocab, rdf.dataset(), {
+      inputResources: ["does not matter"],
+    });
+
+    expect(() => {
+      handler.lookupNamespaceDetails(undefined);
+    }).toThrow("Could not be determined");
   });
 
   it("should not fail for known namespaces without prefix", () => {

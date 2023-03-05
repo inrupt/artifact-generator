@@ -229,7 +229,7 @@ module.exports = class Resource {
       vocabContentTypeHeaderFallback
     );
     debug(
-      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size}] triples)`
+      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size.toLocaleString()}] triples)`
     );
     cachedResources.set(inputResource, resource);
     return resource;

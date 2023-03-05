@@ -50,6 +50,25 @@ const ConfigCommonRdf = {
   reportBestPracticeCompliance: true,
 };
 
+const ConfigCommonRdfNoExtensions = {
+  _: "generate",
+  force: true,
+  clearOutputDirectory: true,
+  outputDirectory:
+    "./test/Generated/GENERATE_SOURCE/SINGLE/RdfCommonNoExtension",
+  vocabListFile:
+    "../solid-common-vocab-rdf/common-rdf/vocab-common-rdf-no-extension.yml",
+  npmRegistry: NPM_REGISTRY,
+  runNpmInstall: RUN_NPM_INSTALL,
+  supportBundling: SUPPORT_BUNDLING,
+  // This configuration is only a subset (i.e., no Inrupt extensions), so
+  // because it's not the most comprehensive test, don't bother testing the
+  // publication process for the generated artifacts.
+  // publish: PUBLISH_TO_REPO_LIST,
+  storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
+  reportBestPracticeCompliance: true,
+};
+
 const ConfigInruptAll = {
   _: "generate",
   force: true,
@@ -74,7 +93,7 @@ const ConfigInruptCore = {
   npmRegistry: NPM_REGISTRY,
   runNpmInstall: RUN_NPM_INSTALL,
   supportBundling: SUPPORT_BUNDLING,
-  publish: PUBLISH_TO_REPO_LIST,
+  // publish: PUBLISH_TO_REPO_LIST,
   storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
   reportBestPracticeCompliance: true,
 };
@@ -159,7 +178,12 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
     await generateVocabArtifact(ConfigCommonRdf);
   }, 600000);
 
-  // it('Solid vocabs', async () => {
+  // it("Common RDF vocabs (with no Inrupt extensions)", async () => {
+  it.skip("Common RDF vocabs (with no Inrupt extensions)", async () => {
+    await generateVocabArtifact(ConfigCommonRdfNoExtensions);
+  }, 600000);
+
+  // it("Solid vocabs", async () => {
   it.skip("Solid vocabs", async () => {
     await generateVocabArtifact(ConfigSolid);
   }, 1200000);
@@ -172,9 +196,9 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("Inrupt specific vocabs", async () => {
   it.skip("Inrupt specific vocabs", async () => {
     await generateVocabArtifact(ConfigInruptCore);
-    await generateVocabArtifact(ConfigInruptUi);
-    await generateVocabArtifact(ConfigInruptService);
-    await generateVocabArtifact(ConfigInruptGlossary);
+    // await generateVocabArtifact(ConfigInruptUi);
+    // await generateVocabArtifact(ConfigInruptService);
+    // await generateVocabArtifact(ConfigInruptGlossary);
   }, 1200000);
 
   // it("tests a single vocab config file", async () => {
@@ -207,6 +231,28 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      // inputResources: ["http://build.fhir.org/fhir.ttl"],
+      // nameAndPrefixOverride: "fhir",
+
+      inputResources: ["http://www.w3.org/ns/spec#"],
+      descriptionFallback: "Sarvens spec vocab",
+      namespaceIriOverride: "http://www.w3.org/ns/spec#",
+
+      //
+      // inputResources: ["http://purl.org/fair-ontology#"],
+      // vocabularyIriOverride: "https://w3id.org/fair/principles/terms/",
+      // namespaceIriOverride: "https://w3id.org/fair/principles/terms/",
+      // nameAndPrefixOverride: "fair",
+      // descriptionFallback: "whatever",
+
+      // http://purl.org/np/RAscnEDxqhJys07l4mKeNsbkwG-C_5RL_17GQRLRGu5Uo
+      // https://w3id.org/fair/principles/latest/FAIR-Vocabulary
+
+      // inputResources: ["https://peta-pico.github.io/FAIR-nanopubs/principles/ontology.ttl"],
+      // // inputResources: ["https://w3id.org/fair/principles/terms/FAIR-Vocabulary"],
+      // // inputResources: ["https://w3id.org/fair/principles/latest/FAIR-Vocabulary"],
+      // ignoreNonVocabTerms: true,
+
       // inputResources: ["https://w3id.org/security#"],
       // nameAndPrefixOverride: "sec",
 
@@ -226,9 +272,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // ignoreNonVocabTerms: true,
 
       // inputResources: ["http://www.w3.org/ns/adms#"],
-
-      // inputResources: ["https://www.w3.org/ns/spec#"],
-      // descriptionFallback: "Sarvens spec vocab",
 
       // inputResources: ["http://www.omg.org/techprocess/ab/SpecificationMetadata/"],
       // nameAndPrefixOverride: "sm",
@@ -307,8 +350,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // ignoreNonVocabTerms: true,
       //
       // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.1.0"],
-      // nameAndPrefixOverride: "gist",
-      // namespaceIriOverride: "https://ontologies.semanticarts.com/gist/",
 
       // inputResources: ["http://www.w3.org/ns/locn"],
 
@@ -394,18 +435,20 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // namespaceIriOverride: "http://www.w3.org/ns/dx/conneg/altr#",
       // ignoreNonVocabTerms: true,
 
-      inputResources: ["https://www.w3.org/ns/prov-o#"],
-      nameAndPrefixOverride: "prov-o",
-      namespaceIriOverride: "http://www.w3.org/ns/prov#",
-      vocabularyIriOverride: "http://www.w3.org/ns/prov-o#",
-      descriptionFallback:
-        "Needs a description - see Common RDF YAML for why...",
+      // inputResources: ["https://www.w3.org/ns/prov-o#"],
+      // nameAndPrefixOverride: "prov-o",
+      // namespaceIriOverride: "http://www.w3.org/ns/prov#",
+      // vocabularyIriOverride: "http://www.w3.org/ns/prov-o#",
+      // descriptionFallback:
+      //   "Needs a description - see Common RDF YAML for why...",
 
       // inputResources: [
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
       // // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
-      // nameAndPrefixOverride: "inrupt-schema",
+      // nameAndPrefixOverride: "schema",
+      // descriptionFallback: "Needs a description...",
+
       //
       // inputResources: [
       //   "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl"
@@ -438,18 +481,16 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       clearOutputDirectory: true,
       outputDirectory: "./test/Generated/GENERATE_SOURCE/CUSTOM",
       artifactVersion: "1.0.0",
-      rdfjsImplVersion: VERSION_RDFJS_IMPL,
-      solidCommonVocabVersion: VERSION_SOLID_COMMON_VOCAB,
       moduleNamePrefix: "@inrupt/generated-custom-vocab-",
       npmRegistry: NPM_REGISTRY,
       runWidoco: false,
       runNpmInstall: RUN_NPM_INSTALL,
       supportBundling: false, //SUPPORT_BUNDLING,
-      publish: [DEFAULT_PUBLISH_KEY],
+      // publish: [DEFAULT_PUBLISH_KEY],
       storeLocalCopyOfVocabDirectory: LOCAL_COPY_OF_VOCAB_DIRECTORY,
       reportBestPracticeCompliance: true,
     });
-  }, 10000);
+  }, 30000);
 });
 
 async function generateVocabArtifact(argv) {

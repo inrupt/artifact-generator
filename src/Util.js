@@ -1,6 +1,11 @@
 const path = require("path");
 const rdf = require("rdf-ext");
 
+const {
+  INRUPT_BEST_PRACTICE_NAMESPACE,
+  INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX,
+} = require("./CommonTerms");
+
 // TODO: Consider moving these functions into 'GeneratorConfiguration.js'
 //  instead. The code was put here due to cyclic dependency problems when it was
 //  in'ArtifactGenerator.js', but 'GeneratorConfiguration.js' seems like it
@@ -47,6 +52,16 @@ function mergeDatasets(dataSetArray) {
   return fullData;
 }
 
+function curie(iri) {
+  if (iri.startsWith(INRUPT_BEST_PRACTICE_NAMESPACE)) {
+    return `${INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX}:${iri.substring(
+      INRUPT_BEST_PRACTICE_NAMESPACE.length
+    )}`;
+  }
+
+  return iri;
+}
+
 module.exports.DEFAULT_DIRECTORY_ROOT = DEFAULT_DIRECTORY_ROOT;
 module.exports.DEFAULT_DIRECTORY_SOURCE_CODE = DEFAULT_DIRECTORY_SOURCE_CODE;
 module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
@@ -54,3 +69,4 @@ module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
 module.exports.normalizePath = normalizeIfFilePath;
 module.exports.describeInput = describeInput;
 module.exports.mergeDatasets = mergeDatasets;
+module.exports.curie = curie;

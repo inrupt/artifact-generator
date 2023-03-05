@@ -122,3 +122,11 @@ module.exports.ARTIFACT_GENERATOR = {
   ),
   ConstantIri: rdf.namedNode(`${ARTIFACT_GENERATOR_NAMESPACE}ConstantIri`),
 };
+
+const INRUPT_BEST_PRACTICE_NAMESPACE =
+  "https://w3id.org/inrupt/vocab/bestPractice/";
+module.exports.INRUPT_BEST_PRACTICE_NAMESPACE = INRUPT_BEST_PRACTICE_NAMESPACE;
+module.exports.INRUPT_BEST_PRACTICE = {};
+const INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX = "inrupt_bp";
+module.exports.INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX =
+  INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX;

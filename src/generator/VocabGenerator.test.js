@@ -306,7 +306,7 @@ describe("Vocab generator unit tests", () => {
         sourceCodeTemplate: "do-not-care",
       };
       await expect(vocabGenerator.generateVocab()).rejects.toThrow(
-        "No namespace IRI"
+        "Namespace IRI could not be determined"
       );
 
       vocabGenerator.vocabData.termSelectionResource = "some-value-any-value";

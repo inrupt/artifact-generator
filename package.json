@@ -10,7 +10,7 @@
     "test": "npm run format && npm run lint && jest --forceExit --detectOpenHandles",
     "start": "node src/index.js",
     "format": "prettier --write \"src/**/*.js\" \"test/resources/**/*.yml\"",
-    "lint": "eslint src --ext js,jsx",
+    "lint": "eslint src --ext js",
     "preversion": "npm test"
   },
   "author": "Inrupt, Inc.",

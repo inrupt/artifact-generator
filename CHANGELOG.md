@@ -44,7 +44,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - **BREAKING CHANGE** Changed Inrupt Artifact Generator vocab namespace IRI to
   use a trailing slash instead of a trailing hash.
 - Ignore Verdaccio 'npm unpublish' errors on retry now (useful for local
-  testing, but was hitting intermittent E404 errors, even on retry).
+  testing, where I was hitting intermittent E404 errors, even on retry).
+- The FAIR vocab has term IRIs with dots/full-stops, so replace those dots with
+  underscores for programming language constant names.
+- NOTE: temporarily excluding the Best Practice reporting code from test
+  coverage for the moment, as it's very much a work-in-progress (and should
+  affect the overall generation process at all (apart from the report output at
+  the top of generated source files, of course!).
 
 ## 2.0.0 2022-06-03
 
