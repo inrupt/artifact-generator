@@ -32,6 +32,7 @@ debugA(`(In English, that would be: [${PET_ROCK.shininess.comment}])`);
 debugA(
   `(With our vocab giving the property 'shiniess' the globally unique, de-reference-able identifier: [${PET_ROCK.shininess}])`
 );
+
 debugSpacer();
 debugA(
   `By the way, our vocab also thinks we might also wish to 'see also' these related links:`
