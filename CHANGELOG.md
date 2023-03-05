@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+## 3.0.0 2023-03-05
+
 - Add vocab counts to generated comments.
 - Add debug message when prefix is found from hard-coded internal vocab list.
 - Replaced FOAF with RDFS for unit test for online vocabs (FOAF has gone down).
