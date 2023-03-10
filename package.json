@@ -36,7 +36,7 @@
     "chokidar": "3.5.3",
     "debug": "^4.3.4",
     "del": "^6.1.1",
-    "glob": "^8.0.3",
+    "glob": "^9.2.1",
     "handlebars": "^4.7.7",
     "js-yaml": "^4.1.0",
     "mock-local-storage": "^1.1.20",
