@@ -1059,19 +1059,15 @@ module.exports = class DatasetHandler {
     );
   }
 
-  // /**
-  //  * Attempts to find the namespace IRI. Starts by looking for an explicit
-  //  * triple of type 'owl:Ontology', but if none found (e.g., the DCTerms
-  //  * vocab), then it can query for the provided namespace (if any, as it can
-  //  * be NULL too).
-  //  * If we find an RDF Subject, then we call the provided callback function
-  //  * and pass all matching triples for that Subject.
-  //  *
-  //  * @param namespaceIriOverride if not NULL will be used as a fallback Subject if no 'owl:Ontology' triple found
-  //  * @param callback the function to call with matching triples
-  //  * @param defaultResult default value to return if no ontology found
-  //  * @returns {string|*}
-  //  */
+  /**
+   * Attempts to lookup the vocabulary IRI. Starts by looking for an explicit
+   * triple of type 'owl:Ontology', but if none found (e.g., the DCTerms
+   * vocab), then it can query for the provided namespace (if any, as it can
+   * be NULL too).
+   *
+   * @param vocabularyIriOverride if not NULL will be used as a fallback Subject if no 'owl:Ontology' triple found
+   * @returns {string|*}
+   */
   lookupVocabularyIri(vocabularyIriOverride) {
     const allOwlOntologies = this.fullDataset
       .match(null, RDF.type, OWL.Ontology)

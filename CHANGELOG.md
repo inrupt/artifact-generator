@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+- Bug reported by Pete Edwards where 'vocabularyIriOverride' is not being reset
+  once set.
+
 ## 3.0.0 2023-03-05
 
 - Add vocab counts to generated comments.

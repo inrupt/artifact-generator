@@ -222,10 +222,8 @@ class ArtifactGenerator {
       this.artifactData.namespaceIriOverride =
         vocabDetails.namespaceIriOverride;
 
-      if (!this.artifactData.vocabularyIriOverride) {
-        this.artifactData.vocabularyIriOverride =
-          vocabDetails.vocabularyIriOverride;
-      }
+      this.artifactData.vocabularyIriOverride =
+        vocabDetails.vocabularyIriOverride;
 
       this.artifactData.ignoreNonVocabTerms = vocabDetails.ignoreNonVocabTerms;
 
