@@ -28,7 +28,7 @@
   "preferGlobal": true,
   "keywords": [],
   "dependencies": {
-    "@rdfjs/fetch-lite": "^2.1.2",
+    "@rdfjs/fetch-lite": "^3.2.1",
     "@rdfjs/parser-jsonld": "^1.3.1",
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/sink-map": "^1.0.1",
