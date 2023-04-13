@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
-## 3.0.1 2023-04-13
+## 3.0.2 2023-04-13 (removed tag 3.0.1)
 
 - Bug reported by Pete Edwards where 'vocabularyIriOverride' is not being reset
   once set.
