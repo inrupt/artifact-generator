@@ -1,6 +1,6 @@
 {
   "name": "@inrupt/artifact-generator",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A generator for building artifacts (e.g. Java JARs, NPM modules, etc.) from RDF vocabularies.",
   "main": "src/index.js",
   "bin": {
