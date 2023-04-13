@@ -1,16 +1,14 @@
-#
-# Note: NSS doesn't support the newer Turtle syntax for PREFIX.
-#
 prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix owl:     <http://www.w3.org/2002/07/owl#>
-prefix vann:    <http://purl.org/vocab/vann/>
+prefix sh:      <http://www.w3.org/ns/shacl#>
 prefix dcterms: <http://purl.org/dc/terms/>
-prefix sm:       <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dalicc:  <http://dalicc.net/licenselibrary/>
 
 prefix inrupt_gen: <https://inrupt.com/vocab/tool/artifact_generator/>
 
-prefix pet_rock:   <https://inrupt.com/vocab/demo/PetRock.ttl#>
+prefix pet_rock:   <https://namespace.inrupt.com/vocab/demo/PetRock/>
 
 #
 # Describe our vocabulary - i.e., an English description, its version, who created it, its
@@ -18,16 +16,18 @@ prefix pet_rock:   <https://inrupt.com/vocab/demo/PetRock.ttl#>
 #
 pet_rock: a owl:Ontology, inrupt_gen:Ontology ;
     owl:versionInfo "0.0.1" ;
-    owl:versionIRI <https://inrupt.com/vocab/demo/PetRock.ttl/0.0.1> ;
+    owl:versionIRI <https://namespace.inrupt.com/vocab/demo/PetRock/0.0.1> ;
     dcterms:creator "Pat McBennett" ;
     dcterms:date "2019/07/28" ;
     dcterms:title "Pet Rock vocabulary"@en ;
     dcterms:description "Vocabulary for Pet Rock collectors, including terms for describing the characteristics of Pet Rocks..."@en ;
     dcterms:description "Vocabulario para coleccionistas de Pet Rocks, incluidos términos para describir las características de Pet Rocks..."@es ;
-    vann:preferredNamespacePrefix "pet_rock" ;
-    vann:preferredNamespaceUri "https://inrupt.com/vocab/demo/PetRock.ttl#" ;
-    dcterms:license sm:MITLicense .
+    dcterms:license dalicc:MIT ;
+    sh:declare pet_rock:_PrefixDeclaration .
 
+pet_rock:_PrefixDeclaration a sh:PrefixDeclaration ;
+    sh:prefix "pet_rock" ;
+    sh:namespace "https://namespace.inrupt.com/vocab/demo/PetRock/"^^xsd:anyURI .
 
 pet_rock:PetRock a rdfs:Class ;
     rdfs:isDefinedBy pet_rock: ;

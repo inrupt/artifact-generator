@@ -331,7 +331,7 @@ module.exports = class Resource {
   // We need to create instances of some parsers per vocab due to the need to
   // set a base IRI for certain vocabs, which we can only do in the constructor.
   static createParserFormats(inputResource) {
-    const parserN3 = new ParserN3();
+    const parserN3 = new ParserN3({ baseIRI: inputResource });
 
     const formats = {
       parsers: new SinkMap([

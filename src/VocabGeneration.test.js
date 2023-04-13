@@ -231,13 +231,28 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: [
+        "https://raw.githubusercontent.com/ewilderj/doap/master/schema/doap.rdf",
+      ],
+      nameAndPrefixOverride: "doap",
+      vocabContentTypeHeaderOverride: "application/rdf+xml",
+
+      // inputResources: ["http://purl.org/wf4ever/ro#"],
+      // nameAndPrefixOverride: "ro",
+      // inputResources: ["http://purl.org/wf4ever/wfprov#"],
+      // nameAndPrefixOverride: "wfprov",
+      // inputResources: ["http://purl.org/wf4ever/wfdesc#"],
+      // nameAndPrefixOverride: "wfdesc",
+
+      // inputResources: ["http://www.openarchives.org/ore/terms/"],
+      // nameAndPrefixOverride: "ore",
+
+      // inputResources: ["http://www.w3.org/ns/spec#"],
+      // descriptionFallback: "Sarvens spec vocab",
+      // namespaceIriOverride: "http://www.w3.org/ns/spec#",
+      //
       // inputResources: ["http://build.fhir.org/fhir.ttl"],
       // nameAndPrefixOverride: "fhir",
-
-      inputResources: ["http://www.w3.org/ns/spec#"],
-      descriptionFallback: "Sarvens spec vocab",
-      namespaceIriOverride: "http://www.w3.org/ns/spec#",
-
       //
       // inputResources: ["http://purl.org/fair-ontology#"],
       // vocabularyIriOverride: "https://w3id.org/fair/principles/terms/",
