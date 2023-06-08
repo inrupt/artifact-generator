@@ -231,11 +231,11 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: [
-        "https://raw.githubusercontent.com/ewilderj/doap/master/schema/doap.rdf",
-      ],
-      nameAndPrefixOverride: "doap",
-      vocabContentTypeHeaderOverride: "application/rdf+xml",
+      // inputResources: [
+      //   "https://raw.githubusercontent.com/ewilderj/doap/master/schema/doap.rdf",
+      // ],
+      // nameAndPrefixOverride: "doap",
+      // vocabContentTypeHeaderOverride: "application/rdf+xml",
 
       // inputResources: ["http://purl.org/wf4ever/ro#"],
       // nameAndPrefixOverride: "ro",
@@ -461,7 +461,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       //   "https://schema.org/version/latest/schemaorg-current-http.ttl",
       // ],
       // // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
-      // nameAndPrefixOverride: "schema",
       // descriptionFallback: "Needs a description...",
 
       //
