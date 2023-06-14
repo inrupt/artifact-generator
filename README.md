@@ -1,11 +1,3 @@
----------------------
-**:warning: NOTE:**
-This is an Alpha release. Alpha releases are strictly for testing purposes
-only, may break your site, application, or destroy your data. Never use in
-production with production data.
-
----------------------
-
 # Artifact Generator
 
 This tool automatically generates deployable artifacts for various programming
