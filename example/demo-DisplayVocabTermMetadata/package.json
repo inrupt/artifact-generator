@@ -6,7 +6,6 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "debug": "file:debug-NoTiming",
     "my-generated-vocab-bundle": "file:Generated/SourceCodeArtifacts/JavaScript"
   }
 }
