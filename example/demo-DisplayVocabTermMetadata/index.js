@@ -7,12 +7,9 @@ const { TIME } = require("my-generated-vocab-bundle");
 // multiple languages.
 const { SCHEMA_INRUPT } = require("my-generated-vocab-bundle");
 
-// Get colored output messages.
-process.env.DEBUG = "*";
-const log = require("debug"),
-  logQ = log("Question:"),
-  logA = log("Answer:"),
-  logSpacer = () => log("")("");
+const logQ = msg => console.log(`Question: ${msg}`);
+const logA = msg => console.log(`Answer: ${msg}`);
+const logSpacer = () => console.log();
 
 /**************************************************
  * So now let's ask some questions of our vocab...
