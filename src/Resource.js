@@ -94,7 +94,7 @@ module.exports = class Resource {
     termSelectionResource,
     vocabAcceptHeaderOverride,
     vocabContentTypeHeaderOverride,
-    vocabContentTypeHeaderFallback
+    vocabContentTypeHeaderFallback,
   ) {
     this.inputResources = inputResources;
     this.termSelectionResource = termSelectionResource;
@@ -113,7 +113,7 @@ module.exports = class Resource {
           inputResource,
           this.vocabAcceptHeaderOverride,
           this.vocabContentTypeHeaderOverride,
-          this.vocabContentTypeHeaderFallback
+          this.vocabContentTypeHeaderFallback,
         );
 
         datasets.push(resource);
@@ -122,8 +122,8 @@ module.exports = class Resource {
           await Resource.attemptToReadGeneratedResource(
             config,
             inputResource,
-            rootCause
-          )
+            rootCause,
+          ),
         );
       }
     }
@@ -131,7 +131,7 @@ module.exports = class Resource {
     let termsSelectionDataset;
     if (this.termSelectionResource) {
       termsSelectionDataset = await Resource.readResourceViaCache(
-        this.termSelectionResource
+        this.termSelectionResource,
       );
 
       // We also add the terms from this resource to our collection of input
@@ -168,12 +168,12 @@ module.exports = class Resource {
     const cacheDirectory = config.storeLocalCopyOfVocabDirectory;
     if (cacheDirectory === undefined) {
       throw new Error(
-        `No local cached vocab directory to fallback to when processing resource [${inputResource}] - root cause of failure: [${rootCause}]`
+        `No local cached vocab directory to fallback to when processing resource [${inputResource}] - root cause of failure: [${rootCause}]`,
       );
     }
 
     debug(
-      `Attempting to use previously cached vocab file for resource [${inputResource}] from directory [${cacheDirectory}]...`
+      `Attempting to use previously cached vocab file for resource [${inputResource}] from directory [${cacheDirectory}]...`,
     );
 
     // Assume the input resource is actually the vocab namespace (which it
@@ -195,17 +195,17 @@ module.exports = class Resource {
       // ...if no existing copies of this vocabulary, report the original problem.
       if (files.length === 0) {
         throw new Error(
-          `No locally cached resources in directory [${cacheDirectory}] ending with [${expectedCacheResource}]`
+          `No locally cached resources in directory [${cacheDirectory}] ending with [${expectedCacheResource}]`,
         );
       }
 
       // Get the latest cached version...
       return Resource.loadTurtleFileIntoDatasetPromise(
-        path.join(cacheDirectory, files[0])
+        path.join(cacheDirectory, files[0]),
       );
     } catch (error) {
       throw new Error(
-        `Context: [${rootCause}] - cache lookup failure: [${error}]`
+        `Context: [${rootCause}] - cache lookup failure: [${error}]`,
       );
     }
   }
@@ -214,7 +214,7 @@ module.exports = class Resource {
     inputResource,
     vocabAcceptHeaderOverride,
     vocabContentTypeHeaderOverride,
-    vocabContentTypeHeaderFallback
+    vocabContentTypeHeaderFallback,
   ) {
     const cacheLookup = cachedResources.get(inputResource);
     if (cacheLookup) {
@@ -226,10 +226,10 @@ module.exports = class Resource {
       inputResource,
       vocabAcceptHeaderOverride,
       vocabContentTypeHeaderOverride,
-      vocabContentTypeHeaderFallback
+      vocabContentTypeHeaderFallback,
     );
     debug(
-      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size.toLocaleString()}] triples)`
+      `Storing resource in in-memory cache: [${inputResource}] (has [${resource.size.toLocaleString()}] triples)`,
     );
     cachedResources.set(inputResource, resource);
     return resource;
@@ -254,7 +254,7 @@ module.exports = class Resource {
     inputResource,
     vocabAcceptHeaderOverride,
     vocabContentTypeHeaderOverride,
-    vocabContentTypeHeaderFallback
+    vocabContentTypeHeaderFallback,
   ) {
     debug(`Loading resource from source: [${inputResource}]`);
     if (Resource.isOnline(inputResource)) {
@@ -289,7 +289,7 @@ module.exports = class Resource {
           if (vocabContentTypeHeaderOverride) {
             rdfResponse.headers.set(
               "content-type",
-              vocabContentTypeHeaderOverride
+              vocabContentTypeHeaderOverride,
             );
           } else {
             // The vocab server may not provide a HTTP Content-Type header (e.g.,
@@ -301,18 +301,18 @@ module.exports = class Resource {
               if (vocabContentTypeHeaderFallback) {
                 rdfResponse.headers.set(
                   "content-type",
-                  vocabContentTypeHeaderFallback
+                  vocabContentTypeHeaderFallback,
                 );
               } else {
                 throw new Error(
-                  `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response`
+                  `Successfully fetched input resource [${inputResource}], but response does not contain a Content-Type header. Our configuration did not provide a fallback value (using the 'vocabContentTypeHeaderFallback' option), so we cannot reliably determine the correct RDF parser to use to process this response`,
                 );
               }
             }
           }
 
           debug(
-            `About to process fetched input resource [${inputResource}] as a dataset...`
+            `About to process fetched input resource [${inputResource}] as a dataset...`,
           );
           return rdfResponse.dataset();
         })
@@ -390,7 +390,7 @@ module.exports = class Resource {
     vocabName,
     vocabNamespace,
     dataset,
-    doneCallback
+    doneCallback,
   ) {
     const writer = new N3.Writer({
       baseIRI: vocabNamespace,
@@ -407,7 +407,7 @@ module.exports = class Resource {
     dataset.forEach((quad) => {
       writer.addQuad(quad);
       vocabDigestInput = vocabDigestInput.concat(
-        Resource.quadToStringIgnoringBNodes(quad)
+        Resource.quadToStringIgnoringBNodes(quad),
       );
     });
 
@@ -438,14 +438,14 @@ module.exports = class Resource {
       const files = fs
         .readdirSync(directory)
         .filter((filename) =>
-          filename.endsWith(`-${vocabDigest}__${namespaceFilename}`)
+          filename.endsWith(`-${vocabDigest}__${namespaceFilename}`),
         );
 
       // ...if no existing copies of this vocabulary, store a copy now.
       if (files.length === 0) {
         const outputFilename = path.join(
           directory,
-          `${vocabName}-${moment().format()}-${vocabDigest}__${namespaceFilename}`
+          `${vocabName}-${moment().format()}-${vocabDigest}__${namespaceFilename}`,
         );
 
         // File errors will just propagate back up. (We should add specific
@@ -492,7 +492,7 @@ module.exports = class Resource {
     )
       .concat(quad.predicate.value)
       .concat(
-        quad.object.termType === "BlankNode" ? "BNode" : quad.object.value
+        quad.object.termType === "BlankNode" ? "BNode" : quad.object.value,
       );
   }
 
@@ -543,7 +543,7 @@ module.exports = class Resource {
       })
       .catch((error) => {
         debug(
-          `Failed to lookup Last Modification Time for resource [${resource}]. Error: ${error}`
+          `Failed to lookup Last Modification Time for resource [${resource}]. Error: ${error}`,
         );
         return new Date();
       });

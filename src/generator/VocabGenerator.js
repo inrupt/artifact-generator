@@ -22,7 +22,7 @@ module.exports = class VocabGenerator {
         this.vocabData.nameAndPrefixOverride
           ? " (from name and prefix override)"
           : ""
-      }...`
+      }...`,
     );
 
     if (
@@ -37,13 +37,13 @@ module.exports = class VocabGenerator {
       if (
         FileGenerator.previouslyGeneratedFileExists(
           this.artifactDetails,
-          vocabGenerationData
+          vocabGenerationData,
         )
       ) {
         debug(
           `A previously generated source file is being reused for resource [${this.vocabData.inputResources.toString()}], as its currently either unreachable or empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
             vocabGenerationData.namespaceIri
-          }].`
+          }].`,
         );
 
         return vocabGenerationData;
@@ -52,14 +52,14 @@ module.exports = class VocabGenerator {
       throw new Error(
         `Resource [${this.vocabData.inputResources.toString()}] is unreachable or is empty of recognisable terms for classes, properties, constants, etc. (e.g., no RDFS:Class, or RDF:Property, or SKOSXL:Label, etc. terms) from the namespace [${
           vocabGenerationData.namespaceIri
-        }], and no previously generated file is available.`
+        }], and no previously generated file is available.`,
       );
     }
 
     FileGenerator.createSourceCodeFile(
       this.vocabData,
       this.artifactDetails,
-      vocabGenerationData
+      vocabGenerationData,
     );
 
     return vocabGenerationData;
@@ -74,7 +74,7 @@ module.exports = class VocabGenerator {
       this.vocabData.termSelectionResource,
       this.vocabData.vocabAcceptHeaderOverride,
       this.vocabData.vocabContentTypeHeaderOverride,
-      this.vocabData.vocabContentTypeHeaderFallback
+      this.vocabData.vocabContentTypeHeaderFallback,
     );
 
     try {
@@ -92,7 +92,7 @@ module.exports = class VocabGenerator {
               this.vocabData.termSelectionResource +
               "])"
             : ""
-        }`
+        }`,
       );
 
       const vocabGenerationData = await this.generateData();
@@ -130,7 +130,7 @@ module.exports = class VocabGenerator {
   parseDatasets(fullDatasetsArray, termSelectionDataset) {
     return this.buildTemplateInput(
       mergeDatasets(fullDatasetsArray),
-      termSelectionDataset || rdf.dataset()
+      termSelectionDataset || rdf.dataset(),
     );
   }
 
@@ -138,7 +138,7 @@ module.exports = class VocabGenerator {
     const datasetHandler = new DatasetHandler(
       fullData,
       termSelectionDataset,
-      this.vocabData
+      this.vocabData,
     );
 
     return datasetHandler.buildTemplateInput();

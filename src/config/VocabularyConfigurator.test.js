@@ -18,7 +18,7 @@ describe("VocabularyConfig Generator", () => {
 
   it("should return the values prompted by the user", () => {
     inquirer.prompt.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(DUMMY_VOCAB))
+      jest.fn().mockReturnValue(Promise.resolve(DUMMY_VOCAB)),
     );
     expect(VocabularyConfigurator.prompt()).resolves.toEqual(DUMMY_VOCAB);
   });

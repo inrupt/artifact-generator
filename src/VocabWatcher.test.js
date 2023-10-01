@@ -48,7 +48,7 @@ beforeEach(() => {
 async function changeAndRestoreFile(filePath, before, after) {
   fs.writeFileSync(
     filePath,
-    fs.readFileSync(filePath).toString().replace(before, after)
+    fs.readFileSync(filePath).toString().replace(before, after),
   );
 
   await sleep(SLEEP_TIME);
@@ -56,7 +56,7 @@ async function changeAndRestoreFile(filePath, before, after) {
   // The following changes the file back.
   fs.writeFileSync(
     filePath,
-    fs.readFileSync(filePath).toString().replace(after, before)
+    fs.readFileSync(filePath).toString().replace(after, before),
   );
 }
 
@@ -67,8 +67,8 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration({
           vocabListFile: VOCAB_LIST_PATH,
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
 
     await watcher.watch();
@@ -88,8 +88,8 @@ describe("Vocabulary watcher", () => {
         rdf.quad(
           rdf.namedNode(RDF_NAMESPACE + "dummyTerm"),
           RDF.type,
-          RDF.Property
-        )
+          RDF.Property,
+        ),
       );
     const rdfFetchMock = {
       dataset: () => {
@@ -106,8 +106,8 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration({
           vocabListFile: VOCAB_LIST_PATH_ONLINE_ONLY,
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
 
     await watcher.watch();
@@ -123,8 +123,8 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration({
           vocabListFile: VOCAB_LIST_PATH,
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
 
     await watcher.watch();
@@ -155,10 +155,10 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "(alive, dead, undead, or fictional)",
-      "(alive, dead, or fictional)"
+      "(alive, dead, or fictional)",
     );
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
-      initialModifiedTime
+      initialModifiedTime,
     );
     await watcher.unwatch();
   });
@@ -188,10 +188,10 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       VOCAB_LIST_PATH,
       "artifactGeneratorVersion: 0.1.0",
-      "artifactGeneratorVersion: 99.999.99999"
+      "artifactGeneratorVersion: 99.999.99999",
     );
     expect(fs.statSync(GENERATED_FILEPATH).mtimeMs).not.toEqual(
-      initialModifiedTime
+      initialModifiedTime,
     );
     await watcher.unwatch();
   }
@@ -203,13 +203,13 @@ describe("Vocabulary watcher", () => {
           vocabListFile:
             "./test/resources/watcher/vocab-list-referencing-incorrect-vocab.yml",
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
 
     await expect(watcher.watch()).rejects.toThrow(
       // Note: the exact error message to expect here is parser-specific...
-      "Expected dot to follow quad"
+      "Expected dot to follow quad",
     );
   });
 
@@ -219,8 +219,8 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration({
           vocabListFile: VOCAB_LIST_PATH,
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
 
     await watcher.watch();
@@ -233,7 +233,7 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "schema:Person a rdfs:Class ;",
-      "schema:Person a rdfs:Class"
+      "schema:Person a rdfs:Class",
     );
 
     // We expect our 'changed file parsing failure' to have been reported, but
@@ -250,8 +250,8 @@ describe("Vocabulary watcher", () => {
         new GeneratorConfiguration({
           vocabListFile: VOCAB_LIST_PATH,
           outputDirectory: OUTPUT_DIRECTORY,
-        })
-      )
+        }),
+      ),
     );
     await watcher.watch();
     // Starting the watcher is not a blocking call, so we need to add a delay
@@ -264,7 +264,7 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "(alive, dead, undead, or fictional)",
-      "(alive, dead, or fictional)"
+      "(alive, dead, or fictional)",
     );
     await sleep(SLEEP_TIME);
 
@@ -276,7 +276,7 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "(alive, dead, undead, or fictional)",
-      "(alive, dead, or fictional)"
+      "(alive, dead, or fictional)",
     );
 
     const newestModifiedTime = fs.statSync(GENERATED_FILEPATH).mtimeMs;
@@ -289,7 +289,7 @@ describe("Vocabulary watcher", () => {
         _: "generate",
         vocabListFile: VOCAB_LIST_PATH,
         outputDirectory: OUTPUT_DIRECTORY,
-      })
+      }),
     );
 
     // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
@@ -314,7 +314,7 @@ describe("Vocabulary watcher", () => {
       new GeneratorConfiguration({
         vocabListFile: VOCAB_LIST_PATH,
         outputDirectory: OUTPUT_DIRECTORY,
-      })
+      }),
     );
 
     // We manually generate the artifacts before watching the vocabulary (so that the artifacts are up-to-date)
@@ -326,7 +326,7 @@ describe("Vocabulary watcher", () => {
     await changeAndRestoreFile(
       WATCHED_VOCAB_PATH,
       "(alive, dead, undead, or fictional)",
-      "(alive, dead, or fictional)"
+      "(alive, dead, or fictional)",
     );
 
     const watcher = new VocabWatcher(generator);

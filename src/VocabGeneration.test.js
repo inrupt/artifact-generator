@@ -231,12 +231,22 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: ["https://w3id.org/plasma#"],
+      // inputResources: ["https://raw.githubusercontent.com/coolharsh55/plasma/main/plasma.ttl"],
+
+      // inputResources: ["http://rdf-vocabulary.ddialliance.org/xkos#"],
+
+      // nameAndPrefixOverride: "oac",
+      // descriptionFallback: "Beatriz's spec vocab",
+
+      // inputResources: ["http://www.w3.org/ns/locn#"],
+      // vocabAcceptHeaderOverride: "text/turtle",
+      //
       // inputResources: [
       //   "https://raw.githubusercontent.com/ewilderj/doap/master/schema/doap.rdf",
       // ],
       // nameAndPrefixOverride: "doap",
       // vocabContentTypeHeaderOverride: "application/rdf+xml",
-
       // inputResources: ["http://purl.org/wf4ever/ro#"],
       // nameAndPrefixOverride: "ro",
       // inputResources: ["http://purl.org/wf4ever/wfprov#"],
@@ -364,8 +374,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["http://www.w3.org/ns/ssn/"],
       // ignoreNonVocabTerms: true,
       //
-      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore11.1.0"],
 
+      // inputResources: ["https://ontologies.semanticarts.com/o/gistCore12.0.0"],
+      // inputResources: ["https://w3id.org/semanticarts/ontology/gistCore"],
+      //
       // inputResources: ["http://www.w3.org/ns/locn"],
 
       // Typo in the Turtle (trailing full stop inside a BNode on line 22!
@@ -515,19 +527,19 @@ async function generateVocabArtifact(argv) {
     (artifact) => {
       const language = artifact.programmingLanguage.toLowerCase();
       return language === "typescript" || language === "javascript";
-    }
+    },
   )[0].outputDirectoryForArtifact;
 
   debug(
-    `Expecting 'package.json' in this directory: [${directoryForJavaScriptArtifact}/package.json]...`
+    `Expecting 'package.json' in this directory: [${directoryForJavaScriptArtifact}/package.json]...`,
   );
   expect(fs.existsSync(`${directoryForJavaScriptArtifact}/package.json`)).toBe(
-    true
+    true,
   );
 
   if (result.runNpmInstall) {
     expect(
-      fs.existsSync(`${directoryForJavaScriptArtifact}/package-lock.json`)
+      fs.existsSync(`${directoryForJavaScriptArtifact}/package-lock.json`),
     ).toBe(true);
   }
 
@@ -537,7 +549,7 @@ async function generateVocabArtifact(argv) {
     expect(result.documentationDirectories).toHaveLength(1);
     expect(result.documentationDirectories[0]).toMatch(/Widoco/);
     expect(
-      fs.existsSync(`${result.documentationDirectory[0]}/index-en.html`)
+      fs.existsSync(`${result.documentationDirectory[0]}/index-en.html`),
     ).toBe(true);
   }
 

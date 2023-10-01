@@ -7,7 +7,7 @@ const DEFAULT_TEMPLATE = path.join(
   "solidCommonVocabDependent",
   "java",
   "rdf4j",
-  "vocab.hbs"
+  "vocab.hbs",
 );
 const DEFAULT_EXTENSION = "java";
 const LANGUAGE = "Java";
@@ -82,7 +82,7 @@ class JavaArtifactConfigurator extends ArtifactConfigurator {
         message: "Select packaging tools",
         name: "packagingToInit",
         choices: [{ name: "maven" }],
-      }
+      },
     );
 
     this.config.templateInternal = DEFAULT_TEMPLATE;

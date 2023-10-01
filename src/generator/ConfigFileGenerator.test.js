@@ -47,7 +47,7 @@ const COMPLETE_JAVA_ARTIFACT = {
     "solidCommonVocabDependent",
     "java",
     "rdf4j",
-    "vocab.hbs"
+    "vocab.hbs",
   ),
   sourceFileExtension: "java",
   artifactDirectoryName: "Java",
@@ -137,7 +137,7 @@ const MOCK_REPO_PROMPT_GIT = jest
   .mockReturnValueOnce(Promise.resolve({ repositoryType: ["git"] }))
   .mockReturnValueOnce(Promise.resolve({ repositoryUrl: REPOSITORY_URL_GIT }))
   .mockReturnValueOnce(
-    Promise.resolve({ gitignoreTemplate: GITIGNORE_TEMPLATE })
+    Promise.resolve({ gitignoreTemplate: GITIGNORE_TEMPLATE }),
   )
   .mockReturnValueOnce(Promise.resolve({ languages: ["Java"] }))
   .mockReturnValueOnce(Promise.resolve(PROMPTED_JAVA_ARTIFACT))
@@ -175,7 +175,7 @@ describe("ConfigFile Generator", () => {
 
   it("should fail when less than one language is checked", () => {
     expect(validateLanguageCheckboxes([])).toEqual(
-      "You must choose at least one target language."
+      "You must choose at least one target language.",
     );
     expect(validateLanguageCheckboxes(["Java"])).toEqual(true);
   });
@@ -204,12 +204,12 @@ describe("ConfigFile Generator", () => {
 
   it("should generate a valid artifact according to the checkbox selection", async () => {
     inquirer.prompt.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(COMPLETE_JAVA_ARTIFACT))
+      jest.fn().mockReturnValue(Promise.resolve(COMPLETE_JAVA_ARTIFACT)),
     );
 
     const artifacts = await ConfigFileGenerator.promptArtifacts([JAVA]);
     expect(artifacts[0].artifactVersion).toEqual(
-      COMPLETE_JAVA_ARTIFACT.artifactVersion
+      COMPLETE_JAVA_ARTIFACT.artifactVersion,
     );
   });
 
@@ -244,7 +244,7 @@ describe("ConfigFile Generator", () => {
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
     expect(fs.readFileSync(targetPath).toString()).toContain(
-      fs.readFileSync(REFERENCE_YAML_PROMPTED).toString()
+      fs.readFileSync(REFERENCE_YAML_PROMPTED).toString(),
     );
   });
 
@@ -258,7 +258,7 @@ describe("ConfigFile Generator", () => {
     configGenerator.generateDefaultConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
     expect(fs.readFileSync(targetPath).toString()).toContain(
-      fs.readFileSync(REFERENCE_YAML_DEFAULT).toString()
+      fs.readFileSync(REFERENCE_YAML_DEFAULT).toString(),
     );
   });
 
@@ -281,7 +281,7 @@ describe("ConfigFile Generator", () => {
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
     expect(fs.readFileSync(targetPath).toString()).toContain(
-      fs.readFileSync(REFERENCE_YAML_GIT).toString()
+      fs.readFileSync(REFERENCE_YAML_GIT).toString(),
     );
   });
 
@@ -304,7 +304,7 @@ describe("ConfigFile Generator", () => {
     configGenerator.generateConfigFile(targetPath);
     expect(fs.existsSync(targetPath)).toEqual(true);
     expect(fs.readFileSync(targetPath).toString()).toContain(
-      fs.readFileSync(REFERENCE_YAML_SVN).toString()
+      fs.readFileSync(REFERENCE_YAML_SVN).toString(),
     );
   });
 
@@ -312,7 +312,7 @@ describe("ConfigFile Generator", () => {
     expect(validateRepositoryCheckboxes([])).toBe(true);
     expect(validateRepositoryCheckboxes(["git"])).toBe(true);
     expect(validateRepositoryCheckboxes(["git", "svn"])).toBe(
-      "You must choose at most one repository type."
+      "You must choose at most one repository type.",
     );
   });
 });

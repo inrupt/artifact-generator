@@ -38,11 +38,13 @@ const NAMESPACE_IRI = rdf.namedNode(NAMESPACE);
 describe("Resources last modification", () => {
   it("should get the resource last modification for online resources", async () => {
     axios.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(VALID_LAST_MODIF_HTTP_RESOURCE))
+      jest
+        .fn()
+        .mockReturnValue(Promise.resolve(VALID_LAST_MODIF_HTTP_RESOURCE)),
     );
 
     const lastmodif = await Resource.getResourceLastModificationTime(
-      "http://whatever.org"
+      "http://whatever.org",
     );
     expect(lastmodif).toEqual(MOCKED_LAST_MODIFIED);
   });
@@ -51,10 +53,10 @@ describe("Resources last modification", () => {
     axios.mockImplementation(
       jest
         .fn()
-        .mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE))
+        .mockReturnValue(Promise.resolve(INVALID_LAST_MODIF_HTTP_RESOURCE)),
     );
     const lastModificationTime = await Resource.getResourceLastModificationTime(
-      "http://whatever.org"
+      "http://whatever.org",
     );
     expect(lastModificationTime).toEqual(Resource.DEFAULT_MODIFICATION_DATE);
   });
@@ -63,19 +65,19 @@ describe("Resources last modification", () => {
 describe("Fetching remote resource", () => {
   it("should return undefined when failing to fetch a resource", async () => {
     rdfFetch.mockImplementation(
-      jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable")))
+      jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable"))),
     );
     expect(() =>
-      Resource.readResource("http://example.org/ns")
+      Resource.readResource("http://example.org/ns"),
     ).rejects.toThrow("Unreachable");
   });
 
   it("should handle SKOS-XL as a known exception", async () => {
     rdfFetch.mockImplementation(
-      jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable")))
+      jest.fn().mockReturnValue(Promise.reject(new Error("Unreachable"))),
     );
     expect(() =>
-      Resource.readResource("http://www.w3.org/2008/05/skos-xl#")
+      Resource.readResource("http://www.w3.org/2008/05/skos-xl#"),
     ).rejects.toThrow("Unreachable");
   });
 
@@ -95,8 +97,8 @@ describe("Fetching remote resource", () => {
       await Resource.readResource(
         "http://www.example.com",
         "mocked accept media type",
-        "mocked media type"
-      )
+        "mocked media type",
+      ),
     ).toEqual(mockedDataset);
   });
 
@@ -116,8 +118,8 @@ describe("Fetching remote resource", () => {
       await Resource.readResource(
         "http://www.example.com",
         undefined,
-        "mocked media type"
-      )
+        "mocked media type",
+      ),
     ).toEqual(mockedDataset);
   });
 
@@ -138,8 +140,8 @@ describe("Fetching remote resource", () => {
         "http://www.example.com",
         undefined,
         undefined,
-        "mocked media type"
-      )
+        "mocked media type",
+      ),
     ).toEqual(mockedDataset);
   });
 
@@ -155,7 +157,7 @@ describe("Fetching remote resource", () => {
     });
 
     expect(() =>
-      Resource.readResource("http://www.example.com")
+      Resource.readResource("http://www.example.com"),
     ).rejects.toThrow("cannot reliably determine the correct RDF parser");
   });
 });
@@ -166,7 +168,7 @@ describe("Touching a file", () => {
       "test",
       "resources",
       "expectedOutput",
-      "sample-vocab.yml"
+      "sample-vocab.yml",
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
     Resource.touchFile(file);
@@ -179,7 +181,7 @@ describe("Touching a file", () => {
       "test",
       "resources",
       "expectedOutput",
-      "sample-vocab.yml"
+      "sample-vocab.yml",
     );
     const origModifiedTime = fs.statSync(file).mtimeMs;
 
@@ -207,7 +209,7 @@ describe("Touching a file", () => {
           "test",
           "Generated",
           "UNIT_TEST",
-          "LocalCopyOfVocab"
+          "LocalCopyOfVocab",
         );
         rimraf.sync(testLocalCopyDirectory);
 
@@ -227,7 +229,7 @@ describe("Touching a file", () => {
               .filter(
                 (filename) =>
                   filename.startsWith(`test-vocab-`) &&
-                  filename.endsWith(`__http---rdf-extension.com#.ttl`)
+                  filename.endsWith(`__http---rdf-extension.com#.ttl`),
               );
 
             expect(matches.length).toBe(1);
@@ -237,7 +239,7 @@ describe("Touching a file", () => {
               testLocalCopyDirectory,
               "test-vocab",
               NAMESPACE,
-              dataset
+              dataset,
             );
 
             // Now write a different vocab to test multiple vocabs in the same output
@@ -253,14 +255,14 @@ describe("Touching a file", () => {
                   .filter(
                     (filename) =>
                       filename.startsWith(`test-vocab-`) &&
-                      filename.endsWith(`__http---rdf-extension.com#.ttl`)
+                      filename.endsWith(`__http---rdf-extension.com#.ttl`),
                   );
 
                 expect(differentMatches.length).toBe(1);
                 done();
-              }
+              },
             );
-          }
+          },
         );
       });
     });
@@ -272,8 +274,8 @@ describe("Touching a file", () => {
           Resource.attemptToReadGeneratedResource(
             {},
             "inputResource doesn't matter",
-            rootCause
-          )
+            rootCause,
+          ),
         ).toThrow(rootCause);
       });
 
@@ -283,7 +285,7 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "non-existent-directory"
+          "non-existent-directory",
         );
 
         const rootCause = "some reason...";
@@ -291,8 +293,8 @@ describe("Touching a file", () => {
           Resource.attemptToReadGeneratedResource(
             { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
             "inputResource doesn't matter",
-            rootCause
-          )
+            rootCause,
+          ),
         ).toThrow(rootCause);
       });
 
@@ -302,7 +304,7 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "testCacheForReading-DoNotDelete"
+          "testCacheForReading-DoNotDelete",
         );
 
         const rootCause = "some reason...";
@@ -310,8 +312,8 @@ describe("Touching a file", () => {
           Resource.attemptToReadGeneratedResource(
             { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
             "https://does-not-exist.com/",
-            rootCause
-          )
+            rootCause,
+          ),
         ).toThrow(rootCause);
       });
 
@@ -321,13 +323,13 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "testCacheForReading-DoNotDelete"
+          "testCacheForReading-DoNotDelete",
         );
 
         const dataset = await Resource.attemptToReadGeneratedResource(
           { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
           "http://rdf-extension.com#",
-          "some reason..."
+          "some reason...",
         );
         expect(dataset.size).toBe(3);
       });
@@ -338,13 +340,13 @@ describe("Touching a file", () => {
           "test",
           "resources",
           "localCopyOfVocab",
-          "testCacheForReading-DoNotDelete"
+          "testCacheForReading-DoNotDelete",
         );
 
         const dataset = await Resource.attemptToReadGeneratedResource(
           { storeLocalCopyOfVocabDirectory: testLocalCopyDirectory },
           "http://rdf-extension.com#.ttl",
-          "some reason..."
+          "some reason...",
         );
         expect(dataset.size).toBe(3);
       });
@@ -355,18 +357,18 @@ describe("Touching a file", () => {
     it("should concatenate normal quad", () => {
       expect(
         Resource.quadToStringIgnoringBNodes(
-          rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology)
-        )
+          rdf.quad(NAMESPACE_IRI, RDF.type, OWL.Ontology),
+        ),
       ).toBe(
-        "http://rdf-extension.com#http://www.w3.org/1999/02/22-rdf-syntax-ns#typehttp://www.w3.org/2002/07/owl#Ontology"
+        "http://rdf-extension.com#http://www.w3.org/1999/02/22-rdf-syntax-ns#typehttp://www.w3.org/2002/07/owl#Ontology",
       );
     });
 
     it("should provide literal for BNode Subject and Object", () => {
       expect(
         Resource.quadToStringIgnoringBNodes(
-          rdf.quad(rdf.blankNode(), RDF.type, rdf.blankNode())
-        )
+          rdf.quad(rdf.blankNode(), RDF.type, rdf.blankNode()),
+        ),
       ).toBe("BNodehttp://www.w3.org/1999/02/22-rdf-syntax-ns#typeBNode");
     });
   });

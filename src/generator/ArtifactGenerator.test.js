@@ -27,7 +27,7 @@ const MOCKED_USER_INPUT = {
 
 beforeEach(() => {
   inquirer.prompt.mockImplementation(
-    jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT))
+    jest.fn().mockReturnValue(Promise.resolve(MOCKED_USER_INPUT)),
   );
 });
 
@@ -46,18 +46,18 @@ describe("Artifact Generator unit tests", () => {
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/index.js`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/package.json`)).toBe(
-        true
+        true,
       );
 
       expect(
         fs.existsSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/OVERRIDE_NAME.js`
-        )
+          `${outputDirectoryJavaScript}/GeneratedVocab/OVERRIDE_NAME.js`,
+        ),
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`
-        )
+          `${outputDirectoryJavaScript}/GeneratedVocab/SCHEMA_INRUPT_EXT.js`,
+        ),
       ).toBe(true);
 
       const indexOutput = fs
@@ -65,8 +65,8 @@ describe("Artifact Generator unit tests", () => {
         .toString();
       expect(indexOutput).toEqual(
         expect.stringContaining(
-          `module.exports.SCHEMA_INRUPT_EXT = require("./GeneratedVocab/SCHEMA_INRUPT_EXT")`
-        )
+          `module.exports.SCHEMA_INRUPT_EXT = require("./GeneratedVocab/SCHEMA_INRUPT_EXT")`,
+        ),
       );
 
       const packageOutput = fs
@@ -74,11 +74,11 @@ describe("Artifact Generator unit tests", () => {
         .toString();
       expect(packageOutput).toEqual(
         expect.stringContaining(
-          '"name": "@inrupt/generated-vocab-common-TEST",'
-        )
+          '"name": "@inrupt/generated-vocab-common-TEST",',
+        ),
       );
       expect(packageOutput).toEqual(
-        expect.stringContaining('"version": "10.11.12"')
+        expect.stringContaining('"version": "10.11.12"'),
       );
 
       const outputDirectoryJava = `${outputDirectory}${getArtifactDirectorySourceCode()}/Java`;
@@ -86,7 +86,7 @@ describe("Artifact Generator unit tests", () => {
         .readFileSync(`${outputDirectoryJava}/pom.xml`)
         .toString();
       expect(pomOutput).toEqual(
-        expect.stringContaining("<version>3.2.1-SNAPSHOT</version>")
+        expect.stringContaining("<version>3.2.1-SNAPSHOT</version>"),
       );
     }
 
@@ -122,7 +122,7 @@ describe("Artifact Generator unit tests", () => {
 
       await artifactGenerator.generate();
       expect(
-        fs.existsSync(path.join(outputDirectory, "Generated", ".gitignore"))
+        fs.existsSync(path.join(outputDirectory, "Generated", ".gitignore")),
       ).toBe(true);
     });
   });
@@ -153,7 +153,7 @@ describe("Artifact Generator unit tests", () => {
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(false);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
-        true
+        true,
       );
       const packageOutput = fs
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
@@ -180,13 +180,13 @@ describe("Artifact Generator unit tests", () => {
 
       expect(artifactGenerator.artifactData.artifactName).toEqual("someName");
       expect(artifactGenerator.artifactData.solidCommonVocabVersion).toEqual(
-        "^1.0.10"
+        "^1.0.10",
       );
       expect(artifactGenerator.artifactData.artifactName).not.toEqual(
-        MOCKED_ARTIFACT_NAME
+        MOCKED_ARTIFACT_NAME,
       );
       expect(
-        artifactGenerator.artifactData.solidCommonVocabVersion
+        artifactGenerator.artifactData.solidCommonVocabVersion,
       ).not.toEqual(MOCKED_LIT_VOCAB_TERM_VERSION);
     });
 
@@ -221,7 +221,7 @@ describe("Artifact Generator unit tests", () => {
 
       expect(fs.existsSync(`${outputDirectoryJavaScript}/config`)).toBe(true);
       expect(fs.existsSync(`${outputDirectoryJavaScript}/wrapper.js`)).toBe(
-        false
+        false,
       );
       const packageOutput = fs
         .readFileSync(`${outputDirectoryJavaScript}/package.json`)
@@ -236,7 +236,7 @@ describe("Artifact Generator unit tests", () => {
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
-        "package.json"
+        "package.json",
       );
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
@@ -271,13 +271,13 @@ describe("Artifact Generator unit tests", () => {
         "Generated",
         "UNIT_TEST",
         "ArtifactGenerator",
-        "modify-input"
+        "modify-input",
       );
       const generatedFile = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
-        "package.json"
+        "package.json",
       );
       del.sync([`${outputDirectory}/*`]);
       fs.mkdirSync(outputDirectory, { recursive: true });
@@ -289,13 +289,13 @@ describe("Artifact Generator unit tests", () => {
         "test",
         "resources",
         "expectedOutput",
-        "skipGeneration"
+        "skipGeneration",
       );
       const testFile = path.join(outputDirectory, "static-first.ttl");
 
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-first.ttl"),
-        testFile
+        testFile,
       );
 
       const config = new GeneratorConfiguration({
@@ -325,7 +325,7 @@ describe("Artifact Generator unit tests", () => {
       // The input was updated, so output should have been re-generated.
       await artifactGenerator.generate();
       expect(fs.statSync(generatedFile).mtimeMs).toBeGreaterThan(
-        initialGenerationTime
+        initialGenerationTime,
       );
     });
 
@@ -336,20 +336,20 @@ describe("Artifact Generator unit tests", () => {
         "Generated",
         "UNIT_TEST",
         "ArtifactGenerator",
-        "modify-extension-input"
+        "modify-extension-input",
       );
       const generatedFilePackage = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
-        "package.json"
+        "package.json",
       );
       const generatedFileVocab = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "GeneratedVocab",
-        "TEST_VOCAB_1.js"
+        "TEST_VOCAB_1.js",
       );
 
       del.sync([`${outputDirectory}/*`]);
@@ -362,30 +362,30 @@ describe("Artifact Generator unit tests", () => {
         "test",
         "resources",
         "expectedOutput",
-        "skipGeneration"
+        "skipGeneration",
       );
 
       const testConfigFile = path.join(
         outputDirectory,
-        "vocab-list-static-with-extension.yml"
+        "vocab-list-static-with-extension.yml",
       );
       const testFile = path.join(outputDirectory, "static-first.ttl");
       const testFileExtension = path.join(
         outputDirectory,
-        "static-first-extension.ttl"
+        "static-first-extension.ttl",
       );
 
       fs.copyFileSync(
         path.join(sourceDataDirectory, "vocab-list-static-with-extension.yml"),
-        testConfigFile
+        testConfigFile,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-first.ttl"),
-        testFile
+        testFile,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-first-extension.ttl"),
-        testFileExtension
+        testFileExtension,
       );
 
       const config = new GeneratorConfiguration({
@@ -415,10 +415,10 @@ describe("Artifact Generator unit tests", () => {
       // The input was updated, so output should have been re-generated.
       await artifactGenerator.generate();
       expect(fs.statSync(generatedFilePackage).mtimeMs).toBeGreaterThan(
-        initialGenerationTimePackage
+        initialGenerationTimePackage,
       );
       expect(fs.statSync(generatedFileVocab).mtimeMs).toBeGreaterThan(
-        initialGenerationTimeVocab
+        initialGenerationTimeVocab,
       );
     });
 
@@ -429,21 +429,21 @@ describe("Artifact Generator unit tests", () => {
         "Generated",
         "UNIT_TEST",
         "ArtifactGenerator",
-        "modify-one-of-multiple-inputs"
+        "modify-one-of-multiple-inputs",
       );
       const generatedFileFirst = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "GeneratedVocab",
-        "TEST_VOCAB_1.js"
+        "TEST_VOCAB_1.js",
       );
       const generatedFileSecond = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "GeneratedVocab",
-        "TEST_VOCAB_2.js"
+        "TEST_VOCAB_2.js",
       );
       del.sync([`${outputDirectory}/*`]);
       fs.mkdirSync(outputDirectory, { recursive: true });
@@ -455,25 +455,25 @@ describe("Artifact Generator unit tests", () => {
         "test",
         "resources",
         "expectedOutput",
-        "skipGeneration"
+        "skipGeneration",
       );
       const testConfigFile = path.join(
         outputDirectory,
-        "vocab-list-static.yml"
+        "vocab-list-static.yml",
       );
       const testInputFirst = path.join(outputDirectory, "static-first.ttl");
       const testInputSecond = path.join(outputDirectory, "static-second.ttl");
       fs.copyFileSync(
         path.join(sourceDataDirectory, "vocab-list-static.yml"),
-        testConfigFile
+        testConfigFile,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-first.ttl"),
-        testInputFirst
+        testInputFirst,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-second.ttl"),
-        testInputSecond
+        testInputSecond,
       );
 
       const config = new GeneratorConfiguration({
@@ -505,10 +505,10 @@ describe("Artifact Generator unit tests", () => {
       // Only one input was updated, so only the corresponding output should
       // have been re-generated.
       expect(fs.statSync(generatedFileSecond).mtimeMs).toBeGreaterThan(
-        initialGenerationTimeSecond
+        initialGenerationTimeSecond,
       );
       expect(fs.statSync(generatedFileFirst).mtimeMs).toEqual(
-        initialGenerationTimeFirst
+        initialGenerationTimeFirst,
       );
 
       // Ensure there's at least 1ms before making changes.
@@ -524,10 +524,10 @@ describe("Artifact Generator unit tests", () => {
       // Only one input was updated, so only the corresponding output should
       // have been re-generated.
       expect(fs.statSync(generatedFileSecond).mtimeMs).toEqual(
-        newGenerationTimeSecond
+        newGenerationTimeSecond,
       );
       expect(fs.statSync(generatedFileFirst).mtimeMs).toBeGreaterThan(
-        initialGenerationTimeFirst
+        initialGenerationTimeFirst,
       );
     });
 
@@ -538,21 +538,21 @@ describe("Artifact Generator unit tests", () => {
         "Generated",
         "UNIT_TEST",
         "ArtifactGenerator",
-        "modify-config-file"
+        "modify-config-file",
       );
       const generatedFileFirst = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "GeneratedVocab",
-        "TEST_VOCAB_1.js"
+        "TEST_VOCAB_1.js",
       );
       const generatedFileSecond = path.join(
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
         "GeneratedVocab",
-        "TEST_VOCAB_2.js"
+        "TEST_VOCAB_2.js",
       );
       del.sync([`${outputDirectory}/*`]);
       fs.mkdirSync(outputDirectory, { recursive: true });
@@ -564,25 +564,25 @@ describe("Artifact Generator unit tests", () => {
         "test",
         "resources",
         "expectedOutput",
-        "skipGeneration"
+        "skipGeneration",
       );
       const testConfigFile = path.join(
         outputDirectory,
-        "vocab-list-static.yml"
+        "vocab-list-static.yml",
       );
       const testInputFirst = path.join(outputDirectory, "static-first.ttl");
       const testInputSecond = path.join(outputDirectory, "static-second.ttl");
       fs.copyFileSync(
         path.join(sourceDataDirectory, "vocab-list-static.yml"),
-        testConfigFile
+        testConfigFile,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-first.ttl"),
-        testInputFirst
+        testInputFirst,
       );
       fs.copyFileSync(
         path.join(sourceDataDirectory, "static-second.ttl"),
-        testInputSecond
+        testInputSecond,
       );
 
       const config = new GeneratorConfiguration({
@@ -614,10 +614,10 @@ describe("Artifact Generator unit tests", () => {
       // Both vocabs should have been re-generated, even though neither changed
       // (only the config file changed).
       expect(fs.statSync(generatedFileFirst).mtimeMs).toBeGreaterThan(
-        initialGenerationTimeFirst
+        initialGenerationTimeFirst,
       );
       expect(fs.statSync(generatedFileSecond).mtimeMs).toBeGreaterThan(
-        initialGenerationTimeSecond
+        initialGenerationTimeSecond,
       );
     });
 
@@ -628,7 +628,7 @@ describe("Artifact Generator unit tests", () => {
         outputDirectory,
         getArtifactDirectorySourceCode(),
         "JavaScript",
-        "package.json"
+        "package.json",
       );
       del.sync([`${outputDirectory}/*`]);
       const config = new GeneratorConfiguration({
@@ -654,7 +654,7 @@ describe("Artifact Generator unit tests", () => {
       // The artifacts are up-to-date, but the generation is forced anyway
       await artifactGenerator.generate();
       expect(fs.statSync(generatedFile).mtimeMs).not.toEqual(
-        initialGenerationTime
+        initialGenerationTime,
       );
     });
 
@@ -675,11 +675,11 @@ describe("Artifact Generator unit tests", () => {
       }
       const canaryFileGeneratedDir = path.join(
         generatedDir,
-        "canaryInGeneratedDir.txt"
+        "canaryInGeneratedDir.txt",
       );
       fs.writeFileSync(
         canaryFileGeneratedDir,
-        "A canary file in the generated directory"
+        "A canary file in the generated directory",
       );
 
       const config = new GeneratorConfiguration({
@@ -728,8 +728,8 @@ describe("Artifact Generator unit tests", () => {
       expect(
         fs.existsSync(
           // `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/templated-@inrupt-test/test-prefix-generated-vocab-common-TEST@10.11.12`
-          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/templated---@-file`
-        )
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/templated---@-file`,
+        ),
       ).toBe(true);
     });
 
@@ -755,23 +755,23 @@ describe("Artifact Generator unit tests", () => {
       // file in the artifact root folder.
       expect(
         fs.existsSync(
-          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishLocal`
-        )
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishLocal`,
+        ),
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishRemote`
-        )
+          `${outputDirectory}${getArtifactDirectorySourceCode()}/Java/mvn-publishRemote`,
+        ),
       ).toBe(false);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishLocal`
-        )
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishLocal`,
+        ),
       ).toBe(true);
       expect(
         fs.existsSync(
-          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
-        )
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`,
+        ),
       ).toBe(false);
     });
 
@@ -827,13 +827,13 @@ describe("Artifact Generator unit tests", () => {
       await artifactGenerator.generate();
 
       expect(() => artifactGenerator.runPublish("local")).toThrowError(
-        "exec-command-guaranteed-to-fail-on-any-operating-system"
+        "exec-command-guaranteed-to-fail-on-any-operating-system",
       );
 
       expect(
         fs.existsSync(
-          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`
-        )
+          `${outputDirectory}/${getArtifactDirectorySourceCode()}/JavaScript/npm-publishRemote`,
+        ),
       ).toBe(false);
     });
 
@@ -892,7 +892,7 @@ describe("Artifact Generator unit tests", () => {
 
       await artifactGenerator.generate();
       expect(
-        fs.existsSync(path.join(outputDirectory, "TypeScript", "LICENSE"))
+        fs.existsSync(path.join(outputDirectory, "TypeScript", "LICENSE")),
       );
     });
   });

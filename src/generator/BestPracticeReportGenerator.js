@@ -1,5 +1,5 @@
 const debug = require("debug")(
-  "artifact-generator:BestPracticeReportGenerator"
+  "artifact-generator:BestPracticeReportGenerator",
 );
 const { curie } = require("../Util");
 const { INRUPT_BEST_PRACTICE_NAMESPACE } = require("../CommonTerms");
@@ -24,29 +24,29 @@ class BestPracticeReportGenerator {
     reportSoFar.bpReport_0 =
       BestPracticeReportGenerator.complianceBp_namespaceIriProvidedExplicitly(
         vocabInfo,
-        reportSoFar
+        reportSoFar,
       );
 
     reportSoFar.bpReport_1 = BestPracticeReportGenerator.complianceBp_1(
       vocabInfo,
-      reportSoFar
+      reportSoFar,
     );
 
     reportSoFar.bpReport_2 = BestPracticeReportGenerator.complianceBp_2(
       vocabInfo,
-      reportSoFar
+      reportSoFar,
     );
 
     reportSoFar.bestPractices = [
       {
         iri: curie(
-          `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriProvidedExplicitly`
+          `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriProvidedExplicitly`,
         ),
         result: "PASS - namespace IRI provided explicitly.",
         subResults: [
           {
             iri: curie(
-              `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriProvidedExplicitly_definedUsingVann`
+              `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriProvidedExplicitly_definedUsingVann`,
             ),
             result: `Detail - namespace IRI provided via VANN:preferredNamespaceUri.`,
           },
@@ -54,19 +54,19 @@ class BestPracticeReportGenerator {
       },
       {
         iri: curie(
-          `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly`
+          `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly`,
         ),
         result: "PASS - namespace prefix provided explicitly.",
         subResults: [
           {
             iri: curie(
-              `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly_definedUsingShacl`
+              `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly_definedUsingShacl`,
             ),
             result: `Detail - namespace prefix provided via SHACL:declare.`,
           },
           {
             iri: curie(
-              `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly_definedUsingShacl_multipleValues`
+              `https://w3id.org/inrupt/vocab/bestPractice/namespace_PrefixProvidedExplicitly_definedUsingShacl_multipleValues`,
             ),
             result: `Detail - multiple namespace prefixes provided via SHACL:declare and SHACL:prefix values of [XXX,YYY].`,
           },
@@ -74,7 +74,7 @@ class BestPracticeReportGenerator {
       },
       {
         iri: curie(
-          `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriDifferentFromVocabularyIri`
+          `https://w3id.org/inrupt/vocab/bestPractice/namespace_IriDifferentFromVocabularyIri`,
         ),
         result: "FAIL - Namespace IRI different from vocabulary IRI.",
       },
@@ -136,7 +136,7 @@ class BestPracticeReportGenerator {
 
   static complianceBp_namespacePrefixProvidedExplicitly(
     vocabInfo,
-    reportSoFar
+    reportSoFar,
   ) {
     let report = undefined;
 
@@ -160,7 +160,7 @@ class BestPracticeReportGenerator {
 
   static complianceBp_namespaceIriDifferentThanVocabularyIri(
     vocabInfo,
-    reportSoFar
+    reportSoFar,
   ) {
     let report = undefined;
 
@@ -205,7 +205,7 @@ class BestPracticeReportGenerator {
         const missing = Array.from(
           vocabInfo.classes
             .filter((term) => !term.isDefinedBys)
-            .concat(vocabInfo.properties.filter((term) => !term.isDefinedBys))
+            .concat(vocabInfo.properties.filter((term) => !term.isDefinedBys)),
         ).map((elem) => elem.name);
 
         if (missing.length > showFirstX) {
@@ -231,7 +231,7 @@ class BestPracticeReportGenerator {
     } else {
       const matchVocabularyIri = BestPracticeReportGenerator.isDefinedByIri(
         reportSoFar.termsWithIsDefinedBy,
-        vocabInfo.vocabularyIri
+        vocabInfo.vocabularyIri,
       );
 
       if (
@@ -248,21 +248,21 @@ class BestPracticeReportGenerator {
         const matchStrippedNamespace =
           BestPracticeReportGenerator.isDefinedByIri(
             reportSoFar.termsWithIsDefinedBy,
-            vocabInfo.namespaceIri.slice(0, -1)
+            vocabInfo.namespaceIri.slice(0, -1),
           );
         if (matchStrippedNamespace.length > 0) {
           report += ` But [${
             matchStrippedNamespace.length
           }] terms match the stripped namespace IRI of [${vocabInfo.namespaceIri.slice(
             0,
-            -1
+            -1,
           )}]...`;
         }
 
         const { termsDefinedByOtherIri, otherIris } =
           BestPracticeReportGenerator.isDefinedByOtherIri(
             reportSoFar.termsWithIsDefinedBy,
-            [vocabInfo.namespaceIri, vocabInfo.namespaceIri.slice(0, -1)]
+            [vocabInfo.namespaceIri, vocabInfo.namespaceIri.slice(0, -1)],
           );
 
         // Check first for what we expect to be the most common case of terms
@@ -301,8 +301,8 @@ class BestPracticeReportGenerator {
   static isDefinedByIri(termsWithIsDefinedBy, iri) {
     return termsWithIsDefinedBy.filter((term) =>
       Array.from(term.isDefinedBys).find(
-        (definedBy) => definedBy.isDefinedBy === iri
-      )
+        (definedBy) => definedBy.isDefinedBy === iri,
+      ),
     );
   }
 
@@ -311,7 +311,7 @@ class BestPracticeReportGenerator {
 
     const termsDefinedByOtherIri = termsWithIsDefinedBy.filter((term) => {
       const otherIri = Array.from(term.isDefinedBys).filter(
-        (termIri) => !ignoreIris.includes(termIri.isDefinedBy)
+        (termIri) => !ignoreIris.includes(termIri.isDefinedBy),
       );
       if (otherIri.length > 0) {
         otherIri.forEach((match) => otherIris.add(match.isDefinedBy));

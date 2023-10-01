@@ -146,7 +146,7 @@ module.exports = class DatasetHandler {
       // if needed.
       if (this.vocabData.ignoreNonVocabTerms) {
         debug(
-          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespaceIriToUse}] (perhaps you need to provide to the 'namespaceIriOverride' option to detect terms from the correct namespace).`
+          `Ignoring vocabulary term [${fullName}] of RDF type [${rdfType.value}], as it's not in our namespace [${namespaceIriToUse}] (perhaps you need to provide to the 'namespaceIriOverride' option to detect terms from the correct namespace).`,
         );
         return null;
       }
@@ -167,8 +167,8 @@ module.exports = class DatasetHandler {
         debug(
           `Ignoring common RDF vocabulary term [${fullName}], as it's not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
             namespace,
-            this.vocabData.namespaceIriOverride
-          )}`
+            this.vocabData.namespaceIriOverride,
+          )}`,
         );
         return null;
       }
@@ -176,8 +176,8 @@ module.exports = class DatasetHandler {
       throw new Error(
         `Vocabulary term [${fullName}] found that is not in the namespace we're using - ${DatasetHandler.describeNamespaceInUse(
           namespace,
-          this.vocabData.namespaceIriOverride
-        )} - currently this is disallowed (as it indicates a probable typo!), but you can override this error and ignore non-vocabulary terms by setting the 'ignoreNonVocabTerms' option to 'true'`
+          this.vocabData.namespaceIriOverride,
+        )} - currently this is disallowed (as it indicates a probable typo!), but you can override this error and ignore non-vocabulary terms by setting the 'ignoreNonVocabTerms' option to 'true'`,
       );
     }
 
@@ -294,7 +294,7 @@ module.exports = class DatasetHandler {
     const skosMatches = this.fullDataset.match(
       quad.subject,
       SKOS.definition,
-      null
+      null,
     );
 
     if (
@@ -305,10 +305,10 @@ module.exports = class DatasetHandler {
         throw new Error(
           `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
             namespace,
-            this.vocabData.namespaceIriOverride
+            this.vocabData.namespaceIriOverride,
           )} - found [${skosMatches.length}] values for constant of type [${
             rdfType.value
-          }] when one, and only one, value is required`
+          }] when one, and only one, value is required`,
         );
       }
 
@@ -318,10 +318,10 @@ module.exports = class DatasetHandler {
             throw new Error(
               `Vocabulary term [${fullName}] in ${DatasetHandler.describeNamespaceInUse(
                 namespace,
-                this.vocabData.namespaceIriOverride
+                this.vocabData.namespaceIriOverride,
               )} - constant IRI value [${
                 quad.object.value
-              }] does not appear to be a valid IRI`
+              }] does not appear to be a valid IRI`,
             );
           }
         });
@@ -335,19 +335,19 @@ module.exports = class DatasetHandler {
     const seeAlsos = this.getSetOfPredicateObjects(
       quad.subject,
       RDFS.seeAlso,
-      "seeAlso"
+      "seeAlso",
     );
 
     const isDefinedBys = this.getSetOfPredicateObjects(
       quad.subject,
       RDFS.isDefinedBy,
-      "isDefinedBy"
+      "isDefinedBy",
     );
 
     const termDescription = DatasetHandler.getTermDescription(
       comments,
       definitions,
-      labels
+      labels,
     );
 
     return {
@@ -363,7 +363,7 @@ module.exports = class DatasetHandler {
       termDescription: DatasetHandler.buildCompositeTermDescription(
         labels,
         comments,
-        definitions
+        definitions,
       ),
     };
   }
@@ -401,7 +401,7 @@ module.exports = class DatasetHandler {
       result = new Set();
 
       valueSet.forEach((value) =>
-        result.add({ [`${propertyNameInObject}`]: value })
+        result.add({ [`${propertyNameInObject}`]: value }),
       );
     }
 
@@ -477,7 +477,7 @@ module.exports = class DatasetHandler {
                 labels,
                 sortedLangTagsLabel,
                 allComments,
-                sortedLangTagsComment
+                sortedLangTagsComment,
               );
             }
           }
@@ -486,7 +486,7 @@ module.exports = class DatasetHandler {
             labels,
             sortedLangTagsLabel,
             allComments,
-            sortedLangTagsComment
+            sortedLangTagsComment,
           );
         }
       }
@@ -499,7 +499,7 @@ module.exports = class DatasetHandler {
     labels,
     sortedLangTagsLabel,
     comments,
-    sortedLangTagsComment
+    sortedLangTagsComment,
   ) {
     let termDescription = undefined;
 
@@ -597,7 +597,7 @@ module.exports = class DatasetHandler {
   static filterOutEnglishAnNoLocale(literals) {
     return literals
       .filter(
-        (elem) => !(elem.language === "" || elem.language.startsWith("en"))
+        (elem) => !(elem.language === "" || elem.language.startsWith("en")),
       )
       .map((elem) => elem.language)
       .toString()
@@ -607,7 +607,7 @@ module.exports = class DatasetHandler {
 
   static countEnglishAnNoLocale(literals) {
     return literals.filter(
-      (elem) => elem.language === "" || elem.language.startsWith("en")
+      (elem) => elem.language === "" || elem.language.startsWith("en"),
     ).length;
   }
 
@@ -625,10 +625,10 @@ module.exports = class DatasetHandler {
       array.push({
         value: quad.object.value,
         valueEscapedForJavaScript: FileGenerator.escapeStringForJavaScript(
-          quad.object.value
+          quad.object.value,
         ),
         valueEscapedForJava: FileGenerator.escapeStringForJava(
-          quad.object.value
+          quad.object.value,
         ),
         language: quad.object.language,
       });
@@ -696,7 +696,7 @@ module.exports = class DatasetHandler {
     result.generatorName = this.vocabData.generatorName;
     result.artifactGeneratorVersion = this.vocabData.artifactGeneratorVersion;
     result.sourceRdfResources = `Vocabulary built from ${describeInput(
-      this.vocabData
+      this.vocabData,
     )}.`;
 
     result.classes = [];
@@ -730,13 +730,13 @@ module.exports = class DatasetHandler {
     // entities with RDF.type of 'owl:Ontology') that may then explicitly
     // provide namespace details (like the namespace IRI and/or prefix).
     const vocabularyIri = this.lookupVocabularyIri(
-      this.vocabData.vocabularyIriOverride
+      this.vocabData.vocabularyIriOverride,
     );
 
     const namespaceDetails = this.lookupNamespaceDetails(
       vocabularyIri,
       this.vocabData.namespaceIriOverride,
-      this.vocabData.nameAndPrefixOverride
+      this.vocabData.nameAndPrefixOverride,
     );
 
     // Big assumption here, but we're saying that a vocab with no
@@ -753,7 +753,7 @@ module.exports = class DatasetHandler {
 
     result.vocabName = namespaceDetails.namespacePrefix;
     result.vocabNameUpperCase = DatasetHandler.vocabNameUpperCase(
-      result.vocabName
+      result.vocabName,
     );
 
     result.namespaceIriOverride = this.vocabData.namespaceIriOverride;
@@ -766,14 +766,14 @@ module.exports = class DatasetHandler {
 
     result.description = this.findDescription(
       result.vocabularyIri,
-      this.vocabData.descriptionFallback
+      this.vocabData.descriptionFallback,
     );
     if (
       !result.description ||
       result.description === "[Generator provided] - undefined"
     ) {
       throw new Error(
-        `Cannot find a description of this vocabulary [${result.vocabName}] with IRI [${result.vocabularyIri}] and namespace IRI [${result.namespaceIri}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`
+        `Cannot find a description of this vocabulary [${result.vocabName}] with IRI [${result.vocabularyIri}] and namespace IRI [${result.namespaceIri}] for artifact [${result.artifactName}], not in the vocab itself (e.g., via properties 'dcterms:title', 'dcterms:description', 'dcelements:title', 'rdfs:comment', or 'rdfs:label'), and our configuration doesn't provide one.`,
       );
     }
     result.description = `${result.description}`;
@@ -800,7 +800,7 @@ module.exports = class DatasetHandler {
         result.storeLocalCopyOfVocabDirectory,
         result.vocabName,
         result.namespaceIri,
-        this.fullDataset
+        this.fullDataset,
       );
     }
 
@@ -838,7 +838,7 @@ module.exports = class DatasetHandler {
           const termDetails = this.handleTerm(
             quad,
             result.localNamespaceIri,
-            classType
+            classType,
           );
 
           if (termDetails !== null) {
@@ -855,7 +855,7 @@ module.exports = class DatasetHandler {
         const termDetails = this.handleTerm(
           quad,
           result.localNamespaceIri,
-          quad.object
+          quad.object,
         );
 
         if (termDetails !== null) {
@@ -873,7 +873,7 @@ module.exports = class DatasetHandler {
           const termDetails = this.handleTerm(
             quad,
             result.localNamespaceIri,
-            propertyType
+            propertyType,
           );
 
           if (termDetails) {
@@ -892,7 +892,7 @@ module.exports = class DatasetHandler {
         const termDetails = this.handleTerm(
           quad,
           result.localNamespaceIri,
-          quad.object
+          quad.object,
         );
 
         if (termDetails) {
@@ -908,7 +908,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.literals.push(
-            this.handleTerm(quad, result.localNamespaceIri, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType),
           );
         }
       });
@@ -920,7 +920,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantStrings.push(
-            this.handleTerm(quad, result.localNamespaceIri, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType),
           );
         }
       });
@@ -932,7 +932,7 @@ module.exports = class DatasetHandler {
       this.fullDataset.match(subject, RDF.type, literalType).forEach((quad) => {
         if (this.isNewTerm(quad.subject.value)) {
           result.constantIris.push(
-            this.handleTerm(quad, result.localNamespaceIri, literalType)
+            this.handleTerm(quad, result.localNamespaceIri, literalType),
           );
         }
       });
@@ -985,7 +985,7 @@ module.exports = class DatasetHandler {
     let ontologyComments = this.fullDataset.match(
       vocabNamedNode,
       DCTERMS.description,
-      null
+      null,
     );
 
     // Fallback to dcterms:title...
@@ -993,7 +993,7 @@ module.exports = class DatasetHandler {
       ontologyComments = this.fullDataset.match(
         vocabNamedNode,
         DCTERMS.title,
-        null
+        null,
       );
     }
 
@@ -1002,7 +1002,7 @@ module.exports = class DatasetHandler {
       ontologyComments = this.fullDataset.match(
         vocabNamedNode,
         RDFS.comment,
-        null
+        null,
       );
     }
 
@@ -1011,7 +1011,7 @@ module.exports = class DatasetHandler {
       ontologyComments = this.fullDataset.match(
         vocabNamedNode,
         DCELEMENTS.title,
-        null
+        null,
       );
     }
 
@@ -1020,7 +1020,7 @@ module.exports = class DatasetHandler {
       ontologyComments = this.fullDataset.match(
         vocabNamedNode,
         SKOS.definition,
-        null
+        null,
       );
     }
 
@@ -1029,7 +1029,7 @@ module.exports = class DatasetHandler {
       ontologyComments = this.fullDataset.match(
         vocabNamedNode,
         RDFS.label,
-        null
+        null,
       );
     }
 
@@ -1041,7 +1041,7 @@ module.exports = class DatasetHandler {
     return DatasetHandler.firstDatasetValue(
       ontologyComments,
       "en",
-      descriptionFallback
+      descriptionFallback,
     );
   }
 
@@ -1049,13 +1049,13 @@ module.exports = class DatasetHandler {
     const vocabAuthors = this.fullDataset.match(
       rdf.namedNode(vocabularyIri),
       DCTERMS.creator,
-      null
+      null,
     );
 
     return new Set(
       vocabAuthors.size === 0
         ? []
-        : vocabAuthors.toArray().map((authorQuad) => authorQuad.object.value)
+        : vocabAuthors.toArray().map((authorQuad) => authorQuad.object.value),
     );
   }
 
@@ -1076,13 +1076,13 @@ module.exports = class DatasetHandler {
     if (allOwlOntologies.length === 0) {
       if (vocabularyIriOverride) {
         debug(
-          `Found no 'rdf:type owl:Ontology' triples, but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`
+          `Found no 'rdf:type owl:Ontology' triples, but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`,
         );
         return vocabularyIriOverride;
       }
 
       debug(
-        `Found no 'rdf:type owl:Ontology' triples, and no 'vocabularyIriOverride' configuration provided.`
+        `Found no 'rdf:type owl:Ontology' triples, and no 'vocabularyIriOverride' configuration provided.`,
       );
       return undefined;
     }
@@ -1095,8 +1095,8 @@ module.exports = class DatasetHandler {
           }] 'rdf:type owl:Ontology' instances (we can only process 1): [${allOwlOntologies
             .map((quad) => quad.subject.value)
             .join(
-              ", "
-            )}], but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`
+              ", ",
+            )}], but we were given a 'vocabularyIriOverride' of [${vocabularyIriOverride}], so we'll use that.`,
         );
 
         return vocabularyIriOverride;
@@ -1108,8 +1108,8 @@ module.exports = class DatasetHandler {
         }] 'rdf:type owl:Ontology' instances (we can only process 1): [${allOwlOntologies
           .map((quad) => quad.subject.value)
           .join(
-            ", "
-          )}], and we weren't configured with a 'vocabularyIriOverride' so we can't know which one to use.`
+            ", ",
+          )}], and we weren't configured with a 'vocabularyIriOverride' so we can't know which one to use.`,
       );
     }
 
@@ -1119,7 +1119,7 @@ module.exports = class DatasetHandler {
       vocabularyIriOverride === owlOntologyQuad.subject.value
     ) {
       debug(
-        `Found just the one 'rdf:type owl:Ontology' instance, which our matched 'vocabularyIriOverride' of [${vocabularyIriOverride}], so seems override was superfluous.`
+        `Found just the one 'rdf:type owl:Ontology' instance, which our matched 'vocabularyIriOverride' of [${vocabularyIriOverride}], so seems override was superfluous.`,
       );
     }
 
@@ -1138,19 +1138,19 @@ module.exports = class DatasetHandler {
   lookupNamespaceDetails(
     vocabularyIri,
     namespaceIriOverride,
-    namespacePrefixOverride
+    namespacePrefixOverride,
   ) {
     const result = {};
 
     result.vannNamespaceIri = this.lookupOneAndOnlyOnePredicate(
       vocabularyIri,
       namespaceIriOverride,
-      VANN.preferredNamespaceUri
+      VANN.preferredNamespaceUri,
     );
     result.vannNamespacePrefix = this.lookupOneAndOnlyOnePredicate(
       vocabularyIri,
       namespacePrefixOverride,
-      VANN.preferredNamespacePrefix
+      VANN.preferredNamespacePrefix,
     );
 
     // Check if our vocab has a SHACL 'declare' triple - if so, only then
@@ -1158,19 +1158,19 @@ module.exports = class DatasetHandler {
     result.shaclDeclareIri = this.lookupOneAndOnlyOnePredicate(
       vocabularyIri,
       undefined,
-      SHACL.declare
+      SHACL.declare,
     );
     if (result.shaclDeclareIri) {
       result.shaclNamespaceIri = this.lookupOneAndOnlyOnePredicate(
         result.shaclDeclareIri,
         namespaceIriOverride,
-        SHACL.namespace
+        SHACL.namespace,
       );
 
       result.shaclNamespacePrefix = this.lookupOneAndOnlyOnePredicate(
         result.shaclDeclareIri,
         namespacePrefixOverride,
-        SHACL.prefix
+        SHACL.prefix,
       );
     }
 
@@ -1196,19 +1196,19 @@ module.exports = class DatasetHandler {
         `Namespace IRI could not be determined for vocabulary with IRI [${
           vocabularyIri ||
           "--Could not be determined, as not explicitly provided and not overridden by configuration--"
-        }] and no 'namespaceIriOverride' was configured, so we can't continue.`
+        }] and no 'namespaceIriOverride' was configured, so we can't continue (it's possible we failed to parse any triples at all from the 'inputResources' provided, possibly due to content negotiation problems on the vocab-serving server).`,
       );
     }
 
     if (!result.namespacePrefix) {
       const knownPrefix = DatasetHandler.lookupKnownNamespacePrefix(
-        result.namespaceIri
+        result.namespaceIri,
       );
 
       if (knownPrefix) {
         result.namespacePrefix = knownPrefix;
         debug(
-          `Determined vocabulary prefix [${knownPrefix}] from hard-coded list of well known vocabularies.`
+          `Determined vocabulary prefix [${knownPrefix}] from hard-coded list of well known vocabularies.`,
         );
       } else {
         throw new Error(`No prefix defined for vocabulary IRI [${
@@ -1229,7 +1229,7 @@ module.exports = class DatasetHandler {
   lookupOneAndOnlyOnePredicate(
     vocabularyIri,
     predicateValueOverride,
-    predicate
+    predicate,
   ) {
     const allPredicateQuads = this.fullDataset
       .match(rdf.namedNode(vocabularyIri), predicate, null)
@@ -1237,7 +1237,7 @@ module.exports = class DatasetHandler {
 
     if (allPredicateQuads.length === 0) {
       debug(
-        `Found no [${predicate.value}] triples for our vocabulary IRI [${vocabularyIri}]`
+        `Found no [${predicate.value}] triples for our vocabulary IRI [${vocabularyIri}]`,
       );
       return undefined;
     }
@@ -1249,7 +1249,7 @@ module.exports = class DatasetHandler {
             predicate.value
           }] triples for our vocabulary IRI [${vocabularyIri}] (we can only process 1): [${allPredicateQuads
             .map((quad) => quad.object.value)
-            .join(", ")}].`
+            .join(", ")}].`,
         );
 
         return undefined;
@@ -1261,8 +1261,8 @@ module.exports = class DatasetHandler {
         }] triples for our vocabulary IRI [${vocabularyIri}] (we can only process 1): [${allPredicateQuads
           .map((quad) => quad.object.value)
           .join(
-            ", "
-          )}], and we weren't configured with an Override, so we can't know which one to use.`
+            ", ",
+          )}], and we weren't configured with an Override, so we can't know which one to use.`,
       );
     }
 
@@ -1272,7 +1272,7 @@ module.exports = class DatasetHandler {
       predicateValueOverride === predicateQuad.object.value
     ) {
       debug(
-        `Found just the one [${predicate.value}] triple for our vocabulary IRI [${vocabularyIri}], which matched our Override of [${predicateValueOverride}], so it seems the override was superfluous.`
+        `Found just the one [${predicate.value}] triple for our vocabulary IRI [${vocabularyIri}], which matched our Override of [${predicateValueOverride}], so it seems the override was superfluous.`,
       );
     }
 
@@ -1289,7 +1289,7 @@ module.exports = class DatasetHandler {
    */
   heuristicForNamespaceIri() {
     const longestTermName = DatasetHandler.findLongestTermName(
-      DatasetHandler.subjectsOnly(this.fullDataset)
+      DatasetHandler.subjectsOnly(this.fullDataset),
     );
 
     // The namespace is simply the IRI up to the last hash or slash.
@@ -1297,12 +1297,12 @@ module.exports = class DatasetHandler {
       0,
       Math.max(
         longestTermName.lastIndexOf("/"),
-        longestTermName.lastIndexOf("#")
-      ) + 1
+        longestTermName.lastIndexOf("#"),
+      ) + 1,
     );
 
     debug(
-      `Used a simple heuristic to determine the namespace IRI of [${namespaceIri}] for input resources [${this.vocabData.inputResources}], using the longest term name of [${longestTermName}].`
+      `Used a simple heuristic to determine the namespace IRI of [${namespaceIri}] for input resources [${this.vocabData.inputResources}], using the longest term name of [${longestTermName}].`,
     );
 
     return namespaceIri;
@@ -1329,7 +1329,7 @@ module.exports = class DatasetHandler {
       // Search our matches for language tags that start with the explicitly
       // specified language tag.
       result = quads.find((elem) =>
-        elem.object.language.startsWith(languageTag)
+        elem.object.language.startsWith(languageTag),
       );
       if (result) {
         return result.object.value;

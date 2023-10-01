@@ -19,7 +19,7 @@ module.exports = class App {
   constructor(argv) {
     if (!argv) {
       throw new Error(
-        "Application must be initialized with a configuration - none was provided."
+        "Application must be initialized with a configuration - none was provided.",
       );
     }
 
@@ -41,7 +41,7 @@ module.exports = class App {
       this,
       async function (app, config) {
         return await app.runWithConfig(config);
-      }
+      },
     );
   }
 
@@ -86,7 +86,7 @@ module.exports = class App {
       throw new Error(`Invalid configuration: [${error}]`);
     }
     debug(
-      "The configuration options are valid. Validating the vocabularies..."
+      "The configuration options are valid. Validating the vocabularies...",
     );
 
     const vocabsToValidate = [];
@@ -94,7 +94,7 @@ module.exports = class App {
     for (let i = 0; i < vocabList.length; i += 1) {
       for (let j = 0; j < vocabList[i].inputResources.length; j += 1) {
         vocabsToValidate.push(
-          Resource.readResourceViaCache(vocabList[i].inputResources[j])
+          Resource.readResourceViaCache(vocabList[i].inputResources[j]),
         );
       }
     }
@@ -113,7 +113,7 @@ module.exports = class App {
 
         app.watcherList.push(watcher);
         return app.watcherList.length;
-      }
+      },
     );
   }
 
@@ -127,7 +127,7 @@ module.exports = class App {
           this.argv.vocabListFile,
           this.argv.vocabListFileIgnore
             ? { ignore: this.argv.vocabListFileIgnore.split(",") }
-            : {}
+            : {},
         )
         .filter((match) => !match.includes("/Generated/"));
 
@@ -155,7 +155,7 @@ module.exports = class App {
         const origOutputDirectory = this.argv.outputDirectory;
         const rootOfGlob = this.argv.vocabListFile.substring(
           0,
-          this.argv.vocabListFile.indexOf("*")
+          this.argv.vocabListFile.indexOf("*"),
         );
 
         // TODO: When generating artifacts from multiple config files, we
@@ -176,7 +176,7 @@ module.exports = class App {
             outputDirectory: origOutputDirectory
               ? path.join(
                   origOutputDirectory,
-                  configDirectory.substring(rootOfGlob.length)
+                  configDirectory.substring(rootOfGlob.length),
                 )
               : configDirectory,
           };
@@ -198,7 +198,7 @@ module.exports = class App {
     debug(
       `Stopping ${plural ? "all " : ""}[${watcherCount}] watcher${
         plural ? "s" : ""
-      }...`
+      }...`,
     );
 
     for (let i = 0; i < this.watcherList.length; i++) {

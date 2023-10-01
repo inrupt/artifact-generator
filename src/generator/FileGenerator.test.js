@@ -8,7 +8,7 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
   "..",
   "..",
   "template",
-  "artifacts-info.hbs"
+  "artifacts-info.hbs",
 );
 
 describe("File Generator", () => {
@@ -28,7 +28,7 @@ describe("File Generator", () => {
           sourceFileExtension: fileExtension,
           outputDirectoryForArtifact: outputDirectory,
         },
-        {}
+        {},
       );
     } catch (error) {
       errorMessage = error.message;
@@ -49,7 +49,7 @@ describe("File Generator", () => {
       FileGenerator.createFileFromTemplate(
         doesNotExistTemplateFile,
         {},
-        outputFile
+        outputFile,
       );
     } catch (error) {
       errorMessage = error.message;
@@ -67,7 +67,7 @@ describe("File Generator", () => {
       FileGenerator.createFileFromTemplate(
         ARTIFACTS_INFO_TEMPLATE,
         { inputResources: inputTurtle, templateFile: ARTIFACTS_INFO_TEMPLATE },
-        "SomeOutputFile.js"
+        "SomeOutputFile.js",
       );
     } catch (error) {
       errorMessage = error.message;
@@ -85,7 +85,7 @@ describe("File Generator", () => {
       FileGenerator.createFileFromTemplate(
         ARTIFACTS_INFO_TEMPLATE,
         { vocabListFile: configFile, templateFile: ARTIFACTS_INFO_TEMPLATE },
-        "SomeOutputFile.js"
+        "SomeOutputFile.js",
       );
     } catch (error) {
       errorMessage = error.message;
@@ -99,16 +99,16 @@ describe("File Generator", () => {
   it("should escape all characters in JavaScript", () => {
     expect(
       FileGenerator.escapeStringForJavaScript(
-        "There are ` lots ` of backticks in ` here!"
-      )
+        "There are ` lots ` of backticks in ` here!",
+      ),
     ).toEqual("There are \\` lots \\` of backticks in \\` here!");
   });
 
   it("should escape all characters in Java", () => {
     expect(
       FileGenerator.escapeStringForJava(
-        "There are\nlots\nof\n new lines in \nhere!"
-      )
+        "There are\nlots\nof\n new lines in \nhere!",
+      ),
     ).toEqual(`There are\\n" +
 "lots\\n" +
 "of\\n" +
@@ -119,6 +119,6 @@ describe("File Generator", () => {
   // Test slash encoding.
   const exampleQudtComment = `<p class=\"lm-para\">A  <em>Quantity Kind Dimension Vector</em> describes the dimensionality of a quantity kind in the context of a system of units. In the SI system of units, the dimensions of a quantity kind are expressed as a product of the basic physical dimensions mass (\\(M\\)), length (\\(L\\)), time (\\(T\\)) current (\\(I\\)), amount of substance (\\(N\\)), luminous intensity (\\(J\\)) and absolute temperature (\\(\\theta\\)) as \\(dim \\, Q = L^{\\alpha} \\, M^{\\beta} \\, T^{\\gamma} \\, I ^{\\delta} \\, \\theta ^{\\epsilon} \\, N^{\\eta} \\, J ^{\\nu}\\).</p>`;
   expect(FileGenerator.escapeStringForJava(exampleQudtComment)).toEqual(
-    `<p class=\\"lm-para\\">A  <em>Quantity Kind Dimension Vector</em> describes the dimensionality of a quantity kind in the context of a system of units. In the SI system of units, the dimensions of a quantity kind are expressed as a product of the basic physical dimensions mass (\\\\\\\\(M\\\\\\\\)), length (\\\\\\\\(L\\\\\\\\)), time (\\\\\\\\(T\\\\\\\\)) current (\\\\\\\\(I\\\\\\\\)), amount of substance (\\\\\\\\(N\\\\\\\\)), luminous intensity (\\\\\\\\(J\\\\\\\\)) and absolute temperature (\\\\\\\\(\\\\\\\\theta\\\\\\\\)) as \\\\\\\\(dim \\\\\\\\, Q = L^{\\\\\\\\alpha} \\\\\\\\, M^{\\\\\\\\beta} \\\\\\\\, T^{\\\\\\\\gamma} \\\\\\\\, I ^{\\\\\\\\delta} \\\\\\\\, \\\\\\\\theta ^{\\\\\\\\epsilon} \\\\\\\\, N^{\\\\\\\\eta} \\\\\\\\, J ^{\\\\\\\\nu}\\\\\\\\).</p>`
+    `<p class=\\"lm-para\\">A  <em>Quantity Kind Dimension Vector</em> describes the dimensionality of a quantity kind in the context of a system of units. In the SI system of units, the dimensions of a quantity kind are expressed as a product of the basic physical dimensions mass (\\\\\\\\(M\\\\\\\\)), length (\\\\\\\\(L\\\\\\\\)), time (\\\\\\\\(T\\\\\\\\)) current (\\\\\\\\(I\\\\\\\\)), amount of substance (\\\\\\\\(N\\\\\\\\)), luminous intensity (\\\\\\\\(J\\\\\\\\)) and absolute temperature (\\\\\\\\(\\\\\\\\theta\\\\\\\\)) as \\\\\\\\(dim \\\\\\\\, Q = L^{\\\\\\\\alpha} \\\\\\\\, M^{\\\\\\\\beta} \\\\\\\\, T^{\\\\\\\\gamma} \\\\\\\\, I ^{\\\\\\\\delta} \\\\\\\\, \\\\\\\\theta ^{\\\\\\\\epsilon} \\\\\\\\, N^{\\\\\\\\eta} \\\\\\\\, J ^{\\\\\\\\nu}\\\\\\\\).</p>`,
   );
 });

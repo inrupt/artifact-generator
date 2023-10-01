@@ -53,7 +53,7 @@ describe("Dataset Handler", () => {
         rdf.dataset(),
         {
           inputResources: ["does not matter"],
-        }
+        },
       );
 
       await expect(handler.buildTemplateInput()).rejects.toThrow(extraOntology);
@@ -81,7 +81,7 @@ describe("Dataset Handler", () => {
           inputResources: ["does not matter"],
           vocabularyIriOverride: overrideOntology,
           nameAndPrefixOverride: "does_not_matter",
-        }
+        },
       );
 
       const result = await handler.buildTemplateInput();
@@ -96,7 +96,7 @@ describe("Dataset Handler", () => {
 
       const override = "test override";
       expect(DatasetHandler.describeNamespaceInUse("X", override)).toContain(
-        override
+        override,
       );
     });
   });
@@ -110,24 +110,24 @@ describe("Dataset Handler", () => {
       const termLong = `${ontologyIri}longer-than-short`;
 
       expect(DatasetHandler.findLongestTermName([termShort, termLong])).toEqual(
-        termLong
+        termLong,
       );
       expect(DatasetHandler.findLongestTermName([termLong, termShort])).toEqual(
-        termLong
+        termLong,
       );
       expect(
         DatasetHandler.findLongestTermName([
           nonOntologyTermButVeryLong,
           termShort,
           termLong,
-        ])
+        ]),
       ).toEqual(nonOntologyTermButVeryLong);
       expect(
         DatasetHandler.findLongestTermName([
           termLong,
           termShort,
           nonOntologyTermButVeryLong,
-        ])
+        ]),
       ).toEqual(nonOntologyTermButVeryLong);
     });
   });
@@ -150,7 +150,7 @@ describe("Dataset Handler", () => {
     it("should pick up vocab description when non-English", async () => {
       const description = rdf.literal(
         "Some description with non-English locale...",
-        "es"
+        "es",
       );
 
       const datasetRdfsLabel = rdf
@@ -171,7 +171,7 @@ describe("Dataset Handler", () => {
       const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
       const commentInFrench = rdf.literal(
         "Quelques commentaires en français",
-        "fr"
+        "fr",
       );
 
       const dataset = rdf
@@ -193,12 +193,12 @@ describe("Dataset Handler", () => {
     it("should use description that starts with explicit English tag", async () => {
       const commentInUsEnglish = rdf.literal(
         "Some comment in US English",
-        "en-US"
+        "en-US",
       );
       const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
       const commentInFrench = rdf.literal(
         "Quelques commentaires en français",
-        "fr"
+        "fr",
       );
 
       const dataset = rdf
@@ -219,12 +219,12 @@ describe("Dataset Handler", () => {
 
     it("should fallback to no language tag if no explicit English", async () => {
       const commentWithNoLocale = rdf.literal(
-        "Some comment with no language tag"
+        "Some comment with no language tag",
       );
       const commentInIrish = rdf.literal("Tráchtann cuid acu i nGaeilge", "ga");
       const commentInFrench = rdf.literal(
         "Quelques commentaires en français",
-        "fr"
+        "fr",
       );
 
       const dataset = rdf
@@ -259,8 +259,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(`${namespaceIri}MyClass`),
             RDF.type,
-            RDFS.Class
-          )
+            RDFS.Class,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -288,8 +288,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(namespaceIri),
             DCTERMS.title,
-            rdf.literal(description)
-          )
+            rdf.literal(description),
+          ),
         )
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
@@ -297,8 +297,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(`${namespaceIri}MyClass`),
             RDF.type,
-            RDFS.Class
-          )
+            RDFS.Class,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -321,7 +321,7 @@ describe("Dataset Handler", () => {
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
-          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -347,7 +347,7 @@ describe("Dataset Handler", () => {
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
-          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -378,7 +378,7 @@ describe("Dataset Handler", () => {
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
-          rdf.quad(rdf.namedNode(`${vocabIri1}MyClass`), RDF.type, RDFS.Class)
+          rdf.quad(rdf.namedNode(`${vocabIri1}MyClass`), RDF.type, RDFS.Class),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -403,7 +403,7 @@ describe("Dataset Handler", () => {
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
-          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class)
+          rdf.quad(rdf.namedNode(`${vocabIri}MyClass`), RDF.type, RDFS.Class),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -436,15 +436,15 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri1)
-          )
+            rdf.namedNode(namespaceIri1),
+          ),
         )
         .add(
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri2)
-          )
+            rdf.namedNode(namespaceIri2),
+          ),
         )
         // We need to define at least one term, in a namespace, otherwise
         // we'll blow up with an 'empty vocab' error.
@@ -452,8 +452,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(`${namespaceIri1}MyClass`),
             RDF.type,
-            RDFS.Class
-          )
+            RDFS.Class,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -482,22 +482,22 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri1)
-          )
+            rdf.namedNode(namespaceIri1),
+          ),
         )
         .add(
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri2)
-          )
+            rdf.namedNode(namespaceIri2),
+          ),
         )
         .add(
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri3)
-          )
+            rdf.namedNode(namespaceIri3),
+          ),
         )
         // We need to define at least one term, in a namespace, otherwise
         // we'll blow up with an 'empty vocab' error.
@@ -505,8 +505,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(`${namespaceIri2}MyClass`),
             RDF.type,
-            RDFS.Class
-          )
+            RDFS.Class,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -540,7 +540,7 @@ describe("Dataset Handler", () => {
         // We need to define at least one term, in our vocab, otherwise we'll
         // blow up with an 'empty vocab' error.
         .add(
-          rdf.quad(rdf.namedNode(`${vocabIri2}MyClass`), RDF.type, RDFS.Class)
+          rdf.quad(rdf.namedNode(`${vocabIri2}MyClass`), RDF.type, RDFS.Class),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -573,15 +573,15 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(vocabIri),
             VANN.preferredNamespaceUri,
-            rdf.namedNode(namespaceIri)
-          )
+            rdf.namedNode(namespaceIri),
+          ),
         )
         .add(
           rdf.quad(
             rdf.namedNode(`${namespaceIri}MyClass`),
             RDF.type,
-            RDFS.Class
-          )
+            RDFS.Class,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -613,7 +613,7 @@ describe("Dataset Handler", () => {
     const labelInFrench = rdf.literal("Une étiquette en français", "fr");
     const commentInFrench = rdf.literal(
       "Quelques commentaires en français",
-      "fr"
+      "fr",
     );
 
     it("should give full description of matching labels and comments in all languages", async () => {
@@ -788,14 +788,14 @@ describe("Dataset Handler", () => {
         .add(rdf.quad(NAMESPACE_IRI, RDFS.label, DEFAULT_DESCRIPTION))
         .add(rdf.quad(NAMESPACE_TEST_TERM, RDF.type, RDFS.Class))
         .add(
-          rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, rdf.literal("label", "en"))
+          rdf.quad(NAMESPACE_TEST_TERM, RDFS.label, rdf.literal("label", "en")),
         )
         .add(
           rdf.quad(
             NAMESPACE_TEST_TERM,
             RDFS.label,
-            rdf.literal("label no lang")
-          )
+            rdf.literal("label no lang"),
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -805,7 +805,7 @@ describe("Dataset Handler", () => {
       const result = await handler.buildTemplateInput();
       expect(result.classes.length).toEqual(1);
       expect(result.classes[0].termDescription).toContain(
-        "no long-form descriptions at all"
+        "no long-form descriptions at all",
       );
     });
 
@@ -909,7 +909,7 @@ describe("Dataset Handler", () => {
       expect(result.classes.length).toEqual(1);
       const description = result.classes[0].termDescription;
       expect(description).toContain(
-        "descriptions only with no explicit locale"
+        "descriptions only with no explicit locale",
       );
     });
 
@@ -962,12 +962,12 @@ describe("Dataset Handler", () => {
             rdf.namedNode("http://www.w3.org/2001/XMLSchema#float"),
             RDFS.subPropertyOf,
             rdf.literal(
-              "Also need to make sure we ignore terms from XSD namespace..."
-            )
-          )
+              "Also need to make sure we ignore terms from XSD namespace...",
+            ),
+          ),
         )
         .add(
-          rdf.quad(NAMESPACE_TEST_TERM, RDFS.subPropertyOf, SKOS.definition)
+          rdf.quad(NAMESPACE_TEST_TERM, RDFS.subPropertyOf, SKOS.definition),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -989,8 +989,8 @@ describe("Dataset Handler", () => {
         rdf.quad(
           rdf.namedNode("https://ex.com/different-namespace#term"),
           RDF.type,
-          RDFS.Class
-        )
+          RDFS.Class,
+        ),
       );
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -1024,8 +1024,8 @@ describe("Dataset Handler", () => {
         rdf.quad(
           rdf.namedNode("http://www.w3.org/2001/XMLSchema#duration"),
           RDF.type,
-          RDFS.Datatype
-        )
+          RDFS.Datatype,
+        ),
       );
 
     const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -1044,10 +1044,10 @@ describe("Dataset Handler", () => {
     const testTermProperty = rdf.namedNode(`${NAMESPACE}testTermProperty`);
     const testTermLiteral = rdf.namedNode(`${NAMESPACE}testTermLiteral`);
     const testTermConstantIri = rdf.namedNode(
-      `${NAMESPACE}testTermConstantIri`
+      `${NAMESPACE}testTermConstantIri`,
     );
     const testTermConstantString = rdf.namedNode(
-      `${NAMESPACE}testTermConstantString`
+      `${NAMESPACE}testTermConstantString`,
     );
 
     const dataset = rdf
@@ -1075,7 +1075,7 @@ describe("Dataset Handler", () => {
         rdf.quad(
           testTermConstantString,
           RDF.type,
-          ARTIFACT_GENERATOR.ConstantString
+          ARTIFACT_GENERATOR.ConstantString,
         ),
       ]);
 
@@ -1197,7 +1197,7 @@ describe("Dataset Handler", () => {
     });
 
     await expect(handler.buildTemplateInput()).rejects.toThrow(
-      `[${NS}] does not contain any terms.`
+      `[${NS}] does not contain any terms.`,
     );
   });
 
@@ -1240,7 +1240,7 @@ describe("Dataset Handler", () => {
         rdf.quad(
           rdf.namedNode(longestTerm),
           RDF.type,
-          `${otherNamespace}someClass`
+          `${otherNamespace}someClass`,
         ),
       ]);
 
@@ -1278,7 +1278,7 @@ describe("Dataset Handler", () => {
           rdf.quad(
             PREFIX_DELCARATION_IRI,
             SHACL.prefix,
-            rdf.literal(TEST_PREFIX)
+            rdf.literal(TEST_PREFIX),
           ),
         ]);
 
@@ -1305,7 +1305,7 @@ describe("Dataset Handler", () => {
         "Generated",
         "UNIT_TEST",
         "LocalCopyOfVocab",
-        "testStoringVocab"
+        "testStoringVocab",
       );
       rimraf.sync(testLocalCopyDirectory);
 
@@ -1321,7 +1321,7 @@ describe("Dataset Handler", () => {
           // Here we are testing for the file, but also the hash of its
           // contents...
           filename.startsWith(`rdf-ext-`) &&
-          filename.endsWith(`--745960813__https---rdf-extension.com-.ttl`)
+          filename.endsWith(`--745960813__https---rdf-extension.com-.ttl`),
       );
       expect(matches.length).toBe(1);
     });
@@ -1345,7 +1345,7 @@ describe("Dataset Handler", () => {
       const result = await handler.buildTemplateInput();
       expect(result.properties.length).toEqual(1);
       expect(result.properties[0].nameEscapedForLanguage).toEqual(
-        `_${testTerm}`
+        `_${testTerm}`,
       );
     });
   });
@@ -1363,8 +1363,8 @@ describe("Dataset Handler", () => {
           rdf.quad(
             rdf.namedNode(`${NAMESPACE}testTerm`),
             RDF.type,
-            RDF.Property
-          )
+            RDF.Property,
+          ),
         );
 
       const handler = new DatasetHandler(dataset, rdf.dataset(), {
@@ -1382,7 +1382,7 @@ describe("Dataset Handler", () => {
     it("should return default if no quads", () => {
       const testDefaultValue = "test default value";
       expect(
-        DatasetHandler.firstDatasetValue(rdf.dataset(), "ga", testDefaultValue)
+        DatasetHandler.firstDatasetValue(rdf.dataset(), "ga", testDefaultValue),
       ).toEqual(testDefaultValue);
     });
 
@@ -1395,8 +1395,8 @@ describe("Dataset Handler", () => {
             .dataset()
             .add(rdf.quad(OWL.Class, RDFS.label, rdf.literal(realValue))),
           undefined,
-          testDefaultValue
-        )
+          testDefaultValue,
+        ),
       ).toEqual(realValue);
     });
 
@@ -1409,8 +1409,8 @@ describe("Dataset Handler", () => {
             .dataset()
             .add(rdf.quad(OWL.Class, RDFS.label, rdf.literal(realValue, "ga"))),
           "ga",
-          testDefaultValue
-        )
+          testDefaultValue,
+        ),
       ).toEqual(realValue);
     });
   });

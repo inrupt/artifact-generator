@@ -31,7 +31,7 @@ module.exports = class CommandLine {
     if (data.runNpmPublish) {
       try {
         const publishedVersion = ChildProcess.execSync(
-          `npm view ${data.artifactName} version`
+          `npm view ${data.artifactName} version`,
         )
           .toString()
           .trim();
@@ -39,11 +39,11 @@ module.exports = class CommandLine {
         cloneData.version = publishedVersion;
 
         debug(
-          `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`
+          `Artifact [${data.artifactName}] in registry [${data.npmRegistry}] currently has version [${publishedVersion}]`,
         );
       } catch (error) {
         debug(
-          `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}] (this probably just means the module has never been published). Error: ${error}`
+          `Error trying to find the published version of artifact [${data.artifactName}] in registry [${data.npmRegistry}] (this probably just means the module has never been published). Error: ${error}`,
         );
         // Its OK to ignore this. It just means that the module hasn't been
         // published before.
@@ -143,7 +143,7 @@ module.exports = class CommandLine {
         data.supportBundling ? "(and bundling) " : ""
       }for artifact [${data.artifactName}] in directory [${
         data.outputDirectoryForArtifact
-      }]...`
+      }]...`,
     );
 
     const commandLine = `cd ${data.outputDirectoryForArtifact} && npm install${
@@ -156,7 +156,7 @@ module.exports = class CommandLine {
         data.supportBundling ? "(and bundling) " : ""
       }for artifact [${data.artifactName}] in directory [${
         data.outputDirectoryForArtifact
-      }].`
+      }].`,
     );
 
     return { ...data, ranNpmInstall: true }; // Merge the answers in with the data and return
@@ -169,7 +169,7 @@ module.exports = class CommandLine {
           data.artifactName
         }] in directory [${
           data.outputDirectory
-        }${getArtifactDirectorySourceCode(data)}/Java]...`
+        }${getArtifactDirectorySourceCode(data)}/Java]...`,
       );
       // Quick addition to also support Maven install for Java artifacts.
       const javaDirectory = `${
@@ -191,15 +191,15 @@ module.exports = class CommandLine {
 
   static runNpmPublish(data) {
     debug(
-      `Running 'npm publish' for artifact [${data.artifactName}] to registry [${data.npmRegistry}]...`
+      `Running 'npm publish' for artifact [${data.artifactName}] to registry [${data.npmRegistry}]...`,
     );
 
     ChildProcess.execSync(
-      `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`
+      `cd ${data.outputDirectoryForArtifact} && npm publish --registry ${data.npmRegistry}`,
     );
 
     debug(
-      `Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`
+      `Artifact [${data.artifactName}] has been published to registry [${data.npmRegistry}].`,
     );
 
     return { ...data, ...{ ranNpmPublish: true } }; // Merge the answers in with the data and return
@@ -222,15 +222,15 @@ module.exports = class CommandLine {
         if (vocab.inputResources.length !== 1) {
           debug(
             `We don't yet support generating Widoco output for vocabularies constructed from multiple input resources [${vocab.inputResources.join(
-              ", "
-            )}].`
+              ", ",
+            )}].`,
           );
           return;
         }
 
         if (vocab.termSelectionResource) {
           debug(
-            `Cannot generate Widoco output for vocabulary [${vocab.inputResources[0]}], as we don't yet support term selection (we're configured to select terms from [${vocab.termSelectionResource}]).`
+            `Cannot generate Widoco output for vocabulary [${vocab.inputResources[0]}], as we don't yet support term selection (we're configured to select terms from [${vocab.termSelectionResource}]).`,
           );
           return;
         }
@@ -247,8 +247,8 @@ module.exports = class CommandLine {
         vocabDirectory = vocabDirectory.substring(
           Math.max(
             vocabDirectory.lastIndexOf("/"),
-            vocabDirectory.lastIndexOf("#")
-          ) + 1
+            vocabDirectory.lastIndexOf("#"),
+          ) + 1,
         );
 
         // Now strip off any file extensions (if input was a local file
@@ -267,7 +267,7 @@ module.exports = class CommandLine {
         const log4jPropertyFile = `-Dlog4j.configuration=file:"./widoco.log4j.properties"`;
 
         debug(
-          `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}], and using Log4J configuration [${log4jPropertyFile}]...`
+          `Running Widoco for artifact [${data.artifactName}] using input [${inputResource}], writing to [${destDirectory}], and using Log4J configuration [${log4jPropertyFile}]...`,
         );
 
         const languageSwitch = vocab.widocoLanguages
@@ -280,12 +280,12 @@ module.exports = class CommandLine {
 
         debug(
           `Widoco documentation generated for [${inputResource}] in directory [${CommandLine.getParentFolder(
-            data.outputDirectory
+            data.outputDirectory,
           )}/Widoco]${
             vocab.widocoLanguages
               ? " in languages [" + vocab.widocoLanguages + "]"
               : ""
-          }.`
+          }.`,
         );
       });
     }

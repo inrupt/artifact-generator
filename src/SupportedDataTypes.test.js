@@ -35,12 +35,12 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await generator.generateVocab();
@@ -50,15 +50,15 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('NAMESPACE: "http://www.w3.org/2002/07/owl#"')
+      expect.stringContaining('NAMESPACE: "http://www.w3.org/2002/07/owl#"'),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("AllDifferent: new _VocabTerm(")
+      expect.stringContaining("AllDifferent: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`AllDifferent`)")
+      expect.stringContaining(".addLabelNoLanguage(`AllDifferent`)"),
     );
   });
 
@@ -93,12 +93,12 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await generator.generateVocab();
@@ -112,15 +112,15 @@ describe("Supported Data Type", () => {
     // we see the trailing hash when the 'a owl:Ontology' triple doesn't have
     // that hash.
     expect(indexOutput).toEqual(
-      expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"')
+      expect.stringContaining('NAMESPACE: "http://www.w3.org/2011/http#"'),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("Connection: new _VocabTerm(")
+      expect.stringContaining("Connection: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addLabel(`Connection`, "en")')
+      expect.stringContaining('.addLabel(`Connection`, "en")'),
     );
   });
 
@@ -145,12 +145,12 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await expect(generator.generateVocab()).rejects.toThrow("not a valid IRI!");
@@ -177,16 +177,16 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await expect(generator.generateVocab()).rejects.toThrow(
-      "constantIriTooMany"
+      "constantIriTooMany",
     );
   });
 
@@ -211,16 +211,16 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await expect(generator.generateVocab()).rejects.toThrow(
-      "constantStringTooMany"
+      "constantStringTooMany",
     );
   });
 
@@ -245,16 +245,16 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await expect(generator.generateVocab()).rejects.toThrow(
-      "constantStringDifferentLanguages"
+      "constantStringDifferentLanguages",
     );
   });
 
@@ -286,12 +286,12 @@ describe("Supported Data Type", () => {
           "template",
           "solidCommonVocabDependent",
           "javascript",
-          "vocab.hbs"
+          "vocab.hbs",
         ),
         sourceFileExtension: "js",
         // We need to provide the artifact-specific output directory.
         outputDirectoryForArtifact: outputDirectoryJavaScript,
-      }
+      },
     );
 
     await generator.generateVocab();
@@ -301,99 +301,101 @@ describe("Supported Data Type", () => {
       .toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class1: new _VocabTerm(")
+      expect.stringContaining("class1: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`A rdfs class`)")
-    );
-
-    expect(indexOutput).toEqual(
-      expect.stringContaining("class2: new _VocabTerm(")
-    );
-    expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`An owl class`)")
+      expect.stringContaining(".addLabelNoLanguage(`A rdfs class`)"),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class3: new _VocabTerm(")
+      expect.stringContaining("class2: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`A skos concept class`)")
+      expect.stringContaining(".addLabelNoLanguage(`An owl class`)"),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("class4: new _VocabTerm(")
+      expect.stringContaining("class3: new _VocabTerm("),
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`A skos concept class`)"),
+    );
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining("class4: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        ".addLabelNoLanguage(`A schema payment status type class`)"
-      )
+        ".addLabelNoLanguage(`A schema payment status type class`)",
+      ),
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("class5: new _VocabTerm(")
+      expect.not.stringContaining("class5: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
-      expect.not.stringContaining(".addLabelNoLanguage(`Not supported class`)")
-    );
-
-    expect(indexOutput).toEqual(
-      expect.stringContaining("property1: new _VocabTerm(")
-    );
-    expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`A rdf property`)")
+      expect.not.stringContaining(".addLabelNoLanguage(`Not supported class`)"),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property2: new _VocabTerm(")
+      expect.stringContaining("property1: new _VocabTerm("),
+    );
+    expect(indexOutput).toEqual(
+      expect.stringContaining(".addLabelNoLanguage(`A rdf property`)"),
+    );
+
+    expect(indexOutput).toEqual(
+      expect.stringContaining("property2: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        ".addLabelNoLanguage(`A rdfs data type property`)"
-      )
+        ".addLabelNoLanguage(`A rdfs data type property`)",
+      ),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property3: new _VocabTerm(")
+      expect.stringContaining("property3: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`An owl object property`)")
+      expect.stringContaining(".addLabelNoLanguage(`An owl object property`)"),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property4: new _VocabTerm(")
+      expect.stringContaining("property4: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        ".addLabelNoLanguage(`An owl named individual property`)"
-      )
+        ".addLabelNoLanguage(`An owl named individual property`)",
+      ),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property5: new _VocabTerm(")
+      expect.stringContaining("property5: new _VocabTerm("),
     );
     expect(indexOutput).toEqual(
       expect.stringContaining(
-        ".addLabelNoLanguage(`An owl annotation property`)"
-      )
+        ".addLabelNoLanguage(`An owl annotation property`)",
+      ),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("property6: new _VocabTerm(")
+      expect.stringContaining("property6: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`An owl datatype property`)")
+      expect.stringContaining(
+        ".addLabelNoLanguage(`An owl datatype property`)",
+      ),
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("property7: new _VocabTerm(")
+      expect.not.stringContaining("property7: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
-        ".addLabelNoLanguage(`Not supported property`)"
-      )
+        ".addLabelNoLanguage(`Not supported property`)",
+      ),
     );
     // });
     //
@@ -401,35 +403,35 @@ describe("Supported Data Type", () => {
     //   var indexOutput = fs.readFileSync(`${outputDirectory}/index.js`).toString();
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("literal1: new _VocabTerm(")
+      expect.stringContaining("literal1: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining(".addLabelNoLanguage(`A rdfs literal`)")
+      expect.stringContaining(".addLabelNoLanguage(`A rdfs literal`)"),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining("literal2: new _VocabTerm(")
+      expect.stringContaining("literal2: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addMessage(`Welcome`, "en")')
+      expect.stringContaining('.addMessage(`Welcome`, "en")'),
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addMessage(`Bienvenido`, "es")')
+      expect.stringContaining('.addMessage(`Bienvenido`, "es")'),
     );
     expect(indexOutput).toEqual(
-      expect.stringContaining('.addMessage(`Bienvenue`, "fr")')
+      expect.stringContaining('.addMessage(`Bienvenue`, "fr")'),
     );
 
     expect(indexOutput).toEqual(
-      expect.not.stringContaining("literal3: new _VocabTerm(")
+      expect.not.stringContaining("literal3: new _VocabTerm("),
     );
 
     expect(indexOutput).toEqual(
       expect.not.stringContaining(
-        ".addLabelNoLanguage(`Not supported literal`)"
-      )
+        ".addLabelNoLanguage(`Not supported literal`)",
+      ),
     );
   });
 });

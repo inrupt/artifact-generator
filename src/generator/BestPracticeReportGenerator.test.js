@@ -22,7 +22,7 @@ describe("Best practices report generator", () => {
     it("should generate empty report", () => {
       const report = BestPracticeReportGenerator.buildComplianceReport(
         emptyVocab,
-        {}
+        {},
       );
       expect(report.totalTermCount).toEqual(0);
     });
