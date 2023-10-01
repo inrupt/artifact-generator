@@ -45,7 +45,7 @@
     "rdf-ext": "^1.3.5",
     "rdfa-streaming-parser": "^2.0.1",
     "rdfxml-streaming-parser": "^2.2.1",
-    "rimraf": "^4.3.1",
+    "rimraf": "^5.0.1",
     "string-to-stream": "^3.0.1",
     "yargs": "^17.7.1"
   },
@@ -80,5 +80,8 @@
   "homepage": "https://github.com/inrupt/artifact-generator#readme",
   "directories": {
     "test": "test"
+  },
+  "engines": {
+    "node": "^14.17.0 || ^16.0.0 || ^18.0.0 || ^20.0.0"
   }
 }

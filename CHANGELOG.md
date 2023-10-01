@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+### Deprecation notice
+
+- In the next major version, support for Node 14 will be removed.
+
+### New features
+
+- Support has been added for Node 18 and Node 20.
+
 ## 3.0.2 2023-04-13 (removed tag 3.0.1)
 
 - Bug reported by Pete Edwards where 'vocabularyIriOverride' is not being reset
