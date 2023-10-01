@@ -96,7 +96,7 @@ ConfigFileGenerator.mockImplementation(() => {
           artifactGeneratorVersion: "^7.8.9",
           generatedTimestamp: "1999/12/31 23:59",
         },
-        targetPath
+        targetPath,
       );
     },
     generateConfigFile: (targetPath) => {
@@ -108,7 +108,7 @@ ConfigFileGenerator.mockImplementation(() => {
           artifactGeneratorVersion: "^7.8.9",
           generatedTimestamp: "1999/12/31 23:59",
         },
-        targetPath
+        targetPath,
       );
     },
   };
@@ -193,7 +193,7 @@ describe("App tests", () => {
       debugInstance.disable("artifact-generator:*");
 
       ArtifactGenerator.mockImplementation(
-        locallyAndRemotelyPublishingGenerator
+        locallyAndRemotelyPublishingGenerator,
       );
 
       const config = {
@@ -288,7 +288,7 @@ describe("App tests", () => {
         "test",
         "resources",
         "validation",
-        "vocab-list.yml"
+        "vocab-list.yml",
       );
       const argv = {
         _: ["validate"],
@@ -306,7 +306,7 @@ describe("App tests", () => {
         "test",
         "resources",
         "vocab",
-        "no-artifacts.yml"
+        "no-artifacts.yml",
       );
       const argv = {
         _: ["validate"],
@@ -320,7 +320,7 @@ describe("App tests", () => {
         "test",
         "resources",
         "validation",
-        "missing-local-vocab-list.yml"
+        "missing-local-vocab-list.yml",
       );
       const argv = {
         _: ["validate"],
@@ -334,7 +334,7 @@ describe("App tests", () => {
         "test",
         "resources",
         "validation",
-        "inexistent-online-vocab-list.yml"
+        "inexistent-online-vocab-list.yml",
       );
       const argv = {
         _: ["validate"],
@@ -348,7 +348,7 @@ describe("App tests", () => {
         "test",
         "resources",
         "validation",
-        "vocab-list-containing-invalid-syntax.yml"
+        "vocab-list-containing-invalid-syntax.yml",
       );
       const argv = {
         _: ["validate"],

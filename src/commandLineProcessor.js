@@ -30,19 +30,19 @@ function validateCommandLine(argv) {
     throw new Error(
       `Exactly one command is expected (got [${
         argv._.length
-      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}]. (Ensure wildcard file patterns are enclosed in double-quotes!)`
+      }], [${argv._.toString()}]), expected one of [${SUPPORTED_COMMANDS}]. (Ensure wildcard file patterns are enclosed in double-quotes!)`,
     );
   }
 
   if (typeof argv._[0] === "number") {
     throw new Error(
-      `Invalid command: command must be a string, but we got the number [${argv._[0]}]. Expected one of [${SUPPORTED_COMMANDS}].`
+      `Invalid command: command must be a string, but we got the number [${argv._[0]}]. Expected one of [${SUPPORTED_COMMANDS}].`,
     );
   }
 
   if (SUPPORTED_COMMANDS.indexOf(argv._[0]) === -1) {
     throw new Error(
-      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of [${SUPPORTED_COMMANDS}].`
+      `Unknown command: [${argv._[0]}] is not a recognized command. Expected one of [${SUPPORTED_COMMANDS}].`,
     );
   }
   return true;
@@ -67,19 +67,19 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .array("inputResources")
             .describe(
               "inputResources",
-              "One or more ontology resources (i.e. local RDF files, or HTTP URI's) used to generate source-code artifacts representing the contained vocabulary terms."
+              "One or more ontology resources (i.e. local RDF files, or HTTP URI's) used to generate source-code artifacts representing the contained vocabulary terms.",
             )
 
             .alias("l", "vocabListFile")
             .describe(
               "vocabListFile",
-              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
+              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).",
             )
 
             .alias("li", "vocabListFileIgnore")
             .describe(
               "vocabListFileIgnore",
-              "Globbing pattern for files or directories to ignore when searching for vocabulary list files."
+              "Globbing pattern for files or directories to ignore when searching for vocabulary list files.",
             )
 
             // This override is really only relevant if we are generating from a
@@ -88,13 +88,13 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .alias("no", "namespaceIriOverride")
             .describe(
               "namespaceIriOverride",
-              "Overrides our namespace determination code to provide an explicit namespace IRI."
+              "Overrides our namespace determination code to provide an explicit namespace IRI.",
             )
 
             .alias("lv", "solidCommonVocabVersion")
             .describe(
               "solidCommonVocabVersion",
-              "The version of the Vocab Term to depend on."
+              "The version of the Vocab Term to depend on.",
             )
             .default("solidCommonVocabVersion", "^0.5.3")
 
@@ -102,7 +102,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .boolean("runNpmInstall")
             .describe(
               "runNpmInstall",
-              "If set will attempt to NPM install the generated artifact from within the output directory."
+              "If set will attempt to NPM install the generated artifact from within the output directory.",
             )
             .default("runNpmInstall", false)
 
@@ -110,33 +110,33 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .array("publish")
             .describe(
               "publish",
-              "the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag."
+              "the values provided to this option will be used as keys to trigger publication according to configurations in the associated YAML file. If not using a YAML file, this option can be used as a flag.",
             )
 
             .alias("tsr", "termSelectionResource")
             .describe(
               "termSelectionResource",
-              "Generates Vocab Terms from only the specified ontology resource (file or IRI)."
+              "Generates Vocab Terms from only the specified ontology resource (file or IRI).",
             )
 
             .alias("av", "artifactVersion")
             .describe(
               "artifactVersion",
-              "The version of the artifact(s) to be generated."
+              "The version of the artifact(s) to be generated.",
             )
             .default("artifactVersion", "0.0.1")
 
             .alias("mnp", "moduleNamePrefix")
             .describe(
               "moduleNamePrefix",
-              "A prefix for the name of the output module"
+              "A prefix for the name of the output module",
             )
             .default("moduleNamePrefix", "generated-vocab-")
 
             .alias("nr", "npmRegistry")
             .describe(
               "npmRegistry",
-              "The NPM Registry where artifacts will be published"
+              "The NPM Registry where artifacts will be published",
             )
             .default("npmRegistry", "http://localhost:4873")
 
@@ -144,21 +144,21 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .boolean("runWidoco")
             .describe(
               "runWidoco",
-              "If set will run Widoco to generate documentation for this vocabulary."
+              "If set will run Widoco to generate documentation for this vocabulary.",
             )
 
             .alias("s", "supportBundling")
             .boolean("supportBundling")
             .describe(
               "supportBundling",
-              "If set will use bundling support within generated artifact (currently supports Rollup only)."
+              "If set will use bundling support within generated artifact (currently supports Rollup only).",
             )
             .default("supportBundling", false)
 
             .boolean("force")
             .describe(
               "force",
-              "Forces generation, even if the target artifacts are considered up-to-date"
+              "Forces generation, even if the target artifacts are considered up-to-date",
             )
             .alias("f", "force")
             .default("force", false)
@@ -166,7 +166,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .boolean("reportBestPracticeCompliance")
             .describe(
               "reportBestPracticeCompliance",
-              "For each vocabulary, add a report on its compliance to the Inrupt vocabulary Best Practice guidelines (added to the file's comment header)"
+              "For each vocabulary, add a report on its compliance to the Inrupt vocabulary Best Practice guidelines (added to the file's comment header)",
             )
             .alias("bp", "reportBestPracticeCompliance")
             .default("reportBestPracticeCompliance", true)
@@ -174,7 +174,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .boolean("clearOutputDirectory")
             .describe(
               "clearOutputDirectory",
-              "Deletes the entire output directory before generation"
+              "Deletes the entire output directory before generation",
             )
             .alias("c", "clearOutputDirectory")
             .default("clearOutputDirectory", false)
@@ -193,7 +193,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             throw new Error(message);
           }
           return runGeneration(argv);
-        }
+        },
       )
       .command(
         CommandLine.COMMAND_INITIALIZE(),
@@ -202,7 +202,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
         (yargs) => yargs,
         (argv) => {
           return runInitialization(argv);
-        }
+        },
       )
       .command(
         CommandLine.COMMAND_VALIDATE(),
@@ -212,12 +212,12 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .alias("l", "vocabListFile")
             .describe(
               "vocabListFile",
-              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
+              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).",
             )
             .demandOption(["vocabListFile"]),
         (argv) => {
           return runValidation(argv);
-        }
+        },
       )
       .command(
         CommandLine.COMMAND_WATCH(),
@@ -229,12 +229,12 @@ function processCommandLine(exitOnFail, commandLineArgs) {
             .alias("l", "vocabListFile")
             .describe(
               "vocabListFile",
-              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages)."
+              "Name of a YAML file providing a list of individual vocabs to bundle together into a single artifact (or potentially multiple artifacts for multiple programming languages).",
             )
             .demandOption(["vocabListFile"]),
         (argv) => {
           return runWatcher(argv);
-        }
+        },
       )
 
       // The following options are shared between the different commands
@@ -242,7 +242,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
       .boolean("quiet")
       .describe(
         "quiet",
-        `If set will not display logging output to console (but you can still use the DEBUG environment variable, set to 'artifact-generator:*').`
+        `If set will not display logging output to console (but you can still use the DEBUG environment variable, set to 'artifact-generator:*').`,
       )
       .default("quiet", false)
 
@@ -250,7 +250,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
       .boolean("noPrompt")
       .describe(
         "noPrompt",
-        "If set will not ask any interactive questions and will attempt to perform artifact generation automatically."
+        "If set will not ask any interactive questions and will attempt to perform artifact generation automatically.",
       )
       .default("noPrompt", false)
 
@@ -258,7 +258,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
       .describe(
         "outputDirectory",
         "The output directory for the" +
-          " generated artifacts (defaults to the current directory)."
+          " generated artifacts (defaults to the current directory).",
       )
       .default("outputDirectory", ".")
       .check(validateCommandLine)
@@ -292,8 +292,8 @@ function runGeneration(argv) {
       debug(
         `\nGeneration process successful to directory [${path.join(
           data.outputDirectory,
-          getArtifactDirectoryRoot(data)
-        )}]!`
+          getArtifactDirectoryRoot(data),
+        )}]!`,
       );
     })
     .catch((error) => {
@@ -339,7 +339,7 @@ async function runWatcher(argv) {
         plural ? "s" : ""
       } on [${watcherCount}] vocabulary bundle configuration file${
         plural ? "s" : ""
-      }.`
+      }.`,
     );
 
     debug("Press Enter to terminate");

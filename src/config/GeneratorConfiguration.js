@@ -27,7 +27,7 @@ const ROLLUP_DEFAULT = {
         "template",
         "generic",
         "javascript",
-        "rollup.config.hbs"
+        "rollup.config.hbs",
       ),
     },
   ],
@@ -58,7 +58,7 @@ const NPM_DEFAULT = {
         "template",
         "stringLiteral",
         "javascript",
-        "package.hbs"
+        "package.hbs",
       ),
     },
     {
@@ -89,7 +89,7 @@ const DEFAULT_CLI_ARTIFACT = [
       "template",
       "stringLiteral",
       "javascript",
-      "vocab.hbs"
+      "vocab.hbs",
     ),
   },
 ];
@@ -105,7 +105,7 @@ class GeneratorConfiguration {
    */
   constructor(initialConfig) {
     debug(
-      `You are running version [${packageDotJson.version}] of the Artifact Generator.`
+      `You are running version [${packageDotJson.version}] of the Artifact Generator.`,
     );
 
     if (initialConfig.vocabListFile) {
@@ -128,7 +128,7 @@ class GeneratorConfiguration {
 
     GeneratorConfiguration.normalizeConfigPaths(
       this.configuration,
-      initialConfig.vocabListFile || CONFIG_SOURCE_COMMAND_LINE
+      initialConfig.vocabListFile || CONFIG_SOURCE_COMMAND_LINE,
     );
 
     // Extend the received arguments with contextual data.
@@ -153,7 +153,7 @@ class GeneratorConfiguration {
       normalizedConfig.outputDirectory =
         GeneratorConfiguration.normalizeAbsolutePath(
           normalizedConfig.outputDirectory,
-          process.cwd()
+          process.cwd(),
         );
     }
 
@@ -171,8 +171,8 @@ class GeneratorConfiguration {
           // Vocabularies are all made relative to the YAML file
           GeneratorConfiguration.normalizeAbsolutePath(
             vocabConfig.inputResources[i],
-            path.dirname(normalizedConfigPath)
-          )
+            path.dirname(normalizedConfigPath),
+          ),
         );
       }
     }
@@ -193,8 +193,8 @@ class GeneratorConfiguration {
       // Templates are all made relative to the YAML file
       GeneratorConfiguration.normalizeAbsolutePath(
         relativePath,
-        path.dirname(configSource)
-      )
+        path.dirname(configSource),
+      ),
     );
   }
 
@@ -213,7 +213,7 @@ class GeneratorConfiguration {
   static normalizeTemplatePath(
     templatePathInternal,
     templatePathCustom,
-    configSource
+    configSource,
   ) {
     let normalizedTemplate;
     if (templatePathInternal) {
@@ -221,16 +221,16 @@ class GeneratorConfiguration {
       // internal templates directory.
       normalizedTemplate = GeneratorConfiguration.normalizeAbsolutePath(
         path.join(__dirname, RELATIVE_TEMPLATE_DIRECTORY, templatePathInternal),
-        process.cwd()
+        process.cwd(),
       );
     } else if (templatePathCustom) {
       normalizedTemplate = GeneratorConfiguration.normalizeRelativePath(
         templatePathCustom,
-        configSource
+        configSource,
       );
     } else {
       throw new Error(
-        `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${configSource}]).`
+        `We require either an internal or a custom template file, but neither was provided (working with a normalized configuration file path of [${configSource}]).`,
       );
     }
     return normalizedTemplate;
@@ -252,11 +252,11 @@ class GeneratorConfiguration {
               GeneratorConfiguration.normalizeTemplatePath(
                 versioningFile.templateInternal,
                 versioningFile.templateCustom,
-                configSource
+                configSource,
               );
 
             return normalizedVersioningFile;
-          }
+          },
         );
     }
 
@@ -264,7 +264,7 @@ class GeneratorConfiguration {
     normalizedConfig.artifactToGenerate = config.artifactToGenerate.map(
       (artifactConfig) => {
         return this.normalizePerArtifactTemplates(artifactConfig, configSource);
-      }
+      },
     );
 
     if (configSource !== CONFIG_SOURCE_COMMAND_LINE) {
@@ -272,7 +272,7 @@ class GeneratorConfiguration {
       for (let i = 0; i < normalizedConfig.vocabList.length; i += 1) {
         normalizedConfig.vocabList[i] = GeneratorConfiguration.normalizePath(
           normalizedConfig.vocabList[i],
-          configSource
+          configSource,
         );
       }
     }
@@ -293,7 +293,7 @@ class GeneratorConfiguration {
       GeneratorConfiguration.normalizeTemplatePath(
         artifactConfig.templateInternal,
         artifactConfig.templateCustom,
-        configSource
+        configSource,
       );
 
     if (normalizedArtifactConfig.packaging) {
@@ -312,7 +312,7 @@ class GeneratorConfiguration {
                 GeneratorConfiguration.normalizeTemplatePath(
                   packagingTemplate.templateInternal,
                   packagingTemplate.templateCustom,
-                  configSource
+                  configSource,
                 );
 
               return normalizedPackagingTemplate;
@@ -336,12 +336,12 @@ class GeneratorConfiguration {
     let normalizedConfig = config;
     const normalizedConfigSource = GeneratorConfiguration.normalizeAbsolutePath(
       configSource,
-      process.cwd()
+      process.cwd(),
     );
 
     normalizedConfig = GeneratorConfiguration.normalizeInputResources(
       normalizedConfig,
-      normalizedConfigSource
+      normalizedConfigSource,
     );
 
     if (config.termSelectionResource) {
@@ -349,8 +349,8 @@ class GeneratorConfiguration {
         path.dirname(normalizedConfigSource),
         GeneratorConfiguration.normalizeAbsolutePath(
           config.termSelectionResource,
-          path.dirname(normalizedConfigSource)
-        )
+          path.dirname(normalizedConfigSource),
+        ),
       );
     }
 
@@ -379,7 +379,7 @@ class GeneratorConfiguration {
   static validateArtifact(artifact) {
     if (!artifact.artifactDirectoryName) {
       throw new Error(
-        `The target directory name for the [${artifact.programmingLanguage}] artifact is missing. Please set a value for 'artifactDirectoryName'.`
+        `The target directory name for the [${artifact.programmingLanguage}] artifact is missing. Please set a value for 'artifactDirectoryName'.`,
       );
     }
 
@@ -387,7 +387,7 @@ class GeneratorConfiguration {
       artifact.packaging.forEach((packagingConfig) => {
         if (!packagingConfig.packagingTemplates) {
           throw new Error(
-            `No templates associated to packaging tool [${packagingConfig.packagingTool}]`
+            `No templates associated to packaging tool [${packagingConfig.packagingTool}]`,
           );
         }
       });
@@ -408,12 +408,12 @@ class GeneratorConfiguration {
     // Check version mismatch.
     if (!config.artifactGeneratorVersion) {
       throw new Error(
-        `Missing 'artifactGeneratorVersion' field in [${configSource}].`
+        `Missing 'artifactGeneratorVersion' field in [${configSource}].`,
       );
     }
     if (config.artifactGeneratorVersion !== packageDotJson.version) {
       debug(
-        `You are running version [${packageDotJson.version}] of the Artifact Generator, but reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/artifact-generator/releases to verify compatibility.`
+        `You are running version [${packageDotJson.version}] of the Artifact Generator, but reading a configuration file validated for version [${config.artifactGeneratorVersion}]. Please check https://github.com/inrupt/artifact-generator/releases to verify compatibility.`,
       );
     }
 
@@ -421,7 +421,7 @@ class GeneratorConfiguration {
     if (!config.artifactToGenerate) {
       throw new Error(
         "No artifacts found: nothing to generate. " +
-          `Please edit the YAML configuration file [${configSource}] to provide artifacts to be generated.`
+          `Please edit the YAML configuration file [${configSource}] to provide artifacts to be generated.`,
       );
     }
 
@@ -433,7 +433,7 @@ class GeneratorConfiguration {
     if (!config.vocabList) {
       throw new Error(
         "No vocabularies found: nothing to generate. " +
-          `Please edit the YAML configuration file [${configSource}] to provide vocabularies to generate from.`
+          `Please edit the YAML configuration file [${configSource}] to provide vocabularies to generate from.`,
       );
     }
 
@@ -443,14 +443,14 @@ class GeneratorConfiguration {
     config.vocabList.forEach((list, vocabIndex) => {
       if (list.inputResources === undefined) {
         throw new Error(
-          `The YAML configuration file [${configSource}] has no input resources (in vocab position [${vocabIndex}]) - check if you have a typo in your intended 'inputResources' fieldname.`
+          `The YAML configuration file [${configSource}] has no input resources (in vocab position [${vocabIndex}]) - check if you have a typo in your intended 'inputResources' fieldname.`,
         );
       }
 
       list.inputResources.forEach((resource, inputIndex) => {
         if (typeof resource !== "string") {
           throw new Error(
-            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in vocab position [${vocabIndex}] and input resource position [${inputIndex}]) - check if you mistakenly have a trailing colon ':' character.`
+            `The YAML configuration file [${configSource}] has an invalid non-string input resource (in vocab position [${vocabIndex}] and input resource position [${inputIndex}]) - check if you mistakenly have a trailing colon ':' character.`,
           );
         }
       });
@@ -469,7 +469,7 @@ class GeneratorConfiguration {
     // must be specified (except for initialization).
     if (mode !== CommandLine.COMMAND_INITIALIZE() && !args.inputResources) {
       throw new Error(
-        "Missing input resource. Please provide either a YAML configuration file, or at least one input resource."
+        "Missing input resource. Please provide either a YAML configuration file, or at least one input resource.",
       );
     }
   }
@@ -492,7 +492,7 @@ class GeneratorConfiguration {
       if (configuration.license) {
         configuration.license.path = this.normalizeRelativePath(
           configuration.license.path,
-          configFile
+          configFile,
         );
 
         if (configuration.license.header) {
@@ -501,9 +501,9 @@ class GeneratorConfiguration {
           configuration.license.header = fs.readFileSync(
             this.normalizeRelativePath(
               configuration.license.header,
-              configFile
+              configFile,
             ),
-            "utf8"
+            "utf8",
           );
         }
       }
@@ -511,7 +511,7 @@ class GeneratorConfiguration {
       GeneratorConfiguration.validateConfiguration(configuration, configFile);
     } catch (error) {
       throw new Error(
-        `Failed to read configuration file [${configFile}]: ${error}`
+        `Failed to read configuration file [${configFile}]: ${error}`,
       );
     }
 
@@ -529,7 +529,7 @@ class GeneratorConfiguration {
       // If the vocab passed on the CLI is absolute, it is normalized
       vocab.inputResources[i] = GeneratorConfiguration.normalizeAbsolutePath(
         vocab.inputResources[i],
-        process.cwd()
+        process.cwd(),
       );
     }
 
@@ -607,7 +607,7 @@ class GeneratorConfiguration {
       cliConfig.artifactToGenerate[0].packaging.push(ROLLUP_DEFAULT);
     } else {
       cliConfig.artifactToGenerate[0].packaging[0].packagingTemplates.push(
-        WRAPPER_DEFAULT
+        WRAPPER_DEFAULT,
       );
     }
 
@@ -657,7 +657,7 @@ class GeneratorConfiguration {
    */
   askAdditionalQuestions() {
     this.configuration = CommandLine.findPublishedVersionOfModule(
-      this.configuration
+      this.configuration,
     );
   }
 
@@ -704,7 +704,7 @@ class GeneratorConfiguration {
         this.configuration.vocabList[i].termSelectionResource;
       if (termSelectionResource) {
         const modifiedTime = await Resource.getResourceLastModificationTime(
-          termSelectionResource
+          termSelectionResource,
         );
 
         if (timestamp < modifiedTime) {
@@ -723,9 +723,8 @@ class GeneratorConfiguration {
         if (addAllVocabs) {
           resources.push(vocabResource);
         } else {
-          const modifiedTime = await Resource.getResourceLastModificationTime(
-            vocabResource
-          );
+          const modifiedTime =
+            await Resource.getResourceLastModificationTime(vocabResource);
 
           if (timestamp < modifiedTime) {
             resources.push(vocabResource);

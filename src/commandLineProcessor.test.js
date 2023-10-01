@@ -29,7 +29,7 @@ describe("Command line argument handling", () => {
     const nonExistFile = "should-not-exist.yml";
     const invalidArguments = ["validate", "--vocabListFile", nonExistFile];
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
-      nonExistFile
+      nonExistFile,
     );
   });
 
@@ -84,7 +84,7 @@ describe("Command line argument handling", () => {
 
     // Deliberately provide non-existent file...
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
-      nonExistFile
+      nonExistFile,
     );
   });
 
@@ -106,7 +106,7 @@ describe("Command line argument handling", () => {
   it("should fail generation if no input files", () => {
     const invalidArguments = ["generate", "--noPrompt"];
     expect(() => processCommandLine(false, invalidArguments)).toThrow(
-      "You must provide input"
+      "You must provide input",
     );
   });
 
@@ -119,7 +119,7 @@ describe("Command line argument handling", () => {
       "--noPrompt",
     ];
     await expect(processCommandLine(false, invalidArguments)).rejects.toThrow(
-      "Generation process failed"
+      "Generation process failed",
     );
   });
 
@@ -138,7 +138,7 @@ describe("Command line argument handling", () => {
 
   it("should throw if no command", () => {
     expect(() =>
-      processCommandLine(false, ["--vocabListFile", "some-dummy-file.yml"])
+      processCommandLine(false, ["--vocabListFile", "some-dummy-file.yml"]),
     ).toThrow("one command is expected");
   });
 
@@ -148,7 +148,7 @@ describe("Command line argument handling", () => {
         "666",
         "--vocabListFile",
         "some-dummy-file.yml",
-      ])
+      ]),
     ).toThrow("but we got the number [666]");
   });
 
@@ -158,7 +158,7 @@ describe("Command line argument handling", () => {
         "Unknown-command",
         "--vocabListFile",
         "some-dummy-file.yml",
-      ])
+      ]),
     ).toThrow("Unknown command");
   });
 });

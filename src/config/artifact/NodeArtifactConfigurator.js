@@ -6,7 +6,7 @@ const ArtifactConfigurator = require("../ArtifactConfigurator");
 const DEFAULT_TEMPLATE = path.join(
   "solidCommonVocabDependent",
   "javascript",
-  "vocab.hbs"
+  "vocab.hbs",
 );
 const DEFAULT_EXTENSION = "js";
 const LANGUAGE = "JavaScript";
@@ -42,7 +42,7 @@ const NPM_PACKAGING_TEMPLATES_PROMPT = [
     default: path.join(
       "solidCommonVocabDependent",
       "javascript",
-      "package.hbs"
+      "package.hbs",
     ),
   },
   {

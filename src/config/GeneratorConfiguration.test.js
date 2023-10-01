@@ -148,7 +148,7 @@ describe("Generator configuration", () => {
     it("should fail if the YAML config does not provide an artifactName", () => {
       expect(() => {
         GeneratorConfiguration.fromConfigFile(
-          "./test/resources/yamlConfig/vocab-list-no-name.yml"
+          "./test/resources/yamlConfig/vocab-list-no-name.yml",
         );
       }).toThrow("Missing 'artifactName' field");
     });
@@ -156,7 +156,7 @@ describe("Generator configuration", () => {
     it("should fail if the YAML config does not provide a artifactGeneratorVersion", () => {
       expect(() => {
         GeneratorConfiguration.fromConfigFile(
-          "./test/resources/yamlConfig/vocab-list-no-version.yml"
+          "./test/resources/yamlConfig/vocab-list-no-version.yml",
         );
       }).toThrow("Missing 'artifactGeneratorVersion' field");
     });
@@ -171,7 +171,7 @@ describe("Generator configuration", () => {
 
       expect(generatorConfiguration.configuration.noPrompt).toBe(true);
       expect(generatorConfiguration.configuration.vocabList).toEqual(
-        EXPECTED_VOCAB_LIST_FROM_YAML
+        EXPECTED_VOCAB_LIST_FROM_YAML,
       );
     });
 
@@ -187,7 +187,7 @@ describe("Generator configuration", () => {
       // artifacts to be our actual version number, and not the version number
       // that appears in the incoming config file.
       expect(
-        generatorConfiguration.configuration.artifactGeneratorVersion
+        generatorConfiguration.configuration.artifactGeneratorVersion,
       ).toEqual(packageDotJson.version);
     });
 
@@ -207,11 +207,11 @@ describe("Generator configuration", () => {
           vocabListFile: configPath,
           noPrompt: true,
         },
-        undefined
+        undefined,
       );
 
       expect(
-        generatorConfiguration.configuration.artifactGeneratorVersion
+        generatorConfiguration.configuration.artifactGeneratorVersion,
       ).toEqual(packageDotJson.version);
     });
 
@@ -232,29 +232,29 @@ describe("Generator configuration", () => {
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
-          "vocab.hbs"
-        )
+          "vocab.hbs",
+        ),
       );
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0]
-          .packagingTemplates[0].template
+          .packagingTemplates[0].template,
       ).toEqual(
         path.join(
           "template",
           "solidCommonVocabDependent",
           "java",
           "rdf4j",
-          "pom.hbs"
-        )
+          "pom.hbs",
+        ),
       );
 
       expect(
         normalizedConfig.artifactToGenerate[0].packaging[0]
-          .packagingTemplates[1].template
+          .packagingTemplates[1].template,
       ).toEqual(path.join(configPath, "../../readme.hbs"));
 
       expect(normalizedConfig.artifactToGenerate[1].sourceCodeTemplate).toEqual(
-        path.join(configPath, "../anotherTemplateDirectory/javascript.hbs")
+        path.join(configPath, "../anotherTemplateDirectory/javascript.hbs"),
       );
 
       expect(generatorConfiguration.configuration.noPrompt).toBe(true);
@@ -275,11 +275,11 @@ describe("Generator configuration", () => {
           },
           artifactToGenerate: [],
         },
-        CONFIG_SOURCE_COMMAND_LINE
+        CONFIG_SOURCE_COMMAND_LINE,
       );
 
       expect(config.versioning.versioningTemplates[0].template).toEqual(
-        "template/templateXXXXInternal"
+        "template/templateXXXXInternal",
       );
     });
   });
@@ -290,7 +290,7 @@ describe("Generator configuration", () => {
 
       const programmingLanguage = path.join(
         configPath,
-        "missing-programming-language-template.yml"
+        "missing-programming-language-template.yml",
       );
 
       expect(
@@ -299,7 +299,7 @@ describe("Generator configuration", () => {
             _: ["generate"],
             vocabListFile: programmingLanguage,
             noPrompt: true,
-          })
+          }),
       ).toThrow("but neither was provided", programmingLanguage);
     });
 
@@ -313,7 +313,7 @@ describe("Generator configuration", () => {
             _: ["generate"],
             vocabListFile: packaging,
             noPrompt: true,
-          })
+          }),
       ).toThrow("but neither was provided", packaging);
     });
 
@@ -322,7 +322,7 @@ describe("Generator configuration", () => {
 
       const versioning = path.join(
         configPath,
-        "missing-versioning-template.yml"
+        "missing-versioning-template.yml",
       );
       expect(
         () =>
@@ -330,7 +330,7 @@ describe("Generator configuration", () => {
             _: ["generate"],
             vocabListFile: versioning,
             noPrompt: true,
-          })
+          }),
       ).toThrow("but neither was provided", versioning);
     });
   });
@@ -360,10 +360,10 @@ describe("Generator configuration", () => {
 
       expect(config.vocabList[0].vocabAcceptHeaderOverride).toBe("text/turtle");
       expect(config.vocabList[0].vocabContentTypeHeaderOverride).toBe(
-        "text/trig"
+        "text/trig",
       );
       expect(config.vocabList[0].vocabContentTypeHeaderFallback).toBe(
-        "text/trig-star"
+        "text/trig-star",
       );
     });
 
@@ -399,14 +399,14 @@ describe("Generator configuration", () => {
       ]);
 
       expect(generatorConfiguration.configuration.artifactToGenerate).toEqual(
-        DEFAULT_CLI_ARTIFACT
+        DEFAULT_CLI_ARTIFACT,
       );
     });
 
     it("should normalize absolute paths", async () => {
       const absolutePath = path.join(
         `${process.cwd()}`,
-        "test/resources/vocab/schema-snippet.ttl"
+        "test/resources/vocab/schema-snippet.ttl",
       );
       const generatorConfiguration = new GeneratorConfiguration({
         _: ["generate"],
@@ -433,9 +433,9 @@ describe("Generator configuration", () => {
 
       expect(
         generatorConfiguration.configuration.artifactToGenerate[0].packaging[0]
-          .publish[0].command
+          .publish[0].command,
       ).toEqual(
-        `npm unpublish --force --registry ${registry} && npm install --registry ${registry} && npm publish --registry ${registry}`
+        `npm unpublish --force --registry ${registry} && npm install --registry ${registry} && npm publish --registry ${registry}`,
       );
     });
   });
@@ -443,19 +443,19 @@ describe("Generator configuration", () => {
   describe("License", () => {
     it("should collect the license text from header if provided", () => {
       const generatorConfiguration = GeneratorConfiguration.fromConfigFile(
-        "test/resources/yamlConfig/vocab-license-header.yml"
+        "test/resources/yamlConfig/vocab-license-header.yml",
       );
       expect(generatorConfiguration.license.header).toEqual(
-        "// This is a mock license header."
+        "// This is a mock license header.",
       );
     });
 
     it("should collect and normalize license path and target file name", () => {
       const generatorConfiguration = GeneratorConfiguration.fromConfigFile(
-        "test/resources/yamlConfig/vocab-license.yml"
+        "test/resources/yamlConfig/vocab-license.yml",
       );
       expect(generatorConfiguration.license.path).toEqual(
-        "test/resources/license/license"
+        "test/resources/license/license",
       );
       expect(generatorConfiguration.license.fileName).toEqual("LICENSE");
     });
@@ -472,28 +472,28 @@ describe("Generator configuration", () => {
           "test",
           "resources",
           "yamlConfig",
-          "vocab-rdf-library-java-rdf4j.yml"
+          "vocab-rdf-library-java-rdf4j.yml",
         ),
       });
       const termSelectionResource = path.join(
         "test",
         "resources",
         "vocab",
-        "schema-inrupt-ext.ttl"
+        "schema-inrupt-ext.ttl",
       );
 
       const timeTermSelectionChanged = fs.statSync(
-        termSelectionResource
+        termSelectionResource,
       ).mtimeMs;
       const changedBefore =
         await generatorConfiguration.getInputResourcesChangedSince(
-          timeTermSelectionChanged - 10
+          timeTermSelectionChanged - 10,
         );
       expect(changedBefore).toContain(termSelectionResource);
 
       const changedAfter =
         await generatorConfiguration.getInputResourcesChangedSince(
-          timeTermSelectionChanged + 10
+          timeTermSelectionChanged + 10,
         );
       expect(changedAfter).not.toContain(termSelectionResource);
     });

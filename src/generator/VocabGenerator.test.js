@@ -25,31 +25,31 @@ const testDataset = rdf
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       RDFS.comment,
-      rdf.literal("Person dead or alive", "en")
+      rdf.literal("Person dead or alive", "en"),
     ),
 
     rdf.quad(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.label,
-      rdf.literal("givenName", "")
+      rdf.literal("givenName", ""),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
-      rdf.literal("A given name is the first name of a person.", "en")
+      rdf.literal("A given name is the first name of a person.", "en"),
     ),
 
     rdf.quad(SCHEMA_DOT_ORG.familyName, RDF.type, RDF.Property),
     rdf.quad(
       SCHEMA_DOT_ORG.familyName,
       RDFS.label,
-      rdf.literal("familyName", "fr")
+      rdf.literal("familyName", "fr"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.familyName,
       RDFS.comment,
-      rdf.literal("A family name is the last name of a person.", "en")
+      rdf.literal("A family name is the last name of a person.", "en"),
     ),
   ]);
 
@@ -59,68 +59,68 @@ const testDatasetExtension = rdf
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Person-fr", "fr")
+      rdf.literal("Person-fr", "fr"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Person-de", "de")
+      rdf.literal("Person-de", "de"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Person-es", "es")
+      rdf.literal("Person-es", "es"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       RDFS.comment,
-      rdf.literal("Person dead or alive fr", "fr")
+      rdf.literal("Person dead or alive fr", "fr"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       RDFS.comment,
-      rdf.literal("Person dead or alive de", "de")
+      rdf.literal("Person dead or alive de", "de"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       RDFS.comment,
-      rdf.literal("Person dead or alive es", "es")
+      rdf.literal("Person dead or alive es", "es"),
     ),
 
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Given Name", "en")
+      rdf.literal("Given Name", "en"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Given Name-fr", "fr")
+      rdf.literal("Given Name-fr", "fr"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Given Name-de", "de")
+      rdf.literal("Given Name-de", "de"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Given Name-es", "es")
+      rdf.literal("Given Name-es", "es"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
-      rdf.literal("Given name of a person fr", "fr")
+      rdf.literal("Given name of a person fr", "fr"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
-      rdf.literal("Given name of a person de", "de")
+      rdf.literal("Given name of a person de", "de"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
-      rdf.literal("Given name of a person es", "es")
+      rdf.literal("Given name of a person es", "es"),
     ),
   ]);
 
@@ -132,23 +132,23 @@ const owlOntologyDataset = rdf.dataset().addAll([
   rdf.quad(
     extSubject,
     DCTERMS.description,
-    rdf.literal("Extension comment with special ' character!")
+    rdf.literal("Extension comment with special ' character!"),
   ),
   rdf.quad(
     extSubject,
     VANN.preferredNamespacePrefix,
-    rdf.literal("ext-prefix")
+    rdf.literal("ext-prefix"),
   ),
   rdf.quad(
     extSubject,
     VANN.preferredNamespaceUri,
-    rdf.literal("http://rdf-extension.com/")
+    rdf.literal("http://rdf-extension.com/"),
   ),
   // This triple prevents the dataset from not defining any terms
   rdf.quad(
     rdf.namedNode("http://rdf-extension.com/dummyClass"),
     RDF.type,
-    OWL.Class
+    OWL.Class,
   ),
 ]);
 
@@ -174,7 +174,7 @@ const dataSetC = rdf
       SCHEMA_DOT_ORG.familyName,
       RDFS.label,
       rdf.literal("Family Name"),
-      "en"
+      "en",
     ),
   ]);
 
@@ -186,7 +186,7 @@ const dataSetD = rdf
       SCHEMA_DOT_ORG.familyName,
       SKOS.definition,
       rdf.literal("Family Name"),
-      "en"
+      "en",
     ),
   ]);
 
@@ -197,13 +197,13 @@ const overrideLabelTerms = rdf
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.label,
-      rdf.literal("Override Given Name")
+      rdf.literal("Override Given Name"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.familyName,
       RDFS.label,
       rdf.literal("Override Family Name"),
-      "en"
+      "en",
     ),
   ]);
 
@@ -213,18 +213,18 @@ const overrideCommentTerms = rdf
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       RDFS.comment,
-      rdf.literal("Override comment for Person")
+      rdf.literal("Override comment for Person"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       RDFS.comment,
-      rdf.literal("Override comment for Given Name")
+      rdf.literal("Override comment for Given Name"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.familyName,
       RDFS.comment,
       rdf.literal("Override comment for Family Name"),
-      "en"
+      "en",
     ),
   ]);
 
@@ -234,18 +234,18 @@ const overrideAtlNameTerms = rdf
     rdf.quad(
       SCHEMA_DOT_ORG.Person,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Alt Person")
+      rdf.literal("Alt Person"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.givenName,
       SCHEMA_DOT_ORG.alternateName,
-      rdf.literal("Alt Given Name")
+      rdf.literal("Alt Given Name"),
     ),
     rdf.quad(
       SCHEMA_DOT_ORG.familyName,
       SCHEMA_DOT_ORG.alternateName,
       rdf.literal("Alt Family Name"),
-      "en"
+      "en",
     ),
   ]);
 
@@ -306,12 +306,12 @@ describe("Vocab generator unit tests", () => {
         sourceCodeTemplate: "do-not-care",
       };
       await expect(vocabGenerator.generateVocab()).rejects.toThrow(
-        "Namespace IRI could not be determined"
+        "Namespace IRI could not be determined",
       );
 
       vocabGenerator.vocabData.termSelectionResource = "some-value-any-value";
       await expect(vocabGenerator.generateVocab()).rejects.toThrow(
-        vocabGenerator.vocabData.termSelectionResource
+        vocabGenerator.vocabData.termSelectionResource,
       );
     });
   });
@@ -326,7 +326,7 @@ describe("Vocab generator unit tests", () => {
     it("should create a simple JSON object with all the fields", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, testDataset]),
-        testDatasetExtension
+        testDatasetExtension,
       );
       expect(result.namespaceIri).toBe("https://schema.org/");
       expect(result.artifactName).toBe("generated-vocab-schema");
@@ -343,7 +343,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Person",
             language: "en",
           },
-        ])
+        ]),
       );
 
       expect(personLabels).toEqual(
@@ -354,7 +354,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Person-fr",
             language: "fr",
           },
-        ])
+        ]),
       );
       expect(personLabels).toEqual(
         expect.arrayContaining([
@@ -364,7 +364,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Person-de",
             language: "de",
           },
-        ])
+        ]),
       );
       expect(personLabels).toEqual(
         expect.arrayContaining([
@@ -374,12 +374,12 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Person-es",
             language: "es",
           },
-        ])
+        ]),
       );
 
       expect(result.properties[0].name).toBe("givenName");
       expect(result.properties[0].comment).toBe(
-        "A given name is the first name of a person."
+        "A given name is the first name of a person.",
       );
       const givenNameLabels = result.properties[0].labels;
 
@@ -391,7 +391,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Given Name",
             language: "en",
           },
-        ])
+        ]),
       );
       expect(givenNameLabels).toEqual(
         expect.arrayContaining([
@@ -401,7 +401,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Given Name-fr",
             language: "fr",
           },
-        ])
+        ]),
       );
       expect(givenNameLabels).toEqual(
         expect.arrayContaining([
@@ -411,7 +411,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Given Name-de",
             language: "de",
           },
-        ])
+        ]),
       );
       expect(givenNameLabels).toEqual(
         expect.arrayContaining([
@@ -421,14 +421,14 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Given Name-es",
             language: "es",
           },
-        ])
+        ]),
       );
     });
 
     it("should merge A and B, and generate code from A and B", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
-        mergeDatasets([dataSetA, dataSetB])
+        mergeDatasets([dataSetA, dataSetB]),
       );
 
       expect(result.classes[0].name).toBe("Person");
@@ -438,7 +438,7 @@ describe("Vocab generator unit tests", () => {
     it("should merge A and B, and generate code from A (not B)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
-        dataSetA
+        dataSetA,
       );
 
       expect(result.classes[0].name).toBe("Person");
@@ -448,7 +448,7 @@ describe("Vocab generator unit tests", () => {
     it("should merge A and B, and generate code from B (not A)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
-        dataSetB
+        dataSetB,
       );
 
       expect(result.classes.length).toBe(0);
@@ -458,7 +458,7 @@ describe("Vocab generator unit tests", () => {
     it("should merge A B and C, and generate code from A and B (not C)", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetB, dataSetC]),
-        mergeDatasets([dataSetA, dataSetB])
+        mergeDatasets([dataSetA, dataSetB]),
       );
 
       expect(result.classes[0].name).toBe("Person");
@@ -472,15 +472,15 @@ describe("Vocab generator unit tests", () => {
       await expect(
         vocabGenerator.buildTemplateInput(
           mergeDatasets([vocabMetadata, emptyDataSet]),
-          emptyDataSet
-        )
+          emptyDataSet,
+        ),
       ).rejects.toThrow("does not contain any terms");
     });
 
     it("should use the label value if no comment and no definition", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetB]),
-        dataSetB
+        dataSetB,
       );
 
       expect(result.properties[0].name).toBe("givenName");
@@ -491,7 +491,7 @@ describe("Vocab generator unit tests", () => {
     it("should use the definition value if no comment", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetD]),
-        rdf.dataset()
+        rdf.dataset(),
       );
 
       expect(result.properties[0].name).toBe("familyName");
@@ -507,13 +507,13 @@ describe("Vocab generator unit tests", () => {
           rdf.quad(
             SCHEMA_DOT_ORG.givenName,
             RDFS.comment,
-            rdf.literal("Given Name comment in french", "fr")
+            rdf.literal("Given Name comment in french", "fr"),
           ),
         ]);
 
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, dataSetFrenchOnlyComment]),
-        dataSetFrenchOnlyComment
+        dataSetFrenchOnlyComment,
       );
 
       expect(result.properties[0].name).toBe("givenName");
@@ -528,7 +528,7 @@ describe("Vocab generator unit tests", () => {
 
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, dataSetA, noDescriptivePredicates]),
-        noDescriptivePredicates
+        noDescriptivePredicates,
       );
 
       expect(result.properties[0].name).toBe("givenName");
@@ -545,7 +545,7 @@ describe("Vocab generator unit tests", () => {
 
       const result = await overridePrefixGenerator.buildTemplateInput(
         mergeDatasets([vocabMetadata, testDataset]),
-        rdf.dataset()
+        rdf.dataset(),
       );
 
       expect(result.artifactName).toBe("my-company-prefix-schema");
@@ -554,7 +554,7 @@ describe("Vocab generator unit tests", () => {
     it("should create label vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([literalDataset]),
-        rdf.dataset()
+        rdf.dataset(),
       );
 
       const messageLiterals = result.literals[0].labels;
@@ -567,7 +567,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Hello",
             language: "en",
           },
-        ])
+        ]),
       );
 
       expect(messageLiterals).toEqual(
@@ -578,7 +578,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Hola",
             language: "es",
           },
-        ])
+        ]),
       );
 
       expect(messageLiterals).toEqual(
@@ -589,14 +589,14 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bonjour",
             language: "fr",
           },
-        ])
+        ]),
       );
     });
 
     it("should create comments vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([literalDataset]),
-        rdf.dataset()
+        rdf.dataset(),
       );
 
       const messageComments = result.literals[0].comments;
@@ -609,7 +609,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Hello there",
             language: "en",
           },
-        ])
+        ]),
       );
 
       expect(messageComments).toEqual(
@@ -620,7 +620,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Hola",
             language: "es",
           },
-        ])
+        ]),
       );
 
       expect(messageComments).toEqual(
@@ -631,14 +631,14 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bonjour",
             language: "fr",
           },
-        ])
+        ]),
       );
     });
 
     it("should create defination vocab terms for literals", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([literalDataset]),
-        rdf.dataset()
+        rdf.dataset(),
       );
 
       const messageDefinitions = result.literals[0].definitions;
@@ -651,7 +651,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Welcome",
             language: "en",
           },
-        ])
+        ]),
       );
 
       expect(messageDefinitions).toEqual(
@@ -662,7 +662,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bienvenido",
             language: "es",
           },
-        ])
+        ]),
       );
 
       expect(messageDefinitions).toEqual(
@@ -673,7 +673,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bienvenue",
             language: "fr",
           },
-        ])
+        ]),
       );
     });
   });
@@ -694,7 +694,7 @@ describe("Vocab generator unit tests", () => {
           dataSetC,
           overrideLabelTerms,
         ]),
-        overrideLabelTerms
+        overrideLabelTerms,
       );
 
       const person = result.classes[0];
@@ -725,7 +725,7 @@ describe("Vocab generator unit tests", () => {
           dataSetC,
           overrideCommentTerms,
         ]),
-        overrideCommentTerms
+        overrideCommentTerms,
       );
 
       const person = result.classes[0];
@@ -739,7 +739,7 @@ describe("Vocab generator unit tests", () => {
       expect(givenName.name).toBe("givenName");
       expect(givenName.comments.length).toBe(1);
       expect(givenName.comments[0].value).toBe(
-        "Override comment for Given Name"
+        "Override comment for Given Name",
       );
 
       const familyName = result.properties[1];
@@ -747,7 +747,7 @@ describe("Vocab generator unit tests", () => {
       expect(familyName.name).toBe("familyName");
       expect(familyName.comments.length).toBe(1);
       expect(familyName.comments[0].value).toBe(
-        "Override comment for Family Name"
+        "Override comment for Family Name",
       );
     });
 
@@ -760,7 +760,7 @@ describe("Vocab generator unit tests", () => {
           dataSetC,
           overrideAtlNameTerms,
         ]),
-        overrideAtlNameTerms
+        overrideAtlNameTerms,
       );
 
       const person = result.classes[0];
@@ -791,7 +791,7 @@ describe("Vocab generator unit tests", () => {
 
       const result = await generator.buildTemplateInput(
         mergeDatasets([testDataset, literalDataset]),
-        literalDataset
+        literalDataset,
       );
 
       const messageDefinitions = result.literals[0].definitions;
@@ -804,7 +804,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Welcome",
             language: "en",
           },
-        ])
+        ]),
       );
 
       expect(messageDefinitions).toEqual(
@@ -815,7 +815,7 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bienvenido",
             language: "es",
           },
-        ])
+        ]),
       );
 
       expect(messageDefinitions).toEqual(
@@ -826,21 +826,21 @@ describe("Vocab generator unit tests", () => {
             valueEscapedForJava: "Bienvenue",
             language: "fr",
           },
-        ])
+        ]),
       );
     });
 
     it("should take description from the rdfs:comment of an owl:Ontology term", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([testDataset, owlOntologyDataset]),
-        owlOntologyDataset
+        owlOntologyDataset,
       );
 
       expect(result.artifactName).toBe("generated-vocab-ext-prefix");
       expect(result.namespaceIri).toBe("http://rdf-extension.com/");
       expect(result.vocabNameUpperCase).toBe("EXT_PREFIX");
       expect(result.description).toBe(
-        "Extension comment with special ' character!"
+        "Extension comment with special ' character!",
       );
     });
 
@@ -852,22 +852,22 @@ describe("Vocab generator unit tests", () => {
           rdf.quad(
             extSubject,
             VANN.preferredNamespacePrefix,
-            rdf.literal("test_prefix")
+            rdf.literal("test_prefix"),
           ),
         ]);
 
       await expect(
         vocabGenerator.buildTemplateInput(
           mergeDatasets([testDataset, owlOntologyDatasetWithNoDescription]),
-          owlOntologyDatasetWithNoDescription
-        )
+          owlOntologyDatasetWithNoDescription,
+        ),
       ).rejects.toThrow(`Cannot find a description`);
     });
 
     it("should read authors from owl:Ontology terms", async () => {
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([testDataset, owlOntologyDataset]),
-        owlOntologyDataset
+        owlOntologyDataset,
       );
 
       expect(result.authorSet.has("Jarlath Holleran"));
@@ -881,23 +881,23 @@ describe("Vocab generator unit tests", () => {
         rdf.quad(
           extSubject,
           VANN.preferredNamespacePrefix,
-          rdf.literal("ext-prefix")
+          rdf.literal("ext-prefix"),
         ),
         rdf.quad(
           extSubject,
           VANN.preferredNamespaceUri,
-          rdf.literal("http://rdf-extension.com/")
+          rdf.literal("http://rdf-extension.com/"),
         ),
         // This triple prevents the dataset from not defining any terms
         rdf.quad(
           rdf.namedNode("http://rdf-extension.com/dummyClass"),
           RDF.type,
-          OWL.Class
+          OWL.Class,
         ),
       ]);
       const result = await vocabGenerator.buildTemplateInput(
         mergeDatasets([testDataset, owlOntologyDatasetWithNoAuthor]),
-        owlOntologyDatasetWithNoAuthor
+        owlOntologyDatasetWithNoAuthor,
       );
 
       expect(result.authorSet.has("@inrupt/artifact-generator-js"));
@@ -920,9 +920,9 @@ describe("Managing remote vocabularies failures", () => {
           "Generated",
           "UNIT_TEST",
           "VocabGenerator",
-          "previouslyGenerated"
+          "previouslyGenerated",
         ),
-      }
+      },
     );
     const outputDir = path.join(
       "test",
@@ -930,7 +930,7 @@ describe("Managing remote vocabularies failures", () => {
       "UNIT_TEST",
       "VocabGenerator",
       "previouslyGenerated",
-      "GeneratedVocab"
+      "GeneratedVocab",
     );
     const targetFile = path.join(outputDir, "TEST.js");
     fs.mkdirSync(outputDir, { recursive: true });
@@ -947,7 +947,7 @@ describe("Managing remote vocabularies failures", () => {
     };
     await generator.generateFiles(vocabGenerationData);
     expect(fs.readFileSync(targetFile).toString()).toEqual(
-      "This is a test file"
+      "This is a test file",
     );
   });
 
@@ -965,9 +965,9 @@ describe("Managing remote vocabularies failures", () => {
           "Generated",
           "UNIT_TEST",
           "VocabGenerator",
-          "notPreviouslyGenerated"
+          "notPreviouslyGenerated",
         ),
-      }
+      },
     );
 
     const outputDir = path.join(
@@ -976,7 +976,7 @@ describe("Managing remote vocabularies failures", () => {
       "UNIT_TEST",
       "VocabGenerator",
       "notPreviouslyGenerated",
-      "GeneratedVocab"
+      "GeneratedVocab",
     );
     fs.mkdirSync(outputDir, { recursive: true });
 
@@ -990,7 +990,7 @@ describe("Managing remote vocabularies failures", () => {
       vocabNameUpperCase: "TEST",
     };
     expect(() => generator.generateFiles(vocabGenerationData)).toThrow(
-      "unreachable or is empty of recognisable terms"
+      "unreachable or is empty of recognisable terms",
     );
   });
 });

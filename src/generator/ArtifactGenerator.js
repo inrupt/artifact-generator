@@ -27,7 +27,7 @@ const ARTIFACTS_INFO_TEMPLATE = path.join(
   "..",
   "..",
   "template",
-  "artifacts-info.hbs"
+  "artifacts-info.hbs",
 );
 const ARTIFACTS_INFO_FILENAME = ".artifacts-info.txt";
 
@@ -96,13 +96,13 @@ class ArtifactGenerator {
             path.join(
               this.artifactData.outputDirectory,
               getArtifactDirectoryRoot(this.artifactData),
-              ARTIFACTS_INFO_FILENAME
-            )
+              ARTIFACTS_INFO_FILENAME,
+            ),
           );
         }
 
         this.artifactData = CommandLine.runWidocoForAllVocabs(
-          this.artifactData
+          this.artifactData,
         );
       })
       .then(() => this.artifactData)
@@ -121,7 +121,7 @@ class ArtifactGenerator {
     const artifactInfoPath = path.join(
       this.artifactData.outputDirectory,
       getArtifactDirectoryRoot(this.artifactData),
-      ARTIFACTS_INFO_FILENAME
+      ARTIFACTS_INFO_FILENAME,
     );
 
     let modifiedResourceList = [];
@@ -145,19 +145,19 @@ class ArtifactGenerator {
       const lastGenerationTime = fs.statSync(artifactInfoPath).mtimeMs;
       modifiedResourceList =
         await this.configuration.getInputResourcesChangedSince(
-          lastGenerationTime
+          lastGenerationTime,
         );
 
       if (modifiedResourceList.length === 0) {
         debug(
           `Skipping generation: artifacts already exist in the target directory [${path.join(
             this.artifactData.outputDirectory,
-            getArtifactDirectoryRoot(this.artifactData)
+            getArtifactDirectoryRoot(this.artifactData),
           )}], and there have been no modifications to the vocabularies or configuration files since their generation on [${moment(
-            lastGenerationTime
+            lastGenerationTime,
           ).format(
-            "LLLL"
-          )}]. Use the '--force' command-line option to re-generate the artifacts regardless.`
+            "LLLL",
+          )}]. Use the '--force' command-line option to re-generate the artifacts regardless.`,
         );
       }
     } else {
@@ -178,7 +178,7 @@ class ArtifactGenerator {
   deleteRootArtifactOutputDirectory() {
     const rootDir = path.join(
       this.artifactData.outputDirectory,
-      getArtifactDirectoryRoot(this.artifactData)
+      getArtifactDirectoryRoot(this.artifactData),
     );
 
     rimraf.sync(rootDir);
@@ -194,7 +194,7 @@ class ArtifactGenerator {
       ? this.artifactData.vocabList
       : this.artifactData.vocabList.filter((vocabDetails) => {
           return vocabDetails.inputResources.some((r) =>
-            this.configuration.modifiedResourceList.includes(r)
+            this.configuration.modifiedResourceList.includes(r),
           );
         });
 
@@ -244,8 +244,8 @@ class ArtifactGenerator {
           generatedArtifacts.push(
             await new VocabGenerator(
               this.artifactData,
-              artifactDetails
-            ).generateVocab()
+              artifactDetails,
+            ).generateVocab(),
           );
         } catch (error) {
           const message = `Failed generation: [${error.message}]`;
@@ -273,8 +273,8 @@ class ArtifactGenerator {
         (artifactDetails.outputDirectoryForArtifact = path.join(
           this.artifactData.outputDirectory,
           getArtifactDirectorySourceCode(this.artifactData),
-          artifactDetails.artifactDirectoryName
-        ))
+          artifactDetails.artifactDirectoryName,
+        )),
     );
 
     if (await this.isGenerationNecessary()) {
@@ -292,7 +292,7 @@ class ArtifactGenerator {
     await Promise.all(
       [...vocabDatasets]
         .sort((vocabDataA, vocabDataB) =>
-          vocabDataA.vocabName.localeCompare(vocabDataB.vocabName)
+          vocabDataA.vocabName.localeCompare(vocabDataB.vocabName),
         )
         .map(async (vocabData) => {
           this.artifactData.description += `\n\n - ${vocabData.vocabName}: ${vocabData.description}`;
@@ -301,9 +301,9 @@ class ArtifactGenerator {
             vocabNameUpperCase: vocabData.vocabNameUpperCase,
           });
           vocabData.authorSet.forEach((author) =>
-            this.artifactData.authorSet.add(author)
+            this.artifactData.authorSet.add(author),
           );
-        })
+        }),
     );
     return vocabDatasets;
   }
@@ -339,8 +339,8 @@ class ArtifactGenerator {
         if (!artifactInfo.packaging) {
           throw new Error(
             `No packaging information for artifact number [${index}] from ${describeInput(
-              this.artifactData
-            )}.`
+              this.artifactData,
+            )}.`,
           );
         }
 
@@ -349,7 +349,7 @@ class ArtifactGenerator {
         this.artifactData.repository = artifactInfo.repository;
         artifactInfo.packaging.forEach((packagingInfo) => {
           debug(
-            `Generating [${artifactInfo.programmingLanguage}] packaging for [${packagingInfo.packagingTool}]`
+            `Generating [${artifactInfo.programmingLanguage}] packaging for [${packagingInfo.packagingTool}]`,
           );
 
           // As a mere convenience, we generate what we think should be the full
@@ -365,15 +365,15 @@ class ArtifactGenerator {
                     // (as that's the Java convention).
                     packagingInfo.groupId === undefined
                       ? ""
-                      : `${packagingInfo.groupId}:`
+                      : `${packagingInfo.groupId}:`,
                   ),
-                  packagingInfo.npmModuleScope
+                  packagingInfo.npmModuleScope,
                 ),
-                artifactInfo.artifactNamePrefix
+                artifactInfo.artifactNamePrefix,
               ),
-              this.artifactData.artifactName
+              this.artifactData.artifactName,
             ),
-            artifactInfo.artifactNameSuffix
+            artifactInfo.artifactNameSuffix,
           );
 
           artifactInfo.suggestedFullArtifactName = suggestedFullArtifactName;
@@ -385,7 +385,7 @@ class ArtifactGenerator {
           FileGenerator.createPackagingFiles(
             this.artifactData,
             artifactInfo,
-            packagingInfo
+            packagingInfo,
           );
         });
       });
@@ -403,8 +403,8 @@ class ArtifactGenerator {
         path.join(
           this.artifactData.outputDirectory,
           getArtifactDirectoryRoot(this.artifactData),
-          "README.md"
-        )
+          "README.md",
+        ),
       );
     }
   }
@@ -420,9 +420,9 @@ class ArtifactGenerator {
         fs.writeFileSync(
           path.join(
             artifactDetails.outputDirectoryForArtifact,
-            this.artifactData.license.fileName
+            this.artifactData.license.fileName,
           ),
-          licenseText
+          licenseText,
         );
       });
     }
@@ -450,13 +450,13 @@ class ArtifactGenerator {
           ) {
             const runFrom = path.join(
               homeDir,
-              artifact.outputDirectoryForArtifact
+              artifact.outputDirectoryForArtifact,
             );
             debug(`Changing to directory [${runFrom}].`);
             process.chdir(runFrom);
 
             debug(
-              `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`
+              `Running command [${publishConfigs[j].command}] to publish artifact with version [${artifact.artifactVersion}] according to [${publishConfigs[j].key}] configuration in directory [${artifact.outputDirectoryForArtifact}].`,
             );
 
             try {
@@ -480,10 +480,10 @@ class ArtifactGenerator {
                       // 'npm unpublish' commands!
                       const commandIgnoringFailure = `(${command} || true)`;
                       debug(
-                        `Re-running sub-command ignoring failure this time [${commandIgnoringFailure}]...`
+                        `Re-running sub-command ignoring failure this time [${commandIgnoringFailure}]...`,
                       );
                       response = ChildProcess.execSync(
-                        commandIgnoringFailure
+                        commandIgnoringFailure,
                       ).toString();
                     } else {
                       const message = `Error executing sub-command [${command}], details (stdout): [${error.stdout.toString()}], stderr: [${error.stderr.toString()}]`;
@@ -523,7 +523,7 @@ class ArtifactGenerator {
       for (let i = 0; i < generationData.artifactToGenerate.length; i += 1) {
         ArtifactGenerator.publishArtifact(
           generationData.artifactToGenerate[i],
-          publicationConfigKey
+          publicationConfigKey,
         );
       }
 

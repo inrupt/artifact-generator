@@ -19,12 +19,12 @@ const DUMMY_NPM_MODULE = {
   packageTemplate: path.join(
     "solidCommonVocabDependent",
     "javascript",
-    "package.hbs"
+    "package.hbs",
   ),
   indexTemplate: path.join(
     "solidCommonVocabDependent",
     "javascript",
-    "index.hbs"
+    "index.hbs",
   ),
 };
 
@@ -32,7 +32,7 @@ const NPM_MODULE_CONFIG = jest
   .fn()
   // Answering the questions on the Java artifact
   .mockReturnValueOnce(
-    Promise.resolve({ ...DUMMY_JS_ARTIFACT, packagingToInit: ["NPM"] })
+    Promise.resolve({ ...DUMMY_JS_ARTIFACT, packagingToInit: ["NPM"] }),
   )
   // Answering the questions on the Maven packaging
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_NPM_MODULE }))
@@ -41,7 +41,7 @@ const NPM_MODULE_CONFIG = jest
 describe("JS ArtifactConfig Generator", () => {
   it("should use the values provided by the user", async () => {
     inquirer.prompt.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(DUMMY_JS_ARTIFACT))
+      jest.fn().mockReturnValue(Promise.resolve(DUMMY_JS_ARTIFACT)),
     );
     const artifact = await new NodeArtifactConfigurator().prompt();
     expect(artifact.artifactVersion).toEqual(DUMMY_JS_ARTIFACT.artifactVersion);
@@ -52,16 +52,16 @@ describe("JS ArtifactConfig Generator", () => {
     const artifact = await new NodeArtifactConfigurator().prompt();
     expect(artifact.packaging[0].packagingTool).toEqual("NPM");
     expect(artifact.packaging[0].solidCommonVocabVersion).toEqual(
-      DUMMY_NPM_MODULE.solidCommonVocabVersion
+      DUMMY_NPM_MODULE.solidCommonVocabVersion,
     );
     expect(artifact.packaging[0].publishCommand).toEqual(
-      DUMMY_NPM_MODULE.publishCommand
+      DUMMY_NPM_MODULE.publishCommand,
     );
     expect(artifact.packaging[0].packagingTemplates[0].template).toEqual(
-      DUMMY_NPM_MODULE.indexTemplate
+      DUMMY_NPM_MODULE.indexTemplate,
     );
     expect(artifact.packaging[0].packagingTemplates[0].fileName).toEqual(
-      "index.js"
+      "index.js",
     );
   });
 
@@ -69,7 +69,7 @@ describe("JS ArtifactConfig Generator", () => {
     inquirer.prompt.mockImplementation(UNSUPPORTED_CONFIG_PROMPT);
     expect(new NodeArtifactConfigurator().prompt()).rejects.toThrow(
       "Unsupported packaging system",
-      "someSystem"
+      "someSystem",
     );
   });
 });

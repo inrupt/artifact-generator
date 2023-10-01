@@ -88,10 +88,10 @@ module.exports.XSD = {
 const VANN_NAMESPACE = "http://purl.org/vocab/vann/";
 module.exports.VANN = {
   preferredNamespacePrefix: rdf.namedNode(
-    `${VANN_NAMESPACE}preferredNamespacePrefix`
+    `${VANN_NAMESPACE}preferredNamespacePrefix`,
   ),
   preferredNamespaceUri: rdf.namedNode(
-    `${VANN_NAMESPACE}preferredNamespaceUri`
+    `${VANN_NAMESPACE}preferredNamespaceUri`,
   ),
 };
 
@@ -110,7 +110,7 @@ module.exports.SCHEMA_DOT_ORG = {
   familyName: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}familyName`),
   Person: rdf.namedNode(`${SCHEMA_DOT_ORG_NAMESPACE}Person`),
   PaymentStatusType: rdf.namedNode(
-    `${SCHEMA_DOT_ORG_NAMESPACE}PaymentStatusType`
+    `${SCHEMA_DOT_ORG_NAMESPACE}PaymentStatusType`,
   ),
 };
 
@@ -118,7 +118,7 @@ const ARTIFACT_GENERATOR_NAMESPACE =
   "https://inrupt.com/vocab/tool/artifact_generator/";
 module.exports.ARTIFACT_GENERATOR = {
   ConstantString: rdf.namedNode(
-    `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`
+    `${ARTIFACT_GENERATOR_NAMESPACE}ConstantString`,
   ),
   ConstantIri: rdf.namedNode(`${ARTIFACT_GENERATOR_NAMESPACE}ConstantIri`),
 };

@@ -28,7 +28,7 @@ describe("Test override root", () => {
   it("should override default", async () => {
     const override = "Whatever_Dir";
     expect(
-      getArtifactDirectoryRoot({ artifactDirectoryRootOverride: override })
+      getArtifactDirectoryRoot({ artifactDirectoryRootOverride: override }),
     ).toEqual(override);
   });
 });
@@ -45,10 +45,10 @@ describe("Merge datasets", () => {
 
     const merged = mergeDatasets([dataSetA, dataSetB]);
     expect(
-      merged.match(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class)
+      merged.match(SCHEMA_DOT_ORG.Person, RDF.type, RDFS.Class),
     ).not.toBeNull();
     expect(
-      merged.match(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property)
+      merged.match(SCHEMA_DOT_ORG.givenName, RDF.type, RDF.Property),
     ).not.toBeNull();
   });
 });
@@ -72,13 +72,13 @@ describe("Normalize paths", () => {
 describe("Test override source code", () => {
   it("should return default if no input data", async () => {
     expect(getArtifactDirectorySourceCode()).toEqual(
-      path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE)
+      path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE),
     );
   });
 
   it("should return default if override no in input data", async () => {
     expect(getArtifactDirectorySourceCode({})).toEqual(
-      path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE)
+      path.join(DEFAULT_DIRECTORY_ROOT, DEFAULT_DIRECTORY_SOURCE_CODE),
     );
   });
 
@@ -87,7 +87,7 @@ describe("Test override source code", () => {
     expect(
       getArtifactDirectorySourceCode({
         artifactDirectoryRootOverride: override,
-      })
+      }),
     ).toEqual(path.join(override, DEFAULT_DIRECTORY_SOURCE_CODE));
   });
 });
@@ -100,7 +100,7 @@ describe("CURIE function", () => {
 
   it("should return curie'd IRI", () => {
     expect(curie(`${INRUPT_BEST_PRACTICE_NAMESPACE}test`)).toEqual(
-      "inrupt_bp:test"
+      "inrupt_bp:test",
     );
   });
 });

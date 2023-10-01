@@ -24,7 +24,7 @@ describe("Command Line unit tests", () => {
   describe("NPM publishing...", () => {
     it("should find the latest published artifact from registry", () => {
       childProcess.execSync.mockImplementation(
-        jest.fn().mockReturnValue("1.1.10")
+        jest.fn().mockReturnValue("1.1.10"),
       );
 
       const result = CommandLine.findPublishedVersionOfModule({
@@ -52,14 +52,13 @@ describe("Command Line unit tests", () => {
 
     it("should publish artifact to the registry if user confirms yes", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmPublish: true })
+        jest.fn().mockReturnValue({ runNpmPublish: true }),
       );
 
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
-      const result = await CommandLine.askForArtifactToBeNpmPublished(
-        defaultInputs
-      );
+      const result =
+        await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
       expect(result.runNpmPublish).toBe(true);
       expect(result.ranNpmPublish).toBe(true);
@@ -79,12 +78,11 @@ describe("Command Line unit tests", () => {
 
     it("should not publish artifact to the registry if user confirms no", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmPublish: false })
+        jest.fn().mockReturnValue({ runNpmPublish: false }),
       );
 
-      const result = await CommandLine.askForArtifactToBeNpmPublished(
-        defaultInputs
-      );
+      const result =
+        await CommandLine.askForArtifactToBeNpmPublished(defaultInputs);
 
       expect(result.runNpmPublish).toBe(false);
       expect(result.ranNpmPublish).toBeUndefined();
@@ -133,26 +131,24 @@ describe("Command Line unit tests", () => {
 
     it("should install artifact if user confirms yes", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmInstall: true })
+        jest.fn().mockReturnValue({ runNpmInstall: true }),
       );
 
       childProcess.execSync.mockImplementation(jest.fn().mockReturnValue(""));
 
-      const result = await CommandLine.askForArtifactToBeNpmInstalled(
-        defaultInputs
-      );
+      const result =
+        await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
       expect(result.ranNpmInstall).toBe(true);
     });
 
     it("should not install artifact if user confirms no", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runNpmInstall: false })
+        jest.fn().mockReturnValue({ runNpmInstall: false }),
       );
 
-      const result = await CommandLine.askForArtifactToBeNpmInstalled(
-        defaultInputs
-      );
+      const result =
+        await CommandLine.askForArtifactToBeNpmInstalled(defaultInputs);
 
       expect(result.ranNpmInstall).toBeUndefined();
     });
@@ -272,11 +268,11 @@ describe("Command Line unit tests", () => {
       expect(config.outputDirectory).toEqual(dummyDir);
       expect(config.documentationDirectories).toHaveLength(2);
       expect(config.documentationDirectories[0]).toContain(
-        firstVocab.substring(0, firstVocab.lastIndexOf("."))
+        firstVocab.substring(0, firstVocab.lastIndexOf(".")),
       );
       expect(config.documentationDirectories[0]).not.toContain(".ttl");
       expect(config.documentationDirectories[1]).toContain(
-        secondVocab.substring(0, secondVocab.lastIndexOf("."))
+        secondVocab.substring(0, secondVocab.lastIndexOf(".")),
       );
       expect(config.documentationDirectories[1]).not.toContain(".ttl");
     });
@@ -296,7 +292,7 @@ describe("Command Line unit tests", () => {
 
     it("should generate documentation if user explicitly anwsers yes", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: true })
+        jest.fn().mockReturnValue({ runWidoco: true }),
       );
 
       const result = await CommandLine.askForArtifactToBeDocumented({
@@ -312,7 +308,7 @@ describe("Command Line unit tests", () => {
 
     it("should not generate documentation if user says not to", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: false })
+        jest.fn().mockReturnValue({ runWidoco: false }),
       );
 
       const result = await CommandLine.askForArtifactToBeDocumented({
@@ -340,7 +336,7 @@ describe("Command Line unit tests", () => {
 
     it("should generate documentation if user confirms yes", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: true })
+        jest.fn().mockReturnValue({ runWidoco: true }),
       );
 
       const result = await CommandLine.askForArtifactToBeDocumented({
@@ -355,7 +351,7 @@ describe("Command Line unit tests", () => {
 
     it("should not generate documentation if user confirms no", async () => {
       inquirer.prompt.mockImplementation(
-        jest.fn().mockReturnValue({ runWidoco: false })
+        jest.fn().mockReturnValue({ runWidoco: false }),
       );
 
       const result = await CommandLine.askForArtifactToBeDocumented({

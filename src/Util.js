@@ -22,7 +22,7 @@ function getArtifactDirectoryRoot(options) {
 function getArtifactDirectorySourceCode(options) {
   return path.join(
     getArtifactDirectoryRoot(options),
-    DEFAULT_DIRECTORY_SOURCE_CODE
+    DEFAULT_DIRECTORY_SOURCE_CODE,
   );
 }
 
@@ -55,7 +55,7 @@ function mergeDatasets(dataSetArray) {
 function curie(iri) {
   if (iri.startsWith(INRUPT_BEST_PRACTICE_NAMESPACE)) {
     return `${INRUPT_BEST_PRACTICE_NAMESPACE_PREFIX}:${iri.substring(
-      INRUPT_BEST_PRACTICE_NAMESPACE.length
+      INRUPT_BEST_PRACTICE_NAMESPACE.length,
     )}`;
   }
 

@@ -50,7 +50,7 @@ class ArtifactConfigurator {
     if (this.language === undefined) {
       // This method should only be called from an extending class
       throw new Error(
-        "Unspecified artifact generator. This should be called from a class extending ArtifactConfigurator"
+        "Unspecified artifact generator. This should be called from a class extending ArtifactConfigurator",
       );
     }
     // The language-specific options have been set when constructing the extending class
@@ -61,7 +61,7 @@ class ArtifactConfigurator {
     };
     if (this.config.packagingToInit) {
       this.config.packaging = await this.promptPackaging(
-        this.config.packagingToInit
+        this.config.packagingToInit,
       );
     }
     return this.config;

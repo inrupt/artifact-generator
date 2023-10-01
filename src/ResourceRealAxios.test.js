@@ -8,9 +8,8 @@ const Resource = require("./Resource");
 describe("Resources last modification", () => {
   it("should log failure and return 'now' if HTTP request fails", async () => {
     const resource = "http://nonsense endpoint";
-    const modified = await Resource.getHttpResourceLastModificationTime(
-      resource
-    );
+    const modified =
+      await Resource.getHttpResourceLastModificationTime(resource);
 
     // We expect modified time to be effectively 'now', so to leave a bit of
     // leeway for the function to return(!), we just assert on our version of

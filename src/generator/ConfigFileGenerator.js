@@ -30,14 +30,14 @@ const CONFIG_TEMPLATE_PATH = path.join(
   "..",
   "..",
   "template",
-  "empty-config.hbs"
+  "empty-config.hbs",
 );
 const DEFAULT_CONFIG_TEMPLATE_PATH = path.join(
   __dirname,
   "..",
   "..",
   "template",
-  "initial-config.hbs"
+  "initial-config.hbs",
 );
 
 // Default values.
@@ -134,7 +134,7 @@ class ConfigFileGenerator {
     }
 
     throw new Error(
-      `Unsported language: no config generator is registered for [${language}]`
+      `Unsported language: no config generator is registered for [${language}]`,
     );
   }
 
@@ -222,7 +222,7 @@ class ConfigFileGenerator {
     // Collect the different artifacts to generate in a map containing only one key-value pair.
     const languages = await inquirer.prompt(LANGUAGES_CHECKBOXES);
     this.config.artifactToGenerate = await ConfigFileGenerator.promptArtifacts(
-      languages.languages
+      languages.languages,
     );
 
     // Get vocabulary information.
@@ -236,7 +236,7 @@ class ConfigFileGenerator {
     // Currently, we only check that some properties have been set
     if (Object.entries(config).length === 0) {
       throw new Error(
-        `Invalid configuration: [${config}] cannot be used to generate the configuration YAML file.`
+        `Invalid configuration: [${config}] cannot be used to generate the configuration YAML file.`,
       );
     }
   }
@@ -253,7 +253,7 @@ class ConfigFileGenerator {
     FileGenerator.createFileFromTemplate(
       CONFIG_TEMPLATE_PATH,
       this.config,
-      targetPath
+      targetPath,
     );
   }
 
@@ -268,7 +268,7 @@ class ConfigFileGenerator {
     FileGenerator.createFileFromTemplate(
       DEFAULT_CONFIG_TEMPLATE_PATH,
       this.config,
-      targetPath
+      targetPath,
     );
   }
 }

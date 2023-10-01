@@ -45,13 +45,13 @@ class VocabWatcher {
     // determine if an online vocabulary has changed.
     // TODO: Right now, online vocabs are checked only once.
     debug(
-      `Generating (if any changes, or --force option specified) from config file [${this.configFile}] into watched directory: [${this.generator.configuration.configuration.outputDirectory}]...`
+      `Generating (if any changes, or --force option specified) from config file [${this.configFile}] into watched directory: [${this.generator.configuration.configuration.outputDirectory}]...`,
     );
     await this.generator
       .generate()
       .then((result) => {
         debug(
-          `Successfully watching [${this.watchedResourceList.length}] resources from directory: [${result.outputDirectory}] - [${result.globMatchPosition} of ${result.globMatchTotal} matched config files].`
+          `Successfully watching [${this.watchedResourceList.length}] resources from directory: [${result.outputDirectory}] - [${result.globMatchPosition} of ${result.globMatchTotal} matched config files].`,
         );
       })
       .catch((error) => {
@@ -67,8 +67,8 @@ class VocabWatcher {
       debug(`*****************************************************`);
       debug(
         `File [${eventPath}] has changed at [${moment().format(
-          "LLLL"
-        )}], regenerating...`
+          "LLLL",
+        )}], regenerating...`,
       );
 
       // If the changed file was a configuration file, then force the
@@ -91,8 +91,8 @@ class VocabWatcher {
         .then((result) => {
           debug(
             `...completed regeneration after file [${eventPath}] changed at [${moment().format(
-              "LLLL"
-            )}].`
+              "LLLL",
+            )}].`,
           );
         })
         .catch((error) => {

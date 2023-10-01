@@ -31,7 +31,7 @@ class FileGenerator {
       data = fs.readFileSync(templateFile);
     } catch (error) {
       throw new Error(
-        `Failed to read template file [${templateFile}] trying to generate output file [${outputFile}]. Error: ${error}`
+        `Failed to read template file [${templateFile}] trying to generate output file [${outputFile}]. Error: ${error}`,
       );
     }
 
@@ -88,13 +88,13 @@ class FileGenerator {
   static buildTargetSourceCodeFilePath(
     targetFolder,
     artifactDetails,
-    templateData
+    templateData,
   ) {
     return path.join(
       targetFolder,
       `${
         templateData.nameAndPrefixOverride || templateData.vocabNameUpperCase
-      }.${artifactDetails.sourceFileExtension}`
+      }.${artifactDetails.sourceFileExtension}`,
     );
   }
 
@@ -103,8 +103,8 @@ class FileGenerator {
       FileGenerator.buildTargetSourceCodeFilePath(
         FileGenerator.buildTargetSourceCodeFolder(artifactDetails),
         artifactDetails,
-        templateData
-      )
+        templateData,
+      ),
     );
   }
 
@@ -120,17 +120,17 @@ class FileGenerator {
         // name).
         FileGenerator.formatTemplateData(
           { ...argv, ...templateData, ...artifactDetails },
-          artifactDetails.sourceFileExtension
+          artifactDetails.sourceFileExtension,
         ),
         FileGenerator.buildTargetSourceCodeFilePath(
           outputDirectoryForSourceCode,
           artifactDetails,
-          templateData
-        )
+          templateData,
+        ),
       );
     } catch (error) {
       throw new Error(
-        `Failed to generate [${artifactDetails.programmingLanguage}] source-code file in artifact directory [${artifactDetails.outputDirectoryForArtifact}]. Error: ${error}`
+        `Failed to generate [${artifactDetails.programmingLanguage}] source-code file in artifact directory [${artifactDetails.outputDirectoryForArtifact}]. Error: ${error}`,
       );
     }
   }
@@ -143,7 +143,7 @@ class FileGenerator {
     if (packagingInfo.packagingDirectory) {
       packagingDirectory = path.join(
         artifactInfo.outputDirectoryForArtifact,
-        packagingInfo.packagingDirectory
+        packagingInfo.packagingDirectory,
       );
 
       FileGenerator.createDirectoryIfNotExist(packagingDirectory);
@@ -157,9 +157,9 @@ class FileGenerator {
         FileGenerator.formatTemplateData(
           { ...generalInfo, ...artifactInfo, ...packagingInfo },
           // extname returns the extension prefixed with ., that we want to remove
-          path.extname(packagingFile.fileName).substr(1)
+          path.extname(packagingFile.fileName).substr(1),
         ),
-        path.join(packagingDirectory, packagingFile.fileName)
+        path.join(packagingDirectory, packagingFile.fileName),
       );
     });
 
@@ -180,8 +180,8 @@ class FileGenerator {
           path.join(
             generalInfo.outputDirectory,
             getArtifactDirectoryRoot(generalInfo),
-            associatedFile.fileName
-          )
+            associatedFile.fileName,
+          ),
         );
       });
     }
@@ -229,8 +229,8 @@ class FileGenerator {
         generalInfo.outputDirectory,
         getArtifactDirectorySourceCode(generalInfo),
         artifactInfo.artifactDirectoryName,
-        "README.md"
-      )
+        "README.md",
+      ),
     );
   }
 
@@ -259,7 +259,7 @@ class FileGenerator {
       .replace(
         /\n/g,
         `\\n" +
-"`
+"`,
       );
   }
 }

@@ -36,7 +36,7 @@ const MAVEN_CONFIG_PROMPT_NO_REPO = jest
   .fn()
   // Answering the questions on the Java artifact
   .mockReturnValueOnce(
-    Promise.resolve({ ...DUMMY_JAVA_ARTIFACT, packagingToInit: ["maven"] })
+    Promise.resolve({ ...DUMMY_JAVA_ARTIFACT, packagingToInit: ["maven"] }),
   )
   // Answering the questions on the Maven packaging
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
@@ -46,9 +46,9 @@ const MAVEN_CONFIG_PROMPT_NO_REPO = jest
         "solidCommonVocabDependent",
         "java",
         "rdf4j",
-        "pom.hbs"
+        "pom.hbs",
       ),
-    })
+    }),
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: false }));
 
@@ -56,7 +56,7 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
   .fn()
   // Answering the questions on the Java artifact
   .mockReturnValueOnce(
-    Promise.resolve({ ...DUMMY_JAVA_ARTIFACT, packagingToInit: ["maven"] })
+    Promise.resolve({ ...DUMMY_JAVA_ARTIFACT, packagingToInit: ["maven"] }),
   )
   // Answering the questions on the Maven packaging
   .mockReturnValueOnce(Promise.resolve({ ...DUMMY_MAVEN_ARTIFACT }))
@@ -66,9 +66,9 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
         "solidCommonVocabDependent",
         "java",
         "rdf4j",
-        "pom.hbs"
+        "pom.hbs",
       ),
-    })
+    }),
   )
   .mockReturnValueOnce(Promise.resolve({ addRepository: true }))
   .mockReturnValueOnce(Promise.resolve(DUMMY_RELEASE_REPO))
@@ -82,11 +82,11 @@ const MAVEN_CONFIG_PROMPT_WITH_REPO = jest
 describe("Java ArtifactConfig Generator", () => {
   it("should use the values provided by the user", async () => {
     inquirer.prompt.mockImplementation(
-      jest.fn().mockReturnValue(Promise.resolve(DUMMY_JAVA_ARTIFACT))
+      jest.fn().mockReturnValue(Promise.resolve(DUMMY_JAVA_ARTIFACT)),
     );
     const artifact = await new JavaArtifactConfigurator().prompt();
     expect(artifact.javaPackageName).toEqual(
-      DUMMY_JAVA_ARTIFACT.javaPackageName
+      DUMMY_JAVA_ARTIFACT.javaPackageName,
     );
   });
 
@@ -96,13 +96,13 @@ describe("Java ArtifactConfig Generator", () => {
     expect(artifact.packaging[0].packagingTool).toEqual("maven");
     expect(artifact.packaging[0].groupId).toEqual(DUMMY_MAVEN_ARTIFACT.groupId);
     expect(artifact.packaging[0].publishCommand).toEqual(
-      DUMMY_MAVEN_ARTIFACT.publishCommand
+      DUMMY_MAVEN_ARTIFACT.publishCommand,
     );
     expect(artifact.packaging[0].packagingTemplates[0].template).toEqual(
-      DUMMY_MAVEN_ARTIFACT.template
+      DUMMY_MAVEN_ARTIFACT.template,
     );
     expect(artifact.packaging[0].packagingTemplates[0].fileName).toEqual(
-      "pom.xml"
+      "pom.xml",
     );
   });
 
@@ -122,7 +122,7 @@ describe("Java ArtifactConfig Generator", () => {
     inquirer.prompt.mockImplementation(UNSUPPORTED_CONFIG_PROMPT);
     expect(new JavaArtifactConfigurator().prompt()).rejects.toThrow(
       "Unsupported packaging system",
-      "someSystem"
+      "someSystem",
     );
   });
 });
