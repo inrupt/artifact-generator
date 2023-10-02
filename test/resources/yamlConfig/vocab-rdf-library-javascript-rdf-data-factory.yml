@@ -12,7 +12,7 @@ artifactToGenerate:
     artifactNameSuffix: ""
 
     npmModuleScope: "@inrupt/"
-    solidCommonVocabVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.4.0"
     artifactDirectoryName: JavaScript
 
     babelCoreVersion: "^1.2.3"

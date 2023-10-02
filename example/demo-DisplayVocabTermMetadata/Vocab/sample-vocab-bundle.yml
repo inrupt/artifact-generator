@@ -41,7 +41,7 @@ artifactToGenerate:
     artifactDirectoryName: JavaScript
     sourceFileExtension: js
 
-    solidCommonVocabVersion: "^1.0.0"
+    solidCommonVocabVersion: "^1.4.0"
     rdfjsTypesVersion: "^1.0.1"
     rdfjsImplVersion: "^1.1.0"
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs

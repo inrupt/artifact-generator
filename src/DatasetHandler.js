@@ -344,6 +344,12 @@ module.exports = class DatasetHandler {
       "isDefinedBy",
     );
 
+    const rdfTypes = this.getSetOfPredicateObjects(
+      quad.subject,
+      RDF.type,
+      "rdfType",
+    );
+
     const termDescription = DatasetHandler.getTermDescription(
       comments,
       definitions,
@@ -365,6 +371,7 @@ module.exports = class DatasetHandler {
         comments,
         definitions,
       ),
+      rdfTypes,
     };
   }
 

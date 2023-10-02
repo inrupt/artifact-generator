@@ -170,7 +170,7 @@ describe("Artifact Generator unit tests", () => {
         inputResources: ["./test/resources/vocab/schema-snippet.ttl"],
         outputDirectory,
         artifactName: "someName",
-        solidCommonVocabVersion: "^1.0.10",
+        solidCommonVocabVersion: "^1.4.0",
         descriptionFallback: "Needs a description...",
         namespaceIriOverride: "https://schema.org/",
       });
@@ -180,7 +180,7 @@ describe("Artifact Generator unit tests", () => {
 
       expect(artifactGenerator.artifactData.artifactName).toEqual("someName");
       expect(artifactGenerator.artifactData.solidCommonVocabVersion).toEqual(
-        "^1.0.10",
+        "^1.4.0",
       );
       expect(artifactGenerator.artifactData.artifactName).not.toEqual(
         MOCKED_ARTIFACT_NAME,

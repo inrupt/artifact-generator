@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ### New features
 
 - Support has been added for Node 18 and Node 20.
+- Updated JS/TS templates to provide RDF type metadata for vocab terms if
+  generating using Solid Common Vocab JS.
 
 ## 3.0.2 2023-04-13 (removed tag 3.0.1)
 

@@ -70,3 +70,16 @@ logA(
   `(Well no, Inrupt doesn't yet provide Slovak translations, but we'll seamlessly fallback to English):`
 );
 logA(`  ${SCHEMA_INRUPT.Person.asLanguage("sk").comment}`);
+
+logSpacer();
+logQ(`Is the term 'Person' in Schema.org a Class or Property...?`);
+logA(`  Is it a Class: [${SCHEMA_INRUPT.Person.isRdfClass}]`);
+logA(`  Is it a Property: [${SCHEMA_INRUPT.Person.isRdfProperty}]`);
+SCHEMA_INRUPT.Person.type.forEach((elem) => logA(`  Types: [${elem.value}]`));
+
+
+logSpacer();
+logQ(`Is the term 'shininess' in PetRock a Class or Property...?`);
+logA(`  Is it a Class: [${PET_ROCK.shininess.isRdfClass}]`);
+logA(`  Is it a Property: [${PET_ROCK.shininess.isRdfProperty}]`);
+PET_ROCK.shininess.type.forEach((elem) => logA(`  Types: [${elem.value}]`));

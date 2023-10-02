@@ -96,7 +96,7 @@ function processCommandLine(exitOnFail, commandLineArgs) {
               "solidCommonVocabVersion",
               "The version of the Vocab Term to depend on.",
             )
-            .default("solidCommonVocabVersion", "^0.5.3")
+            .default("solidCommonVocabVersion", "^1.4.0")
 
             .alias("in", "runNpmInstall")
             .boolean("runNpmInstall")

@@ -62,7 +62,7 @@ artifactToGenerate:
 
     rdfjsTypesVersion: "^1.0.1"
     rdfjsImplVersion: "^1.1.0"
-    solidCommonVocabVersion: "^0.5.3"
+    solidCommonVocabVersion: "^1.4.0"
     templateInternal: solidCommonVocabDependent/typescript/rdfjsRdfDataFactory/vocab.hbs
 
     packaging:
