@@ -9,7 +9,7 @@ const { UNSUPPORTED_CONFIG_PROMPT } = require("../ArtifactConfigurator.test");
 
 const DUMMY_JS_ARTIFACT = {
   artifactVersion: "0.0.1",
-  solidCommonVocabVersion: "^0.1.0",
+  solidCommonVocabVersion: "^1.4.0",
 };
 
 const DUMMY_NPM_MODULE = {

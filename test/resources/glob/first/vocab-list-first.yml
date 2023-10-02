@@ -13,7 +13,7 @@ artifactToGenerate:
 
     npmModuleScope: "@inrupt/"
     rdfjsImplVersion: "^1.1.0"
-    solidCommonVocabVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.4.0"
     artifactDirectoryName: JavaScript
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js

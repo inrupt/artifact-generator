@@ -20,7 +20,7 @@ artifactToGenerate:
     ##
     strict: true
     rdfjsImplVersion: "^1.1.0"
-    solidCommonVocabVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.4.0"
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
 
     packaging:

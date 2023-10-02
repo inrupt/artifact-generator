@@ -208,7 +208,7 @@ artifactToGenerate:
 
   - programmingLanguage: JavaScript
     artifactVersion: 10.11.12
-    solidCommonVocabVersion: "^1.0.10"
+    solidCommonVocabVersion: "^1.4.0"
     artifactDirectoryName: JavaScript
     templateInternal: solidCommonVocabDependent/javascript/vocab.hbs
     sourceFileExtension: js

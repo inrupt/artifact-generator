@@ -69,7 +69,8 @@ const {{vocabNameUpperCase}} = {
     _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each isDefinedBys}}
+  ){{#each rdfTypes}}
+    .addType(_namedNode("{{rdfType}}")){{/each}}{{#each isDefinedBys}}
     .addIsDefinedBy(_namedNode("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
     .addSeeAlso(_namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -99,7 +100,8 @@ const {{vocabNameUpperCase}} = {
     _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each isDefinedBys}}
+  ){{#each rdfTypes}}
+    .addType(_namedNode("{{rdfType}}")){{/each}}{{#each isDefinedBys}}
     .addIsDefinedBy(_namedNode("{{isDefinedBy}}")){{/each}}{{#each seeAlsos}}
     .addSeeAlso(_namedNode("{{seeAlso}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
@@ -129,7 +131,8 @@ const {{vocabNameUpperCase}} = {
     _DataFactory,
     getLocalStore(),
     {{#if ../strict}}true{{else}}false{{/if}}
-  ){{#each labels}}{{#if language}}
+  ){{#each rdfTypes}}
+    .addType(_NS("{{rdfType}}")){{/each}}{{#each labels}}{{#if language}}
     .addLabel(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
     .addLabelNoLanguage(`{{{valueEscapedForJavaScript}}}`){{/if}}{{/each}}{{#each comments}}{{#if language}}
     .addComment(`{{{valueEscapedForJavaScript}}}`, "{{language}}"){{else}}
