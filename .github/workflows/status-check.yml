@@ -19,9 +19,9 @@ jobs:
     steps:
         # Setup
       - name: Checkout repo
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3.8.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
