@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### New features
 
+- README updated to note best-effort support only.
+
 ## 3.1.1 2023-10-02
 
 - Release with correct tag aligned with package.json version number.
