@@ -231,6 +231,10 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
+      inputResources: ["http://www.w3.org/2006/03/test-description#"],
+      nameAndPrefixOverride: "td",
+      descriptionFallback: "Test description",
+
       // inputResources: ["https://protect.oeg.fi.upm.es/def/gdprif#"],
       // inputResources: ["https://protect.oeg.fi.upm.es/def/gdprif/ontology.ttl"],
       // ignoreNonVocabTerms: true,
@@ -489,11 +493,11 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // descriptionFallback:
       //   "Needs a description - see Common RDF YAML for why...",
 
-      inputResources: [
-        "https://schema.org/version/latest/schemaorg-current-https.ttl",
-      ],
-      // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
-      descriptionFallback: "Needs a description...",
+      // inputResources: [
+      //   "https://schema.org/version/latest/schemaorg-current-https.ttl",
+      // ],
+      // // termSelectionResource: "./test/resources/vocab/schema-inrupt-ext.ttl",
+      // descriptionFallback: "Needs a description...",
 
       //
       // inputResources: [
