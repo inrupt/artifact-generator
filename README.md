@@ -7,10 +7,6 @@ programming-language constants for the terms (e.g., the Classes, Properties,
 and Constants) found in RDF vocabularies (such as Schema.org, FOAF, Activity
 Streams, Solid vocabularies, or your own custom vocabularies).
 
-> **Note:** This tool is provided by Inrupt 'as-is', with no guarantees or
-> obligations in relation to fixing defects or adding features. We only offer
-> support on a best-effort basis, depending on Inrupt's business needs.
-
 ## Quick start demo
 
 To immediately appreciate some of the major capabilities enabled by the Artifact
