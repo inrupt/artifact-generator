@@ -17,7 +17,8 @@ const VERSION_RDFJS_IMPL = "^1.2.3";
 const NPM_REGISTRY = "http://localhost:4873";
 const RUN_NPM_INSTALL = false;
 const SUPPORT_BUNDLING = true;
-const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
+// const PUBLISH_TO_REPO_LIST = ["mavenLocal", "npmLocal"];
+const PUBLISH_TO_REPO_LIST = ["npmLocal"];
 const LOCAL_COPY_OF_VOCAB_DIRECTORY =
   "./test/Generated/LOCAL_COPY_OF_VOCAB_AS_TURTLE/";
 
@@ -249,7 +250,6 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
       // inputResources: ["https://www.w3.org/TR/dx-prof/rdf/prof.ttl"],
       // nameAndPrefixOverride: "prof",
       // ignoreNonVocabTerms: true,
-
 
       // inputResources: [
       //   "https://protect.oeg.fi.upm.es/odrl-access-control-profile/oac.ttl",
