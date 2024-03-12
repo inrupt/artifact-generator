@@ -22,7 +22,7 @@ const {
 const Resource = require("./Resource");
 const FileGenerator = require("./generator/FileGenerator");
 const BestPracticeReportGenerator = require("./generator/BestPracticeReportGenerator");
-const { describeInput, merge } = require("./Util");
+const { describeInput, describeTemplateVocab } = require("./Util");
 
 const KNOWN_DOMAINS = new Map([
   ["http://xmlns.com/foaf/0.1", "foaf"],
@@ -705,6 +705,7 @@ module.exports = class DatasetHandler {
     result.sourceRdfResources = `Vocabulary built from ${describeInput(
       this.vocabData,
     )}.`;
+    result.sourceTemplateVocab = describeTemplateVocab(this.vocabData);
 
     result.classes = [];
     result.properties = [];

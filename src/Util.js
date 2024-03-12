@@ -43,6 +43,12 @@ function describeInput(artifactInfo) {
       }: [${artifactInfo.inputResources.join(", ")}]`;
 }
 
+function describeTemplateVocab(artifactInfo) {
+  return artifactInfo.artifactToGenerate
+    ? `Source code template file: [${artifactInfo.artifactToGenerate[0].sourceCodeTemplate}].`
+    : `No artifact to generate`;
+}
+
 function mergeDatasets(dataSetArray) {
   let fullData = rdf.dataset();
   dataSetArray.forEach((dataset) => {
@@ -68,5 +74,6 @@ module.exports.getArtifactDirectoryRoot = getArtifactDirectoryRoot;
 module.exports.getArtifactDirectorySourceCode = getArtifactDirectorySourceCode;
 module.exports.normalizePath = normalizeIfFilePath;
 module.exports.describeInput = describeInput;
+module.exports.describeTemplateVocab = describeTemplateVocab;
 module.exports.mergeDatasets = mergeDatasets;
 module.exports.curie = curie;

@@ -288,7 +288,7 @@ class ArtifactGenerator {
   }
 
   async collectGeneratedVocabDetails(vocabDatasets) {
-    this.artifactData.description = `Bundle of [${vocabDatasets.length}] vocabularies that includes the following:`;
+    this.artifactData.description = `Bundle of [${vocabDatasets.length}] vocabular${vocabDatasets.length === 1 ? "y" : "ies"} that bundles the following:`;
     await Promise.all(
       [...vocabDatasets]
         .sort((vocabDataA, vocabDataB) =>
@@ -336,58 +336,51 @@ class ArtifactGenerator {
       const generatedFullArtifactList = [];
 
       this.artifactData.artifactToGenerate.forEach((artifactInfo, index) => {
-        if (!artifactInfo.packaging) {
-          throw new Error(
-            `No packaging information for artifact number [${index}] from ${describeInput(
-              this.artifactData,
-            )}.`,
-          );
-        }
+        if (artifactInfo.packaging) {
+          this.artifactData.gitRepository = artifactInfo.gitRepository;
+          this.artifactData.repository = artifactInfo.repository;
+          artifactInfo.packaging.forEach((packagingInfo) => {
+            debug(
+              `Generating [${artifactInfo.programmingLanguage}] packaging for [${packagingInfo.packagingTool}]`,
+            );
 
-        // TODO: manage repositories properly
-        this.artifactData.gitRepository = artifactInfo.gitRepository;
-        this.artifactData.repository = artifactInfo.repository;
-        artifactInfo.packaging.forEach((packagingInfo) => {
-          debug(
-            `Generating [${artifactInfo.programmingLanguage}] packaging for [${packagingInfo.packagingTool}]`,
-          );
-
-          // As a mere convenience, we generate what we think should be the full
-          // artifact name too - but templates are completely free to create their
-          // own interpretations as they see fit.
-          const suggestedFullArtifactName = ArtifactGenerator.concatIfDefined(
-            ArtifactGenerator.concatIfDefined(
+            // As a mere convenience, we generate what we think should be the full
+            // artifact name too - but templates are completely free to create their
+            // own interpretations as they see fit.
+            const suggestedFullArtifactName = ArtifactGenerator.concatIfDefined(
               ArtifactGenerator.concatIfDefined(
                 ArtifactGenerator.concatIfDefined(
                   ArtifactGenerator.concatIfDefined(
-                    "",
-                    // If we have a Java GroupID, then suffix it with a colon
-                    // (as that's the Java convention).
-                    packagingInfo.groupId === undefined
-                      ? ""
-                      : `${packagingInfo.groupId}:`,
+                    ArtifactGenerator.concatIfDefined(
+                      "",
+                      // If we have a Java GroupID, then suffix it with a colon
+                      // (as that's the Java convention).
+                      packagingInfo.groupId === undefined
+                        ? ""
+                        : `${packagingInfo.groupId}:`,
+                    ),
+                    packagingInfo.npmModuleScope,
                   ),
-                  packagingInfo.npmModuleScope,
+                  artifactInfo.artifactNamePrefix,
                 ),
-                artifactInfo.artifactNamePrefix,
+                this.artifactData.artifactName,
               ),
-              this.artifactData.artifactName,
-            ),
-            artifactInfo.artifactNameSuffix,
-          );
+              artifactInfo.artifactNameSuffix,
+            );
 
-          artifactInfo.suggestedFullArtifactName = suggestedFullArtifactName;
-          generatedFullArtifactList.push({
-            programmingLanguage: artifactInfo.programmingLanguage,
-            suggestedFullArtifactName,
+            artifactInfo.suggestedFullArtifactName = suggestedFullArtifactName;
+            generatedFullArtifactList.push({
+              programmingLanguage: artifactInfo.programmingLanguage,
+              suggestedFullArtifactName,
+            });
+
+            FileGenerator.createPackagingFiles(
+              this.artifactData,
+              artifactInfo,
+              packagingInfo,
+            );
           });
-
-          FileGenerator.createPackagingFiles(
-            this.artifactData,
-            artifactInfo,
-            packagingInfo,
-          );
-        });
+        }
       });
 
       // Generate README in the root. First convert our bundle description into

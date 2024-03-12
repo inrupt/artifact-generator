@@ -232,9 +232,13 @@ describe("Suite for generating common vocabularies (marked as [skip] to prevent 
   // it("tests a single custom vocab", async () => {
   it.skip("tests a single custom vocab", async () => {
     await generateVocabArtifact({
-      inputResources: ["http://www.w3.org/2006/03/test-description#"],
-      nameAndPrefixOverride: "td",
-      descriptionFallback: "Test description",
+      inputResources: ["https://w3c.github.io/dx-connegp/connegp/altr.ttl"],
+      nameAndPrefixOverride: "altr",
+      ignoreNonVocabTerms: true,
+
+      // inputResources: ["http://www.w3.org/2006/03/test-description#"],
+      // nameAndPrefixOverride: "td",
+      // descriptionFallback: "Test description",
 
       // inputResources: ["https://protect.oeg.fi.upm.es/def/gdprif#"],
       // inputResources: ["https://protect.oeg.fi.upm.es/def/gdprif/ontology.ttl"],
