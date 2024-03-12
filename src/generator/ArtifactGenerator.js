@@ -337,7 +337,6 @@ class ArtifactGenerator {
 
       this.artifactData.artifactToGenerate.forEach((artifactInfo, index) => {
         if (artifactInfo.packaging) {
-          // TODO: Manage repositories properly.
           this.artifactData.gitRepository = artifactInfo.gitRepository;
           this.artifactData.repository = artifactInfo.repository;
           artifactInfo.packaging.forEach((packagingInfo) => {
