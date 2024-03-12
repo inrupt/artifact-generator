@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>generated-vocab-TEST</name>
-    <description>Bundle of [1] vocabularies that includes the following:
+    <description>Bundle of [1] vocabulary that bundles the following:
 
  - schema_inrupt_ext: Inrupt extension to Schema.org terms.</description>
 

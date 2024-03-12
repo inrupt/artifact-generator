@@ -677,7 +677,7 @@ describe("End-to-end tests", () => {
         fs.readFileSync(`${outputDirectoryJavaScript}/package.json`).toString(),
       ).toEqual(
         expect.stringContaining(
-          '"description": "Bundle of [1] vocabularies that includes the following:\\n\\n - schema_inrupt_ext: Inrupt extension to Schema.org terms.',
+          '"description": "Bundle of [1] vocabulary that bundles the following:\\n\\n - schema_inrupt_ext: Inrupt extension to Schema.org terms.',
         ),
       );
     });
