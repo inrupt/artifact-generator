@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### New features
 
+## 4.0.0 2024-03-12
+
+- Breaking changes (no longer throws an exception if YAML artifact has no
+  packaging info).
+
 - Allow YAML files with no packaging info at all, for cases where we just want
   vocab file generation without packaging up, or publishing.
 - Added the template filename used to the header comments of generate vocab
