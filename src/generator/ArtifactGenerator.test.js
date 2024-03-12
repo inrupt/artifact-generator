@@ -856,8 +856,8 @@ describe("Artifact Generator unit tests", () => {
     });
   });
 
-  describe("Missing packaging info.", () => {
-    it("should throw with missing packaging info", async () => {
+  describe("Missing packaging info should be fine", () => {
+    it("shouldn't throw if missing packaging info", async () => {
       const outputDirectory =
         "test/Generated/UNIT_TEST/ArtifactGenerator/backwardCompatibility/";
       del.sync([`${outputDirectory}/*`]);
@@ -872,7 +872,12 @@ describe("Artifact Generator unit tests", () => {
       });
 
       const artifactGenerator = new ArtifactGenerator(config);
-      await expect(artifactGenerator.generate()).rejects.toThrowError(yamlFile);
+      await artifactGenerator.generate();
+
+      const outputDirectoryJavaScript = `${outputDirectory}${getArtifactDirectorySourceCode()}/JavaScript/GeneratedVocab`;
+      expect(fs.existsSync(`${outputDirectoryJavaScript}/SCHEMA.js`)).toBe(
+        true,
+      );
     });
   });
 
