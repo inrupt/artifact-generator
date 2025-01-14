@@ -44,7 +44,7 @@
     "moment": "^2.29.3",
     "rdf-ext": "^1.3.5",
     "rdfa-streaming-parser": "^3.0.1",
-    "rdfxml-streaming-parser": "^2.4.0",
+    "rdfxml-streaming-parser": "^3.0.1",
     "rimraf": "^6.0.1",
     "string-to-stream": "^3.0.1",
     "yargs": "^17.7.1"
