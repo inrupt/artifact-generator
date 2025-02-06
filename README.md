@@ -1,3 +1,6 @@
+# Deprecation warning
+This project is deprecated. It will no longer receive any updates, including security patches, so we recommend to stop using it as a dependency (or to use it at your own risk).
+
 # Artifact Generator
 
 This tool automatically generates deployable artifacts for various programming
